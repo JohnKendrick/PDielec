@@ -19,6 +19,7 @@ html:
 	rm -rf autoapi
 	rm -rf _build
 	sphinx-build -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+	# touch ../docs/.nojekyll
 	rsync -r _build/html/* ../docs
 
 .PHONY: help Makefile

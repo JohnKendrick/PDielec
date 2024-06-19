@@ -1,5 +1,5 @@
-PDielec.CastepOutputReader
-==========================
+:py:mod:`PDielec.CastepOutputReader`
+====================================
 
 .. py:module:: PDielec.CastepOutputReader
 
@@ -9,23 +9,23 @@ PDielec.CastepOutputReader
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.CastepOutputReader.CastepOutputReader
-   PDielec.CastepOutputReader.GenericOutputReader
-   PDielec.CastepOutputReader.UnitCell
 
 
-Module Contents
----------------
+
 
 .. py:class:: CastepOutputReader(filenames)
 
-   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
    Read the contents of a Castep output file.
 
@@ -40,7 +40,6 @@ Module Contents
    -----
    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
    - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
-
 
    .. py:method:: _read_born_charges(line)
 
@@ -57,7 +56,6 @@ Module Contents
       -------
       ndarray
           An array where each row represents the born charges for a particular atomic displacement arranged in the format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.
-
 
 
    .. py:method:: _read_cellcontents(line)
@@ -82,7 +80,6 @@ Module Contents
       None
 
 
-
    .. py:method:: _read_convergence(line)
 
       Reads convergence data from a file and updates internal lists with values.
@@ -103,7 +100,6 @@ Module Contents
       This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line). 
 
       The function does not return any value, but it updates the internal state of the object it is a part of.
-
 
 
    .. py:method:: _read_dielectric(line)
@@ -128,7 +124,6 @@ Module Contents
       This method modifies the state of the object by updating the 'zerof_optical_dielectric' and 'zerof_static_dielectric' lists with new data read from the file. 
 
 
-
    .. py:method:: _read_ediff(line)
 
       Reads and sets the energy difference from a given line of text.
@@ -146,7 +141,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: _read_energies(line)
@@ -176,7 +170,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_energies2(line)
 
       Parse a line of text to read energies and update properties.
@@ -199,7 +192,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: _read_energies3(line)
@@ -228,7 +220,6 @@ Module Contents
       to. It does not return any value.
 
 
-
    .. py:method:: _read_energy_cutoff(line)
 
       Extract the energy cutoff value from a given line and store it in the object.
@@ -243,7 +234,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: _read_external_pressure(line)
@@ -262,7 +252,6 @@ Module Contents
       Notes
       -----
       This function updates the `pressure` attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.
-
 
 
    .. py:method:: _read_frequencies(line)
@@ -296,7 +285,6 @@ Module Contents
       - The method relies on the internal variable `self._nbranches` to determine the number of modes to read, and `self.nions` for the number of ions per mode.
 
 
-
    .. py:method:: _read_kpoint_grid(line)
 
       Parse and set the k-point grid dimensions from the given line.
@@ -311,7 +299,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: _read_kpoints(line)
@@ -332,7 +319,6 @@ Module Contents
       This function assumes the number of k-points is always located at the 6th position (index 5) when the line is split by whitespace. It directly updates the `kpoints` attribute of the class instance.
 
 
-
    .. py:method:: _read_masses(line)
 
       Read and parse masses from a file, categorizing them by species.
@@ -350,7 +336,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_nbands(line)
 
       Extracts the number of bands from a given line and sets it to the 'nbands' attribute of the class.
@@ -363,7 +348,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: _read_nbranches(line)
@@ -386,7 +370,6 @@ Module Contents
       This function does not return anything as it sets the parsed number directly to an instance variable named `_nbranches`.
 
 
-
    .. py:method:: _read_nelect(line)
 
       Extracts the number of electrons from a line and assigns it.
@@ -404,7 +387,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_output_files()
 
       Define the strings needed for searching the files
@@ -417,7 +399,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: _read_pseudoatom(line)
@@ -436,7 +417,6 @@ Module Contents
       Notes
       -----
       This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.
-
 
 
    .. py:method:: _read_pspot(line)
@@ -458,7 +438,6 @@ Module Contents
       None
 
 
-
    .. py:method:: _read_skip4(line)
 
       Read and skip the next four lines from the current file position.
@@ -477,7 +456,6 @@ Module Contents
       None
 
 
-
    .. py:method:: _read_spin(line)
 
       Read and set the spin value from a given line of text.
@@ -492,1086 +470,6 @@ Module Contents
       Returns
       -------
       None
-
-
-
-.. py:class:: GenericOutputReader(filenames)
-
-   Generic reader of output files. Actual reader should inherit from this class.
-   Examples of readers with this base class:
-
-   - :class:`~PDielec.AbinitOutputReader`
-   - :class:`~PDielec.CastepOutputReader`
-   - :class:`~PDielec.CrystalOutputReader`
-   - :class:`~PDielec.ExperimentOutputReader`
-   - :class:`~PDielec.GulpOutputReader`
-   - :class:`~PDielec.PhonopyOutputReader`
-   - :class:`~PDielec.QEOutputReader`
-   - :class:`~PDielec.VaspOutputReader`
-
-   Parameters
-   ----------
-   filenames : list
-       A list containing file names (strings) to be associated with the instance. These
-       are converted into the absolute paths and stored.
-
-   Attributes
-   ----------
-   _outputfiles : list
-       Stores the initial filenames provided during instantiation.
-
-   names : list
-       The absolute paths of the files specified in `filenames`. Computed by resolving
-       each filename to its absolute path.
-
-   debug : bool
-       Indicates if debug mode is on or off. Defaults to False.
-
-   type : str
-       The type of the object, initially set as 'Unkown'.
-
-   ncells, nsteps, electrons, spin, nbands, volume, nions, nspecies, geomsteps : int
-       Attributes initialized as 0, representing various numerical properties.
-
-   unit_cells, volumes, species, energiesDFT, energiesDFT_disp, final_free_energies, final_energies_without_entropy, volumes, pressures, born_charges, frequencies, mass_weighted_normal_modes, ions_per_type, atom_type_list, masses, masses_per_type, elastic_constants, zerof_optical_dielectric, zerof_static_dielectric : list
-       Various lists to store computational results related to the object. Initialized as empty lists.
-
-   final_free_energy, final_energy_without_entropy, magnetization, energy_cutoff, pressure : float
-       Floating point attributes initialized to represent different scalar quantities. Defaults to 0 or 0.0.
-
-   kpoints : int
-       The number of kpoints, initialized to 1.
-
-   kpoint_grid : list
-       The kpoint grid dimensions, initialized as [1, 1, 1].
-
-   manage : set
-       The set contains phrases which are matched when looking through a file
-
-   iterations : dict
-       Holds the values of 'max force' and 'rms force' at each iteration
-
-   file_descriptor : str
-       A string to hold file descriptor, initialized as an empty string.
-
-   eckart : bool
-       A boolean flag to indicate the use of Eckart conditions, defaults to False.
-
-   hessian_symmetrisation : str
-       The method for symmetrization of Hessian, defaults to 'symm'.
-
-   open_filename, open_directory : str
-       Strings for tracking open files or directories, initialized as empty strings.
-
-   _old_masses : list
-       A list to keep track of old mass values, initialized as empty.
-
-   nomass_hessian : type or None
-       Placeholder for hessian without mass contribution, initially None.
-
-   nomass_hessian_has_been_set : bool
-       Indicates if the `nomass_hessian` has been provided, defaults to False.
-
-   original_born_charges, CrystalPermittivity, oscillator_strengths, edited_masses : Various types
-       Attributes initialized as `None` to represent unassigned computational properties.
-
-   original_born_charges_are_being_used : bool
-       Signifies whether original Born charges are in use, defaults to True.
-
-
-   .. py:method:: _born_charge_sum_rule()
-
-      Apply a simple charge sum rule to all the elements of the born matrices
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This function applies a straightforward summation rule to the elements of the born matrices,
-
-
-
-   .. py:method:: _dynamical_matrix(hessian)
-
-      Process the dynamical matrix.
-
-      Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally storing the frequencies and normal modes.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      - Hessian is a nxn matrix of the mass weighted force constants.
-      - The hessian is symmetrised.
-      - Translational modes are projected out.
-      - The hessian is diagonalised.
-      - Finally, the frequencies and normal modes are stored.
-
-
-
-   .. py:method:: _modify_mass_weighting(hessian, new)
-
-      Modify the Hessian matrix based on new mass weighting.
-
-      This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the square root of the product of elements from a new weighting (`new`). 
-
-      Parameters
-      ----------
-      hessian : numpy.ndarray
-          The original Hessian matrix whose elements are to be modified. It is assumed to be a square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.
-      new : numpy.ndarray or list
-          An array or list of new weighting factors, one per ion. Its length should be equal to `nions`. These factors are applied in the modification of the Hessian matrix elements.
-
-      Returns
-      -------
-      numpy.ndarray
-          The modified Hessian matrix with the same dimensions as the input matrix.
-
-
-
-
-   .. py:method:: _read_output_file(name)
-
-      Read through the file 'name' for key words. The keywords are established in _read_output_files.
-
-      Parameters
-      ----------
-      name : str
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      The actual implementation for identifying keywords is handled by the `_read_output_files` method.
-
-
-
-   .. py:method:: _read_output_files()
-
-      Read the through the output files.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method is over-ridden by the child class
-
-
-
-   .. py:method:: _read_till_phrase(phrase)
-
-      Read lines from the current file until a match with phrase is found.
-      Once a match is found, return the matching line.
-
-      Parameters
-      ----------
-      phrase : str
-          The phrase to match in each line of the file.
-
-      Returns
-      -------
-      str
-          The line from the file that matches the phrase.
-
-
-
-   .. py:method:: _remove_mass_weighting(hessian, old)
-
-      Remove mass-weighting from a Hessian matrix.
-
-      Parameters
-      ----------
-      hessian : ndarray
-          The Hessian matrix to be un-weighted, typically a square, 2D array where
-          the dimension correlates with 3 times the number of ions (nions*3) since
-          it includes the x, y, and z coordinates for each ion.
-      old : ndarray or list
-          An array or list of mass weights for each ion.
-
-      Returns
-      -------
-      new_hessian : ndarray
-          The mass-weighting removed (un-weighted) Hessian matrix.
-
-      Notes
-      -----
-      This function assumes that the Hessian matrix is provided in a form that
-      has been mass-weighted. Each element of the `hessian` input is divided by
-      the square root of the product of the mass weights of the corresponding ions,
-      adjusting it to an un-weighted form.
-
-      The size of `old` must match the number of ions (`nions`). Each entry in `old`
-      is used to compute the square root of the product of mass weights for the 
-      appropriate matrix element, thereby removing the mass weighting from the 
-      original Hessian matrix.
-
-
-
-   .. py:method:: _symmetric_orthogonalisation(A)
-
-      Private routine to perform symmetric orthogonalization.
-
-      Parameters
-      ----------
-      A : ndarray
-          matrix to be orthogonalised
-
-      Returns
-      -------
-      None
-
-
-
-
-   .. py:method:: calculate_mass_weighted_normal_modes()
-
-      Calculate the mass weighted normal modes from the hessian.
-
-      The hessian itself is constructed from the frequencies and normal modes
-      Any changes to the atomic masses is applied
-      Eckart conditions are applied if requested
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      mass_weighted_normal_modes : np.array
-         the mass weighted normal modes
-
-
-
-   .. py:method:: change_masses(new_masses, mass_dictionary)
-
-      Change the masses of elements in a output reader.
-
-      This function updates the masses of the elements within the reader according to the new masses provided. If the object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the simulation's internal mass dictionary based on the provided `new_masses` and an optional external `mass_dictionary` for overrides. If debugging is enabled, various diagnostic messages will be printed during the function's execution.
-
-      Parameters
-      ----------
-      new_masses : dict
-          A dictionary where keys are element symbols as strings and values are the new masses for these elements.
-      mass_dictionary : dict, optional
-          An additional dictionary provided for mass overrides. If any element present in `new_masses` also exists in `mass_dictionary`, the mass from `mass_dictionary` will be used.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      - It assumes that `cleanup_symbol()` is a function used to standardize or validate the element symbols in `self.species`.
-      - It alters `self.masses` and `self.masses_per_type` to reflect changes in masses as per `new_masses` and `mass_dictionary`.
-      - If `self.edited_masses` is already set to a truthy value, it bypasses the update process and uses these values instead.
-      - `self.species` and `self.atom_type_list` are expected to be iterable attributes of the object containing symbols for elements and types of atoms, respectively.
-      - Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
-
-
-
-   .. py:method:: getSpecies()
-
-      Return a list of cleaned species symbols.
-
-      This method applies a specified cleanup function to each element of 
-      the `species` attribute and returns the resulting list.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      list
-          A list of cleaned species symbols.
-
-
-
-   .. py:method:: get_crystal_density()
-
-      Return the crystal density in g/cc
-
-      The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      float
-          Density in g/cc
-
-
-
-
-   .. py:method:: get_unit_cell()
-
-      Return the last unit cell in the reader
-
-      The routine adds the current set of masses to the unit cell
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      unitCell object
-          The last unit cell read by the reader
-
-
-
-
-   .. py:method:: mass_dictionary()
-
-      Generate a dictionary mapping chemical species symbols to their masses.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      dictionary : dict
-          A dictionary where keys are cleaned up species symbols and values are their corresponding masses.
-
-      Notes
-      -----
-      The function uses a helper function `cleanup_symbol` to clean up the species symbols before using them as keys in the dictionary. If the instance's `debug` attribute is set to True, the function will print the newly created mass dictionary.
-
-      Examples
-      --------
-      Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
-
-
-
-   .. py:method:: neutralise_born_charges()
-
-      Neutralise Born charges within the object.
-
-      Changes the state of `original_born_charges_are_being_used` 
-      to False and saves the current `born_charges` as `original_born_charges` if
-      `original_born_charges_are_being_used` is True, indicating that the 
-      original Born charges are no longer being used directly. It then applies 
-      the Born charge sum rule by calling the `_born_charge_sum_rule` method.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method is intended to be used within a context where Born charges 
-      (representative of the polarization of ions in a solid under an electric field) 
-      need to be neutralized or altered from their original state.
-
-
-
-   .. py:method:: print()
-
-      Print information about the reader.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This function prints out detailed information about the reader it is run on.
-
-
-
-   .. py:method:: project(hessian)
-
-      Apply projection operators to remove translation.
-
-      Parameters
-      ----------
-      hessian : np.array
-          The given matrix.
-
-      Returns
-      -------
-      np.array
-          The matrix with translational modes projected out.
-
-
-
-   .. py:method:: read_output()
-
-      Interface to the private read output files methods.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: reset_born_charges()
-
-      Resets the born charges to their original values if they are not currently being used.
-
-      This method restores the `born_charges` attribute of the instance to the value stored in `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
-
-
-
-   .. py:method:: reset_masses()
-
-      Reset the mass values to the program's defaults.
-
-      This function resets the mass dictionary of an object to the values specified
-      by the object's `program_mass_dictionary`. Typically used when needing to revert
-      any runtime changes to the object's mass values to their original state.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      If `debug` attribute of the object is True, it prints a message indicating 
-      that the masses are being reset. This function does not return any value
-      but modifies the object's state by changing its mass dictionary to match
-      the `program_mass_dictionary`.
-
-      Examples
-      --------
-      Assuming an object `obj` of a class that has `reset_masses` method, `debug` attribute,
-      and `program_mass_dictionary`:
-
-          >>> obj.debug = True
-          >>> obj.reset_masses()
-          Re setting mass dictionary to the program values
-
-      Make sure that `program_mass_dictionary` is set properly before calling this
-      method to avoid setting the masses to an unintended state.
-
-
-
-   .. py:method:: set_edited_masses(masses)
-
-      Sets the edited masses attribute if the length matches the original masses attribute.
-
-      Parameters
-      ----------
-      masses : list
-          A list of mass values to be set as the edited masses.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      The method updates the `edited_masses` attribute only if the length of the input list matches the length of the `masses` attribute of the object. If they do not match, an error message is printed, and `edited_masses` is set to `None`.
-
-      Returns
-      -------
-      None
-
-
-
-.. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom')
-
-   Hold unit cell information and its associated calculated properties.
-
-   Initialize the class instance with optional lattice parameters and calculate the reciprocal lattice.
-
-   Parameters
-   ----------
-   a, b, c : float or array, optional
-       Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.
-   alpha, beta, gamma : float, optional
-       Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
-   units : str
-       An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
-
-   Notes
-   -----
-   This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
-
-   Examples
-   --------
-   ::
-
-       a = [2.853604, -1.647529, 0.0]
-       b = [0.0,       3.295058, 0.0]
-       c = [0.0,       0.0,      5.284824]
-       cell = UnitCell( a, b, c )
-       cell.set_element_names(['Zn', 'Zn', 'O', 'O'])
-       coords = [ [ 0.333333,    0.666667,    0.000900 ]
-                  [ 0.666667,    0.333333,    0.500900 ]
-                  [ 0.333333,    0.666667,    0.381600 ]
-                  [ 0.666667,    0.333333,    0.881600 ] ]
-       cell.set_fractional_coordinates(coords)
-       cell.print()
-
-
-   .. py:method:: _calculate_reciprocal_lattice(lattice)
-
-      Calculate the reciprocal lattice
-
-      Parameters
-      ----------
-      3x3 list of floats
-          Lattice as [a, b, c] where a/b/c are [x,y,z]
-
-      Returns
-      -------
-      None
-
-      Returns
-      -------
-      sets the reciprocal lattice vectors
-
-
-
-   .. py:method:: calculateCentreOfMass(atom_list=None, output='xyz')
-
-      Calculate the centre of mass for a given set of atoms.
-
-      Parameters
-      ----------
-      atom_list : list, optional
-          A list of atom indices for which the centre of mass should be calculated.
-          If None, the centre of mass will be calculated for all atoms in the system. Default is None.
-      output : {'xyz', 'mass', 'abc'}, optional
-          The output requested:
-          - 'xyz' returns the centre of mass coordinates in Cartesian (x, y, z) units.
-          - 'mass' returns the total mass of the atoms in `atom_list`.
-          - 'abc' returns the centre of mass in fractional (a, b, c) coordinates.
-          If not specified, 'xyz' is used as default.
-
-      Returns
-      -------
-      numpy.ndarray or float or tuple
-          The centre of mass as requested by output:
-          - If 'xyz', returns a numpy array with the x, y, z coordinates of the centre of mass.
-          - If 'mass', returns a float representing the total mass of the specified atoms.
-          - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
-          - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
-
-      See Also
-      --------
-      convert_xyz_to_abc : A method to convert Cartesian coordinates to fractional coordinates.
-
-      Examples
-      --------
-      >>> calculateCentreOfMass(atom_list=[1, 2, 3], output='xyz')
-      array([0.1, 0.2, 0.3])
-      >>> calculateCentreOfMass(output='mass')
-      50.2
-      >>> calculateCentreOfMass(output='abc')
-      array([0.4, 0.5, 0.6])
-
-
-
-   .. py:method:: calculate_molecular_contents(scale=1.1, tolerance=0.1, radii=None)
-
-      Finds whole molecules in the unit cell.
-
-      Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
-      A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
-      The routine returns the new unit cell, the number of molecules and the old ordering of the atoms.
-
-      Parameters
-      ----------
-      scale : float, optional
-          The scale factor applied to the covalent radii. Default is 1.1
-      tolerance : float, optional. Default is 0.1
-          The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.
-      radii : a dictionary, optional
-          A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants
-
-      Returns
-      -------
-      new_unit_cell, len(new_molecules), old_order
-
-      Notes
-      -----
-      The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
-      `scale * (radi + radj) + tolerance`
-
-
-
-   .. py:method:: convert_abc_to_unitcell(a, b, c, alpha_degs, beta_degs, gamma_degs)
-
-      Convert a, b, c, alpha, beta, gamma to a unit cell
-
-      Parameters
-      ----------
-      a : type
-          Description of parameter `a`.
-      b : type
-          Description of parameter `b`.
-      c : type
-          Description of parameter `c`.
-      alpha : type
-          Description of parameter `alpha`.
-      beta : type
-          Description of parameter `beta`.
-      gamma : type
-          Description of parameter `gamma`.
-
-      Returns
-      -------
-      lattice : list of floats (3,3) list
-          The lattice parameters
-
-
-
-   .. py:method:: convert_abc_to_xyz(abc)
-
-      Convert abc coordinates to xyz coordinates.
-
-      Parameters
-      ----------
-      abc : list of fractional coordinates
-
-      Returns
-      -------
-      xyz : list of coordinates
-
-
-
-
-   .. py:method:: convert_hkl_to_xyz(hkl)
-
-      Convert hkl miller indices to xyz coordinates.
-
-      Parameters
-      ----------
-      hkl : list of hkl coordinates
-
-      Returns
-      -------
-      xyz : list of xyz coordinates
-
-
-
-   .. py:method:: convert_unitcell_to_abc()
-
-      Convert a unit cell to the equivalent a, b, c, alpha, beta, gamma designation.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      a, b, c : float
-          The lengths of the cell edges.
-      alpha, beta, gamma : float
-          The angles between the edges in degrees.
-
-
-
-   .. py:method:: convert_xyz_to_abc(xyz)
-
-      Convert xyz coordinates to abc lattice coordinates.
-
-      Parameters
-      ----------
-      xyz: list of coordinates
-
-      Returns
-      -------
-      abc : list of fractional coordinates
-
-
-
-   .. py:method:: find_symmetry(symprec=1e-05, angle_tolerance=-1.0)
-
-      Find the space group symmetry of the unit cell.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      a tuple
-          (international table symbol, number])
-
-
-
-   .. py:method:: getBoundingBox(units='Angstrom')
-
-      Generate the corners and edges of a bounding box.
-
-      This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
-
-      Parameters
-      ----------
-      units : str
-          An optional unit of length required for output, default is Angstrom
-
-      Returns
-      -------
-      tuple of list
-          A tuple containing two elements:
-          - The first element is a list of corners' coordinates after conversion (`list` of `np.ndarray`).
-          - The second element is a list of tuples, each consisting of a pair of corners representing an edge (`list` of `tuple`).
-
-      Example
-      -------
-      To fetch the bounding box coordinates and edges, simply call: ::
-
-          corners_xyz, edges = object.getBoundingBox()
-
-
-
-
-   .. py:method:: getDensity(units='cm')
-
-      Calculate the density of the crystal.
-
-      Returns the density in g/cc.  If the mass is not known, then returns 1.0
-
-      Parameters
-      ----------
-      units : str
-          Optional parameter giving the output unit of length, default is cm, so volume will be cm3
-
-      Returns
-      -------
-      float
-          The density in gms/cc
-
-
-
-   .. py:method:: getVolume(units='cm')
-
-      Calculate the volume
-
-      Parameters
-      ----------
-      units : str
-          An optional string indicating the required unit of length for the output value, default is cm
-
-      Returns
-      -------
-      volume : float
-
-
-
-   .. py:method:: get_atom_labels()
-
-      get the atom labels for a molecule.
-
-      If the labels have not been set, then a list of labels is created from the element names
-
-      Parameters
-      ----------
-      None
-          A list containing the labels of atoms.
-
-      Returns
-      -------
-      A list of atom labels
-
-
-
-   .. py:method:: get_atomic_masses()
-
-      Get the atomic masses for the elements.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      masses : list
-          The atomic masses 
-
-
-
-   .. py:method:: get_atomic_numbers()
-
-      Get the atomic numbers for the elements.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      list of ints
-          The atomic numbers
-
-
-
-   .. py:method:: get_bond_angles()
-
-      Returns a list of atoms that form bonded angles for the unit cell
-
-      It also returns a list of the angles in degrees
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      (list of 3 integer tuples, list of bond angles)
-          list of angles is a list of 3 integers denoting involved in the angle
-          list of angles is a list of floats
-
-
-
-   .. py:method:: get_bonds()
-
-      Returns a list of bonds for the unit cell
-
-      It also returns a list of the bond lengths in angstrom
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      (list of bonds, list of bondlengths)
-          list of bonds is a list of pairs of integers denoting a bond
-          list of bond lengths is a list of floats
-
-
-
-   .. py:method:: get_torsions()
-
-      Returns a list of atoms that form torsion angles for the unit cell
-
-      It also returns a list of the angles in degrees
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      (list of 4 integer tuples, list of torsion angles)
-          list of torsions is a list of 4 integers denoting involved in the angle
-          list of angles is a list of floats
-
-
-
-   .. py:method:: print()
-
-      Prints the details of the given unit cell.
-
-      This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_atom_labels(atom_labels)
-
-      Set the atom labels for a molecule.
-
-      Parameters
-      ----------
-      atom_labels : list
-          A list containing the labels of atoms.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method updates the `atom_labels` attribute of the molecule with the
-      provided list of atom labels. Each element in the input `atom_labels` list 
-      is appended to the `self.atom_labels` attribute.
-
-
-
-   .. py:method:: set_atomic_masses(masses)
-
-      Set the atomic masses for the elements.
-
-      Parameters
-      ----------
-      masses : list
-          The atomic masses to be assigned. This can be a list or a dictionary of atomic masses.
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_bonds(bonds)
-
-      Define a list of bonds for the unit cell
-
-      Some checking is performed.  If the bonds has duplicates but in a different order, then they are removed.
-
-      Parameters
-      ----------
-      bonds : a list of integer tuple
-         The bonding list for the cell
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_element_names(element_names)
-
-      Set the names of elements in the object after cleaning them up.
-
-      Parameters
-      ----------
-      element_names : list
-          A list of strings representing element names to be cleaned and stored.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This function takes a list of element names, cleans each name using the 
-      `cleanup_symbol` function (not defined here), and then updates the object's 
-      `element_names` attribute with the cleaned names.
-
-
-
-   .. py:method:: set_fractional_coordinates(coords)
-
-      Set the fractional coordinates and calculate the xyz coordinates.
-
-      Parameters
-      ----------
-      coords : a list of fractional coordinates
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_molecules(molecules)
-
-      Define a list of molecules, each molecule is a list of atom coordinates.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_xyz_coordinates(coords, units='Angstrom')
-
-      Set the xyz coordinates and calculate the fractional coordinates.
-
-      Parameters
-      ----------
-      coords : a list of xyz coordinates
-          A list of xyz coordinates, the unit of length must agree with the lattice
-      units : str
-          A unit of length for the input values.  The default is Angstrom.
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: write_cif(filename=None, file_=sys.stdout)
-
-      Write the crystallographic information file (CIF) representation of a structure.
-
-      Parameters
-      ----------
-      filename : str, optional
-          The name of the file to be written. If not provided, the CIF data is printed to stdout.
-      file\_ : object, optional
-          An output stream object. Default is sys.stdout.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method prints the CIF representation of a structure, including the space group,
-      cell dimensions, angles, volume, and the fractional coordinates of the atoms.
-      Any lengths are converted to Angstrom, the volumes is give as Angstrom^3
-      If a filename is provided, the CIF data will be written to that file. Otherwise,
-      it will be printed to standard output.
-
-      Examples
-      --------
-      To print the CIF representation to standard output, simply call the method without arguments:
-
-      >>> cell.write_cif()
-
-      To write the CIF representation to a file named "example.cif":
-
-      >>> cell.write_cif('example.cif')
 
 
 

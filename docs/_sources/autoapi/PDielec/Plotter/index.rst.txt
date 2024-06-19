@@ -1,5 +1,5 @@
-PDielec.Plotter
-===============
+:py:mod:`PDielec.Plotter`
+=========================
 
 .. py:module:: PDielec.Plotter
 
@@ -9,8 +9,12 @@ PDielec.Plotter
 
 
 
+Module Contents
+---------------
+
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -20,8 +24,6 @@ Functions
    PDielec.Plotter.print_strings
 
 
-Module Contents
----------------
 
 .. py:function:: print3x3(title, array, format='{:14.6f}', file=sys.stdout, separator=' ')
 

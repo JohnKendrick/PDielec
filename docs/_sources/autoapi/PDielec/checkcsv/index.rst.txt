@@ -1,5 +1,5 @@
-PDielec.checkcsv
-================
+:py:mod:`PDielec.checkcsv`
+==========================
 
 .. py:module:: PDielec.checkcsv
 
@@ -11,8 +11,12 @@ PDielec.checkcsv
 
 
 
+Module Contents
+---------------
+
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -21,8 +25,6 @@ Functions
    PDielec.checkcsv.main
 
 
-Module Contents
----------------
 
 .. py:function:: compare_lines(line1, line2, swapped)
 

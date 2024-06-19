@@ -1,5 +1,5 @@
-PDielec.IO
-==========
+:py:mod:`PDielec.IO`
+====================
 
 .. py:module:: PDielec.IO
 
@@ -11,18 +11,21 @@ PDielec.IO
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.IO.pdielec_io
 
 
-Module Contents
----------------
+
 
 .. py:class:: pdielec_io(filename, mode)
+
 
    A class for reading lines from a file and providing an interface similar to file objects.
 
@@ -58,7 +61,6 @@ Module Contents
        Resets the reading process by resetting the current line index and
        deleting all lines read from the file from memory.
 
-
    .. py:method:: close()
 
       Closes the current object session.
@@ -76,7 +78,6 @@ Module Contents
       Notes
       -----
       This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.
-
 
 
    .. py:method:: readline()

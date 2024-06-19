@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../../">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.IO" href="../IO/index.html" /><link rel="prev" title="PDielec.GulpOutputReader" href="../GulpOutputReader/index.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>PDielec.HelperRoutines - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=387cc868" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
@@ -71,7 +71,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -86,7 +86,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -94,7 +94,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -102,60 +102,6 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
-    </svg>
-  </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -168,8 +114,6 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -188,8 +132,7 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -235,63 +178,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.HelperRoutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html">PDielec.checkcsv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html">PDielec.checkexcel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html">PDielec.p1reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html">PDielec.p2cif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -315,17 +258,11 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="../../../_sources/autoapi/PDielec/HelperRoutines/index.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
+          
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -335,58 +272,15 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main" id="furo-main-content">
+        <article role="main">
           <section id="module-PDielec.HelperRoutines">
-<span id="pdielec-helperroutines"></span><h1>PDielec.HelperRoutines<a class="headerlink" href="#module-PDielec.HelperRoutines" title="Link to this heading">¶</a></h1>
+<span id="pdielec-helperroutines"></span><h1><a class="reference internal" href="#module-PDielec.HelperRoutines" title="PDielec.HelperRoutines"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a><a class="headerlink" href="#module-PDielec.HelperRoutines" title="Permalink to this heading">#</a></h1>
 <p>Helper Routines - Useful for scripting and in Jupyter Notebooks</p>
 <p>These routines are a useful starting point for investigating the way the code operates</p>
-<section id="attributes">
-<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
-<div class="table-wrapper autosummary longtable docutils container">
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.amu" title="PDielec.HelperRoutines.amu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amu</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.angstrom" title="PDielec.HelperRoutines.angstrom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angstrom</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.average_masses" title="PDielec.HelperRoutines.average_masses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_masses</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.isotope_masses" title="PDielec.HelperRoutines.isotope_masses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isotope_masses</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.wavenumber" title="PDielec.HelperRoutines.wavenumber"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavenumber</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
-<div class="table-wrapper autosummary longtable docutils container">
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.External" title="PDielec.HelperRoutines.External"><code class="xref py py-obj docutils literal notranslate"><span class="pre">External</span></code></a></p></td>
-<td><p>A class for representing materials with externally specified permittivity.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.Material" title="PDielec.HelperRoutines.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p></td>
-<td><p>A class for representing materials with properties like name, density, permittivity, and unit cell.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase" title="PDielec.HelperRoutines.MaterialsDataBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaterialsDataBase</span></code></a></p></td>
-<td><p>A class for managing a database of materials' properties.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer" title="PDielec.HelperRoutines.SingleCrystalLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a></p></td>
-<td><p>A class representing a single crystal layer.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -402,1308 +296,19 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, qmprogram, eckart, ...])</p></td>
 <td><p>Get a material with the given name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.solve_single_crystal_equations" title="PDielec.HelperRoutines.solve_single_crystal_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_single_crystal_equations</span></code></a>(layers, mode, theta, ...)</p></td>
-<td><p>This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.</p></td>
-</tr>
 </tbody>
 </table>
 </div>
-</section>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.External">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">External</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivityObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#External"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.External" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#PDielec.HelperRoutines.Material" title="PDielec.HelperRoutines.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p>
-<p>A class for representing materials with externally specified permittivity.</p>
-<p>This class inherits from the <cite>Material</cite> class and is used to define materials
-where the permittivity is specified externally, rather than calculated or predefined.
-Permittivity can be a complex value indicating both the real and imaginary parts.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivityObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material" title="Link to this definition">¶</a></dt>
-<dd><p>A class for representing materials with properties like name, density, permittivity, and unit cell.</p>
-<p>The Material class also contains the permittivity object for the material.
-The permittivity object is an instance of <a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a> or one its children.
-The permittivity object is responsible for calculating the permittivity at the given frequency.
-The subclasses which inherit from the Material class are: Constant, External, DrudeLorentz, FPSQ, Sellmeier, and Tabulated.
-Each subclass has an initialisation routine which instantiates the permittivity object of the appropriate type for the material.
-The relationship between the Material subclass and the DielectricFunction subclass of the permittivity object is shown below.</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head" rowspan="2"><p>Material subclass</p></th>
-<th class="head" rowspan="2"><p>DielectricFunction subclass</p></th>
-</tr>
-<tr class="row-even"></tr>
-</thead>
-<tbody>
-<tr class="row-odd"><td rowspan="2"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Constant</span></code></p></td>
-<td rowspan="2"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Constant</span></code></p></td>
-</tr>
-<tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="3"><p><a class="reference internal" href="#PDielec.HelperRoutines.External" title="PDielec.HelperRoutines.External"><code class="xref py py-class docutils literal notranslate"><span class="pre">External</span></code></a></p></td>
-<td rowspan="3"><p>This class is passed a permittivity object which has been
-defined externally</p></td>
-</tr>
-<tr class="row-even"></tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></p></td>
-<td rowspan="2"><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz" title="PDielec.DielectricFunction.DrudeLorentz"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a></p></td>
-</tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">FPSQ</span></code></p></td>
-<td rowspan="2"><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.FPSQ" title="PDielec.DielectricFunction.FPSQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">FPSQ</span></code></a></p></td>
-</tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Sellmeier</span></code></p></td>
-<td rowspan="2"><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.Sellmeier" title="PDielec.DielectricFunction.Sellmeier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sellmeier</span></code></a></p></td>
-</tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="5"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Tabulated</span></code></p></td>
-<td rowspan="5"><ul class="simple">
-<li><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.TabulateScalar" title="PDielec.DielectricFunction.TabulateScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">TabulateScalar</span></code></a></p></li>
-<li><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate3" title="PDielec.DielectricFunction.Tabulate3"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tabulate3</span></code></a></p></li>
-<li><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate3" title="PDielec.DielectricFunction.Tabulate3"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tabulate3</span></code></a></p></li>
-<li><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate6" title="PDielec.DielectricFunction.Tabulate6"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tabulate6</span></code></a></p></li>
-</ul>
-</td>
-</tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"></tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"></tr>
-</tbody>
-</table>
-</div>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
-<dl>
-<dt>name<span class="classifier">str</span></dt><dd><p>The name of the material.</p>
-</dd>
-<dt>density<span class="classifier">float, optional</span></dt><dd><p>The density of the material. If not provided and a cell is given, it will be calculated based on the cell.</p>
-</dd>
-<dt>permittivityObject<span class="classifier"><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a>, optional</span></dt><dd><p>An object representing the dielectric function of the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. (see <a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a> and its sub-classes)</p>
-</dd>
-<dt>cell<span class="classifier"><a class="reference internal" href="../UnitCell/index.html#PDielec.UnitCell.UnitCell" title="PDielec.UnitCell.UnitCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitCell</span></code></a>, optional</span></dt><dd><p>An object representing the unit cell of the material. If provided without a density, the density will be calculated from this cell. (See <a class="reference internal" href="../UnitCell/index.html#PDielec.UnitCell.UnitCell" title="PDielec.UnitCell.UnitCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitCell</span></code></a>)</p>
-</dd>
-</dl>
-</section>
-<section id="id1">
-<h3>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material, which may be calculated based on the cell if not provided initially.</p>
-</dd>
-<dt>cell<span class="classifier">Cell or None</span></dt><dd><p>The unit cell of the material if provided.</p>
-</dd>
-<dt>name<span class="classifier">str</span></dt><dd><p>The name of the material.</p>
-</dd>
-<dt>type<span class="classifier">str</span></dt><dd><p>A string indicating the type of the object. Defaults to ‘Base Class’ for the base Material class.</p>
-</dd>
-<dt>permittivityObject<span class="classifier">DielectricFunction or None</span></dt><dd><p>An object to handle the permittivity calculations for the material.</p>
-</dd>
-</dl>
-</section>
-<section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>getName()</dt><dd><p>Returns the name of the material.</p>
-</dd>
-<dt>getInformation()</dt><dd><p>Returns information about the material, including its type and, if applicable, its permittivity frequency range.</p>
-</dd>
-<dt>getSigmas()</dt><dd><p>If the material has a lorentzian dielectric this routine returns the sigma parameters</p>
-</dd>
-<dt>setSigmas()</dt><dd><p>If the material has a lorentzian dielectric this routine sets the sigma parameters</p>
-</dd>
-<dt>getFrequencies()</dt><dd><p>If the material has a lorentzian dielectric this routine returns the frequencies</p>
-</dd>
-<dt>setFrequencies()</dt><dd><p>If the material has a lorentzian dielectric this routine sets the frequencies</p>
-</dd>
-<dt>getOscillatorStrengths()</dt><dd><p>If the material has a lorentzian dielectric this routine returns the oscillator strengths</p>
-</dd>
-<dt>setOscillatorStrengths()</dt><dd><p>If the material has a lorentzian dielectric this routine sets the oscillator strengths</p>
-</dd>
-<dt>print()</dt><dd><p>Prints information about the material, such as its name, density, type, and permittivity details.</p>
-</dd>
-<dt>isScalar()</dt><dd><p>Checks and returns True if the material’s permittivity is scalar.</p>
-</dd>
-<dt>isTensor()</dt><dd><p>Checks and returns True if the material’s permittivity is tensor.</p>
-</dd>
-<dt>getPermittivityObject()</dt><dd><p>Returns the permittivityObject of the material.</p>
-</dd>
-<dt>getPermittivityFunction()</dt><dd><p>Returns the permittivity function from the permittivityObject.</p>
-</dd>
-<dt>getDensity()</dt><dd><p>Returns the density of the material.</p>
-</dd>
-<dt>setCell(cell)</dt><dd><p>Sets the cell of the material and updates the density if it was initially None.</p>
-</dd>
-<dt>getCell()</dt><dd><p>Returns the cell of the material.</p>
-</dd>
-<dt>setDensity(value)</dt><dd><p>Sets the density of the material.</p>
-</dd>
-<dt>setEpsilonInfinity(eps)</dt><dd><p>Sets the epsilon infinity of the material</p>
-</dd>
-<dt>setPermittivityObject(permittivityObject)</dt><dd><p>Sets the permittivityObject for the material.</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getCell">
-<span class="sig-name descname"><span class="pre">getCell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getCell" title="Link to this definition">¶</a></dt>
-<dd><p>Return the cell</p>
-<section id="id2">
-<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
-<p>self.cell</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getDensity">
-<span class="sig-name descname"><span class="pre">getDensity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getDensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getDensity" title="Link to this definition">¶</a></dt>
-<dd><p>Return the density</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
-<p>self.density</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getFrequencies">
-<span class="sig-name descname"><span class="pre">getFrequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getFrequencies" title="Link to this definition">¶</a></dt>
-<dd><p>Gets the frequencies for a Lorentzian permittivity</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>1d array of floats</dt><dd><p>Returns the frequencies for a Lorentzian function in cm-1</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getInformation">
-<span class="sig-name descname"><span class="pre">getInformation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getInformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getInformation" title="Link to this definition">¶</a></dt>
-<dd><p>Returns information about the material.</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>str</dt><dd><p>A description of the material.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getName">
-<span class="sig-name descname"><span class="pre">getName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getName" title="Link to this definition">¶</a></dt>
-<dd><p>Get the name attribute of the object.</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>str</dt><dd><p>The name attribute of the object.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getOscillatorStrengths">
-<span class="sig-name descname"><span class="pre">getOscillatorStrengths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getOscillatorStrengths" title="Link to this definition">¶</a></dt>
-<dd><p>Gets the oscillator strengths for a Lorentzian permittivity</p>
-<p>The oscillator strength of each transition is a 3x3 matrix</p>
-<section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>list of 3x3 array of floats</dt><dd><p>Returns the oscillator strengths for a Lorentzian permittivity function in cm-1</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getPermittivityFunction">
-<span class="sig-name descname"><span class="pre">getPermittivityFunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getPermittivityFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getPermittivityFunction" title="Link to this definition">¶</a></dt>
-<dd><p>Returns the permittivity function.</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>permittivityObjectFunction</dt><dd><p>Return the permittivity object function</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getPermittivityObject">
-<span class="sig-name descname"><span class="pre">getPermittivityObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getPermittivityObject" title="Link to this definition">¶</a></dt>
-<dd><p>Returns the permittivity object.</p>
-<section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>permittivityObject</dt><dd><p>Return the permittivity object (dielectric function object)</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.getSigmas">
-<span class="sig-name descname"><span class="pre">getSigmas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.getSigmas" title="Link to this definition">¶</a></dt>
-<dd><p>Gets the sigma parameters for a Lorentzian permittivity</p>
-<section id="id17">
-<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id18">
-<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>1d array of floats</dt><dd><p>Returns the sigma parameters for a Lorentz permittivity function in cm-1</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.isScalar">
-<span class="sig-name descname"><span class="pre">isScalar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.isScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.isScalar" title="Link to this definition">¶</a></dt>
-<dd><p>Returns true if the material returns a scalar permittivity.</p>
-<section id="id19">
-<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id20">
-<h4>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>bool</dt><dd><p>True if the material returns a scalar permittivity, False otherwise.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.isTensor">
-<span class="sig-name descname"><span class="pre">isTensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.isTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.isTensor" title="Link to this definition">¶</a></dt>
-<dd><p>Returns true if the material returns a tensor permittivity.</p>
-<section id="id21">
-<h4>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id22">
-<h4>Returns<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>bool</dt><dd><p>True if the material returns a tensor permittivity, False otherwise.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.print">
-<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.print" title="Link to this definition">¶</a></dt>
-<dd><p>Print information about the material.</p>
-<section id="id23">
-<h4>Parameters<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id24">
-<h4>Returns<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.setCell">
-<span class="sig-name descname"><span class="pre">setCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.setCell" title="Link to this definition">¶</a></dt>
-<dd><p>Set the unit cell</p>
-<section id="id25">
-<h4>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
-<p>cell : a unit cell</p>
-</section>
-<section id="id26">
-<h4>Returns<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.setDensity">
-<span class="sig-name descname"><span class="pre">setDensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setDensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.setDensity" title="Link to this definition">¶</a></dt>
-<dd><p>Set the density</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
-<p>value : float</p>
-</section>
-<section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.setFrequencies">
-<span class="sig-name descname"><span class="pre">setFrequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.setFrequencies" title="Link to this definition">¶</a></dt>
-<dd><p>Sets the frequencies for a Lorentzian permittivity</p>
-<section id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>frequencies<span class="classifier">1D array of floats</span></dt><dd><p>The frequencies for a Drude-Lorentzian permittivity in cm-1</p>
-</dd>
-</dl>
-</section>
-<section id="id30">
-<h4>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.setOscillatorStrengths">
-<span class="sig-name descname"><span class="pre">setOscillatorStrengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.setOscillatorStrengths" title="Link to this definition">¶</a></dt>
-<dd><p>Sets the oscillator strengths for a Lorentzian permittivity</p>
-<section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>strengths<span class="classifier">a 3x3 array of floats for each frequency</span></dt><dd><p>The oscillator strengths for a Lorentzian permittivity function in cm-1</p>
-</dd>
-</dl>
-</section>
-<section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.setPermittivityObject">
-<span class="sig-name descname"><span class="pre">setPermittivityObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">permittivityObject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.setPermittivityObject" title="Link to this definition">¶</a></dt>
-<dd><p>Set the permittivity object.</p>
-<section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
-<p>permittivityObject : a permittivity object (dielectric function object)</p>
-</section>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.Material.setSigmas">
-<span class="sig-name descname"><span class="pre">setSigmas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.Material.setSigmas" title="Link to this definition">¶</a></dt>
-<dd><p>Sets the sigma parameters for a Lorentzian permittivity</p>
-<section id="id35">
-<h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sigmas<span class="classifier">1D array of floats</span></dt><dd><p>The sigma parameters for a Lorentzian permittivity function in cm-1</p>
-</dd>
-</dl>
-</section>
-<section id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-</section>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">MaterialsDataBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase" title="Link to this definition">¶</a></dt>
-<dd><p>A class for managing a database of materials’ properties.</p>
-<p>This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others.
-Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).
-The getMaterial() method returns a material with a dielectric function of the appropriate type.
-There are routines which read (process) the data stored for the following dielectric functions:</p>
-<ul class="simple">
-<li><p>constant refractive index</p></li>
-<li><p>constant permittivity</p></li>
-<li><p>tabulated refractive index (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)</p></li>
-<li><p>tabulated permittivity (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)</p></li>
-<li><p>Lorentz-Drude</p></li>
-<li><p>FPSQ (Four parameters semi-quantum model)</p></li>
-<li><p>Sellmeier</p></li>
-</ul>
-<p>Further information can be found in the following classes and their sub-classes:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a></p></li>
-<li><p><a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p></li>
-</ul>
-<section id="id37">
-<h3>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>filename<span class="classifier">str</span></dt><dd><p>The filename of the spreadsheet/database.</p>
-</dd>
-<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Set to true for additional debugging information</p>
-</dd>
-</dl>
-</section>
-<section id="id38">
-<h3>Attributes<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>filename<span class="classifier">str</span></dt><dd><p>The path to the Excel spreadsheet containing materials data.</p>
-</dd>
-<dt>sheetNames<span class="classifier">list</span></dt><dd><p>A list of strings representing the names of the sheets within the Excel spreadsheet.</p>
-</dd>
-<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>A flag indicating whether debugging information should be printed. Default is False.</p>
-</dd>
-</dl>
-</section>
-<section id="id39">
-<h3>Methods<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>__init__(filename, debug=False)</dt><dd><p>Initializes the MaterialsDataBase class with a given Excel spreadsheet and a debug flag.</p>
-</dd>
-<dt>getFileName()</dt><dd><p>Returns the filename of the Excel spreadsheet being used as the database.</p>
-</dd>
-<dt>valid()</dt><dd><p>Checks if the spreadsheet is a valid materials database based on certain criteria.</p>
-</dd>
-<dt>getSheetNames()</dt><dd><p>Retrieves a sorted list of sheet names within the spreadsheet, including additional predefined names.</p>
-</dd>
-<dt>getMaterial(sheet)</dt><dd><p>Returns a material object based on the data in a given sheet of the Excel spreadsheet.</p>
-</dd>
-<dt>readConstantRefractiveIndex(sheet, worksheet, density)</dt><dd><p>Reads constant refractive index data for a given material from the spreadsheet.</p>
-</dd>
-<dt>readConstantPermittivity(sheet, worksheet, density)</dt><dd><p>Reads constant permittivity data for a given material from the spreadsheet.</p>
-</dd>
-<dt>readTabulatedRefractiveIndex(sheet, worksheet, density)</dt><dd><p>Reads tabulated refractive index data for a given material from the spreadsheet.</p>
-</dd>
-<dt>readTabulatedPermittivity(sheet, worksheet, density)</dt><dd><p>Reads tabulated permittivity data for a given material from the spreadsheet.</p>
-</dd>
-<dt>readLorentzDrude(sheet, worksheet, density, unitCell)</dt><dd><p>Reads Drude-Lorentz model parameters for a given material from the spreadsheet.</p>
-</dd>
-<dt>readFPSQ(sheet, worksheet, density, unitCell)</dt><dd><p>Reads FPSQ model parameters for a given material from the spreadsheet.</p>
-</dd>
-<dt>readSellmeier(sheet, worksheet, density, unitCell)</dt><dd><p>Reads Sellmeier model parameters for a given material from the spreadsheet.</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.getFileName">
-<span class="sig-name descname"><span class="pre">getFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.getFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.getFileName" title="Link to this definition">¶</a></dt>
-<dd><p>Return the filename</p>
-<section id="id40">
-<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id41">
-<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>str</dt><dd><p>The filename.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.getMaterial">
-<span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.getMaterial" title="Link to this definition">¶</a></dt>
-<dd><p>Return a material object based on the data in sheet (an excel sheet).</p>
-<p>If one of the following is requested: air, vacuum, ptfe, ldpe, mdpe, kbr, nujol, then
-the material is created even if it is not in the database.</p>
-<section id="id42">
-<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">Excel sheet</span></dt><dd><p>The excel sheet containing the material data.</p>
-</dd>
-</dl>
-</section>
-<section id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>Material object</dt><dd><p>The material object created from the excel sheet data.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.getSheetNames">
-<span class="sig-name descname"><span class="pre">getSheetNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.getSheetNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.getSheetNames" title="Link to this definition">¶</a></dt>
-<dd><p>Returns a list of the sheetnames in the database.</p>
-<p>As well as the sheets in the database, there are some default materials which will be added
-to the list of materials and which are provided internally by this module.</p>
-<section id="id44">
-<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id45">
-<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>list</dt><dd><p>A list of the sheet names present in the database.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.readConstantPermittivity">
-<span class="sig-name descname"><span class="pre">readConstantPermittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readConstantPermittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.readConstantPermittivity" title="Link to this definition">¶</a></dt>
-<dd><p>Read constant permittivity data from the spreadsheet.</p>
-<section id="id46">
-<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
-</dd>
-<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet instance.</p>
-</dd>
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
-</dd>
-</dl>
-</section>
-<section id="id47">
-<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.readConstantRefractiveIndex">
-<span class="sig-name descname"><span class="pre">readConstantRefractiveIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readConstantRefractiveIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.readConstantRefractiveIndex" title="Link to this definition">¶</a></dt>
-<dd><p>Read constant refractive index from the spreadsheet.</p>
-<section id="id48">
-<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
-</dd>
-<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
-</dd>
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
-</dd>
-</dl>
-</section>
-<section id="id49">
-<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.readFPSQ">
-<span class="sig-name descname"><span class="pre">readFPSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitCell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readFPSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.readFPSQ" title="Link to this definition">¶</a></dt>
-<dd><p>Read FPSQ data from the spreadsheet.</p>
-<section id="id50">
-<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
-</dd>
-<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The actual worksheet object.</p>
-</dd>
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
-</dd>
-<dt>unitCell<span class="classifier">object</span></dt><dd><p>The unit cell.</p>
-</dd>
-</dl>
-</section>
-<section id="id51">
-<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.readLorentzDrude">
-<span class="sig-name descname"><span class="pre">readLorentzDrude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitCell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readLorentzDrude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.readLorentzDrude" title="Link to this definition">¶</a></dt>
-<dd><p>Read Drude-Lorentz data from the spreadsheet.</p>
-<section id="id52">
-<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
-</dd>
-<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
-</dd>
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
-</dd>
-<dt>unitCell<span class="classifier">object</span></dt><dd><p>The unit cell.</p>
-</dd>
-</dl>
-</section>
-<section id="id53">
-<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.readSellmeier">
-<span class="sig-name descname"><span class="pre">readSellmeier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitCell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readSellmeier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.readSellmeier" title="Link to this definition">¶</a></dt>
-<dd><p>Read Sellmeier data from the spreadsheet.</p>
-<section id="id54">
-<h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
-</dd>
-<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
-</dd>
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
-</dd>
-<dt>unitCell<span class="classifier">object</span></dt><dd><p>The unit cell.</p>
-</dd>
-</dl>
-</section>
-<section id="id55">
-<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.readTabulatedPermittivity">
-<span class="sig-name descname"><span class="pre">readTabulatedPermittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readTabulatedPermittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.readTabulatedPermittivity" title="Link to this definition">¶</a></dt>
-<dd><p>Read tabulated permittivity data from the spreadsheet.</p>
-<section id="id56">
-<h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
-</dd>
-<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
-</dd>
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
-</dd>
-</dl>
-</section>
-<section id="id57">
-<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.readTabulatedRefractiveIndex">
-<span class="sig-name descname"><span class="pre">readTabulatedRefractiveIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readTabulatedRefractiveIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.readTabulatedRefractiveIndex" title="Link to this definition">¶</a></dt>
-<dd><p>Read tabulated refractive index data from the spreadsheet.</p>
-<section id="id58">
-<h4>Parameters<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
-</dd>
-<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
-</dd>
-<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
-</dd>
-</dl>
-</section>
-<section id="id59">
-<h4>Returns<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.MaterialsDataBase.valid">
-<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.MaterialsDataBase.valid" title="Link to this definition">¶</a></dt>
-<dd><p>Test to see if the spreadsheet is a valid materials database.</p>
-<section id="id60">
-<h4>Parameters<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id61">
-<h4>Returns<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>bool</dt><dd><p>True if the spreadshee is ‘valid’</p>
-</dd>
-</dl>
-</section>
-<section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-</section>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">SingleCrystalLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hkl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuthal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thicknessUnit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoherentOption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Coherent'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectricFlag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer" title="Link to this definition">¶</a></dt>
-<dd><p>A class representing a single crystal layer.</p>
-<section id="id62">
-<h3>Parameters<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>material<span class="classifier">Material</span></dt><dd><dl class="simple">
-<dt>An instance of Material object (see <a class="reference internal" href="../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>), which contains:</dt><dd><ul class="simple">
-<li><p>name (str)</p></li>
-<li><p>density (float)</p></li>
-<li><p>permittivity (float)</p></li>
-<li><p>unit cell (UnitCell)</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-<dt>hkl<span class="classifier">list of int</span></dt><dd><p>A list of 3 integers defining the plane of interest.</p>
-</dd>
-<dt>azimuthal<span class="classifier">float</span></dt><dd><p>The azimuthal angle of rotation of the crystal about the z-axis.</p>
-</dd>
-<dt>thickness<span class="classifier">float</span></dt><dd><p>The thickness of the layer in the specified thickness units.</p>
-</dd>
-<dt>thicknessUnits<span class="classifier">{‘ang’,’nm’, ‘um’, ‘mm’, ‘cm’}</span></dt><dd><p>The units of thickness measurement.</p>
-</dd>
-<dt>incoherentOption<span class="classifier">{‘Coherent’, ‘Incoherent (intensity)’, ‘Incoherent (phase cancelling)’, ‘Incoherent (phase averaging)’, ‘Incoherent non-reflective’}</span></dt><dd><p>The option for handling incoherent scattering.</p>
-</dd>
-<dt>dielectricFlag<span class="classifier">bool</span></dt><dd><p>True if the layer material is the dielectric being studied (ie it was read in as a DFT calculation), False otherwise.</p>
-</dd>
-</dl>
-</section>
-<section id="id63">
-<h3>Attributes<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>material<span class="classifier">Material</span></dt><dd><p>The material of the layer. (See <a class="reference internal" href="../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>)</p>
-</dd>
-<dt>hkl<span class="classifier">list of int</span></dt><dd><p>The Miller indices of the plane of interest in the crystal.</p>
-</dd>
-<dt>incoherentOption<span class="classifier">str</span></dt><dd><p>The incoherent option for the layer.</p>
-</dd>
-<dt>azimuthal<span class="classifier">float</span></dt><dd><p>The azimuthal angle of rotation of the crystal about the z-axis, in degrees.</p>
-</dd>
-<dt>thickness<span class="classifier">float</span></dt><dd><p>The thickness of the layer in the specified units.</p>
-</dd>
-<dt>thicknessUnit<span class="classifier">str</span></dt><dd><p>The units used for the thickness measurement.</p>
-</dd>
-<dt>dielectricFlag<span class="classifier">bool</span></dt><dd><p>A flag indicating if the layer material is the dielectric material.</p>
-</dd>
-<dt>euler<span class="classifier">ndarray</span></dt><dd><p>The Euler rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with <cite>dtype=np.longdouble</cite>.</p>
-</dd>
-<dt>euler_inverse<span class="classifier">ndarray</span></dt><dd><p>The inverse of the Euler rotation matrix, stored as a 3x3 numpy array with <cite>dtype=np.longdouble</cite>.</p>
-</dd>
-<dt>labframe_w :</dt><dd><p>Placeholder attribute for GUI interactions, not initialized within the class definition.</p>
-</dd>
-<dt>labframe<span class="classifier">ndarray</span></dt><dd><p>The lattice vectors of the crystal in the laboratory frame, stored as a numpy array.</p>
-</dd>
-<dt>phaseShift<span class="classifier">float</span></dt><dd><p>The phase shift for the layer.</p>
-</dd>
-</dl>
-</section>
-<section id="id64">
-<h3>Methods<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>print()</dt><dd><p>Prints the main attributes of the layer.</p>
-</dd>
-<dt>getPhaseShift()</dt><dd><p>Returns the phase shift for the layer.</p>
-</dd>
-<dt>setPhaseShift(phaseShift)</dt><dd><p>Sets the phase shift for the layer.</p>
-</dd>
-<dt>setAzimuthal(angle)</dt><dd><p>Sets the azimuthal angle of the layer and recalculates the Euler matrix.</p>
-</dd>
-<dt>isCoherent()</dt><dd><p>Returns True if the layer is coherent, False otherwise.</p>
-</dd>
-<dt>getIncoherentOption()</dt><dd><p>Returns the incoherent interaction option for the layer.</p>
-</dd>
-<dt>setIncoherentOption(option)</dt><dd><p>Sets the incoherent interaction option for the layer.</p>
-</dd>
-<dt>getAzimuthal()</dt><dd><p>Returns the azimuthal angle.</p>
-</dd>
-<dt>setThickness(thickness)</dt><dd><p>Sets the thickness of the layer.</p>
-</dd>
-<dt>getThickness()</dt><dd><p>Returns the thickness of the layer.</p>
-</dd>
-<dt>getThicknessInMetres()</dt><dd><p>Converts and returns the thickness of the layer in meters.</p>
-</dd>
-<dt>setThicknessUnit(thicknessUnit)</dt><dd><p>Sets the unit of thickness measurement.</p>
-</dd>
-<dt>getThicknessUnit()</dt><dd><p>Returns the unit of thickness measurement.</p>
-</dd>
-<dt>setHKL(hkl)</dt><dd><p>Sets the Miller indices for the plane of interest in the crystal.</p>
-</dd>
-<dt>getHKL()</dt><dd><p>Returns the Miller indices of the plane of interest.</p>
-</dd>
-<dt>getName()</dt><dd><p>Returns the name of the material.</p>
-</dd>
-<dt>getMaterial()</dt><dd><p>Returns the material object associated with the layer.</p>
-</dd>
-<dt>getPermittivityFunction()</dt><dd><p>Returns the permittivity tensor for the crystal at the surface and azimuthal angle specified.</p>
-</dd>
-<dt>isTensor()</dt><dd><p>Returns True if the material of the layer is a tensor material, False otherwise.</p>
-</dd>
-<dt>isScalar()</dt><dd><p>Returns True if the material of the layer is a scalar material, False otherwise.</p>
-</dd>
-<dt>isDielectric()</dt><dd><p>Returns True if the material of the layer is the dielectric being studied.</p>
-</dd>
-<dt>calculate_euler_matrix()</dt><dd><p>Calculates the Euler angles for the crystal to lab frame transformation.</p>
-</dd>
-<dt>azimuthalRotationMatrix(angle)</dt><dd><p>Calculates a rotation matrix for the azimuthal angle.</p>
-</dd>
-<dt>changeLabFrameInfo()</dt><dd><p>Changes the Lab Frame Information, used with GUI interactions.</p>
-</dd>
-<dt>getLabFrame()</dt><dd><p>Returns the information of the crystal axes in the laboratory frame.</p>
-</dd>
-<dt>calculateLabFrameEpsilon(v)</dt><dd><p>Computes the permittivity tensor for the material at a given frequency and transforms it to the laboratory frame.</p>
-</dd>
-<dt>invert(m)</dt><dd><p>Calculates the inverse of a given 3x3 complex matrix.</p>
-</dd>
-</dl>
-</section>
-<section id="id65">
-<h3>Notes<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h3>
-<p>The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.azimuthalRotationMatrix">
-<span class="sig-name descname"><span class="pre">azimuthalRotationMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.azimuthalRotationMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.azimuthalRotationMatrix" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate a rotation matrix for the azimuthal angle (in degrees).</p>
-<section id="id66">
-<h4>Parameters<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
-<p>angle : float</p>
-</section>
-<section id="id67">
-<h4>Returns<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>ndarray 3x3</dt><dd><p>The rotation matrix for the given azimuthal angle.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.calculateLabFrameEpsilon">
-<span class="sig-name descname"><span class="pre">calculateLabFrameEpsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.calculateLabFrameEpsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.calculateLabFrameEpsilon" title="Link to this definition">¶</a></dt>
-<dd><p>Get the permittivity for this material at frequency v and transform it to the laboratory frame.</p>
-<section id="id68">
-<h4>Parameters<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id69">
-<h4>Parameters<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>v<span class="classifier">float</span></dt><dd><p>Frequency at which the permittivity is evaluated.</p>
-</dd>
-</dl>
-</section>
-<section id="id70">
-<h4>Returns<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>float</dt><dd><p>The permittivity of the material in the laboratory frame.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.calculate_euler_matrix">
-<span class="sig-name descname"><span class="pre">calculate_euler_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.calculate_euler_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.calculate_euler_matrix" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the Euler angles for the crystal to lab transformation.</p>
-<section id="id71">
-<h4>Parameters<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id72">
-<h4>Returns<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.changeLabFrameInfo">
-<span class="sig-name descname"><span class="pre">changeLabFrameInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.changeLabFrameInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.changeLabFrameInfo" title="Link to this definition">¶</a></dt>
-<dd><p>Change the Lab Frame Info panel.</p>
-<p>Information about the relationship between the crystal and labframe coordinate systems is presented.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getAzimuthal">
-<span class="sig-name descname"><span class="pre">getAzimuthal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getAzimuthal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getAzimuthal" title="Link to this definition">¶</a></dt>
-<dd><p>Get the azimuthal angle</p>
-<section id="id73">
-<h4>Parameters<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id74">
-<h4>Returns<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>float</dt><dd><p>The azimuthal angle.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getHKL">
-<span class="sig-name descname"><span class="pre">getHKL</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getHKL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getHKL" title="Link to this definition">¶</a></dt>
-<dd><p>Get the hkl.</p>
-<section id="id75">
-<h4>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id76">
-<h4>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
-<p>list of 3 ints</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getIncoherentOption">
-<span class="sig-name descname"><span class="pre">getIncoherentOption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getIncoherentOption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getIncoherentOption" title="Link to this definition">¶</a></dt>
-<dd><p>Returns the value of the incoherent option attribute.</p>
-<p>This will return ‘Coherent’ for a coherent layer</p>
-<section id="id77">
-<h4>Parameters<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id78">
-<h4>Returns<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>type</dt><dd><p>The value of the <cite>incoherentOption</cite> attribute of the object.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getLabFrame">
-<span class="sig-name descname"><span class="pre">getLabFrame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getLabFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getLabFrame" title="Link to this definition">¶</a></dt>
-<dd><p>Return the a, b, and c cell axes in the laboratory frame coordinates.</p>
-<section id="id79">
-<h4>Parameters<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id80">
-<h4>Returns<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>(a, b, c)<span class="classifier">3 lists of floats each with 3 elements</span></dt><dd><ul class="simple">
-<li><p>a, The a cell axis in the laboratory frame.</p></li>
-<li><p>b, The b cell axis in the laboratory frame.</p></li>
-<li><p>c, The c cell axis in the laboratory frame.</p></li>
-</ul>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getMaterial">
-<span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getMaterial" title="Link to this definition">¶</a></dt>
-<dd><p>Return the material</p>
-<section id="id81">
-<h4>Parameters<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id82">
-<h4>Returns<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
-<p>an instance of a Materials object</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getName">
-<span class="sig-name descname"><span class="pre">getName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getName" title="Link to this definition">¶</a></dt>
-<dd><p>Return the material name</p>
-<section id="id83">
-<h4>Parameters<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id84">
-<h4>Returns<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>str</dt><dd><p>The name of the material.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getPermittivityFunction">
-<span class="sig-name descname"><span class="pre">getPermittivityFunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getPermittivityFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getPermittivityFunction" title="Link to this definition">¶</a></dt>
-<dd><p>Return the permittivity function associated with this material</p>
-<section id="id85">
-<h4>Parameters<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id86">
-<h4>Returns<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
-<p>A permittivity function</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getPhaseShift">
-<span class="sig-name descname"><span class="pre">getPhaseShift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getPhaseShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getPhaseShift" title="Link to this definition">¶</a></dt>
-<dd><p>Get the phase shift for the layer</p>
-<section id="id87">
-<h4>Parameters<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id88">
-<h4>Returns<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>float</dt><dd><p>The phase shift used in the averaged phase shift method</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getThickness">
-<span class="sig-name descname"><span class="pre">getThickness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getThickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getThickness" title="Link to this definition">¶</a></dt>
-<dd><p>Get the thickness</p>
-<section id="id89">
-<h4>Parameters<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id90">
-<h4>Returns<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
-<p>float</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getThicknessInMetres">
-<span class="sig-name descname"><span class="pre">getThicknessInMetres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getThicknessInMetres"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getThicknessInMetres" title="Link to this definition">¶</a></dt>
-<dd><p>Get the thickness in metres</p>
-<section id="id91">
-<h4>Parameters<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id92">
-<h4>Returns<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h4>
-<p>float</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.getThicknessUnit">
-<span class="sig-name descname"><span class="pre">getThicknessUnit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getThicknessUnit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.getThicknessUnit" title="Link to this definition">¶</a></dt>
-<dd><p>Get the thickness unit</p>
-<section id="id93">
-<h4>Parameters<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id94">
-<h4>Returns<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h4>
-<p>str</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.invert">
-<span class="sig-name descname"><span class="pre">invert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.invert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.invert" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the inverse of m</p>
-<section id="id95">
-<h4>Parameters<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>m<span class="classifier">complex 3x3 array</span></dt><dd><p>The input matrix for which to calculate the inverse.</p>
-</dd>
-</dl>
-</section>
-<section id="id96">
-<h4>Returns<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>numpy.ndarray</dt><dd><p>The inverse of <cite>m</cite> as a 3x3 complex numpy array.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.isCoherent">
-<span class="sig-name descname"><span class="pre">isCoherent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isCoherent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.isCoherent" title="Link to this definition">¶</a></dt>
-<dd><p>Returns True if this is a coherent layer, False otherwise.</p>
-<section id="id97">
-<h4>Parameters<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id98">
-<h4>Returns<a class="headerlink" href="#id98" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>bool</dt><dd><p>True if this is a coherent layer, False otherwise.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.isDielectric">
-<span class="sig-name descname"><span class="pre">isDielectric</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isDielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.isDielectric" title="Link to this definition">¶</a></dt>
-<dd><p>Return true if the material of the layer is the dielectric material.</p>
-<section id="id99">
-<h4>Parameters<a class="headerlink" href="#id99" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id100">
-<h4>Returns<a class="headerlink" href="#id100" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>bool</dt><dd><p>True if the material of the layer is the dielectric material, otherwise False.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.isScalar">
-<span class="sig-name descname"><span class="pre">isScalar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.isScalar" title="Link to this definition">¶</a></dt>
-<dd><p>Return true if the material of the layer is a scalar material.</p>
-<section id="id101">
-<h4>Parameters<a class="headerlink" href="#id101" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id102">
-<h4>Returns<a class="headerlink" href="#id102" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>bool</dt><dd><p>True if the material of the layer is a scalar material, False otherwise.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.isTensor">
-<span class="sig-name descname"><span class="pre">isTensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.isTensor" title="Link to this definition">¶</a></dt>
-<dd><p>Return true if the material of the layer is a tensor material.</p>
-<section id="id103">
-<h4>Parameters<a class="headerlink" href="#id103" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id104">
-<h4>Returns<a class="headerlink" href="#id104" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>bool</dt><dd><p>True if the material of the layer is a tensor material, False otherwise.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.print">
-<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.print" title="Link to this definition">¶</a></dt>
-<dd><p>Print the main attributes of the layer.</p>
-<section id="id105">
-<h4>Parameters<a class="headerlink" href="#id105" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.setAzimuthal">
-<span class="sig-name descname"><span class="pre">setAzimuthal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setAzimuthal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.setAzimuthal" title="Link to this definition">¶</a></dt>
-<dd><p>Set the azimuthal angle of the layer and calculate the Euler matrix.</p>
-<section id="id106">
-<h4>Parameters<a class="headerlink" href="#id106" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>angle<span class="classifier">float</span></dt><dd><p>The azimuthal angle in degrees</p>
-</dd>
-</dl>
-</section>
-<section id="id107">
-<h4>Returns<a class="headerlink" href="#id107" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.setHKL">
-<span class="sig-name descname"><span class="pre">setHKL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hkl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setHKL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.setHKL" title="Link to this definition">¶</a></dt>
-<dd><p>Set the hkl and recalculate the Euler matrix</p>
-<section id="id108">
-<h4>Parameters<a class="headerlink" href="#id108" title="Link to this heading">¶</a></h4>
-<p>hkl : list of 3 ints</p>
-</section>
-<section id="id109">
-<h4>Returns<a class="headerlink" href="#id109" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.setIncoherentOption">
-<span class="sig-name descname"><span class="pre">setIncoherentOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setIncoherentOption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.setIncoherentOption" title="Link to this definition">¶</a></dt>
-<dd><p>Set the incoherent option</p>
-<section id="id110">
-<h4>Parameters<a class="headerlink" href="#id110" title="Link to this heading">¶</a></h4>
-<p>option : string</p>
-</section>
-<section id="id111">
-<h4>Returns<a class="headerlink" href="#id111" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.setPhaseShift">
-<span class="sig-name descname"><span class="pre">setPhaseShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phaseShift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setPhaseShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.setPhaseShift" title="Link to this definition">¶</a></dt>
-<dd><p>Set the phase shift for the layer</p>
-<section id="id112">
-<h4>Parameters<a class="headerlink" href="#id112" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>phaseShift<span class="classifier">float</span></dt><dd><p>The phase shift</p>
-</dd>
-</dl>
-</section>
-<section id="id113">
-<h4>Returns<a class="headerlink" href="#id113" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.setThickness">
-<span class="sig-name descname"><span class="pre">setThickness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setThickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.setThickness" title="Link to this definition">¶</a></dt>
-<dd><p>Set the thickness.</p>
-<section id="id114">
-<h4>Parameters<a class="headerlink" href="#id114" title="Link to this heading">¶</a></h4>
-<p>thickness : float</p>
-</section>
-<section id="id115">
-<h4>Returns<a class="headerlink" href="#id115" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.SingleCrystalLayer.setThicknessUnit">
-<span class="sig-name descname"><span class="pre">setThicknessUnit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thicknessUnit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setThicknessUnit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.SingleCrystalLayer.setThicknessUnit" title="Link to this definition">¶</a></dt>
-<dd><p>Set the thickness unit.</p>
-<section id="id116">
-<h4>Parameters<a class="headerlink" href="#id116" title="Link to this heading">¶</a></h4>
-<p>thicknessUnit</p>
-</section>
-<section id="id117">
-<h4>Returns<a class="headerlink" href="#id117" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-</section>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculateDFTPermittivityObject">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateDFTPermittivityObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculateDFTPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculateDFTPermittivityObject" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateDFTPermittivityObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculateDFTPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculateDFTPermittivityObject" title="Permalink to this definition">#</a></dt>
 <dd><p>Define a permittivity object for the DFT calculation from the given reader</p>
 <p>This routine reads in the details of the DFT calculation
 Calculates the hessian and normal modes
 Calculates the oscillator strength
 Finally it defines a permittivity object from which the permittivity can be calculated</p>
-<section id="id118">
-<h3>Parameters<a class="headerlink" href="#id118" title="Link to this heading">¶</a></h3>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>reader<span class="classifier">outputReader object</span></dt><dd><p>An output reader object, see <a class="reference internal" href="../GenericOutputReader/index.html#module-PDielec.GenericOutputReader" title="PDielec.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a> and its sub-classes.</p>
 </dd>
@@ -1720,18 +325,18 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </dd>
 </dl>
 </section>
-<section id="id119">
-<h3>Returns<a class="headerlink" href="#id119" title="Link to this heading">¶</a></h3>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
 <p>permittivityObject (see <a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a> and its sub-classes)</p>
 </section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculatePowderSpectrum">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculatePowderSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Maxwell-Garnett'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculatePowderSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculatePowderSpectrum" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculatePowderSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Maxwell-Garnett'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculatePowderSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculatePowderSpectrum" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.</p>
-<section id="id120">
-<h3>Parameters<a class="headerlink" href="#id120" title="Link to this heading">¶</a></h3>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>frequencies_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1.</p>
 </dd>
@@ -1745,8 +350,8 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </dd>
 </dl>
 </section>
-<section id="id121">
-<h3>Returns<a class="headerlink" href="#id121" title="Link to this heading">¶</a></h3>
+<section id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>absorption,permittivity<span class="classifier">tuple of np.arrays</span></dt><dd><p>absorption: Absorption coefficients in cm-1.
 permittivity: Complex permittivities</p>
@@ -1754,7 +359,7 @@ permittivity: Complex permittivities</p>
 </dl>
 </section>
 <section id="example">
-<h3>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h3>
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">frequencies_cm1</span> <span class="pre">=</span> <span class="pre">np.arange(</span> <span class="pre">0,</span> <span class="pre">200,</span> <span class="pre">0.2</span> <span class="pre">)</span>
 <span class="pre">matrix</span> <span class="pre">=</span> <span class="pre">getMaterial('ptfe')</span>
@@ -1768,13 +373,13 @@ permittivity: Complex permittivities</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculateSingleCrystalSpectrum">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateSingleCrystalSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_azimuthal_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculateSingleCrystalSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateSingleCrystalSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_azimuthal_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculateSingleCrystalSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate a single crystal spectrum.</p>
 <p>Calculate a single crystal spectrum from the frequencies, a list of layers (<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>), the incident angle
 the global azimuthal angle and optional specification of the method of calculation.
 Information about the layer class can be found here (<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>)</p>
-<section id="id122">
-<h3>Parameters<a class="headerlink" href="#id122" title="Link to this heading">¶</a></h3>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>frequencies_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1.</p>
 </dd>
@@ -1788,8 +393,8 @@ Information about the layer class can be found here (<a class="reference interna
 </dd>
 </dl>
 </section>
-<section id="id123">
-<h3>Returns<a class="headerlink" href="#id123" title="Link to this heading">¶</a></h3>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>((reflp,refls) (tranp, trans) (absop, absos))<span class="classifier">list of nd.arrrays</span></dt><dd><ul class="simple">
 <li><p>reflp the p- polarised reflection at each frequency as an np.array</p></li>
@@ -1802,8 +407,8 @@ Information about the layer class can be found here (<a class="reference interna
 </dd>
 </dl>
 </section>
-<section id="id124">
-<h3>Example<a class="headerlink" href="#id124" title="Link to this heading">¶</a></h3>
+<section id="id5">
+<h4>Example<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">air</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;air&#39;</span><span class="p">)</span>
 <span class="n">ptfe</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;ptfe&#39;</span><span class="p">)</span>
 <span class="n">Sapphire</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;Sapphire&#39;</span><span class="p">)</span>
@@ -1826,13 +431,13 @@ Information about the layer class can be found here (<a class="reference interna
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.getMaterial">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a material with the given name.</p>
 <p>If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
 If the name is a material name in the material database, this is used instead.
 Information about the material class can be found here (<a class="reference internal" href="../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>)</p>
-<section id="id125">
-<h3>Parameters<a class="headerlink" href="#id125" title="Link to this heading">¶</a></h3>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>name<span class="classifier">str</span></dt><dd><p>The name of the material, which can be a file name or a material name existing in the database.</p>
 </dd>
@@ -1852,15 +457,15 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </dd>
 </dl>
 </section>
-<section id="id126">
-<h3>Returns<a class="headerlink" href="#id126" title="Link to this heading">¶</a></h3>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>Material (see <a class="reference internal" href="../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>)</dt><dd><p>The material obtained based on the given name.</p>
 </dd>
 </dl>
 </section>
 <section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">material1</span> <span class="pre">=</span> <span class="pre">get_material(&quot;example.dft&quot;)</span>
 <span class="pre">material2</span> <span class="pre">=</span> <span class="pre">get_material(&quot;gold&quot;)</span>
@@ -1868,79 +473,7 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </section>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.solve_single_crystal_equations">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">solve_single_crystal_equations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliceThickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#solve_single_crystal_equations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.solve_single_crystal_equations" title="Link to this definition">¶</a></dt>
-<dd><p>This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.</p>
-<section id="id127">
-<h3>Parameters<a class="headerlink" href="#id127" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>layers<span class="classifier">list</span></dt><dd><p>A list of material layers (their permittivity functions).</p>
-</dd>
-<dt>mode<span class="classifier">{‘Transfer matrix’, ‘Scattering matrix’}</span></dt><dd><p>The mode of calculation.</p>
-</dd>
-<dt>theta<span class="classifier">float</span></dt><dd><p>The theta angle of the slab.</p>
-</dd>
-<dt>phi<span class="classifier">float</span></dt><dd><p>The phi angle of the slab.</p>
-</dd>
-<dt>psi<span class="classifier">float</span></dt><dd><p>The psi angle of the slab.</p>
-</dd>
-<dt>angleOfIncidence<span class="classifier">float</span></dt><dd><p>The angle of incidence.</p>
-</dd>
-<dt>sliceThickness<span class="classifier">float</span></dt><dd><p>A thickness in meters, used to subdivide thicker films.
-If zero, then the full thickness film is used.</p>
-</dd>
-<dt>exponent_threshold<span class="classifier">float</span></dt><dd><p>The largest exponent allowed in the calculation of the propagation matrix.</p>
-</dd>
-<dt>v<span class="classifier">float</span></dt><dd><p>The frequency of the light in cm^-1.</p>
-</dd>
-</dl>
 </section>
-<section id="id128">
-<h3>Returns<a class="headerlink" href="#id128" title="Link to this heading">¶</a></h3>
-<blockquote>
-<div><dl class="simple">
-<dt>A tuple of :</dt><dd><ul class="simple">
-<li><p>v                 : the frequency</p></li>
-<li><p>r                 : the reflectance coefficients</p></li>
-<li><p>R                 : the reflectance</p></li>
-<li><p>t                 : the transmittance coefficients</p></li>
-<li><p>T                 : the transmittance</p></li>
-<li><p>epsilon           : the DFT permittivity</p></li>
-<li><p>errors            : a list of errors</p></li>
-<li><p>largest_exponent  : the largest exponent</p></li>
-</ul>
-</dd>
-</dl>
-</div></blockquote>
-</section>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.amu">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">amu</span></span><a class="headerlink" href="#PDielec.HelperRoutines.amu" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.angstrom">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">angstrom</span></span><a class="headerlink" href="#PDielec.HelperRoutines.angstrom" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.average_masses">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">average_masses</span></span><a class="headerlink" href="#PDielec.HelperRoutines.average_masses" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.isotope_masses">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">isotope_masses</span></span><a class="headerlink" href="#PDielec.HelperRoutines.isotope_masses" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.wavenumber">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">wavenumber</span></span><a class="headerlink" href="#PDielec.HelperRoutines.wavenumber" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </section>
 </section>
 
@@ -1954,7 +487,7 @@ If zero, then the full thickness film is used.</p>
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.IO</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1965,7 +498,7 @@ If zero, then the full thickness film is used.</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PDielec.GulpOutputReader</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></div>
                 
               </div>
             </a>
@@ -1999,87 +532,15 @@ If zero, then the full thickness film is used.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">PDielec.HelperRoutines</a><ul>
-<li><a class="reference internal" href="#attributes">Attributes</a></li>
-<li><a class="reference internal" href="#classes">Classes</a></li>
-<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.External"><code class="docutils literal notranslate"><span class="pre">External</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material"><code class="docutils literal notranslate"><span class="pre">Material</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getCell"><code class="docutils literal notranslate"><span class="pre">Material.getCell()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getDensity"><code class="docutils literal notranslate"><span class="pre">Material.getDensity()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getFrequencies"><code class="docutils literal notranslate"><span class="pre">Material.getFrequencies()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getInformation"><code class="docutils literal notranslate"><span class="pre">Material.getInformation()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getName"><code class="docutils literal notranslate"><span class="pre">Material.getName()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">Material.getOscillatorStrengths()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getPermittivityFunction"><code class="docutils literal notranslate"><span class="pre">Material.getPermittivityFunction()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getPermittivityObject"><code class="docutils literal notranslate"><span class="pre">Material.getPermittivityObject()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.getSigmas"><code class="docutils literal notranslate"><span class="pre">Material.getSigmas()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.isScalar"><code class="docutils literal notranslate"><span class="pre">Material.isScalar()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.isTensor"><code class="docutils literal notranslate"><span class="pre">Material.isTensor()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.print"><code class="docutils literal notranslate"><span class="pre">Material.print()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.setCell"><code class="docutils literal notranslate"><span class="pre">Material.setCell()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.setDensity"><code class="docutils literal notranslate"><span class="pre">Material.setDensity()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.setFrequencies"><code class="docutils literal notranslate"><span class="pre">Material.setFrequencies()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.setOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">Material.setOscillatorStrengths()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.setPermittivityObject"><code class="docutils literal notranslate"><span class="pre">Material.setPermittivityObject()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.Material.setSigmas"><code class="docutils literal notranslate"><span class="pre">Material.setSigmas()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.getFileName"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.getFileName()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.getMaterial"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.getMaterial()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.getSheetNames"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.getSheetNames()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.readConstantPermittivity"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readConstantPermittivity()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.readConstantRefractiveIndex"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readConstantRefractiveIndex()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.readFPSQ"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readFPSQ()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.readLorentzDrude"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readLorentzDrude()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.readSellmeier"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readSellmeier()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.readTabulatedPermittivity"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readTabulatedPermittivity()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.readTabulatedRefractiveIndex"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readTabulatedRefractiveIndex()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.MaterialsDataBase.valid"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.valid()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.azimuthalRotationMatrix"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.azimuthalRotationMatrix()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.calculateLabFrameEpsilon"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.calculateLabFrameEpsilon()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.calculate_euler_matrix"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.calculate_euler_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.changeLabFrameInfo"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.changeLabFrameInfo()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getAzimuthal"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getAzimuthal()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getHKL"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getHKL()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getIncoherentOption"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getIncoherentOption()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getLabFrame"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getLabFrame()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getMaterial"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getMaterial()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getName"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getName()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getPermittivityFunction"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getPermittivityFunction()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getPhaseShift"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getPhaseShift()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getThickness"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getThickness()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getThicknessInMetres"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getThicknessInMetres()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.getThicknessUnit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getThicknessUnit()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.invert"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.invert()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.isCoherent"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isCoherent()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.isDielectric"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isDielectric()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.isScalar"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isScalar()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.isTensor"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isTensor()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.print"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.print()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.setAzimuthal"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setAzimuthal()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.setHKL"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setHKL()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.setIncoherentOption"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setIncoherentOption()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.setPhaseShift"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setPhaseShift()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.setThickness"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setThickness()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.SingleCrystalLayer.setThicknessUnit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setThicknessUnit()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.calculateDFTPermittivityObject"><code class="docutils literal notranslate"><span class="pre">calculateDFTPermittivityObject()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.calculatePowderSpectrum"><code class="docutils literal notranslate"><span class="pre">calculatePowderSpectrum()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum"><code class="docutils literal notranslate"><span class="pre">calculateSingleCrystalSpectrum()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial"><code class="docutils literal notranslate"><span class="pre">getMaterial()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.solve_single_crystal_equations"><code class="docutils literal notranslate"><span class="pre">solve_single_crystal_equations()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.amu"><code class="docutils literal notranslate"><span class="pre">amu</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.angstrom"><code class="docutils literal notranslate"><span class="pre">angstrom</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.average_masses"><code class="docutils literal notranslate"><span class="pre">average_masses</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.isotope_masses"><code class="docutils literal notranslate"><span class="pre">isotope_masses</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.wavenumber"><code class="docutils literal notranslate"><span class="pre">wavenumber</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -2093,9 +554,9 @@ If zero, then the full thickness film is used.</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=23ce250a"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

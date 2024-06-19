@@ -1,5 +1,5 @@
-PDielec.vibanalysis
-===================
+:py:mod:`PDielec.vibanalysis`
+=============================
 
 .. py:module:: PDielec.vibanalysis
 
@@ -21,8 +21,11 @@ PDielec.vibanalysis
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
@@ -31,8 +34,9 @@ Classes
    PDielec.vibanalysis.Vibration
 
 
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -59,15 +63,16 @@ Functions
    PDielec.vibanalysis.torsionAmp
 
 
-Module Contents
----------------
 
 .. py:class:: Atom(symbol, r, mass=None)
+
 
    .. py:method:: punch()
 
 
+
 .. py:class:: System
+
 
    .. py:method:: addAtom(symbol, pos, mass=None)
 
@@ -87,7 +92,6 @@ Module Contents
    .. py:method:: checkADM()
 
       Check orthogonalyty of the ADM
-
 
 
    .. py:method:: makeADM()
@@ -120,7 +124,9 @@ Module Contents
    .. py:method:: tripleMass()
 
 
+
 .. py:class:: Vibration(freq, ndegs, adv=[], ir=None, raman=None, sym='')
+
 
    .. py:method:: addVMARD(coefs, r2=0.0, exvar=0.0)
 
@@ -141,6 +147,7 @@ Module Contents
 
 
    .. py:method:: string(n=-1)
+
 
 
 .. py:function:: InitialiseVaOpts()
@@ -207,6 +214,7 @@ Module Contents
 
 
 .. py:function:: main()
+
 
 .. py:function:: makeIC(o, useric=[])
 

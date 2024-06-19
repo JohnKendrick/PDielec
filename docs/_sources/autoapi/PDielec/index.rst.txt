@@ -1,5 +1,5 @@
-PDielec
-=======
+:py:mod:`PDielec`
+=================
 
 .. py:module:: PDielec
 
@@ -33,59 +33,51 @@ PDielec
 
 Subpackages
 -----------
-
 .. toctree::
-   :maxdepth: 1
+   :titlesonly:
+   :maxdepth: 3
 
-   /autoapi/PDielec/GUI/index
+   GUI/index.rst
 
 
 Submodules
 ----------
-
 .. toctree::
+   :titlesonly:
    :maxdepth: 1
 
-   /autoapi/PDielec/AbinitOutputReader/index
-   /autoapi/PDielec/Calculator/index
-   /autoapi/PDielec/CastepOutputReader/index
-   /autoapi/PDielec/Constants/index
-   /autoapi/PDielec/CrystalOutputReader/index
-   /autoapi/PDielec/DielectricFunction/index
-   /autoapi/PDielec/ExperimentOutputReader/index
-   /autoapi/PDielec/GTMcore/index
-   /autoapi/PDielec/GenericOutputReader/index
-   /autoapi/PDielec/GulpOutputReader/index
-   /autoapi/PDielec/HelperRoutines/index
-   /autoapi/PDielec/IO/index
-   /autoapi/PDielec/Materials/index
-   /autoapi/PDielec/Mie/index
-   /autoapi/PDielec/PhonopyOutputReader/index
-   /autoapi/PDielec/Plotter/index
-   /autoapi/PDielec/QEOutputReader/index
-   /autoapi/PDielec/SuperCell/index
-   /autoapi/PDielec/UnitCell/index
-   /autoapi/PDielec/Utilities/index
-   /autoapi/PDielec/VaspOutputReader/index
-   /autoapi/PDielec/checkcsv/index
-   /autoapi/PDielec/checkexcel/index
-   /autoapi/PDielec/graphdatagenerator/index
-   /autoapi/PDielec/p1reader/index
-   /autoapi/PDielec/p2cif/index
-   /autoapi/PDielec/pdcompare/index
-   /autoapi/PDielec/pdgui/index
-   /autoapi/PDielec/pdmake/index
-   /autoapi/PDielec/pickled_reader/index
-   /autoapi/PDielec/preader/index
-   /autoapi/PDielec/vibanalysis/index
-
-
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.__version__
+   AbinitOutputReader/index.rst
+   Calculator/index.rst
+   CastepOutputReader/index.rst
+   Constants/index.rst
+   CrystalOutputReader/index.rst
+   DielectricFunction/index.rst
+   ExperimentOutputReader/index.rst
+   GTMcore/index.rst
+   GenericOutputReader/index.rst
+   GulpOutputReader/index.rst
+   HelperRoutines/index.rst
+   IO/index.rst
+   Materials/index.rst
+   Mie/index.rst
+   PhonopyOutputReader/index.rst
+   Plotter/index.rst
+   QEOutputReader/index.rst
+   SuperCell/index.rst
+   UnitCell/index.rst
+   Utilities/index.rst
+   VaspOutputReader/index.rst
+   checkcsv/index.rst
+   checkexcel/index.rst
+   graphdatagenerator/index.rst
+   p1reader/index.rst
+   p2cif/index.rst
+   pdcompare/index.rst
+   pdgui/index.rst
+   pdmake/index.rst
+   pickled_reader/index.rst
+   preader/index.rst
+   vibanalysis/index.rst
 
 
 Package Contents
@@ -94,4 +86,5 @@ Package Contents
 .. py:data:: __version__
    :value: '8.1.1'
 
+   
 

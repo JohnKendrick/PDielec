@@ -1,5 +1,5 @@
-PDielec.graphdatagenerator
-==========================
+:py:mod:`PDielec.graphdatagenerator`
+====================================
 
 .. py:module:: PDielec.graphdatagenerator
 
@@ -9,16 +9,18 @@ PDielec.graphdatagenerator
 
 
 
+Module Contents
+---------------
+
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
    PDielec.graphdatagenerator.main
 
 
-Module Contents
----------------
 
 .. py:function:: main()
 
