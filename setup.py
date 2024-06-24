@@ -2,7 +2,7 @@ import setuptools
 import os
 
 # Update this for every PyPi release
-version = "8.1.1"
+version = "8.1.2"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -26,7 +26,7 @@ with open("PDielec/GUI/__init__.py", "w") as fh:
     fh.writelines(init_lines)
 
 setuptools.setup(
-    name="PDielec",
+    name="pdielec",
     version=version,
     author="John Kendrick and Andrew Burnett",
     author_email="john@kendrick.co.uk",
