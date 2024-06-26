@@ -12,9 +12,9 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
+"""
 AbinitOutputReader module
-'''
+"""
 
 import re
 import math
@@ -60,9 +60,9 @@ class AbinitOutputReader(GenericOutputReader):
         filenames : list or str
             A list of filenames or a single filename string corresponding to the Abinit output files to be processed.
 
-        """        
+        """
         GenericOutputReader.__init__(self, filenames)
-        self.type = 'Abinit output files'
+        self.type = "Abinit output files"
         self._acell = None
         self._charges = None
         return
@@ -80,28 +80,55 @@ class AbinitOutputReader(GenericOutputReader):
         None
         """
         # Define the search keys to be looked for in the files
-        self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['dynamical']  = (re.compile('  Dynamical matrix,'), self._read_dynamical)
-        self.manage['bornCharges']  = (re.compile('  Effective charges,'), self._read_born_charges)
-        self.manage['epsilon']  = (re.compile('  Dielectric tensor,'), self._read_epsilon)
-        self.manage['masses']   = (re.compile('              amu '), self._read_masses)
-        self.manage['nions']    = (re.compile('            natom '), self._read_natom)
-        self.manage['lattice']  = (re.compile('            rprim '), self._read_lattice_vectors)
-        self.manage['xred']  = (re.compile('             xred '), self._read_xred)
-        self.manage['typat']    = (re.compile('            typat '), self._read_typat)
-        self.manage['ntypat']   = (re.compile('           ntypat '), self._read_ntypat)
-        self.manage['acell']    = (re.compile('            acell '), self._read_acell)
-        self.manage['nkpt']    = (re.compile('             nkpt '), self._read_kpoints)
-        self.manage['band']    = (re.compile('            nband '), self._read_band)
-        self.manage['band1']    = (re.compile('            nband1 '), self._read_band)
-        self.manage['occupancy']    = (re.compile('              occ '), self._read_occupancy)
-        self.manage['occupancy1']    = (re.compile('              occ1 '), self._read_occupancy)
-        self.manage['ecut']    = (re.compile('^ *ecut '), self._read_energy_cutoff)
-        self.manage['kptrlatt']    = (re.compile('         kptrlatt '), self._read_kpoint_grid)
-        self.manage['electrons']    = (re.compile('  fully or partial'), self._read_electrons)
-        self.manage['pressure']    = (re.compile('-Cartesian.*GPa'), self._read_pressure)
-        self.manage['znucl']    = (re.compile('^  *znucl '), self._read_znucl)
-        self.manage['totalenergy']    = (re.compile('^  *Total energy '), self._read_total_energy)
+        self.manage = {}  # Empty the dictionary matching phrases
+        self.manage["dynamical"] = (
+            re.compile("  Dynamical matrix,"),
+            self._read_dynamical,
+        )
+        self.manage["bornCharges"] = (
+            re.compile("  Effective charges,"),
+            self._read_born_charges,
+        )
+        self.manage["epsilon"] = (
+            re.compile("  Dielectric tensor,"),
+            self._read_epsilon,
+        )
+        self.manage["masses"] = (re.compile("              amu "), self._read_masses)
+        self.manage["nions"] = (re.compile("            natom "), self._read_natom)
+        self.manage["lattice"] = (
+            re.compile("            rprim "),
+            self._read_lattice_vectors,
+        )
+        self.manage["xred"] = (re.compile("             xred "), self._read_xred)
+        self.manage["typat"] = (re.compile("            typat "), self._read_typat)
+        self.manage["ntypat"] = (re.compile("           ntypat "), self._read_ntypat)
+        self.manage["acell"] = (re.compile("            acell "), self._read_acell)
+        self.manage["nkpt"] = (re.compile("             nkpt "), self._read_kpoints)
+        self.manage["band"] = (re.compile("            nband "), self._read_band)
+        self.manage["band1"] = (re.compile("            nband1 "), self._read_band)
+        self.manage["occupancy"] = (
+            re.compile("              occ "),
+            self._read_occupancy,
+        )
+        self.manage["occupancy1"] = (
+            re.compile("              occ1 "),
+            self._read_occupancy,
+        )
+        self.manage["ecut"] = (re.compile("^ *ecut "), self._read_energy_cutoff)
+        self.manage["kptrlatt"] = (
+            re.compile("         kptrlatt "),
+            self._read_kpoint_grid,
+        )
+        self.manage["electrons"] = (
+            re.compile("  fully or partial"),
+            self._read_electrons,
+        )
+        self.manage["pressure"] = (re.compile("-Cartesian.*GPa"), self._read_pressure)
+        self.manage["znucl"] = (re.compile("^  *znucl "), self._read_znucl)
+        self.manage["totalenergy"] = (
+            re.compile("^  *Total energy "),
+            self._read_total_energy,
+        )
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -118,7 +145,7 @@ class AbinitOutputReader(GenericOutputReader):
         Returns
         -------
         None
-        """        
+        """
         self.final_energy_without_entropy = float(line.split()[4]) * hartree2ev
         self.final_free_energy = float(line.split()[4]) * hartree2ev
         return
@@ -127,8 +154,8 @@ class AbinitOutputReader(GenericOutputReader):
         """
         Parse and store atomic species information from a line input.
 
-        This method extracts atomic species from a given line, converts them to 
-        their element representation using their atomic numbers, and stores them 
+        This method extracts atomic species from a given line, converts them to
+        their element representation using their atomic numbers, and stores them
         in a list. The total number of species processed is also updated.
 
         Parameters
@@ -143,18 +170,18 @@ class AbinitOutputReader(GenericOutputReader):
         Notes
         -----
         - Atomic numbers in the line are expected to be separated by space.
-        - The atomic numbers are converted to integers with a small increment to 
+        - The atomic numbers are converted to integers with a small increment to
           account for any floating-point representation issues.
-        - This method updates the instance attributes `species` with the element 
+        - This method updates the instance attributes `species` with the element
           names capitalized, and `nspecies` with the count of unique species.
 
         See Also
         --------
         atomic_number_to_element : Dictionary mapping atomic numbers to element symbols.
-        """        
+        """
         self.species = []
         for z in line.split()[1:]:
-            iz = int(float(z)+0.001)
+            iz = int(float(z) + 0.001)
             self.species.append(atomic_number_to_element[iz].capitalize())
         self.nspecies = len(self.species)
         return
@@ -175,7 +202,7 @@ class AbinitOutputReader(GenericOutputReader):
         Returns
         -------
         None
-        """        
+        """
         self.nbands = int(line.split()[1])
         return
 
@@ -208,11 +235,11 @@ class AbinitOutputReader(GenericOutputReader):
         -----
         - This method modifies the state of the object by setting `self.electrons` based on the read occupancies.
         - It implicitly relies on `self.nbands` to know how many occupancy values need to be read.
-        """        
+        """
         occs = []
         occupancies = line.split()[1:]
         while len(occs) < self.nbands:
-            occs+= [ float(f) for f in occupancies ]
+            occs += [float(f) for f in occupancies]
             occupancies = self.file_descriptor.readline().split()
         sum = 0.0
         for f in occs:
@@ -237,7 +264,7 @@ class AbinitOutputReader(GenericOutputReader):
         -----
         The function expects `line` to be a well-formatted string containing at least 8 space-separated values. The eighth value is converted to a float and stored in the `pressure` attribute of the class instance. This function does not return any value.
 
-        """        
+        """
         self.pressure = float(line.split()[7])
         return
 
@@ -259,7 +286,7 @@ class AbinitOutputReader(GenericOutputReader):
         Notes
         -----
         This method modifies the object's state by setting the 'electrons' attribute.
-        """        
+        """
         self.electrons = float(line.split()[6])
         return
 
@@ -282,8 +309,12 @@ class AbinitOutputReader(GenericOutputReader):
         This function is intended to be used internally within its class.
         It reads a line of text, extracts integers from specific positions,
         and sets them as the k-point grid dimensions for the instance.
-        """        
-        self.kpoint_grid = [ int(line.split()[1]), int(line.split()[5]), int(line.split()[9]) ]
+        """
+        self.kpoint_grid = [
+            int(line.split()[1]),
+            int(line.split()[5]),
+            int(line.split()[9]),
+        ]
         return
 
     def _read_kpoints(self, line):
@@ -308,7 +339,7 @@ class AbinitOutputReader(GenericOutputReader):
         -----
         The method does not return any value but updates the instance variable
         `kpoints` with the integer value of the k-points extracted from the input line.
-        """        
+        """
         self.kpoints = int(line.split()[1])
         return
 
@@ -327,7 +358,7 @@ class AbinitOutputReader(GenericOutputReader):
         -------
         None
 
-        """        
+        """
         self.energy_cutoff = hartree2ev * float(line.split()[1])
         return
 
@@ -344,8 +375,8 @@ class AbinitOutputReader(GenericOutputReader):
         -------
         None
             This function does not return a value but updates the `_acell` attribute of the object.
-        """        
-        self._acell = [float(f)/angs2bohr for f in line.split()[1:4]]
+        """
+        self._acell = [float(f) / angs2bohr for f in line.split()[1:4]]
         return
 
     def _read_ntypat(self, line):
@@ -355,14 +386,14 @@ class AbinitOutputReader(GenericOutputReader):
         Parameters
         ----------
         line : str
-            A string containing the information of the number of species, 
-            where the relevant data is expected to be in the second token 
+            A string containing the information of the number of species,
+            where the relevant data is expected to be in the second token
             when splitting the string by whitespace.
 
         Returns
         -------
         None
-        """        
+        """
         self.nspecies = int(line.split()[1])
         return
 
@@ -393,15 +424,15 @@ class AbinitOutputReader(GenericOutputReader):
         species_list : list of str, optional
             A list of species names corresponding to the atom types if the species attribute is set. This
             list is used to assign element names to the unit cells.
-        """        
-        self.atom_type_list = [int(i)-1 for i in line.split()[1:]]
+        """
+        self.atom_type_list = [int(i) - 1 for i in line.split()[1:]]
         self.masses = [None for i in range(self.nions)]
         self.ions_per_type = [0 for i in range(self.nspecies)]
         for i, a in enumerate(self.atom_type_list):
-            self.ions_per_type[a-1] += 1
+            self.ions_per_type[a - 1] += 1
             self.masses[i] = self.masses_per_type[a]
         if self.species:
-            species_list = [ self.species[i] for i in self.atom_type_list ]
+            species_list = [self.species[i] for i in self.atom_type_list]
             self.unit_cells[-1].set_element_names(species_list)
         return
 
@@ -410,7 +441,7 @@ class AbinitOutputReader(GenericOutputReader):
         Read zero frequency optical permittivity
 
         Parse epsilon related data, and populates the `zerof_optical_dielectric` array
-        based on the read data. 
+        based on the read data.
 
         Parameters
         ----------
@@ -431,7 +462,7 @@ class AbinitOutputReader(GenericOutputReader):
 
         zerof_optical_dielectric : An attribute, typically a 2D list or an array, that this
                                    method updates based on the data read from the file.
-        """        
+        """
         for i in range(3):
             linea = self.file_descriptor.readline().split()
         nlines = 9
@@ -441,7 +472,7 @@ class AbinitOutputReader(GenericOutputReader):
                 linea = self.file_descriptor.readline().split()
             j = int(linea[0])
             k = int(linea[2])
-            self.zerof_optical_dielectric[j-1][k-1] = float(linea[4])
+            self.zerof_optical_dielectric[j - 1][k - 1] = float(linea[4])
         return
 
     def _read_natom(self, line):
@@ -462,7 +493,7 @@ class AbinitOutputReader(GenericOutputReader):
         See Also
         --------
         numpy.zeros : Used to initialize the '_charges' attribute.
-        """        
+        """
         self.nions = int(line.split()[1])
         # We can only create this once we know the number of ions
         self._charges = np.zeros((self.nions, 3, 3))
@@ -483,7 +514,7 @@ class AbinitOutputReader(GenericOutputReader):
         Returns
         -------
         None
-        """        
+        """
         self.masses_per_type = [float(f) for f in line.split()[1:]]
         return
 
@@ -492,7 +523,7 @@ class AbinitOutputReader(GenericOutputReader):
         """
         Read and populate the Hessian matrix from a file.
 
-        This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the Hessian matrix from these data. 
+        This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the Hessian matrix from these data.
 
         Parameters
         ----------
@@ -512,24 +543,26 @@ class AbinitOutputReader(GenericOutputReader):
         --------
         _dynamical_matrix : Method called with the computed Hessian matrix.
 
-        """        
-        nmodes = self.nions*3
+        """
+        nmodes = self.nions * 3
         hessian = np.zeros((nmodes, nmodes))
         for i in range(4):
             self.file_descriptor.readline()
-        nlines = nmodes*nmodes
+        nlines = nmodes * nmodes
         for i in range(nlines):
             linea = self.file_descriptor.readline().split()
             if not linea:
                 linea = self.file_descriptor.readline().split()
-            diri  = int(linea[0])
+            diri = int(linea[0])
             atomi = int(linea[1])
-            dirj  = int(linea[2])
+            dirj = int(linea[2])
             atomj = int(linea[3])
-            ipos  = (atomi - 1)*3 + diri - 1
-            jpos  = (atomj - 1)*3 + dirj - 1
+            ipos = (atomi - 1) * 3 + diri - 1
+            jpos = (atomj - 1) * 3 + dirj - 1
             # store the massweighted matrix
-            hessian[ipos][jpos] = float(linea[4])/(amu*math.sqrt(self.masses[atomi-1]*self.masses[atomj-1]))
+            hessian[ipos][jpos] = float(linea[4]) / (
+                amu * math.sqrt(self.masses[atomi - 1] * self.masses[atomj - 1])
+            )
         # symmetrise, project diagonalise and store frequencies and normal modes
         self._dynamical_matrix(hessian)
         return
@@ -561,20 +594,20 @@ class AbinitOutputReader(GenericOutputReader):
         for i in range(5):
             self.file_descriptor.readline()
         #  The charges are calculated in two ways, we take the mean of the phonon and the field
-        nlines = 9*self.nions
+        nlines = 9 * self.nions
         for i in range(nlines):
             linea = self.file_descriptor.readline().split()
             if not linea:
                 linea = self.file_descriptor.readline().split()
             if int(linea[3]) > self.nions:
                 ifield = int(linea[2])
-                ixyz   = int(linea[0])
-                iatom  = int(linea[1])
+                ixyz = int(linea[0])
+                iatom = int(linea[1])
             else:
                 ifield = int(linea[0])
-                ixyz   = int(linea[2])
-                iatom  = int(linea[3])
-            self._charges[iatom-1][ifield-1][ixyz-1] += 0.5*float(linea[4])
+                ixyz = int(linea[2])
+                iatom = int(linea[3])
+            self._charges[iatom - 1][ifield - 1][ixyz - 1] += 0.5 * float(linea[4])
         # Convert the charges
         self.born_charges = []
         for i in range(self.nions):
@@ -609,25 +642,25 @@ class AbinitOutputReader(GenericOutputReader):
           corresponding to the remaining ions ('nions' - 1).
         - The extracted fractional coordinates are stored in a nested list, which is passed to the last unit cell's
           'set_fractional_coordinates' method.
-        - If the 'species' attribute is provided along with a coherent 'atom_type_list', the method will also set element names for the 
+        - If the 'species' attribute is provided along with a coherent 'atom_type_list', the method will also set element names for the
           last unit cell using these mappings.
 
         No direct returns but updates the state of the last unit cell in the 'unit_cells' list by setting its fractional coordinates and optionally, element names.
 
-        """        
+        """
         linea = line.split()[1:]
         fractional = []
-        fractional.append( [ float(xyz) for xyz in linea ] )
-        for i in range(self.nions-1):
+        fractional.append([float(xyz) for xyz in linea])
+        for i in range(self.nions - 1):
             linea = self.file_descriptor.readline().split()
-            fractional.append( [ float(xyz) for xyz in linea ] )
+            fractional.append([float(xyz) for xyz in linea])
         # end for i
         self.unit_cells[-1].set_fractional_coordinates(fractional)
         if self.species:
-            species_list = [ self.species[i] for i in self.atom_type_list ]
+            species_list = [self.species[i] for i in self.atom_type_list]
             self.unit_cells[-1].set_element_names(species_list)
-    # end def
 
+    # end def
 
     def _read_lattice_vectors(self, line):
         """
@@ -655,7 +688,7 @@ class AbinitOutputReader(GenericOutputReader):
         See Also
         --------
         UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its constructor.
-        """        
+        """
         linea = line.split()
         avector = [float(linea[1]), float(linea[2]), float(linea[3])]
         linea = self.file_descriptor.readline().split()
@@ -665,7 +698,7 @@ class AbinitOutputReader(GenericOutputReader):
         avector = [f * self._acell[0] for f in avector]
         bvector = [f * self._acell[1] for f in bvector]
         cvector = [f * self._acell[2] for f in cvector]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector, units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume('Angstrom')
+        self.volume = self.unit_cells[-1].getVolume("Angstrom")
         return

@@ -16,11 +16,14 @@
 """
 Do some pretty printing for the dielectric functions
 """
+
 import sys
 import numpy as np
 
 
-def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" "):
+def print_ints(
+    title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" "
+):
     """
     Print ints data.
 
@@ -32,9 +35,9 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
        A list of integers to be printed
     no_per_line : int, optional
        The number of  integers per line of output
-    format : str, optional 
+    format : str, optional
         a format descriptor (defaults to 9d)
-    file : int, optional 
+    file : int, optional
         a file descriptor (defaults to stdout)
     separator : str
         the separator to use between ints (defaults to space)
@@ -56,12 +59,17 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
         end = start + no_per_line
         if end > len_ints:
             end = len_ints
-        print(" " + separator.join(format.format(r) for r in ints[start:end]), file=file)
+        print(
+            " " + separator.join(format.format(r) for r in ints[start:end]), file=file
+        )
         start = start + no_per_line
     # end for i
     return
 
-def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout, separator=" "):
+
+def print_strings(
+    title, strings, no_per_line=8, format="{:9s}", file=sys.stdout, separator=" "
+):
     """
     Print strings data.
 
@@ -73,9 +81,9 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
        A list of strings to be printed
     no_per_line : int, optional
        The number of  integers per line of output
-    format : str, optional 
+    format : str, optional
         a format descriptor (defaults to 9s)
-    file : int, optional 
+    file : int, optional
         a file descriptor (defaults to stdout)
     separator : str
         the separator to use between ints (defaults to space)
@@ -97,13 +105,18 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
         end = start + no_per_line
         if end > len_strings:
             end = len_strings
-        print(" " + separator.join(format.format(r) for r in strings[start:end]), file=file)
+        print(
+            " " + separator.join(format.format(r) for r in strings[start:end]),
+            file=file,
+        )
         start = start + no_per_line
     # end for i
     return
 
 
-def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "):
+def print_reals(
+    title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "
+):
     """
     Print reals data
 
@@ -115,9 +128,9 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
        A list of reals to be printed
     no_per_line : int, optional
        The number of  integers per line of output (default is 8)
-    format : str, optional 
+    format : str, optional
         a format descriptor (defaults to 9.2f)
-    file : int, optional 
+    file : int, optional
         a file descriptor (defaults to stdout)
     separator : str
         the separator to use between ints (defaults to space)
@@ -139,7 +152,9 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
         end = start + no_per_line
         if end > len_reals:
             end = len_reals
-        print(" " + separator.join(format.format(r) for r in reals[start:end]), file=file)
+        print(
+            " " + separator.join(format.format(r) for r in reals[start:end]), file=file
+        )
         start = start + no_per_line
     # end for i
     return
@@ -153,9 +168,9 @@ def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
     ----------
     array : tensor 3x3
         The array to be printed
-    format : str, optional 
+    format : str, optional
         a format descriptor (defaults to 9.2f)
-    file : int, optional 
+    file : int, optional
         a file descriptor (defaults to stdout)
     separator : str
         the separator to use between ints (defaults to space)
@@ -171,6 +186,6 @@ def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
     if title != "":
         print(title, file=file)
     for i in range(3):
-        print("      "+" ".join(format.format(p) for p in array[i]), file=file)
+        print("      " + " ".join(format.format(p) for p in array[i]), file=file)
     # end for i
     return

@@ -12,12 +12,15 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
+"""
 SpreadSheetMamager module
-'''
+"""
+
 import xlsxwriter as xlsx
 import numpy as np
-class SpreadSheetManager():
+
+
+class SpreadSheetManager:
     """
     A manager for handling operations on an Excel workbook via xlsxwriter.
 
@@ -65,7 +68,8 @@ class SpreadSheetManager():
         Deletes all content from the currently selected worksheet.
     close()
         Closes the workbook, finalizing it for output.
-    """    
+    """
+
     def __init__(self, filename):
         # Manage a spread sheet for PDielec / PDGui
         """
@@ -107,38 +111,42 @@ class SpreadSheetManager():
         --------
         >>> my_excel_file = ExcelFileHandler("example.xlsx")
         >>> my_excel_file.add_data_to_sheet("Main", data)
-        """        
+        """
         self.workbook = xlsx.Workbook(filename)
         self.closed = False
-        self.tab_names = ['Main', 'Settings', 'Scenarios',
-                'Powder Molar Absorption (cells)',
-                'Powder Molar Absorption (atoms)',
-                'Powder Molar Absorption (mols)',
-                'Powder Absorption',
-                'Powder Real Permittivity',
-                'Powder Imaginary Permittivity',
-                'Powder ATR Reflectance',
-                'Analysis',
-                'Crystal R_p',
-                'Crystal R_s',
-                'Crystal T_p',
-                'Crystal T_s',
-                'Crystal A_p',
-                'Crystal A_s',
-                'Real Crystal Permittivity',
-                'Imag Crystal Permittivity' ]
+        self.tab_names = [
+            "Main",
+            "Settings",
+            "Scenarios",
+            "Powder Molar Absorption (cells)",
+            "Powder Molar Absorption (atoms)",
+            "Powder Molar Absorption (mols)",
+            "Powder Absorption",
+            "Powder Real Permittivity",
+            "Powder Imaginary Permittivity",
+            "Powder ATR Reflectance",
+            "Analysis",
+            "Crystal R_p",
+            "Crystal R_s",
+            "Crystal T_p",
+            "Crystal T_s",
+            "Crystal A_p",
+            "Crystal A_s",
+            "Real Crystal Permittivity",
+            "Imag Crystal Permittivity",
+        ]
         self.worksheets = {}
         # Positions points to where we write to next
-        self.positions  = {}
-        self.max_col    = {}
-        self.max_row    = {}
-        self.opened     = {}
+        self.positions = {}
+        self.max_col = {}
+        self.max_row = {}
+        self.opened = {}
         for tab in self.tab_names:
             self.opened[tab] = False
-        self.name = 'Main'
+        self.name = "Main"
         self.openWorkSheet(self.name)
 
-    def openWorkSheet(self,tab):
+    def openWorkSheet(self, tab):
         """
         Open a new worksheet in a workbook.
 
@@ -153,20 +161,20 @@ class SpreadSheetManager():
 
         Notes
         -----
-        If the worksheet identified by `tab` is already opened, this method does nothing. 
-        Otherwise, it creates a new worksheet with the name `tab`, initializes its position, 
-        maximum column, maximum row, and marks it as opened within the workbook data structures 
-        handled by the instance. 
-        """        
+        If the worksheet identified by `tab` is already opened, this method does nothing.
+        Otherwise, it creates a new worksheet with the name `tab`, initializes its position,
+        maximum column, maximum row, and marks it as opened within the workbook data structures
+        handled by the instance.
+        """
         if self.opened[tab]:
             return
         self.worksheets[tab] = self.workbook.add_worksheet(tab)
-        self.positions[tab] = (0,0)
+        self.positions[tab] = (0, 0)
         self.max_col[tab] = 0
         self.max_row[tab] = 0
         self.opened[tab] = True
 
-    def selectWorkSheet(self,name):
+    def selectWorkSheet(self, name):
         """
         Selects or opens a worksheet by name.
 
@@ -184,12 +192,12 @@ class SpreadSheetManager():
         This method selects a worksheet if it is already opened. If the worksheet is not
         currently open, it attempts to open the worksheet by calling `openWorkSheet` with
         the worksheet name.
-        """        
+        """
         self.name = name
         if not self.opened[name]:
             self.openWorkSheet(self.name)
 
-    def writeNextRow(self,items, row=None, col=None, check=''):
+    def writeNextRow(self, items, row=None, col=None, check=""):
         """
         Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
 
@@ -214,31 +222,31 @@ class SpreadSheetManager():
         - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
         - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
         - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
-        """        
-        oldRow,oldCol = self.positions[self.name]
+        """
+        oldRow, oldCol = self.positions[self.name]
         if col is None:
             col = oldCol
         if row is None:
             row = oldRow
         if col == 0:
-            print('We have a problem, col is 0')
-        self.write(row,0,check)
+            print("We have a problem, col is 0")
+        self.write(row, 0, check)
         for item in items:
-            if isinstance(item,list):
+            if isinstance(item, list):
                 for i in item:
                     if isinstance(i, list):
                         for j in i:
-                            self.write(row,col,j)
+                            self.write(row, col, j)
                             col += 1
                     else:
-                        self.write(row,col,i)
+                        self.write(row, col, i)
                         col += 1
             else:
                 self.write(row, col, item)
                 col += 1
         row += 1
 
-    def write(self,row,col,item):
+    def write(self, row, col, item):
         """
         Writes an item to a specific position in the active worksheet, handling complex numbers.
 
@@ -263,19 +271,19 @@ class SpreadSheetManager():
           and the updated column is used for adjusting the max column.
         - Updates the `positions` attribute with the next available position in the worksheet.
 
-        """        
-        if isinstance(item,complex) or np.iscomplexobj(item):
-            self.worksheets[self.name].write(row,col,item.real)
+        """
+        if isinstance(item, complex) or np.iscomplexobj(item):
+            self.worksheets[self.name].write(row, col, item.real)
             col += 1
-            self.worksheets[self.name].write(row,col,item.imag)
+            self.worksheets[self.name].write(row, col, item.imag)
             self.max_col[self.name] = max(self.max_col[self.name], col)
             self.max_row[self.name] = max(self.max_row[self.name], row)
-            self.positions[self.name] = (row+1,col+1)
+            self.positions[self.name] = (row + 1, col + 1)
         else:
-            self.worksheets[self.name].write(row,col,item)
+            self.worksheets[self.name].write(row, col, item)
             self.max_col[self.name] = max(self.max_col[self.name], col)
             self.max_row[self.name] = max(self.max_row[self.name], row)
-            self.positions[self.name] = (row+1,col+1)
+            self.positions[self.name] = (row + 1, col + 1)
 
     def delete(self):
         """
@@ -292,11 +300,11 @@ class SpreadSheetManager():
         -------
         None
 
-        """        
-        for row in range(0,self.max_row[self.name]):
+        """
+        for row in range(0, self.max_row[self.name]):
             for col in range(0, self.max_col[self.name]):
-                self.worksheets[self.name].write(row,col,'')
-        self.positions[self.name] = (-1,0)
+                self.worksheets[self.name].write(row, col, "")
+        self.positions[self.name] = (-1, 0)
         self.max_col[self.name] = 0
         self.max_row[self.name] = 0
 
@@ -313,7 +321,7 @@ class SpreadSheetManager():
         Returns
         -------
         None
-        """        
+        """
         if not self.closed:
             self.workbook.close()
         self.closed = True

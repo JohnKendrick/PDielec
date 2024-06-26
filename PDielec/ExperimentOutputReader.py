@@ -13,14 +13,15 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
+"""
 Read the contents of a directory containing Experiment input and output files.
-'''
+"""
+
 import re
 import numpy as np
 from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
-from PDielec.Calculator          import initialise_diagonal_tensor
+from PDielec.Calculator import initialise_diagonal_tensor
 import PDielec.DielectricFunction as DielectricFunction
 
 
@@ -74,9 +75,9 @@ class ExperimentOutputReader(GenericOutputReader):
             Initially None, intended for storing oscillator strengths data.
         frequencies : NoneType or Various types
             Initially None, intended for storing frequencies data.
-        """        
+        """
         GenericOutputReader.__init__(self, names)
-        self.type                    = 'Experimental output'
+        self.type = "Experimental output"
         self._ion_type_index = {}
         self.CrystalPermittivity = None
         self.zerof_optical_dielectric = None
@@ -104,9 +105,9 @@ class ExperimentOutputReader(GenericOutputReader):
         Notes
         -----
         - Lines consisting solely of whitespace characters (spaces, tabs, newlines) are considered empty.
-        """        
+        """
         line = self.file_descriptor.readline()
-        while not line.strip() or line[0] == '#':
+        while not line.strip() or line[0] == "#":
             line = self.file_descriptor.readline()
         return line
 
@@ -122,23 +123,44 @@ class ExperimentOutputReader(GenericOutputReader):
         -------
         None
         """
-        self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['lattice']       = (re.compile('lattice'),          self._read_lattice_vectors)
-        self.manage['CPK_LATTICE']   = (re.compile('&CELL'),            self._read_cpk_lattice_vectors)
-        self.manage['cpk_lattice']   = (re.compile('&cell'),            self._read_cpk_lattice_vectors)
-        self.manage['species']       = (re.compile('species'),          self._read_species)
-        self.manage['fractional']    = (re.compile('unitcell'),         self._read_fractional_coordinates)
-        self.manage['CPK_CARTESIANS']= (re.compile('&COORD'),           self._read_cpk_coords)
-        self.manage['cpk_cartesians']= (re.compile('&coord'),           self._read_cpk_coords)
-        self.manage['static']        = (re.compile('static'),           self._read_static_dielectric)
-        self.manage['epsinf']        = (re.compile('epsinf'),           self._read_static_dielectric)
-        self.manage['fpsq']          = (re.compile('fpsq'),             self._read_fpsq_model)
-        self.manage['drude-lorentz'] = (re.compile('drude-lorentz'),    self._read_drude_lorentz_model)
-        self.manage['constant']      = (re.compile('constant'),         self._read_constant_model)
+        self.manage = {}  # Empty the dictionary matching phrases
+        self.manage["lattice"] = (re.compile("lattice"), self._read_lattice_vectors)
+        self.manage["CPK_LATTICE"] = (
+            re.compile("&CELL"),
+            self._read_cpk_lattice_vectors,
+        )
+        self.manage["cpk_lattice"] = (
+            re.compile("&cell"),
+            self._read_cpk_lattice_vectors,
+        )
+        self.manage["species"] = (re.compile("species"), self._read_species)
+        self.manage["fractional"] = (
+            re.compile("unitcell"),
+            self._read_fractional_coordinates,
+        )
+        self.manage["CPK_CARTESIANS"] = (re.compile("&COORD"), self._read_cpk_coords)
+        self.manage["cpk_cartesians"] = (re.compile("&coord"), self._read_cpk_coords)
+        self.manage["static"] = (re.compile("static"), self._read_static_dielectric)
+        self.manage["epsinf"] = (re.compile("epsinf"), self._read_static_dielectric)
+        self.manage["fpsq"] = (re.compile("fpsq"), self._read_fpsq_model)
+        self.manage["drude-lorentz"] = (
+            re.compile("drude-lorentz"),
+            self._read_drude_lorentz_model,
+        )
+        self.manage["constant"] = (re.compile("constant"), self._read_constant_model)
         # The order of these interpolates is important !
-        self.manage['interpolate3']  = (re.compile('interpolate_3'),    self._read_interpolate3_model)
-        self.manage['interpolate6']  = (re.compile('interpolate_6'),    self._read_interpolate6_model)
-        self.manage['interpolate']   = (re.compile('interpolate'),      self._read_interpolate1_model)
+        self.manage["interpolate3"] = (
+            re.compile("interpolate_3"),
+            self._read_interpolate3_model,
+        )
+        self.manage["interpolate6"] = (
+            re.compile("interpolate_6"),
+            self._read_interpolate6_model,
+        )
+        self.manage["interpolate"] = (
+            re.compile("interpolate"),
+            self._read_interpolate1_model,
+        )
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -163,7 +185,7 @@ class ExperimentOutputReader(GenericOutputReader):
         line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
         # If we have complex input return a complex list, otherwise return a real list
-        odc = np.array(od,dtype=complex)
+        odc = np.array(od, dtype=complex)
         odi = np.absolute(np.imag(odc))
         sumi = np.sum(odi)
         if sumi < 1.0e-12:
@@ -191,23 +213,23 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(",", " ")
         split_line = line.split()
         omegas = []
-        eps    = []
-        while split_line[0] != '&end' and split_line[0] != 'end':
-            omega  = float(split_line[0])
-            epsr   = float(split_line[1])
-            epsi   = float(split_line[2])
+        eps = []
+        while split_line[0] != "&end" and split_line[0] != "end":
+            omega = float(split_line[0])
+            epsr = float(split_line[1])
+            epsi = float(split_line[2])
             omegas.append(omega)
-            eps.append(complex(epsr,epsi))
+            eps.append(complex(epsr, epsi))
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(",", " ")
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction.Tabulate1(omegas,eps)
+        self.CrystalPermittivity = DielectricFunction.Tabulate1(omegas, eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -231,14 +253,14 @@ class ExperimentOutputReader(GenericOutputReader):
         full_eps = []
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(",", " ")
         split_line = line.split()
         omegas = []
         epsxx = []
         epsyy = []
         epszz = []
-        while split_line[0] != '&end' and split_line[0] != 'end':
-            omega  = float(split_line[0])
+        while split_line[0] != "&end" and split_line[0] != "end":
+            omega = float(split_line[0])
             epsrxx = float(split_line[1])
             epsixx = float(split_line[2])
             epsryy = float(split_line[3])
@@ -246,16 +268,18 @@ class ExperimentOutputReader(GenericOutputReader):
             epsrzz = float(split_line[5])
             epsizz = float(split_line[6])
             omegas.append(omega)
-            epsxx.append(complex(epsrxx,epsixx))
-            epsyy.append(complex(epsryy,epsiyy))
-            epszz.append(complex(epsrzz,epsizz))
+            epsxx.append(complex(epsrxx, epsixx))
+            epsyy.append(complex(epsryy, epsiyy))
+            epszz.append(complex(epsrzz, epsizz))
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(",", " ")
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction.Tabulate3(omegas,epsxx,epsyy,epszz)
+        self.CrystalPermittivity = DielectricFunction.Tabulate3(
+            omegas, epsxx, epsyy, epszz
+        )
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -279,7 +303,7 @@ class ExperimentOutputReader(GenericOutputReader):
         full_eps = []
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(",", " ")
         split_line = line.split()
         omegas = []
         epsxx = []
@@ -288,8 +312,8 @@ class ExperimentOutputReader(GenericOutputReader):
         epsxy = []
         epsxz = []
         epsyz = []
-        while split_line[0] != '&end' and split_line[0] != 'end':
-            omega  = float(split_line[0])
+        while split_line[0] != "&end" and split_line[0] != "end":
+            omega = float(split_line[0])
             epsrxx = float(split_line[1])
             epsixx = float(split_line[2])
             epsryy = float(split_line[3])
@@ -303,19 +327,21 @@ class ExperimentOutputReader(GenericOutputReader):
             epsryz = float(split_line[11])
             epsiyz = float(split_line[12])
             omegas.append(omega)
-            epsxx.append(complex(epsrxx,epsixx))
-            epsyy.append(complex(epsryy,epsiyy))
-            epszz.append(complex(epsrzz,epsizz))
-            epsxy.append(complex(epsrxy,epsixy))
-            epsxz.append(complex(epsrxz,epsixz))
-            epsyz.append(complex(epsryz,epsiyz))
+            epsxx.append(complex(epsrxx, epsixx))
+            epsyy.append(complex(epsryy, epsiyy))
+            epszz.append(complex(epsrzz, epsizz))
+            epsxy.append(complex(epsrxy, epsixy))
+            epsxz.append(complex(epsrxz, epsixz))
+            epsyz.append(complex(epsryz, epsiyz))
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(",", " ")
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction.Tablulate6(omegas,epsxx,epsyy,epszz,epsxy,epsxz,epsyz)
+        self.CrystalPermittivity = DielectricFunction.Tablulate6(
+            omegas, epsxx, epsyy, epszz, epsxy, epsxz, epsyz
+        )
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -333,7 +359,7 @@ class ExperimentOutputReader(GenericOutputReader):
         Returns
         -------
         None
- 
+
         Notes
         -----
         A simple example of a 2 oscillator model is given below. All units are in cm-1.
@@ -351,7 +377,7 @@ class ExperimentOutputReader(GenericOutputReader):
         omegas_all = []
         strengths_all = []
         gammas_all = []
-        for diag in range(0,3):
+        for diag in range(0, 3):
             line = self._read_line().split()
             element = line[0]
             n = int(line[1])
@@ -369,7 +395,9 @@ class ExperimentOutputReader(GenericOutputReader):
             gammas_all.append(gammas)
         # end for diag
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction.DrudeLorentz(omegas_all,strengths_all,gammas_all)
+        self.CrystalPermittivity = DielectricFunction.DrudeLorentz(
+            omegas_all, strengths_all, gammas_all
+        )
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -412,7 +440,7 @@ class ExperimentOutputReader(GenericOutputReader):
              1063.7     6.1       1230.7    8.2
              1157.2     6.2       1154.9    6.1
 
-        Each section starts with `epsxx`, `epsyy`, or `epszz` followed by the number of modes. 
+        Each section starts with `epsxx`, `epsyy`, or `epszz` followed by the number of modes.
         After that, data lines include mode frequencies and corresponding contributions.
 
         Returns
@@ -423,7 +451,7 @@ class ExperimentOutputReader(GenericOutputReader):
         gamma_tos_all = []
         omega_los_all = []
         gamma_los_all = []
-        for diag in range(0,3):
+        for diag in range(0, 3):
             line = self._read_line().split()
             element = line[0]
             n = int(line[1])
@@ -444,7 +472,9 @@ class ExperimentOutputReader(GenericOutputReader):
             # end for i
         # end for diag
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction.FPSQ(omega_tos_all,gamma_tos_all,omega_los_all,gamma_los_all)
+        self.CrystalPermittivity = DielectricFunction.FPSQ(
+            omega_tos_all, gamma_tos_all, omega_los_all, gamma_los_all
+        )
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -475,7 +505,7 @@ class ExperimentOutputReader(GenericOutputReader):
         and the second entry is the oscillator strength. It also uses '_read_line' method, which is not defined in the snippet,
         to read each subsequent line for the frequencies and their oscillator strengths. Furthermore, 'initialise_diagonal_tensor'
         is used to convert the scalar strength values into tensor form, which is not detailed here.
-        """        
+        """
         nfreq = int(line.split()[1])
         self.frequencies = []
         self.oscillator_strengths = []
@@ -483,7 +513,9 @@ class ExperimentOutputReader(GenericOutputReader):
             line = self._read_line()
             self.frequencies.append(float(line.split()[0]))
             strength = float(line.split()[1])
-            self.oscillator_strengths.append(initialise_diagonal_tensor( [strength, strength, strength] ) )
+            self.oscillator_strengths.append(
+                initialise_diagonal_tensor([strength, strength, strength])
+            )
         return
 
     def _read_species(self, line):
@@ -502,7 +534,7 @@ class ExperimentOutputReader(GenericOutputReader):
         Notes
         -----
         This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.
-        """        
+        """
         nspecies = int(line.split()[1])
         self.species = []
         self.masses_per_type = []
@@ -534,12 +566,12 @@ class ExperimentOutputReader(GenericOutputReader):
         alpha = 90.0
         beta = 90.0
         gamma = 90.0
-        while split_line[0] != '&end' and split_line[0] != 'end':
-            if  split_line[0] == 'abc':
+        while split_line[0] != "&end" and split_line[0] != "end":
+            if split_line[0] == "abc":
                 a = float(split_line[1])
                 b = float(split_line[2])
                 c = float(split_line[3])
-            elif split_line[0] == 'alpha_beta_gamma':
+            elif split_line[0] == "alpha_beta_gamma":
                 alpha = float(split_line[1])
                 beta = float(split_line[2])
                 gamma = float(split_line[3])
@@ -548,10 +580,10 @@ class ExperimentOutputReader(GenericOutputReader):
             line = line.lower()
             split_line = line.split()
         # end while
-        cell = UnitCell(a,b,c,alpha,beta,gamma,units='Angstrom')
+        cell = UnitCell(a, b, c, alpha, beta, gamma, units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume(units='Angstrom')
+        self.volume = cell.getVolume(units="Angstrom")
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setVolume(self.volume)
         return
@@ -575,19 +607,31 @@ class ExperimentOutputReader(GenericOutputReader):
         See Also
         --------
         UnitCell : A class or function used to represent and manipulate unit cell information.
-        """        
+        """
         line = self._read_line()
         scalar = float(line.split()[0])
         line = self._read_line()
-        avector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
+        avector = [
+            scalar * float(line.split()[0]),
+            scalar * float(line.split()[1]),
+            scalar * float(line.split()[2]),
+        ]
         line = self._read_line()
-        bvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
+        bvector = [
+            scalar * float(line.split()[0]),
+            scalar * float(line.split()[1]),
+            scalar * float(line.split()[2]),
+        ]
         line = self._read_line()
-        cvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
-        cell = UnitCell(avector, bvector, cvector, units='Angstrom')
+        cvector = [
+            scalar * float(line.split()[0]),
+            scalar * float(line.split()[1]),
+            scalar * float(line.split()[2]),
+        ]
+        cell = UnitCell(avector, bvector, cvector, units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume('Angstrom')
+        self.volume = cell.getVolume("Angstrom")
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setVolume(self.volume)
         return
@@ -610,40 +654,40 @@ class ExperimentOutputReader(GenericOutputReader):
         Notes
         -----
 
-        - This method directly modifies several attributes of the class instance it 
-          belongs to, including lists of species, ions, and masses, as well as data 
+        - This method directly modifies several attributes of the class instance it
+          belongs to, including lists of species, ions, and masses, as well as data
           structures related to unit cells.
 
         - This method utilizes `self.nspecies`, `self.nions`, `self.species`, `self.masses_per_type`,
-          `self._ion_type_index`, `self.ions_per_type`, `self.atom_type_list`, `self.masses`, 
-          `self.unit_cells`, `self.oscillator_strengths`, and `self.frequencies` as 
+          `self._ion_type_index`, `self.ions_per_type`, `self.atom_type_list`, `self.masses`,
+          `self.unit_cells`, `self.oscillator_strengths`, and `self.frequencies` as
           relevant attributes that get updated.
 
-        - Initial coordinates and species names for each unit cell are eventually encapsulated 
+        - Initial coordinates and species names for each unit cell are eventually encapsulated
           in `self.unit_cells` with their respective setter methods.
 
-        - The method is designed to handle CPK format data incrementally, assuming that the 
+        - The method is designed to handle CPK format data incrementally, assuming that the
           beginning of a new entry is marked by a line that doesn't start with '&end' or 'end'.
 
         Raises
         ------
 
-        - This function implicitly assumes correct formatting and content of the input data. 
-          If the data is not correctly formatted or if `_read_line` fails to read further 
+        - This function implicitly assumes correct formatting and content of the input data.
+          If the data is not correctly formatted or if `_read_line` fails to read further
           lines as expected, unexpected behavior or errors could occur.
 
         See Also
         --------
         _read_line : Method used to read the next line for continued parsing.
-        """        
+        """
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(",", " ")
         split_line = line.split()
         species_list = []
         ions = []
         self.nspecies = 0
-        while split_line[0] != '&end' and split_line[0] != 'end':
+        while split_line[0] != "&end" and split_line[0] != "end":
             self.nions += 1
             species = line.split()[0]
             if species not in self.species:
@@ -660,15 +704,15 @@ class ExperimentOutputReader(GenericOutputReader):
             self.masses.append(self.masses_per_type[index])
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(",", " ")
             split_line = line.split()
         # end while
-        self.unit_cells[-1].set_xyz_coordinates(ions,units='Angstrom')
+        self.unit_cells[-1].set_xyz_coordinates(ions, units="Angstrom")
         self.unit_cells[-1].set_element_names(species_list)
         if self.oscillator_strengths == None:
-            self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )
+            self.oscillator_strengths = np.zeros((3 * self.nions, 3, 3))
         if self.frequencies == None:
-            self.frequencies = np.zeros( (3*self.nions) )
+            self.frequencies = np.zeros((3 * self.nions))
 
     def _read_fractional_coordinates(self, line):
         """
@@ -696,11 +740,11 @@ class ExperimentOutputReader(GenericOutputReader):
         - Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays if they haven't been already.
 
         Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
-        """        
+        """
         n = 0
         ions = []
         self.nions = int(line.split()[1])
-        self.ions_per_type = [ 0 for s in self.species ]
+        self.ions_per_type = [0 for s in self.species]
         self.masses = []
         species_list = []
         for n in range(self.nions):
@@ -715,9 +759,9 @@ class ExperimentOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_fractional_coordinates(ions)
         self.unit_cells[-1].set_element_names(species_list)
         if self.oscillator_strengths == None:
-            self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )
+            self.oscillator_strengths = np.zeros((3 * self.nions, 3, 3))
         if self.frequencies == None:
-            self.frequencies = np.zeros( (3*self.nions) )
+            self.frequencies = np.zeros((3 * self.nions))
         return
 
     def _read_static_dielectric(self, line):
@@ -747,7 +791,7 @@ class ExperimentOutputReader(GenericOutputReader):
         ------
         ValueError
             If the input lines cannot be converted into complex numbers.
-        """        
+        """
         # the is epsilon infinity
         od = []
         line = self._read_line()
@@ -757,7 +801,7 @@ class ExperimentOutputReader(GenericOutputReader):
         line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
         # If we have complex input return a complex list, otherwise return a real list
-        odc = np.array(od,dtype=complex)
+        odc = np.array(od, dtype=complex)
         odi = np.absolute(np.imag(odc))
         sumi = np.sum(odi)
         if sumi < 1.0e-12:
@@ -780,6 +824,6 @@ class ExperimentOutputReader(GenericOutputReader):
         np.array
             Returns an array for the mass weighted normal modes which in this case is zero
             The array has a shape 3*nions, nions, 3
-        """        
-        self.mass_weighted_normal_modes = np.zeros( (3*self.nions,self.nions,3) )
+        """
+        self.mass_weighted_normal_modes = np.zeros((3 * self.nions, self.nions, 3))
         return self.mass_weighted_normal_modes

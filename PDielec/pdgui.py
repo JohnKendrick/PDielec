@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
+"""
 PDgui driver program to calculate dielectric response at infrared and THz frequencies
 
 Process command line arguments and start a GUI application with optional splash screen.
@@ -30,15 +30,17 @@ Notes
     - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
     - If the splash screen is shown, it also includes a progress bar.
 
-'''
+"""
+
 from __future__ import print_function
 import os
 import sys
-from PDielec.GUI.App  import App
-from PyQt5.QtGui      import QPixmap
-from PyQt5.QtWidgets  import QApplication, QSplashScreen, QProgressBar
-from multiprocessing  import freeze_support
+from PDielec.GUI.App import App
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
+from multiprocessing import freeze_support
 import PDielec.__init__
+
 version = PDielec.__init__.__version__
 
 
@@ -82,42 +84,43 @@ def main():
     - To run a script:
 
     >>>    pdgui -script script.py
-    """    
+    """
     show_splash = True
     force_exit = False
     debug = False
     for token in sys.argv:
-        if token == '-nosplash' or token == '--nosplash':
+        if token == "-nosplash" or token == "--nosplash":
             show_splash = False
-        elif token == '-v' or token == '-version' or token == '--version':
-            print('Version ',version)
+        elif token == "-v" or token == "-version" or token == "--version":
+            print("Version ", version)
             exit()
-        elif token == '-exit' or token == '--exit':
+        elif token == "-exit" or token == "--exit":
             force_exit = True
-        elif token == '-d' or token == '-debug' or token == '--debug':
+        elif token == "-d" or token == "-debug" or token == "--debug":
             debug = True
-
 
     app = QApplication(sys.argv)
 
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
-        splashfile = os.path.join(dirname, 'PDielec/GUI/splash.png')
+        splashfile = os.path.join(dirname, "PDielec/GUI/splash.png")
         if debug:
-            print('Looking for ',splashfile)
+            print("Looking for ", splashfile)
         if not os.path.isfile(splashfile):
-            splashfile = os.path.join(dirname, '../../lib/site-packages/PDielec/GUI/splash.png')
+            splashfile = os.path.join(
+                dirname, "../../lib/site-packages/PDielec/GUI/splash.png"
+            )
             if debug:
-                print('Looking for ',splashfile)
+                print("Looking for ", splashfile)
         if not os.path.isfile(splashfile):
             for f in sys.path:
-                splashfile = os.path.join(f,'PDielec/GUI/splash.png')
+                splashfile = os.path.join(f, "PDielec/GUI/splash.png")
                 if debug:
-                    print('Looking for ',splashfile)
+                    print("Looking for ", splashfile)
                 if os.path.isfile(splashfile):
                     break
         if debug:
-            print('pdgui: splashfile ',dirname, splashfile)
+            print("pdgui: splashfile ", dirname, splashfile)
         pixmap = QPixmap(splashfile)
         splash = QSplashScreen(pixmap)
         progressbar = QProgressBar(splash)
@@ -131,8 +134,9 @@ def main():
         if show_splash:
             splash.finish(ex)
         app.exec_()
-    return 
+    return
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     freeze_support()
     main()

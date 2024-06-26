@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
+"""
 DielectricFunction
 
 Provides an interface to different mechanisms for providing dielectric information
@@ -30,7 +30,7 @@ Provides an interface to different mechanisms for providing dielectric informati
     - Subclass :class:`DrudeLorentz`
     - Subclass :class:`FPSQ`
     - Subclass :class:`Sellmeier`
-'''
+"""
 
 import numpy as np
 import sys
@@ -40,13 +40,13 @@ from scipy import interpolate
 
 
 class DielectricFunction:
-    '''
+    """
     A base class to different dielectric functions.
 
     There is a close relationship between the dielectric function and a material.
     The Material module allows data to be read in for different dielectric models.
     Once the data has been read in a DielectricFunction is created which is appropriate for the data.
-    The tensor and scalar versions of the functions behave differently with respect to 
+    The tensor and scalar versions of the functions behave differently with respect to
     epsilon infinity: tensor functions add epsilon infinity to the calculated permittivity, scalar functions do not.
 
     Attributes
@@ -73,37 +73,38 @@ class DielectricFunction:
     calculate(v)
         Return the value of the permittivity at frequency v.
     setFrequencies(frequencies)
-        Set frequencies 
+        Set frequencies
     getFrequencies()
-        Get frequencies 
+        Get frequencies
     setSigmas(sigmas)
-        Set sigmas 
+        Set sigmas
     getSigmas()
-        Get sigmas 
+        Get sigmas
     setOscillatorStrengths(strengths)
-        Set strengths 
+        Set strengths
     getOscillatorStrengths()
-        Get strengths 
+        Get strengths
     dielectricContributionsFromDrude(f, frequency, sigma, volume)
         Calculates permittivity from a Drude Model.
     dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
         Calculates permittivity from a Drude-Lorentz model.
-    '''
-    possible_epsTypes = ['dft','fpsq','drude-lorentz','sellmeier']
+    """
 
-    def __init__(self ):
-        '''
+    possible_epsTypes = ["dft", "fpsq", "drude-lorentz", "sellmeier"]
+
+    def __init__(self):
+        """
         Initialise and instance of the function
-        '''
-        self.isScalarFunction             = None
-        self.vs_cm1               = 0
-        self.epsilon_infinity     = np.zeros( (3,3) )
-        self.volume_angs          = None
+        """
+        self.isScalarFunction = None
+        self.vs_cm1 = 0
+        self.epsilon_infinity = np.zeros((3, 3))
+        self.volume_angs = None
         if self.volume_angs:
-            self.volume_au = volume*angstrom*angstrom*angstrom
+            self.volume_au = volume * angstrom * angstrom * angstrom
 
     def setFrequencies(self, frequencies):
-        '''
+        """
         Sets the frequencies of a Lorentzian permittivity
 
         The default is to print an error message unless the DielectricFunction is a Lorentzian
@@ -117,13 +118,14 @@ class DielectricFunction:
         -------
         None
 
-        '''
-        print('Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function')
-        return 
-
+        """
+        print(
+            "Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function"
+        )
+        return
 
     def getFrequencies(self):
-        '''
+        """
         Returns the frequencies of a Lorentzian permittivity
 
         The default is to return None, only return an array if the permittivity is Lorentzian
@@ -136,12 +138,11 @@ class DielectricFunction:
         -------
         None
 
-        '''
+        """
         return None
 
-
     def setOscillatorStrengths(self, strengths):
-        '''
+        """
         Sets the oscillator strengths of a Lorentzian permittivity
 
         The default is to print an error message unless the DielectricFunction is a Lorentzian
@@ -155,13 +156,14 @@ class DielectricFunction:
         -------
         None
 
-        '''
-        print('Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function')
-        return 
-
+        """
+        print(
+            "Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function"
+        )
+        return
 
     def getOscillatorStrengths(self):
-        '''
+        """
         Returns the oscillator strengths of a Lorentzian permittivity
 
         The default is to return None, only return an array if the permittivity is Lorentzian
@@ -174,11 +176,11 @@ class DielectricFunction:
         -------
         None
 
-        '''
+        """
         return None
 
     def setSigmas(self, sigmas):
-        '''
+        """
         Sets the sigma parameters of a Lorentzian permittivity
 
         The default is to print an error message unless the DielectricFunction is a Lorentzian
@@ -192,13 +194,14 @@ class DielectricFunction:
         -------
         None
 
-        '''
-        print('Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function')
-        return 
-
+        """
+        print(
+            "Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function"
+        )
+        return
 
     def getSigmas(self):
-        '''
+        """
         Returns the sigma parameters of a Lorentzian permittivity
 
         The default is to return None, only return an array if the permittivity is Lorentzian
@@ -211,12 +214,11 @@ class DielectricFunction:
         -------
         None
 
-        '''
+        """
         return None
 
-
     def isTensor(self):
-        '''
+        """
         Returns true if the dielectric function is a tensor
 
         Parameters
@@ -227,11 +229,11 @@ class DielectricFunction:
         -------
         bool
             True if the dielectric function returns a tensor, otherwise False.
-        '''
+        """
         return not self.isScalarFunction
 
     def isScalar(self):
-        '''
+        """
         Returns true if the dielectric function is a scalar
 
         Parameters
@@ -242,11 +244,11 @@ class DielectricFunction:
         -------
         bool
             True if the dielectric function returns a scalar value, False otherwise.
-        '''
+        """
         return self.isScalarFunction
 
-    def setVolume(self,volume):
-        '''
+    def setVolume(self, volume):
+        """
         Set the volume for dielectric calculations.
 
         Parameters
@@ -257,13 +259,13 @@ class DielectricFunction:
         Returns
         -------
         None
-        '''
-        self.volume_angs     = volume
-        self.volume_au       = volume*angstrom*angstrom*angstrom
+        """
+        self.volume_angs = volume
+        self.volume_au = volume * angstrom * angstrom * angstrom
         return
 
-    def setEpsilonInfinity(self,eps):
-        '''
+    def setEpsilonInfinity(self, eps):
+        """
         Set epsilon infinity for dielectric calculations.
 
         Parameters
@@ -274,12 +276,12 @@ class DielectricFunction:
         Returns
         -------
         None
-        '''
-        self.epsilon_infinity     = np.array(eps)
+        """
+        self.epsilon_infinity = np.array(eps)
         return
 
     def function(self):
-        '''
+        """
         Return the function used to calculate the permittivity.
 
         Parameters
@@ -289,11 +291,11 @@ class DielectricFunction:
         Returns
         -------
         a function
-        '''
-        return  self.calculate
+        """
+        return self.calculate
 
     def getLowestFrequency(self):
-        '''
+        """
         Returns the lowest tabulated frequency in cm-1.
 
         Parameters
@@ -303,13 +305,12 @@ class DielectricFunction:
         Returns
         -------
         The lowest tabulated frequency in cm-1.
-        '''
+        """
         lowestFrequency = np.min(self.vs_cm1)
         return lowestFrequency
 
-
     def getHighestFrequency(self):
-        '''
+        """
         Return the highest tabulated frequency in cm-1.
 
         Parameters
@@ -320,13 +321,12 @@ class DielectricFunction:
         -------
         float
             The highest tabulated frequency in cm-1.
-        '''
+        """
         highestFrequency = np.max(self.vs_cm1)
         return highestFrequency
 
-
     def dielectriContributionsFromDrude(self, f, frequency, sigma, volume):
-        '''
+        """
         Calculate the dielectric function for a set of a Drude oscillator
 
         The units of the parameters must be self-consistent.  Atomic units is a good choice.
@@ -346,19 +346,22 @@ class DielectricFunction:
         -------
         tensor (3x3)
             A complex scalar dielectric.
-        '''
+        """
         dielectric = np.zeros((3, 3), dtype=complex)
-        unit = identity(3,dtype=complex)
+        unit = identity(3, dtype=complex)
         # Avoid a divide by zero if f is small
         if f <= 1.0e-8:
             f = 1.0e-8
         # Assume that the drude contribution is isotropic
-        dielectric = dielectric - unit * frequency*frequency / complex(-f*f, -sigma*f)
-        return dielectric * (4.0*np.pi/volume)
+        dielectric = dielectric - unit * frequency * frequency / complex(
+            -f * f, -sigma * f
+        )
+        return dielectric * (4.0 * np.pi / volume)
 
-
-    def dielectriContributionsFromModes(self, f, modes, frequencies, sigmas, strengths, volume):
-        '''
+    def dielectriContributionsFromModes(
+        self, f, modes, frequencies, sigmas, strengths, volume
+    ):
+        """
         Calculate the dielectric function for a set of modes.
 
         Parameters
@@ -378,17 +381,17 @@ class DielectricFunction:
         -------
         tensor (3x3)
             A complex scalar representing the dielectric function.
-        '''
+        """
         dielectric = np.zeros((3, 3), dtype=complex)
         for mode in modes:
             v = frequencies[mode]
             sigma = sigmas[mode]
             strength = strengths[mode].astype(complex)
-            dielectric = dielectric + strength / complex((v*v - f*f), -sigma*f)
-        return dielectric * (4.0*np.pi/volume)
+            dielectric = dielectric + strength / complex((v * v - f * f), -sigma * f)
+        return dielectric * (4.0 * np.pi / volume)
 
-    def print(self, v1_cm1, v2_cm1, v_inc=1,diagonal_only=True,file=None):
-        '''
+    def print(self, v1_cm1, v2_cm1, v_inc=1, diagonal_only=True, file=None):
+        """
         Print the permittivity over a range of frequencies to a file
 
         Parameters
@@ -407,29 +410,63 @@ class DielectricFunction:
         Returns
         -------
         None
-        '''
+        """
         fd = sys.stdout
         closeFlag = False
         if file is not None:
             closeFlag = True
-            fd = open(file,'w')
-        c = ','
+            fd = open(file, "w")
+        c = ","
         if diagonal_only:
-            print('f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag',file=fd)
+            print(
+                "f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag",
+                file=fd,
+            )
         else:
-            print('f,eps00,epss11,eps22,eps01,eps02,,eps12',file=fd)
+            print("f,eps00,epss11,eps22,eps01,eps02,,eps12", file=fd)
         for v in np.arange(v1_cm1, v2_cm1, v_inc):
             epsilon = self.calculate(v)
             if diagonal_only:
-                print(v,c,epsilon[0,0].real,c,epsilon[1,1].real,c,epsilon[2,2].real,c,epsilon[0,0].imag,c,epsilon[1,1].imag,c,epsilon[2,2].imag,file=fd)
+                print(
+                    v,
+                    c,
+                    epsilon[0, 0].real,
+                    c,
+                    epsilon[1, 1].real,
+                    c,
+                    epsilon[2, 2].real,
+                    c,
+                    epsilon[0, 0].imag,
+                    c,
+                    epsilon[1, 1].imag,
+                    c,
+                    epsilon[2, 2].imag,
+                    file=fd,
+                )
             else:
-                print(v,c,epsilon[0,0],c,epsilon[1,1],c,epsilon[2,2],c,epsilon[0,1],c,epsilon[0,2],c,epsilon[1,2],file=fd)
+                print(
+                    v,
+                    c,
+                    epsilon[0, 0],
+                    c,
+                    epsilon[1, 1],
+                    c,
+                    epsilon[2, 2],
+                    c,
+                    epsilon[0, 1],
+                    c,
+                    epsilon[0, 2],
+                    c,
+                    epsilon[1, 2],
+                    file=fd,
+                )
         if closeFlag:
             fd.close()
         return
 
+
 class ConstantTensor(DielectricFunction):
-    '''
+    """
     A complex constant tensor permittivity
 
     Inherits from DielectricFunction.
@@ -448,20 +485,21 @@ class ConstantTensor(DielectricFunction):
         df = ConstantTensor(permittivity)
         newMaterial = Material('New material name',permittivityObject=df,cell=UnitCell(2, 2, 2))
 
-    '''
+    """
+
     def __init__(self, value):
-        '''
+        """
         Parameters
         ----------
         value : 3x3 numpy array
             Initialise the permittivity with this tensor
-        '''
+        """
         DielectricFunction.__init__(self)
         self.value = value
         self.isScalarFunction = False
 
-    def calculate(self,v):
-        '''
+    def calculate(self, v):
+        """
         Calculate the permittivity at a given frequency.
 
         Parameters
@@ -473,11 +511,12 @@ class ConstantTensor(DielectricFunction):
         -------
         ndarray
             The permittivity at frequency v as a 3x3 tensor.
-        '''
+        """
         return self.value * np.eye(3) + self.epsilon_infinity
 
+
 class ConstantScalar(DielectricFunction):
-    '''
+    """
     A complex constant scalar permittivity
 
     Inherits from DielectricFunction. Provides a calculate() function to return
@@ -487,20 +526,21 @@ class ConstantScalar(DielectricFunction):
     -------
     calculate()
         Calculates and returns the permittivity of the dielectric function.
-    '''
+    """
+
     def __init__(self, value):
-        '''
+        """
         Parameters
         ----------
         value : float
             Initialise the permittivity with this tensor
-        '''
+        """
         DielectricFunction.__init__(self)
         self.value = value
         self.isScalarFunction = True
 
-    def calculate(self,v):
-        '''
+    def calculate(self, v):
+        """
         Calculate the permittivity at a specified frequency.
 
         Parameters
@@ -512,15 +552,16 @@ class ConstantScalar(DielectricFunction):
         -------
         float
             The permittivity at frequency v.
-        '''
+        """
         return self.value
 
+
 class TabulateScalar(DielectricFunction):
-    '''
+    """
     A complex tabulated scalar permittivity
 
-    Inherits from DielectricFunction. 
-    Represents an isotropic material dielectric function. 
+    Inherits from DielectricFunction.
+    Represents an isotropic material dielectric function.
     Provides a calculate() function to return the permittivity.
     Epsilon infinity is not used in the calculation.
 
@@ -536,27 +577,28 @@ class TabulateScalar(DielectricFunction):
     Examples
     --------
     None
-    '''
+    """
+
     def __init__(self, vs_cm1, permittivities):
-        '''
+        """
         Parameters
         ----------
         vs_cm1 : list of float
             Frequencies in cm-1 of the following permittivities.
         permittivities : list of complex
             The permittivities at each of the frequencies.
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = True
         self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
         eps_r = np.real(eps)
         eps_i = np.imag(eps)
-        self.interpolater = interpolate.CubicSpline(self.vs_cm1,eps_r)
-        self.interpolatei = interpolate.CubicSpline(self.vs_cm1,eps_i)
+        self.interpolater = interpolate.CubicSpline(self.vs_cm1, eps_r)
+        self.interpolatei = interpolate.CubicSpline(self.vs_cm1, eps_i)
 
-    def calculate(self,v):
-        '''
+    def calculate(self, v):
+        """
         Calculate the permittivity at a given frequency.
 
         Parameters
@@ -568,12 +610,13 @@ class TabulateScalar(DielectricFunction):
         -------
         float
             The permittivity at frequency v as a scalar.
-        '''
-        eps = complex(self.interpolater(v),self.interpolatei(v))
+        """
+        eps = complex(self.interpolater(v), self.interpolatei(v))
         return eps
 
+
 class Tabulate1(DielectricFunction):
-    '''
+    """
     A complex tabulated isotropic tensor permittivity
 
     Inherits from DielectricFunction.
@@ -585,27 +628,28 @@ class Tabulate1(DielectricFunction):
     -------
     calculate()
         Returns the permittivity of the dielectric function.
-    '''
+    """
+
     def __init__(self, vs_cm1, permittivities):
-        '''
+        """
         Parameters
         ----------
         vs_cm1 : list of float
             Frequencies in cm-1 of the following permittivities.
         permittivities : list of complex
             The permittivities at each of the frequencies.
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
         eps_r = np.real(eps)
         eps_i = np.imag(eps)
-        self.interpolater = interpolate.CubicSpline(self.vs_cm1,eps_r)
-        self.interpolatei = interpolate.CubicSpline(self.vs_cm1,eps_i)
+        self.interpolater = interpolate.CubicSpline(self.vs_cm1, eps_r)
+        self.interpolatei = interpolate.CubicSpline(self.vs_cm1, eps_i)
 
-    def calculate(self,v):
-        '''
+    def calculate(self, v):
+        """
         Calculate the isotropic permittivity at a given frequency.
 
         Parameters
@@ -617,15 +661,16 @@ class Tabulate1(DielectricFunction):
         -------
         numpy.ndarray
             The isotropic permittivity at frequency v as a 3x3 tensor.
-        '''
-        eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolater(v),self.interpolatei(v))
-        eps[1,1] = eps[0,0]
-        eps[2,2] = eps[0,0]
+        """
+        eps = np.zeros((3, 3), dtype=complex)
+        eps[0, 0] = complex(self.interpolater(v), self.interpolatei(v))
+        eps[1, 1] = eps[0, 0]
+        eps[2, 2] = eps[0, 0]
         return eps + self.epsilon_infinity
 
+
 class Tabulate3(DielectricFunction):
-    '''
+    """
     A complex tabulated diagonal tensor permittivity
 
     Inherits from DielectricFunction.
@@ -637,9 +682,10 @@ class Tabulate3(DielectricFunction):
     -------
     calculate()
         Return the permittivity of the dielectric function.
-    '''
+    """
+
     def __init__(self, vs_cm1, epsxx, epsyy, epszz):
-        '''
+        """
         Parameters
         ----------
         vs_cm1 : list of floats
@@ -650,19 +696,19 @@ class Tabulate3(DielectricFunction):
             The eps(yy) permittivities at each of the frequencies
         epszz : list of complex
             The eps(zz) permittivities at each of the frequencies
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
         epsd = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
         self.interpolater = []
         self.interpolatei = []
-        for i,eps in enumerate(epsd):
-            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,np.real(eps)))
-            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,np.imag(eps)))
+        for i, eps in enumerate(epsd):
+            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1, np.real(eps)))
+            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1, np.imag(eps)))
 
-    def calculate(self,v):
-        '''
+    def calculate(self, v):
+        """
         Calculate the permittivity at a given frequency.
 
         Parameters
@@ -674,15 +720,16 @@ class Tabulate3(DielectricFunction):
         -------
         numpy.ndarray
             The permittivity at frequency v as a diagonal 3x3 tensor.
-        '''
-        eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolater[0](v),self.interpolatei[0](v))
-        eps[1,1] = complex(self.interpolater[1](v),self.interpolatei[1](v))
-        eps[2,2] = complex(self.interpolater[2](v),self.interpolatei[2](v))
+        """
+        eps = np.zeros((3, 3), dtype=complex)
+        eps[0, 0] = complex(self.interpolater[0](v), self.interpolatei[0](v))
+        eps[1, 1] = complex(self.interpolater[1](v), self.interpolatei[1](v))
+        eps[2, 2] = complex(self.interpolater[2](v), self.interpolatei[2](v))
         return eps + self.epsilon_infinity
 
+
 class Tabulate6(DielectricFunction):
-    '''
+    """
     A complex tabulated, anisotropic tensor permittivity
 
     Inherits from DielectricFunction.
@@ -694,9 +741,10 @@ class Tabulate6(DielectricFunction):
     -------
     calculate()
         Returns the permittivity of the dielectric.
-    '''
+    """
+
     def __init__(self, vs_cm1, epsxx, epsyy, epszz, epsxy, epsxz, epsyz):
-        '''
+        """
         Parameters
         ----------
         vs_cm1 : list of float
@@ -713,21 +761,28 @@ class Tabulate6(DielectricFunction):
             The eps(xz) permittivities at each of the frequencies.
         epsyz : list of complex
             The eps(yz) permittivities at each of the frequencies.
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
-        eps6 = [np.array(epsxx), np.array(epsyy), np.array(epszz), np.array(epsxy), np.array(epsxz), np.array(epsyz)]
+        eps6 = [
+            np.array(epsxx),
+            np.array(epsyy),
+            np.array(epszz),
+            np.array(epsxy),
+            np.array(epsxz),
+            np.array(epsyz),
+        ]
         self.interpolater = []
         self.interpolatei = []
         for eps in eps6:
             epsr = np.real(eps)
             epsi = np.imag(eps)
-            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,epsr))
-            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,epsi))
+            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1, epsr))
+            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1, epsi))
 
-    def calculate(self,v):
-        '''
+    def calculate(self, v):
+        """
         Calculate the symmetric permittivity tensor at a given frequency.
 
         Parameters
@@ -739,21 +794,22 @@ class Tabulate6(DielectricFunction):
         -------
         numpy.ndarray
             The full permittivity tensor at frequency v as a 3x3 tensor.
-        '''
-        eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolater[0](v),self.interpolatei[0](v))
-        eps[1,1] = complex(self.interpolater[1](v),self.interpolatei[1](v))
-        eps[2,2] = complex(self.interpolater[2](v),self.interpolatei[2](v))
-        eps[1,0] = complex(self.interpolater[3](v),self.interpolatei[3](v))
-        eps[2,0] = complex(self.interpolater[4](v),self.interpolatei[4](v))
-        eps[2,1] = complex(self.interpolater[5](v),self.interpolatei[5](v))
-        eps[0,1] = eps[1,0]
-        eps[0,2] = eps[2,0]
-        eps[1,2] = eps[2,1]
+        """
+        eps = np.zeros((3, 3), dtype=complex)
+        eps[0, 0] = complex(self.interpolater[0](v), self.interpolatei[0](v))
+        eps[1, 1] = complex(self.interpolater[1](v), self.interpolatei[1](v))
+        eps[2, 2] = complex(self.interpolater[2](v), self.interpolatei[2](v))
+        eps[1, 0] = complex(self.interpolater[3](v), self.interpolatei[3](v))
+        eps[2, 0] = complex(self.interpolater[4](v), self.interpolatei[4](v))
+        eps[2, 1] = complex(self.interpolater[5](v), self.interpolatei[5](v))
+        eps[0, 1] = eps[1, 0]
+        eps[0, 2] = eps[2, 0]
+        eps[1, 2] = eps[2, 1]
         return eps + self.epsilon_infinity
 
+
 class DFT(DielectricFunction):
-    '''
+    """
     A complex tensor permittivity from a DFT calculation
 
     Inherits from DielectricFunction.
@@ -770,9 +826,20 @@ class DFT(DielectricFunction):
     Notes
     -----
     The internal units for all calculations within this class are atomic units.
-    '''
-    def __init__(self,mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, drude, drude_plasma, drude_sigma):
-        '''
+    """
+
+    def __init__(
+        self,
+        mode_list,
+        mode_frequencies,
+        mode_sigmas,
+        mode_oscillator_strengths,
+        crystal_volume,
+        drude,
+        drude_plasma,
+        drude_sigma,
+    ):
+        """
         Parameters
         ----------
         mode_list : list of int
@@ -792,7 +859,7 @@ class DFT(DielectricFunction):
         drude_sigma : float
             Drude plasma width.
         All parameters are given in atomic units.
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.mode_list = mode_list
@@ -804,8 +871,8 @@ class DFT(DielectricFunction):
         self.drude_plasma = drude_plasma
         self.drude_sigma = drude_sigma
 
-    def calculate(self,v):
-        '''
+    def calculate(self, v):
+        """
         Calculate the permittivity at a given frequency.
 
         Parameters
@@ -817,18 +884,25 @@ class DFT(DielectricFunction):
         -------
         ndarray
             The permittivity at frequency v as a 3x3 tensor.
-        '''
+        """
         # For this class we force the use of atomic units and ignore internal units
         v_au = v * wavenumber
-        eps = self.dielectriContributionsFromModes(v_au, self.mode_list, self.mode_frequencies, 
-                                                   self.mode_sigmas, self.mode_oscillator_strengths, 
-                                                   self.crystal_volume)
+        eps = self.dielectriContributionsFromModes(
+            v_au,
+            self.mode_list,
+            self.mode_frequencies,
+            self.mode_sigmas,
+            self.mode_oscillator_strengths,
+            self.crystal_volume,
+        )
         if self.drude:
-            eps = eps + self.dielectricContributionFromDrude(v_au, self.drude_plasma, self.drude_sigma, self.crystal_volume)
+            eps = eps + self.dielectricContributionFromDrude(
+                v_au, self.drude_plasma, self.drude_sigma, self.crystal_volume
+            )
         return eps + self.epsilon_infinity
 
-    def setFrequencies(self,frequencies):
-        '''
+    def setFrequencies(self, frequencies):
+        """
         Sets the frequencies of a DFT permittivity
 
         The frequencies are converted to atomic units
@@ -842,14 +916,13 @@ class DFT(DielectricFunction):
         -------
         None
 
-        '''
+        """
         frequencies = np.array(frequencies)
         self.mode_frequencies = wavenumber * frequencies
-        return 
-
+        return
 
     def getFrequencies(self):
-        '''
+        """
         Returns the frequencies of a DFT permittivity
 
         The frequencies are in units of cm-1
@@ -863,11 +936,11 @@ class DFT(DielectricFunction):
         1d array of floats
             The frequencies in cm-1
 
-        '''
+        """
         return self.mode_frequencies / wavenumber
 
-    def setOscillatorStrengths(self,strengths):
-        '''
+    def setOscillatorStrengths(self, strengths):
+        """
         Sets the oscillator strengths of a DFT permittivity
 
         The oscillator strengths are converted to atomic units
@@ -881,14 +954,13 @@ class DFT(DielectricFunction):
         -------
         None
 
-        '''
+        """
         strengths = np.array(strengths)
         self.mode_oscillator_strengths = wavenumber * strengths
-        return 
-
+        return
 
     def getOscillatorStrengths(self):
-        '''
+        """
         Returns the oscillator strengths of a DFT permittivity
 
         The returned strengths are in units of cm-1
@@ -902,11 +974,11 @@ class DFT(DielectricFunction):
         3x3 array of floats for each frequency
             The oscillator strengths in cm-1
 
-        '''
+        """
         return self.mode_oscillator_strengths / wavenumber
 
-    def setSigmas(self,sigmas):
-        '''
+    def setSigmas(self, sigmas):
+        """
         Sets the sigma parameters of a DFT permittivity
 
         The sigmas parameter is converted to atomic units
@@ -920,14 +992,13 @@ class DFT(DielectricFunction):
         -------
         None
 
-        '''
+        """
         sigmas = np.array(sigmas)
         self.mode_sigmas = wavenumber * sigmas
-        return 
-
+        return
 
     def getSigmas(self):
-        '''
+        """
         Returns the sigma parameters of a DFT permittivity
 
         The returned sigmas are in units of cm-1
@@ -941,12 +1012,12 @@ class DFT(DielectricFunction):
         1d array of floats
             The sigma parameters of  Drude-Lorentzian permittivity
 
-        '''
+        """
         return self.mode_sigmas / wavenumber
 
 
 class DrudeLorentz(DielectricFunction):
-    '''
+    """
     A complex tensor Drude-Lorentz permittivity
 
     Inherits from DielectricFunction.
@@ -961,9 +1032,10 @@ class DrudeLorentz(DielectricFunction):
     Examples
     --------
     None
-    '''
+    """
+
     def __init__(self, vs_cm1, strengths_cm1, sigmas_cm1):
-        '''
+        """
         Parameters
         ----------
         vs_cm1 : list of ints
@@ -974,24 +1046,24 @@ class DrudeLorentz(DielectricFunction):
         sigmas_cm1 : list of floats
             Sigmas of isotropic contribution ([]).
             Sigmas of orthonormal contributions ([[xxs][yys][zzs]]), shape is either [] or [[xxs][yys][zzs]].
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         rhombic = False
         if isinstance(vs_cm1[0], list):
             rhombic = True
         if rhombic:
-            self.vs_cm1        = vs_cm1
+            self.vs_cm1 = vs_cm1
             self.strengths_cm1 = strengths_cm1
-            self.sigmas_cm1    = sigmas_cm1
+            self.sigmas_cm1 = sigmas_cm1
         else:
-            self.vs_cm1        = [vs_cm1, vs_cm1, vs_cm1]
+            self.vs_cm1 = [vs_cm1, vs_cm1, vs_cm1]
             self.strengths_cm1 = [strengths_cm1, strengths_cm1, strengths_cm1]
-            self.sigmas_cm1    = [sigmas_cm1, sigmas_cm1, sigmas_cm1]
+            self.sigmas_cm1 = [sigmas_cm1, sigmas_cm1, sigmas_cm1]
         return
 
     def calculate(self, v):
-        '''
+        """
         Calculate the permittivity at a given frequency.
 
         Parameters
@@ -1003,16 +1075,22 @@ class DrudeLorentz(DielectricFunction):
         -------
         tensor
             The permittivity at frequency v as a diagonal 3x3 tensor.
-        '''
+        """
         f_cm1 = v
-        eps = np.zeros( (3,3), dtype=complex )
-        for xyz, (vs, strengths, sigmas) in enumerate(zip(self.vs_cm1,self.strengths_cm1, self.sigmas_cm1)):
-            for v, strength, sigma in zip(vs, strengths,sigmas):
-                eps[xyz,xyz] += strength * strength / complex((v*v - f_cm1*f_cm1), -sigma*f_cm1)
+        eps = np.zeros((3, 3), dtype=complex)
+        for xyz, (vs, strengths, sigmas) in enumerate(
+            zip(self.vs_cm1, self.strengths_cm1, self.sigmas_cm1)
+        ):
+            for v, strength, sigma in zip(vs, strengths, sigmas):
+                eps[xyz, xyz] += (
+                    strength
+                    * strength
+                    / complex((v * v - f_cm1 * f_cm1), -sigma * f_cm1)
+                )
         return eps + self.epsilon_infinity
 
-    def setFrequencies(self,frequencies):
-        '''
+    def setFrequencies(self, frequencies):
+        """
         Sets the frequencies of a Drude-Lorentz permittivity
 
         The frequencies are in cm-1
@@ -1026,14 +1104,13 @@ class DrudeLorentz(DielectricFunction):
         -------
         None
 
-        '''
+        """
         frequencies = np.array(frequencies)
         self.vs_cm1 = frequencies
-        return 
-
+        return
 
     def getFrequencies(self):
-        '''
+        """
         Returns the frequencies of a Drude-Lorentz permittivity
 
         The frequencies are in units of cm-1
@@ -1047,11 +1124,11 @@ class DrudeLorentz(DielectricFunction):
         1d array of floats
             The frequencies in cm-1
 
-        '''
+        """
         return self.vs_cm1
 
-    def setOscillatorStrengths(self,strengths):
-        '''
+    def setOscillatorStrengths(self, strengths):
+        """
         Sets the oscillator strengths of a Drude-Lorentz permittivity
 
         The oscillator strengths are in cm-1
@@ -1065,13 +1142,13 @@ class DrudeLorentz(DielectricFunction):
         -------
         None
 
-        '''
+        """
         strengths = np.array(strengths)
         self.strengths = strengths
-        return 
+        return
 
     def getOscillatorStrengths(self):
-        '''
+        """
         Returns the oscillator strengths of a Drude-Lorentz permittivity
 
         The returned strengths are in units of cm-1
@@ -1085,11 +1162,11 @@ class DrudeLorentz(DielectricFunction):
         1d array of floats
             The oscillator strengths in cm-1
 
-        '''
+        """
         return self.strengths
 
-    def setSigmas(self,sigmas):
-        '''
+    def setSigmas(self, sigmas):
+        """
         Sets the sigma parameters of a Drude-Lorentz permittivity
 
         The default is to print an error message unless the DielectricFunction is a Lorentzian
@@ -1103,13 +1180,12 @@ class DrudeLorentz(DielectricFunction):
         -------
         None
 
-        '''
+        """
         self.sigmas_cm1 = sigmas
-        return 
-
+        return
 
     def getSigmas(self):
-        '''
+        """
         Returns the sigma parameters of a Lorentzian permittivity
 
         The returned sigmas are in units of cm-1
@@ -1122,20 +1198,21 @@ class DrudeLorentz(DielectricFunction):
         -------
         1d array of floats
 
-        '''
+        """
         return self.sigmas_cm1
 
 
 class FPSQ(DielectricFunction):
-    '''
+    """
     A complex tensor FPSQ dielectric function.
 
     Inherits from DielectricFunction.
     Provides a calculate() function to return the permittivity.
     Epsilon infinity is included in the total permittivity
-    '''
+    """
+
     def __init__(self, omega_tos, gamma_tos, omega_los, gamma_los):
-        '''
+        """
         Parameters
         ----------
         omega_tos : list of floats
@@ -1146,7 +1223,7 @@ class FPSQ(DielectricFunction):
             Omega (lo) in the FPSQ equation.
         gamma_los : list of floats
             Gamma (lo) in the FPSQ equation.
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         rhombic = False
@@ -1165,7 +1242,7 @@ class FPSQ(DielectricFunction):
         return
 
     def calculate(self, v):
-        '''
+        """
         Calculate the diagonal permittivity 3x3 tensor at a given frequency.
 
         Parameters
@@ -1177,35 +1254,43 @@ class FPSQ(DielectricFunction):
         -------
         numpy.ndarray
             The diagonal permittivity 3x3 tensor at frequency v.
-        '''
+        """
         f_cm1 = v
-        eps = np.array(self.epsilon_infinity,dtype=complex)
-        for xyz,(omega_tos,gamma_tos,omega_los,gamma_los) in enumerate(zip(self.omega_tos,self.gamma_tos,self.omega_los, self.gamma_los)):
-            for omega_to, gamma_to, omega_lo, gamma_lo  in zip(omega_tos,gamma_tos,omega_los,gamma_los):
-                contribution = (omega_lo**2 - f_cm1**2 - complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - complex(0,gamma_to)*f_cm1)
+        eps = np.array(self.epsilon_infinity, dtype=complex)
+        for xyz, (omega_tos, gamma_tos, omega_los, gamma_los) in enumerate(
+            zip(self.omega_tos, self.gamma_tos, self.omega_los, self.gamma_los)
+        ):
+            for omega_to, gamma_to, omega_lo, gamma_lo in zip(
+                omega_tos, gamma_tos, omega_los, gamma_los
+            ):
+                contribution = (
+                    omega_lo**2 - f_cm1**2 - complex(0, gamma_lo) * f_cm1
+                ) / (omega_to**2 - f_cm1**2 - complex(0, gamma_to) * f_cm1)
                 # make sure the imaginary component is not negative!
                 real_contribution = np.real(contribution)
-                imag_contribution = max(-1.0E-12,np.imag(contribution))
-                eps[xyz,xyz] *= complex(real_contribution,imag_contribution)
-        return eps 
+                imag_contribution = max(-1.0e-12, np.imag(contribution))
+                eps[xyz, xyz] *= complex(real_contribution, imag_contribution)
+        return eps
+
 
 class Sellmeier(DielectricFunction):
-    '''
+    """
     A real tensor Sellmeier permittivity
 
     Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
     Epsilon infinity is not included in the total permittivity
 
-    '''
+    """
+
     def __init__(self, Bs, Cs):
-        '''
+        """
         Parameters
         ----------
         Bs : list of floats
             B parameter for Sellmeier equation (microns^2)
         Cs : list of floats
             C parameter for Sellmeier equation (microns^2)
-        '''
+        """
         DielectricFunction.__init__(self)
         self.isScalarFunction = True
         self.Bs = Bs
@@ -1213,7 +1298,7 @@ class Sellmeier(DielectricFunction):
         return
 
     def calculate(self, v):
-        '''
+        """
         Calculate the diagonal permittivity 3x3 tensor at a given frequency.
 
         Parameters
@@ -1229,13 +1314,12 @@ class Sellmeier(DielectricFunction):
         Notes
         -----
         The Sellmeier parameters are in microns^2.
-        '''
+        """
         f_cm1 = v
         # Convert to wavelength in microns
-        wavelength_mu = f_cm1 * 1.0E+6 *1.0E-2            # convert cm-1 to microns
-        wavelength2 = wavelength_mu*wavelength_mu
+        wavelength_mu = f_cm1 * 1.0e6 * 1.0e-2  # convert cm-1 to microns
+        wavelength2 = wavelength_mu * wavelength_mu
         n2 = 1.0
-        for B,C in zip(self.Bs,self.Cs):
-            n2 += B*wavelength2/(wavelength2-C) 
-        return n2 
-
+        for B, C in zip(self.Bs, self.Cs):
+            n2 += B * wavelength2 / (wavelength2 - C)
+        return n2

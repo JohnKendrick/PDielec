@@ -16,10 +16,13 @@
 """
 Read the contents of a directory containing DFT output and create a pickled filed
 """
+
 import sys
 import dill as pickle
 import PDielec.__init__
+
 version = PDielec.__init__.__version__
+
 
 def print_help():
     """
@@ -32,12 +35,19 @@ def print_help():
     The function uses `sys.stderr` to print messages, ensuring that they are output to the standard error stream rather than the standard output. This is useful for separating actual program output from error or help messages.
 
     The function explicitly calls `exit()`, which terminates the program execution. This is used here to halt further execution after displaying the help information.
-    """    
-    print('pickled_reader filenames', file=sys.stderr)
-    print('  Read in a pickled (actually using dill to pickle the object) reader            ', file=sys.stderr)
-    print('  The pickled file should have been created using preader -pickle                ', file=sys.stderr)
-    print('  Version ',version,file=sys.stderr)
+    """
+    print("pickled_reader filenames", file=sys.stderr)
+    print(
+        "  Read in a pickled (actually using dill to pickle the object) reader            ",
+        file=sys.stderr,
+    )
+    print(
+        "  The pickled file should have been created using preader -pickle                ",
+        file=sys.stderr,
+    )
+    print("  Version ", version, file=sys.stderr)
     exit()
+
 
 def main():
     """
@@ -66,11 +76,11 @@ def main():
     Note
     ----
     The function requires the 'sys' and 'pickle' modules to be imported.
-    """    
+    """
     #
     # Print out the help file if there is nothing else on the command line
     #
-    if len(sys.argv) <= 1 :
+    if len(sys.argv) <= 1:
         print_help()
     #
     # Read in the pickled reader objects from the dump file
@@ -84,24 +94,26 @@ def main():
     # Open the pickled file as binary and for reading only
     # keep reading until we reach an end of file
     #
-    with open(picklefile,'rb') as f:
+    with open(picklefile, "rb") as f:
         try:
             while True:
                 readers.append(pickle.load(f))
         except EOFError:
             pass
     #
-    print('Read in {} readers'.format(len(readers)))
+    print("Read in {} readers".format(len(readers)))
     #
     # Loop over the readers and print out some information - assign a variable
     #
     for reader in readers:
-        print('NEW READER type={}, file={}'.format(reader.type,reader.names[0]))
+        print("NEW READER type={}, file={}".format(reader.type, reader.names[0]))
         reader.print()
-        print('LAST CELL')
+        print("LAST CELL")
         lastcell = reader.get_unit_cell()
         lastcell.print()
     # End of for loop over readers
+
+
 # end of def main
 
 if __name__ == "__main__":

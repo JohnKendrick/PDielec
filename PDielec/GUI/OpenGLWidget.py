@@ -12,30 +12,32 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
+"""
 OpenGLWidget module
-'''
+"""
 
 import os
 import math
 import numpy as np
+
 # The following lines seem to fix a problem when running on low end machines
 import OpenGL
+
 OpenGL.USE_ACCELERATE = False
 OpenGL.ERROR_CHECKING = False
 # end of low-end machine fix
-from collections     import deque
-from OpenGL.GL       import *
-from OpenGL.GLU      import *
-from OpenGL.GLUT     import *
+from collections import deque
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
 from PyQt5.QtWidgets import QOpenGLWidget
-from PyQt5.QtCore    import Qt
-from PyQt5.QtCore    import QTimer
-from PyQt5.QtGui     import QSurfaceFormat
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QSurfaceFormat
 from PDielec.Utilities import Debug
 
-class OpenGLWidget(QOpenGLWidget):
 
+class OpenGLWidget(QOpenGLWidget):
     """
     A widget for the Qt framework specialized in OpenGL graphics rendering.
 
@@ -123,10 +125,11 @@ class OpenGLWidget(QOpenGLWidget):
         Adds a cylinder to the scene.
     addSphere(colour, radius, pos, phase=0)
         Adds a sphere to the scene.
-    """    
+    """
+
     format = QSurfaceFormat()
-    #format.setDepthBufferSize(24)
-    #format.setStencilBufferSize(8)
+    # format.setDepthBufferSize(24)
+    # format.setStencilBufferSize(8)
     format.setSamples(6)
     format.setSwapBehavior(QSurfaceFormat.DoubleBuffer)
     QSurfaceFormat.setDefaultFormat(format)
@@ -157,50 +160,68 @@ class OpenGLWidget(QOpenGLWidget):
 
         >>> parent_widget = SomeQWidget()
         >>> opengl_widget = OpenGLWidget(parent=parent_widget, debug=True)
-        """        
+        """
         QOpenGLWidget.__init__(self, parent)
         global debugger
-        debugger = Debug(debug,'OpenGLWidget')
+        debugger = Debug(debug, "OpenGLWidget")
         self.debug = debug
         self.viewerTab = parent
         self.notebook = parent.notebook
         self.setMinimumSize(640, 672)
         self.lightingOn = True
-        self.diffuseMaterialFactor  = 0.9
-        self.ambientMaterialFactor  = 0.4
+        self.diffuseMaterialFactor = 0.9
+        self.ambientMaterialFactor = 0.4
         self.specularMaterialFactor = 0.7
-        self.glintMaterialFactor    = 100.0
-        self.diffuseLightFactor     = 0.8
-        self.ambientLightFactor     = 0.6
-        self.specularLightFactor    = 1.0
-        self.linearAttenuation      = True
-        self.image_size             = 15.0
-        self.white                  = np.array( [1.0, 1.0, 1.0, 1.0] )
-        self.spheres                = deque()
-        self.cylinders              = deque()
-        self.arrows                 = deque()
-        self.current_phase          = 0
-        self.phase_direction        = 1
-        self.number_of_phases       = 1
-        self.sphere_slices          = 20
-        self.sphere_stacks          = 20
-        self.cylinder_slices        = 8
-        self.cylinder_stacks        = 2
-        self.timer                  = None
-        self.show_arrows            = True
-        self.timer_interval         = 60
-        self.my_width               = None
-        self.my_height              = None
-        self.background_colour      = None
+        self.glintMaterialFactor = 100.0
+        self.diffuseLightFactor = 0.8
+        self.ambientLightFactor = 0.6
+        self.specularLightFactor = 1.0
+        self.linearAttenuation = True
+        self.image_size = 15.0
+        self.white = np.array([1.0, 1.0, 1.0, 1.0])
+        self.spheres = deque()
+        self.cylinders = deque()
+        self.arrows = deque()
+        self.current_phase = 0
+        self.phase_direction = 1
+        self.number_of_phases = 1
+        self.sphere_slices = 20
+        self.sphere_stacks = 20
+        self.cylinder_slices = 8
+        self.cylinder_stacks = 2
+        self.timer = None
+        self.show_arrows = True
+        self.timer_interval = 60
+        self.my_width = None
+        self.my_height = None
+        self.background_colour = None
 
-        self.show_full_screen       = False
-        self.writer                 = None
-        self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
-        self.matrix =  np.eye( 4, dtype=np.float32)
+        self.show_full_screen = False
+        self.writer = None
+        self.rotation_centre = np.array([0.0, 0.0, 0.0])
+        self.matrix = np.eye(4, dtype=np.float32)
         self.light_switches = None
         d = 200.0
-        self.light_positions = [ [-d, d, d], [ d,-d, d], [-d,-d, d], [ d, d, d], [-d, d,-d], [ d,-d,-d], [-d,-d,-d], [ d, d,-d] ]
-        self.lights = [ GL_LIGHT0, GL_LIGHT1, GL_LIGHT2, GL_LIGHT3, GL_LIGHT4, GL_LIGHT5, GL_LIGHT6, GL_LIGHT7 ]
+        self.light_positions = [
+            [-d, d, d],
+            [d, -d, d],
+            [-d, -d, d],
+            [d, d, d],
+            [-d, d, -d],
+            [d, -d, -d],
+            [-d, -d, -d],
+            [d, d, -d],
+        ]
+        self.lights = [
+            GL_LIGHT0,
+            GL_LIGHT1,
+            GL_LIGHT2,
+            GL_LIGHT3,
+            GL_LIGHT4,
+            GL_LIGHT5,
+            GL_LIGHT6,
+            GL_LIGHT7,
+        ]
 
     def enterEvent(self, event):
         """
@@ -218,8 +239,8 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         This function primarily ensures that the focus is set accordingly when an event occurs, and then it passes the event on to the viewerTab's own enterEvent handler for further processing.
-        """        
-        debugger.print('enter event')
+        """
+        debugger.print("enter event")
         self.setFocus()
         self.viewerTab.enterEvent(event)
 
@@ -239,8 +260,8 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         This function updates the `show_arrows` attribute based on the "show" parameter and prints the current status to the debugger.
-        """        
-        debugger.print('show arrows',show)
+        """
+        debugger.print("show arrows", show)
         self.show_arrows = show
 
     def timeoutHandler(self):
@@ -266,15 +287,15 @@ class OpenGLWidget(QOpenGLWidget):
         - `self.number_of_phases` indicates the total number of available phases.
         - `self.phase_direction` is either +1 or -1, indicating the direction of phase progression.
         - The `update` method is called at the end to apply any changes made to the state as a result of this timeout event.
-        """        
+        """
         self.current_phase += self.phase_direction
         if self.current_phase >= self.number_of_phases:
             self.phase_direction = -1
-            self.current_phase = self.number_of_phases -2
+            self.current_phase = self.number_of_phases - 2
         elif self.current_phase < 0:
             self.current_phase = 1
             self.phase_direction = +1
-        debugger.print('Timeout - phase', self.current_phase)
+        debugger.print("Timeout - phase", self.current_phase)
         self.update()
 
     def myMakeCurrent(self):
@@ -293,13 +314,13 @@ class OpenGLWidget(QOpenGLWidget):
 
         This method does not return any value or raise exceptions. It is designed to
         ensure that the OpenGL context is error-free after making it current.
-        """        
+        """
         self.makeCurrent()
         err = glGetError()
         while err != GL_NO_ERROR:
             err = glGetError()
 
-    def moleculeRotate(self,scale,x,y,z):
+    def moleculeRotate(self, scale, x, y, z):
         """
         Rotate a molecule object around the specified axes.
 
@@ -344,16 +365,16 @@ class OpenGLWidget(QOpenGLWidget):
         Raises
         ------
         This function does not explicitly raise exceptions but relies on the OpenGL context and the `update` method's implementation.
-        """        
+        """
         # Rotate molecular frame using glortho
         # Create a 4x4 matrix for the model view
-        debugger.print('molecule rotation',x,y,z)
+        debugger.print("molecule rotation", x, y, z)
         self.myMakeCurrent()
         glMatrixMode(GL_MODELVIEW)
         glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
         glLoadIdentity()
-        glRotatef(scale*x, 1.0, 0.0, 0.0)
-        glRotatef(scale*y, 0.0, 1.0, 0.0)
+        glRotatef(scale * x, 1.0, 0.0, 0.0)
+        glRotatef(scale * y, 0.0, 1.0, 0.0)
         glMultMatrixf(self.matrix)
         self.update()
 
@@ -361,10 +382,10 @@ class OpenGLWidget(QOpenGLWidget):
         """
         Handle keyboard events for specific actions.
 
-        This method is triggered whenever a keyboard event occurs. 
-        It interprets key presses to perform various actions such as rotating the molecule, zooming in or out, 
-        saving the current state, toggling between full screen mode, and resetting the view. 
- 
+        This method is triggered whenever a keyboard event occurs.
+        It interprets key presses to perform various actions such as rotating the molecule, zooming in or out,
+        saving the current state, toggling between full screen mode, and resetting the view.
+
         Parameters
         ----------
         event : QKeyEvent
@@ -376,9 +397,9 @@ class OpenGLWidget(QOpenGLWidget):
 
         Notes
         -----
-        This function checks for specific keys and their combinations with modifiers like Shift and Control to determine the required action. 
-        For rotation and zoom actions, the amount of change is determined based on whether 
-        any modifiers are pressed (larger rotation if Shift or Control is held). 
+        This function checks for specific keys and their combinations with modifiers like Shift and Control to determine the required action.
+        For rotation and zoom actions, the amount of change is determined based on whether
+        any modifiers are pressed (larger rotation if Shift or Control is held).
         Saving, toggling the full screen mode, and resetting the view do not require modifiers.
 
         The following keys perform actions as described:
@@ -398,18 +419,18 @@ class OpenGLWidget(QOpenGLWidget):
 
         Requires
         --------
-        This function requires `Qt`, `GL_MODELVIEW`, `glLoadIdentity`, `np`, and the instance methods 
-        `myMakeCurrent`, `moleculeRotate`, `zoom`, `save_movie`, `showFullScreen`, and `showNormal` to be properly defined. 
+        This function requires `Qt`, `GL_MODELVIEW`, `glLoadIdentity`, `np`, and the instance methods
+        `myMakeCurrent`, `moleculeRotate`, `zoom`, `save_movie`, `showFullScreen`, and `showNormal` to be properly defined.
         It also assumes an external debugger tool for logging.
 
         Raises
         ------
         This method does not explicitly raise any exceptions but might propagate exceptions from methods it calls.
-        """        
+        """
         self.myMakeCurrent()
         key = event.key()
         modifiers = event.modifiers()
-        debugger.print('kepressevent',key,modifiers)
+        debugger.print("kepressevent", key, modifiers)
         control = False
         shift = False
         if modifiers & Qt.ShiftModifier:
@@ -421,13 +442,13 @@ class OpenGLWidget(QOpenGLWidget):
         else:
             amount = 5.0
         if key == Qt.Key_Left:
-            self.moleculeRotate(-amount,0.0,1.0,0.0)
+            self.moleculeRotate(-amount, 0.0, 1.0, 0.0)
         elif key == Qt.Key_Right:
-            self.moleculeRotate(+amount,0.0,1.0,0.0)
+            self.moleculeRotate(+amount, 0.0, 1.0, 0.0)
         elif key == Qt.Key_Up:
-            self.moleculeRotate(-amount,1.0,0.0,0.0)
+            self.moleculeRotate(-amount, 1.0, 0.0, 0.0)
         elif key == Qt.Key_Down:
-            self.moleculeRotate(+amount,1.0,0.0,0.0)
+            self.moleculeRotate(+amount, 1.0, 0.0, 0.0)
         elif key == Qt.Key_Plus:
             self.zoom(+1.0)
         elif key == Qt.Key_Minus:
@@ -443,9 +464,9 @@ class OpenGLWidget(QOpenGLWidget):
         elif key == Qt.Key_Home:
             glMatrixMode(GL_MODELVIEW)
             glLoadIdentity()
-            self.matrix =  np.eye( 4, dtype=np.float32)
+            self.matrix = np.eye(4, dtype=np.float32)
             self.current_phase = int(self.number_of_phases / 2)
-            debugger.print('Home key', self.current_phase)
+            debugger.print("Home key", self.current_phase)
             self.update()
 
     def save_movie(self, filename):
@@ -471,38 +492,39 @@ class OpenGLWidget(QOpenGLWidget):
         taken consistently, and then restarted once the movie is saved.
         Temporary storage is used for intermediate images
 
-        """        
+        """
         import imageio
+
         # imageio.plugins.ffmpeg.download()
-        debugger.print('save_movie', filename)
+        debugger.print("save_movie", filename)
         if self.timer is not None:
             self.timer.stop()
-        writer  = imageio.get_writer(filename, mode='I', fps=24)
-        tmpdir  = os.path.dirname(filename)
-        tmpfile = os.path.join(tmpdir,'.snapshot.png')
-        debugger.print('save_movie', filename)
-        for i in range(0,2*self.number_of_phases):
+        writer = imageio.get_writer(filename, mode="I", fps=24)
+        tmpdir = os.path.dirname(filename)
+        tmpfile = os.path.join(tmpdir, ".snapshot.png")
+        debugger.print("save_movie", filename)
+        for i in range(0, 2 * self.number_of_phases):
             self.timeoutHandler()
             image = self.grabFramebuffer()
             x = image.width()
             y = image.height()
-            modx = x%16
-            mody = y%16
+            modx = x % 16
+            mody = y % 16
             startx = int(modx / 2)
             starty = int(mody / 2)
             x = x - modx + startx
             y = y - mody + starty
             # The image is cropped so that the height and widths are multiples of 16
-            image = image.copy(startx, starty, x,y)
+            image = image.copy(startx, starty, x, y)
             image.save(tmpfile)
             image = imageio.imread(tmpfile)
-            writer.append_data(image);
+            writer.append_data(image)
         writer.close()
         os.remove(tmpfile)
         if self.timer is not None:
             self.timer.start()
 
-    def snapshot(self,filename):
+    def snapshot(self, filename):
         """
         Capture and save a snapshot of the current framebuffer to a file.
 
@@ -524,12 +546,12 @@ class OpenGLWidget(QOpenGLWidget):
         ```
 
         This will grab the current framebuffer content and save it as 'screenshot.png'.
-        """        
-        debugger.print('snapshot', filename)
+        """
+        debugger.print("snapshot", filename)
         image = self.grabFramebuffer()
         image.save(filename)
 
-    def translate(self,x,y):
+    def translate(self, x, y):
         """
         Translate an object by modifying its current position.
 
@@ -549,8 +571,8 @@ class OpenGLWidget(QOpenGLWidget):
         This method updates the current position of the object by adding the specified distances along the x and y axes, respectively. It does not return a value.
 
         This function involves a call to `glTranslatef`, which applies a translation transformation to the current matrix. Ensure that the appropriate OpenGL context is made current before calling this function by using `self.myMakeCurrent()`.
-        """        
-        debugger.print('translate ',x,y)
+        """
+        debugger.print("translate ", x, y)
         self.myMakeCurrent()
         glTranslatef(x, y, 0.0)
 
@@ -573,8 +595,8 @@ class OpenGLWidget(QOpenGLWidget):
         the current context to this object before determining the direction and
         intensity of the zoom based on the vertical angle delta of the wheel event.
         Lastly, it refreshes the display to reflect any changes.
-        """        
-        debugger.print('Wheel event ' )
+        """
+        debugger.print("Wheel event ")
         self.myMakeCurrent()
         zoom = event.angleDelta().y()
         self.zoom(zoom)
@@ -592,10 +614,10 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
+        """
         self.xAtPress = event.x()
         self.yAtPress = event.y()
-        #print('mouse press',self.xAtPress, self.yAtPress)
+        # print('mouse press',self.xAtPress, self.yAtPress)
 
     def mouseReleaseEvent(self, event):
         """
@@ -613,10 +635,10 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         This method records the x and y coordinates of the mouse at the moment it is released.
-        """        
+        """
         self.xAtRelease = event.x()
         self.yAtRelease = event.y()
-        #print('mouse release',self.xAtRelease, self.yAtRelease)
+        # print('mouse release',self.xAtRelease, self.yAtRelease)
 
     def zoom(self, zoom):
         """
@@ -637,14 +659,14 @@ class OpenGLWidget(QOpenGLWidget):
         - Updates the object's state after zooming.
 
         Uses `glScalef` from OpenGL for scaling transformations and assumes that `debugger` and `glScalef` are accessible in the current context, with `debugger.print` used for debug logging.
-        """        
-        debugger.print('zoom ', zoom)
+        """
+        debugger.print("zoom ", zoom)
         self.myMakeCurrent()
         if zoom > 0:
             zoom_factor = 1.06
         else:
             zoom_factor = 0.94
-        debugger.print('zoom factor', zoom_factor)
+        debugger.print("zoom factor", zoom_factor)
         glScalef(zoom_factor, zoom_factor, zoom_factor)
         self.update()
 
@@ -670,30 +692,30 @@ class OpenGLWidget(QOpenGLWidget):
         - If the middle mouse button is pressed: Performs translation.
 
         Mouse coordinates are updated at the end of the method to reflect the current position.
-        """        
+        """
         self.xAtMove = event.x()
         self.yAtMove = event.y()
         buttons = event.buttons()
         modifiers = event.modifiers()
         if buttons & Qt.LeftButton:
-            debugger.print('Mouse event - left button')
+            debugger.print("Mouse event - left button")
             if modifiers & Qt.ShiftModifier or modifiers & Qt.ControlModifier:
                 # handle zoom
-                xzoom = +1.0*(self.xAtMove - self.xAtPress)
-                yzoom = -1.0*(self.yAtMove - self.yAtPress)
-                self.zoom(xzoom+yzoom)
+                xzoom = +1.0 * (self.xAtMove - self.xAtPress)
+                yzoom = -1.0 * (self.yAtMove - self.yAtPress)
+                self.zoom(xzoom + yzoom)
             else:
                 # handle ordinary rotation
-                xrotate = (self.xAtMove - self.xAtPress)*1
-                yrotate = (self.yAtMove - self.yAtPress)*1
-                self.moleculeRotate(0.3,yrotate,xrotate,0.0)
+                xrotate = (self.xAtMove - self.xAtPress) * 1
+                yrotate = (self.yAtMove - self.yAtPress) * 1
+                self.moleculeRotate(0.3, yrotate, xrotate, 0.0)
         elif buttons & Qt.MidButton:
-            debugger.print('Mouse event - mid button')
-            xshift =  0.02 * (self.xAtMove - self.xAtPress)
+            debugger.print("Mouse event - mid button")
+            xshift = 0.02 * (self.xAtMove - self.xAtPress)
             yshift = -0.02 * (self.yAtMove - self.yAtPress)
             self.translate(xshift, yshift)
             self.update()
-        debugger.print('Mouse event - xy', self.xAtPress,self.yAtPress)
+        debugger.print("Mouse event - xy", self.xAtPress, self.yAtPress)
         self.xAtPress = self.xAtMove
         self.yAtPress = self.yAtMove
 
@@ -714,8 +736,8 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         This function assumes that `self.timer` is an instance with a `stop` method, which is called to halt any ongoing animation. If `self.timer` is `None`, indicating no animation is currently active, this method does nothing.
-        """        
-        debugger.print('stopAnimation')
+        """
+        debugger.print("stopAnimation")
         if self.timer is not None:
             self.timer.stop()
 
@@ -745,8 +767,8 @@ class OpenGLWidget(QOpenGLWidget):
           or create, set up, and start a new timer.
         - This method is designed for use within a class that manages animations or
           timed events, utilizing a QTimer from the PyQt or PySide frameworks.
-        """        
-        debugger.print('startAnimation')
+        """
+        debugger.print("startAnimation")
         if self.timer is not None:
             self.timer.stop()
         else:
@@ -782,14 +804,18 @@ class OpenGLWidget(QOpenGLWidget):
         - Utilizes several attributes of the instance (`self`), including `background_colour`,
           `rotation_centre`, and `show_arrows`, to determine how to render the scene.
         - The OpenGL context is modified by setting the clear color and transforming the modelview matrix.
-        """        
-        debugger.print('paintGL')
+        """
+        debugger.print("paintGL")
         glMatrixMode(GL_MODELVIEW)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        self.background_colour = np.array(self.viewerTab.settings['Background colour'])/255.0
+        self.background_colour = (
+            np.array(self.viewerTab.settings["Background colour"]) / 255.0
+        )
         glClearColor(*self.background_colour)
         glPushMatrix()
-        glTranslatef(-self.rotation_centre[0],-self.rotation_centre[1],-self.rotation_centre[2] )
+        glTranslatef(
+            -self.rotation_centre[0], -self.rotation_centre[1], -self.rotation_centre[2]
+        )
         self.drawSpheres()
         self.drawCylinders()
         if self.show_arrows:
@@ -814,23 +840,23 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`, `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.
-        """        
-        debugger.print('drawSpheres')
+        """
+        debugger.print("drawSpheres")
         if len(self.spheres) == 0:
             return
         for sphere in self.spheres[self.current_phase]:
-            col       = sphere.colour
-            rad       = sphere.radius
+            col = sphere.colour
+            rad = sphere.radius
             (x, y, z) = sphere.position
-            diffMatColour =  col * self.diffuseMaterialFactor
-            ambMatColour =   col * self.ambientMaterialFactor
-            specMatColour =  self.white * self.specularLightFactor
+            diffMatColour = col * self.diffuseMaterialFactor
+            ambMatColour = col * self.ambientMaterialFactor
+            specMatColour = self.white * self.specularLightFactor
             glMaterialfv(GL_FRONT, GL_DIFFUSE, diffMatColour)
             glMaterialfv(GL_FRONT, GL_AMBIENT, ambMatColour)
             glMaterialfv(GL_FRONT, GL_SPECULAR, specMatColour)
-            glMaterialf( GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
+            glMaterialf(GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
             glPushMatrix()
-            glTranslatef( x, y, z )
+            glTranslatef(x, y, z)
             gluSphere(self.quadric, rad, self.sphere_slices, self.sphere_stacks)
             glPopMatrix()
 
@@ -838,8 +864,8 @@ class OpenGLWidget(QOpenGLWidget):
         """
         Draw the cylinders stored in the object.
 
-        This method iterates through the list of cylinder objects for the current phase, 
-        computes the required material colors based on predefined factors, and renders 
+        This method iterates through the list of cylinder objects for the current phase,
+        computes the required material colors based on predefined factors, and renders
         each cylinder using OpenGL commands.
 
         Parameters
@@ -854,40 +880,47 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         Each cylinder is represented by an object with attributes such as colour, radius,
-        position1, position2, height, angle, and rotation. These attributes are used to 
+        position1, position2, height, angle, and rotation. These attributes are used to
         determine the cylinder's appearance and placement in the 3D space.
 
-        This function assumes that OpenGL context is correctly set up, and global variables 
+        This function assumes that OpenGL context is correctly set up, and global variables
         such as `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`,
-        `self.white`, `self.glintMaterialFactor`, `self.quadric`, `self.cylinder_slices`, and 
+        `self.white`, `self.glintMaterialFactor`, `self.quadric`, `self.cylinder_slices`, and
         `self.cylinder_stacks` are predefined and configured.
 
-        It is also assumed that `self.cylinders` is a dictionary where each key corresponds to a 
-        different phase, and the value is a list of cylinder objects for that phase. The current 
+        It is also assumed that `self.cylinders` is a dictionary where each key corresponds to a
+        different phase, and the value is a list of cylinder objects for that phase. The current
         phase is determined by `self.current_phase`.
-        """        
-        debugger.print('drawCylinders')
+        """
+        debugger.print("drawCylinders")
         if len(self.cylinders) == 0:
             return
         for cylinder in self.cylinders[self.current_phase]:
-            col    = cylinder.colour
-            rad    = cylinder.radius
-            pos1   = cylinder.position1
-            pos2   = cylinder.position2
+            col = cylinder.colour
+            rad = cylinder.radius
+            pos1 = cylinder.position1
+            pos2 = cylinder.position2
             length = cylinder.height
-            angle  = cylinder.angle
-            rot    = cylinder.rotation
-            diffMatColour =  col * self.diffuseMaterialFactor
-            ambMatColour =   col * self.ambientMaterialFactor
-            specMatColour =  self.white * self.specularLightFactor
+            angle = cylinder.angle
+            rot = cylinder.rotation
+            diffMatColour = col * self.diffuseMaterialFactor
+            ambMatColour = col * self.ambientMaterialFactor
+            specMatColour = self.white * self.specularLightFactor
             glMaterialfv(GL_FRONT, GL_DIFFUSE, diffMatColour)
             glMaterialfv(GL_FRONT, GL_AMBIENT, ambMatColour)
             glMaterialfv(GL_FRONT, GL_SPECULAR, specMatColour)
-            glMaterialf( GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
+            glMaterialf(GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
             glPushMatrix()
-            glTranslated( pos2[0], pos2[1], pos2[2] )
+            glTranslated(pos2[0], pos2[1], pos2[2])
             glRotated(angle, rot[0], rot[1], rot[2])
-            gluCylinder(self.quadric, rad, rad, length, self.cylinder_slices, self.cylinder_stacks)
+            gluCylinder(
+                self.quadric,
+                rad,
+                rad,
+                length,
+                self.cylinder_slices,
+                self.cylinder_stacks,
+            )
             glPopMatrix()
 
     def drawArrows(self):
@@ -911,37 +944,50 @@ class OpenGLWidget(QOpenGLWidget):
         - Material properties such as diffuse, ambient, and specular colors are calculated from the arrow's color and applied to the OpenGL material.
         - Arrows consist of a cylindrical shaft and a conical tip, whose dimensions and orientations are based on the properties of each arrow (e.g., direction, length, angle, rotation, colour, and radius).
         - This method depends on the `self.arrows` list and the corresponding `self.spheres` for the current phase stored in `self.current_phase`. It leverages OpenGL functions and assumes that `self.viewerTab.settings['Arrow colour']`, along with other properties like `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`, and `self.glintMaterialFactor` are predefined and correctly configured.
-        """        
-        debugger.print('drawArrows')
+        """
+        debugger.print("drawArrows")
         if len(self.arrows) == 0:
             return
-        self.arrow_colour = np.array(self.viewerTab.settings['Arrow colour'])/255.0
-        for arrow,sphere in zip(self.arrows,self.spheres[self.current_phase]):
-            pos       = sphere.position
+        self.arrow_colour = np.array(self.viewerTab.settings["Arrow colour"]) / 255.0
+        for arrow, sphere in zip(self.arrows, self.spheres[self.current_phase]):
+            pos = sphere.position
             direction = arrow.direction
-            length    = arrow.height
-            angle     = arrow.angle
-            rot       = arrow.rotation
-            colour    = arrow.colour
-            radius    = arrow.radius
-            diffMatColour =  colour * self.diffuseMaterialFactor
-            ambMatColour =   colour * self.ambientMaterialFactor
-            specMatColour =  self.white * self.specularLightFactor
+            length = arrow.height
+            angle = arrow.angle
+            rot = arrow.rotation
+            colour = arrow.colour
+            radius = arrow.radius
+            diffMatColour = colour * self.diffuseMaterialFactor
+            ambMatColour = colour * self.ambientMaterialFactor
+            specMatColour = self.white * self.specularLightFactor
             glMaterialfv(GL_FRONT, GL_DIFFUSE, diffMatColour)
             glMaterialfv(GL_FRONT, GL_AMBIENT, ambMatColour)
             glMaterialfv(GL_FRONT, GL_SPECULAR, specMatColour)
-            glMaterialf( GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
+            glMaterialf(GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
             glPushMatrix()
-            glTranslated( pos[0], pos[1], pos[2] )
+            glTranslated(pos[0], pos[1], pos[2])
             glRotated(angle, rot[0], rot[1], rot[2])
-            gluCylinder(self.quadric, radius, radius, length, self.cylinder_slices, self.cylinder_stacks)
-            glTranslated( 0.0, 0.0, length )
+            gluCylinder(
+                self.quadric,
+                radius,
+                radius,
+                length,
+                self.cylinder_slices,
+                self.cylinder_stacks,
+            )
+            glTranslated(0.0, 0.0, length)
             length = 0.1
-            gluCylinder(self.quadric, 2.0*radius, 0.1*radius, length, self.cylinder_slices, self.cylinder_stacks)
+            gluCylinder(
+                self.quadric,
+                2.0 * radius,
+                0.1 * radius,
+                length,
+                self.cylinder_slices,
+                self.cylinder_stacks,
+            )
             glPopMatrix()
 
-
-    def resizeGL(self,w,h):
+    def resizeGL(self, w, h):
         """
         Resizes the OpenGL widget to a new width and height.
 
@@ -960,10 +1006,10 @@ class OpenGLWidget(QOpenGLWidget):
         -------
         None
 
-        """        
-        debugger.print('resizeGL',w,h)
+        """
+        debugger.print("resizeGL", w, h)
         self.my_width = w
-        self.my_height =h
+        self.my_height = h
         # set projection matrix
         self.setProjectionMatrix()
 
@@ -980,16 +1026,16 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
-        debugger.print('initializeGL')
-        self.quadric  = gluNewQuadric()
+        """
+        debugger.print("initializeGL")
+        self.quadric = gluNewQuadric()
         gluQuadricDrawStyle(self.quadric, GLU_FILL)
         gluQuadricNormals(self.quadric, GLU_SMOOTH)
         glClearDepth(1.0)
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_NORMALIZE)
-        #glDisable(GL_DITHER)
+        # glDisable(GL_DITHER)
         glShadeModel(GL_SMOOTH)
         glEnable(GL_POLYGON_SMOOTH)
         glEnable(GL_POINT_SMOOTH)
@@ -997,11 +1043,13 @@ class OpenGLWidget(QOpenGLWidget):
         glEnable(GL_MULTISAMPLE)
         glCullFace(GL_BACK)
         glEnable(GL_CULL_FACE)
-        #glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
+        # glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
         glEnable(GL_BLEND)
         self.defineLights()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        self.background_colour = np.array(self.viewerTab.settings['Background colour'])/255.0
+        self.background_colour = (
+            np.array(self.viewerTab.settings["Background colour"]) / 255.0
+        )
         glClearColor(*self.background_colour)
 
     def setImageSize(self):
@@ -1021,27 +1069,27 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         The `self` parameter represents the instance of the class in which the function is called. This function relies on the `math.sqrt`, `np.dot` for calculations, and expects `self.spheres`, `self.cylinders`, `self.current_phase`, `self.rotation_centre`, and `self.setProjectionMatrix` to be defined.
-        """        
+        """
         maxsize = 0.0
         for sphere in self.spheres[self.current_phase]:
             pos = sphere.position
             vec = pos - self.rotation_centre
-            dist = math.sqrt(np.dot(vec,vec))
+            dist = math.sqrt(np.dot(vec, vec))
             if dist > maxsize:
                 maxsize = dist
         for cylinder in self.cylinders[self.current_phase]:
             pos1 = cylinder.position1
             pos2 = cylinder.position2
             vec1 = pos1 - self.rotation_centre
-            dist1 = math.sqrt(np.dot(vec,vec))
+            dist1 = math.sqrt(np.dot(vec, vec))
             vec2 = pos2 - self.rotation_centre
-            dist2 = math.sqrt(np.dot(vec,vec))
-            dist = max(dist1,dist2)
+            dist2 = math.sqrt(np.dot(vec, vec))
+            dist = max(dist1, dist2)
             if dist > maxsize:
                 maxsize = dist
         self.image_size = maxsize
         self.setProjectionMatrix()
-        debugger.print('setImageSize',self.image_size)
+        debugger.print("setImageSize", self.image_size)
 
     def setProjectionMatrix(self):
         """
@@ -1060,25 +1108,29 @@ class OpenGLWidget(QOpenGLWidget):
         Notes
         -----
         This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current. It also updates `self.matrix` with an identity matrix and sets `self.current_phase` based on the total number of phases.
-        """        
+        """
         if self.image_size is None or self.my_width is None or self.my_height is None:
             return
         self.myMakeCurrent()
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        orthox = 1.1 * self.image_size * self.my_width  / min(self.my_width,self.my_height)
-        orthoy = 1.1 * self.image_size * self.my_height / min(self.my_width,self.my_height)
-        orthoz = 1.1 * self.image_size * max(self.my_width,self.my_height)
-        debugger.print('projection', orthox, orthoy, orthoz)
+        orthox = (
+            1.1 * self.image_size * self.my_width / min(self.my_width, self.my_height)
+        )
+        orthoy = (
+            1.1 * self.image_size * self.my_height / min(self.my_width, self.my_height)
+        )
+        orthoz = 1.1 * self.image_size * max(self.my_width, self.my_height)
+        debugger.print("projection", orthox, orthoy, orthoz)
         glOrtho(-orthox, orthox, -orthoy, orthoy, -orthoz, orthoz)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        self.matrix =  np.eye( 4, dtype=np.float32)
+        self.matrix = np.eye(4, dtype=np.float32)
         # reset the current phase to the centre of the phases
         self.current_phase = int(self.number_of_phases / 2)
-        debugger.print('set projection matrix ortho', orthox, orthoy, orthoz)
-        debugger.print('set projection matrix image_size', self.image_size)
-        debugger.print('set projection matrix current_phase', self.current_phase)
+        debugger.print("set projection matrix ortho", orthox, orthoy, orthoz)
+        debugger.print("set projection matrix image_size", self.image_size)
+        debugger.print("set projection matrix current_phase", self.current_phase)
 
     def defineLights(self):
         """
@@ -1105,20 +1157,49 @@ class OpenGLWidget(QOpenGLWidget):
           - The position of each light with `glLightfv(light, GL_POSITION, position)`.
         - If `self.linearAttenuation` is True, linear attenuation is set for each light with `glLight(light, GL_LINEAR_ATTENUATION, 1.0)`.
         - Each light in `self.lights` is either enabled or disabled based on its corresponding status in `self.light_switches`.
-        """        
-        debugger.print('Define Lights')
+        """
+        debugger.print("Define Lights")
         self.myMakeCurrent()
         if self.light_switches is None:
             self.light_switches = self.viewerTab.light_switches
             glEnable(GL_LIGHTING)
-            for position,lightOn,light in zip(self.light_positions,self.light_switches,self.lights):
-                glLightfv(light, GL_AMBIENT,  [ self.ambientLightFactor,  self.ambientLightFactor,  self.ambientLightFactor,  1.0 ] )
-                glLightfv(light, GL_DIFFUSE,  [ self.diffuseLightFactor,  self.diffuseLightFactor,  self.diffuseLightFactor,  1.0 ] )
-                glLightfv(light, GL_SPECULAR, [ self.specularLightFactor, self.specularLightFactor, self.specularLightFactor, 1.0 ] )
-                glLightfv(light, GL_POSITION, position )
+            for position, lightOn, light in zip(
+                self.light_positions, self.light_switches, self.lights
+            ):
+                glLightfv(
+                    light,
+                    GL_AMBIENT,
+                    [
+                        self.ambientLightFactor,
+                        self.ambientLightFactor,
+                        self.ambientLightFactor,
+                        1.0,
+                    ],
+                )
+                glLightfv(
+                    light,
+                    GL_DIFFUSE,
+                    [
+                        self.diffuseLightFactor,
+                        self.diffuseLightFactor,
+                        self.diffuseLightFactor,
+                        1.0,
+                    ],
+                )
+                glLightfv(
+                    light,
+                    GL_SPECULAR,
+                    [
+                        self.specularLightFactor,
+                        self.specularLightFactor,
+                        self.specularLightFactor,
+                        1.0,
+                    ],
+                )
+                glLightfv(light, GL_POSITION, position)
                 if self.linearAttenuation:
                     glLight(light, GL_LINEAR_ATTENUATION, 1.0)
-        for lightOn, light in zip(self.light_switches,self.lights):
+        for lightOn, light in zip(self.light_switches, self.lights):
             if lightOn:
                 glEnable(light)
             else:
@@ -1137,8 +1218,8 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
-        debugger.print('set rotation centre',pos)
+        """
+        debugger.print("set rotation centre", pos)
         self.rotation_centre = np.array(pos)
 
     def createArrays(self, nphases):
@@ -1160,13 +1241,13 @@ class OpenGLWidget(QOpenGLWidget):
         -----
         - Assumes `self.spheres` and `self.cylinders` are already defined as lists.
         - It uses the `clear` method on both `self.spheres` and `self.cylinders`, which is available for lists in Python 3.3 and later.
-        """        
-        debugger.print('createArrays')
+        """
+        debugger.print("createArrays")
         #  Create an empty list for each phase
         # self.spheres    = [ [] for i in range(nphases) ]
         # self.cylinders  = [ [] for i in range(nphases) ]
-        #self.spheres    = deque( deque() for i in range(nphases) )
-        #self.cylinders  = deque( deque() for i in range(nphases) )
+        # self.spheres    = deque( deque() for i in range(nphases) )
+        # self.cylinders  = deque( deque() for i in range(nphases) )
         self.spheres.clear()
         self.cylinders.clear()
         for i in range(nphases):
@@ -1188,8 +1269,8 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
-        debugger.print('deleteSpheres')
+        """
+        debugger.print("deleteSpheres")
         self.spheres.clear()
 
     def deleteCylinders(self):
@@ -1209,10 +1290,10 @@ class OpenGLWidget(QOpenGLWidget):
 
         Notes
         -----
-        This method should be used with caution as it irreversibly deletes all 
+        This method should be used with caution as it irreversibly deletes all
         cylinder data from the instance.
-        """        
-        debugger.print('deleteCylinders')
+        """
+        debugger.print("deleteCylinders")
         self.cylinders.clear()
 
     def deleteArrows(self):
@@ -1228,9 +1309,9 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
-        debugger.print('deleteArrows')
-        #self.arrows = []
+        """
+        debugger.print("deleteArrows")
+        # self.arrows = []
         self.arrows.clear()
 
     def addArrows(self, colour, radius, direction, length, phase=0):
@@ -1254,8 +1335,8 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
-        self.arrows.append( Arrow(colour, radius, direction, length) )
+        """
+        self.arrows.append(Arrow(colour, radius, direction, length))
 
     def addCylinder(self, colour, radius, pos1, pos2, phase=0):
         """
@@ -1277,8 +1358,8 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
-        self.cylinders[phase].append( Cylinder(colour,radius,pos1,pos2) )
+        """
+        self.cylinders[phase].append(Cylinder(colour, radius, pos1, pos2))
 
     def addSphere(self, colour, radius, pos, phase=0):
         """
@@ -1298,10 +1379,11 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
-        self.spheres[phase].append( Sphere(colour,radius,pos) )
+        """
+        self.spheres[phase].append(Sphere(colour, radius, pos))
 
-class Sphere():
+
+class Sphere:
     """
     A class representing a sphere.
 
@@ -1322,7 +1404,8 @@ class Sphere():
         The radius of the sphere.
     position : ndarray
         The position of the sphere in 3D space as a NumPy array with three elements (x, y, z).
-    """    
+    """
+
     def __init__(self, colour, radius, position):
         """
         Initialize a new object with colour, radius, and position.
@@ -1340,12 +1423,13 @@ class Sphere():
         -----
         - The `colour` parameter will be normalized to a range between 0 and 1 internally.
         - The `position` parameter is expected to match the dimensionality of the system (i.e., 2D or 3D).
-        """        
-        self.colour= np.array(colour)/255.0
+        """
+        self.colour = np.array(colour) / 255.0
         self.radius = radius
         self.position = np.array(position)
 
-class Cylinder():
+
+class Cylinder:
     """
     A class representing a 3D cylinder.
 
@@ -1376,7 +1460,8 @@ class Cylinder():
         The height of the cylinder, determined as the distance between `pos1` and `pos2`.
     rotation : ndarray
         The 3D vector representing the axis of rotation to align the cylinder with the z-axis (used together with `angle` for setting the cylinder's orientation in 3D space).
-    """    
+    """
+
     def __init__(self, colour, radius, pos1, pos2):
         """
         Initialize a new instance with specified color, radius, and positions.
@@ -1388,7 +1473,7 @@ class Cylinder():
         radius : float
             The radius of the instance.
         pos1 : array_like
-            The first position vector, described by three coordinates. 
+            The first position vector, described by three coordinates.
         pos2 : array_like
             The second position vector, also described by three coordinates.
 
@@ -1399,28 +1484,29 @@ class Cylinder():
         normalized to be in the range [0, 1]. Positions and rotation are stored as
         NumPy arrays, and properties such as `height`, `angle`, and `rotation` direction
         are calculated for use in positioning and rendering the instance.
-        """        
+        """
         if pos1[2] > pos2[2]:
             a = np.array(pos1)
             b = np.array(pos2)
         else:
             b = np.array(pos1)
             a = np.array(pos2)
-        self.colour= np.array(colour)/255.0
+        self.colour = np.array(colour) / 255.0
         self.radius = radius
         self.position1 = a
         self.position2 = b
-        z = np.array( [0.0, 0.0, 1.0] )
+        z = np.array([0.0, 0.0, 1.0])
         p = a - b
-        height = math.sqrt(np.dot(p,p))
+        height = math.sqrt(np.dot(p, p))
         p = p / height
         t = np.cross(z, p)
-        angle = 180.0 / np.pi * math.acos( np.dot(z,p) )
+        angle = 180.0 / np.pi * math.acos(np.dot(z, p))
         self.angle = angle
         self.height = height
         self.rotation = t
 
-class Arrow():
+
+class Arrow:
     """
     A class to represent a 3D arrow for graphical display.
 
@@ -1454,7 +1540,8 @@ class Arrow():
         A normalized 3-element array representing the direction of the arrow.
     radius : float
         The radius of the arrow's base as provided during instantiation.
-    """    
+    """
+
     def __init__(self, colour, radius, direction, scale):
         """
         Initialize a custom object with given parameters.
@@ -1472,14 +1559,14 @@ class Arrow():
 
         Notes
         -----
-        This initialization function converts the `colour` from an integer RGB format (0-255 per channel) to 
-        a normalized format (0-1.0 per channel). It calculates the rotation and direction vectors based on 
+        This initialization function converts the `colour` from an integer RGB format (0-255 per channel) to
+        a normalized format (0-1.0 per channel). It calculates the rotation and direction vectors based on
         the input `direction` and `scale`, prepares the object for further use.
 
-        This function uses NumPy operations for calculations. It assumes the direction 
+        This function uses NumPy operations for calculations. It assumes the direction
         is not parallel to the z-axis to avoid division by zero in the cross product.
 
-        The angle calculation is done in degrees and considers the case when the direction vector 
+        The angle calculation is done in degrees and considers the case when the direction vector
         is almost aligned with the z-axis by adding `1e-08` to the height to avoid division by zero.
 
         Attributes
@@ -1498,18 +1585,17 @@ class Arrow():
             The scaled height of the object based on the input direction and scale.
         rotation : np.array
             The rotation vector of the object.
-        """        
+        """
         # Adds a displacement to each atom
-        self.colour= np.array(colour)/255.0
+        self.colour = np.array(colour) / 255.0
         p = np.array(direction)
-        z = np.array( [0.0, 0.0, 1.0] )
+        z = np.array([0.0, 0.0, 1.0])
         t = np.cross(z, p)
-        height = math.sqrt(np.dot(p,p)) + 1.0E-8
-        angle = 180.0 / np.pi * math.acos( np.dot(z,p) / height )
+        height = math.sqrt(np.dot(p, p)) + 1.0e-8
+        angle = 180.0 / np.pi * math.acos(np.dot(z, p) / height)
         p = p / height
         self.angle = angle
-        self.height = height*scale
+        self.height = height * scale
         self.rotation = t
         self.direction = p
         self.radius = radius
-

@@ -13,13 +13,16 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-Simple IO interface 
+"""
+Simple IO interface
 
 This aims to reproduce the python readline() io method, with limited functionality but much faster.
 
-'''
+"""
+
 import sys
+
+
 #
 class pdielec_io:
     """
@@ -56,7 +59,8 @@ class pdielec_io:
     close()
         Resets the reading process by resetting the current line index and
         deleting all lines read from the file from memory.
-    """    
+    """
+
     def __init__(self, filename, mode):
         """
         Initialize the object with a file's content.
@@ -68,9 +72,9 @@ class pdielec_io:
         mode : str
             The mode in which the file should be opened (e.g., 'r' for read).
 
-        """        
+        """
         self.filename = filename
-        with open(filename,mode) as fd:
+        with open(filename, mode) as fd:
             self.lines = fd.readlines()
         self.index = 0
         self.end = len(self.lines)
@@ -91,9 +95,9 @@ class pdielec_io:
         -------
         str
             The next line in the internal list of lines, or an empty string if the end of the list is reached.
-        """        
+        """
         if self.index >= self.end:
-            line = ''
+            line = ""
         else:
             line = self.lines[self.index]
             self.index += 1
@@ -116,6 +120,6 @@ class pdielec_io:
         Notes
         -----
         This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.
-        """        
+        """
         self.index = 0
-        del(self.lines)
+        del self.lines

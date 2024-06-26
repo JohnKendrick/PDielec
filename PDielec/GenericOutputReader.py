@@ -13,19 +13,21 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
+"""
 Generic reader of output files. An actual reader should inherit from this class.
 
-'''
+"""
+
 from __future__ import print_function
 import math
 import os
 import sys
 import numpy as np
-from PDielec.Constants  import wavenumber, avogadro_si, amu
-from PDielec.Plotter    import print3x3, print_reals, print_strings, print_ints
+from PDielec.Constants import wavenumber, avogadro_si, amu
+from PDielec.Plotter import print3x3, print_reals, print_strings, print_ints
 from PDielec.Calculator import cleanup_symbol
-from PDielec.IO         import pdielec_io
+from PDielec.IO import pdielec_io
+
 
 class GenericOutputReader:
     """
@@ -67,7 +69,7 @@ class GenericOutputReader:
 
     unit_cells, volumes, species, energiesDFT, energiesDFT_disp, final_free_energies, final_energies_without_entropy, volumes, pressures, born_charges, frequencies, mass_weighted_normal_modes, ions_per_type, atom_type_list, masses, masses_per_type, elastic_constants, zerof_optical_dielectric, zerof_static_dielectric : list
         Various lists to store computational results related to the object. Initialized as empty lists.
-    
+
     final_free_energy, final_energy_without_entropy, magnetization, energy_cutoff, pressure : float
         Floating point attributes initialized to represent different scalar quantities. Defaults to 0 or 0.0.
 
@@ -121,63 +123,70 @@ class GenericOutputReader:
             A list containing file names (strings) to be associated with the instance. These
             are converted into the absolute paths and stored.
 
-        """        
-        self._outputfiles               = filenames
-        self.names                      = [os.path.abspath(f) for f in filenames]
-        self.debug                      = False
-        self.type                       = 'Unkown'
-        self.ncells                     = 0
-        self.unit_cells                 = []
-        self.nsteps                     = 0
-        self.electrons                  = 0
-        self.spin                       = 0
-        self.nbands                     = 0
-        self.volume                     = 0
-        self.volumes                    = []
-        self.nions                      = 0
-        self.nspecies                   = 0
-        self.geomsteps                  = 0
-        self.species                    = []
-        self.energiesDFT                = []
-        self.energiesDFT_disp           = []
-        self.final_free_energy          = 0.0
-        self.final_free_energies        = []
+        """
+        self._outputfiles = filenames
+        self.names = [os.path.abspath(f) for f in filenames]
+        self.debug = False
+        self.type = "Unkown"
+        self.ncells = 0
+        self.unit_cells = []
+        self.nsteps = 0
+        self.electrons = 0
+        self.spin = 0
+        self.nbands = 0
+        self.volume = 0
+        self.volumes = []
+        self.nions = 0
+        self.nspecies = 0
+        self.geomsteps = 0
+        self.species = []
+        self.energiesDFT = []
+        self.energiesDFT_disp = []
+        self.final_free_energy = 0.0
+        self.final_free_energies = []
         self.final_energy_without_entropy = 0.0
         self.final_energies_without_entropy = []
-        self.kpoints                    = 1
-        self.kpoint_grid                = [ 1, 1, 1 ]
-        self.energy_cutoff              = 0.0
-        self.born_charges               = []
-        self.manage                     = {}
-        self.iterations                 = {}
-        self.file_descriptor            = ''
-        self.pressure                   = 0
-        self.pressures                  = []
-        self.magnetization              = 0.0
+        self.kpoints = 1
+        self.kpoint_grid = [1, 1, 1]
+        self.energy_cutoff = 0.0
+        self.born_charges = []
+        self.manage = {}
+        self.iterations = {}
+        self.file_descriptor = ""
+        self.pressure = 0
+        self.pressures = []
+        self.magnetization = 0.0
         # this in epsilon infinity
-        self.zerof_optical_dielectric   = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        self.zerof_optical_dielectric = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         # this is the zero frequency static dielectric constant
-        self.zerof_static_dielectric    = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        self.elastic_constants          = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-        self.frequencies                = []
+        self.zerof_static_dielectric = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        self.elastic_constants = [
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+        ]
+        self.frequencies = []
         self.mass_weighted_normal_modes = []
-        self.ions_per_type              = []
-        self.atom_type_list             = []
-        self.masses                     = []
-        self.masses_per_type            = []
-        self.program_mass_dictionary    = {}
-        self.eckart                     = False
-        self.hessian_symmetrisation     = "symm"
-        self.open_filename              = ""
-        self.open_directory             = ""
-        self._old_masses                = []
-        self.nomass_hessian             = None
-        self.nomass_hessian_has_been_set= False
-        self.original_born_charges      = None
+        self.ions_per_type = []
+        self.atom_type_list = []
+        self.masses = []
+        self.masses_per_type = []
+        self.program_mass_dictionary = {}
+        self.eckart = False
+        self.hessian_symmetrisation = "symm"
+        self.open_filename = ""
+        self.open_directory = ""
+        self._old_masses = []
+        self.nomass_hessian = None
+        self.nomass_hessian_has_been_set = False
+        self.original_born_charges = None
         self.original_born_charges_are_being_used = True
-        self.CrystalPermittivity        = None
-        self.oscillator_strengths       = None
-        self.edited_masses              = None
+        self.CrystalPermittivity = None
+        self.oscillator_strengths = None
+        self.edited_masses = None
         return
 
     def read_output(self):
@@ -213,7 +222,7 @@ class GenericOutputReader:
 
         Notes
         -----
-        If `debug` attribute of the object is True, it prints a message indicating 
+        If `debug` attribute of the object is True, it prints a message indicating
         that the masses are being reset. This function does not return any value
         but modifies the object's state by changing its mass dictionary to match
         the `program_mass_dictionary`.
@@ -226,21 +235,21 @@ class GenericOutputReader:
             >>> obj.debug = True
             >>> obj.reset_masses()
             Re setting mass dictionary to the program values
-    
+
         Make sure that `program_mass_dictionary` is set properly before calling this
         method to avoid setting the masses to an unintended state.
-        """        
+        """
         mass_dictionary = {}
         if self.debug:
             print("Re setting mass dictionary to the program values")
         if self.program_mass_dictionary:
-            self.change_masses(self.program_mass_dictionary,mass_dictionary)
+            self.change_masses(self.program_mass_dictionary, mass_dictionary)
 
     def getSpecies(self):
         """
         Return a list of cleaned species symbols.
 
-        This method applies a specified cleanup function to each element of 
+        This method applies a specified cleanup function to each element of
         the `species` attribute and returns the resulting list.
 
         Parameters
@@ -251,8 +260,8 @@ class GenericOutputReader:
         -------
         list
             A list of cleaned species symbols.
-        """        
-        return [ cleanup_symbol(el) for el in self.species ]
+        """
+        return [cleanup_symbol(el) for el in self.species]
 
     def mass_dictionary(self):
         """
@@ -274,9 +283,9 @@ class GenericOutputReader:
         Examples
         --------
         Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
-        """        
+        """
         dictionary = {}
-        for symbol,mass in zip(self.species,self.masses_per_type):
+        for symbol, mass in zip(self.species, self.masses_per_type):
             # the element name may be appended with a digit or an underscore
             element = cleanup_symbol(symbol)
             dictionary[element] = mass
@@ -284,7 +293,7 @@ class GenericOutputReader:
             print("new mass_dictionary", dictionary)
         return dictionary
 
-    def set_edited_masses(self,masses):
+    def set_edited_masses(self, masses):
         """
         Sets the edited masses attribute if the length matches the original masses attribute.
 
@@ -304,11 +313,11 @@ class GenericOutputReader:
         Returns
         -------
         None
-        """        
+        """
         if len(masses) == len(self.masses):
             self.edited_masses = masses
         else:
-            print('Error unable to edited_masses')
+            print("Error unable to edited_masses")
             self.edited_masses = None
         return
 
@@ -336,7 +345,7 @@ class GenericOutputReader:
         - If `self.edited_masses` is already set to a truthy value, it bypasses the update process and uses these values instead.
         - `self.species` and `self.atom_type_list` are expected to be iterable attributes of the object containing symbols for elements and types of atoms, respectively.
         - Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
-        """        
+        """
         if self.edited_masses:
             # This is pretty crude!  If the reader has this variable set then we
             # only use the masses stored in the edit_masses list
@@ -345,12 +354,12 @@ class GenericOutputReader:
                 print("Using the edited masses")
             self.masses = self.edited_masses
             return
-        # 
+        #
         if not self.program_mass_dictionary:
             # We only want to do this once - remember the program masses as a dictionary
             if self.debug:
                 print("Setting program mass dictionary")
-            for symbol,mass in zip(self.species,self.masses_per_type):
+            for symbol, mass in zip(self.species, self.masses_per_type):
                 element = cleanup_symbol(symbol)
                 self.program_mass_dictionary[element] = mass
         if self.debug:
@@ -365,7 +374,7 @@ class GenericOutputReader:
                 mass = mass_dictionary[element]
             self.masses_per_type.append(mass)
         # end for symbol
-        self.masses = [ self.masses_per_type[atype] for atype in self.atom_type_list ]
+        self.masses = [self.masses_per_type[atype] for atype in self.atom_type_list]
         if self.debug:
             print("new masses", self.masses)
         return
@@ -395,12 +404,16 @@ class GenericOutputReader:
         print("Number of species: {:5d}".format(self.nspecies))
         print_strings("Species:", self.species)
         print_ints("Number of atoms for each species:", self.ions_per_type)
-        print_reals("Mass of each species:", self.masses_per_type,format="{:10.6f}")
+        print_reals("Mass of each species:", self.masses_per_type, format="{:10.6f}")
         print_ints("Atom type list:", self.atom_type_list)
         print("")
         print("Number of kpoints: {:5d}".format(self.kpoints))
         print("")
-        print("Kpoint grid      : {:5d} {:5d} {:5d}".format(self.kpoint_grid[0], self.kpoint_grid[1], self.kpoint_grid[2]))
+        print(
+            "Kpoint grid      : {:5d} {:5d} {:5d}".format(
+                self.kpoint_grid[0], self.kpoint_grid[1], self.kpoint_grid[2]
+            )
+        )
         print("")
         print("Energy cutoff (eV): {:f}".format(self.energy_cutoff))
         print("")
@@ -408,14 +421,18 @@ class GenericOutputReader:
         print("")
         print("geomsteps: {:f}".format(self.geomsteps))
         print("")
-        print_reals("DFT energies (eV):", self.energiesDFT,format="{:10.8f}")
+        print_reals("DFT energies (eV):", self.energiesDFT, format="{:10.8f}")
         print("")
-        print_reals("DFT energies including dispersion (eV):", self.energiesDFT_disp,format="{:10.8f}")
+        print_reals(
+            "DFT energies including dispersion (eV):",
+            self.energiesDFT_disp,
+            format="{:10.8f}",
+        )
         print("")
-        print_reals("Volumes:", self.volumes,format="{:10.8f}")
+        print_reals("Volumes:", self.volumes, format="{:10.8f}")
         print("")
         print_reals("Frequencies (cm-1):", self.frequencies)
-        print_reals("Masses (amu):", self.masses,format="{:10.6f}")
+        print_reals("Masses (amu):", self.masses, format="{:10.6f}")
         for i, charges in enumerate(self.born_charges):
             title = "Born Charges for Atom {:d}".format(i)
             print3x3(title, charges)
@@ -427,7 +444,11 @@ class GenericOutputReader:
         for m in self.masses:
             mtotal = mtotal + m
         print("Total mass is: {:f} g/mol".format(mtotal))
-        print("Density is: {:f} g/cc".format(mtotal/(avogadro_si * self.volume * 1.0e-24)))
+        print(
+            "Density is: {:f} g/cc".format(
+                mtotal / (avogadro_si * self.volume * 1.0e-24)
+            )
+        )
         print(" ")
         return
 
@@ -475,7 +496,7 @@ class GenericOutputReader:
         mtotal = 0.0
         for m in self.masses:
             mtotal = mtotal + m
-        density = mtotal/(avogadro_si * self.volume * 1.0e-24)
+        density = mtotal / (avogadro_si * self.volume * 1.0e-24)
         return density
 
     def _read_output_files(self):
@@ -519,19 +540,19 @@ class GenericOutputReader:
             print("Warning file is not present: ", name, file=sys.stderr)
             return
         # Open file and store file name and directory
-        self.file_descriptor = pdielec_io(name, 'r')
+        self.file_descriptor = pdielec_io(name, "r")
         self.open_filename = name
         self.open_directory = os.path.dirname(name)
         if self.open_directory == "":
             self.open_directory = "."
         # Loop through the contents of the file a line at a time and parse the contents
         line = self.file_descriptor.readline()
-        while line != '':
+        while line != "":
             for k in self.manage:
                 if self.manage[k][0].match(line):
-                    method   = self.manage[k][1]
+                    method = self.manage[k][1]
                     if self.debug:
-                        print('_read_output_file({}): Match found {}'.format(name,k))
+                        print("_read_output_file({}): Match found {}".format(name, k))
                     method(line)
                     break
                 # end if
@@ -565,7 +586,7 @@ class GenericOutputReader:
             Ck = np.linalg.inv(unity + Bk)
             Kk = np.dot(error, Ck)
             Ak = np.dot((unity + Kk), Ak)
-            error  = np.sum(np.abs(error))
+            error = np.sum(np.abs(error))
             if self.debug:
                 print("Orthogonalisation iteration: ", error)
         # end for k
@@ -574,7 +595,7 @@ class GenericOutputReader:
     def calculate_mass_weighted_normal_modes(self):
         """
         Calculate the mass weighted normal modes from the hessian.
-  
+
         The hessian itself is constructed from the frequencies and normal modes
         Any changes to the atomic masses is applied
         Eckart conditions are applied if requested
@@ -601,13 +622,13 @@ class GenericOutputReader:
         if self.debug:
             print("calculate mass weighted normal modes")
         n = np.size(self.mass_weighted_normal_modes, 0)
-        m = np.size(self.mass_weighted_normal_modes, 1)*3
-        nmodes = 3*self.nions
+        m = np.size(self.mass_weighted_normal_modes, 1) * 3
+        nmodes = 3 * self.nions
         UT = np.zeros((n, m))
         frequencies_a = np.array(self.frequencies) * wavenumber
         if self.debug:
-            print("frequencies_a",frequencies_a)
-        masses = np.array(self.masses)*amu
+            print("frequencies_a", frequencies_a)
+        masses = np.array(self.masses) * amu
         # if the non mass-weighted hasn't been set, set it
         if not self.nomass_hessian_has_been_set:
             if self.debug:
@@ -617,9 +638,9 @@ class GenericOutputReader:
                 n = 0
                 for atom in mode:
                     # in python the first index is the row of the matrix, the second is the column
-                    UT[imode, n+0] = atom[0]
-                    UT[imode, n+1] = atom[1]
-                    UT[imode, n+2] = atom[2]
+                    UT[imode, n + 0] = atom[0]
+                    UT[imode, n + 1] = atom[1]
+                    UT[imode, n + 2] = atom[2]
                     n = n + 3
                 # end for atom
             # end for imode
@@ -629,7 +650,9 @@ class GenericOutputReader:
             # then it is really imaginary, so the square of the frequency
             # will be negative too.
             frequencies_a = np.array(self.frequencies) * wavenumber
-            f2 = np.diag(np.sign(frequencies_a)*np.real(frequencies_a*frequencies_a))
+            f2 = np.diag(
+                np.sign(frequencies_a) * np.real(frequencies_a * frequencies_a)
+            )
             # The back transformation uses approximately orthogonal (unitary) matrices because of rounding issues on reading vectors
             # So before that lets orthogonalise them
             UT = self._symmetric_orthogonalisation(UT)
@@ -647,15 +670,15 @@ class GenericOutputReader:
             if self.debug:
                 print("program mass dictionary", self.program_mass_dictionary)
             self.change_masses(self.program_mass_dictionary, {})
-            masses = np.array(self.masses)*amu
+            masses = np.array(self.masses) * amu
             # remove the mass weighting from the hessian and store
-            self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
+            self.nomass_hessian = self._remove_mass_weighting(hessian, masses)
             # finally replace the masses with those set before we did this
             self.change_masses(current_mass_dictionary, {})
             if self.debug:
                 print("non mass weighted hessian", self.nomass_hessian[0:4][0])
         # If the masses have been changed then alter the mass weighted hessian here
-        masses = np.array(self.masses)*amu
+        masses = np.array(self.masses) * amu
         if self.debug:
             print("masses", masses)
             print("non mass weighted hessian", self.nomass_hessian[0:4][0])
@@ -684,7 +707,7 @@ class GenericOutputReader:
             mode = []
             n = 0
             for j in range(self.nions):
-                modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
+                modea = [eig_vec[n][i], eig_vec[n + 1][i], eig_vec[n + 2][i]]
                 n = n + 3
                 mode.append(modea)
             self.mass_weighted_normal_modes.append(mode)
@@ -707,15 +730,15 @@ class GenericOutputReader:
         """
         #
         new_hessian = np.zeros_like(hessian)
-        nmodes = self.nions*3
+        nmodes = self.nions * 3
         unit = np.eye(nmodes)
         p1 = np.zeros(nmodes)
         p2 = np.zeros(nmodes)
         p3 = np.zeros(nmodes)
         for i in range(self.nions):
-            p1[i*3+0] = math.sqrt(self.masses[i])
-            p2[i*3+1] = math.sqrt(self.masses[i])
-            p3[i*3+2] = math.sqrt(self.masses[i])
+            p1[i * 3 + 0] = math.sqrt(self.masses[i])
+            p2[i * 3 + 1] = math.sqrt(self.masses[i])
+            p3[i * 3 + 2] = math.sqrt(self.masses[i])
         # end for i
         # Normalise
         p1 = p1 / math.sqrt(np.dot(p1, p1))
@@ -731,7 +754,7 @@ class GenericOutputReader:
         new_hessian = np.dot(np.dot(P3.T, new_hessian), P3)
         return new_hessian
 
-    def _read_till_phrase(self,phrase):
+    def _read_till_phrase(self, phrase):
         """
         Read lines from the current file until a match with phrase is found.
         Once a match is found, return the matching line.
@@ -777,8 +800,8 @@ class GenericOutputReader:
             print("_dynamical_matrix")
             print("hessian", hessian[0:4][0])
         #
-        nmodes = self.nions*3
-        masses = np.array(self.masses)*amu
+        nmodes = self.nions * 3
+        masses = np.array(self.masses) * amu
         if self.debug:
             print("masses", self.masses, masses)
         if not self.nomass_hessian_has_been_set:
@@ -789,10 +812,10 @@ class GenericOutputReader:
                 # Crystal only uses the upper triangle to calculate the eigenvalues
                 hessian = hessian - np.tril(hessian) + np.triu(hessian).T
             self.nomass_hessian_has_been_set = True
-            self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
+            self.nomass_hessian = self._remove_mass_weighting(hessian, masses)
         if self.debug:
             print("non mass weighted hessian", self.nomass_hessian[0:4][0])
-        hessian = self._modify_mass_weighting(self.nomass_hessian,masses)
+        hessian = self._modify_mass_weighting(self.nomass_hessian, masses)
         if self.debug:
             print("non mass weighted hessian", self.nomass_hessian[0:4][0])
         if self.debug:
@@ -824,7 +847,7 @@ class GenericOutputReader:
             mode = []
             n = 0
             for j in range(self.nions):
-                modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
+                modea = [eig_vec[n][i], eig_vec[n + 1][i], eig_vec[n + 2][i]]
                 n = n + 3
                 mode.append(modea)
             self.mass_weighted_normal_modes.append(mode)
@@ -850,7 +873,7 @@ class GenericOutputReader:
         Notes
         -----
         This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
-        """        
+        """
         if not self.original_born_charges_are_being_used:
             self.born_charges = self.original_born_charges
 
@@ -858,10 +881,10 @@ class GenericOutputReader:
         """
         Neutralise Born charges within the object.
 
-        Changes the state of `original_born_charges_are_being_used` 
+        Changes the state of `original_born_charges_are_being_used`
         to False and saves the current `born_charges` as `original_born_charges` if
-        `original_born_charges_are_being_used` is True, indicating that the 
-        original Born charges are no longer being used directly. It then applies 
+        `original_born_charges_are_being_used` is True, indicating that the
+        original Born charges are no longer being used directly. It then applies
         the Born charge sum rule by calling the `_born_charge_sum_rule` method.
 
         Parameters
@@ -874,10 +897,10 @@ class GenericOutputReader:
 
         Notes
         -----
-        This method is intended to be used within a context where Born charges 
-        (representative of the polarization of ions in a solid under an electric field) 
+        This method is intended to be used within a context where Born charges
+        (representative of the polarization of ions in a solid under an electric field)
         need to be neutralized or altered from their original state.
-        """        
+        """
         if self.original_born_charges_are_being_used:
             self.original_born_charges = self.born_charges
             self.original_born_charges_are_being_used = False
@@ -905,16 +928,16 @@ class GenericOutputReader:
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
         if self.debug:
-            print('born charge sum', total)
+            print("born charge sum", total)
         new_born_charges = born_charges - total
         self.born_charges = new_born_charges.tolist()
         return
 
-    def _modify_mass_weighting(self,hessian,new):
+    def _modify_mass_weighting(self, hessian, new):
         """
         Modify the Hessian matrix based on new mass weighting.
 
-        This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the square root of the product of elements from a new weighting (`new`). 
+        This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the square root of the product of elements from a new weighting (`new`).
 
         Parameters
         ----------
@@ -928,7 +951,7 @@ class GenericOutputReader:
         numpy.ndarray
             The modified Hessian matrix with the same dimensions as the input matrix.
 
-        """        
+        """
         ipos = -1
         new_hessian = np.empty_like(hessian)
         for i in range(self.nions):
@@ -938,14 +961,16 @@ class GenericOutputReader:
                 for j in range(self.nions):
                     for jx in range(3):
                         jpos += 1
-                        new_hessian[ipos,jpos] = hessian[ipos,jpos] / math.sqrt(  new[i]*new[j] )
+                        new_hessian[ipos, jpos] = hessian[ipos, jpos] / math.sqrt(
+                            new[i] * new[j]
+                        )
                     # end for jx
                 # end for j
             # end for ix
         # end for i
         return new_hessian
 
-    def _remove_mass_weighting(self,hessian,old):
+    def _remove_mass_weighting(self, hessian, old):
         """
         Remove mass-weighting from a Hessian matrix.
 
@@ -971,10 +996,10 @@ class GenericOutputReader:
         adjusting it to an un-weighted form.
 
         The size of `old` must match the number of ions (`nions`). Each entry in `old`
-        is used to compute the square root of the product of mass weights for the 
-        appropriate matrix element, thereby removing the mass weighting from the 
+        is used to compute the square root of the product of mass weights for the
+        appropriate matrix element, thereby removing the mass weighting from the
         original Hessian matrix.
-        """        
+        """
         new_hessian = np.empty_like(hessian)
         ipos = -1
         for i in range(self.nions):
@@ -984,7 +1009,9 @@ class GenericOutputReader:
                 for j in range(self.nions):
                     for jx in range(3):
                         jpos += 1
-                        new_hessian[ipos,jpos] = hessian[ipos,jpos] * math.sqrt( old[i]*old[j] )
+                        new_hessian[ipos, jpos] = hessian[ipos, jpos] * math.sqrt(
+                            old[i] * old[j]
+                        )
                     # end for jx
                 # end for j
             # end for ix
