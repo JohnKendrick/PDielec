@@ -17,18 +17,23 @@
 Examples of plots and calculations using the tmm package.
 """
 
-from __future__ import division, print_function, absolute_import
+from __future__ import absolute_import, division, print_function
 
-from tmm.tmm_core import (coh_tmm, unpolarized_RT, ellips,
-                       position_resolved, find_in_structure_with_inf)
-
-from numpy import pi, linspace, inf, array, sqrt
-from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
+from numpy import array, inf, linspace, pi, sqrt
+from scipy.interpolate import interp1d
+from tmm.tmm_core import (
+    coh_tmm,
+    ellips,
+    find_in_structure_with_inf,
+    position_resolved,
+    unpolarized_RT,
+)
 
 try:
-    import colorpy.illuminants
     import colorpy.colormodels
+    import colorpy.illuminants
+
     from . import color
     colors_were_imported = True
 except ImportError:

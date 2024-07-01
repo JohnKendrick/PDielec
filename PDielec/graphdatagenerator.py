@@ -18,6 +18,7 @@ graphdatagenerator command
 """
 
 import sys
+
 import numpy as np
 from openpyxl import load_workbook
 
@@ -81,7 +82,6 @@ def main():
         "atr": "ATR Reflectance",
     }
     # Begin processing of command line
-    command_line = " ".join(sys.argv)
     tokens = sys.argv[1:]
     ntokens = len(tokens)
     itoken = 0
@@ -90,7 +90,7 @@ def main():
     rmax = 0
     column = "D"
     sheet = "molar"
-    excefile = ""
+    excelfile = ""
     while itoken < ntokens:
         token = tokens[itoken]
         if token == "-excel":
@@ -115,12 +115,9 @@ def main():
     print("Comparison based on ", sheet, sheet_dict[sheet])
     sheet = sheet_dict[sheet]
     print("Comparision of spectra based on column: ", column)
-    if excelfile != "":
-        print("Output will be sent to the excel file: ", excelfile)
-    else:
-        excelfile = temp.xlsx
-        print("Output will be sent to the excel file: ", excelfile)
-    size = len(names)
+    if excelfile == "":
+        excelfile = "temp.xlsx"
+    print("Output will be sent to the excel file: ", excelfile)
     columns = []
     # Use the first file name to define the frequency range
     # and the range of rows to be treated
@@ -149,8 +146,8 @@ def main():
         # print('Work sheet names for ',f1_name)
         # print(wb1.get_sheet_names())
         ws1 = wb1[sheet]
-        range1 = "{}{}".format(column, rmin)
-        range2 = "{}{}".format(column, rmax)
+        range1 = f"{column}{rmin}"
+        range2 = f"{column}{rmax}"
         col1 = np.array([[i.value for i in j] for j in ws1[range1:range2]])
         # Convert to a 1D array
         col1 = col1[:, 0]
@@ -169,7 +166,7 @@ def main():
         for i, name1 in enumerate(names):
             worksheet.write(0, i + 1, name1)
             column = columns[i]
-            for j, f in enumerate(frequencies):
+            for j, _f in enumerate(frequencies):
                 worksheet.write(j + 1, i + 1, column[j])
         print("Finished write the spread sheet to ", excelfile)
         workbook.close()

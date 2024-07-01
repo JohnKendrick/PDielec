@@ -17,16 +17,25 @@ MainTab module
 """
 
 import os.path
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QListWidget, QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets import QFileDialog, QPushButton, QCheckBox
-from PyQt5.QtWidgets import QFormLayout
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QMessageBox
-from PyQt5.QtCore import Qt, QCoreApplication, QSize
-from PDielec.Utilities import find_program_from_name, pdgui_get_reader, Debug
-from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
-import numpy as np
 import platform
+
+import numpy as np
+from PyQt5.QtCore import QCoreApplication, QSize, Qt
+from PyQt5.QtWidgets import (
+    QComboBox,
+    QFileDialog,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QMessageBox,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
+
+from PDielec.Utilities import Debug, find_program_from_name, pdgui_get_reader
 
 
 class MainTab(QWidget):
@@ -171,9 +180,8 @@ class MainTab(QWidget):
         elif prtext == "Vasp":
             prtext = "VASP"
             self.settings["QM program"] = "vasp"
-        elif prtext == "Phonopy":
-            if qmtext != "":
-                prtext = prtext + " - " + qmtext
+        elif prtext == "Phonopy" and qmtext != "":
+            prtext = prtext + " - " + qmtext
         index = self.program_cb.findText(prtext, Qt.MatchFixedString)
         if index >= 0:
             self.program_cb.setCurrentIndex(index)
@@ -505,7 +513,7 @@ class MainTab(QWidget):
         else:
             try:
                 self.reader.read_output()
-            except:
+            except Exception:
                 print(
                     "Error in reading output files - program  is ",
                     self.settings["Program"],
@@ -549,15 +557,13 @@ class MainTab(QWidget):
         self.cell_window_w.addItem("                                  ")
         self.frequencies_cm1 = np.sort(self.reader.frequencies)
         for f in self.frequencies_cm1:
-            self.frequencies_window.addItem("{0:.3f}".format(f))
+            self.frequencies_window.addItem(f"{f:.3f}")
         # tell the settings tab to update the widgets that depend on the contents of the reader
         debugger.print("processing a return in reading the output file")
         # Update any scenarios
         if self.notebook.scenarios is not None:
             debugger.print("about to refresh scenarios")
-            debugger.print(
-                "notebook has {} scenarios".format(len(self.notebook.scenarios))
-            )
+            debugger.print(f"notebook has {len(self.notebook.scenarios)} scenarios")
             for tab in self.notebook.scenarios:
                 tab.requestRefresh()
         else:
@@ -933,9 +939,8 @@ class MainTab(QWidget):
         elif prtext == "Vasp":
             prtext = "VASP"
             self.settings["QM program"] = "vasp"
-        elif prtext == "Phonopy":
-            if qmtext != "":
-                prtext = prtext + " - " + qmtext
+        elif prtext == "Phonopy" and qmtext != "":
+            prtext = prtext + " - " + qmtext
         index = self.program_cb.findText(prtext, Qt.MatchFixedString)
         if index >= 0:
             self.program_cb.setCurrentIndex(index)

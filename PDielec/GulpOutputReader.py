@@ -17,11 +17,13 @@
 Module to read the contents of a Gulp output file
 """
 
-import re
 import os
+import re
+
 import numpy as np
-from PDielec.UnitCell import UnitCell
+
 from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 class GulpOutputReader(GenericOutputReader):
@@ -229,10 +231,10 @@ class GulpOutputReader(GenericOutputReader):
         -------
         None
         """
-        for skip in range(0, 5):
+        for _skip in range(0, 5):
             line = self.file_descriptor.readline()
         elastic = []
-        for skip in range(0, 6):
+        for _skip in range(0, 6):
             elastic.append([float(f) for f in line.split()[1:]])
             line = self.file_descriptor.readline()
         self.elastic_constant_tensor = np.array(elastic)
@@ -270,19 +272,17 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()  # Raman
             line = self.file_descriptor.readline()
             columns = []
-            for n in range(0, ncolumns):
+            for _n in range(0, ncolumns):
                 columns.append([])
-            for i in range(0, nions):
+            for _i in range(0, nions):
                 line = self.file_descriptor.readline()
                 modex = [float(f) for f in line.split()[2:]]
                 line = self.file_descriptor.readline()
                 modey = [float(f) for f in line.split()[2:]]
                 line = self.file_descriptor.readline()
                 modez = [float(f) for f in line.split()[2:]]
-                n = 0
-                for x, y, z in zip(modex, modey, modez):
+                for n, (x, y, z) in enumerate(zip(modex, modey, modez)):
                     columns[n].append([x, y, z])
-                    n += 1
                 # end for x, y, z (columns)
             # end loop over atoms
             for mode in columns:
@@ -383,9 +383,9 @@ class GulpOutputReader(GenericOutputReader):
         self.nshells = 0
         self.atom_type_list = []
         self.ions_per_type = [0 for i in range(self.nspecies)]
-        for skip in range(0, 5):
+        for _skip in range(0, 5):
             line = self.file_descriptor.readline()
-        for ion in range(0, self.nions):
+        for _ion in range(0, self.nions):
             line = self.file_descriptor.readline()
             atom_type = line.split()[1].capitalize()
             coreshell = line.split()[2]
@@ -433,9 +433,9 @@ class GulpOutputReader(GenericOutputReader):
         self.ncores = 0
         self.nshells = 0
         self.atom_type_list = []
-        for skip in range(0, 5):
+        for _skip in range(0, 5):
             line = self.file_descriptor.readline()
-        for ion in range(0, self.nions):
+        for _ion in range(0, self.nions):
             line = self.file_descriptor.readline()
             atom_type = line.split()[1].capitalize()
             coreshell = line.split()[2]
@@ -476,7 +476,7 @@ class GulpOutputReader(GenericOutputReader):
         self.species = []
         self.mass_per_type = []
         self._mass_dictionary = {}
-        for skip in range(0, 6):
+        for _skip in range(0, 6):
             line = self.file_descriptor.readline()
         n = len(line.split())
         while n > 1:
@@ -531,9 +531,9 @@ class GulpOutputReader(GenericOutputReader):
         analysis.
         """
         self.born_charges = []
-        for skip in range(0, 5):
+        for _skip in range(0, 5):
             line = self.file_descriptor.readline()
-        for i in range(self.nions):
+        for _i in range(self.nions):
             b = []
             b.append([float(f) for f in line.split()[3:6]])
             line = self.file_descriptor.readline()
@@ -556,7 +556,7 @@ class GulpOutputReader(GenericOutputReader):
         ----------
         line : str (not used)
         """
-        for skip in range(0, 5):
+        for _skip in range(0, 5):
             line = self.file_descriptor.readline()
         # this is the zero frequency optical dielectric constant
         self.zerof_optical_dielectric = []
@@ -579,7 +579,7 @@ class GulpOutputReader(GenericOutputReader):
         -------
         None
         """
-        for skip in range(0, 5):
+        for _skip in range(0, 5):
             line = self.file_descriptor.readline()
         # this is the zero frequency static dielectric constant
         self.zerof_static_dielectric = []

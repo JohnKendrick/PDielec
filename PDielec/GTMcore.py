@@ -86,11 +86,13 @@ The optical system is assembled using the :py:class:`System` class.
 """
 ######## general utilities
 
+import copy
+import sys
+
 import numpy as np
 import scipy.linalg as lag
-import sys
-import copy
-from PDielec.Constants import speed_light_si, epsilon_0_si
+
+from PDielec.Constants import epsilon_0_si, speed_light_si
 
 # jk c_const = 299792458 # m/s
 # jk eps0 = 8.854e-12 ## vacuum permittivity
@@ -117,7 +119,7 @@ def vacuum_eps(f):
     """
     try:
         return np.ones(len(f))
-    except:
+    except Exception:
         return 1.0 + 0.0j
 
 
@@ -256,7 +258,7 @@ def exact_inv_4x4(M):
         try:
             print("Warning 4x4 inversion problem 1")
             result = np.clongdouble(lag.pinv(np.cdouble(M)))
-        except:
+        except Exception:
             print("Warning 4x4 inversion problem 2")
             result = np.clongdouble(lag.pinv(np.complex64(M)))
         return result
@@ -1762,7 +1764,7 @@ class System:
     The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.
     """
 
-    def __init__(self, substrate=None, superstrate=None, layers=[]):
+    def __init__(self, substrate=None, superstrate=None, layers=None):
         """
         Initialise the system for a transfer matrix calculation.
 
@@ -1775,7 +1777,7 @@ class System:
         layers : list of pyGTM layers, default is an empty list
         """
         self.layers = []
-        if len(layers) > 0:
+        if layers is not None:
             self.layers = layers
 
         ## system transfer matrix
@@ -2167,7 +2169,7 @@ class TransferMatrixSystem(System):
     to distinguish itself from a system which uses the scattering matrix method
     """
 
-    def __init__(self, substrate=None, superstrate=None, layers=[]):
+    def __init__(self, substrate=None, superstrate=None, layers=None):
         """
         Initialize a new instance of the system with optional substrate, superstrate, and layers.
 
@@ -2183,6 +2185,8 @@ class TransferMatrixSystem(System):
             A list of layer objects used in the system. The default is an empty list.
 
         """
+        if layers is None:
+            layers = []
         System.__init__(self, substrate, superstrate, layers)
         return
 
@@ -2195,7 +2199,7 @@ class ScatteringMatrixSystem(System):
 
     """
 
-    def __init__(self, substrate=None, superstrate=None, layers=[]):
+    def __init__(self, substrate=None, superstrate=None, layers=None):
         """
         Initialize a new instance of the System class suitable for scattering matrix calculations.
 
@@ -2208,6 +2212,8 @@ class ScatteringMatrixSystem(System):
         layers : list, optional
             A list representing the layers in the system. Defaults to an empty list.
         """
+        if layers is None:
+            layers = []
         System.__init__(self, substrate, superstrate, layers)
         return
 
@@ -2465,8 +2471,8 @@ class SMatrix:
         """
         self.S11 = np.zeros((2, 2))
         self.S22 = np.zeros((2, 2))
-        self.S21 = np.eye((2))
-        self.S12 = np.eye((2))
+        self.S21 = np.eye(2)
+        self.S12 = np.eye(2)
         self.calculateS()
         return
 

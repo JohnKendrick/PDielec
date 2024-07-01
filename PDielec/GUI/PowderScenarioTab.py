@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 #
 # Copyright 2024 John Kendrick & Andrew Burnett
 #
@@ -17,27 +16,31 @@
 PowderScenarioTab module
 """
 
-from PyQt5.QtWidgets import QPushButton, QWidget
-from PyQt5.QtWidgets import QComboBox, QLabel, QLineEdit, QDoubleSpinBox
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QSpinBox
-from PyQt5.QtWidgets import QSizePolicy
-from PyQt5.QtCore import Qt, QCoreApplication
-
-from PDielec.Constants import avogadro_si
-from PDielec.Utilities import Debug
-from PDielec.GUI.ScenarioTab import ScenarioTab
-from multiprocessing import Array
-from PDielec.Constants import wavenumber
-from functools import partial
 import ctypes
+from functools import partial
+from multiprocessing import Array
+
+import numpy as np
+from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QSizePolicy,
+    QSpinBox,
+    QVBoxLayout,
+    QWidget,
+)
+
 import PDielec.Calculator as Calculator
 import PDielec.DielectricFunction as DielectricFunction
-from PDielec.Materials import MaterialsDataBase
-from PDielec.Materials import Material
 import PDielec.Materials as Materials
-import numpy as np
-import os
+from PDielec.GUI.ScenarioTab import ScenarioTab
+from PDielec.Materials import MaterialsDataBase
+from PDielec.Utilities import Debug
 
 
 class PowderScenarioTab(ScenarioTab):
@@ -265,13 +268,13 @@ class PowderScenarioTab(ScenarioTab):
         )
         self.materialNames = self.DataBase.getSheetNames()
         self.matrix_cb.addItems(self.materialNames)
-        if not self.settings["Matrix"] in self.materialNames:
+        if self.settings["Matrix"] not in self.materialNames:
             self.settings["Matrix"] = self.materialNames[0]
         index = self.matrix_cb.findText(self.settings["Matrix"], Qt.MatchFixedString)
         if index >= 0:
             self.matrix_cb.setCurrentIndex(index)
         else:
-            print("support matrix index was not 0", matrix)
+            print("support matrix index was not 0", index)
         self.matrix_cb.activated.connect(self.on_matrix_cb_activated)
         if "Material defined manually" in self.settings["Matrix"]:
             self.materialDefinedManually = True
@@ -623,7 +626,6 @@ class PowderScenarioTab(ScenarioTab):
         self.openDataBase()
         if self.settings["Matrix"] not in self.materialNames:
             self.settings["Matrix"] = self.materialNames[0]
-        index = self.matrix_cb.findText(self.settings["Matrix"], Qt.MatchFixedString)
         self.matrixMaterial = self.DataBase.getMaterial(self.settings["Matrix"])
         # Check to see that the matrix return a scalar permittivity
         if self.matrixMaterial.isTensor():
@@ -708,13 +710,15 @@ class PowderScenarioTab(ScenarioTab):
         debugger.print(self.settings["Legend"], "on methods cb activated", index)
         self.refreshRequired = True
         self.settings["Effective medium method"] = self.methods[index]
-        if self.settings["Effective medium method"] == "Mie":
+        if (
+            self.settings["Effective medium method"] == "Mie"
+            or self.settings["Effective medium method"] == "Anisotropic-Mie"
+        ):
             self.settings["Particle shape"] = "Sphere"
-        elif self.settings["Effective medium method"] == "Anisotropic-Mie":
-            self.settings["Particle shape"] = "Sphere"
-        elif self.settings["Effective medium method"] == "Maxwell-Garnett":
-            self.settings["Particle size distribution sigma(mu)"] = 0.0
-        elif self.settings["Effective medium method"] == "Bruggeman":
+        elif (
+            self.settings["Effective medium method"] == "Maxwell-Garnett"
+            or self.settings["Effective medium method"] == "Bruggeman"
+        ):
             self.settings["Particle size distribution sigma(mu)"] = 0.0
         elif self.settings["Effective medium method"] == "Averaged Permittivity":
             self.settings["Particle size(mu)"] = 0.0001
@@ -1219,7 +1223,7 @@ class PowderScenarioTab(ScenarioTab):
         if method == "Mie" or method == "Anisotropic-Mie":
             self.size_sb.setEnabled(True)
             self.sigma_sb.setEnabled(True)
-            for i, shape in enumerate(self.shapes):
+            for i, _shape in enumerate(self.shapes):
                 self.shape_cb.model().item(i).setEnabled(False)
             self.settings["Particle shape"] = "Sphere"
             self.shape_cb.setEnabled(True)
@@ -1242,19 +1246,19 @@ class PowderScenarioTab(ScenarioTab):
                 self.shape_cb.model().item(index).setEnabled(True)
                 self.shape_cb.setCurrentIndex(index)
             self.shape_cb.setEnabled(False)
-            for i, shape in enumerate(self.shapes):
+            for i, _shape in enumerate(self.shapes):
                 self.shape_cb.model().item(i).setEnabled(False)
         elif method == "Maxwell-Garnett" or method == "Bruggeman":
             self.size_sb.setEnabled(True)
             self.sigma_sb.setEnabled(False)
             self.shape_cb.setEnabled(True)
-            for i, shape in enumerate(self.shapes):
+            for i, _shape in enumerate(self.shapes):
                 self.shape_cb.model().item(i).setEnabled(True)
         else:
             self.size_sb.setEnabled(False)
             self.sigma_sb.setEnabled(False)
             self.shape_cb.setEnabled(True)
-            for i, shape in enumerate(self.shapes):
+            for i, _shape in enumerate(self.shapes):
                 self.shape_cb.model().item(i).setEnabled(True)
         # deal with shapes
         if self.settings["Particle shape"] == "Ellipsoid":
@@ -1395,7 +1399,6 @@ class PowderScenarioTab(ScenarioTab):
             self.notebook.startPool()
         debugger.print("About to use the pool to calculate effective medium equations")
         results = []
-        indices = range(len(vs_cm1))
         for result in self.notebook.pool.map(
             partial_function, zip(vs_cm1, crystalPermittivity), chunksize=20
         ):
@@ -1411,11 +1414,11 @@ class PowderScenarioTab(ScenarioTab):
         debugger.print("Extracting results")
         for (
             v,
-            method,
-            size_mu,
-            size_sigma,
-            shape,
-            data,
+            _method,
+            _size_mu,
+            _size_sigma,
+            _shape,
+            _data,
             trace,
             absorption_coefficient,
             molar_absorption_coefficient,
@@ -1450,19 +1453,12 @@ class PowderScenarioTab(ScenarioTab):
         debugger.print(self.settings["Legend"], "Start:: get_result")
         self.get_results(vs_cm1)
         debugger.print(self.settings["Legend"], "Finished:: get_result")
-        if plot_type == "Powder Molar Absorption":
-            return self.molarAbsorptionCoefficient
-        elif plot_type == "Powder Absorption":
-            return self.absorptionCoefficient
-        elif plot_type == "Powder Real Permittivity":
-            return self.realPermittivity
-        elif plot_type == "Powder Imaginary Permittivity":
-            return self.imagPermittivity
-        elif plot_type == "Powder ATR":
-            return self.sp_atr
-        else:
-            # print('Error in returning result from PowderScenarioTab: ',plot_type)
-            return None
+        return {"Powder Molar Absorption"      : self.molarAbsorptionCoefficient,
+                "Powder Absorption"            : self.absorptionCoefficient,
+                "Powder Real Permittivity"     : self.realPermittivity,
+                "Powder Imaginary Permittivity": self.imagPermittivity,
+                "Powder ATR"                   : self.sp_atr,
+               }.get(plot_type)
 
     def get_results(self, vs_cm1):
         """
@@ -1539,7 +1535,7 @@ class PowderScenarioTab(ScenarioTab):
         # Update the possible matrix material names from the database
         self.materialNames = self.DataBase.getSheetNames()
         self.materialDefinedManually = False
-        if "Material defined manually" == self.settings["Matrix"]:
+        if self.settings["Matrix"] == "Material defined manually":
             self.materialDefinedManually = True
         if self.materialDefinedManually:
             self.materialNames.append("Material defined manually")

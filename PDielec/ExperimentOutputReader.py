@@ -18,11 +18,13 @@ Read the contents of a directory containing Experiment input and output files.
 """
 
 import re
+
 import numpy as np
-from PDielec.UnitCell import UnitCell
-from PDielec.GenericOutputReader import GenericOutputReader
-from PDielec.Calculator import initialise_diagonal_tensor
+
 import PDielec.DielectricFunction as DielectricFunction
+from PDielec.Calculator import initialise_diagonal_tensor
+from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 class ExperimentOutputReader(GenericOutputReader):
@@ -250,7 +252,6 @@ class ExperimentOutputReader(GenericOutputReader):
         -------
         None
         """
-        full_eps = []
         line = self._read_line()
         line = line.lower()
         line = line.replace(",", " ")
@@ -300,7 +301,6 @@ class ExperimentOutputReader(GenericOutputReader):
         -------
         None
         """
-        full_eps = []
         line = self._read_line()
         line = line.lower()
         line = line.replace(",", " ")
@@ -377,14 +377,13 @@ class ExperimentOutputReader(GenericOutputReader):
         omegas_all = []
         strengths_all = []
         gammas_all = []
-        for diag in range(0, 3):
+        for _diag in range(0, 3):
             line = self._read_line().split()
-            element = line[0]
             n = int(line[1])
             omegas = []
             strengths = []
             gammas = []
-            for i in range(n):
+            for _i in range(n):
                 line = self._read_line().split()
                 omegas.append(float(line[0]))
                 strengths.append(float(line[1]))
@@ -451,15 +450,14 @@ class ExperimentOutputReader(GenericOutputReader):
         gamma_tos_all = []
         omega_los_all = []
         gamma_los_all = []
-        for diag in range(0, 3):
+        for _diag in range(0, 3):
             line = self._read_line().split()
-            element = line[0]
             n = int(line[1])
             omega_tos = []
             gamma_tos = []
             omega_los = []
             gamma_los = []
-            for i in range(n):
+            for _i in range(n):
                 line = self._read_line().split()
                 omega_tos.append(float(line[0]))
                 gamma_tos.append(float(line[1]))
@@ -509,7 +507,7 @@ class ExperimentOutputReader(GenericOutputReader):
         nfreq = int(line.split()[1])
         self.frequencies = []
         self.oscillator_strengths = []
-        for i in range(nfreq):
+        for _i in range(nfreq):
             line = self._read_line()
             self.frequencies.append(float(line.split()[0]))
             strength = float(line.split()[1])
@@ -538,7 +536,7 @@ class ExperimentOutputReader(GenericOutputReader):
         nspecies = int(line.split()[1])
         self.species = []
         self.masses_per_type = []
-        for i in range(nspecies):
+        for _i in range(nspecies):
             line = self._read_line()
             species = line.split()[0]
             self.species.append(species)
@@ -709,10 +707,10 @@ class ExperimentOutputReader(GenericOutputReader):
         # end while
         self.unit_cells[-1].set_xyz_coordinates(ions, units="Angstrom")
         self.unit_cells[-1].set_element_names(species_list)
-        if self.oscillator_strengths == None:
+        if self.oscillator_strengths is None:
             self.oscillator_strengths = np.zeros((3 * self.nions, 3, 3))
-        if self.frequencies == None:
-            self.frequencies = np.zeros((3 * self.nions))
+        if self.frequencies is None:
+            self.frequencies = np.zeros(3 * self.nions)
 
     def _read_fractional_coordinates(self, line):
         """
@@ -741,13 +739,12 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
         """
-        n = 0
         ions = []
         self.nions = int(line.split()[1])
         self.ions_per_type = [0 for s in self.species]
         self.masses = []
         species_list = []
-        for n in range(self.nions):
+        for _n in range(self.nions):
             line = self._read_line()
             species = line.split()[0]
             index = self._ion_type_index[species]
@@ -758,10 +755,10 @@ class ExperimentOutputReader(GenericOutputReader):
             self.masses.append(self.masses_per_type[index])
         self.unit_cells[-1].set_fractional_coordinates(ions)
         self.unit_cells[-1].set_element_names(species_list)
-        if self.oscillator_strengths == None:
+        if self.oscillator_strengths is None:
             self.oscillator_strengths = np.zeros((3 * self.nions, 3, 3))
-        if self.frequencies == None:
-            self.frequencies = np.zeros((3 * self.nions))
+        if self.frequencies is None:
+            self.frequencies = np.zeros(3 * self.nions)
         return
 
     def _read_static_dielectric(self, line):

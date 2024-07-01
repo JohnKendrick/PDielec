@@ -17,16 +17,14 @@
 Calculator module
 """
 
-import math
-import sys
-import os
 import cmath
+import math
 import random
+import string
+import sys
+
 import numpy as np
 import scipy.optimize as sc
-import PDielec.GTMcore as GTM
-import string
-from PDielec.Constants import d2byamuang2, speed_light_si, wavenumber
 from scipy.integrate import trapz
 from scipy.stats import lognorm
 
@@ -35,6 +33,7 @@ from scipy.stats import lognorm
 # The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github
 #
 from PDielec import Mie
+from PDielec.Constants import d2byamuang2
 
 Mie.crossover = 0.01
 
@@ -322,7 +321,7 @@ def initialise_ellipsoid_depolarisation_matrix(unique, aoverb):
     small = 1.0e-8
     if bovera < 1.0 - small:
         e = math.sqrt(1.0 - bovera * bovera)
-        nz = (1 - e * e) * (np.log(((1 + e) / (1 - e))) - 2 * e) / (2 * e * e * e)
+        nz = (1 - e * e) * (np.log((1 + e) / (1 - e)) - 2 * e) / (2 * e * e * e)
     elif bovera > 1.0 + small:
         e = math.sqrt(bovera * bovera - 1.0)
         nz = (1 + e * e) * (e - np.arctan(e)) / (e * e * e)
@@ -560,10 +559,7 @@ def longitudinal_modes(
         # If eig_val less than zero we set it to zero
         values = []
         for eig in eig_val:
-            if eig >= 0:
-                val = math.sqrt(eig)
-            else:
-                val = -math.sqrt(-eig)
+            val = math.sqrt(eig) if eig >= 0 else -math.sqrt(-eig)
             values.append(val)
         # end of for eig
         # Sort the eigen values in ascending order and append to the results
@@ -899,7 +895,7 @@ def spherical_averaged_mie_scattering(
         # scale is the mean of the underlying normal distribution
         ndp = lognorm.pdf(dp, s=size_distribution_sigma, scale=size_mu)
     # Calculate the sampling points on a fibonacci sphere
-    if points_on_sphere == None:
+    if points_on_sphere is None:
         points_on_sphere = fibonacci_sphere(samples=500, randomize=True)
     trace = 0.0
     # Now take the average of each direction on the sphere
@@ -1003,16 +999,10 @@ def mie_scattering(
     # Use scalar quantities to calculate the dielectric constant of the equivalent isotropic sphere
     ef = np.trace(mg_permittivity) / 3.0
     em = np.trace(dielectric_medium) / 3.0
-    # print('crystal_permittivity',crystal_permittivity)
-    # print('Maxwell',ef)
-    # print('EMedium',em)
     # Calculate the permittivity of an isotropic sphere that has the same effective permittivity
     einclusion = (-3 * vf * em * em - (ef - em) * em * (2 + vf)) / (
         (ef - em) * (1 - vf) - 3 * vf * em
     )
-    # print('E inclusion',einclusion)
-    dielecv = einclusion * np.eye(3)
-    # print('New dielecv',dielecv)
     # define i as a complex number
     i = complex(0, 1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the
@@ -1345,7 +1335,7 @@ def coherent(
     tensor
         The effective dielectric constant.
     """
-    for i in range(10):
+    for _i in range(10):
         dielectric_apparent = 0.1 * dielectric_apparent + 0.9 * coherent2(
             dielectric_medium,
             dielectric_apparent,
@@ -1764,15 +1754,9 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
     imag1 = np.imag(solution1)
     imag2 = np.imag(solution2)
     if abs(imag1) + abs(imag2) > 1.0e-18:
-        if imag1 > imag2:
-            solution = solution1
-        else:
-            solution = solution2
+        solution = solution1 if imag1 > imag2 else solution2
     else:
-        if real1 > real2:
-            solution = solution1
-        else:
-            solution = solution2
+        solution = solution1 if real1 > real2 else solution2
     if (
         np.abs(solution * solution - dielectric_scalar)
         / (1 + np.abs(dielectric_scalar))
@@ -1843,7 +1827,7 @@ def direction_from_shape(data, reader):
             hkl[k] = sign * int(data[i])
             i += 1
     # end of handling no commas
-    if not len(hkl) == 3:
+    if len(hkl) != 3:
         print("Error encountered in interpretting the miller surface / vector", data)
         exit(1)
     cell = reader.get_unit_cell()
@@ -2025,7 +2009,7 @@ def solve_effective_medium_equations(
             size_distribution_sigma,
         )
     else:
-        print("Unkown dielectric method: {}".format(method))
+        print(f"Unkown dielectric method: {method}")
         exit(1)
     # Average over all directions by taking the trace
     trace = (effdielec[0, 0] + effdielec[1, 1] + effdielec[2, 2]) / 3.0
@@ -2090,10 +2074,7 @@ def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     # The effective lambda in the supporting medium is lambda / sqrt(emedium)
     # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
     #
-    if v_cm1 > 0:
-        lambda_vacuum_nm = 1.0e3 * 1.0e4 / v_cm1
-    else:
-        lambda_vacuum_nm = 1.0e99
+    lambda_vacuum_nm = 1000.0 * 10000.0 / v_cm1 if v_cm1 > 0 else 1.0e99
     # Treat the bubble as though it is air in matrix
     # The effective wave number k = sqrt(emedium)*2pi*v/c (complex!)
     radius_nm = radius_mu * 1000
@@ -2369,12 +2350,12 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
         molecule_masks.append(mol_mask)
     # Calculate the contributions to the kinetic energy in each mode
     energies_in_modes = []
-    for imode, mode in enumerate(normal_modes):
+    for _imode, mode in enumerate(normal_modes):
         mode_cm = mode
         centre_of_mass_energy = 0.0
         rotational_energy = 0.0
         molecular_energies = []
-        for imol, (ps, mask) in enumerate(
+        for _imol, (ps, mask) in enumerate(
             zip(molecular_projection_operators, molecule_masks)
         ):
             # Calculate total kinetic energy
@@ -2451,13 +2432,13 @@ def hodrick_prescott_filter(y, damping, lambda_value, niters):
         [-1 * diag, 3 * diag, -3 * diag, 1 * diag], [0, -1, -2, -3], n, n - 3
     ).tocsc()
     w = np.ones(n)
-    for it in range(10 * niters):
+    for _it in range(10 * niters):
         W = sparse.spdiags(w, 0, n, n).tocsc()
         # Problems with overflow if lambda is large
         try:
             Z = W + pow(10, lambda_value) * (D.dot(D.transpose()))
-        except:
-            pass
+        except Exception as e:
+            print(f"Exception in Calculator {e}")
         z = sparse.linalg.spsolve(Z, w * y)
         # residuals = y - z
         # error = sum( r*r for r in residuals if r < 0.0 )
@@ -2554,6 +2535,7 @@ def determineEulerAngles(R):
     R13 = R[0, 2]
     R21 = R[1, 0]
     R31 = R[2, 0]
+    R32 = R[2, 1]
     R33 = R[2, 2]
     phi = 0.0
     if R31 > 0.9999999999:
@@ -2563,12 +2545,9 @@ def determineEulerAngles(R):
         theta = np.pi / 2.0
         psi = phi + np.arctan2(R12, R13)
     else:
-        theta = theta1 = -np.arcsin(R31)
-        theta2 = np.pi - theta1
-        psi = psi1 = np.arctan2(R32 / np.cos(theta1), R33 / np.cos(theta1))
-        psi2 = np.arctan2(R32 / np.cos(theta2), R33 / np.cos(theta2))
-        phi = phi1 = np.arctan2(R21 / np.cos(theta1), R11 / np.cos(theta1))
-        phi2 = np.arctan2(R21 / np.cos(theta2), R11 / np.cos(theta2))
+        theta = -np.arcsin(R31)
+        psi = np.arctan2(R32 / np.cos(theta), R33 / np.cos(theta))
+        phi = np.arctan2(R21 / np.cos(theta), R11 / np.cos(theta))
     return theta, phi, psi
 
 
@@ -2637,8 +2616,9 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None):
         import mkl
 
         mkl.set_num_threads(1)
-    except:
-        pass
+    except Exception as e:
+        print(f"Exception in switching of threading {e}")
+
     # see if threading has been requested
     if threading:
         from multiprocessing.dummy import Pool

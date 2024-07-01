@@ -17,24 +17,33 @@ AnalysisTab Module
 """
 
 import math
-import numpy as np
-import PDielec.Calculator as Calculator
-from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtWidgets import QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QSpinBox, QDoubleSpinBox
-from PyQt5.QtWidgets import QSizePolicy, QTableWidgetItem
-from PyQt5.QtCore import Qt, QCoreApplication
-from PDielec.Constants import covalent_radii
 
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
-from matplotlib.ticker import MaxNLocator
+import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from PDielec.Utilities import Debug
+from matplotlib.ticker import MaxNLocator
+from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QSizePolicy,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
+
+import PDielec.Calculator as Calculator
+from PDielec.Constants import covalent_radii
 from PDielec.GUI.SettingsTab import FixedQTableWidget
+from PDielec.Utilities import Debug
 
 
 class AnalysisTab(QWidget):
@@ -242,7 +251,7 @@ class AnalysisTab(QWidget):
         # Add number of molecules found
         self.molecules_le = QLineEdit(self)
         self.molecules_le.setEnabled(False)
-        self.molecules_le.setText("{}".format(self.number_of_molecules))
+        self.molecules_le.setText(f"{self.number_of_molecules}")
         self.molecules_le.setToolTip(
             "The bonding tolerances can change the number of molecules found"
         )
@@ -354,7 +363,7 @@ class AnalysisTab(QWidget):
             self.plot()
             if self.notebook.viewerTab is not None:
                 self.notebook.viewerTab.requestRefresh()
-        except:
+        except Exception:
             debugger.print("Failed Changing the element radius", col, item.text())
             pass
 
@@ -400,9 +409,9 @@ class AnalysisTab(QWidget):
         self.element_radii_tw.setColumnCount(len(self.species))
         self.element_radii_tw.setHorizontalHeaderLabels(self.species)
         self.element_radii_tw.setVerticalHeaderLabels([""])
-        for i, (radius, element) in enumerate(zip(radii, self.species)):
+        for i, (radius, _element) in enumerate(zip(radii, self.species)):
             qw = QTableWidgetItem()
-            qw.setText("{0:.6f}".format(radius))
+            qw.setText(f"{radius:.6f}")
             qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
             self.element_radii_tw.setItem(0, i, qw)
         self.element_radii_tw.blockSignals(False)
@@ -681,7 +690,7 @@ class AnalysisTab(QWidget):
         self.vmax_sb.setValue(self.settings["Maximum frequency"])
         self.scale_sp.setValue(self.settings["Covalent radius scaling"])
         self.tolerance_sp.setValue(self.settings["Bonding tolerance"])
-        self.molecules_le.setText("{}".format(self.number_of_molecules))
+        self.molecules_le.setText(f"{self.number_of_molecules}")
         self.width_sp.setValue(self.settings["Bar width"])
         self.title_le.setText(self.settings["title"])
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
@@ -776,7 +785,7 @@ class AnalysisTab(QWidget):
             if self.notebook.viewerTab is not None:
                 self.notebook.viewerTab.requestRefresh()
             self.number_of_molecules = nmols
-        self.molecules_le.setText("{}".format(self.number_of_molecules))
+        self.molecules_le.setText(f"{self.number_of_molecules}")
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
@@ -816,7 +825,7 @@ class AnalysisTab(QWidget):
                 if abs(fi - fj) < 1.0e-5:
                     degenerate_list[i].append(j)
         self.mode_energies = []
-        for i, fi in enumerate(self.frequencies_cm1):
+        for i, _fi in enumerate(self.frequencies_cm1):
             tote, cme, rote, vibe, mole = mode_energies[i]
             tote = max(tote, 1.0e-8)
             sums = [0.0] * 5

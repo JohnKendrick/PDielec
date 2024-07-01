@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-# -*- coding: utf8 -*-
 """
 vibAnalysis is a Python tool written by Filipe Teixeira the original is available on
 github at https://github.com/teixeirafilipe/vibAnalysis.
@@ -32,15 +31,279 @@ Full details of the options available can be viewed at https://github.com/teixei
 # Original file is va.py.original
 #
 
-from __future__ import print_function, division
-import numpy as np
-import sys
-import os
 import logging
+import os
+import sys
+from importlib import reload
+
+import numpy as np
+import sklearn as skl
 import sklearn.linear_model as sklm
 import sklearn.metrics as skmt
-import sklearn as skl
-from importlib import reload
+
+Bohr2Ang = 0.5291772
+Symbols = [
+    "h",
+    "he",
+    "li",
+    "be",
+    "b",
+    "c",
+    "n",
+    "o",
+    "f",
+    "ne",
+    "na",
+    "mg",
+    "al",
+    "si",
+    "p",
+    "s",
+    "cl",
+    "ar",
+    "k",
+    "ca",
+    "sc",
+    "ti",
+    "v",
+    "cr",
+    "mn",
+    "fe",
+    "co",
+    "ni",
+    "cu",
+    "zn",
+    "ga",
+    "ge",
+    "as",
+    "se",
+    "br",
+    "kr",
+    "rb",
+    "sr",
+    "y",
+    "zr",
+    "nb",
+    "mo",
+    "tc",
+    "ru",
+    "rh",
+    "pd",
+    "ag",
+    "cd",
+    "in",
+    "sn",
+    "sb",
+    "te",
+    "i",
+    "xe",
+    "cs",
+    "ba",
+    "la",
+    "ce",
+    "pr",
+    "nd",
+    "pm",
+    "sm",
+    "eu",
+    "gd",
+    "tb",
+    "dy",
+    "ho",
+    "er",
+    "tm",
+    "yb",
+    "lu",
+    "hf",
+    "ta",
+    "w",
+    "re",
+    "os",
+    "ir",
+    "pt",
+    "au",
+    "hg",
+    "tl",
+    "pb",
+    "bi",
+]
+
+Masses = [
+    1.007825,
+    4.002602,
+    6.94,
+    9.0121831,
+    10.81,
+    12.0000,
+    14.007,
+    15.9949159,
+    18.998403163,
+    20.1797,
+    22.98976928,
+    24.305,
+    26.9815385,
+    28.085,
+    30.973761998,
+    32.06,
+    35.45,
+    39.948,
+    39.0983,
+    40.078,
+    44.955908,
+    47.867,
+    50.9415,
+    51.9961,
+    54.938044,
+    55.845,
+    58.933194,
+    58.6934,
+    63.546,
+    65.38,
+    69.723,
+    72.63,
+    74.921595,
+    78.971,
+    79.904,
+    83.798,
+    85.4678,
+    87.62,
+    88.90584,
+    91.224,
+    92.90637,
+    95.95,
+    97,
+    101.07,
+    102.9055,
+    106.42,
+    107.8682,
+    112.414,
+    114.818,
+    118.71,
+    121.76,
+    127.6,
+    126.90447,
+    131.293,
+    132.90545196,
+    137.327,
+    138.90547,
+    140.116,
+    140.90766,
+    144.242,
+    145,
+    150.36,
+    151.964,
+    157.25,
+    158.92535,
+    162.5,
+    164.93033,
+    167.259,
+    168.93422,
+    173.054,
+    174.9668,
+    178.49,
+    180.94788,
+    183.84,
+    186.207,
+    190.23,
+    192.217,
+    195.084,
+    196.966569,
+    200.592,
+    204.38,
+    207.2,
+    208.9804,
+]
+
+Radii = [
+    0.5,
+    0.3,
+    1.7,
+    1.1,
+    0.9,
+    0.7,
+    0.6,
+    0.6,
+    0.5,
+    0.4,
+    1.9,
+    1.5,
+    1.2,
+    1.1,
+    1.0,
+    0.9,
+    0.8,
+    0.7,
+    2.4,
+    1.9,
+    1.8,
+    1.8,
+    1.7,
+    1.7,
+    1.6,
+    1.6,
+    1.5,
+    1.5,
+    1.5,
+    1.4,
+    1.4,
+    1.3,
+    1.1,
+    1.0,
+    0.9,
+    0.9,
+    2.7,
+    2.2,
+    2.1,
+    2.1,
+    2.0,
+    1.9,
+    1.8,
+    1.8,
+    1.7,
+    1.7,
+    1.7,
+    1.6,
+    1.6,
+    1.5,
+    1.3,
+    1.2,
+    1.2,
+    1.1,
+    3.0,
+    2.5,
+    2.0,
+    2.0,
+    2.5,
+    2.1,
+    2.1,
+    2.4,
+    2.3,
+    2.3,
+    2.3,
+    2.3,
+    2.3,
+    2.3,
+    2.2,
+    2.2,
+    2.2,
+    2.1,
+    2.0,
+    1.9,
+    1.9,
+    1.9,
+    1.8,
+    1.8,
+    1.7,
+    1.7,
+    1.6,
+    1.5,
+    1.4,
+]
+
+# balancing parameters
+sangles = 1.0
+souts = 1.0
+storsions = 1.0
 
 
 def InitialiseVaOpts():
@@ -72,269 +335,6 @@ def InitialiseVaOpts():
     Opts["oopp"] = True
     Opts["oopTol"] = np.deg2rad(5.0)
     # General Data
-    Bohr2Ang = 0.5291772
-    Symbols = [
-        "h",
-        "he",
-        "li",
-        "be",
-        "b",
-        "c",
-        "n",
-        "o",
-        "f",
-        "ne",
-        "na",
-        "mg",
-        "al",
-        "si",
-        "p",
-        "s",
-        "cl",
-        "ar",
-        "k",
-        "ca",
-        "sc",
-        "ti",
-        "v",
-        "cr",
-        "mn",
-        "fe",
-        "co",
-        "ni",
-        "cu",
-        "zn",
-        "ga",
-        "ge",
-        "as",
-        "se",
-        "br",
-        "kr",
-        "rb",
-        "sr",
-        "y",
-        "zr",
-        "nb",
-        "mo",
-        "tc",
-        "ru",
-        "rh",
-        "pd",
-        "ag",
-        "cd",
-        "in",
-        "sn",
-        "sb",
-        "te",
-        "i",
-        "xe",
-        "cs",
-        "ba",
-        "la",
-        "ce",
-        "pr",
-        "nd",
-        "pm",
-        "sm",
-        "eu",
-        "gd",
-        "tb",
-        "dy",
-        "ho",
-        "er",
-        "tm",
-        "yb",
-        "lu",
-        "hf",
-        "ta",
-        "w",
-        "re",
-        "os",
-        "ir",
-        "pt",
-        "au",
-        "hg",
-        "tl",
-        "pb",
-        "bi",
-    ]
-
-    Masses = [
-        1.007825,
-        4.002602,
-        6.94,
-        9.0121831,
-        10.81,
-        12.0000,
-        14.007,
-        15.9949159,
-        18.998403163,
-        20.1797,
-        22.98976928,
-        24.305,
-        26.9815385,
-        28.085,
-        30.973761998,
-        32.06,
-        35.45,
-        39.948,
-        39.0983,
-        40.078,
-        44.955908,
-        47.867,
-        50.9415,
-        51.9961,
-        54.938044,
-        55.845,
-        58.933194,
-        58.6934,
-        63.546,
-        65.38,
-        69.723,
-        72.63,
-        74.921595,
-        78.971,
-        79.904,
-        83.798,
-        85.4678,
-        87.62,
-        88.90584,
-        91.224,
-        92.90637,
-        95.95,
-        97,
-        101.07,
-        102.9055,
-        106.42,
-        107.8682,
-        112.414,
-        114.818,
-        118.71,
-        121.76,
-        127.6,
-        126.90447,
-        131.293,
-        132.90545196,
-        137.327,
-        138.90547,
-        140.116,
-        140.90766,
-        144.242,
-        145,
-        150.36,
-        151.964,
-        157.25,
-        158.92535,
-        162.5,
-        164.93033,
-        167.259,
-        168.93422,
-        173.054,
-        174.9668,
-        178.49,
-        180.94788,
-        183.84,
-        186.207,
-        190.23,
-        192.217,
-        195.084,
-        196.966569,
-        200.592,
-        204.38,
-        207.2,
-        208.9804,
-    ]
-
-    Radii = [
-        0.5,
-        0.3,
-        1.7,
-        1.1,
-        0.9,
-        0.7,
-        0.6,
-        0.6,
-        0.5,
-        0.4,
-        1.9,
-        1.5,
-        1.2,
-        1.1,
-        1.0,
-        0.9,
-        0.8,
-        0.7,
-        2.4,
-        1.9,
-        1.8,
-        1.8,
-        1.7,
-        1.7,
-        1.6,
-        1.6,
-        1.5,
-        1.5,
-        1.5,
-        1.4,
-        1.4,
-        1.3,
-        1.1,
-        1.0,
-        0.9,
-        0.9,
-        2.7,
-        2.2,
-        2.1,
-        2.1,
-        2.0,
-        1.9,
-        1.8,
-        1.8,
-        1.7,
-        1.7,
-        1.7,
-        1.6,
-        1.6,
-        1.5,
-        1.3,
-        1.2,
-        1.2,
-        1.1,
-        3.0,
-        2.5,
-        2.0,
-        2.0,
-        2.5,
-        2.1,
-        2.1,
-        2.4,
-        2.3,
-        2.3,
-        2.3,
-        2.3,
-        2.3,
-        2.3,
-        2.2,
-        2.2,
-        2.2,
-        2.1,
-        2.0,
-        1.9,
-        1.9,
-        1.9,
-        1.8,
-        1.8,
-        1.7,
-        1.7,
-        1.6,
-        1.5,
-        1.4,
-    ]
-
-    # balancing parameters
-    sangles = 1.0
-    souts = 1.0
-    storsions = 1.0
 
 
 ## Object Classes ##
@@ -344,20 +344,22 @@ class Atom:
     def __init__(self, symbol, r, mass=None):
         self.symbol = symbol.capitalize()
         self.mass = mass
-        if mass == None:
+        if mass is None:
             mass = Masses[Symbols.index(symbol.lower())]
         self.r = np.array(r)
 
     def punch(self):
-        o = "{self.symbol:2s} {self.mass:8.4f}".format(self=self)
+        o = f"{self.symbol:2s} {self.mass:8.4f}"
         for i in range(3):
             o += " %+16.4f" % (self.r[i])
         return o
 
 
 class Vibration:
-    def __init__(self, freq, ndegs, adv=[], ir=None, raman=None, sym=""):
+    def __init__(self, freq, ndegs, adv=None, ir=None, raman=None, sym=""):
         self.frequency = float(freq)
+        if adv is None:
+            adv = []
         if len(adv) == 0:
             self.displacements = np.zeros(ndegs)
         else:
@@ -411,13 +413,13 @@ class Vibration:
             o = "Mode at %8.2f cm-1 " % (self.frequency)
         if self.symmetry.strip() != "":
             o += "(%s) " % (self.symmetry)
-        if self.intIR != None:
+        if self.intIR is not None:
             o += "(IR: %5.1f" % (self.intIR)
-        if (self.intIR == None) and (self.intRaman != None):
+        if (self.intIR is None) and (self.intRaman is not None):
             o += "(Raman: %5.1f)" % (self.intRaman)
-        if (self.intIR != None) and (self.intRaman != None):
+        if (self.intIR is not None) and (self.intRaman is not None):
             o += ",Raman: %5.1f)" % (self.intRaman)
-        if self.intRaman == None:
+        if self.intRaman is None:
             o += ")"
         return o
 
@@ -435,10 +437,10 @@ class System:
 
     def punch(self):
         o = "System Data:\n"
-        o += "Number of atoms = {self.natoms}\n".format(self=self)
+        o += f"Number of atoms = {self.natoms}\n"
         o += "\nAtoms, Masses and Positions:\n"
         for a in self.atoms:
-            o += "{}\n".format(a.punch())
+            o += f"{a.punch()}\n"
         return o
 
     def addAtom(self, symbol, pos, mass=None):
@@ -466,11 +468,12 @@ class System:
         """Check orthogonalyty of the ADM"""
         self.makeADM()
         for n in range(self.ADM.shape[1]):
-            norm = np.linalg.norm(self.ADM[:, n])
+            # norm = np.linalg.norm(self.ADM[:, n])
             # print("Norm of Vibrational Mode %d is %8.6f"%(n+1,norm))
-            for m in range(n + 1, self.ADM.shape[1]):
-                c = np.dot(self.ADM[:, n], self.ADM[:, m])
+            for _m in range(n + 1, self.ADM.shape[1]):
+                # c = np.dot(self.ADM[:, n], self.ADM[:, m])
                 # print("Cross between Mode %d and Mode %d is: %8.6f"%(n+1,m+1,c))
+                pass
 
     def makeGeo(self):
         self.geo = np.zeros((self.natoms, 3))
@@ -484,7 +487,7 @@ class System:
         n = 0
         for i in range(self.natoms):
             # print(" %d %2s %5.2f %10.6f %10.6f %10.6f"%(i+1,self.atoms[i].symbol,self.atoms[i].mass,self.atoms[i].r[0],self.atoms[i].r[1],self.atoms[i].r[2]))
-            for k in range(3):
+            for _k in range(3):
                 o[n] = self.atoms[i].mass
                 n += 1
         return o
@@ -510,8 +513,10 @@ class System:
                 self.vibrations[i].displacements
             )
 
-    def removeVibrations(self, elst=list(range(6))):
+    def removeVibrations(self, elst=None):
         idx = []
+        if elst is None:
+            elst = list(range(6))
         for i in range(len(self.vibrations)):
             if i not in elst:
                 idx.append(i)
@@ -530,9 +535,8 @@ def readMopac2016(ifn):
     """Opens a MOPAC2016 output file ifn and returns A System object.
     Depending on Linear and Transition, freqs and modes will be
     pruned out of the translational and rotational components."""
-    f = open(ifn, "r")
-    data = f.readlines()
-    f.close()
+    with open(ifn) as f:
+        data = f.readlines()
     o = System()
     # read geometry (in angs) and atomic symbols, get masses from internal lib
     natoms = -1
@@ -577,7 +581,7 @@ def readMopac2016(ifn):
     while n < iend:
         if "Root No." in data[n]:
             curr = len(data[n].split()) - 2
-            for i in range(curr):
+            for _i in range(curr):
                 tdisp.append([])
             # reading symmetries
             n += 2
@@ -591,7 +595,7 @@ def readMopac2016(ifn):
                 tfreq.append(float(i))
             # reading displacements
             n += 1
-            for i in range(3 * natoms):
+            for _i in range(3 * natoms):
                 n += 1
                 l = data[n].split()[1:]
                 for j in range(last, last + curr):
@@ -635,9 +639,8 @@ def readHess(ifn):
     """Opens Orca Hess file ifn and returns A System object.
     Depending on Linear and Transition, freqs and modes will be
     pruned out of the translational and rotational components."""
-    f = open(ifn, "r")
-    data = f.readlines()
-    f.close()
+    with open(ifn) as f:
+        data = f.readlines()
     o = System()
     # read masses, geometry (in angs) and atomic symbols
     for i in range(len(data)):
@@ -676,10 +679,9 @@ def readHess(ifn):
     icol = 0
     ecol = 0
     nread = 0
-    for n in range(ipos, epos, ndegs + 1):
+    for nread, n in enumerate(range(ipos, epos, ndegs + 1)):
         icol = ecol
         ecol = icol + incr
-        nread += 1
         if nread > nils:
             ecol = ndegs + 1
         l = 0
@@ -728,17 +730,14 @@ def readPDielec(ifn):
     """Use PDielec library to read hessian information.
     only the first 3 modes will be pruned; the translational components."""
     # Open the file use pdielec library
-    import PDielec.Utilities as Utilities
+    import math
+
     import PDielec.Calculator as Calculator
+    import PDielec.Utilities as Utilities
     from PDielec.Constants import (
         amu,
-        wavenumber,
-        angstrom,
-        isotope_masses,
         average_masses,
-        covalent_radii,
     )
-    import math
 
     # Use as many defaults as possible
     # First determine the program used to create the output file
@@ -841,22 +840,21 @@ def readG09log(ifn):
     Depending on Linear and Transition, freqs and modes will be
     pruned out of the translational and rotational components."""
     o = System()
-    logging.info("Opening Gaussian log file: {:s}".format(ifn))
-    f = open(ifn, "r")
-    data = f.readlines()
-    f.close()
+    logging.info(f"Opening Gaussian log file: {ifn:s}")
+    with open(ifn) as f:
+        data = f.readlines()
     # get number of atoms
     natoms = -1
     for i in range(len(data)):
         if "NAtoms=" in data[i]:
             natoms = int(data[i].split()[1])
             logging.info(
-                "Expecting {} atoms from reading line {}".format(natoms, i + 1)
+                f"Expecting {natoms} atoms from reading line {i + 1}"
             )
             break
-    symbols = []
-    mass = np.zeros(natoms)
-    geo = np.zeros((natoms, 3))
+    # symbols = []
+    # mass = np.zeros(natoms)
+    # geo = np.zeros((natoms, 3))
     p = 0
     # read (last) geometry in standard orientation
     istart = -1
@@ -881,7 +879,7 @@ def readG09log(ifn):
         print("ERROR: Cannot read geometry!\n")
         sys.exit(1)
     # read vibrational frequencies, modes, IR and Raman Intensities
-    nfreqs = 0
+    # nfreqs = 0
     freqs = []
     irInt = []
     raInt = []
@@ -911,7 +909,7 @@ def readG09log(ifn):
                     for f in l:
                         raInt.append(float(f))
             lmodes = []
-            for k in range(freqsInRow):
+            for _k in range(freqsInRow):
                 lmodes.append([])
             for j in range(mstart, mstart + natoms):
                 p = 0
@@ -945,13 +943,10 @@ def readG09log(ifn):
 def readUserIC(fn):
     """Reads additional internal coordinates defined by the user"""
     o = []
-    f = open(fn, "r")
-    udata = f.readlines()
-    f.close()
+    with open(fn) as f:
+        udata = f.readlines()
     for line in udata:
-        if "#" in line:
-            continue
-        elif line.strip() == "":
+        if "#" in line or line.strip() == "":
             continue
         else:
             l = line.split()
@@ -1037,42 +1032,40 @@ def punchIC(o, s):
 def animateMode(tfn, s, m, nsteps=50, damp=0.33):
     """displaces geo over vibrational displacement m and punches a xyz file tfn"""
     natoms = len(s.atoms)
-    tf = open(tfn, "w")
-    v = damp * np.sin(np.linspace(0 - 0, 2.0 * np.pi, nsteps))
-    for n in range(nsteps):
-        g = s.geo.copy()
-        g = g.reshape(g.size) + (v[n] * s.vibrations[m].displacements)
-        tf.write(" %d \n Generated by vibAnalysis d=%7.4f\n" % (natoms, v[n]))
-        for i in range(natoms):
-            tf.write(
-                " %3s %10.6f %10.6f %10.6f\n"
-                % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2])
-            )
-    tf.close()
+    with open(tfn, "w") as tf:
+        v = damp * np.sin(np.linspace(0 - 0, 2.0 * np.pi, nsteps))
+        for n in range(nsteps):
+            g = s.geo.copy()
+            g = g.reshape(g.size) + (v[n] * s.vibrations[m].displacements)
+            tf.write(" %d \n Generated by vibAnalysis d=%7.4f\n" % (natoms, v[n]))
+            for i in range(natoms):
+                tf.write(
+                    " %3s %10.6f %10.6f %10.6f\n"
+                    % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2])
+                )
 
 
 def animateIC(tfn, s, m, nsteps=50, damp=0.33):
     """displaces geo over internal coordinate m and punches a xyz file tfn"""
     natoms = len(s.atoms)
-    tf = open(tfn, "w")
-    v = damp * np.sin(np.linspace(0 - 0, 2.0 * np.pi, nsteps))
-    for n in range(nsteps):
-        g = s.geo.copy()
-        g = g.reshape(g.size) + (v[n] * s.S[:, m])
-        tf.write(" %d \n Generated by vibAnalysis d=%7.4f\n" % (natoms, v[n]))
-        for i in range(natoms):
-            tf.write(
-                " %3s %10.6f %10.6f %10.6f\n"
-                % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2])
-            )
-    tf.close()
+    with open(tfn, "w") as tf:
+        v = damp * np.sin(np.linspace(0 - 0, 2.0 * np.pi, nsteps))
+        for n in range(nsteps):
+            g = s.geo.copy()
+            g = g.reshape(g.size) + (v[n] * s.S[:, m])
+            tf.write(" %d \n Generated by vibAnalysis d=%7.4f\n" % (natoms, v[n]))
+            for i in range(natoms):
+                tf.write(
+                    " %3s %10.6f %10.6f %10.6f\n"
+                    % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2])
+                )
 
 
 def printResults(o, s):
     """Prints the results of the analysis stored in system s onto file o"""
     lanalysis = ["VMP", "VMLD", "VMBLD", "VMARD"]
     for a in lanalysis:
-        if a in s.vibrations[0].analysis.keys():
+        if a in s.vibrations[0].analysis:
             if a == "VMP":
                 o.write("\n\n*** Vibrational Mode Projection (VMP) ***\n")
             elif a == "VMLD":
@@ -1086,12 +1079,10 @@ def printResults(o, s):
                     "\n\n*** Vibrational Mode Automatic Relevance Determination (VMARD) ***\n"
                 )
             # jk n=1
-            n = 0
-            for vib in s.vibrations:
+            for n, vib in enumerate(s.vibrations):
                 o.write("\n" + vib.string(n) + "\n")
                 # calculate weights
                 w = vib.analysis[a] / np.sum(np.abs(vib.analysis[a]))
-                n += 1
                 cut = 0.0  # cut = all
                 if Opts["cut"] == "auto":
                     cut = len(s.vibrations) / (10.0 * len(s.intcoords))
@@ -1178,42 +1169,22 @@ def angleAmp(geo, al, deg=False):
     r01 = geo[al[0]] - geo[al[1]]
     r21 = geo[al[2]] - geo[al[1]]
     logging.debug(
-        """Vectors for angle {}, {} and {}:
-        R01 = {} (norm: {})
-        R21 = {} (norm: {})
-        R01 (dot) R02 = {}""".format(
-            al[0] + 1,
-            al[1] + 1,
-            al[2] + 1,
-            r01,
-            np.linalg.norm(r01),
-            r21,
-            np.linalg.norm(r21),
-            np.dot(r01, r21),
-        )
+        f"""Vectors for angle {al[0] + 1}, {al[1] + 1} and {al[2] + 1}:
+        R01 = {r01} (norm: {np.linalg.norm(r01)})
+        R21 = {r21} (norm: {np.linalg.norm(r21)})
+        R01 (dot) R02 = {np.dot(r01, r21)}"""
     )
     r01 = r01 / np.linalg.norm(r01)
     r21 = r21 / np.linalg.norm(r21)
     logging.debug(
-        """Normalized vectors for angle {}, {} and {}:
-        R01 = {} (norm: {})
-        R21 = {} (norm: {})
-        R01 (dot) R02 = {}""".format(
-            al[0] + 1,
-            al[1] + 1,
-            al[2] + 1,
-            r01,
-            np.linalg.norm(r01),
-            r21,
-            np.linalg.norm(r21),
-            np.dot(r01, r21),
-        )
+        f"""Normalized vectors for angle {al[0] + 1}, {al[1] + 1} and {al[2] + 1}:
+        R01 = {r01} (norm: {np.linalg.norm(r01)})
+        R21 = {r21} (norm: {np.linalg.norm(r21)})
+        R01 (dot) R02 = {np.dot(r01, r21)}"""
     )
     phi = np.arccos(np.round(np.dot(r01, r21), decimals=12))
     logging.info(
-        "Angle between atoms {}, {} and {} = {:7.2f} degs.\n".format(
-            al[0] + 1, al[1] + 1, al[2] + 1, np.rad2deg(phi)
-        )
+        f"Angle between atoms {al[0] + 1}, {al[1] + 1} and {al[2] + 1} = {np.rad2deg(phi):7.2f} degs.\n"
     )
     if deg:
         phi = np.rad2deg(phi)
@@ -1233,29 +1204,13 @@ def oopAmp(geo, al, deg=False):
     n2 = np.cross(r3, r2)
     atmp = np.dot(n1, n2) / (np.linalg.norm(n1) * np.linalg.norm(n2))
     logging.debug(
-        """Normalized vectors for OOP angle {}, {}, {} and {}:
-        R1 = {} (norm: {})
-        R2 = {} (norm: {})
-        R3 = {} (norm: {})
-        N1 = {} (norm: {})
-        N2 = {} (norm: {})
-        N1 (dot) N2 = {}""".format(
-            al[0] + 1,
-            al[2] + 1,
-            al[3] + 1,
-            al[1] + 1,
-            r1,
-            np.linalg.norm(r1),
-            r2,
-            np.linalg.norm(r2),
-            r3,
-            np.linalg.norm(r3),
-            n1,
-            np.linalg.norm(n1),
-            n2,
-            np.linalg.norm(n2),
-            np.dot(n1, n2),
-        )
+        f"""Normalized vectors for OOP angle {al[0] + 1}, {al[2] + 1}, {al[3] + 1} and {al[1] + 1}:
+        R1 = {r1} (norm: {np.linalg.norm(r1)})
+        R2 = {r2} (norm: {np.linalg.norm(r2)})
+        R3 = {r3} (norm: {np.linalg.norm(r3)})
+        N1 = {n1} (norm: {np.linalg.norm(n1)})
+        N2 = {n2} (norm: {np.linalg.norm(n2)})
+        N1 (dot) N2 = {np.dot(n1, n2)}"""
     )
     if atmp > 1.0:
         phi = np.arccos(1.0)
@@ -1271,8 +1226,8 @@ def oopAmp(geo, al, deg=False):
     if np.dot(nc, r1) > 0.0:
         phi = (2.0 * np.pi) - phi
     logging.info(
-        """Amplitude for OOP angle {}, {}, {} and {}: {:+7.2f} degs.
-        """.format(al[0] + 1, al[2] + 1, al[3] + 1, al[1] + 1, np.rad2deg(phi))
+        f"""Amplitude for OOP angle {al[0] + 1}, {al[2] + 1}, {al[3] + 1} and {al[1] + 1}: {np.rad2deg(phi):+7.2f} degs.
+        """
     )
     if deg:
         phi = np.rad2deg(phi)
@@ -1317,23 +1272,24 @@ def torsionAmp(geo, al, deg=False):
     return phi
 
 
-def makeIC(o, useric=[]):
+def makeIC(o, useric=None):
     """Automatically identifies internal coordinates using
     connectivity deduced from covalent radii and generates
     Wilson's S matrix for the specified geometry"""
     ## Parameters from Global Opts
+    if useric is None:
+        useric = []
     delta = Opts["delta"]
     tol = Opts["tol"]
     o.makeGeo()
     geo = np.copy(o.geo)
     o.intcoords = []  # each coord is a tuple of 5 ints: coord type + 4 atom idxs
     natoms = o.natoms
-    ageo = np.reshape(o.geo.copy(), (np.size(o.geo), 1))
     # temporary lists
     valence = []  # store number of bonds for each atom
     centred = []  # store number angles this atoms is the centre of
     coordination = []
-    for i in range(natoms):
+    for _i in range(natoms):
         coordination.append([])
         valence.append(0)
         centred.append(0)
@@ -1411,22 +1367,22 @@ def makeIC(o, useric=[]):
                     a1 = tmplst[0]
                     a3 = tmplst[1]
                     a4 = tmplst[2]
-                    if Opts["doOuts"]:
+                    if (
+                        Opts["doOuts"]
+                        and (angleAmp(geo, [a1, a2, a3], True) < 179.0)
+                        and (angleAmp(geo, [a1, a2, a4], True) < 179.0)
+                        and (angleAmp(geo, [a3, a2, a4], True) < 179.0)
+                    ):
                         # check if none of the involved angles are 180
-                        if (
-                            (angleAmp(geo, [a1, a2, a3], True) < 179.0)
-                            and (angleAmp(geo, [a1, a2, a4], True) < 179.0)
-                            and (angleAmp(geo, [a3, a2, a4], True) < 179.0)
-                        ):
-                            if Opts["oopp"]:
-                                teta = oopAmp(geo, [a1, a2, a3, a4])
-                                if (np.abs(teta - np.pi) < Opts["oopTol"]) and (
-                                    [a1, a2, a3, a4] not in loop
-                                ):
-                                    loop.append([a1, a2, a3, a4])
-                            else:
-                                if [a1, a2, a3, a4] not in loop:
-                                    loop.append([a1, a2, a3, a4])
+                        if Opts["oopp"]:
+                            teta = oopAmp(geo, [a1, a2, a3, a4])
+                            if (np.abs(teta - np.pi) < Opts["oopTol"]) and (
+                                [a1, a2, a3, a4] not in loop
+                            ):
+                                loop.append([a1, a2, a3, a4])
+                        else:
+                            if [a1, a2, a3, a4] not in loop:
+                                loop.append([a1, a2, a3, a4])
                 # now the torsions...
                 else:
                     candidate = []
@@ -1466,16 +1422,16 @@ def makeIC(o, useric=[]):
                             langles[j][1],
                             langles[j][0],
                         ]
-                    if Opts["doAutoSel"]:
-                        if (candidate != []) and (
-                            candidate[1:] not in [h[1:] for h in ltors]
-                        ):
-                            if Opts["doTors"]:
-                                ltors.append(candidate)
+                    if (
+                        Opts["doAutoSel"]
+                        and (candidate != [])
+                        and (candidate[1:] not in [h[1:] for h in ltors])
+                    ):
+                        if Opts["doTors"]:
+                            ltors.append(candidate)
                     else:
-                        if candidate != []:
-                            if Opts["doTors"]:
-                                ltors.append(candidate)
+                        if candidate != [] and Opts["doTors"]:
+                            ltors.append(candidate)
     # calc S for bonds
     o.S = np.zeros((3 * natoms, len(lbonds) + len(langles) + len(loop) + len(ltors)))
     o.intcoords = []
@@ -1620,7 +1576,7 @@ def VMLD(of, s):
         of.write(" More internal coordinates than frequencies, expect\n")
         of.write(" some (possibly unwanted) redundancy in the results\n")
     for i in range(len(s.vibrations)):
-        o = []
+        # o = []
         regressor = sklm.LinearRegression()
         regressor.fit(s.S, s.ADM[:, i])
         r2 = np.corrcoef(s.ADM[:, i], regressor.predict(s.S))[0, 1] ** 2
@@ -1641,7 +1597,7 @@ def VMBLD(of, s):
         of.write(" More internal coordinates than frequencies, expect\n")
         of.write(" some (possibly unwanted) redundancy in the results\n")
     for i in range(len(s.vibrations)):
-        o = []
+        # o = []
         if skl.__version__ >= str(1.3):
             regressor = sklm.BayesianRidge(compute_score=True, max_iter=5000)
         else:
@@ -1665,7 +1621,7 @@ def VMARD(of, s):
         of.write(" More internal coordinates than frequencies, expect\n")
         of.write(" some (possibly unwanted) redundancy in the results\n")
     for i in range(len(s.vibrations)):
-        o = []
+        # o = []
         if skl.__version__ >= str(1.3):
             regressor = sklm.ARDRegression(compute_score=True, max_iter=5000)
         else:
@@ -1688,8 +1644,8 @@ def main():
     logging.shutdown()
     reload(logging)
     # Set flags and filenames
-    Linear = False  # if true, internal coords will be 3N-5m instead of 3N-6
-    Transition = False  # if true, get the first mode and exclude the next 6 (or 5)
+    # ruff Linear = False  # if true, internal coords will be 3N-5m instead of 3N-6
+    # ruff Transition = False  # if true, get the first mode and exclude the next 6 (or 5)
     if len(sys.argv) < 2:
         print(
             """Usage: %s [ Commands ] [ Options ] inputFile
@@ -1921,8 +1877,8 @@ Options:
         logging.basicConfig(
             level=logging.WARNING, format="%(levelname)s:%(funcName)s: %(message)s"
         )
-    of = open(ofn + ".nma", "w")
-    of.write("""###############################################################
+    with open(ofn + ".nma", "w") as of:
+        of.write("""###############################################################
 #                                                             #
 #   vibAnalysis - version 1.2.2                               #
 #   A set of tools to analyse vibrational modes in terms of   #
@@ -1932,73 +1888,73 @@ Options:
 #   filipe _dot_ teixeira _at_ fc _dot_ up _dot_ pt           #
 #                                                             #
 ###############################################################\n""")
-    # Read Geometry, Masses, Frequencies and Vibrational Mode Displacements
-    if Opts["input"] == "OrcaHess":
-        of.write("\nOpening Hess file: %s\n\n" % (ifn))
-        system = readHess(ifn)
-    elif Opts["input"] == "G09OUT":
-        of.write("\nOpening Gaussian09 output file: %s\n\n" % (ifn))
-        system = readG09log(ifn)
-    elif Opts["input"] == "MOPAC2016":
-        of.write("\nOpening MOPAC 2016 output file: %s\n\n" % (ifn))
-        system = readMopac2016(ifn)
-    elif Opts["input"] == "PDIELEC":
-        of.write("\nOpening using PDielec library : %s\n\n" % (ifn))
-        system = readPDielec(ifn)
-    logging.debug(system.punch())
-    ## If MW, mass-weight the normal modes
-    # Orca's hess is not mass-weighted, but normalized
-    # Gaussian's log is not mass-weighted, but normalized
-    if Opts["doMWD"]:
-        of.write("\nMass-weighting the atomic displacements...\n\n")  # OLD
-        system.massWeightVibrations()
-        system.normalizeVibrations()
-    # jk system.sortVibrations()
-    system.makeADM()
-    system.checkADM()
-    # Generate quasi-redundant internal coordinated
-    of.write("\nGenerating Internal Coordinates...\n")
-    makeIC(system, useric)
-    # normalize S
-    if Opts["doMWS"]:
-        system.massWeightS()
-    system.normalizeS()
-    of.write("Internal Coordinates Generated: %d\n" % (len(system.intcoords)))
-    # print list of internal coordinates
-    of.write("""\nThis is the list of Internal Coordinates generated for
+        # Read Geometry, Masses, Frequencies and Vibrational Mode Displacements
+        if Opts["input"] == "OrcaHess":
+            of.write("\nOpening Hess file: %s\n\n" % (ifn))
+            system = readHess(ifn)
+        elif Opts["input"] == "G09OUT":
+            of.write("\nOpening Gaussian09 output file: %s\n\n" % (ifn))
+            system = readG09log(ifn)
+        elif Opts["input"] == "MOPAC2016":
+            of.write("\nOpening MOPAC 2016 output file: %s\n\n" % (ifn))
+            system = readMopac2016(ifn)
+        elif Opts["input"] == "PDIELEC":
+            of.write("\nOpening using PDielec library : %s\n\n" % (ifn))
+            system = readPDielec(ifn)
+        logging.debug(system.punch())
+        ## If MW, mass-weight the normal modes
+        # Orca's hess is not mass-weighted, but normalized
+        # Gaussian's log is not mass-weighted, but normalized
+        if Opts["doMWD"]:
+            of.write("\nMass-weighting the atomic displacements...\n\n")  # OLD
+            system.massWeightVibrations()
+            system.normalizeVibrations()
+        # jk system.sortVibrations()
+        system.makeADM()
+        system.checkADM()
+        # Generate quasi-redundant internal coordinated
+        of.write("\nGenerating Internal Coordinates...\n")
+        makeIC(system, useric)
+        # normalize S
+        if Opts["doMWS"]:
+            system.massWeightS()
+        system.normalizeS()
+        of.write("Internal Coordinates Generated: %d\n" % (len(system.intcoords)))
+        # print list of internal coordinates
+        of.write("""\nThis is the list of Internal Coordinates generated for
 this run. Please use these indexes if you whish to animate
 any one of these coordinates. If you added some user-defined
 coordinates, please be sure to re-run this program with the
 same added coordinates.\n""")
-    punchIC(of, system)
-    ## Animate modes?
-    if len(Opts["aniMode"]) > 0:
-        of.write("\n")
-        for mode in Opts["aniMode"]:
-            tfn = "%s.v%03d.xyz" % (ofn, mode)
-            of.write("Animating mode %d to file: %s\n" % (mode, tfn))
-            animateMode(tfn, system, mode - 1)
-        of.write("\n")
-    if len(Opts["anic"]) > 0:
-        of.write("\n")
-        for icidx in Opts["anic"]:
-            tfn = "%s.i%03d.xyz" % (ofn, icidx)
-            of.write("Animating internal coordinate %d to file: %s\n" % (icidx, tfn))
-            animateIC(tfn, system, icidx - 1)
-        of.write("\n")
-    ## Do the analysis
-    if Opts["doVMP"]:
-        VMP(of, system)
-    if Opts["doVMLD"]:
-        VMLD(of, system)
-    if Opts["doVMBLD"]:
-        VMBLD(of, system)
-    if Opts["doVMARD"]:
-        VMARD(of, system)
-    ## Print the final analysis
-    printResults(of, system)
-    ## Clean up
-    of.close()
+        punchIC(of, system)
+        ## Animate modes?
+        if len(Opts["aniMode"]) > 0:
+            of.write("\n")
+            for mode in Opts["aniMode"]:
+                tfn = "%s.v%03d.xyz" % (ofn, mode)
+                of.write("Animating mode %d to file: %s\n" % (mode, tfn))
+                animateMode(tfn, system, mode - 1)
+            of.write("\n")
+        if len(Opts["anic"]) > 0:
+            of.write("\n")
+            for icidx in Opts["anic"]:
+                tfn = "%s.i%03d.xyz" % (ofn, icidx)
+                of.write(
+                    "Animating internal coordinate %d to file: %s\n" % (icidx, tfn)
+                )
+                animateIC(tfn, system, icidx - 1)
+            of.write("\n")
+        ## Do the analysis
+        if Opts["doVMP"]:
+            VMP(of, system)
+        if Opts["doVMLD"]:
+            VMLD(of, system)
+        if Opts["doVMBLD"]:
+            VMBLD(of, system)
+        if Opts["doVMARD"]:
+            VMARD(of, system)
+        ## Print the final analysis
+        printResults(of, system)
 
 
 if __name__ == "__main__":

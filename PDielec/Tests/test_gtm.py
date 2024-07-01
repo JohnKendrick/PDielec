@@ -24,12 +24,13 @@ fig 2
 It also demonstrates how to use the euler angles for the layers
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import GTMcore as GTM
+import matplotlib.pyplot as plt
+import numpy as np
 import Permittivities as mat
 from matplotlib import rcParams, rcParamsDefault
+
+import GTMcore as GTM
 
 c_const = 299792458.0 # m/s
 

@@ -18,7 +18,9 @@ Read the contents of a directory containing DFT output and create a pickled file
 """
 
 import sys
+
 import dill as pickle
+
 import PDielec.__init__
 
 version = PDielec.__init__.__version__
@@ -101,12 +103,12 @@ def main():
         except EOFError:
             pass
     #
-    print("Read in {} readers".format(len(readers)))
+    print(f"Read in {len(readers)} readers")
     #
     # Loop over the readers and print out some information - assign a variable
     #
     for reader in readers:
-        print("NEW READER type={}, file={}".format(reader.type, reader.names[0]))
+        print(f"NEW READER type={reader.type}, file={reader.names[0]}")
         reader.print()
         print("LAST CELL")
         lastcell = reader.get_unit_cell()

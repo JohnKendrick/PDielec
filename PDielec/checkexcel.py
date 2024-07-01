@@ -20,10 +20,10 @@ It is used by the :mod:`~PDielec.pdmake` command to check the validity of the re
 
 """
 
-from __future__ import print_function
 import sys
-from termcolor import colored
+
 from openpyxl import load_workbook
+from termcolor import colored
 
 global threshold
 
@@ -91,7 +91,6 @@ def main():
         exit()
 
     threshold = 1.0e-3
-    separator = None
     tokens = sys.argv[1:]
     ntokens = len(tokens) - 1
     itoken = -1
@@ -153,9 +152,9 @@ def main():
         sheets.append("Settings")
         sheets.append("Scenarios")
     for sheet in sheets:
-        if not sheet in wb1:
+        if sheet not in wb1:
             continue
-        if not sheet in wb2:
+        if sheet not in wb2:
             continue
         print("Checking sheet ", sheet)
         ws1 = wb1[sheet]
@@ -185,18 +184,11 @@ def main():
         #
         # Loop over rows
         #
-        row_index = 0
-        for row1, row2 in zip(ws1.rows, ws2.rows):
-            row_index += 1
-            col_index = 0
+        for row_index, (row1, row2) in enumerate(zip(ws1.rows, ws2.rows)):
             #
             # Loop over cells
             #
-            for (
-                cell1,
-                cell2,
-            ) in zip(row1, row2):
-                col_index += 1
+            for col_index, (cell1, cell2) in enumerate(zip(row1, row2)):
                 value1 = cell1.value
                 value2 = cell2.value
                 if cell1 is None and cell2 is None:
@@ -277,31 +269,19 @@ def main():
         print(
             "  "
             + colored("ERRORS:", "red")
-            + "({}) LARGEST ON ROW,COL {},{} OF SHEET {}, {}({}) and {}({}) -- max %error={}".format(
-                nerrors,
-                row,
-                col,
-                sheet,
-                file1,
-                value1,
-                file2,
-                value2,
-                max_percentage_error,
-            )
+            + f"({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}"
         )
     elif nerrors > 0:
         print(
             "  "
             + colored("ERRORS:", "red")
-            + "({}) Dimensions of spreadsheet were wrong                                    ".format(
-                nerrors
-            )
+            + f"({nerrors}) Dimensions of spreadsheet were wrong                                    "
         )
     else:
         print(
             "  "
             + colored("OK:", "blue")
-            + " {} = {} -- max %error={}".format(file1, file2, max_percentage_error)
+            + f" {file1} = {file2} -- max %error={max_percentage_error}"
         )
     return nerrors, row, col, sheet, file1, value1, file2, value2, max_percentage_error
 

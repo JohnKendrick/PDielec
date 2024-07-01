@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 #
 # Copyright 2024 John Kendrick & Andrew Burnett
 #
@@ -18,29 +17,38 @@ FitterTab module
 """
 
 import os.path
-import numpy as np
-import PDielec.Calculator as Calculator
-from PyQt5.QtWidgets import QPushButton, QWidget, QProgressBar
-from PyQt5.QtWidgets import QComboBox, QLabel, QLineEdit, QDoubleSpinBox
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QSpinBox
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QTableWidgetItem
-from PyQt5.QtWidgets import QSizePolicy
-from PyQt5.QtWidgets import QCheckBox
-from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QCoreApplication
-from PDielec.Utilities import Debug
-from PDielec.GUI.SettingsTab import FixedQTableWidget
 
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
+import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QFileDialog,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QProgressBar,
+    QPushButton,
+    QSizePolicy,
+    QSpinBox,
+    QTableWidgetItem,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize
+
+import PDielec.Calculator as Calculator
+from PDielec.GUI.SettingsTab import FixedQTableWidget
+from PDielec.Utilities import Debug
 
 
 def is_float(element):
@@ -152,8 +160,9 @@ def read_experimental_file(
                     experimental_spectrum.append(float(row[spectrum_column - 1]))
     else:
         # Read in a xlsx file, discard alphanumerics
-        from openpyxl import load_workbook
         import warnings
+
+        from openpyxl import load_workbook
 
         if debug:
             print("FitterTab: Reading xlsx file::")
@@ -161,10 +170,7 @@ def read_experimental_file(
             warnings.simplefilter("ignore")
             wb = load_workbook(filename=file_name, read_only=True)
         sheetnames = wb.sheetnames
-        if sheet_name in sheetnames:
-            ws = wb[sheet_name]
-        else:
-            ws = wb.worksheets[0]
+        ws = wb[sheet_name] if sheet_name in sheetnames else wb.worksheets[0]
         for row in ws.rows:
             if isinstance(row[frequency_column - 1].value, (int, float, complex)):
                 experimental_frequencies.append(row[frequency_column - 1].value)
@@ -733,18 +739,18 @@ class FitterTab(QWidget):
         hbox = QHBoxLayout()
         self.cross_correlation_le = QLineEdit(self)
         self.cross_correlation_le.setEnabled(False)
-        self.cross_correlation_le.setText("{}".format(0.0))
+        self.cross_correlation_le.setText(f"{0.0}")
         self.lag_frequency_le = QLineEdit(self)
         self.lag_frequency_le.setEnabled(False)
-        self.lag_frequency_le.setText("{}".format(0.0))
+        self.lag_frequency_le.setText(f"{0.0}")
         self.frequency_scaling_le = QLineEdit(self)
         self.frequency_scaling_le.setEnabled(False)
         self.frequency_scaling_le.setText(
-            "{}".format(self.settings["Frequency scaling factor"])
+            f"{self.settings['Frequency scaling factor']}"
         )
         self.rmse_le = QLineEdit(self)
         self.rmse_le.setEnabled(False)
-        self.rmse_le.setText("{}".format(0.0))
+        self.rmse_le.setText(f"{0.0}")
         hbox.addWidget(self.cross_correlation_le)
         hbox.addWidget(self.lag_frequency_le)
         hbox.addWidget(self.frequency_scaling_le)
@@ -873,7 +879,7 @@ class FitterTab(QWidget):
         self.refreshRequired = True
         try:
             self.settings["HPFilter lambda"] = float(value)
-        except:
+        except Exception:
             print("Failed to convert to float", value)
         return
 
@@ -898,7 +904,7 @@ class FitterTab(QWidget):
         self.refreshRequired = True
         try:
             self.settings["Spectrum scaling factor"] = float(value)
-        except:
+        except Exception:
             print("Failed to convert to float", value)
         return
 
@@ -942,7 +948,7 @@ class FitterTab(QWidget):
         self.refreshRequired = True
         try:
             self.settings["Spectral difference threshold"] = float(value)
-        except:
+        except Exception:
             print("Failed to convert to float", value)
         return
 
@@ -969,7 +975,7 @@ class FitterTab(QWidget):
         self.refreshRequired = True
         try:
             self.settings["Frequency scaling factor"] = float(value)
-        except:
+        except Exception:
             print("Failed to convert to float", value)
         return
 
@@ -1096,7 +1102,7 @@ class FitterTab(QWidget):
                 scale * x, experiment, lw=2, color=cmap(cmap_index), label="Experiment"
             )
             lines.append(line)
-        labels = [l.get_label() for l in lines]
+        labels = [label.get_label() for label in lines]
         if self.settings["Independent y-axes"]:
             self.subplot2.set_ylabel("Experiment")
             self.subplot2.set_ylim(bottom=0.0)
@@ -1141,7 +1147,7 @@ class FitterTab(QWidget):
         debugger.print("replotButton2Clicked", self.refreshRequired)
         self.refresh()
         self.replot()
-        final_point = self.optimiseFit()
+        self.optimiseFit()
         self.fittingButton.setText("Perform fitting")
         self.calculationInProgress = False
         debugger.print("Finished:: fittingButtonClicked")
@@ -1255,12 +1261,8 @@ class FitterTab(QWidget):
         debugger.print("Start:: optimiseFunction", variables)
         self.functionCalls += 1
         nvariables = len(variables)
-        self.fittingButton.setText(
-            "Interrupt fitting ({}/{})".format(
-                self.functionCalls,
-                nvariables + 1 + nvariables * self.settings["Number of iterations"],
-            )
-        )
+        nnn = nvariables + 1 + nvariables * self.settings["Number of iterations"]
+        self.fittingButton.setText(f"Interrupt fitting ({self.functionCalls}/{nnn})")
         if self.settings["Optimise frequency scaling"]:
             sigmas = variables[:-1]
             scaling_factor = variables[-1]
@@ -1321,7 +1323,7 @@ class FitterTab(QWidget):
             # Sigma and check / unchecked column
             items = []
             itemFlags = []
-            item = QTableWidgetItem("{0:.2f}".format(sigma))
+            item = QTableWidgetItem(f"{sigma:.2f}")
             if self.modes_selected[i]:
                 if self.modes_fitted[i]:
                     item.setCheckState(Qt.Checked)
@@ -1346,10 +1348,10 @@ class FitterTab(QWidget):
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
             # Frequency column cm-1
-            items.append(QTableWidgetItem("{0:.4f}".format(f)))
+            items.append(QTableWidgetItem(f"{f:.4f}"))
             itemFlags.append(otherFlags)
             # Intensity column Debye2/Angs2/amu
-            items.append(QTableWidgetItem("{0:.4f}".format(intensity)))
+            items.append(QTableWidgetItem(f"{intensity:.4f}"))
             itemFlags.append(otherFlags)
             for j, (item, flag) in enumerate(zip(items, itemFlags)):
                 item.setFlags(flag)
@@ -1514,7 +1516,7 @@ class FitterTab(QWidget):
                 self.notebook.settingsTab.sigmas_cm1[row] = new_value
                 self.notebook.settingsTab.requestRefresh()
                 self.notebook.settingsTab.redraw_output_tw()
-            except:
+            except Exception:
                 print("Failed to convert to float", item.txt())
         elif col == 1:
             self.redraw_sigmas_tw()
@@ -1707,12 +1709,12 @@ class FitterTab(QWidget):
                 spectral_threshold=spectral_threshold,
                 debug=debugger.state(),
             )
-        self.cross_correlation_le.setText("{:6.4f}".format(self.xcorr0))
-        self.lag_frequency_le.setText("{:8.2f}".format(self.lag))
+        self.cross_correlation_le.setText(f"{self.xcorr0:6.4f}")
+        self.lag_frequency_le.setText(f"{self.lag:8.2f}")
         self.frequency_scaling_le.setText(
-            "{:8.2f}".format(self.settings["Frequency scaling factor"])
+            f"{self.settings['Frequency scaling factor']:8.2f}"
         )
-        self.rmse_le.setText("{:.2e}".format(self.rmse))
+        self.rmse_le.setText(f"{self.rmse:.2e}")
         self.replot()
         #
         # Unblock signals after refresh

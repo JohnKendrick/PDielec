@@ -17,14 +17,16 @@
 A module to read contents of a directory containing Crystal input and output files.
 """
 
-import re
 import math
 import os
+import re
+
 import numpy as np
+
 from PDielec.Constants import amu, hartree2ev
-from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.IO import pdielec_io
+from PDielec.UnitCell import UnitCell
 
 
 class CrystalOutputReader(GenericOutputReader):
@@ -372,7 +374,7 @@ class CrystalOutputReader(GenericOutputReader):
         n = 0
         massweight = np.zeros(nmodes)
         for a in range(self.nions):
-            for j in range(3):
+            for _j in range(3):
                 massweight[n] = 1.0 / math.sqrt(self.masses[a] * amu)
                 n = n + 1
         # We read the hessian and store the mass weighted matrix
@@ -422,7 +424,7 @@ class CrystalOutputReader(GenericOutputReader):
         nmodes = 3 * self.nions
         self.frequencies = []
         # Loop over all the modes
-        for j in range(nmodes):
+        for _j in range(nmodes):
             # They come in columns of 6 so after 6 modes we read the frequencies and initialse the 6 new modes
             n = n + 1
             if n >= 6:
@@ -510,7 +512,7 @@ class CrystalOutputReader(GenericOutputReader):
         """
         fd2 = pdielec_io(filename, "r")
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             b = []
             line = fd2.readline()
             b.append(
@@ -553,7 +555,7 @@ class CrystalOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
@@ -700,7 +702,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.species = []
         self.species_list = []
         self.atom_type_list = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             species = line.split()[3].capitalize()
             self.species_list.append(species)

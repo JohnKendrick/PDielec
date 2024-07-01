@@ -16,27 +16,32 @@
 NoteBook module
 """
 
-import sys
 import copy
-import psutil
 import os
-from PyQt5.QtWidgets import QWidget, QTabWidget
-from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QMessageBox
+import sys
+
+import psutil
 from PyQt5.QtCore import Qt
-from PDielec.GUI.MainTab import MainTab
-from PDielec.GUI.SettingsTab import SettingsTab
-from PDielec.GUI.PowderScenarioTab import PowderScenarioTab
-from PDielec.GUI.SingleCrystalScenarioTab import SingleCrystalScenarioTab
-from PDielec.GUI.PlottingTab import PlottingTab
-from PDielec.GUI.AnalysisTab import AnalysisTab
-from PDielec.GUI.ViewerTab import ViewerTab
-from PDielec.GUI.FitterTab import FitterTab
-from PDielec.Utilities import Debug
-from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
+from PyQt5.QtWidgets import (
+    QApplication,
+    QFileDialog,
+    QMessageBox,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
+
 import PDielec.Calculator as Calculator
+from PDielec.GUI.AnalysisTab import AnalysisTab
+from PDielec.GUI.FitterTab import FitterTab
+from PDielec.GUI.MainTab import MainTab
+from PDielec.GUI.PlottingTab import PlottingTab
+from PDielec.GUI.PowderScenarioTab import PowderScenarioTab
+from PDielec.GUI.SettingsTab import SettingsTab
+from PDielec.GUI.SingleCrystalScenarioTab import SingleCrystalScenarioTab
+from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
+from PDielec.GUI.ViewerTab import ViewerTab
+from PDielec.Utilities import Debug
 
 
 class NoteBook(QWidget):
@@ -351,7 +356,7 @@ class NoteBook(QWidget):
             debugger.print(
                 "scenario type has been set from copyFromIndex", scenarioType
             )
-        elif scenarioType == None:
+        elif scenarioType is None:
             # The default behaviour with no parameters in the call, use the last scenario in the list
             last = self.scenarios[-1]
             scenarioType = last.scenarioType
@@ -416,51 +421,50 @@ class NoteBook(QWidget):
         qf.setWindowTitle("Save the program settings to a file")
         debugger.print("print_settings, directory=", self.mainTab.directory)
         qf.setDirectory(self.mainTab.directory)
-        if filename == None:
+        if filename is None:
             filename, selection = qf.getSaveFileName()
         if filename == "":
             debugger.print("Start:: print_settings, filename is blank")
             return
         print("Current settings will be saved to " + filename)
-        fd = open(filename, "w")
-        # Handle the special case of the first scenario
-        print("#", file=fd)
-        print("# Handle the special case of the first scenario", file=fd)
-        print("#", file=fd)
-        print(
-            'self.notebook.switchScenario(0,scenarioType="'
-            + self.scenarios[0].scenarioType
-            + '")',
-            file=fd,
-        )
-        print("#", file=fd)
-        # Print settings of mainTab
-        self.print_tab_settings(self.mainTab, "mainTab", fd)
-        # print('tab.requestRefresh()',file=fd)
-        # Print settings of settingsTab
-        self.print_tab_settings(self.settingsTab, "settingsTab", fd)
-        print("tab.sigmas_cm1 =", self.settingsTab.sigmas_cm1, file=fd)
-        # print('tab.requestRefresh()',file=fd)
-        # Print settings of scenarios
-        for i, tab in enumerate(self.scenarios):
-            if i == 0:
-                self.print_tab_settings(
-                    tab, "scenarios[{}]".format(i), fd, new_scenario=False
-                )
-            else:
-                self.print_tab_settings(
-                    tab, "scenarios[{}]".format(i), fd, new_scenario=True
-                )
+        with open(filename, "w") as fd:
+            # Handle the special case of the first scenario
+            print("#", file=fd)
+            print("# Handle the special case of the first scenario", file=fd)
+            print("#", file=fd)
+            print(
+                'self.notebook.switchScenario(0,scenarioType="'
+                + self.scenarios[0].scenarioType
+                + '")',
+                file=fd,
+            )
+            print("#", file=fd)
+            # Print settings of mainTab
+            self.print_tab_settings(self.mainTab, "mainTab", fd)
             # print('tab.requestRefresh()',file=fd)
-        self.print_tab_settings(self.analysisTab, "analysisTab", fd)
-        # print('tab.requestRefresh()',file=fd)
-        self.print_tab_settings(self.viewerTab, "viewerTab", fd)
-        # print('tab.requestRefresh()',file=fd)
-        self.print_tab_settings(self.fitterTab, "fitterTab", fd)
-        # print('tab.requestRefresh()',file=fd)
-        self.print_tab_settings(self.plottingTab, "plottingTab", fd)
-        # print('tab.requestRefresh()',file=fd)
-        fd.close()
+            # Print settings of settingsTab
+            self.print_tab_settings(self.settingsTab, "settingsTab", fd)
+            print("tab.sigmas_cm1 =", self.settingsTab.sigmas_cm1, file=fd)
+            # print('tab.requestRefresh()',file=fd)
+            # Print settings of scenarios
+            for i, tab in enumerate(self.scenarios):
+                if i == 0:
+                    self.print_tab_settings(
+                        tab, f"scenarios[{i}]", fd, new_scenario=False
+                    )
+                else:
+                    self.print_tab_settings(
+                        tab, f"scenarios[{i}]", fd, new_scenario=True
+                    )
+                # print('tab.requestRefresh()',file=fd)
+            self.print_tab_settings(self.analysisTab, "analysisTab", fd)
+            # print('tab.requestRefresh()',file=fd)
+            self.print_tab_settings(self.viewerTab, "viewerTab", fd)
+            # print('tab.requestRefresh()',file=fd)
+            self.print_tab_settings(self.fitterTab, "fitterTab", fd)
+            # print('tab.requestRefresh()',file=fd)
+            self.print_tab_settings(self.plottingTab, "plottingTab", fd)
+            # print('tab.requestRefresh()',file=fd)
         debugger.print("Finished:: print_settings, filename=", filename)
         return
 
@@ -508,7 +512,7 @@ class NoteBook(QWidget):
                 pass
             elif item == "Mass definition":
                 print(
-                    "tab.settings['" + item + "'] = '{}'".format(tab.settings[item]),
+                    "tab.settings['" + item + f"'] = '{tab.settings[item]}'",
                     file=fd,
                 )
                 # Check to see if the mass_definition is gui, if so set all the masses
@@ -525,7 +529,7 @@ class NoteBook(QWidget):
                     print(
                         "tab.settings['"
                         + item
-                        + "'] = '{}'".format(tab.settings[item]),
+                        + f"'] = '{tab.settings[item]}'",
                         file=fd,
                     )
                 else:
@@ -634,7 +638,7 @@ class NoteBook(QWidget):
         # If scenarioType is specified in the call then force that type
         # Otherwise switch type
         #
-        if scenarioType == None:
+        if scenarioType is None:
             if scenario.scenarioType == "Powder":
                 self.currentScenarioTab = SingleCrystalScenarioTab
             else:

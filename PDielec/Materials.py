@@ -18,15 +18,17 @@ Materials DataBase
 An interface to the spreadsheet which holds materials data
 """
 
-import numpy as np
-import PDielec.DielectricFunction as DielectricFunction
-import PDielec.Calculator as Calculator
-from PDielec.Utilities import Debug
-from PDielec.UnitCell import UnitCell
-from PDielec import __file__ as PDielec_init_filename
-import openpyxl as xl
 import os
 import sys
+
+import numpy as np
+import openpyxl as xl
+
+import PDielec.Calculator as Calculator
+import PDielec.DielectricFunction as DielectricFunction
+from PDielec import __file__ as PDielec_init_filename
+from PDielec.UnitCell import UnitCell
+from PDielec.Utilities import Debug
 
 
 class MaterialsDataBase:
@@ -303,11 +305,11 @@ class MaterialsDataBase:
                             worksheet["K" + str(i + 1)],
                         ]
                     ]
-                elif "a:" == token:
+                elif token == "a:":
                     a = float(worksheet[cell2].value)
-                elif "b:" == token:
+                elif token == "b:":
                     b = float(worksheet[cell2].value)
-                elif "c:" == token:
+                elif token == "c:":
                     c = float(worksheet[cell2].value)
                 elif "alpha" in token:
                     alpha = float(worksheet[cell2].value)
@@ -428,8 +430,8 @@ class MaterialsDataBase:
                 permittivity = Calculator.calculate_permittivity(nk)
                 permittivities.append(permittivity)
                 vs_cm1.append(v)
-            except:
-                print("Error in Tabulated: ", a.value, c.value, d.value)
+            except Exception as exception:
+                print("Error in Tabulated: ", a.value, c.value, d.value, exception)
         material = Tabulated(
             sheet, vs_cm1, permittivities=permittivities, density=density
         )
@@ -490,7 +492,6 @@ class MaterialsDataBase:
         """
         # Lorentz-Drude model for permittivity
         epsilon_infinity = np.zeros((3, 3))
-        directions = [[], [], []]
         omegas = [[], [], []]
         strengths = [[], [], []]
         gammas = [[], [], []]
@@ -513,7 +514,7 @@ class MaterialsDataBase:
                     strengths[index].append(float(d.value))
                 if e.value is not None:
                     gammas[index].append(float(e.value))
-            except:
+            except Exception as exception:
                 print(
                     "Error in Lorentz-Drude: ",
                     a.value,
@@ -521,6 +522,7 @@ class MaterialsDataBase:
                     c.value,
                     d.value,
                     e.value,
+                    exception,
                 )
                 return
         material = DrudeLorentz(
@@ -555,7 +557,6 @@ class MaterialsDataBase:
         """
         # FPSQ model for permittivity
         epsilon_infinity = np.zeros((3, 3))
-        directions = [[], [], []]
         omega_tos = [[], [], []]
         gamma_tos = [[], [], []]
         omega_los = [[], [], []]
@@ -582,7 +583,7 @@ class MaterialsDataBase:
                     omega_los[index].append(float(e.value))
                 if f.value is not None:
                     gamma_los[index].append(float(f.value))
-            except:
+            except Exception as exception:
                 print(
                     "Error in FPSQ: ",
                     a.value,
@@ -591,6 +592,7 @@ class MaterialsDataBase:
                     d.value,
                     e.value,
                     f.value,
+                    exception,
                 )
                 return
         material = FPSQ(
@@ -625,7 +627,6 @@ class MaterialsDataBase:
         None
         """
         # Sellmeier model for refractive index
-        directions = []
         Bs = []
         Cs = []
         for b, c in zip(worksheet["A"][1:], worksheet["B"][1:]):
@@ -634,8 +635,8 @@ class MaterialsDataBase:
                     Bs.append(float(b.value))
                 if c.value is not None:
                     Cs.append(float(c.value))
-            except:
-                print("Error in Sellmeier: ", b.value, c.value)
+            except Exception as exception:
+                print("Error in Sellmeier: ", b.value, c.value, exception)
                 return
         material = Sellmeier(sheet, Bs, Cs, density=density, cell=unitCell)
         return material
@@ -797,9 +798,7 @@ class Material:
         if "Tabulate" in self.type:
             low = self.permittivityObject.getLowestFrequency()
             high = self.permittivityObject.getHighestFrequency()
-            result += " freq range {:.0f}-{:.0f}".format(
-                low, high
-            )  # + ' value at 0 {}'.format(self.permittivityObject.function()(0))
+            result += f" freq range {low:.0f}-{high:.0f}"  # + ' value at 0 {}'.format(self.permittivityObject.function()(0))
         # result += ' value at 0 {}'.format(self.permittivityObject.function()(0))
         return result
 
@@ -1417,8 +1416,5 @@ class Tabulated(Material):
         -------
         None
         """
-        if isinstance(eps, float):
-            eps = eps * np.eye(3)
-        else:
-            eps = np.array(eps)
+        eps = eps * np.eye(3) if isinstance(eps, float) else np.array(eps)
         self.permittivityObject.setEpsilonInfinity(eps)

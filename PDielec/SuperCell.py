@@ -18,7 +18,8 @@ The SuperCell module
 """
 
 import numpy as np
-from PDielec.Plotter import print_reals, print_ints, print_strings
+
+from PDielec.Plotter import print_ints, print_reals
 
 
 class SuperCell:
@@ -117,8 +118,8 @@ class SuperCell:
         print_ints("Image_specifier", self.imageSpecifier)
         self.unitCell.print()
         print("SuperCell Image list")
-        for l in self.imageList:
-            print_ints("", l)
+        for image in self.imageList:
+            print_ints("", image)
         corners, edges = self.getBoundingBox()
         print("SuperCell Corners")
         for corner in corners:
@@ -176,7 +177,7 @@ class SuperCell:
         """
         names = []
         cell_names = self.unitCell.element_names
-        for i, j, k in self.imageList:
+        for _i, _j, _k in self.imageList:
             names.extend(cell_names)
         # end for i,j,k
         return names
@@ -207,7 +208,7 @@ class SuperCell:
         normal_modes = np.zeros((nmodes, mult * nions3))
         for mode_index, mode in enumerate(modes):
             pos = 0
-            for i, j, k in self.imageList:
+            for _i, _j, _k in self.imageList:
                 for m in mode:
                     normal_modes[mode_index, pos] = m
                     pos += 1
@@ -265,18 +266,16 @@ class SuperCell:
         self.bonds = []
         natoms = self.unitCell.nions
         bonds = self.unitCell.bonds
-        cell = 0
-        for i, j, k in self.imageList:
+        for cell, (_i, _j, _k) in enumerate(self.imageList):
             for na, nb in bonds:
                 na += cell * natoms
                 nb += cell * natoms
                 self.bonds.append((na, nb))
             # end for na,nb
-            cell += 1
         # end for i,j,k
         return self.bonds
 
-    def getBoundingBox(self, originABC=[0, 0, 0]):
+    def getBoundingBox(self, originABC=None):
         """
         Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
 
@@ -305,6 +304,8 @@ class SuperCell:
         -----
         The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
         """
+        if originABC is None:
+            originABC = [0, 0, 0]
         i, j, k = self.imageSpecifier
         i = float(i)
         j = float(j)
@@ -391,7 +392,7 @@ class SuperCell:
         mass = 0.0
         cm_fractional = np.zeros(3)
         unit_mass, unit_cm_xyz, unit_cm_fractional = (
-            self.unitCell.calculateCentreOfMass(output=all)
+            self.unitCell.calculateCentreOfMass(output="all")
         )
         for i, j, k in self.imageList:
             cm_fractional[0] += i + unit_cm_fractional[0]
@@ -401,11 +402,8 @@ class SuperCell:
         # end for i,j,k
         cm_fractional = cm_fractional / len(self.imageList)
         cm_xyz = self.unitCell.convert_abc_to_xyz(cm_fractional)
-        if output == "xyz":
-            return cm_xyz
-        elif output == "mass":
-            return mass
-        elif output == "abc":
-            return cm_fractional
-        else:
-            return mass, cm_xyz, cm_fractional
+        return {"xyz"   : cm_xyz,
+                "mass"  : mass,
+                "abc"   : cm_fractional,
+                "all"   : (mass, cm_xyz, cm_fractional)
+               }.get(output)

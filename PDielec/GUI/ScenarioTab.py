@@ -17,14 +17,20 @@ ScenarioTab module
 """
 
 # -*- coding: utf8 -*-
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel, QLineEdit
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtCore import Qt
-from PDielec.Utilities import Debug
+import os
+
+from PyQt5.QtWidgets import (
+    QFileDialog,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QWidget,
+)
+
 from PDielec import __file__ as PDielec_init_filename
 from PDielec.Materials import MaterialsDataBase
-from PDielec.Materials import Material
-import os
+from PDielec.Utilities import Debug
 
 
 class ScenarioTab(QWidget):
@@ -205,10 +211,7 @@ class ScenarioTab(QWidget):
         int
             The number of spectra requiring recalculation.
         """
-        if self.refreshRequired:
-            result = self.noCalculationsRequired
-        else:
-            result = 0
+        result = self.noCalculationsRequired if self.refreshRequired else 0
         debugger.print(self.settings["Legend"], "getNoCalculationsRequired", result)
         return result
 

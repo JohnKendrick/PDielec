@@ -16,12 +16,14 @@
 AbinitOutputReader module
 """
 
-import re
 import math
+import re
+
 import numpy as np
+
 from PDielec.Constants import amu, angs2bohr, atomic_number_to_element, hartree2ev
-from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 class AbinitOutputReader(GenericOutputReader):
@@ -463,10 +465,10 @@ class AbinitOutputReader(GenericOutputReader):
         zerof_optical_dielectric : An attribute, typically a 2D list or an array, that this
                                    method updates based on the data read from the file.
         """
-        for i in range(3):
+        for _i in range(3):
             linea = self.file_descriptor.readline().split()
         nlines = 9
-        for i in range(nlines):
+        for _i in range(nlines):
             linea = self.file_descriptor.readline().split()
             if not linea:
                 linea = self.file_descriptor.readline().split()
@@ -546,10 +548,10 @@ class AbinitOutputReader(GenericOutputReader):
         """
         nmodes = self.nions * 3
         hessian = np.zeros((nmodes, nmodes))
-        for i in range(4):
+        for _i in range(4):
             self.file_descriptor.readline()
         nlines = nmodes * nmodes
-        for i in range(nlines):
+        for _i in range(nlines):
             linea = self.file_descriptor.readline().split()
             if not linea:
                 linea = self.file_descriptor.readline().split()
@@ -591,11 +593,11 @@ class AbinitOutputReader(GenericOutputReader):
         numpy.ndarray
             A 2D array where each row represents a field direction and each column represents an atomic displacement in the x, y, and z directions.
         """
-        for i in range(5):
+        for _i in range(5):
             self.file_descriptor.readline()
         #  The charges are calculated in two ways, we take the mean of the phonon and the field
         nlines = 9 * self.nions
-        for i in range(nlines):
+        for _i in range(nlines):
             linea = self.file_descriptor.readline().split()
             if not linea:
                 linea = self.file_descriptor.readline().split()
@@ -651,7 +653,7 @@ class AbinitOutputReader(GenericOutputReader):
         linea = line.split()[1:]
         fractional = []
         fractional.append([float(xyz) for xyz in linea])
-        for i in range(self.nions - 1):
+        for _i in range(self.nions - 1):
             linea = self.file_descriptor.readline().split()
             fractional.append([float(xyz) for xyz in linea])
         # end for i

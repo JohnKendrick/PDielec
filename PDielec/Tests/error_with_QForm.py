@@ -13,9 +13,17 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
-from PyQt5.QtWidgets import QFormLayout, QLabel, QPushButton
-from PyQt5.QtGui import QPalette, QColor
+
+from PyQt5.QtGui import QColor, QPalette
+from PyQt5.QtWidgets import (
+    QApplication,
+    QFormLayout,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    QWidget,
+)
+
 
 class MainWindow(QMainWindow):
 

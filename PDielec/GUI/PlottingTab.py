@@ -16,23 +16,29 @@
 PlottingTab module
 """
 
-import os.path
-import os
-import numpy as np
-from PyQt5.QtWidgets import QPushButton, QWidget
-from PyQt5.QtWidgets import QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets import QProgressBar, QApplication
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QSpinBox, QDoubleSpinBox
-from PyQt5.QtWidgets import QSizePolicy
-from PyQt5.QtCore import QCoreApplication, Qt
-from PDielec.Constants import avogadro_si, angstrom
-
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
+import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QSizePolicy,
+    QSpinBox,
+    QVBoxLayout,
+    QWidget,
+)
+
+from PDielec.Constants import avogadro_si
 from PDielec.Utilities import Debug
 
 possible_frequency_units = [
@@ -61,10 +67,7 @@ def isThisAFrequencyUnit(unit):
         True if this is a frequency unit, False if a wavelength.
     """
     index = possible_frequency_units.index(unit)
-    if index <= 2:
-        result = True
-    else:
-        result = False
+    result = index <= 2
     return result
 
 
@@ -333,7 +336,7 @@ class PlottingTab(QWidget):
         self.funits_cb = QComboBox(self)
         self.funits_cb.addItems(possible_frequency_units)
         self.funits_cb.activated.connect(self.on_funits_cb_activated)
-        index = possible_frequency_units.index((self.settings["Frequency unit"]))
+        index = possible_frequency_units.index(self.settings["Frequency unit"])
         self.funits_cb.setCurrentIndex(index)
         if isThisAFrequencyUnit(self.settings["Frequency unit"]):
             self.funits_cb.setToolTip("Set the frequency unit")
@@ -369,7 +372,7 @@ class PlottingTab(QWidget):
             self.molar_cb_current_index = self.molar_definitions.index(
                 self.settings["Molar definition"]
             )
-        except:
+        except Exception:
             self.molar_cb_current_index = 0
             self.settings["Molar definition"] = self.molar_definitions[
                 self.molar_cb_current_index
@@ -525,7 +528,7 @@ class PlottingTab(QWidget):
         None
         """
         debugger.print("Start:: requestRefresh")
-        self.refreshRequired
+        self.refreshRequired = True
         debugger.print("Finished:: requestRefresh")
         return
 
@@ -587,7 +590,6 @@ class PlottingTab(QWidget):
         if ngui <= 2:
             return
         vinc = (vmax - vmin) / (ngui - 1)
-        ncm1 = len(np.arange(float(vmin), float(vmax) + 0.5 * float(vinc), float(vinc)))
         self.settings["Frequency increment"] = vinc
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
@@ -624,7 +626,6 @@ class PlottingTab(QWidget):
         debugger.print("Start:: on_vmin_changed")
         self.vmin_sb.blockSignals(True)
         vmin = self.vmin_sb.value()
-        vmax = self.vmax_sb.value()
         if isThisAFrequencyUnit(self.settings["Frequency unit"]):
             self.settings["Minimum frequency"] = convert_frequency_units(
                 vmin, self.settings["Frequency unit"], "wavenumber"
@@ -662,7 +663,6 @@ class PlottingTab(QWidget):
         """
         debugger.print("Start:: on_vmax_changed")
         self.vmax_sb.blockSignals(True)
-        vmin = self.vmin_sb.value()
         vmax = self.vmax_sb.value()
         if isThisAFrequencyUnit(self.settings["Frequency unit"]):
             self.settings["Maximum frequency"] = convert_frequency_units(
@@ -784,7 +784,7 @@ class PlottingTab(QWidget):
             self.frequency_form_label.setToolTip(
                 "Choose minimum, maximum and increment for wavelength"
             )
-        index = possible_frequency_units.index((self.settings["Frequency unit"]))
+        index = possible_frequency_units.index(self.settings["Frequency unit"])
         self.funits_cb.setCurrentIndex(index)
         index = self.plot_type_cb.findText(
             self.settings["Plot type"], Qt.MatchFixedString
@@ -794,7 +794,7 @@ class PlottingTab(QWidget):
             self.molar_cb_current_index = self.molar_definitions.index(
                 self.settings["Molar definition"]
             )
-        except:
+        except Exception:
             self.molar_cb_current_index = 0
             self.settings["Molar definition"] = self.molar_definitions[
                 self.molar_cb_current_index
@@ -817,7 +817,7 @@ class PlottingTab(QWidget):
         QCoreApplication.processEvents()
         debugger.print("calling plot from refresh")
         self.plot()
-        refreshRequired = False
+        self.refreshRequired = False
         debugger.print("Finished:: refresh", force)
         return
 
@@ -1113,7 +1113,7 @@ class PlottingTab(QWidget):
                 powder_legends,
                 molarAbsorptionCoefficients,
             )
-            if not self.settings["Molar definition"] == "Unit cells":
+            if self.settings["Molar definition"] != "Unit cells":
                 # If some other molar definition has been used then write that out too
                 molarAbsorptionCoefficients_mols = []
                 molar_scaling = (

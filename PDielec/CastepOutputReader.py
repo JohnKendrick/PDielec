@@ -17,11 +17,13 @@
 CastepOutputReader module
 """
 
-import re
 import os
+import re
+
 import numpy as np
-from PDielec.UnitCell import UnitCell
+
 from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 class CastepOutputReader(GenericOutputReader):
@@ -63,9 +65,7 @@ class CastepOutputReader(GenericOutputReader):
             If the first filename does not contain '.castep' or '.phonon', implying it may not be suitable for initializing this class instance as intended. (Note: This exception raising is implied and should ideally be added to the code to handle cases where filenames do not meet expected criteria.)
         """
         GenericOutputReader.__init__(self, filenames)
-        if filenames[0].find(".castep"):
-            seedname, ext = os.path.splitext(filenames[0])
-        elif filenames[0].find(".phonon"):
+        if filenames[0].find(".castep") or filenames[0].find(".phonon"):
             seedname, ext = os.path.splitext(filenames[0])
         self._castepfile = seedname + ".castep"
         self._phononfile = seedname + ".phonon"
@@ -224,16 +224,16 @@ class CastepOutputReader(GenericOutputReader):
         frequencies = []
         intensities = []
         normal_modes = []
-        for imode in range(self._nbranches):
+        for _imode in range(self._nbranches):
             line = self.file_descriptor.readline()
             frequencies.append(float(line.split()[1]))
             intensities.append(float(line.split()[2]))
 
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
-        for imode in range(self._nbranches):
+        for _imode in range(self._nbranches):
             a = []
-            for ion in range(self.nions):
+            for _ion in range(self.nions):
                 line = self.file_descriptor.readline()
                 a.append(
                     [
@@ -413,7 +413,7 @@ class CastepOutputReader(GenericOutputReader):
         self.atom_type_list = []
         self.species = []
         species_list = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             atom_type = line.split()[1].capitalize()
             species_list.append(atom_type)
@@ -464,7 +464,7 @@ class CastepOutputReader(GenericOutputReader):
             self._ion_index_type[self.nspecies] = species
             self.masses_per_type.append(mass)
             self.nspecies += 1
-            for j in range(nions):
+            for _j in range(nions):
                 self.masses.append(mass)
             line = self.file_descriptor.readline()
         # end while loop
@@ -488,7 +488,7 @@ class CastepOutputReader(GenericOutputReader):
         """
         line = self.file_descriptor.readline()
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             b = []
             line = self.file_descriptor.readline()
             b.append([float(f) for f in line.split()[2:5]])
@@ -599,7 +599,7 @@ class CastepOutputReader(GenericOutputReader):
         -------
         None
         """
-        for i in range(self.nspecies):
+        for _i in range(self.nspecies):
             line = self.file_descriptor.readline()
             self._pspots[line.split()[0]] = line.split()[1]
         return

@@ -17,12 +17,14 @@
 QEOutputReader: Read the contents of a QE output file containing QE dynamical matrix.
 """
 
-import re
 import math
+import re
+
 import numpy as np
+
 from PDielec.Constants import amu, angs2bohr, hartree2ev
-from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 class QEOutputReader(GenericOutputReader):
@@ -150,7 +152,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.nions = int(line.split()[4])
         if self.debug:
-            print("_read_nions: nions={}".format(self.nions))
+            print(f"_read_nions: nions={self.nions}")
         return
 
     def _read_pressure(self, line):
@@ -174,7 +176,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.pressure = float(line.split()[5]) / 10.0
         if self.debug:
-            print("_read_pressure: pressure={}".format(self.pressure))
+            print(f"_read_pressure: pressure={self.pressure}")
         return
 
     def _read_celldm1(self, line):
@@ -212,7 +214,7 @@ class QEOutputReader(GenericOutputReader):
         if self._alat is None:
             self._alat = t
         if self.debug:
-            print("_read_celldm1: _alat={}".format(self._alat))
+            print(f"_read_celldm1: _alat={self._alat}")
         return
 
     def _read_alat(self, line):
@@ -253,7 +255,7 @@ class QEOutputReader(GenericOutputReader):
         if self._alat is None:
             self._alat = t
         if self.debug:
-            print("_read_alat: _alat={}".format(self._alat))
+            print(f"_read_alat: _alat={self._alat}")
         return
 
     def _read_alat2(self, line):
@@ -290,7 +292,7 @@ class QEOutputReader(GenericOutputReader):
         if self._alat is None:
             self._alat = t
         if self.debug:
-            print("_read_alat2: _alat={}".format(self._alat))
+            print(f"_read_alat2: _alat={self._alat}")
         return
 
     def _read_electrons(self, line):
@@ -322,7 +324,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.electrons = float(line.split()[4])
         if self.debug:
-            print("_read_electrons: electrons={}".format(self.electrons))
+            print(f"_read_electrons: electrons={self.electrons}")
         return
 
     def _read_energy(self, line):
@@ -357,7 +359,7 @@ class QEOutputReader(GenericOutputReader):
         self.final_energy_without_entropy = float(line.split()[3]) * hartree2ev / 2.0
         self.final_free_energy = float(line.split()[3]) * hartree2ev / 2.0
         if self.debug:
-            print("_read_energy: energy={}".format(self.final_free_energy))
+            print(f"_read_energy: energy={self.final_free_energy}")
         return
 
     def _read_energy_cutoff(self, line):
@@ -390,7 +392,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.energy_cutoff = float(line.split()[3]) * hartree2ev / 2.0
         if self.debug:
-            print("_read_energy_cutoff: energy_cutoff={}".format(self.energy_cutoff))
+            print(f"_read_energy_cutoff: energy_cutoff={self.energy_cutoff}")
         return
 
     def _read_kpoints(self, line):
@@ -417,7 +419,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.kpoints = int(line.split()[4])
         if self.debug:
-            print("_read_kpoints: kpoints={}".format(self.kpoints))
+            print(f"_read_kpoints: kpoints={self.kpoints}")
         return
 
     def _read_kpoint_grid(self, line):
@@ -445,7 +447,7 @@ class QEOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         self.kpoint_grid = [float(f) for f in line.split()[0:3]]
         if self.debug:
-            print("_read_kpoints_grid kpoint_grid={}".format(self.kpoint_grid))
+            print(f"_read_kpoints_grid kpoint_grid={self.kpoint_grid}")
         return
 
     def _read_header(self, line):
@@ -478,7 +480,7 @@ class QEOutputReader(GenericOutputReader):
             t = angs2bohr
         self._alat = t
         if self.debug:
-            print("_read_header alat={}".format(self._alat))
+            print(f"_read_header alat={self._alat}")
         return
 
     def _read_epsilon(self, line):
@@ -511,9 +513,7 @@ class QEOutputReader(GenericOutputReader):
         self.zerof_optical_dielectric.append([float(f) for f in linea[0:3]])
         if self.debug:
             print(
-                "_read_espilon zerof_optical_dielectric={}".format(
-                    self.zerof_optical_dielectric
-                )
+                f"_read_espilon zerof_optical_dielectric={self.zerof_optical_dielectric}"
             )
         return
 
@@ -545,13 +545,13 @@ class QEOutputReader(GenericOutputReader):
         """
         self.masses_per_type = []
         self.species = []
-        for i in range(self.nspecies):
+        for _i in range(self.nspecies):
             linea = self.file_descriptor.readline().replace("'", "").split()
             self.species.append(linea[1].capitalize())
             # The factor of two is because au in pwscf are half mass of electron
             self.masses_per_type.append(float(linea[2]) * 2 / amu)
         if self.debug:
-            print("_read_masses masses={}".format(self.masses_per_type))
+            print(f"_read_masses masses={self.masses_per_type}")
         line = ""
         self._read_dyng_coordinates(line)
         return
@@ -636,7 +636,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.born_charges = []
         line = self.file_descriptor.readline()
-        for i in range(self.nions):
+        for _i in range(self.nions):
             b = []
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
@@ -696,7 +696,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].getVolume("Angstrom")
         if self.debug:
-            print("_read_cell_parameters: volume={}".format(self.volume))
+            print(f"_read_cell_parameters: volume={self.volume}")
         return
 
     def _read_lattice_vectors(self, line):
@@ -733,7 +733,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].getVolume("Angstrom")
         if self.debug:
-            print("_read_lattices_vectors: volume={}".format(self.volume))
+            print(f"_read_lattices_vectors: volume={self.volume}")
         self._read_masses()
         return
 
@@ -762,7 +762,7 @@ class QEOutputReader(GenericOutputReader):
             return
         species_list = []
         fractional_coordinates = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             linea = self.file_descriptor.readline().split()
             species_list.append(linea[0])
             fractional_coordinates.append(
@@ -773,7 +773,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].volume
         if self.debug:
-            print("_read_fractional_coordinates: volume={}".format(self.volume))
+            print(f"_read_fractional_coordinates: volume={self.volume}")
         return
 
     def _read_dyng_coordinates(self, line):
@@ -818,7 +818,7 @@ class QEOutputReader(GenericOutputReader):
         xyz_coordinates = []
         # It took a long time to work out that alat is in bohr
         const = self._alat / angs2bohr
-        for i in range(self.nions):
+        for _i in range(self.nions):
             linea = self.file_descriptor.readline().split()
             species_index = int(linea[1])
             xyz_coordinates.append(
@@ -837,5 +837,5 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].getVolume("Angstrom")
         if self.debug:
-            print("_read_dyng_coordinates: volume={}".format(self.volume))
+            print(f"_read_dyng_coordinates: volume={self.volume}")
         return

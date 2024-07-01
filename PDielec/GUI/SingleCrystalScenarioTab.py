@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 #
 # Copyright 2024 John Kendrick & Andrew Burnett
 #
@@ -17,32 +16,40 @@
 SingleCrystalScenarioTab module
 """
 
-import os.path
-import os
-import numpy as np
 import copy
-import PDielec.Calculator as Calculator
-import PDielec.DielectricFunction as DielectricFunction
-import PDielec.Materials as Materials
-import PDielec.GTMcore as GTM
-from PyQt5.QtWidgets import QToolBar, QHeaderView, QAction
-from PyQt5.QtWidgets import QPushButton, QWidget, QFrame, QToolButton
-from PyQt5.QtWidgets import QSpacerItem, QCheckBox
-from PyQt5.QtWidgets import QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QSpinBox, QDoubleSpinBox
-from PyQt5.QtWidgets import QSizePolicy, QApplication, QStyle
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
-from PyQt5.QtCore import QCoreApplication, Qt, QSize
-from PyQt5.QtGui import QIcon
-from PDielec.Constants import wavenumber, avogadro_si, angstrom, speed_light_si
-from PDielec.Utilities import Debug
-from PDielec.GUI.ScenarioTab import ScenarioTab
-from PDielec.Materials import MaterialsDataBase
-from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer, ShowLayerWindow
 from functools import partial
 from itertools import product
+
+import numpy as np
+from PyQt5.QtCore import QCoreApplication, QSize, Qt
+from PyQt5.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QFrame,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QSizePolicy,
+    QSpacerItem,
+    QSpinBox,
+    QStyle,
+    QTableWidget,
+    QVBoxLayout,
+    QWidget,
+)
 from scipy import signal
+
+import PDielec.GTMcore as GTM
+import PDielec.Materials as Materials
+from PDielec.Constants import speed_light_si
+from PDielec.GUI.ScenarioTab import ScenarioTab
+from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
+from PDielec.Materials import MaterialsDataBase
+from PDielec.Utilities import Debug
 
 thickness_conversion_factors = {
     "ang": 1.0e-10,
@@ -128,11 +135,13 @@ def solve_single_crystal_equations(
     # Create layers from all the layers between first and last
     for layer in selectedLayers:
         incoherentOption = layer.getIncoherentOption()
+        depth = layer.getThickness()
         if sliceThickness != 0 and depth > sliceThickness:
             # Slice if the slicing is chosen and if the layer thickness is larger than the threshold
             no_of_layers = int(depth / sliceThickness) + 1
             sliced_depth = depth / no_of_layers
-            for i in range(no_of_layers):
+            layer.setThickness(sliced_depth)
+            for _i in range(no_of_layers):
                 gtmLayers.append(
                     gtmMethods[incoherentOption](
                         layer, exponent_threshold=exponent_threshold
@@ -166,7 +175,7 @@ def solve_single_crystal_equations(
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
     zeta_sys = np.sin(angleOfIncidence) * np.sqrt(system.superstrate.epsilon[0, 0])
-    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
     if len(system.layers) > 0:
         epsilon = system.layers[0].epsilon
@@ -675,9 +684,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         option_cb.setToolTip("Change optional settings for the layer")
         option_cb.addItems(incoherentOptions)
         # We can't use incoherent intensity method with the scattering matrix method
-        if self.settings["Mode"] == "Scattering matrix":
-            if layer.getIncoherentOption() == "Incoherent (intensity)":
-                layer.setIncoherentOption("Coherent")
+        if (
+            self.settings["Mode"] == "Scattering matrix"
+            and layer.getIncoherentOption() == "Incoherent (intensity)"
+        ):
+            layer.setIncoherentOption("Coherent")
         index = option_cb.findText(layer.getIncoherentOption(), Qt.MatchFixedString)
         option_cb.setCurrentIndex(index)
         option_cb.activated.connect(lambda x: self.on_option_cb_activated(x, layer))
@@ -975,7 +986,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         moveDownButton = self.createToolBarMoveDownButton(layer, layerIndex, nLayers)
         deleteButton = self.createToolBarDeleteButton(layer, layerIndex, nLayers)
         nextIndex = layerIndex + 1
-        previousIndex = layerIndex - 1
         # disable any buttons that are irrelevant to the layer
         if layerIndex == 0:
             moveUpButton.setEnabled(False)
@@ -1345,7 +1355,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.layers = []
         self.materialNames = self.setMaterialNames()
         # Process the settings information and append each layer to the list
-        for index, (
+        for (
             name,
             hkl,
             azimuthal,
@@ -1353,16 +1363,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
             thicknessUnit,
             dielectricFlag,
             incoherentOption,
-        ) in enumerate(
-            zip(
-                self.settings["Layer material names"],
-                self.settings["Layer hkls"],
-                self.settings["Layer azimuthals"],
-                self.settings["Layer thicknesses"],
-                self.settings["Layer thickness units"],
-                self.settings["Layer dielectric flags"],
-                self.settings["Layer incoherent options"],
-            )
+        ) in zip(
+            self.settings["Layer material names"],
+            self.settings["Layer hkls"],
+            self.settings["Layer azimuthals"],
+            self.settings["Layer thicknesses"],
+            self.settings["Layer thickness units"],
+            self.settings["Layer dielectric flags"],
+            self.settings["Layer incoherent options"],
         ):
             if name not in self.materialNames:
                 print("Error material ", name, " not available ", self.materialNames)
@@ -1979,7 +1987,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             w.blockSignals(False)
         # Redraw the layer information widget
         self.redrawLayerTable()
-        for i in range(20):
+        for _i in range(20):
             QCoreApplication.processEvents()
         self.refreshRequired = False
         debugger.print(self.settings["Legend"], "Finished:: refresh, force =", force)
@@ -2122,11 +2130,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         av_p_absorbtance = np.zeros(size)
         av_epsilon = np.zeros((size, 3, 3), dtype=np.cdouble)
         # Work out which of the layers is the crystal dielectric
-        crystalLayer = None
+        # crystalLayer = None
         averageList = []
         for layer in layers:
-            if layer.isDielectric():
-                crystalLayer = layer
+            # if layer.isDielectric():
+            #     crystalLayer = layer
             if layer.getIncoherentOption() == "Incoherent (phase averaging)":
                 averageList.append(layer)
         #
@@ -2253,7 +2261,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         q = psi
         a = angleOfIncidence
         fractionalIncoherence = self.settings["Percentage partial incoherence"] / 100.0
-        for s in range(self.settings["Partially incoherent samples"]):
+        for _s in range(self.settings["Partially incoherent samples"]):
             crystalDepth = d + d * (-1 + 2 * np.random.rand()) * fractionalIncoherence
             crystalLayer.setThickness(crystalDepth)
             theta = (
@@ -2414,7 +2422,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             results.append(result)
         QCoreApplication.processEvents()
         # Initialise result variables
-        vs_cm1 = []
         p_reflectance = []
         s_reflectance = []
         p_transmittance = []
@@ -2426,7 +2433,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings["Legend"],
             "About to extract results for single crystal scenario",
         )
-        for v, r, R, t, T, eps, errors, largest_exponent in results:
+        for v, _r, R, _t, T, eps, errors, largest_exponent in results:
             if self.settings["Mode"] == "Transfer matrix" and errors > 0:
                 print(
                     "Warning exponential overflow occured at frequency",
@@ -2511,11 +2518,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             )
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
-        sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
-        sigmas = np.array(sigmas_cm1) * wavenumber
-        modes_selected = self.notebook.settingsTab.modes_selected
-        frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
-        frequencies = np.array(frequencies_cm1) * wavenumber
         # Set the sliceThickness in metres
         tom = thickness_conversion_factors[self.settings["Slice thickness unit"]]
         sliceThickness = tom * self.settings["Slice thickness"]
@@ -2597,21 +2599,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(
             self.settings["Legend"], "Finished:: get_result", len(vs_cm1), plot_type
         )
-        if plot_type == "Crystal Reflectance (P polarisation)":
-            return self.p_reflectance
-        elif plot_type == "Crystal Reflectance (S polarisation)":
-            return self.s_reflectance
-        elif plot_type == "Crystal Transmittance (P polarisation)":
-            return self.p_transmittance
-        elif plot_type == "Crystal Transmittance (S polarisation)":
-            return self.s_transmittance
-        elif plot_type == "Crystal Absorbtance (P polarisation)":
-            return self.p_absorbtance
-        elif plot_type == "Crystal Absorbtance (S polarisation)":
-            return self.s_absorbtance
-        else:
-            # print('Error in returning result from CrystalScenarioTab: ',plot_type)
-            return None
+        return {"Crystal Reflectance (P polarisation)"  : self.p_reflectance,
+                "Crystal Reflectance (S polarisation)"  : self.s_reflectance,
+                "Crystal Transmittance (P polarisation)": self.p_transmittance,
+                "Crystal Transmittance (S polarisation)": self.s_transmittance,
+                "Crystal Absorbtance (P polarisation)"  : self.p_absorbtance,
+                "Crystal Absorbtance (S polarisation)"  : self.s_absorbtance,
+                }.get(plot_type)
 
     def get_results(self, vs_cm1):
         """

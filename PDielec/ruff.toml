@@ -1,0 +1,23 @@
+[lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    # character such as "l"
+    "E741",
+    # line too long
+    "E501",
+    # Use f-string instead of %
+    "UP031",
+]

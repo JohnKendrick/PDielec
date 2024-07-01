@@ -18,14 +18,23 @@ SingleCrystalLayer module
 
 # -*- coding: utf8 -*-
 import numpy as np
-from PyQt5.QtWidgets import QPushButton, QWidget, QFrame, QDialog
-from PyQt5.QtWidgets import QComboBox, QLabel, QLineEdit, QListWidget
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QSpinBox, QDoubleSpinBox, QCheckBox
-from PyQt5.QtWidgets import QSizePolicy, QDialogButtonBox
-from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (
+    QComboBox,
+    QDialog,
+    QDialogButtonBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QListWidget,
+    QSizePolicy,
+    QSpinBox,
+    QVBoxLayout,
+    QWidget,
+)
+
 from PDielec.Utilities import Debug
-import PDielec.Calculator as Calculator
 
 
 class SingleCrystalLayer:
@@ -145,7 +154,7 @@ class SingleCrystalLayer:
     def __init__(
         self,
         material,
-        hkl=[0, 0, 1],
+        hkl=None,
         azimuthal=0.0,
         thickness=0.0,
         thicknessUnit="nm",
@@ -176,9 +185,11 @@ class SingleCrystalLayer:
         dielectricFlag : bool
             True if the layer material is the dielectric being studied (ie it was read in as a DFT calculation), False otherwise.
         """
-        self.material = material
+        if hkl is None:
+            hkl = [0, 0, 1]
         if material.isScalar():
             hkl = [0, 0, 0]
+        self.material = material
         self.hkl = hkl
         self.incoherentOption = incoherentOption
         self.azimuthal = azimuthal
@@ -609,19 +620,13 @@ class SingleCrystalLayer:
         a, b, c = self.getLabFrame()
         self.labframe_w.clear()
         self.labframe_w.addItem(
-            "crystal a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}".format(
-                a[0], a[1], a[2]
-            )
+            f"crystal a-axis in lab frame: {a[0]: 3.5f}, {a[1]: 3.5f}, {a[2]: 3.5f}"
         )
         self.labframe_w.addItem(
-            "crystal b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}".format(
-                b[0], b[1], b[2]
-            )
+            f"crystal b-axis in lab frame: {b[0]: 3.5f}, {b[1]: 3.5f}, {b[2]: 3.5f}"
         )
         self.labframe_w.addItem(
-            "crystal c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}".format(
-                c[0], c[1], c[2]
-            )
+            f"crystal c-axis in lab frame: {c[0]: 3.5f}, {c[1]: 3.5f}, {c[2]: 3.5f}"
         )
         return
 
@@ -776,7 +781,7 @@ class ShowLayerWindow(QDialog):
         including buttons and the layout. It also configures the debug mode according
         to the provided argument.
         """
-        super(ShowLayerWindow, self).__init__(parent)
+        super().__init__(parent)
         global debugger
         debugger = Debug(debug, "ShowLayerWindow")
         debugger.print("Start:: initialiser")
@@ -863,6 +868,7 @@ class ShowLayerWindow(QDialog):
         material = self.layer.getMaterial()
         materialName = material.getName()
         materialLabel = QLabel(materialName)
+        materialLabel.setToolTop("The material label")
         materialThickness = self.layer.getThickness()
         # Handle thickness
         film_thickness_sb = QDoubleSpinBox(self)
@@ -1001,19 +1007,13 @@ class ShowLayerWindow(QDialog):
         a, b, c = self.layer.getLabFrame()
         self.labframe_w.clear()
         self.labframe_w.addItem(
-            "crystal a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}".format(
-                a[0], a[1], a[2]
-            )
+            f"crystal a-axis in lab frame: {a[0]: 3.5f}, {a[1]: 3.5f}, {a[2]: 3.5f}"
         )
         self.labframe_w.addItem(
-            "crystal b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}".format(
-                b[0], b[1], b[2]
-            )
+            f"crystal b-axis in lab frame: {b[0]: 3.5f}, {b[1]: 3.5f}, {b[2]: 3.5f}"
         )
         self.labframe_w.addItem(
-            "crystal c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}".format(
-                c[0], c[1], c[2]
-            )
+            f"crystal c-axis in lab frame: {c[0]: 3.5f}, {c[1]: 3.5f}, {c[2]: 3.5f}"
         )
         return
 

@@ -19,17 +19,17 @@ Utility Functions
 A set of utility functions that may be used anywhere in the package.
 """
 
-from __future__ import print_function
 import os
+import sys
 
-from PDielec.VaspOutputReader import VaspOutputReader
-from PDielec.PhonopyOutputReader import PhonopyOutputReader
-from PDielec.CastepOutputReader import CastepOutputReader
-from PDielec.GulpOutputReader import GulpOutputReader
-from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.AbinitOutputReader import AbinitOutputReader
-from PDielec.QEOutputReader import QEOutputReader
+from PDielec.CastepOutputReader import CastepOutputReader
+from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.ExperimentOutputReader import ExperimentOutputReader
+from PDielec.GulpOutputReader import GulpOutputReader
+from PDielec.PhonopyOutputReader import PhonopyOutputReader
+from PDielec.QEOutputReader import QEOutputReader
+from PDielec.VaspOutputReader import VaspOutputReader
 
 
 def printsp(name, matrix):
@@ -102,10 +102,7 @@ def find_program_from_name(filename):
     """
     head, tail = os.path.split(filename)
     root, ext = os.path.splitext(tail)
-    if head == "":
-        head = "./"
-    else:
-        head = head + "/"
+    head = "./" if head == "" else head + "/"
     if tail == "OUTCAR":
         if os.path.isfile(head + "phonopy.yaml"):
             return "phonopy"
@@ -193,9 +190,8 @@ def get_reader(name, program, qmprogram):
         name4 = os.path.join(head, tail1)
         names = []
         for n in [name1, name2, name3, name4]:
-            if os.path.isfile(n):
-                if not n in names:
-                    names.append(n)
+            if os.path.isfile(n) and n not in names:
+                names.append(n)
         reader = QEOutputReader(names)
     elif program == "phonopy":
         # The order is important
@@ -292,7 +288,7 @@ def pdgui_get_reader(program, names, qmprogram):
         #  If names[0] is a directory then we will use a vaspoutputreader
         #  Otherwise it is a seedname for castep, or a gulp output file, or a crystal output file
         if os.path.isdir(names[0]):
-            print("Analysing VASP directory: {} ".format(names[0]))
+            print(f"Analysing VASP directory: {names[0]} ")
             outcarfile = os.path.join(names[0], "OUTCAR")
             kpointsfile = os.path.join(names[0], "KPOINTS")
             if not os.path.isfile(outcarfile):
@@ -348,8 +344,8 @@ def pdgui_get_reader(program, names, qmprogram):
         for f in checkfiles:
             # jk print("The file containing the output is: {}".format(f))
             if not os.path.isfile(f):
-                print("Output files created by program: {}".format(program))
-                print("Error: file not available: {}".format(f))
+                print(f"Output files created by program: {program}")
+                print(f"Error: file not available: {f}")
                 reader = None
                 return reader
         # The files requested are available so read them
@@ -439,9 +435,8 @@ class Debug:
         This method will only print the message if the instance's `debug` flag is True
         and the provided `level` is less than or equal to the instance's `level`.
         """
-        if self.debug:
-            if level <= self.level:
-                print(self.text, *args)
+        if self.debug and level <= self.level:
+            print(self.text, *args)
         return
 
     def state(

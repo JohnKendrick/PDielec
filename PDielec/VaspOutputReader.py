@@ -18,10 +18,12 @@ VASP output reader
 """
 
 import re
+
 import numpy as np
-from PDielec.UnitCell import UnitCell
-from PDielec.GenericOutputReader import GenericOutputReader
+
 from PDielec.Constants import atomic_number_to_element
+from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 def myfloat(string):
@@ -215,7 +217,7 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         maxf = 0.0
         rmsf = 0.0
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             forces = [float(f) for f in line.split()[3:6]]
             for f in forces:
@@ -225,10 +227,10 @@ class VaspOutputReader(GenericOutputReader):
                 # end if
             # end for f
         # end for i
-        if not "max_force" in self.iterations:
+        if "max_force" not in self.iterations:
             self.iterations["max_force"] = []
         self.iterations["max_force"].append(maxf)
-        if not "rms_force" in self.iterations:
+        if "rms_force" not in self.iterations:
             self.iterations["rms_force"] = []
         self.iterations["rms_force"].append(rmsf)
         return
@@ -256,7 +258,7 @@ class VaspOutputReader(GenericOutputReader):
         nlines = int(line.split()[0])
         line = self.file_descriptor.readline()
         zcharge = 0.0
-        for i in range(nlines):
+        for _i in range(nlines):
             line = self.file_descriptor.readline()
             zcharge = zcharge + float(line.split()[4])
         self.species.append(atomic_number_to_element[int(zcharge + 0.001)])
@@ -327,7 +329,7 @@ class VaspOutputReader(GenericOutputReader):
         mass_string = line[12:]
         start = 0
         increment = 6
-        for i in range(self.nspecies):
+        for _i in range(self.nspecies):
             mass = mass_string[start : start + increment]
             self.masses_per_type.append(float(mass))
             start = start + increment
@@ -336,7 +338,7 @@ class VaspOutputReader(GenericOutputReader):
         self.species_list = []
         for k, mass in enumerate(self.masses_per_type):
             n = self.ions_per_type[k]
-            for i in range(n):
+            for _i in range(n):
                 self.atom_type_list.append(k)
                 self.masses.append(mass)
                 self.species_list.append(self.species[k])
@@ -388,20 +390,16 @@ class VaspOutputReader(GenericOutputReader):
         self.frequencies = []
         self.mass_weighted_normal_modes = []
         n = 3 * self.nions
-        for i in range(n):
+        for _i in range(n):
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
             imaginary = line.split()[1] == "f/i="
-            if imaginary:
-                # represent imaginary by negative real
-                freq = -float(line.split()[6])
-            else:
-                freq = float(line.split()[7])
-            # end if
+            # represent imaginary by negative real
+            freq = -float(line.split()[6]) if imaginary else float(line.split()[7])
             self.frequencies.append(freq)
             line = self.file_descriptor.readline()
             a = []
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 line = self.file_descriptor.readline()
                 a.append(
                     [
@@ -440,7 +438,7 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             b = []
             b.append(
@@ -762,9 +760,8 @@ class VaspOutputReader(GenericOutputReader):
         -------
         None
         """
-        n = 0
         ions = []
-        for n in range(self.nions):
+        for _n in range(self.nions):
             line = self.file_descriptor.readline()
             ions.append([float(f) for f in line.split()[0:3]])
         self.unit_cells[-1].set_fractional_coordinates(ions)

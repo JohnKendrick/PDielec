@@ -16,25 +16,91 @@
 OpenGLWidget module
 """
 
-import os
 import math
+import os
+from collections import deque
+
 import numpy as np
+import OpenGL
+from OpenGL.GL import (
+    GL_AMBIENT,
+    GL_BACK,
+    GL_BLEND,
+    GL_COLOR_BUFFER_BIT,
+    GL_CULL_FACE,
+    GL_DEPTH_BUFFER_BIT,
+    GL_DEPTH_TEST,
+    GL_DIFFUSE,
+    GL_FRONT,
+    GL_LESS,
+    GL_LIGHT0,
+    GL_LIGHT1,
+    GL_LIGHT2,
+    GL_LIGHT3,
+    GL_LIGHT4,
+    GL_LIGHT5,
+    GL_LIGHT6,
+    GL_LIGHT7,
+    GL_LIGHTING,
+    GL_LINE_SMOOTH,
+    GL_LINEAR_ATTENUATION,
+    GL_MODELVIEW,
+    GL_MODELVIEW_MATRIX,
+    GL_MULTISAMPLE,
+    GL_NO_ERROR,
+    GL_NORMALIZE,
+    GL_POINT_SMOOTH,
+    GL_POLYGON_SMOOTH,
+    GL_POSITION,
+    GL_PROJECTION,
+    GL_SHININESS,
+    GL_SMOOTH,
+    GL_SPECULAR,
+    glClear,
+    glClearColor,
+    glClearDepth,
+    glCullFace,
+    glDepthFunc,
+    glDisable,
+    glEnable,
+    glGetError,
+    glGetFloatv,
+    glLight,
+    glLightfv,
+    glLoadIdentity,
+    glMaterialf,
+    glMaterialfv,
+    glMatrixMode,
+    glMultMatrixf,
+    glOrtho,
+    glPopMatrix,
+    glPushMatrix,
+    glRotated,
+    glRotatef,
+    glScalef,
+    glShadeModel,
+    glTranslated,
+    glTranslatef,
+)
+from OpenGL.GLU import (
+    GLU_FILL,
+    GLU_SMOOTH,
+    gluCylinder,
+    gluNewQuadric,
+    gluQuadricDrawStyle,
+    gluQuadricNormals,
+    gluSphere,
+)
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QSurfaceFormat
+from PyQt5.QtWidgets import QOpenGLWidget
+
+from PDielec.Utilities import Debug
 
 # The following lines seem to fix a problem when running on low end machines
-import OpenGL
-
 OpenGL.USE_ACCELERATE = False
 OpenGL.ERROR_CHECKING = False
 # end of low-end machine fix
-from collections import deque
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from OpenGL.GLUT import *
-from PyQt5.QtWidgets import QOpenGLWidget
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QSurfaceFormat
-from PDielec.Utilities import Debug
 
 
 class OpenGLWidget(QOpenGLWidget):
@@ -431,12 +497,12 @@ class OpenGLWidget(QOpenGLWidget):
         key = event.key()
         modifiers = event.modifiers()
         debugger.print("kepressevent", key, modifiers)
-        control = False
-        shift = False
-        if modifiers & Qt.ShiftModifier:
-            shift = True
-        if modifiers & Qt.ControlModifier:
-            control = True
+        # control = False
+        # shift = False
+        # if modifiers & Qt.ShiftModifier:
+        #     shift = True
+        # if modifiers & Qt.ControlModifier:
+        #     control = True
         if modifiers & Qt.ShiftModifier or modifiers & Qt.ControlModifier:
             amount = 45.0
         else:
@@ -503,7 +569,7 @@ class OpenGLWidget(QOpenGLWidget):
         tmpdir = os.path.dirname(filename)
         tmpfile = os.path.join(tmpdir, ".snapshot.png")
         debugger.print("save_movie", filename)
-        for i in range(0, 2 * self.number_of_phases):
+        for _i in range(0, 2 * self.number_of_phases):
             self.timeoutHandler()
             image = self.grabFramebuffer()
             x = image.width()
@@ -662,10 +728,7 @@ class OpenGLWidget(QOpenGLWidget):
         """
         debugger.print("zoom ", zoom)
         self.myMakeCurrent()
-        if zoom > 0:
-            zoom_factor = 1.06
-        else:
-            zoom_factor = 0.94
+        zoom_factor = 1.06 if zoom > 0 else 0.94
         debugger.print("zoom factor", zoom_factor)
         glScalef(zoom_factor, zoom_factor, zoom_factor)
         self.update()
@@ -898,7 +961,7 @@ class OpenGLWidget(QOpenGLWidget):
         for cylinder in self.cylinders[self.current_phase]:
             col = cylinder.colour
             rad = cylinder.radius
-            pos1 = cylinder.position1
+            # pos1 = cylinder.position1
             pos2 = cylinder.position2
             length = cylinder.height
             angle = cylinder.angle
@@ -951,7 +1014,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.arrow_colour = np.array(self.viewerTab.settings["Arrow colour"]) / 255.0
         for arrow, sphere in zip(self.arrows, self.spheres[self.current_phase]):
             pos = sphere.position
-            direction = arrow.direction
+            # direction = arrow.direction
             length = arrow.height
             angle = arrow.angle
             rot = arrow.rotation
@@ -1077,16 +1140,12 @@ class OpenGLWidget(QOpenGLWidget):
             dist = math.sqrt(np.dot(vec, vec))
             if dist > maxsize:
                 maxsize = dist
-        for cylinder in self.cylinders[self.current_phase]:
-            pos1 = cylinder.position1
-            pos2 = cylinder.position2
-            vec1 = pos1 - self.rotation_centre
-            dist1 = math.sqrt(np.dot(vec, vec))
-            vec2 = pos2 - self.rotation_centre
-            dist2 = math.sqrt(np.dot(vec, vec))
-            dist = max(dist1, dist2)
-            if dist > maxsize:
-                maxsize = dist
+        # for cylinder in self.cylinders[self.current_phase]:
+        #     dist1 = math.sqrt(np.dot(vec, vec))
+        #     dist2 = math.sqrt(np.dot(vec, vec))
+        #     dist = max(dist1, dist2)
+        #     if dist > maxsize:
+        #         maxsize = dist
         self.image_size = maxsize
         self.setProjectionMatrix()
         debugger.print("setImageSize", self.image_size)
@@ -1163,7 +1222,7 @@ class OpenGLWidget(QOpenGLWidget):
         if self.light_switches is None:
             self.light_switches = self.viewerTab.light_switches
             glEnable(GL_LIGHTING)
-            for position, lightOn, light in zip(
+            for position, _lightOn, light in zip(
                 self.light_positions, self.light_switches, self.lights
             ):
                 glLightfv(
@@ -1250,7 +1309,7 @@ class OpenGLWidget(QOpenGLWidget):
         # self.cylinders  = deque( deque() for i in range(nphases) )
         self.spheres.clear()
         self.cylinders.clear()
-        for i in range(nphases):
+        for _i in range(nphases):
             self.spheres.append(deque())
             self.cylinders.append(deque())
         self.number_of_phases = nphases

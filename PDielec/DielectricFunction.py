@@ -32,11 +32,12 @@ Provides an interface to different mechanisms for providing dielectric informati
     - Subclass :class:`Sellmeier`
 """
 
-import numpy as np
 import sys
-from PDielec.Constants import wavenumber, angstrom, speed_light_si
-import PDielec.Calculator as Calculator
+
+import numpy as np
 from scipy import interpolate
+
+from PDielec.Constants import angstrom, wavenumber
 
 
 class DielectricFunction:
@@ -101,7 +102,7 @@ class DielectricFunction:
         self.epsilon_infinity = np.zeros((3, 3))
         self.volume_angs = None
         if self.volume_angs:
-            self.volume_au = volume * angstrom * angstrom * angstrom
+            self.volume_au = self.volume_angs * angstrom * angstrom * angstrom
 
     def setFrequencies(self, frequencies):
         """
@@ -348,7 +349,7 @@ class DielectricFunction:
             A complex scalar dielectric.
         """
         dielectric = np.zeros((3, 3), dtype=complex)
-        unit = identity(3, dtype=complex)
+        unit = np.eye(3, dtype=complex)
         # Avoid a divide by zero if f is small
         if f <= 1.0e-8:
             f = 1.0e-8
@@ -411,57 +412,53 @@ class DielectricFunction:
         -------
         None
         """
-        fd = sys.stdout
-        closeFlag = False
-        if file is not None:
-            closeFlag = True
-            fd = open(file, "w")
-        c = ","
-        if diagonal_only:
-            print(
-                "f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag",
-                file=fd,
-            )
-        else:
-            print("f,eps00,epss11,eps22,eps01,eps02,,eps12", file=fd)
-        for v in np.arange(v1_cm1, v2_cm1, v_inc):
-            epsilon = self.calculate(v)
+        from contextlib import nullcontext
+
+        with open(file, "w") if file else nullcontext(sys.stdout) as fd:
+            c = ","
             if diagonal_only:
                 print(
-                    v,
-                    c,
-                    epsilon[0, 0].real,
-                    c,
-                    epsilon[1, 1].real,
-                    c,
-                    epsilon[2, 2].real,
-                    c,
-                    epsilon[0, 0].imag,
-                    c,
-                    epsilon[1, 1].imag,
-                    c,
-                    epsilon[2, 2].imag,
+                    "f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag",
                     file=fd,
                 )
             else:
-                print(
-                    v,
-                    c,
-                    epsilon[0, 0],
-                    c,
-                    epsilon[1, 1],
-                    c,
-                    epsilon[2, 2],
-                    c,
-                    epsilon[0, 1],
-                    c,
-                    epsilon[0, 2],
-                    c,
-                    epsilon[1, 2],
-                    file=fd,
-                )
-        if closeFlag:
-            fd.close()
+                print("f,eps00,epss11,eps22,eps01,eps02,,eps12", file=fd)
+            for v in np.arange(v1_cm1, v2_cm1, v_inc):
+                epsilon = self.calculate(v)
+                if diagonal_only:
+                    print(
+                        v,
+                        c,
+                        epsilon[0, 0].real,
+                        c,
+                        epsilon[1, 1].real,
+                        c,
+                        epsilon[2, 2].real,
+                        c,
+                        epsilon[0, 0].imag,
+                        c,
+                        epsilon[1, 1].imag,
+                        c,
+                        epsilon[2, 2].imag,
+                        file=fd,
+                    )
+                else:
+                    print(
+                        v,
+                        c,
+                        epsilon[0, 0],
+                        c,
+                        epsilon[1, 1],
+                        c,
+                        epsilon[2, 2],
+                        c,
+                        epsilon[0, 1],
+                        c,
+                        epsilon[0, 2],
+                        c,
+                        epsilon[1, 2],
+                        file=fd,
+                    )
         return
 
 
@@ -703,7 +700,7 @@ class Tabulate3(DielectricFunction):
         epsd = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
         self.interpolater = []
         self.interpolatei = []
-        for i, eps in enumerate(epsd):
+        for eps in epsd:
             self.interpolater.append(interpolate.CubicSpline(self.vs_cm1, np.real(eps)))
             self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1, np.imag(eps)))
 

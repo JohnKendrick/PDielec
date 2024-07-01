@@ -20,8 +20,6 @@ This aims to reproduce the python readline() io method, with limited functionali
 
 """
 
-import sys
-
 
 #
 class pdielec_io:

@@ -18,7 +18,6 @@ Do some pretty printing for the dielectric functions
 """
 
 import sys
-import numpy as np
 
 
 def print_ints(
@@ -55,7 +54,7 @@ def print_ints(
         print(title, file=file)
     nlines = int((len_ints - 1) / no_per_line) + 1
     start = 0
-    for i in range(nlines):
+    for _i in range(nlines):
         end = start + no_per_line
         if end > len_ints:
             end = len_ints
@@ -101,7 +100,7 @@ def print_strings(
         print(title, file=file)
     nlines = int((len_strings - 1) / no_per_line) + 1
     start = 0
-    for i in range(nlines):
+    for _i in range(nlines):
         end = start + no_per_line
         if end > len_strings:
             end = len_strings
@@ -148,7 +147,7 @@ def print_reals(
         print(title, file=file)
     nlines = int((len_reals - 1) / no_per_line) + 1
     start = 0
-    for i in range(nlines):
+    for _i in range(nlines):
         end = start + no_per_line
         if end > len_reals:
             end = len_reals

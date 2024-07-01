@@ -40,18 +40,13 @@ Command-line usage examples:
     ```
 """
 
-from __future__ import print_function
-import os, sys
-import psutil
-from PDielec.VaspOutputReader import VaspOutputReader
-from PDielec.CastepOutputReader import CastepOutputReader
-from PDielec.GulpOutputReader import GulpOutputReader
-from PDielec.CrystalOutputReader import CrystalOutputReader
-from PDielec.AbinitOutputReader import AbinitOutputReader
-from PDielec.QEOutputReader import QEOutputReader
-from PDielec.PhonopyOutputReader import PhonopyOutputReader
-import PDielec.Utilities as Utilities
+import os
+import sys
 from multiprocessing import Pool
+
+import psutil
+
+import PDielec.Utilities as Utilities
 
 
 def set_affinity_on_worker():
@@ -190,7 +185,7 @@ def main():
         )
         exit()
 
-    if not program in [
+    if program not in [
         "abinit",
         "castep",
         "crystal",
@@ -205,7 +200,7 @@ def main():
         exit()
 
     if program == "phonopy":
-        if not qmprogram in ["abinit", "castep", "crystal", "gulp", "qe", "vasp"]:
+        if qmprogram not in ["abinit", "castep", "crystal", "gulp", "qe", "vasp"]:
             print("Phonopy QM program is not recognised: ", qmprogram, file=sys.stderr)
             exit()
         print("  QM program used by Phonopy is: ", qmprogram, file=sys.stderr)
@@ -236,8 +231,8 @@ def main():
     results_map_object = p.map_async(read_a_file, calling_parameters)
     results_map_object.wait()
     results = results_map_object.get()
-    for name, cell in results:
-        cell.write_cif(file_=sys.stdout)
+    for _name, cell in results:
+        cell.write_cif()
     #
     p.close()
     p.join()

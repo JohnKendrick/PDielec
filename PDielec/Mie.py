@@ -41,10 +41,11 @@ Publications
 http://pymiescatt.readthedocs.io/en/latest/forward.html
 """
 
-import numpy as np
-from scipy.special import jv, yv
-from scipy.integrate import trapz
 import warnings
+
+import numpy as np
+from scipy.integrate import trapz
+from scipy.special import jv, yv
 
 # Parameter to determine wavelength crossover between methods for treating
 # long and short wavelengths
@@ -493,7 +494,6 @@ def AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#AutoMieQ
     nMedium = nMedium.real
-    m_eff = m / nMedium
     wavelength_eff = wavelength / nMedium
     x_eff = np.pi * diameter / wavelength_eff
     if x_eff == 0:
@@ -1313,7 +1313,7 @@ def MieQ_withWavelengthRange(
     nMedium = nMedium.real
     _m = m / nMedium
     _wavelengthRange = tuple([x / nMedium for x in wavelengthRange])
-    if type(_m) == complex and len(_wavelengthRange) == 2:
+    if isinstance(_m, complex) and len(_wavelengthRange) == 2:
         if logW:
             wavelengths = np.logspace(
                 np.log10(_wavelengthRange[0]), np.log10(_wavelengthRange[1]), nw
@@ -1328,7 +1328,8 @@ def MieQ_withWavelengthRange(
         ]
     else:
         warnings.warn(
-            "Error: the size of the input data is mismatched. Please examine your inputs and try again."
+            "Error: the size of the input data is mismatched. Please examine your inputs and try again.",
+            stacklevel=2,
         )
         return
 
@@ -1433,7 +1434,7 @@ def Mie_Lognormal(
     numberOfBins=10000,
     lower=1,
     upper=1000,
-    gamma=[1],
+    gamma=None,
     returnDistribution=False,
     decomposeMultimodal=False,
     asDict=False,
@@ -1485,12 +1486,14 @@ def Mie_Lognormal(
     The function optionally warns the user if the specified particle size distribution may not be compact within the given interval or if there aren't enough parameters to fully specify each mode in the case of a multimodal distribution. This function is particularly useful in the analysis and simulation of light scattering by particles following a lognormal size distribution.
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_Lognormal
+    if gamma is None:
+        gamma = [1]
     nMedium = nMedium.real
     m /= nMedium
     wavelength /= nMedium
-    ithPart = lambda gammai, dp, dpgi, sigmagi: (
+    ithPart = lambda gammai, dp, dpgi, sigmagi: (                           # noqa <E731>
         gammai / (np.sqrt(2 * np.pi) * np.log(sigmagi) * dp)
-    ) * np.exp(-((np.log(dp) - np.log(dpgi)) ** 2) / (2 * np.log(sigmagi) ** 2))
+    ) * np.exp(-((np.log(dp) - np.log(dpgi)) ** 2) / (2 * np.log(sigmagi) ** 2)) 
     dp = np.logspace(np.log10(lower), np.log10(upper), numberOfBins)
     if all([type(x) in [list, tuple, np.ndarray] for x in [geoStdDev, geoMean]]):
         # multimodal
@@ -1513,7 +1516,9 @@ def Mie_Lognormal(
             ndp = np.sum(ndpi, axis=0)
         else:
             # user problem
-            warnings.warn("Not enough parameters to fully specify each mode.")
+            warnings.warn(
+                "Not enough parameters to fully specify each mode.", stacklevel=2
+            )
             return None
     else:
         # unimodal
@@ -1521,14 +1526,15 @@ def Mie_Lognormal(
         ndp = numberOfParticles * ithPart(1, dp, geoMean, geoStdDev)
     if ndp[-1] > np.max(ndp) / 100 or ndp[0] > np.max(ndp) / 100:
         warnings.warn(
-            "Warning: distribution may not be compact on the specified interval. Consider using a higher upper bound."
+            "Warning: distribution may not be compact on the specified interval. Consider using a higher upper bound.",
+            stacklevel=2,
         )
     Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio = Mie_SD(
         m, wavelength, dp, ndp, SMPS=False
     )
     if returnDistribution:
         if decomposeMultimodal:
-            if asDict == True:
+            if asDict:
                 return (
                     dict(
                         Bext=Bext,
@@ -1546,7 +1552,7 @@ def Mie_Lognormal(
             else:
                 return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio, dp, ndp, ndpi
         else:
-            if asDict == True:
+            if asDict:
                 return (
                     dict(
                         Bext=Bext,
@@ -1563,7 +1569,7 @@ def Mie_Lognormal(
             else:
                 return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio, dp, ndp
     else:
-        if asDict == True:
+        if asDict:
             return dict(
                 Bext=Bext,
                 Bsca=Bsca,

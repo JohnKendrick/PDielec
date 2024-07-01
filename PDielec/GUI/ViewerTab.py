@@ -17,23 +17,36 @@ ViewerTab module
 """
 
 import os
-import numpy as np
 from collections import deque
-from PyQt5.QtWidgets import QPushButton, QWidget
-from PyQt5.QtWidgets import QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QSpinBox, QTabWidget, QDoubleSpinBox
-from PyQt5.QtWidgets import QSizePolicy, QColorDialog, QMessageBox, QApplication
-from PyQt5.QtCore import Qt
-from PDielec.Constants import wavenumber, angstrom
-from PDielec.Constants import elemental_colours
 
-# Import plotting requirements
-from PDielec.Utilities import Debug
+import numpy as np
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (
+    QApplication,
+    QColorDialog,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QMessageBox,
+    QPushButton,
+    QSizePolicy,
+    QSpinBox,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
+
+from PDielec.Constants import elemental_colours
 from PDielec.GUI.OpenGLWidget import OpenGLWidget
 
 # Need the SuperCell class
 from PDielec.SuperCell import SuperCell
+
+# Import plotting requirements
+from PDielec.Utilities import Debug
 
 
 class ViewerTab(QWidget):
@@ -240,7 +253,7 @@ class ViewerTab(QWidget):
         # Add frequency of mode
         self.frequency_le = QLineEdit(self)
         self.frequency_le.setEnabled(False)
-        self.frequency_le.setText("{}".format(0.0))
+        self.frequency_le.setText(f"{0.0}")
         label = QLabel("Frequency (cm-1)", self)
         form.addRow(label, self.frequency_le)
         #
@@ -256,7 +269,7 @@ class ViewerTab(QWidget):
             self.on_super_cell_changed_c,
         ]
         super_cell_tooltip = ["Size in a", "Size in b", "Size in c"]
-        for i, change_function, tip in zip(
+        for _i, change_function, tip in zip(
             self.settings["Super Cell"], super_cell_changed, super_cell_tooltip
         ):
             spinBox = QSpinBox(self)
@@ -346,9 +359,9 @@ class ViewerTab(QWidget):
         self.light_switches_cb.setToolTip("Toogle the light switches on or off")
         for index, light in enumerate(self.light_switches):
             if light:
-                string = "switch light {} off".format(index)
+                string = f"switch light {index} off"
             else:
-                string = "switch light {} on".format(index)
+                string = f"switch light {index} on"
             self.light_switches_cb.addItem(string)
         self.light_switches_cb.activated.connect(self.on_light_switches_cb_activated)
         #
@@ -361,7 +374,7 @@ class ViewerTab(QWidget):
             r, g, b, a = self.element_colours[el]
             button = QPushButton(el)
             button.setStyleSheet(
-                "background-color:rgba( {}, {}, {}, {});".format(r, g, b, a)
+                f"background-color:rgba( {r}, {g}, {b}, {a});"
             )
             button.clicked.connect(self.on_coloured_element_clicked)
             self.element_coloured_buttons.append(button)
@@ -554,11 +567,7 @@ class ViewerTab(QWidget):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if extension == ".png":
             self.opengl_widget.snapshot(filename)
-        elif extension == ".avi":
-            self.opengl_widget.save_movie(filename)
-        elif extension == ".mp4":
-            self.opengl_widget.save_movie(filename)
-        elif extension == ".gif":
+        elif extension == ".avi" or extension == ".mp4" or extension == ".gif":
             self.opengl_widget.save_movie(filename)
         elif extension == ".cif":
             self.save_cif(filename)
@@ -722,9 +731,9 @@ class ViewerTab(QWidget):
         debugger.print("on_light_switches_cb_activated")
         self.light_switches[index] = not self.light_switches[index]
         if self.light_switches[index]:
-            string = "switch light {} off".format(index)
+            string = f"switch light {index} off"
         else:
-            string = "switch light {} on".format(index)
+            string = f"switch light {index} on"
         self.light_switches_cb.setItemText(index, string)
         self.opengl_widget.defineLights()
         self.calculate()
@@ -966,7 +975,7 @@ class ViewerTab(QWidget):
         self.number_of_modes = len(self.normal_modes)
         # get the cell edges for the bounding box, shifted to the centre of mass origin
         totalMass, centreOfMassXYZ, centreOfMassABC = (
-            self.super_cell.calculateCentreOfMass(output=all)
+            self.super_cell.calculateCentreOfMass(output="all")
         )
         self.cell_corners, self.cell_edges = self.super_cell.getBoundingBox(
             centreOfMassABC
@@ -982,7 +991,7 @@ class ViewerTab(QWidget):
         # reorder the displacement info in the normal modes into U,V and W lists
         # Using deque here rather than a simple list as the memory allocation doesn't have to be contiguous
         self.UVW.clear()
-        for mode, displacements in enumerate(self.normal_modes):
+        for _mode, displacements in enumerate(self.normal_modes):
             uvw = deque()
             for i in range(0, len(displacements), 3):
                 uvw.append(displacements[i : i + 3])
@@ -1084,7 +1093,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.deleteCylinders()
         self.opengl_widget.createArrays(len(phases))
         debugger.print("calculatePhasePositions - adding spheres and cylinders")
-        for phase_index, phase in enumerate(phases):
+        for phase_index, _phase in enumerate(phases):
             for col, rad, xyz in zip(
                 self.colours, self.radii, self.newXYZ[phase_index]
             ):
@@ -1324,9 +1333,9 @@ class ViewerTab(QWidget):
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         for index, light in enumerate(self.light_switches):
             if light:
-                string = "switch light {} off".format(index)
+                string = f"switch light {index} off"
             else:
-                string = "switch light {} on".format(index)
+                string = f"switch light {index} on"
             self.light_switches_cb.setItemText(index, string)
         #
         # Colours list of buttons with element colours
@@ -1357,7 +1366,7 @@ class ViewerTab(QWidget):
                 r, g, b, a = self.element_colours[el]
                 button = QPushButton(el)
                 button.setStyleSheet(
-                    "background-color:rgba( {}, {}, {}, {});".format(r, g, b, a)
+                    f"background-color:rgba( {r}, {g}, {b}, {a});"
                 )
                 button.clicked.connect(self.on_coloured_element_clicked)
                 self.element_coloured_buttons.append(button)
@@ -1367,7 +1376,7 @@ class ViewerTab(QWidget):
             for el, button in zip(self.species, self.element_coloured_buttons):
                 r, g, b, a = self.element_colours[el]
                 button.setStyleSheet(
-                    "background-color:rgba( {}, {}, {}, {});".format(r, g, b, a)
+                    f"background-color:rgba( {r}, {g}, {b}, {a});"
                 )
         #
         # Colours list of buttons with colours

@@ -20,16 +20,13 @@ These routines are a useful starting point for investigating the way the code op
 """
 
 import numpy as np
-import PDielec.Utilities as Utilities
+
 import PDielec.Calculator as Calculator
 import PDielec.DielectricFunction as DielectricFunction
-import PDielec.GTMcore as GTMcore
-
-from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer
+import PDielec.Utilities as Utilities
+from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
 from PDielec.GUI.SingleCrystalScenarioTab import solve_single_crystal_equations
-from PDielec.Materials import Material, MaterialsDataBase, External
-from PDielec.Constants import wavenumber, angstrom, amu
-from PDielec.Constants import average_masses, isotope_masses
+from PDielec.Materials import External, MaterialsDataBase
 
 
 def calculateDFTPermittivityObject(
@@ -70,7 +67,7 @@ def calculateDFTPermittivityObject(
     volume_au = cell.getVolume("Bohr")
     mass_dictionary = []
     reader.reset_masses()
-    if isinstance(mass_definition, list) or isinstance(mass_definition, np.ndarray):
+    if isinstance(mass_definition, (list, np.ndarray)):
         reader.set_edited_masses(mass_definition)
     else:
         mass_definition = mass_definition.lower()
@@ -108,7 +105,7 @@ def calculateDFTPermittivityObject(
     # Decide which modes to select
     modes_selected = []
     mode_list = []
-    for index, (f, intensity) in enumerate(zip(frequencies_cm1, intensities)):
+    for _index, (f, intensity) in enumerate(zip(frequencies_cm1, intensities)):
         if f > 10.0 and intensity > 1.0e-6:
             modes_selected.append(True)
         else:
@@ -370,12 +367,12 @@ def calculatePowderSpectrum(
     molarAbsorptionCoefficient = []
     sp_atr = []
     for (
-        v,
-        method,
-        size_mu,
-        size_sigma,
-        shape,
-        data,
+        _v,
+        _method,
+        _size_mu,
+        _size_sigma,
+        _shape,
+        _data,
         trace,
         absorption_coefficient,
         molar_absorption_coefficient,

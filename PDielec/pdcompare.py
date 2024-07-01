@@ -31,8 +31,8 @@ PDielec driver program to compare a collection of spreadsheets with spectra
                 -excel filename
 """
 
-from __future__ import print_function
 import sys
+
 import numpy as np
 from openpyxl import load_workbook
 
@@ -167,8 +167,8 @@ def main():
         # print('Work sheet names for ',f1_name)
         # print(wb1.get_sheet_names())
         ws1 = wb1[sheet]
-        range1 = "{}{}".format(column, rmin)
-        range2 = "{}{}".format(column, rmax)
+        range1 = f"{column}{rmin}"
+        range2 = f"{column}{rmax}"
         col1 = np.array([[i.value for i in j] for j in ws1[range1:range2]])
         # Convert to a 1D array
         col1 = col1[:, 0]
@@ -211,14 +211,14 @@ def main():
         for i, name1 in enumerate(names):
             worksheet.write(0, i + 1, name1)
             worksheet.write(i + 1, 0, name1)
-            for j, name2 in enumerate(names):
+            for j, _name2 in enumerate(names):
                 worksheet.write(j + 1, i + 1, lags[j, i])
                 worksheet.write(i + 1, j + 1, lags[i, j])
         worksheet = workbook.add_worksheet("Correlations")
         for i, name1 in enumerate(names):
             worksheet.write(0, i + 1, name1)
             worksheet.write(i + 1, 0, name1)
-            for j, name2 in enumerate(names):
+            for j, _name2 in enumerate(names):
                 worksheet.write(j + 1, i + 1, correlations[j, i])
                 worksheet.write(i + 1, j + 1, correlations[i, j])
         print("Finished write the spread sheet to ", excelfile)

@@ -16,14 +16,16 @@
 App Module
 """
 
-import sys
 import os.path
-from PyQt5.QtWidgets import QMainWindow, QApplication
+import sys
+
 from PyQt5.QtCore import QCoreApplication
-from PDielec.GUI.NoteBook import NoteBook
-import PDielec.Utilities as Utilities
-from PDielec.Utilities import Debug
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
 import PDielec.__init__
+import PDielec.Utilities as Utilities
+from PDielec.GUI.NoteBook import NoteBook
+from PDielec.Utilities import Debug
 
 version = PDielec.__init__.__version__
 
@@ -120,7 +122,6 @@ class App(QMainWindow):
         self.program_exit = False
         self.debug = False
         self.scripting = False
-        nosplash = False
         self.scriptname = ""
         # Manage options
         tokens = args[1:]
@@ -131,17 +132,11 @@ class App(QMainWindow):
         default_scenario = "powder"
         # Look at the environment to see if the number of cpus is specified
         token = os.getenv("PDIELEC_NUM_PROCESSORS")
-        if token is not None:
-            ncpus = int(token)
-        else:
-            ncpus = 0
+        ncpus = int(token) if token is not None else 0
         # Look at the environment to see if the number of threading is specified
         token = os.getenv("PDIELEC_THREADING")
         if token is not None:
-            if token == "FALSE" or token == "false":
-                threading = False
-            else:
-                threading = True
+            threading = not (token == "FALSE" or token == "false")
         else:
             threading = False
         parameters = []
@@ -152,7 +147,8 @@ class App(QMainWindow):
             if token == "-d" or token == "-debug" or token == "--debug":
                 self.debug = True
             elif token == "-nosplash" or token == "--nosplash":
-                nosplash = True
+                # just ignore --nosplash
+                pass
             elif (
                 token == "-exit"
                 or token == "--exit"
@@ -231,7 +227,7 @@ class App(QMainWindow):
         # Continue
         #
         self.version = version
-        self.title = "PDGui - Using PDielec library {} ".format(self.version)
+        self.title = f"PDGui - Using PDielec library {self.version} "
         self.left = 10
         self.top = 30
         self.width = 900
@@ -365,7 +361,7 @@ class App(QMainWindow):
         -----
         This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
         """
-        self.title = "PDGui {}  - ".format(self.version) + title
+        self.title = f"PDGui {self.version}  - " + title
         self.setWindowTitle(self.title)
         return
 
@@ -401,7 +397,7 @@ class App(QMainWindow):
         scriptname = os.path.basename(scriptname)
         # If a script is used there are no prompts for overwriting files etc.
         self.notebook.overwriting = True
-        with open(scriptname, "r") as fd:
+        with open(scriptname) as fd:
             # lines = fd.readlines()
             script = fd.read()
             exec(script)
@@ -462,13 +458,11 @@ class App(QMainWindow):
         debugger.print("Close event has been captured")
         self.notebook.pool.close()
         self.notebook.pool.join()
-        super(App, self).closeEvent(event)
+        super().closeEvent(event)
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = App(sys.argv)
     ex.show()
-    self.notebook.pool.close()
-    self.notebook.pool.join()
     sys.exit(app.exec_())

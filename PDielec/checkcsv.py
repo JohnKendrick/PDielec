@@ -19,9 +19,9 @@ The checkcsv command read in two csv files and check that the float contents are
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 """
 
-from __future__ import print_function
 import sys
 from os.path import splitext
+
 from termcolor import colored
 
 global separator
@@ -73,27 +73,25 @@ def compare_lines(line1, line2, swapped):
     max_percentage_error = 0.0
     keep_word1 = ""
     keep_word2 = ""
-    index = 0
     len1 = len(line1.split(separator))
     len2 = len(line2.split(separator))
-    if len1 == len2:
-        if len1 > 4:
-            word1 = line1.split(separator)[3]
-            word2 = line2.split(separator)[3]
-            if word1 == word2 and word1 == "processors":
-                # Ignore this line 'cos the number of processors used depends on the machine
-                return (
-                    store_error,
-                    nerrors,
-                    max_percentage_error,
-                    keep_word1,
-                    keep_word2,
-                )
-            # end if word1 == word2
-        # end if len1 > 4
+    if len1 == len2 and len1 > 4:
+        word1 = line1.split(separator)[3]
+        word2 = line2.split(separator)[3]
+        if word1 == word2 and word1 == "processors":
+            # Ignore this line 'cos the number of processors used depends on the machine
+            return (
+                store_error,
+                nerrors,
+                max_percentage_error,
+                keep_word1,
+                keep_word2,
+            )
+        # end if word1 == word2 and len1 > 4
     # end if len1 == len2
-    for word1, word2 in zip(line1.split(separator), line2.split(separator)):
-        index += 1
+    for index, (word1, word2) in enumerate(
+        zip(line1.split(separator), line2.split(separator))
+    ):
         if isfloat(word1):
             if not isfloat(word2):
                 nerrors += 1
@@ -236,9 +234,7 @@ def main():
     file_name, extension = splitext(file1)
     if extension == ".csv":
         separator = ","
-    elif extension == ".txt":
-        separator = None
-    elif extension == ".out":
+    elif extension == ".txt" or extension == ".out":
         separator = None
     # Read the command line again
     files = []
@@ -257,87 +253,72 @@ def main():
             files.append(tokens[itoken])
         # end if
     # end while
-    fd1 = open(file1)
-    fd2 = open(file2)
-    #
-    line1_errors = []
-    line2_errors = []
-    line_numbers_with_error = []
     keep_line_number = 0
     keep_word1 = 0
     keep_word2 = 0
     nerrors = 0
     store_error = False
     max_percentage_error = 0.0
-    max_percentage_error2 = 0.0
-    line_number = 0
     compare_next_line = False
-    for line1, line2 in zip(fd1, fd2):
-        line_number += 1
-        if not compare_next_line:
-            store_error, nerror, percentage_error, keep_word1c, keep_word2c = (
-                compare_lines(line1, line2, False)
-            )
-            max_percentage_error = max(max_percentage_error, percentage_error)
-            if store_error:
-                # if there was an error let's see if two lines are swapped
-                line1a = line1
-                line2a = line2
-                compare_next_line = True
-        else:
-            # There was an error on the previous line, see if lines are swapped
-            store_error1, nerror1, percentage_error1, keep_word1a, keep_word2a = (
-                compare_lines(line1, line2a, True)
-            )
-            store_error2, nerror2, percentage_error2, keep_word1b, keep_word2b = (
-                compare_lines(line2, line1a, True)
-            )
-            compare_next_line = False
-            keep_word1 = keep_word1a
-            keep_word2 = keep_word2a
-            keep_line_number = line_number
-            if store_error1 or store_error2:
-                # There is still an error on the swapped lines so we have an error on line1 and line1a
-                nerrors += nerror
-                if percentage_error > max_percentage_error:
-                    max_percentage_error = percentage_error
-                    keep_word1 = keep_word1c
-                    keep_word2 = keep_word2c
-                    keep_line_number = line_number - 1
+    with open(file1) as fd1, open(file2) as fd2:
+        for line_number, (line1, line2) in enumerate(zip(fd1, fd2)):
+            if not compare_next_line:
                 store_error, nerror, percentage_error, keep_word1c, keep_word2c = (
                     compare_lines(line1, line2, False)
                 )
-                nerrors += nerror
-                if percentage_error > max_percentage_error:
-                    max_percentage_error = percentage_error
-                    keep_word1 = keep_word1c
-                    keep_word2 = keep_word2c
-                    keep_line_number = line_number
+                max_percentage_error = max(max_percentage_error, percentage_error)
+                if store_error:
+                    # if there was an error let's see if two lines are swapped
+                    line1a = line1
+                    line2a = line2
+                    compare_next_line = True
             else:
-                # The swapped lines are the same so there is no error
-                store_error = False
-            # endif
-        # end if not
-    # end for line1, line2
+                # There was an error on the previous line, see if lines are swapped
+                store_error1, nerror1, percentage_error1, keep_word1a, keep_word2a = (
+                    compare_lines(line1, line2a, True)
+                )
+                store_error2, nerror2, percentage_error2, keep_word1b, keep_word2b = (
+                    compare_lines(line2, line1a, True)
+                )
+                compare_next_line = False
+                keep_word1 = keep_word1a
+                keep_word2 = keep_word2a
+                keep_line_number = line_number
+                if store_error1 or store_error2:
+                    # There is still an error on the swapped lines so we have an error on line1 and line1a
+                    nerrors += nerror
+                    if percentage_error > max_percentage_error:
+                        max_percentage_error = percentage_error
+                        keep_word1 = keep_word1c
+                        keep_word2 = keep_word2c
+                        keep_line_number = line_number - 1
+                    store_error, nerror, percentage_error, keep_word1c, keep_word2c = (
+                        compare_lines(line1, line2, False)
+                    )
+                    nerrors += nerror
+                    if percentage_error > max_percentage_error:
+                        max_percentage_error = percentage_error
+                        keep_word1 = keep_word1c
+                        keep_word2 = keep_word2c
+                        keep_line_number = line_number
+                else:
+                    # The swapped lines are the same so there is no error
+                    store_error = False
+                # endif
+            # end if not
+        # end for line1, line2
+    # end of open fd1, fd2
     if nerrors > 0:
         print(
             "  "
             + colored("ERRORS:", "red")
-            + "({}) LARGEST ON LINE {} OF {}({}) and {}({}) -- max %error={}".format(
-                nerrors,
-                keep_line_number,
-                file1,
-                keep_word1,
-                file2,
-                keep_word2,
-                max_percentage_error,
-            )
+            + f"({nerrors}) LARGEST ON LINE {keep_line_number} OF {file1}({keep_word1}) and {file2}({keep_word2}) -- max %error={max_percentage_error}"
         )
     else:
         print(
             "  "
             + colored("OK:", "blue")
-            + " {} = {} -- max %error={}".format(file1, file2, max_percentage_error)
+            + f" {file1} = {file2} -- max %error={max_percentage_error}"
         )
     # end
     return (nerrors, keep_line_number, keep_word1, keep_word2, max_percentage_error)

@@ -18,13 +18,19 @@ Hold unit cell information and its associated calculated properties.
 
 """
 
-import numpy as np
 import math
-from PDielec.Calculator import calculate_distance, calculate_angle, calculate_torsion
-from PDielec.Calculator import cleanup_symbol
-from PDielec.Plotter import print_reals, print_ints, print_strings
-from PDielec.Constants import avogadro_si, element_to_atomic_number, covalent_radii
 import sys
+
+import numpy as np
+
+from PDielec.Calculator import (
+    calculate_angle,
+    calculate_distance,
+    calculate_torsion,
+    cleanup_symbol,
+)
+from PDielec.Constants import avogadro_si, covalent_radii, element_to_atomic_number
+from PDielec.Plotter import print_ints, print_reals, print_strings
 
 
 def convert_length_units(value, units_in, units_out):
@@ -184,7 +190,7 @@ class UnitCell:
             self.lattice[2] = c
         self._calculate_reciprocal_lattice(self.lattice)
 
-    def write_cif(self, filename=None, file_=sys.stdout):
+    def write_cif(self, filename=None):
         """
         Write the crystallographic information file (CIF) representation of a structure.
 
@@ -192,8 +198,6 @@ class UnitCell:
         ----------
         filename : str, optional
             The name of the file to be written. If not provided, the CIF data is printed to stdout.
-        file\_ : object, optional
-            An output stream object. Default is sys.stdout.
 
         Returns
         -------
@@ -218,43 +222,44 @@ class UnitCell:
         >>> cell.write_cif('example.cif')
         """
         # Open the filename if it is given
-        if filename is not None:
-            file_ = open(filename, "w")
-        abc = convert_length_units([self.a, self.b, self.c], self.units, "Angstrom")
-        volume = self.getVolume("Angstrom")
-        spg_symbol, spg_number = self.find_symmetry()
-        if filename is not None:
-            print("data_" + filename, file=file_)
-        else:
-            print("data_", file=file_)
-        print("_symmetry_space_group_name_H-M '{}'".format(spg_symbol), file=file_)
-        print("_symmetry_Int_Tables_number      {}  ".format(spg_number), file=file_)
-        print("_cell_length_a      {:12.6f}".format(abc[0]), file=file_)
-        print("_cell_length_b      {:12.6f}".format(abc[1]), file=file_)
-        print("_cell_length_c      {:12.6f}".format(abc[2]), file=file_)
-        print("_cell_angle_alpha   {:12.6f}".format(self.alpha), file=file_)
-        print("_cell_angle_beta    {:12.6f}".format(self.beta), file=file_)
-        print("_cell_angle_gamma   {:12.6f}".format(self.gamma), file=file_)
-        print("_cell_volume        {:12.6f}".format(volume), file=file_)
-        print("loop_", file=file_)
-        print("_atom_site_label", file=file_)
-        print("_atom_site_type_symbol", file=file_)
-        print("_atom_site_fract_x", file=file_)
-        print("_atom_site_fract_y", file=file_)
-        print("_atom_site_fract_z", file=file_)
-        for i, (frac, el) in enumerate(
-            zip(self.fractional_coordinates, self.element_names)
-        ):
-            symbol = el + str(i + 1)
+        from contextlib import nullcontext
+
+        with open(filename, "w") if filename else nullcontext(sys.stdout) as file_:
+            abc = convert_length_units([self.a, self.b, self.c], self.units, "Angstrom")
+            volume = self.getVolume("Angstrom")
+            spg_symbol, spg_number = self.find_symmetry()
+            if filename is not None:
+                print("data_" + filename, file=file_)
+            else:
+                print("data_", file=file_)
+            print(f"_symmetry_space_group_name_H-M '{spg_symbol}'", file=file_)
             print(
-                "{} {} {:12.6f} {:12.6f} {:12.6f}".format(
-                    symbol, el, frac[0], frac[1], frac[2]
-                ),
-                file=file_,
+                f"_symmetry_Int_Tables_number      {spg_number}  ", file=file_
             )
-        print(" ", file=file_)
-        print("#END", file=file_)
-        print(" ", file=file_)
+            print(f"_cell_length_a      {abc[0]:12.6f}", file=file_)
+            print(f"_cell_length_b      {abc[1]:12.6f}", file=file_)
+            print(f"_cell_length_c      {abc[2]:12.6f}", file=file_)
+            print(f"_cell_angle_alpha   {self.alpha:12.6f}", file=file_)
+            print(f"_cell_angle_beta    {self.beta:12.6f}", file=file_)
+            print(f"_cell_angle_gamma   {self.gamma:12.6f}", file=file_)
+            print(f"_cell_volume        {volume:12.6f}", file=file_)
+            print("loop_", file=file_)
+            print("_atom_site_label", file=file_)
+            print("_atom_site_type_symbol", file=file_)
+            print("_atom_site_fract_x", file=file_)
+            print("_atom_site_fract_y", file=file_)
+            print("_atom_site_fract_z", file=file_)
+            for i, (frac, el) in enumerate(
+                zip(self.fractional_coordinates, self.element_names)
+            ):
+                symbol = el + str(i + 1)
+                print(
+                    f"{symbol} {el} {frac[0]:12.6f} {frac[1]:12.6f} {frac[2]:12.6f}",
+                    file=file_,
+                )
+            print(" ", file=file_)
+            print("#END", file=file_)
+            print(" ", file=file_)
         return
 
     def getBoundingBox(self, units="Angstrom"):
@@ -442,7 +447,7 @@ class UnitCell:
         # Calculate the centre of mass - if the atom list is given just use that
         # The centre of mass can be returned in as 'xyz' space or 'abc' space
         # if output='all' a tuple of (mass,cm_xyz,cm_abc) is returned
-        if atom_list == None:
+        if atom_list is None:
             atom_list = range(self.nions)
         mass = 0.0
         cm = np.zeros(3)
@@ -672,11 +677,11 @@ class UnitCell:
         """
         # Use the hkl miller indices to calculate the normal to a plane in cartesian space
         p = []
-        if not hkl[0] == 0:
+        if hkl[0] != 0:
             p.append(np.array(self.lattice[0] / hkl[0]))
-        if not hkl[1] == 0:
+        if hkl[1] != 0:
             p.append(np.array(self.lattice[1] / hkl[1]))
-        if not hkl[2] == 0:
+        if hkl[2] != 0:
             p.append(np.array(self.lattice[2] / hkl[2]))
         if hkl[0] == 0:
             p.append(self.lattice[0] + p[0])
@@ -865,12 +870,12 @@ class UnitCell:
         fractional_supercell = []
         index_supercell = []
         for tr in translations:
-            for l, a in enumerate(self.fractional_coordinates):
+            for index, a in enumerate(self.fractional_coordinates):
                 i, j, k = tr
-                index_supercell.append(l)
+                index_supercell.append(index)
                 new_position = [(xyz1 + xyz2) for xyz1, xyz2 in zip(a, tr)]
                 fractional_supercell.append(new_position)
-                # jk print('New positions ',new_position,l,i,j,k)
+                # jk print('New positions ',new_position,index,i,j,k)
         # Convert fractional supercell coordinates to xyz
         # xyz_supercell will be an np array
         xyz_supercell = np.empty_like(fractional_supercell)
@@ -898,7 +903,7 @@ class UnitCell:
             Atom_box_id.append(abc)
             try:
                 BoxAtoms[abc].append(i)
-            except:
+            except Exception:
                 BoxAtoms[abc] = [i]
         # Calculate the neighbouring boxes for each occupied box
         for abc in BoxAtoms:
@@ -979,7 +984,7 @@ class UnitCell:
                             jx = index_supercell[j]
                             # jk print("atom j / jx is bonded to atom i",j,jx,i)
                             # The image of j in the original cell might not be available, and j might be bonded
-                            if jx in remainingAtoms and not j in belongsToMolecule:
+                            if jx in remainingAtoms and j not in belongsToMolecule:
                                 # if j was not already in a molecule then we have new information
                                 moreAtomsToBeFound = True
                                 molecules[useThisMolecule].append(j)
@@ -1159,18 +1164,14 @@ class UnitCell:
         torsion_list = []
         for i, j, k in angle_list:
             for l1, l2 in self.bonds:
-                if l1 == i and l2 != j:
-                    if (l2, i, j, k) not in torsion_list:
-                        torsion_list.append((l2, i, j, k))
-                if l2 == i and l1 != j:
-                    if (l1, i, j, k) not in torsion_list:
-                        torsion_list.append((l1, i, j, k))
-                if l1 == k and l2 != j:
-                    if (i, j, k, l2) not in torsion_list:
-                        torsion_list.append((i, j, k, l2))
-                if l2 == k and l1 != j:
-                    if (i, j, k, l1) not in torsion_list:
-                        torsion_list.append((i, j, k, l1))
+                if l1 == i and l2 != j and (l2, i, j, k) not in torsion_list:
+                    torsion_list.append((l2, i, j, k))
+                if l2 == i and l1 != j and (l1, i, j, k) not in torsion_list:
+                    torsion_list.append((l1, i, j, k))
+                if l1 == k and l2 != j and (i, j, k, l2) not in torsion_list:
+                    torsion_list.append((i, j, k, l2))
+                if l2 == k and l1 != j and (i, j, k, l1) not in torsion_list:
+                    torsion_list.append((i, j, k, l1))
         # Calculate the value of the torsion angle
         angles = []
         for i, j, k, l in torsion_list:

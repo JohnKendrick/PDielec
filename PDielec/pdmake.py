@@ -41,20 +41,18 @@ Command line options
     - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 """
 
-import os
-import sys
-from PDielec.preader import main as main_preader
-from PDielec.pdgui import main as main_pdgui
-from PDielec.checkcsv import main as main_checkcsv
-from PDielec.checkexcel import main as main_checkexcel
-from PDielec.p2cif import main as main_p2cif
-from PDielec.vibanalysis import main as main_vibanalysis
-import numpy as np
 import contextlib
 import functools
-from shutil import copyfile
+import os
 import subprocess
+import sys
 import time
+from shutil import copyfile
+
+import numpy as np
+
+from PDielec.checkcsv import main as main_checkcsv
+from PDielec.checkexcel import main as main_checkexcel
 
 # Force a flush on print, needed for Windows
 print = functools.partial(print, flush=True)
@@ -312,28 +310,28 @@ def install(scripts):
     global rootDirectory
     mychdir(rootDirectory)
     print("Installing preader", end="")
-    subprocess.run("cp -P preader {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P preader {scripts}", shell=True)
     print(",p1reader", end="")
-    subprocess.run("cp -P p1reader {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P p1reader {scripts}", shell=True)
     print(",pdgui", end="")
-    subprocess.run("cp -P pdgui {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P pdgui {scripts}", shell=True)
     print(",p2cif", end="")
-    subprocess.run("cp -P p2cif {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P p2cif {scripts}", shell=True)
     print(",pdcompare", end="")
-    subprocess.run("cp -P pdcompare {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P pdcompare {scripts}", shell=True)
     print(",graphdatagenerator", end="")
-    subprocess.run("cp -P graphdatagenerator {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P graphdatagenerator {scripts}", shell=True)
     print(",vibanalysis", end="")
-    subprocess.run("cp -P vibanalysis {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P vibanalysis {scripts}", shell=True)
     print(",pdmake", end="")
-    subprocess.run("cp -P pdmake {}".format(scripts), shell=True)
+    subprocess.run(f"cp -P pdmake {scripts}", shell=True)
     print(",python scripts")
-    subprocess.run("mkdir -p {}/PDielec".format(scripts), shell=True)
-    subprocess.run("mkdir -p {}/PDielec/GUI".format(scripts), shell=True)
-    subprocess.run("cp -r PDielec/*.py {}/PDielec".format(scripts), shell=True)
-    subprocess.run("cp -r PDielec/GUI/*.py {}/PDielec/GUI/".format(scripts), shell=True)
+    subprocess.run(f"mkdir -p {scripts}/PDielec", shell=True)
+    subprocess.run(f"mkdir -p {scripts}/PDielec/GUI", shell=True)
+    subprocess.run(f"cp -r PDielec/*.py {scripts}/PDielec", shell=True)
+    subprocess.run(f"cp -r PDielec/GUI/*.py {scripts}/PDielec/GUI/", shell=True)
     subprocess.run(
-        "cp -r PDielec/GUI/*.png {}/PDielec/GUI/".format(scripts), shell=True
+        f"cp -r PDielec/GUI/*.png {scripts}/PDielec/GUI/", shell=True
     )
     print("Finished installation of scripts into ", scripts)
 
@@ -376,8 +374,8 @@ def redirect(file):
 
     class Logger:
         def __init__(self, file):
-            fd = open(file, "w")
-            self.terminal = sys.stdout
+            fd = open(file, "w")        # noqa <SIM115>
+            self.terminal = sys.stdout 
             self.log = fd
 
         def write(self, message):
@@ -393,7 +391,7 @@ def redirect(file):
 
     sys.stdout = logger
     if not debug:
-        sys.stderr = open(os.devnull, "w")
+        sys.stderr = open(os.devnull, "w")        # noqa <SIM115>
     try:
         yield logger.log
     finally:
@@ -436,7 +434,7 @@ def readNmaFile(file):
     frequencies = []
     rsquared = []
     explained = []
-    with open(file, "r") as fd:
+    with open(file) as fd:
         line = fd.readline()
         while line:
             splits = line.split()
@@ -531,39 +529,42 @@ def compareFiles(file1, file2):
       floating-point inaccuracies.
     """
     global debug
-    fd1 = open(file1, "r")
-    fd2 = open(file2, "r")
-    lines1 = fd1.readlines()
-    lines2 = fd2.readlines()
-    nerrors = 0
-    for line1, line2 in zip(lines1, lines2):
-        for word1, word2 in zip(line1.split(), line2.split()):
-            word1 = word1.replace("(", "")
-            word1 = word1.replace(")", "")
-            word1 = word1.replace("%", "")
-            word1 = word1.replace("/", "")
-            word1 = word1.replace("\\", "")
-            word2 = word2.replace("(", "")
-            word2 = word2.replace(")", "")
-            word2 = word2.replace("%", "")
-            word2 = word1.replace("/", "")
-            try:
-                float1 = float(word1)
-                float2 = float(word2)
-                if abs(float1) + abs(float2) > 1.0e-12:
-                    if 2 * abs(float1 - float2) / (abs(float1) + abs(float2)) > 1.0e-4:
+    with open(file1) as fd1, open(file2) as fd2:
+        lines1 = fd1.readlines()
+        lines2 = fd2.readlines()
+        nerrors = 0
+        for line1, line2 in zip(lines1, lines2):
+            for word1, word2 in zip(line1.split(), line2.split()):
+                word1 = word1.replace("(", "")
+                word1 = word1.replace(")", "")
+                word1 = word1.replace("%", "")
+                word1 = word1.replace("/", "")
+                word1 = word1.replace("\\", "")
+                word2 = word2.replace("(", "")
+                word2 = word2.replace(")", "")
+                word2 = word2.replace("%", "")
+                word2 = word1.replace("/", "")
+                try:
+                    float1 = float(word1)
+                    float2 = float(word2)
+                    #  Check to see if there is a difference if floats
+                    if (
+                        abs(float1) + abs(float2) > 1.0e-12
+                        and 2 * abs(float1 - float2) / (abs(float1) + abs(float2))
+                        > 1.0e-4
+                    ):
                         if debug:
                             print("Float difference", float1, float2)
                             print("Line 1", line1)
                             print("Line 2", line2)
                         nerrors += 1
-            except:
-                if word1 != word2:
-                    if debug:
-                        print("Word difference", word1, word2)
-                        print("Line 1", line1)
-                        print("Line 2", line2)
-                    nerrors += 1
+                except Exception as e:
+                    if word1 != word2:
+                        if debug:
+                            print("Word difference", word1, word2, e)
+                            print("Line 1", line1)
+                            print("Line 2", line2)
+                        nerrors += 1
     return nerrors
 
 
@@ -596,16 +597,16 @@ def runP2CifTest(title, instructions, regenerate):
         outputfile = "all.ref.cif"
     with open(outputfile, "w") as stdout:
         if debug:
-            result = subprocess.run(sys.argv, stdout=stdout)
+            subprocess.run(sys.argv, stdout=stdout)
         else:
-            result = subprocess.run(sys.argv, stdout=stdout, stderr=subprocess.DEVNULL)
+            subprocess.run(sys.argv, stdout=stdout, stderr=subprocess.DEVNULL)
         # end if debug
     # end with open
     # If not doing a regeneration perform a check
     if not regenerate:
         nerrors = compareFiles("all.cif", "all.ref.cif")
         if nerrors > 0:
-            print(" {} ERRORS:".format(nerrors))
+            print(f" {nerrors} ERRORS:")
         else:
             print(" OK:")
         # end if
@@ -649,16 +650,14 @@ def runVibAnalysis(title, instructions, regenerate):
     nmafile = header + ".nma"
     reffile = header + ".nma.ref"
     if debug:
-        result = subprocess.run(sys.argv)
+        subprocess.run(sys.argv)
     else:
-        result = subprocess.run(
-            sys.argv, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-        )
+        subprocess.run(sys.argv, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     # If not doing a regeneration perform a check
     if not regenerate:
         nerrors = compareNmaFiles(nmafile, reffile)
         if nerrors > 0:
-            print(" {} ERRORS:".format(nerrors))
+            print(f" {nerrors} ERRORS:")
         else:
             print(" OK:")
         # end if
@@ -702,9 +701,9 @@ def runPreaderTest(title, instructions, regenerate):
         outputfile = "command.ref.csv"
     with open(outputfile, "w") as fd:
         if debug:
-            result = subprocess.run(sys.argv, stdout=fd)
+            subprocess.run(sys.argv, stdout=fd)
         else:
-            result = subprocess.run(sys.argv, stdout=fd, stderr=subprocess.DEVNULL)
+            subprocess.run(sys.argv, stdout=fd, stderr=subprocess.DEVNULL)
     # end with
     # If not doing a regeneration perform a check
     if not regenerate:
@@ -715,12 +714,10 @@ def runPreaderTest(title, instructions, regenerate):
         if nerrors > 0:
             print(
                 " ERRORS:"
-                + "LARGEST ON LINE {} - max %error={}".format(
-                    nerrors, keep_line_number, max_percentage_error
-                )
+                + f"LARGEST ON LINE {nerrors} - max %error={keep_line_number}"
             )
         else:
-            print(" OK:" + " - max %error={}".format(max_percentage_error))
+            print(" OK:" + f" - max %error={max_percentage_error}")
         # end if
     else:
         print(" Regenerated:")
@@ -782,19 +779,17 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
             ) = result
             if nerrors > 0:
                 print(
-                    "{} ERRORS:".format(nerrors)
-                    + "{}@{},{} - max %error={}".format(
-                        sheet, row, col, max_percentage_error
-                    )
+                    f"{nerrors} ERRORS:"
+                    + f"{sheet}@{row},{col} - max %error={max_percentage_error}"
                 )
             else:
-                print(" OK:" + " - max %error={}".format(max_percentage_error))
+                print(" OK:" + f" - max %error={max_percentage_error}")
             # end if
         elif benchmarks:
             end_time = time.time()
             elapsed_time = end_time - start_time
             start_time = end_time
-            print(" OK:" + " - elapsed time {:.3f}s".format(elapsed_time))
+            print(" OK:" + f" - elapsed time {elapsed_time:.3f}s")
         elif not benchmarks:
             # If we asked for a benchmarking then don't do a regenerate
             copyfile("results.xlsx", "results.ref.xlsx")
@@ -871,8 +866,8 @@ def runTests(testlist, testType, regenerate):
             print("RunTest: directory=", directory)
         if not os.path.isdir(directory):
             print("Error: command needs to be executed in the PDielec home directory")
-            print("       current directory is {}".format(homedir))
-            print("       required directory is {}".format(directory))
+            print(f"       current directory is {homedir}")
+            print(f"       required directory is {directory}")
             exit()
         if testType == "benchmarks":
             runPdMakefile(directory, pdmakefile, regenerate, benchmarks=True)
@@ -881,7 +876,7 @@ def runTests(testlist, testType, regenerate):
     # end for
     elapsed_time = time.time() - test_start_time
     print("--------------------------------------------------")
-    print(convertTestType[testType], "completed in {:.3f}s".format(elapsed_time))
+    print(convertTestType[testType], f"completed in {elapsed_time:.3f}s")
 
 
 def readPdMakefile(directory, filename):
@@ -931,7 +926,7 @@ def readPdMakefile(directory, filename):
     instructions = {}
     if debug:
         print("ReadPdMakefile:", directory, filename)
-    with open(filename, "r") as fd:
+    with open(filename) as fd:
         line = fd.readline()[:-1]
         if settings["title"] == "title":
             title = line.ljust(settings["padding"])
@@ -969,8 +964,7 @@ def mychdir(directory):
     """
     if directory != "":
         if os.path.isdir(directory):
-            result = os.chdir(directory)
-            newdir = os.getcwd()
+            os.chdir(directory)
         else:
             print("mychdir: Error directory does not exist", directory)
             print("mychdir: Current directory is          ", os.getcwd())
@@ -1199,10 +1193,6 @@ def main():
     itoken = -1
     regenerate = False
     scriptsDirectory = "~/bin"
-    command = sys.argv[0]
-    # rootDirectory,command = os.path.split(command)
-    # if rootDirectory == '':
-    #    rootDirectory = originalDirectory
     rootDirectory = originalDirectory
     rootDirectory = findRootDirectory(rootDirectory)
     actions = []
@@ -1271,10 +1261,7 @@ def main():
     # If the are then use them
     #
     if useLocal:
-        if checkLocalExecutables():
-            useLocal = True
-        else:
-            useLocal = False
+        useLocal = checkLocalExecutables()
     # Change directory to the Examples directory
     if not os.path.isdir("Examples"):
         print("Error: command needs to be executed in the PDielec home directory")

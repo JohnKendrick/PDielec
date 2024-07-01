@@ -18,6 +18,7 @@ Read the contents of a directory containing Phonopy input and output files.
 """
 
 import numpy as np
+
 from PDielec.GenericOutputReader import GenericOutputReader
 
 
@@ -155,17 +156,15 @@ class PhonopyOutputReader(GenericOutputReader):
 
         try:
             from yaml import CLoader as Loader
-        except:
-            print("WARNING: Yaml CLoader is not avaiable, using fallback")
+        except Exception as e:
+            print("WARNING: Yaml CLoader is not avaiable, using fallback", e)
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
-        fd = open(self._outputfiles[0])
-        data_q = yaml.load(fd, Loader=Loader)
-        fd.close
+        with open(self._outputfiles[0]) as fd:
+            data_q = yaml.load(fd, Loader=Loader)
         # the second name has to be the phonopy file
-        fd = open(self._outputfiles[1])
-        data_p = yaml.load(fd, Loader=Loader)
-        fd.close
+        with open(self._outputfiles[1]) as fd:
+            data_p = yaml.load(fd, Loader=Loader)
         self._old_masses = []
         for i in range(self.nions):
             self._old_masses.append(data_p["primitive_cell"]["points"][i]["mass"])
@@ -197,7 +196,7 @@ class PhonopyOutputReader(GenericOutputReader):
         for i in range(nmodes):
             mode = []
             n = 0
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 modea = [eig_vec[n][i], eig_vec[n + 1][i], eig_vec[n + 2][i]]
                 n = n + 3
                 mode.append(modea)

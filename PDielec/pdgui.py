@@ -32,14 +32,15 @@ Notes
 
 """
 
-from __future__ import print_function
 import os
 import sys
-from PDielec.GUI.App import App
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
 from multiprocessing import freeze_support
+
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QProgressBar, QSplashScreen
+
 import PDielec.__init__
+from PDielec.GUI.App import App
 
 version = PDielec.__init__.__version__
 

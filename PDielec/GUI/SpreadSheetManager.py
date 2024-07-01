@@ -16,8 +16,8 @@
 SpreadSheetMamager module
 """
 
-import xlsxwriter as xlsx
 import numpy as np
+import xlsxwriter as xlsx
 
 
 class SpreadSheetManager:

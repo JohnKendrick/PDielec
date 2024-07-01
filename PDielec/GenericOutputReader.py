@@ -18,15 +18,16 @@ Generic reader of output files. An actual reader should inherit from this class.
 
 """
 
-from __future__ import print_function
 import math
 import os
 import sys
+
 import numpy as np
-from PDielec.Constants import wavenumber, avogadro_si, amu
-from PDielec.Plotter import print3x3, print_reals, print_strings, print_ints
+
 from PDielec.Calculator import cleanup_symbol
+from PDielec.Constants import amu, avogadro_si, wavenumber
 from PDielec.IO import pdielec_io
+from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
 
 
 class GenericOutputReader:
@@ -399,27 +400,25 @@ class GenericOutputReader:
         print("")
         print("Summary of information contained in the QM/MM Reader")
         print("")
-        print("Number of atoms: {:5d}".format(self.nions))
+        print(f"Number of atoms: {self.nions:5d}")
         print("")
-        print("Number of species: {:5d}".format(self.nspecies))
+        print(f"Number of species: {self.nspecies:5d}")
         print_strings("Species:", self.species)
         print_ints("Number of atoms for each species:", self.ions_per_type)
         print_reals("Mass of each species:", self.masses_per_type, format="{:10.6f}")
         print_ints("Atom type list:", self.atom_type_list)
         print("")
-        print("Number of kpoints: {:5d}".format(self.kpoints))
+        print(f"Number of kpoints: {self.kpoints:5d}")
         print("")
         print(
-            "Kpoint grid      : {:5d} {:5d} {:5d}".format(
-                self.kpoint_grid[0], self.kpoint_grid[1], self.kpoint_grid[2]
-            )
+            f"Kpoint grid      : {self.kpoint_grid[0]:5d} {self.kpoint_grid[1]:5d} {self.kpoint_grid[2]:5d}"
         )
         print("")
-        print("Energy cutoff (eV): {:f}".format(self.energy_cutoff))
+        print(f"Energy cutoff (eV): {self.energy_cutoff:f}")
         print("")
-        print("final_free_energy(eV): {:f}".format(self.final_free_energy))
+        print(f"final_free_energy(eV): {self.final_free_energy:f}")
         print("")
-        print("geomsteps: {:f}".format(self.geomsteps))
+        print(f"geomsteps: {self.geomsteps:f}")
         print("")
         print_reals("DFT energies (eV):", self.energiesDFT, format="{:10.8f}")
         print("")
@@ -434,20 +433,18 @@ class GenericOutputReader:
         print_reals("Frequencies (cm-1):", self.frequencies)
         print_reals("Masses (amu):", self.masses, format="{:10.6f}")
         for i, charges in enumerate(self.born_charges):
-            title = "Born Charges for Atom {:d}".format(i)
+            title = f"Born Charges for Atom {i:d}"
             print3x3(title, charges)
         print3x3("Epsilon inf: ", self.zerof_optical_dielectric)
         print3x3("Unit cell: ", self.unit_cells[-1].lattice)
         print(" ")
-        print("Volume of cell: {:f}".format(self.volume))
+        print(f"Volume of cell: {self.volume:f}")
         mtotal = 0.0
         for m in self.masses:
             mtotal = mtotal + m
-        print("Total mass is: {:f} g/mol".format(mtotal))
+        print(f"Total mass is: {mtotal:f} g/mol")
         print(
-            "Density is: {:f} g/cc".format(
-                mtotal / (avogadro_si * self.volume * 1.0e-24)
-            )
+            f"Density is: {mtotal / (avogadro_si * self.volume * 1.0e-24):f} g/cc"
         )
         print(" ")
         return
@@ -552,7 +549,7 @@ class GenericOutputReader:
                 if self.manage[k][0].match(line):
                     method = self.manage[k][1]
                     if self.debug:
-                        print("_read_output_file({}): Match found {}".format(name, k))
+                        print(f"_read_output_file({name}): Match found {k}")
                     method(line)
                     break
                 # end if
@@ -580,7 +577,7 @@ class GenericOutputReader:
         n = np.size(A, 0)
         unity = np.eye(n)
         Ak = A
-        for k in range(3):
+        for _k in range(3):
             Bk = np.dot(Ak, Ak.T)
             error = unity - Bk
             Ck = np.linalg.inv(unity + Bk)
@@ -706,7 +703,7 @@ class GenericOutputReader:
         for i in range(nmodes):
             mode = []
             n = 0
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 modea = [eig_vec[n][i], eig_vec[n + 1][i], eig_vec[n + 2][i]]
                 n = n + 3
                 mode.append(modea)
@@ -846,7 +843,7 @@ class GenericOutputReader:
         for i in range(nmodes):
             mode = []
             n = 0
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 modea = [eig_vec[n][i], eig_vec[n + 1][i], eig_vec[n + 2][i]]
                 n = n + 3
                 mode.append(modea)
@@ -955,11 +952,11 @@ class GenericOutputReader:
         ipos = -1
         new_hessian = np.empty_like(hessian)
         for i in range(self.nions):
-            for ix in range(3):
+            for _ix in range(3):
                 ipos += 1
                 jpos = -1
                 for j in range(self.nions):
-                    for jx in range(3):
+                    for _jx in range(3):
                         jpos += 1
                         new_hessian[ipos, jpos] = hessian[ipos, jpos] / math.sqrt(
                             new[i] * new[j]
@@ -1003,11 +1000,11 @@ class GenericOutputReader:
         new_hessian = np.empty_like(hessian)
         ipos = -1
         for i in range(self.nions):
-            for ix in range(3):
+            for _ix in range(3):
                 ipos += 1
                 jpos = -1
                 for j in range(self.nions):
-                    for jx in range(3):
+                    for _jx in range(3):
                         jpos += 1
                         new_hessian[ipos, jpos] = hessian[ipos, jpos] * math.sqrt(
                             old[i] * old[j]

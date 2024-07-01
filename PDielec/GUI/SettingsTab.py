@@ -18,20 +18,24 @@ SettingsTab module
 
 # -*- coding: utf8 -*-
 import numpy as np
+from PyQt5.QtCore import QCoreApplication, QSize, Qt
+from PyQt5.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QLabel,
+    QSizePolicy,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
+
 import PDielec.Calculator as Calculator
 import PDielec.DielectricFunction as DielectricFunction
-from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtWidgets import QComboBox, QLabel
-from PyQt5.QtWidgets import QCheckBox
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QVBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QDoubleSpinBox, QTableWidget, QTableWidgetItem
-from PyQt5.QtWidgets import QSizePolicy
-from PyQt5.QtCore import Qt, QSize, QCoreApplication
-from PDielec.Constants import wavenumber, amu, angstrom
-from PDielec.Constants import average_masses, isotope_masses
+from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
 from PDielec.Utilities import Debug
-from functools import partial
 
 
 class FixedQTableWidget(QTableWidget):
@@ -96,20 +100,14 @@ class FixedQTableWidget(QTableWidget):
             The calculated size that suggests the optimal dimensions for the widget. The width is determined by the total width of all columns, the vertical header width, the vertical scrollbar width, and twice the frame width. The height is determined by the total height of all rows, the horizontal header height, the horizontal scrollbar height, and twice the frame width.
         """
         width = 0
-        if self.columns == None:
-            columns = self.columnCount()
-        else:
-            columns = self.columns
+        columns = self.columnCount() if self.columns is None else self.columns
         for i in range(columns):
             width += self.columnWidth(i)
         width += self.verticalHeader().sizeHint().width()
         width += self.verticalScrollBar().sizeHint().width()
         width += self.frameWidth() * 2
         height = 0
-        if self.rows == None:
-            rows = self.rowCount()
-        else:
-            rows = self.rows
+        rows = self.rowCount() if self.rows is None else self.rows
         for i in range(rows):
             height += self.rowHeight(i)
         height += self.verticalHeader().sizeHint().width()
@@ -469,7 +467,6 @@ class SettingsTab(QWidget):
         # convert cm-1 to au
         if not self.frequencies_have_been_edited:
             self.frequencies_cm1 = self.reader.frequencies
-        frequencies = np.array(self.frequencies_cm1) * wavenumber
         if len(self.sigmas_cm1) == 0:
             self.sigmas_cm1 = [
                 self.settings["Sigma value"] for i in self.frequencies_cm1
@@ -499,9 +496,7 @@ class SettingsTab(QWidget):
             debugger.print("createIntensityTable: recalculating selected modes")
             self.modes_selected = []
             self.mode_list = []
-            for index, (f, intensity) in enumerate(
-                zip(self.frequencies_cm1, self.intensities)
-            ):
+            for f, intensity in zip(self.frequencies_cm1, self.intensities):
                 if f > 10.0 and intensity > 1.0e-6:
                     self.modes_selected.append(True)
                 else:
@@ -611,7 +606,7 @@ class SettingsTab(QWidget):
             return
         debugger.print("Writing of spreadsheet")
         sp.selectWorkSheet("Settings")
-        sp.delete
+        sp.delete()
         sp.writeNextRow(
             ["Settings and calculations of frequencies and absorption"], row=0, col=1
         )
@@ -715,7 +710,7 @@ class SettingsTab(QWidget):
             # Sigma and check / unchecked column
             items = []
             itemFlags = []
-            item = QTableWidgetItem("{0:.1f}".format(sigma))
+            item = QTableWidgetItem(f"{sigma:.1f}")
             if self.modes_selected[i]:
                 item.setCheckState(Qt.Checked)
                 itemFlags.append(
@@ -750,20 +745,18 @@ class SettingsTab(QWidget):
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
             # Frequency column cm-1
-            items.append(QTableWidgetItem("{0:.4f}".format(f)))
+            items.append(QTableWidgetItem(f"{f:.4f}"))
             itemFlags.append(freqFlags)
             # Intensity column Debye2/Angs2/amu
-            items.append(QTableWidgetItem("{0:.4f}".format(intensity)))
+            items.append(QTableWidgetItem(f"{intensity:.4f}"))
             itemFlags.append(otherFlags)
             # Integrated molar absorption L/mole/cm/cm
-            items.append(QTableWidgetItem("{0:.2f}".format(intensity * 4225.6)))
+            items.append(QTableWidgetItem(f"{intensity*4225.6:.2f}"))
             itemFlags.append(otherFlags)
             # Maximum extinction L/mole/cm
             items.append(
                 QTableWidgetItem(
-                    "{0:.2f}".format(
-                        2 * intensity * 4225.6 / self.sigmas_cm1[i] / np.pi
-                    )
+                    f"{2 * intensity * 4225.6 / self.sigmas_cm1[i] / np.pi:.2f}"
                 )
             )
             itemFlags.append(otherFlags)
@@ -906,24 +899,24 @@ class SettingsTab(QWidget):
                 qw = QTableWidgetItem()
                 if self.settings["Mass definition"] == "program":
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText("{0:.6f}".format(mass))
+                    qw.setText(f"{mass:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     self.element_masses_tw.setItem(0, i, qw)
                 elif self.settings["Mass definition"] == "average":
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText("{0:.6f}".format(average_masses[element]))
+                    qw.setText(f"{average_masses[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print("average", average_masses[element])
                     self.element_masses_tw.setItem(0, i, qw)
                 elif self.settings["Mass definition"] == "isotope":
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText("{0:.6f}".format(isotope_masses[element]))
+                    qw.setText(f"{isotope_masses[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print("isotope", isotope_masses[element])
                     self.element_masses_tw.setItem(0, i, qw)
                 elif self.settings["Mass definition"] == "gui":
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText("{0:.6f}".format(self.masses_dictionary[element]))
+                    qw.setText(f"{self.masses_dictionary[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print("gui", self.masses_dictionary[element])
                     self.element_masses_tw.setItem(0, i, qw)
@@ -1238,7 +1231,7 @@ class SettingsTab(QWidget):
         self.optical_tw.blockSignals(True)
         for i, row in enumerate(optical):
             for j, value in enumerate(row):
-                qw = QTableWidgetItem("{0:.4f}".format(value))
+                qw = QTableWidgetItem(f"{value:.4f}")
                 qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                 self.optical_tw.setItem(i, j, qw)
         self.optical_tw.blockSignals(False)
