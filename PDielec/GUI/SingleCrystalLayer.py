@@ -12,11 +12,11 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-SingleCrystalLayer module
-"""
+"""SingleCrystalLayer module."""
 
 # -*- coding: utf8 -*-
+import sys
+
 import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -38,8 +38,7 @@ from PDielec.Utilities import Debug
 
 
 class SingleCrystalLayer:
-    """
-    A class representing a single crystal layer.
+    """A class representing a single crystal layer.
 
     Parameters
     ----------
@@ -149,6 +148,7 @@ class SingleCrystalLayer:
     Notes
     -----
     The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.
+
     """
 
     def __init__(
@@ -161,8 +161,7 @@ class SingleCrystalLayer:
         incoherentOption="Coherent",
         dielectricFlag=False,
     ):
-        """
-        A single crystal layer class to handle layers.
+        """Initialise a single crystal layer class to handle layers.
 
         Parameters
         ----------
@@ -178,12 +177,13 @@ class SingleCrystalLayer:
             The azimuthal angle of rotation of the crystal about the z-axis.
         thickness : float
             The thickness of the layer in the specified thickness units.
-        thicknessUnits : {'ang','nm', 'um', 'mm', 'cm'}
-            The units of thickness measurement.
+        thicknessUnit : {'ang','nm', 'um', 'mm', 'cm'}
+            The unit of thickness measurement.
         incoherentOption : {'Coherent', 'Incoherent (intensity)', 'Incoherent (phase cancelling)', 'Incoherent (phase averaging)', 'Incoherent non-reflective'}
             The option for handling incoherent scattering.
         dielectricFlag : bool
             True if the layer material is the dielectric being studied (ie it was read in as a DFT calculation), False otherwise.
+
         """
         if hkl is None:
             hkl = [0, 0, 1]
@@ -204,12 +204,12 @@ class SingleCrystalLayer:
         self.calculate_euler_matrix()
 
     def print(self):
-        """
-        Print the main attributes of the layer.
+        """Print the main attributes of the layer.
 
         Parameters
         ----------
         None
+
         """
         print("------------------ ")
         print("Material         : ", self.material)
@@ -222,8 +222,7 @@ class SingleCrystalLayer:
         print("Phase shift      :", self.phaseShift)
 
     def getPhaseShift(self):
-        """
-        Get the phase shift for the layer
+        """Get the phase shift for the layer.
 
         Parameters
         ----------
@@ -233,12 +232,12 @@ class SingleCrystalLayer:
         -------
         float
             The phase shift used in the averaged phase shift method
+
         """
         return self.phaseShift
 
     def setPhaseShift(self, phaseShift):
-        """
-        Set the phase shift for the layer
+        """Set the phase shift for the layer.
 
         Parameters
         ----------
@@ -248,13 +247,12 @@ class SingleCrystalLayer:
         Returns
         -------
         None
+
         """
         self.phaseShift = phaseShift
-        return
 
     def setAzimuthal(self, angle):
-        """
-        Set the azimuthal angle of the layer and calculate the Euler matrix.
+        """Set the azimuthal angle of the layer and calculate the Euler matrix.
 
         Parameters
         ----------
@@ -264,14 +262,13 @@ class SingleCrystalLayer:
         Returns
         -------
         None
+
         """
         self.azimuthal = angle
         self.calculate_euler_matrix()
-        return
 
     def isCoherent(self):
-        """
-        Returns True if this is a coherent layer, False otherwise.
+        """Return True if this is a coherent layer, False otherwise.
 
         Parameters
         ----------
@@ -281,6 +278,7 @@ class SingleCrystalLayer:
         -------
         bool
             True if this is a coherent layer, False otherwise.
+
         """
         result = False
         if self.incoherentOption == "Coherent":
@@ -288,8 +286,7 @@ class SingleCrystalLayer:
         return result
 
     def getIncoherentOption(self):
-        """
-        Returns the value of the incoherent option attribute.
+        """Return the value of the incoherent option attribute.
 
         This will return 'Coherent' for a coherent layer
 
@@ -301,27 +298,32 @@ class SingleCrystalLayer:
         -------
         type
             The value of the `incoherentOption` attribute of the object.
+
         """
         return self.incoherentOption
 
     def setIncoherentOption(self, option):
-        """
-        Set the incoherent option
+        """Set the incoherent option.
 
         Parameters
         ----------
         option : string
+            Sets the incoherent option to one of;
+            - "Coherent"
+            - "Incoherent (intensity)"
+            - "Incoherent (phase averaging)"
+            - "Incoherent (phase cancelling)"
+            - "Incoherent (non-reflective)"
 
         Returns
         -------
         None
+
         """
         self.incoherentOption = option
-        return
 
     def getAzimuthal(self):
-        """
-        Get the azimuthal angle
+        """Get the azimuthal angle.
 
         Parameters
         ----------
@@ -331,27 +333,29 @@ class SingleCrystalLayer:
         -------
         float
             The azimuthal angle.
+
         """
         return self.azimuthal
 
     def setThickness(self, thickness):
-        """
-        Set the thickness.
+        """Set the thickness.
 
         Parameters
         ----------
         thickness : float
+            Set the thickness of the layer
 
         Returns
         -------
         None
+
         """
         self.thickness = thickness
-        return
 
     def getThickness(self):
-        """
-        Get the thickness
+        """Get the thickness.
+
+        The units of thickness are defined by the class.  Use getThicknessInMetres() for definite units.
 
         Parameters
         ----------
@@ -360,12 +364,12 @@ class SingleCrystalLayer:
         Returns
         -------
         float
+
         """
         return self.thickness
 
     def getThicknessInMetres(self):
-        """
-        Get the thickness in metres
+        """Get the thickness in metres.
 
         Parameters
         ----------
@@ -374,6 +378,7 @@ class SingleCrystalLayer:
         Returns
         -------
         float
+
         """
         thickness_conversion_factors = {
             "ang": 1.0e-10,
@@ -386,23 +391,27 @@ class SingleCrystalLayer:
         return tom * self.thickness
 
     def setThicknessUnit(self, thicknessUnit):
-        """
-        Set the thickness unit.
+        """Set the thickness unit.
 
         Parameters
         ----------
-        thicknessUnit
+        thicknessUnit : str
+            One of;
+            - "ang"
+            - "nm"
+            - "um"
+            - "mm"
+            - "cm"
 
         Returns
         -------
         None
+
         """
         self.thicknessUnit = thicknessUnit
-        return
 
     def getThicknessUnit(self):
-        """
-        Get the thickness unit
+        """Get the thickness unit.
 
         Parameters
         ----------
@@ -411,28 +420,34 @@ class SingleCrystalLayer:
         Returns
         -------
         str
+            One of;
+            - "ang"
+            - "nm"
+            - "um"
+            - "mm"
+            - "cm"
+
         """
         return self.thicknessUnit
 
     def setHKL(self, hkl):
-        """
-        Set the hkl and recalculate the Euler matrix
+        """Set the hkl and recalculate the Euler matrix.
 
         Parameters
         ----------
         hkl : list of 3 ints
+            [h,k,l] defines a surface
 
         Returns
         -------
         None
+
         """
         self.hkl = hkl
         self.calculate_euler_matrix()
-        return
 
     def getHKL(self):
-        """
-        Get the hkl.
+        """Get the hkl.
 
         Parameters
         ----------
@@ -441,12 +456,12 @@ class SingleCrystalLayer:
         Returns
         -------
         list of 3 ints
+
         """
         return self.hkl
 
     def getName(self):
-        """
-        Return the material name
+        """Return the material name.
 
         Parameters
         ----------
@@ -456,12 +471,12 @@ class SingleCrystalLayer:
         -------
         str
             The name of the material.
+
         """
         return self.material.getName()
 
     def getMaterial(self):
-        """
-        Return the material
+        """Return the material.
 
         Parameters
         ----------
@@ -470,12 +485,12 @@ class SingleCrystalLayer:
         Returns
         -------
         an instance of a Materials object
+
         """
         return self.material
 
     def getPermittivityFunction(self):
-        """
-        Return the permittivity function associated with this material
+        """Return the permittivity function associated with this material.
 
         Parameters
         ----------
@@ -484,12 +499,12 @@ class SingleCrystalLayer:
         Returns
         -------
         A permittivity function
+
         """
         return self.calculateLabFrameEpsilon
 
     def isTensor(self):
-        """
-        Return true if the material of the layer is a tensor material.
+        """Return true if the material of the layer is a tensor material.
 
         Parameters
         ----------
@@ -499,12 +514,12 @@ class SingleCrystalLayer:
         -------
         bool
             True if the material of the layer is a tensor material, False otherwise.
+
         """
         return self.getMaterial().isTensor()
 
     def isScalar(self):
-        """
-        Return true if the material of the layer is a scalar material.
+        """Return true if the material of the layer is a scalar material.
 
         Parameters
         ----------
@@ -514,12 +529,12 @@ class SingleCrystalLayer:
         -------
         bool
             True if the material of the layer is a scalar material, False otherwise.
+
         """
         return self.getMaterial().isScalar()
 
     def isDielectric(self):
-        """
-        Return true if the material of the layer is the dielectric material.
+        """Return true if the material of the layer is the dielectric material.
 
         Parameters
         ----------
@@ -529,12 +544,12 @@ class SingleCrystalLayer:
         -------
         bool
             True if the material of the layer is the dielectric material, otherwise False.
+
         """
         return self.dielectricFlag
 
     def calculate_euler_matrix(self):
-        """
-        Calculate the Euler angles for the crystal to lab transformation.
+        """Calculate the Euler angles for the crystal to lab transformation.
 
         Parameters
         ----------
@@ -543,6 +558,7 @@ class SingleCrystalLayer:
         Returns
         -------
         None
+
         """
         # Get plane specification
         hkl = self.hkl
@@ -584,21 +600,22 @@ class SingleCrystalLayer:
                 "Error in Euler rotations - surface normal is not along Z-axis",
                 normal_to_plane_lab,
             )
-            exit()
+            sys.exit()
         return
 
     def azimuthalRotationMatrix(self, angle):
-        """
-        Calculate a rotation matrix for the azimuthal angle (in degrees).
+        """Calculate a rotation matrix for the azimuthal angle (in degrees).
 
         Parameters
         ----------
         angle : float
+            The angle to be used for the azimuthal angle in degrees
 
         Returns
         -------
         ndarray 3x3
             The rotation matrix for the given azimuthal angle.
+
         """
         angle = np.radians(angle)
         matrix = np.eye(3)
@@ -610,8 +627,7 @@ class SingleCrystalLayer:
         return matrix
 
     def changeLabFrameInfo(self):
-        """
-        Change the Lab Frame Info panel.
+        """Change the Lab Frame Info panel.
 
         Information about the relationship between the crystal and labframe coordinate systems is presented.
         """
@@ -620,19 +636,18 @@ class SingleCrystalLayer:
         a, b, c = self.getLabFrame()
         self.labframe_w.clear()
         self.labframe_w.addItem(
-            f"crystal a-axis in lab frame: {a[0]: 3.5f}, {a[1]: 3.5f}, {a[2]: 3.5f}"
+            f"crystal a-axis in lab frame: {a[0]: 3.5f}, {a[1]: 3.5f}, {a[2]: 3.5f}",
         )
         self.labframe_w.addItem(
-            f"crystal b-axis in lab frame: {b[0]: 3.5f}, {b[1]: 3.5f}, {b[2]: 3.5f}"
+            f"crystal b-axis in lab frame: {b[0]: 3.5f}, {b[1]: 3.5f}, {b[2]: 3.5f}",
         )
         self.labframe_w.addItem(
-            f"crystal c-axis in lab frame: {c[0]: 3.5f}, {c[1]: 3.5f}, {c[2]: 3.5f}"
+            f"crystal c-axis in lab frame: {c[0]: 3.5f}, {c[1]: 3.5f}, {c[2]: 3.5f}",
         )
         return
 
     def getLabFrame(self):
-        """
-        Return the a, b, and c cell axes in the laboratory frame coordinates.
+        """Return the a, b, and c cell axes in the laboratory frame coordinates.
 
         Parameters
         ----------
@@ -649,12 +664,7 @@ class SingleCrystalLayer:
         return self.labframe
 
     def calculateLabFrameEpsilon(self, v):
-        """
-        Get the permittivity for this material at frequency v and transform it to the laboratory frame.
-
-        Parameters
-        ----------
-        None
+        """Get the permittivity for this material at frequency v and transform it to the laboratory frame.
 
         Parameters
         ----------
@@ -665,19 +675,19 @@ class SingleCrystalLayer:
         -------
         float
             The permittivity of the material in the laboratory frame.
+
         """
         epsilon_xstal = self.material.getPermittivityFunction()(v)
         if self.material.isScalar():
             self.labFrameEpsilon = epsilon_xstal * np.eye(3)
         else:
             self.labFrameEpsilon = np.matmul(
-                self.euler, np.matmul(epsilon_xstal, self.euler_inverse)
+                self.euler, np.matmul(epsilon_xstal, self.euler_inverse),
             )
         return self.labFrameEpsilon
 
     def invert(self, m):
-        """
-        Calculate the inverse of m
+        """Calculate the inverse of m.
 
         Parameters
         ----------
@@ -688,6 +698,7 @@ class SingleCrystalLayer:
         -------
         numpy.ndarray
             The inverse of `m` as a 3x3 complex numpy array.
+
         """
         m1, m2, m3, m4, m5, m6, m7, m8, m9 = m.flatten()
         determinant = (
@@ -704,15 +715,14 @@ class SingleCrystalLayer:
                     [m5 * m9 - m6 * m8, m3 * m8 - m2 * m9, m2 * m6 - m3 * m5],
                     [m6 * m7 - m4 * m9, m1 * m9 - m3 * m7, m3 * m4 - m1 * m6],
                     [m4 * m8 - m5 * m7, m2 * m7 - m1 * m8, m1 * m5 - m2 * m4],
-                ]
+                ],
             )
             / determinant
         )
 
 
 class ShowLayerWindow(QDialog):
-    """
-    A GUI window for displaying and editing the properties of a layer in a project.
+    """A GUI window for displaying and editing the properties of a layer in a project.
 
     Parameters
     ----------
@@ -758,11 +768,11 @@ class ShowLayerWindow(QDialog):
         Respond to changes in the h, k, or l spin boxes.
     on_thickness_units_cb_activated(index)
         Respond to thickness unit selection changes.
+
     """
 
     def __init__(self, layer, message="", parent=None, debug=False):
-        """
-        Initialize a ShowLayerWindow instance.
+        """Initialize a ShowLayerWindow instance.
 
         Parameters
         ----------
@@ -780,6 +790,7 @@ class ShowLayerWindow(QDialog):
         This constructor initializes the ShowLayerWindow by setting up the UI elements
         including buttons and the layout. It also configures the debug mode according
         to the provided argument.
+
         """
         super().__init__(parent)
         global debugger
@@ -804,8 +815,7 @@ class ShowLayerWindow(QDialog):
         debugger.print("Finished:: initialiser")
 
     def getLayer(self):
-        """
-        Return the edited layer
+        """Return the edited layer.
 
         Parameters
         ----------
@@ -814,12 +824,12 @@ class ShowLayerWindow(QDialog):
         Returns
         -------
         self.layer : An instance of a single crystal layer
+
         """
         return self.layer
 
     def drawLayerWidget(self):
-        """
-        Create a layer widget showing all the information about the layer.
+        """Create a layer widget showing all the information about the layer.
 
         Parameters
         ----------
@@ -828,6 +838,7 @@ class ShowLayerWindow(QDialog):
         Returns
         -------
         None
+
         """
         debugger.print("drawLayerWidget")
         widget = QWidget()
@@ -849,8 +860,7 @@ class ShowLayerWindow(QDialog):
         return widget
 
     def drawLayerWidgetLine1(self):
-        """
-        Add the first line of the layer description
+        """Add the first line of the layer description.
 
         Shows the material name and the film thickness and units.
 
@@ -861,6 +871,7 @@ class ShowLayerWindow(QDialog):
         Returns
         -------
         None
+
         """
         hbox = QHBoxLayout()
         debugger.print("drawLayerWidgetLine1")
@@ -874,7 +885,7 @@ class ShowLayerWindow(QDialog):
         film_thickness_sb = QDoubleSpinBox(self)
         film_thickness_sb.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         film_thickness_sb.setToolTip(
-            "Define the thin film thickness in the defined thickness units"
+            "Define the thin film thickness in the defined thickness units",
         )
         film_thickness_sb.setRange(0, 100000)
         film_thickness_sb.setSingleStep(0.01)
@@ -885,7 +896,7 @@ class ShowLayerWindow(QDialog):
         thickness_units_cb = QComboBox(self)
         thickness_units_cb.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         thickness_units_cb.setToolTip(
-            "Set the units to be used for thickness; either nm, um, mm or cm"
+            "Set the units to be used for thickness; either nm, um, mm or cm",
         )
         thickness_units_cb.addItems(["nm", "um", "mm", "cm"])
         index = thickness_units_cb.findText(thicknessUnit, Qt.MatchFixedString)
@@ -893,7 +904,7 @@ class ShowLayerWindow(QDialog):
         thickness_units_cb.activated.connect(self.on_thickness_units_cb_activated)
         thicknessLabel = QLabel("Thickness:")
         thicknessLabel.setToolTip(
-            "Define the depth of the thin crystal in the defined thickness units."
+            "Define the depth of the thin crystal in the defined thickness units.",
         )
         # Create the line of widgets
         hbox.addWidget(film_thickness_sb)
@@ -901,8 +912,7 @@ class ShowLayerWindow(QDialog):
         return thicknessLabel, hbox
 
     def drawLayerWidgetLine2(self):
-        """
-        Add the second line of the layer description
+        """Add the second line of the layer description.
 
         Shows the hkl specification and the azimuthal angle
 
@@ -913,6 +923,7 @@ class ShowLayerWindow(QDialog):
         Returns
         -------
         None
+
         """
         debugger.print("drawLayerWidgetLine2")
         hbox = QHBoxLayout()
@@ -937,13 +948,13 @@ class ShowLayerWindow(QDialog):
         l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x, 2))
         hklLabel = QLabel("hkl:")
         hklLabel.setToolTip(
-            "Define the crystal surface (hkl). Defines the unique direction in crystallographic units."
+            "Define the crystal surface (hkl). Defines the unique direction in crystallographic units.",
         )
         # define azimuthal angle
         azimuthal = self.layer.getAzimuthal()
         azimuthal_angle_sb = QDoubleSpinBox(self)
         azimuthal_angle_sb.setToolTip(
-            "Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below"
+            "Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below",
         )
         azimuthal_angle_sb.setRange(-180, 360)
         azimuthal_angle_sb.setSingleStep(10)
@@ -959,8 +970,7 @@ class ShowLayerWindow(QDialog):
         return hklLabel, hbox
 
     def drawLayerWidgetLine3(self):
-        """
-        Add the third line of the layer description
+        """Add the third line of the layer description.
 
         Shows the relationship between crystal and labframe coordinate systems
 
@@ -971,27 +981,27 @@ class ShowLayerWindow(QDialog):
         Returns
         -------
         None
+
         """
         debugger.print("drawLayerWidgetLine3")
         hbox = QHBoxLayout()
         label = QLabel("Lab frame\ninformation", self)
         label.setToolTip(
-            "The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y"
+            "The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y",
         )
         self.labframe_w = QListWidget(self)
         fm = self.labframe_w.fontMetrics()
         h = fm.ascent() + fm.descent()
         self.labframe_w.setMaximumHeight(6 * h)
         self.labframe_w.setToolTip(
-            "The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y"
+            "The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y",
         )
         self.changeLabFrameInfo()
         hbox.addWidget(self.labframe_w)
         return label, hbox
 
     def changeLabFrameInfo(self):
-        """
-        Update the lab frame information in the labframe widget.
+        """Update the lab frame information in the labframe widget.
 
         Shows a, b and c crystal axis in the labframe.
 
@@ -1007,53 +1017,51 @@ class ShowLayerWindow(QDialog):
         a, b, c = self.layer.getLabFrame()
         self.labframe_w.clear()
         self.labframe_w.addItem(
-            f"crystal a-axis in lab frame: {a[0]: 3.5f}, {a[1]: 3.5f}, {a[2]: 3.5f}"
+            f"crystal a-axis in lab frame: {a[0]: 3.5f}, {a[1]: 3.5f}, {a[2]: 3.5f}",
         )
         self.labframe_w.addItem(
-            f"crystal b-axis in lab frame: {b[0]: 3.5f}, {b[1]: 3.5f}, {b[2]: 3.5f}"
+            f"crystal b-axis in lab frame: {b[0]: 3.5f}, {b[1]: 3.5f}, {b[2]: 3.5f}",
         )
         self.labframe_w.addItem(
-            f"crystal c-axis in lab frame: {c[0]: 3.5f}, {c[1]: 3.5f}, {c[2]: 3.5f}"
+            f"crystal c-axis in lab frame: {c[0]: 3.5f}, {c[1]: 3.5f}, {c[2]: 3.5f}",
         )
-        return
 
     def on_film_thickness_sb_changed(self, value):
-        """
-        Handle film thickness spin box change.
+        """Handle film thickness spin box change.
 
         Parameters
         ----------
         value : float
+           The value of the film thickness
 
         Returns
         -------
         None
+
         """
         debugger.print("on_film_thickness_sb_changed", value)
         self.layer.setThickness(value)
-        return
 
     def on_azimuthal_angle_sb_changed(self, value):
-        """
-        Handle azimuthal spin box change.
+        """Handle azimuthal spin box change.
 
         Parameters
         ----------
         value : float
+            The value of the azimuthal angle
 
         Returns
         -------
         None
+
         """
         debugger.print("on_azimuthal_angl_sb_changed", value)
         self.layer.setAzimuthal(value)
         self.layer.changeLabFrameInfo()
         self.changeLabFrameInfo()
-        return
 
     def on_hkl_sb_changed(self, value, hkorl):
-        """
-        Handle h, k, or l change.
+        """Handle h, k, or l change.
 
         Parameters
         ----------
@@ -1073,11 +1081,9 @@ class ShowLayerWindow(QDialog):
         self.layer.setHKL(hkl)
         self.layer.changeLabFrameInfo()
         self.changeLabFrameInfo()
-        return
 
     def on_thickness_units_cb_activated(self, index):
-        """
-        Handle activation of thickness units combobox.
+        """Handle activation of thickness units combobox.
 
         Parameters
         ----------
@@ -1088,9 +1094,9 @@ class ShowLayerWindow(QDialog):
         Returns
         -------
         None
+
         """
         debugger.print("Start:: on_thickness_units_cb_activated", index)
         units = ["nm", "um", "mm", "cm"]
         unit = units[index]
         self.layer.setThicknessUnit(unit)
-        return

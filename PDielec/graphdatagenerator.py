@@ -13,9 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-graphdatagenerator command
-"""
+"""graphdatagenerator command."""
 
 import sys
 
@@ -24,8 +22,7 @@ from openpyxl import load_workbook
 
 
 def main():
-    """
-     Main driver routine for graphdatagenerator.
+    """Driver routine for graphdatagenerator.
 
      This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates the results.
      It is a utility programme and not part of the main PDielec or PDGui packages
@@ -47,16 +44,16 @@ def main():
     """
 
     def show_usage():
-        """
-        Show graphdatagenerator usage.
+        """Show graphdatagenerator usage.
 
         Returns
         -------
         None
+
         """
         print("graphdatagenerator file1 file2...")
         print(
-            "graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec"
+            "graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec",
         )
         print("         -column column  Take the data from column in each spreadsheet")
         print("                         C Averaged")
@@ -67,12 +64,11 @@ def main():
         print("                         H Mie/3.0 ")
         print("         -sheet [molar/absorption/real/imaginary/atr]")
         print("         -excel filename")
-        return
 
     # check usage
     if len(sys.argv) <= 1:
         show_usage()
-        exit()
+        sys.exit()
 
     sheet_dict = {
         "molar": "Molar Absorption",
@@ -110,7 +106,7 @@ def main():
     if len(names) <= 0:
         print("No files were specified")
         show_usage()
-        exit(1)
+        sys.exit(1)
 
     print("Comparison based on ", sheet, sheet_dict[sheet])
     sheet = sheet_dict[sheet]

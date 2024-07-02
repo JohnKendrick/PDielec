@@ -13,9 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Calculator module
-"""
+"""Calculator module."""
 
 import cmath
 import math
@@ -39,8 +37,7 @@ Mie.crossover = 0.01
 
 
 def initialise_unit_tensor():
-    """
-    Initialise a 3x3 tensor to a unit tensor.
+    """Initialise a 3x3 tensor to a unit tensor.
 
     Parameters
     ----------
@@ -50,6 +47,7 @@ def initialise_unit_tensor():
     -------
     array
         The returned tensor is a 3x3 array.
+
     """
     x = np.zeros((3, 3), dtype=float)
     x[0, 0] = 1.0
@@ -59,8 +57,7 @@ def initialise_unit_tensor():
 
 
 def initialise_complex_diagonal_tensor(reals):
-    """
-    Initialise a complex 3x3 tensor with the given diagonal components.
+    """Initialise a complex 3x3 tensor with the given diagonal components.
 
     Parameters
     ----------
@@ -71,6 +68,7 @@ def initialise_complex_diagonal_tensor(reals):
     -------
     array
         The returned tensor is a complex 3x3 array.
+
     """
     x = np.zeros((3, 3), dtype=complex)
     x[0, 0] = reals[0]
@@ -80,8 +78,7 @@ def initialise_complex_diagonal_tensor(reals):
 
 
 def initialise_diagonal_tensor(reals):
-    """
-    Initialise a real 3x3 tensor with the given diagonal components.
+    """Initialise a real 3x3 tensor with the given diagonal components.
 
     Parameters
     ----------
@@ -92,6 +89,7 @@ def initialise_diagonal_tensor(reals):
     -------
     array
         The returned tensor is a real 3x3 array.
+
     """
     x = np.zeros((3, 3), dtype=float)
     x[0, 0] = reals[0]
@@ -101,8 +99,7 @@ def initialise_diagonal_tensor(reals):
 
 
 def calculate_distance(a, b):
-    """
-    Calculate the distance between a and b.
+    """Calculate the distance between a and b.
 
     Parameters
     ----------
@@ -124,8 +121,7 @@ def calculate_distance(a, b):
 
 
 def calculate_angle(a, b, c):
-    """
-    Calculate the angle between a, b and c in degrees
+    """Calculate the angle between a, b and c in degrees.
 
     The bond is a-b-c, b is the central atom
 
@@ -156,8 +152,7 @@ def calculate_angle(a, b, c):
 
 
 def calculate_torsion(a, b, c, d):
-    """
-    Calculate the torsion angle between a, b, c and d in degrees
+    """Calculate the torsion angle between a, b, c and d in degrees.
 
     Parameters
     ----------
@@ -195,8 +190,7 @@ def calculate_torsion(a, b, c, d):
 
 
 def initialise_sphere_depolarisation_matrix():
-    """
-    Initialise a 3x3 tensor with the sphere depolarisation matrix, returns a tensor.
+    """Initialise a 3x3 tensor with the sphere depolarisation matrix, returns a tensor.
 
     Parmeters
     ---------
@@ -206,16 +200,15 @@ def initialise_sphere_depolarisation_matrix():
     -------
     ndarray
         A 3x3 tensor representing the sphere depolarisation matrix.
+
     """
     athird = 1.0 / 3.0
     tensor = initialise_diagonal_tensor([athird, athird, athird])
-    tensor = tensor / np.trace(tensor)
-    return tensor
+    return tensor / np.trace(tensor)
 
 
 def initialise_plate_depolarisation_matrix(normal):
-    """
-    Initialise a 3x3 tensor with the plate depolarisation matrix, returns a tensor.
+    """Initialise a 3x3 tensor with the plate depolarisation matrix, returns a tensor.
 
     Parameters
     ----------
@@ -226,16 +219,15 @@ def initialise_plate_depolarisation_matrix(normal):
     -------
     ndarray
         A 3x3 tensor initialized with the plate depolarisation matrix.
+
     """
     normal = normal / np.linalg.norm(normal)
     tensor = np.outer(normal, normal)
-    tensor = tensor / np.trace(tensor)
-    return tensor
+    return tensor / np.trace(tensor)
 
 
 def initialise_needle_depolarisation_matrix(unique):
-    """
-    Initialise a 3x3 tensor with the needle depolarisation matrix.
+    """Initialise a 3x3 tensor with the needle depolarisation matrix.
 
     Parameters
     ----------
@@ -246,6 +238,7 @@ def initialise_needle_depolarisation_matrix(unique):
     -------
     ndarray
         A 3x3 tensor initialized with the plate depolarisation matrix.
+
     """
     # unique is the unique direction of the needle
     # depolarisation matrix is therefore half the sum of the
@@ -274,16 +267,16 @@ def initialise_needle_depolarisation_matrix(unique):
     dir2 = dir2 / np.linalg.norm(dir2)
     # compute the complex tensors from the outer product of each direction
     tensor = np.outer(dir1, dir1) + np.outer(dir2, dir2)
-    tensor = tensor / np.trace(tensor)
-    return tensor
+    return tensor / np.trace(tensor)
 
 
 def initialise_ellipsoid_depolarisation_matrix(unique, aoverb):
-    """
-    Initialise a 3x3 tensor with the ellipsoid depolarisation matrix.
+    """Initialise a 3x3 tensor with the ellipsoid depolarisation matrix.
 
     Parameters
     ----------
+    unique : list of 3 float
+         A list or array giving the direction of the unique axis
     aoverb : float
         The ratio of a / b (the ratio of the principle axis lengths of the ellipsoid)
 
@@ -291,6 +284,7 @@ def initialise_ellipsoid_depolarisation_matrix(unique, aoverb):
     -------
     np.array
         The Ellipsoid dpolarisation tensor
+
     """
     # unique is the unique direction of the ellipsoid
     # a and b are the sizes of the ellipsoid along the unique axis (a) and perpendicular to it b
@@ -335,13 +329,11 @@ def initialise_ellipsoid_depolarisation_matrix(unique, aoverb):
         + nxy * np.outer(dir1, dir1)
         + nxy * np.outer(dir2, dir2)
     )
-    tensor = tensor / np.trace(tensor)
-    return tensor
+    return tensor / np.trace(tensor)
 
 
 def fibonacci_sphere(samples=1, randomize=True):
-    """
-    Generate points on a sphere using the Fibonacci lattice method.
+    """Generate points on a sphere using the Fibonacci lattice method.
 
     This method generates points on the surface of a sphere in a way that they are evenly distributed. The distribution follows
     the Fibonacci Sphere algorithm, which is useful for creating well-distributed points across the surface of a sphere.
@@ -378,6 +370,7 @@ def fibonacci_sphere(samples=1, randomize=True):
     >>> points = fibonacci_sphere(5)
     >>> len(points)
     5
+
     """
     rnd = 1.0
     if randomize:
@@ -401,11 +394,12 @@ def fibonacci_sphere(samples=1, randomize=True):
 
 
 def ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume):
-    """
-    Calculate the low frequency permittivity or zero frequency permittivity.
+    """Calculate the low frequency permittivity or zero frequency permittivity.
 
     Parameters
     ----------
+    mode_list : list of integers
+        Defines the modes that are to be included in the calculation
     oscillator_strengths : array_like
         Oscillator strengths, in atomic units.
     frequencies : array_like
@@ -423,6 +417,7 @@ def ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume):
     The calculation of low frequency permittivity or zero frequency permittivity
     requires oscillator strengths, frequencies, and volume all to be specified
     in atomic units.
+
     """
     permittivity = np.zeros((3, 3))
     for imode in mode_list:
@@ -434,13 +429,13 @@ def ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume):
 
 
 def infrared_intensities(oscillator_strengths):
-    """
-    Calculate the IR intensities from the trace of the oscillator strengths.
+    """Calculate the IR intensities from the trace of the oscillator strengths.
 
     Returns
     -------
     np.array
         An array of the calculated IR intensities in units of (D/A)^2/amu.
+
     """
     # Each mode has a 3x3 oscillator strength
     nmodes = np.size(oscillator_strengths, 0)
@@ -455,15 +450,13 @@ def infrared_intensities(oscillator_strengths):
     convert = maxintensity
     # convert the intensities to Castep units (D/A)**2/amu
     convert = d2byamuang2
-    intensities = intensities / convert
-    return intensities
+    return intensities / convert
 
 
 def longitudinal_modes(
-    frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader
+    frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader,
 ):
-    """
-    Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies.
+    """Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies.
 
     Parameters
     ----------
@@ -479,6 +472,8 @@ def longitudinal_modes(
         The atomic masses in atomic units
     epsilon_inf : 3x3 array
         Epsilon infinity
+    volume : float
+        The volume in atomic units
     qlist : list
         A list of direction vectors.
     reader : a reader object
@@ -492,6 +487,7 @@ def longitudinal_modes(
     Notes
     -----
     If projection was requested in the reader, the correction is modified to ensure translational invariance.
+
     """
     # Use a sqrt that returns a complex number
     # from numpy.lib.scimath import sqrt
@@ -569,8 +565,7 @@ def longitudinal_modes(
 
 
 def oscillator_strengths(normal_modes, born_charges):
-    """
-    Calculate oscillator strengths from the normal modes and the born charges.
+    """Calculate oscillator strengths from the normal modes and the born charges.
 
     Parameters
     ----------
@@ -583,6 +578,7 @@ def oscillator_strengths(normal_modes, born_charges):
     -------
     array_like
         Oscillator strengths calculated from the given normal modes and born charges.
+
     """
     # Each mode has a 3x3 oscillator strength
     nmodes = np.size(normal_modes, 0)
@@ -595,7 +591,7 @@ def oscillator_strengths(normal_modes, born_charges):
             # born contains the polarisability tensor [a1x a1y a1z] [a2x a2y a2z] [a3x a3y a3z]]
             # where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom
             z_imode = z_imode + np.dot(
-                born, mode[atom]
+                born, mode[atom],
             )  # the displacement is an array [x, y, z]
         # end for
         # The oscillator strength matrix is the outer product of z
@@ -605,25 +601,27 @@ def oscillator_strengths(normal_modes, born_charges):
 
 
 def normal_modes(masses, mass_weighted_normal_modes):
-    """
-    Transform from mass weighted coordinates to xyz.
+    """Transform from mass weighted coordinates to xyz.
 
     Note this returns an array object. The returned normal modes have NOT been renormalized.
     The input masses are in atomic units. The output normal modes are in atomic units.
 
     Parameters
     ----------
-    None
+    masses : list of floats
+        The masses of the atoms in amu
+    mass_weighted_normal_modes
+        Array of mass-weighted normal modes
 
     Returns
     -------
     np.array
-        An array of xyz coordinates derived from mass-weighted coordinates.
+        The normal modes derived from mass-weighted coordinates.
 
     Notes
     -----
-    The transformation to xyz coordinates does not involve renormalization of the normal modes.
-    Both the input masses and the output normal modes are in atomic units.
+    The transformation to normal modes does not involve renormalization.
+
     """
     list_m = []
     normal_modes = np.zeros_like(mass_weighted_normal_modes)
@@ -640,7 +638,8 @@ def normal_modes(masses, mass_weighted_normal_modes):
 
 
 def rodridgues_rotations(efield):
-    """
+    """Generate Rodrigues rotation matrices for the given field.
+
     Take the field directions in efield and use each direction to calculate a random rotation about that axis.
     Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix
     using the Rodrigues rotation formula A = I3.cos(theta) + (1-cos(theta)) e . eT + ex sin(theta),
@@ -666,6 +665,7 @@ def rodridgues_rotations(efield):
     -----
     - The input field is assumed to be real.
     - Output is a list of 3x3 rotation matrices.
+
     """
     rotations = []
     for field in efield:
@@ -691,8 +691,7 @@ def rodridgues_rotations(efield):
 
 
 def absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities):
-    """
-    Calculate the absorption from the frequencies and intensities using a Lorentzian.
+    """Calculate the absorption from the frequencies and intensities using a Lorentzian.
 
     Parameters
     ----------
@@ -715,6 +714,7 @@ def absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities)
     Notes
     -----
     The number 4225.6 converts the units of D2/A2/amu to L mole-1 cm-1 cm-1.
+
     """
     absorption = 0.0
     for mode in modes:
@@ -728,8 +728,7 @@ def absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities)
 
 
 def calculate_size_factor(x):
-    """
-    Calculate a size effect using Equations 10.38 and 10.39 in Sihvola.
+    """Calculate a size effect using Equations 10.38 and 10.39 in Sihvola.
 
     If x is small the result is  close to 1
 
@@ -742,6 +741,7 @@ def calculate_size_factor(x):
     -------
     float
         Size effect
+
     """
     if x < 1.0e-12:
         result = 1.0
@@ -756,8 +756,7 @@ def calculate_size_factor(x):
 
 
 def averaged_permittivity(dielectric_medium, crystal_permittivity, shape, L, vf, size):
-    """
-    Calculate the effective constant permittivity using the averaged permittivity method.
+    """Calculate the effective constant permittivity using the averaged permittivity method.
 
     Parameters
     ----------
@@ -769,6 +768,8 @@ def averaged_permittivity(dielectric_medium, crystal_permittivity, shape, L, vf,
         The name of the current shape.
     L : array_like (3x3)
         The shape's depolarisation matrix.
+    vf : float
+        The volume fraction of dielectric
     size : float
         The dimensionless size parameter for the frequency under consideration (not used).
 
@@ -776,16 +777,15 @@ def averaged_permittivity(dielectric_medium, crystal_permittivity, shape, L, vf,
     -------
     array_like
         The effective dielectric constant.
+
     """
     effd = vf * crystal_permittivity + (1.0 - vf) * dielectric_medium
     trace = np.trace(effd) / 3.0
-    effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
-    return effdielec
+    return np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
 
 
 def balan(dielectric_medium, crystal_permittivity, shape, L, vf, size):
-    """
-    Calculate the effective constant permittivity using the method of Balan.
+    """Calculate the effective constant permittivity using the method of Balan.
 
     Parameters
     ----------
@@ -795,6 +795,8 @@ def balan(dielectric_medium, crystal_permittivity, shape, L, vf, size):
         The total frequency dielectric constant tensor at the current frequency.
     shape : str
         The name of the current shape.
+    vf : float
+        The volume fraction of dielectric
     L : array_like (3x3)
         The shape's depolarisation matrix.
     size : float
@@ -804,19 +806,19 @@ def balan(dielectric_medium, crystal_permittivity, shape, L, vf, size):
     -------
     array_like
         The effective dielectric constant.
+
     """
     unit = initialise_unit_tensor()
     dielecvm1 = crystal_permittivity - unit
     deformation = np.dot(
         dielectric_medium,
         np.linalg.inv(
-            dielectric_medium + np.dot(L, (crystal_permittivity - dielectric_medium))
+            dielectric_medium + np.dot(L, (crystal_permittivity - dielectric_medium)),
         ),
     )
     effd = unit + np.dot(deformation, dielecvm1)
     trace = vf * np.trace(effd) / 3.0
-    effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
-    return effdielec
+    return np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
 
 
 def spherical_averaged_mie_scattering(
@@ -829,8 +831,7 @@ def spherical_averaged_mie_scattering(
     size_mu,
     size_distribution_sigma,
 ):
-    """
-    Calculate the effective constant permittivity using a Mie scattering approach.
+    """Calculate the effective constant permittivity using a Mie scattering approach.
 
     Parameters
     ----------
@@ -846,6 +847,8 @@ def spherical_averaged_mie_scattering(
         only works for spherical particles.
     size : float
         The dimensionless size parameter for the frequency under consideration.
+    size_mu : float
+        The size of the Mie particle in microns
     size_distribution_sigma : float
         The log normal value of sigma.
     vf : float
@@ -864,6 +867,7 @@ def spherical_averaged_mie_scattering(
     as `shape` and `L` are not used in this calculation. The routine considers the
     anisotropy of the permittivity by sampling various directions and computing
     the scattering for each to calculate the effective dielectric constant.
+
     """
     points_on_sphere = None
     # define i as a complex number
@@ -920,17 +924,12 @@ def spherical_averaged_mie_scattering(
             # Now integrate
             s1 = trapz(s1_factors * ndp, dp)
             normal = trapz(ndp, dp)
-            # mean = trapz(ndp*dp,dp)
-            # true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
-            # v_cm1 = 1.0E4/lambda_vacuum_mu
-            # print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
             if np.abs(normal - 1.0) > 1.0e-2:
                 print("Warning integration of log-normal distribution in error", normal)
                 print(
-                    "Stopping calculation - likely problem is too large a sigma for log-normal distribution"
+                    "Stopping calculation - likely problem is too large a sigma for log-normal distribution",
                 )
-                effdielec = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-                return effdielec
+                return np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
         else:
             # Calculate the scattering factors at 0 degrees
             s1, s2 = Mie.MieS1S2(refractive_index, size * refractive_index_medium, 1)
@@ -944,9 +943,7 @@ def spherical_averaged_mie_scattering(
     # return an isotropic tensor
     trace = trace / len(points_on_sphere)
     eff = trace * trace
-    effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    # print ("radius_nm, eff", radius_nm, eff)
-    return effdielec
+    return np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
 
 
 def mie_scattering(
@@ -959,8 +956,7 @@ def mie_scattering(
     size_mu,
     size_distribution_sigma,
 ):
-    """
-    Calculate the effective constant permittivity using a Mie scattering approach.
+    """Calculate the effective constant permittivity using a Mie scattering approach.
 
     Parameters
     ----------
@@ -974,6 +970,8 @@ def mie_scattering(
         The shape's depolarisation matrix (NOT USED).
     size : float
         The dimensionless size parameter for the frequency under consideration.
+    size_mu : float
+        The size of the Mie particle in microns
     size_distribution_sigma : float
         The log normal value of sigma.
     vf : float
@@ -989,12 +987,13 @@ def mie_scattering(
     In this method, the MG method is used to calculate the averaged effective permittivity.
     Then, the permittivity of the isotropic sphere that would give the same average permittivity is calculated.
     Finally, the Mie scattering of that sphere is calculated. The routine returns the effective dielectric constant.
+
     """
     #
     # Calculate the MG permittivity with no size effects
     #
     mg_permittivity = maxwell(
-        dielectric_medium, crystal_permittivity, shape, L, vf, 0.0000001
+        dielectric_medium, crystal_permittivity, shape, L, vf, 0.0000001,
     )
     # Use scalar quantities to calculate the dielectric constant of the equivalent isotropic sphere
     ef = np.trace(mg_permittivity) / 3.0
@@ -1050,17 +1049,12 @@ def mie_scattering(
         # Now integrate
         s1 = trapz(s1_factors * ndp, dp)
         normal = trapz(ndp, dp)
-        # mean = trapz(ndp*dp,dp)
-        # true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
-        # v_cm1 = 1.0E4/lambda_vacuum_mu
-        # print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
         if np.abs(normal - 1.0) > 1.0e-2:
             print("Warning integration of log-normal distribution in error", normal)
             print(
-                "Stopping calculation - likely problem is too large a sigma for log-normal distribution"
+                "Stopping calculation - likely problem is too large a sigma for log-normal distribution",
             )
-            effdielec = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-            return effdielec
+            return np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
     else:
         # Calculate the scattering factors at 0 degrees
         s1, s2 = Mie.MieS1S2(refractive_index, size * refractive_index_medium, 1)
@@ -1071,8 +1065,7 @@ def mie_scattering(
         1.0 + i * s1 * 2 * np.pi * N_nm / (k_nm * k_nm * k_nm)
     )
     eff = refractive_index * refractive_index
-    effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    return effdielec
+    return np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
 
 
 def anisotropic_mie_scattering(
@@ -1085,8 +1078,7 @@ def anisotropic_mie_scattering(
     size_mu,
     size_distribution_sigma,
 ):
-    """
-    Calculate the effective constant permittivity using a Mie scattering approach.
+    """Calculate the effective constant permittivity using a Mie scattering approach.
 
     Parameters
     ----------
@@ -1100,6 +1092,8 @@ def anisotropic_mie_scattering(
         The shape's depolarisation matrix (NOT USED).
     size : float
         The dimensionless size parameter for the frequency under consideration.
+    size_mu : float
+        The size of the Mie particle in microns
     size_distribution_sigma : float
         The log normal value of sigma.
     vf : float
@@ -1113,6 +1107,7 @@ def anisotropic_mie_scattering(
     -------
     effective_dielectric_constant : float
         The effective dielectric constant.
+
     """
     # define i as a complex number
     i = complex(0, 1)
@@ -1148,10 +1143,6 @@ def anisotropic_mie_scattering(
         # s is the standard deviation (shape function) of the log of the variate
         # scale is the mean of the underlying normal distribution
         ndp = lognorm.pdf(dp, s=size_distribution_sigma, scale=size_mu)
-        # print("DP",dp)
-        # print("NDP",ndp)
-        # print("Upper lower",lower,upper)
-        # print("Size_MU",size_mu)
     # We are now going to ignore any off-diagonal elements
     trace = 0.0
     # Now take the average of each direction
@@ -1179,10 +1170,9 @@ def anisotropic_mie_scattering(
             if np.abs(normal - 1.0) > 1.0e-2:
                 print("Warning integration of log-normal distribution in error", normal)
                 print(
-                    "Stopping calculation - likely problem is too large a sigma for log-normal distribution"
+                    "Stopping calculation - likely problem is too large a sigma for log-normal distribution",
                 )
-                effdielec = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-                return effdielec
+                return np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
         else:
             # Calculate the scattering factors at 0 degrees
             s1, s2 = Mie.MieS1S2(refractive_index, size * refractive_index_medium, 1)
@@ -1196,13 +1186,11 @@ def anisotropic_mie_scattering(
     # return an isotropic tensor
     trace = trace / 3.0
     eff = trace * trace
-    effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    return effdielec
+    return np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
 
 
 def maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size):
-    """
-    Calculate the effective constant permittivity using the Maxwell Garnett method.
+    """Calculate the effective constant permittivity using the Maxwell Garnett method.
 
     Parameters
     ----------
@@ -1223,6 +1211,7 @@ def maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size):
     -------
     tensor (3x3)
         The effective dielectric constant.
+
     """
     unit = initialise_unit_tensor()
     emedium = np.trace(dielectric_medium) / 3.0
@@ -1236,7 +1225,7 @@ def maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size):
             (crystal_permittivity - dielectric_medium),
             np.linalg.inv(
                 dielectric_medium
-                + size_factor * np.dot(L, (crystal_permittivity - dielectric_medium))
+                + size_factor * np.dot(L, (crystal_permittivity - dielectric_medium)),
             ),
         )
     )
@@ -1248,13 +1237,11 @@ def maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size):
     polarisation = np.dot(np.linalg.inv(unit - nalphal), nalpha)
     effd = dielectric_medium + polarisation
     trace = np.trace(effd) / 3.0
-    effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
-    return effdielec
+    return np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
 
 
 def maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size):
-    """
-    Calculate the effective constant permittivity using the Maxwell Garnett method.
+    """Calculate the effective constant permittivity using the Maxwell Garnett method.
 
     Parameters
     ----------
@@ -1275,6 +1262,7 @@ def maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     -------
     tensor
         The effective dielectric constant.
+
     """
     unit = initialise_unit_tensor()
     # Equation 6.29 on page 123 of Sihvola
@@ -1288,7 +1276,7 @@ def maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     size_factor = calculate_size_factor(size)
     # calculate the polarisability matrix x the number density of inclusions
     nA = vf * np.dot(
-        (Mi - Me), np.linalg.inv(unit + (size_factor * Mem1 * np.dot(L, (Mi - Me))))
+        (Mi - Me), np.linalg.inv(unit + (size_factor * Mem1 * np.dot(L, (Mi - Me)))),
     )
     nAL = np.dot((nA), L)
     # average the polarisability over orientation
@@ -1305,15 +1293,13 @@ def maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     effd = dielectric_medium + pol
     # Average over orientation
     trace = np.trace(effd) / 3.0
-    effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
-    return effdielec
+    return np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
 
 
 def coherent(
-    dielectric_medium, crystal_permittivity, shape, L, vf, size, dielectric_apparent
+    dielectric_medium, crystal_permittivity, shape, L, vf, size, dielectric_apparent,
 ):
-    """
-    Calculate the effective constant permittivity using the Coherent method
+    """Calculate the effective constant permittivity using the Coherent method.
 
     Parameters
     ----------
@@ -1325,15 +1311,18 @@ def coherent(
         The name of the current shape.
     L : matrix (3x3)
         The shape's depolarisation matrix.
-    size : float
-        The dimensionless size parameter for the frequency under consideration.
     vf : float
         The volume fraction of filler.
+    size : float
+        The dimensionless size parameter for the frequency under consideration.
+    dielectric_apparent : 3x3 tensor
+        The initial guess at the final result
 
     Returns
     -------
     tensor
         The effective dielectric constant.
+
     """
     for _i in range(10):
         dielectric_apparent = 0.1 * dielectric_apparent + 0.9 * coherent2(
@@ -1349,15 +1338,16 @@ def coherent(
 
 
 def coherent2(
-    dielectric_medium, dielectric_apparent, crystal_permittivity, shape, L, vf, size
+    dielectric_medium, dielectric_apparent, crystal_permittivity, shape, L, vf, size,
 ):
-    """
-    Calculate the effective constant permittivity using the Coherent2 method
+    """Calculate the effective constant permittivity using the Coherent2 method.
 
     Parameters
     ----------
     dielectric_medium : tensor (3x3)
         The dielectric constant tensor of the medium.
+    dielectric_apparent : 3x3 tensor
+        The initial guess at the final result
     crystal_permittivity : tensor (3x3)
         The total frequency dielectric constant tensor at the current frequency.
     shape : str
@@ -1373,6 +1363,7 @@ def coherent2(
     -------
     tensor (3x3)
         The effective dielectric constant.
+
     """
     unit = initialise_unit_tensor()
     emedium = np.trace(dielectric_medium) / 3.0
@@ -1387,7 +1378,7 @@ def coherent2(
             (crystal_permittivity - dielectric_medium),
             np.linalg.inv(
                 dielectric_medium
-                + size_factor * np.dot(L, (crystal_permittivity - dielectric_medium))
+                + size_factor * np.dot(L, (crystal_permittivity - dielectric_medium)),
             ),
         )
     )
@@ -1399,13 +1390,11 @@ def coherent2(
     polarisation = np.dot(np.linalg.inv(unit - nalphal), nalpha)
     effd = dielectric_medium + polarisation
     trace = np.trace(effd) / 3.0
-    effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
-    return effdielec
+    return np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
 
 
 def bruggeman_minimise(eps1, eps2, shape, L, f2, size, epsbr):
-    """
-    Calculate the effective constant permittivity using the method of Bruggeman (minimisation).
+    """Calculate the effective constant permittivity using the method of Bruggeman (minimisation).
 
     Parameters
     ----------
@@ -1432,6 +1421,7 @@ def bruggeman_minimise(eps1, eps2, shape, L, f2, size, epsbr):
     Notes
     -----
     This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+
     """
     f1 = 1.0 - f2
     # we need to fool the optimiser into thinking that it has two real variables
@@ -1451,13 +1441,11 @@ def bruggeman_minimise(eps1, eps2, shape, L, f2, size, epsbr):
     variables = sol.x
     # transform the imaginary variable back
     trace = complex(variables[0], np.exp(variables[1]) - 1.0)
-    epsbr = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
-    return epsbr
+    return np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
 
 
 def bruggeman_iter(eps1, eps2, shape, L, f2, size, epsbr):
-    """
-    Calculate the effective constant permittivity using the method of Bruggeman. (Iteration)
+    """Calculate the effective constant permittivity using the method of Bruggeman. (Iteration).
 
     Parameters
     ----------
@@ -1484,6 +1472,7 @@ def bruggeman_iter(eps1, eps2, shape, L, f2, size, epsbr):
     Notes
     -----
     This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+
     """
     f1 = 1.0 - f2
     # perform an iteration
@@ -1497,30 +1486,29 @@ def bruggeman_iter(eps1, eps2, shape, L, f2, size, epsbr):
         if niters > 3000:
             print("Bruggeman iterations failed, error=", error)
             converged = True
-    epsbr = average_tensor(epsbr)
-    return epsbr
+    return average_tensor(epsbr)
 
 
 def average_tensor(t):
-    """
-    Return the averaged tensor.
+    """Return the averaged tensor.
 
     Parameters
     ----------
     t : tensor (3x3)
+        The tensor to be averaged
 
     Returns
     -------
     output : tensor
         The averaged tensor.
+
     """
     a = np.trace(t) / 3.0
     return np.array([[a, 0, 0], [0, a, 0], [0, 0, a]])
 
 
 def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1, size):
-    """
-    Bruggeman method using scalar quantities (suitable for powell minimisation method)
+    """Bruggeman method using scalar quantities (suitable for powell minimisation method).
 
     Parameters
     ----------
@@ -1530,6 +1518,8 @@ def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1, size):
         Permittivity of phase 1
     eps2      : tensor (3x3)
         Permittivity of phase 2
+    shape     : string
+        Specifies the shape (unused)
     L         : 3x3 tensor
         Depolarisation tensor
     f1        : float
@@ -1540,6 +1530,7 @@ def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1, size):
     Returns
     -------
     float : The error associated with the current values of the permittivities
+
     """
     # unpack the complex number from the variables
     # two things going on here.
@@ -1572,8 +1563,7 @@ def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1, size):
 
 
 def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1, size):
-    """
-    Bruggeman method using tensor quantities
+    """Bruggeman method using tensor quantities.
 
     Parameters
     ----------
@@ -1583,6 +1573,8 @@ def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1, size):
         Permittivity of phase 1
     eps2      : tensor (3x3)
         Permittivity of phase 2
+    shape     : string
+        Specifies the shape (unused)
     L         : 3x3 tensor
         Depolarisation tensor
     f1        : float
@@ -1593,6 +1585,7 @@ def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1, size):
     Returns
     -------
     float : The error associated with the current values of the permittivities
+
     """
     # unpack the complex number from the variables
     # two things going on here.
@@ -1632,17 +1625,18 @@ def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1, size):
 
 
 def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size):
-    """
-    Routine to calculate the error in the Bruggeman method.
+    """Routine to calculate the error in the Bruggeman method.
 
     Parameters
     ----------
-    variables : list of 2 floats
-        The real and imaginary components of the scalar permittivity
+    epsbr : tensor (3x3)
+        The Bruggeman permittivity
     eps1      : tensor (3x3)
         Permittivity of phase 1
     eps2      : tensor (3x3)
         Permittivity of phase 2
+    shape     : string
+        Specifies the shape (unused)
     L         : 3x3 tensor
         Depolarisation tensor
     f1        : float
@@ -1653,6 +1647,7 @@ def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size):
     Returns
     -------
     float : The error associated with the current values of the permittivities
+
     """
     f2 = 1.0 - f1
     # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
@@ -1681,25 +1676,26 @@ def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size):
 
 
 def calculate_permittivity(refractive_index, debug=False):
-    """
-    Calculate the permittivity from the refractive index.
+    """Calculate the permittivity from the refractive index.
 
     Parameters
     ----------
     refractive_index : complex
         The refractive index from which the permittivity is calculated.
+    debug : boolean
+        True if debug is on
 
     Returns
     -------
     complex
         The calculated permittivity.
+
     """
     return refractive_index * refractive_index
 
 
 def calculate_refractive_index(dielectric, debug=False):
-    """
-    Calculate the refractive index from the dielectric constant.
+    """Calculate the refractive index from the dielectric constant.
 
     Calculate the trace of the dielectric and calculate both square roots.
     Then choose the root with the largest imaginary component. This obeys the Kramers-Konig requirements.
@@ -1707,6 +1703,9 @@ def calculate_refractive_index(dielectric, debug=False):
     Parameters
     ----------
     dielectric : complex
+        The permittivity used to calculate the refractive index
+    debug : boolean
+        True if debug is on
 
     Returns
     -------
@@ -1718,15 +1717,14 @@ def calculate_refractive_index(dielectric, debug=False):
     The calculation of the refractive index from the dielectric constant involves
     the trace of the dielectric tensor and the selection of the square root with
     the largest imaginary component.
+
     """
     trace = np.trace(dielectric) / 3.0
-    solution = calculate_refractive_index_scalar(trace, debug)
-    return solution
+    return calculate_refractive_index_scalar(trace, debug)
 
 
 def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
-    """
-    Calculate the refractive index from the dielectric constant.
+    """Calculate the refractive index from the dielectric constant.
 
     Calculate the trace of the dielectric and calculate both square roots.
     Then choose the root with the largest imaginary component. This obeys the Konig-Kramer requirements.
@@ -1734,6 +1732,9 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
     Parameters
     ----------
     dielectric_scalar : complex
+        The scalar permittivity
+    debug : boolean
+        Set to true for debugging
 
     Returns
     -------
@@ -1745,6 +1746,7 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
     The calculation of the refractive index from the dielectric constant involves
     the trace of the dielectric tensor and the selection of the square root with
     the largest imaginary component to satisfy the Konig-Kramer conditions.
+
     """
     solution1 = np.sqrt(dielectric_scalar)
     r, phase = cmath.polar(solution1)
@@ -1777,14 +1779,15 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
 
 
 def direction_from_shape(data, reader):
-    """
-    Determine the unique direction of the shape from the shape data.
+    """Determine the unique direction of the shape from the shape data.
 
     Parameters
     ----------
     data : list of strings
         Data may contain a miller indices which defines a surface, e.g., (1,1,-1),
         or a direction as a miller direction vector, e.g., [1,0,-1].
+    reader : a reader object
+        Use the reader to get the unit cell
 
     Returns
     -------
@@ -1812,7 +1815,7 @@ def direction_from_shape(data, reader):
         data = data.replace("]", "")
     else:
         print("Error encountered in interpretting the miller surface / vector", data)
-        exit(1)
+        sys.exit(1)
     if commas:
         data = data.replace(",", " ")
         hkl = [int(f) for f in data.split()]
@@ -1829,12 +1832,9 @@ def direction_from_shape(data, reader):
     # end of handling no commas
     if len(hkl) != 3:
         print("Error encountered in interpretting the miller surface / vector", data)
-        exit(1)
+        sys.exit(1)
     cell = reader.get_unit_cell()
-    if surface:
-        direction = cell.convert_hkl_to_xyz(hkl)
-    else:
-        direction = cell.convert_abc_to_xyz(hkl)
+    direction = cell.convert_hkl_to_xyz(hkl) if surface else cell.convert_abc_to_xyz(hkl)
     direction = direction / np.linalg.norm(direction)
     data = data.replace('"', "")
     data = data.replace("", "")
@@ -1858,8 +1858,7 @@ def solve_effective_medium_equations(
     previous_solution_shared,
     atuple,
 ):
-    """
-    Solve the effective medium equations.
+    """Solve the effective medium equations.
 
     Parameters
     ----------
@@ -1879,9 +1878,9 @@ def solve_effective_medium_equations(
         The depolarisation matrix.
     concentration : float
         The concentration of particles.
-    AtrPermittivity : float
+    atrPermittivity : float
         The permittivity of the ATR substrate.
-    AtrTheta : float
+    atrTheta : float
         The ATR angle of incidence.
     atrSPol : str
         The ATR polarisation.
@@ -1907,6 +1906,7 @@ def solve_effective_medium_equations(
         absorption_coefficient
         molar_absorption_coefficient
         spatr
+
     """
     # unpack the tuple that is passed by a call to the partial function
     (v_cm1, crystalPermittivity) = atuple
@@ -1931,33 +1931,28 @@ def solve_effective_medium_equations(
                 file=sys.stderr,
             )
         effdielec, refractive_index = calculate_bubble_refractive_index(
-            v_cm1, refractive_index.real, bubble_vf, bubble_radius
+            v_cm1, refractive_index.real, bubble_vf, bubble_radius,
         )
         dielectric_medium = effdielec
     # Choose which method to apply, the effective dielectric determined with bubbles will be used
     if method == "balan":
         effdielec = balan(dielectric_medium, crystal_permittivity, shape, L, vf, size)
-    elif (
-        method == "ap"
-        or method == "averagedpermittivity"
-        or method == "averaged permittivity"
-        or method == "average permittivity"
-    ):
+    elif method in ("ap", "averagedpermittivity", "averaged permittivity", "average permittivity"):
         effdielec = averaged_permittivity(
-            dielectric_medium, crystal_permittivity, shape, L, vf, size
+            dielectric_medium, crystal_permittivity, shape, L, vf, size,
         )
-    elif method == "maxwell" or method == "maxwell-garnett":
+    elif method in ("maxwell", "maxwell-garnett"):
         effdielec = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     elif method == "maxwell_sihvola":
         effdielec = maxwell_sihvola(
-            dielectric_medium, crystal_permittivity, shape, L, vf, size
+            dielectric_medium, crystal_permittivity, shape, L, vf, size,
         )
     elif method == "coherent":
         eff = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
             eff = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
         effdielec = coherent(
-            dielectric_medium, crystal_permittivity, shape, L, vf, size, eff
+            dielectric_medium, crystal_permittivity, shape, L, vf, size, eff,
         )
         previous_solution_shared = effdielec
     elif method == "bruggeman_minimise":
@@ -1965,15 +1960,15 @@ def solve_effective_medium_equations(
         if np.abs(np.trace(eff)) < 1.0e-8:
             eff = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
         effdielec = bruggeman_minimise(
-            dielectric_medium, crystal_permittivity, shape, L, vf, size, eff
+            dielectric_medium, crystal_permittivity, shape, L, vf, size, eff,
         )
         previous_solution_shared = effdielec
-    elif method == "bruggeman" or method == "bruggeman_iter":
+    elif method in ("bruggeman", "bruggeman_iter"):
         eff = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
             eff = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
         effdielec = bruggeman_iter(
-            dielectric_medium, crystal_permittivity, shape, L, vf, size, eff
+            dielectric_medium, crystal_permittivity, shape, L, vf, size, eff,
         )
         previous_solution_shared = effdielec
     elif method == "anisotropic-mie":
@@ -2010,7 +2005,7 @@ def solve_effective_medium_equations(
         )
     else:
         print(f"Unkown dielectric method: {method}")
-        exit(1)
+        sys.exit(1)
     # Average over all directions by taking the trace
     trace = (effdielec[0, 0] + effdielec[1, 1] + effdielec[2, 2]) / 3.0
     refractive_index = calculate_refractive_index(effdielec)
@@ -2042,8 +2037,7 @@ def solve_effective_medium_equations(
 
 
 def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
-    """
-    Calculate the scattering from bubbles embedded in a possibly complex dielectric at a given frequency.
+    """Calculate the scattering from bubbles embedded in a possibly complex dielectric at a given frequency.
 
     Parameters
     ----------
@@ -2066,6 +2060,7 @@ def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     Notes
     -----
     This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive index.
+
     """
     #
     # We need to taken account of the change in wavelength and the change in size parameter due to the
@@ -2091,8 +2086,7 @@ def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
 
 
 def foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium):
-    """
-    Calculate the new wave number based on the Foldy's approximation for light scattering.
+    """Calculate the new wave number based on the Foldy's approximation for light scattering.
 
     Parameters
     ----------
@@ -2128,6 +2122,7 @@ def foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium):
     See Also
     --------
     Mie.MieS1S2 : Function used to calculate scattering coefficients based on Mie theory.
+
     """
     k_nm = 2 * np.pi * ri_medium / lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
@@ -2144,8 +2139,7 @@ def foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium):
 
 
 def waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium):
-    """
-    Calculate the effective wavenumber based on Waterman-Truell scattering model.
+    """Calculate the effective wavenumber based on Waterman-Truell scattering model.
 
     Parameters
     ----------
@@ -2176,6 +2170,7 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium):
     amplitudes, which are then used to approximate the effective wavenumber for
     wave propagation in the medium. This model is particularly useful in the study
     of wave scattering in composite materials and biological tissues.
+
     """
     k_nm = 2 * np.pi * ri_medium / lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
@@ -2198,22 +2193,24 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium):
 
 
 def calculate_centre_of_mass(xyzs, masses):
-    """
-    Calculate centre of mass.
+    """Calculate centre of mass.
 
     Parameters
     ----------
-    xyzs : list of xyz coordinates of the atoms
-    masses : list of the atomic masses
+    xyzs : list floats
+        The xyz coordinates of the atoms
+    masses : list floats
+        The masses of the atoms in amu
 
     Returns
     -------
     mass : float - The total mass
     cm   : vector (3) - the coordinates of the centre of mass
+
     """
     cm = np.zeros(3)
     mass = 0.0
-    for m, xyz in zip(masses, xyzs):
+    for m, xyz in zip(masses, xyzs, strict=False):
         mass += m
         cm += m * xyz
     cm /= mass
@@ -2221,8 +2218,7 @@ def calculate_centre_of_mass(xyzs, masses):
 
 
 def orthogonalise_projection_operator(ps):
-    """
-    Orthogonalise the list of projection operators ps.
+    """Orthogonalise the list of projection operators ps.
 
     Use Gramm Schmidt orthogonalisation to perform the operation
 
@@ -2265,24 +2261,29 @@ def orthogonalise_projection_operator(ps):
                         max_overlap = dotprod
     if cycle >= maxcyc:
         print("WARNING Schmidt Orthogonalisation Failed", max_overlap)
-        exit()
+        sys.exit()
     return ps
 
 
 def construct_projection_operator(atoms, xyzs, masses, nats):
-    """
-    Construct the projection operator for the molecule defined by atoms, xyz, masses.
+    """Construct the projection operator for the molecule defined by atoms, xyz, masses.
 
     Parameters
     ----------
-    atoms : list of atom types
-    xyz : list of atom coordinates vector (3)
-    masses : list of atom masses
+    atoms : array of floats
+        list of atom types
+    xyzs : array of floats
+        list of atom coordinates vector (3)
+    masses : array of floats
+        list of atom masses
+    nats : int
+        The number of atoms
 
     Returns
     -------
     type
         Description of the returned object.
+
     """
     mass, cm = calculate_centre_of_mass(xyzs, masses)
     # The projection operator has dimension number_of_constraints*natoms*3
@@ -2290,7 +2291,7 @@ def construct_projection_operator(atoms, xyzs, masses, nats):
     x = 0
     y = 1
     z = 2
-    for i, mass, xyz in zip(atoms, masses, xyzs):
+    for i, mass, xyz in zip(atoms, masses, xyzs, strict=False):
         ps[0, i * 3 + x] = math.sqrt(mass)
         ps[1, i * 3 + y] = math.sqrt(mass)
         ps[2, i * 3 + z] = math.sqrt(mass)
@@ -2314,8 +2315,7 @@ def construct_projection_operator(atoms, xyzs, masses, nats):
 
 
 def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
-    """
-    Calculate energy distribution in the phonon modes.
+    """Calculate energy distribution in the phonon modes.
 
     Parameters
     ----------
@@ -2325,6 +2325,9 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
         The frequencies in cm-1.
     normal_modes : array_like
         The mass weighted normal modes.
+    debug : boolean
+        True for the printing of debug information
+
     """
     molecules = cell.molecules
     atomic_masses = cell.atomic_masses
@@ -2342,7 +2345,7 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
             mol_mask[3 * atom + 2] = 1
         mol_masses = [atomic_masses[atom] for atom in atoms]
         projection_operators = construct_projection_operator(
-            atoms, mol_xyzs, mol_masses, nats
+            atoms, mol_xyzs, mol_masses, nats,
         )
         projection_operators = orthogonalise_projection_operator(projection_operators)
         molecular_projection_operators.append(projection_operators)
@@ -2356,7 +2359,7 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
         rotational_energy = 0.0
         molecular_energies = []
         for _imol, (ps, mask) in enumerate(
-            zip(molecular_projection_operators, molecule_masks)
+            zip(molecular_projection_operators, molecule_masks, strict=False),
         ):
             # Calculate total kinetic energy
             total_energy = np.dot(mode, mode)
@@ -2389,7 +2392,7 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
                 rotational_energy,
                 vibrational_energy,
                 molecular_energies,
-            )
+            ),
         )
     # end for mode in normal modes
     return energies_in_modes
@@ -2399,8 +2402,7 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
 
 
 def hodrick_prescott_filter(y, damping, lambda_value, niters):
-    """
-    Apply a Hodrick Prescott filter to the spectrum in x, y.
+    """Apply a Hodrick Prescott filter to the spectrum in x, y.
 
     Parameters
     ----------
@@ -2420,6 +2422,7 @@ def hodrick_prescott_filter(y, damping, lambda_value, niters):
     Notes
     -----
     Based on ideas in the thesis of Mayank Kaushik (University Adelaide).
+
     """
     from scipy import sparse
 
@@ -2429,7 +2432,7 @@ def hodrick_prescott_filter(y, damping, lambda_value, niters):
     n = len(y)
     diag = np.ones(n - 3)
     D = sparse.spdiags(
-        [-1 * diag, 3 * diag, -3 * diag, 1 * diag], [0, -1, -2, -3], n, n - 3
+        [-1 * diag, 3 * diag, -3 * diag, 1 * diag], [0, -1, -2, -3], n, n - 3,
     ).tocsc()
     w = np.ones(n)
     for _it in range(10 * niters):
@@ -2449,8 +2452,7 @@ def hodrick_prescott_filter(y, damping, lambda_value, niters):
 
 
 def reflectance_atr(ns, n0, theta, atrSPolFraction):
-    """
-    Calculate the atr s and p reflectance.
+    """Calculate the atr s and p reflectance.
 
     Parameters
     ----------
@@ -2469,6 +2471,7 @@ def reflectance_atr(ns, n0, theta, atrSPolFraction):
         The s-wave Fresnel amplitude.
     rp : float
         The p-wave Fresnel amplitude.
+
     """
     # Convert theta to an angle in radians
     theta = math.radians(theta)
@@ -2492,22 +2495,22 @@ def reflectance_atr(ns, n0, theta, atrSPolFraction):
     RP = np.real(rp * rp.conjugate())
     RSP = atrSPolFraction * RS + (1.0 - atrSPolFraction) * RP
     # Now return the extinction
-    RSP = -math.log10(RSP)
-    return RSP
+    return -math.log10(RSP)
 
 
 def cleanup_symbol(s):
-    """
-    Return a true element from the symbol
+    """Return a true element from the symbol.
 
     Parameters
     ----------
     s : str
+        The symbol to be analysed for an element string
 
     Returns
     -------
     str
         The cleaned symbol
+
     """
     s = s.capitalize()
     s = s.replace("_", "")
@@ -2517,8 +2520,7 @@ def cleanup_symbol(s):
 
 
 def determineEulerAngles(R):
-    """
-    Determine the euler angles of a rotation matrix.
+    """Determine the euler angles of a rotation matrix.
 
     Parameters
     ----------
@@ -2529,6 +2531,7 @@ def determineEulerAngles(R):
     -------
     theta, phi, psi : float
         The Euler angles
+
     """
     R11 = R[0, 0]
     R12 = R[0, 1]
@@ -2552,15 +2555,18 @@ def determineEulerAngles(R):
 
 
 def euler_rotation(vector, theta, phi, psi):
-    """
-    Apply a passive Euler rotation to a vector.
+    """Apply a passive Euler rotation to a vector.
 
     Parameters
     ----------
     vector : vector (3)
+        A vector to be rotated
     theta  : float
+        The angle theta
     phi    : float
+        The angle phi
     psi    : float
+        The angle psi
 
     Returns
     -------
@@ -2572,6 +2578,7 @@ def euler_rotation(vector, theta, phi, psi):
     while the vector remains fixed. This operation is often used in
     physics and engineering to describe the orientation of an object
     with respect to a reference coordinate system.
+
     """
     euler = np.zeros((3, 3))
     euler[0, 0] = np.cos(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.sin(psi)
@@ -2583,13 +2590,11 @@ def euler_rotation(vector, theta, phi, psi):
     euler[2, 0] = np.sin(theta) * np.sin(psi)
     euler[2, 1] = np.sin(theta) * np.cos(psi)
     euler[2, 2] = np.cos(theta)
-    result = np.matmul(euler, vector)
-    return result
+    return np.matmul(euler, vector)
 
 
 def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None):
-    """
-    Return a pool of processors given the number of cpus and whether threading is requested.
+    """Return a pool of processors given the number of cpus and whether threading is requested.
 
     Parameters
     ----------
@@ -2601,6 +2606,8 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None):
         Function to be called before getting the pool
     initargs : function arguments
         Any other parameters
+    debugger : debugger object
+        Defaults to None
 
     Returns
     -------

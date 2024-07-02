@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Read the contents of a single file containing DFT output and create a csv style file of information
+"""Read the contents of a single file containing DFT output and create a csv style file of information.
 
 Parse command-line arguments to set program configuration and process a specified file.
 
@@ -29,20 +28,20 @@ This function does not accept parameters directly through its definition. Instea
 - `-version` : Print software version and exit.
 - `-program` : Specify the program to use for analysis. When set to 'phonopy', an additional quantum mechanics program argument is required.
 - Any other argument is considered as the filename for analysis.
+
 """
 
 import os
 import sys
 
 import PDielec.__init__
-import PDielec.Utilities as Utilities
+from PDielec import Utilities
 
 version = PDielec.__init__.__version__
 
 
 def print_help():
-    """
-    Prints the help message for the p1reader program to stderr.
+    """Print the help message for the p1reader program to stderr.
 
     This function displays the usage of the `p1reader` command, including accepted programs, flags, and additional
     optional arguments.
@@ -57,6 +56,7 @@ def print_help():
     To display the help message, simply call the function without any arguments:
 
     >>> print_help()
+
     """
     print("p1reader -program program [-version] filename", file=sys.stderr)
     print(
@@ -92,13 +92,12 @@ def print_help():
         file=sys.stderr,
     )
     print("  Version ", version, file=sys.stderr)
-    exit()
+    sys.exit()
 
 
 def main():
     # Start processing the directories
-    """
-    Parse command-line arguments to set program configuration and process a specified file.
+    """Parse command-line arguments to set program configuration and process a specified file.
 
     This function does not have a formal return but exits with different messages and statuses based on the command-line inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line requests for help and version information.
 
@@ -128,6 +127,7 @@ def main():
     - The function makes extensive use of `sys.argv` for argument parsing and `sys.stderr` for error and status messaging.
     - The function supports a flexible addition of program types and respective validation.
     - The handling of `-debug`, `-help`, `-version`, and program-specific arguments provides an example of a rudimentary command-line interface.
+
     """
     if len(sys.argv) <= 1:
         print_help()
@@ -148,7 +148,7 @@ def main():
             print_help()
         elif token == "-version":
             print("  Version ", version, file=sys.stderr)
-            exit()
+            sys.exit()
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
@@ -160,7 +160,7 @@ def main():
 
     if len(program) < 1:
         print("Please give a filename to be read in", file=sys.stderr)
-        exit()
+        sys.exit()
 
     if program not in [
         "auto",
@@ -174,12 +174,12 @@ def main():
         "experiment",
     ]:
         print("Program is not recognised: ", program, file=sys.stderr)
-        exit()
+        sys.exit()
 
     if program == "phonopy":
         if qmprogram not in ["abinit", "castep", "crystal", "gulp", "qe", "vasp"]:
             print("Phonopy QM program is not recognised: ", qmprogram, file=sys.stderr)
-            exit()
+            sys.exit()
         print("  QM program used by Phonopy is: ", qmprogram, file=sys.stderr)
 
     print("  Program is ", program, file=sys.stderr)
@@ -190,7 +190,7 @@ def main():
             filename,
             file=sys.stderr,
         )
-        exit()
+        sys.exit()
     #
     # If no program information was given try and work out what package created the outputfile
     #
@@ -216,7 +216,6 @@ def main():
     # Test to make sure we have a functioning reader
     #
     reader.print()
-    return
 
 
 if __name__ == "__main__":

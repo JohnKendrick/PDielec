@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-The checkcsv command read in two csv files and check that the float contents are the same
+"""The checkcsv command read in two csv files and check that the float contents are the same.
 
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 """
@@ -29,8 +28,7 @@ global threshold
 
 
 def compare_lines(line1, line2, swapped):
-    """
-    Compare two lines of text to find and report differences in numerical values.
+    """Compare two lines of text to find and report differences in numerical values.
 
     Parameters
     ----------
@@ -64,6 +62,7 @@ def compare_lines(line1, line2, swapped):
       if present and matching in both lines, it's an immediate pass, regardless of subsequent content.
     - The function also allows for a tolerance in the comparison of the first numeric values
       of the lines if `swapped` is True, ignoring a discrepancy of exactly 1.
+
     """
     global separator
     global threshold
@@ -90,7 +89,7 @@ def compare_lines(line1, line2, swapped):
         # end if word1 == word2 and len1 > 4
     # end if len1 == len2
     for index, (word1, word2) in enumerate(
-        zip(line1.split(separator), line2.split(separator))
+        zip(line1.split(separator), line2.split(separator), strict=False),
     ):
         if isfloat(word1):
             if not isfloat(word2):
@@ -126,8 +125,7 @@ def compare_lines(line1, line2, swapped):
 
 
 def isfloat(value):
-    """
-    Check if the given value can be converted to float.
+    """Check if the given value can be converted to float.
 
     Parameters
     ----------
@@ -138,6 +136,7 @@ def isfloat(value):
     -------
     bool
         Returns True if value can be converted to float, False otherwise.
+
     """
     try:
         float(value)
@@ -147,8 +146,7 @@ def isfloat(value):
 
 
 def main():
-    """
-    Compares two files line by line to check for significant changes based on a provided threshold.
+    """Compare two files line by line to check for significant changes based on a provided threshold.
 
     This script takes at least two arguments that are file names along with optional arguments for
     separator (`-sep`) and threshold value (`-thresh`). It compares numbers from corresponding lines
@@ -185,6 +183,7 @@ def main():
     -----
     The command-line arguments need to be parsed using `sys.argv`.
     The comparison formula used is `2*abs(f1-f2)/(f1+f2+2)`.
+
     """
     global separator
     global threshold
@@ -206,7 +205,7 @@ def main():
             file=sys.stderr,
         )
         print("         The default value for threshold is 3.0E-2 ", file=sys.stderr)
-        exit()
+        sys.exit()
 
     threshold = 3.0e-2
     separator = None
@@ -234,7 +233,7 @@ def main():
     file_name, extension = splitext(file1)
     if extension == ".csv":
         separator = ","
-    elif extension == ".txt" or extension == ".out":
+    elif extension in ( ".txt", ".out" ):
         separator = None
     # Read the command line again
     files = []
@@ -261,7 +260,7 @@ def main():
     max_percentage_error = 0.0
     compare_next_line = False
     with open(file1) as fd1, open(file2) as fd2:
-        for line_number, (line1, line2) in enumerate(zip(fd1, fd2)):
+        for line_number, (line1, line2) in enumerate(zip(fd1, fd2, strict=False)):
             if not compare_next_line:
                 store_error, nerror, percentage_error, keep_word1c, keep_word2c = (
                     compare_lines(line1, line2, False)
@@ -312,13 +311,13 @@ def main():
         print(
             "  "
             + colored("ERRORS:", "red")
-            + f"({nerrors}) LARGEST ON LINE {keep_line_number} OF {file1}({keep_word1}) and {file2}({keep_word2}) -- max %error={max_percentage_error}"
+            + f"({nerrors}) LARGEST ON LINE {keep_line_number} OF {file1}({keep_word1}) and {file2}({keep_word2}) -- max %error={max_percentage_error}",
         )
     else:
         print(
             "  "
             + colored("OK:", "blue")
-            + f" {file1} = {file2} -- max %error={max_percentage_error}"
+            + f" {file1} = {file2} -- max %error={max_percentage_error}",
         )
     # end
     return (nerrors, keep_line_number, keep_word1, keep_word2, max_percentage_error)

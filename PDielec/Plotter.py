@@ -13,18 +13,15 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Do some pretty printing for the dielectric functions
-"""
+"""Do some pretty printing for the dielectric functions."""
 
 import sys
 
 
 def print_ints(
-    title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" "
+    title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" ",
 ):
-    """
-    Print ints data.
+    """Print ints data.
 
     Parameters
     ----------
@@ -44,6 +41,7 @@ def print_ints(
     Returns
     -------
     None
+
     """
     #
     # Print out a list of ints prettily
@@ -59,18 +57,16 @@ def print_ints(
         if end > len_ints:
             end = len_ints
         print(
-            " " + separator.join(format.format(r) for r in ints[start:end]), file=file
+            " " + separator.join(format.format(r) for r in ints[start:end]), file=file,
         )
         start = start + no_per_line
     # end for i
-    return
 
 
 def print_strings(
-    title, strings, no_per_line=8, format="{:9s}", file=sys.stdout, separator=" "
+    title, strings, no_per_line=8, format="{:9s}", file=sys.stdout, separator=" ",
 ):
-    """
-    Print strings data.
+    """Print strings data.
 
     Parameters
     ----------
@@ -90,6 +86,7 @@ def print_strings(
     Returns
     -------
     None
+
     """
     #
     # Print out a list of strings prettily
@@ -110,14 +107,12 @@ def print_strings(
         )
         start = start + no_per_line
     # end for i
-    return
 
 
 def print_reals(
-    title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "
+    title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" ",
 ):
-    """
-    Print reals data
+    """Print reals data.
 
     Parameters
     ----------
@@ -137,6 +132,7 @@ def print_reals(
     Returns
     -------
     None
+
     """
     #
     # Print out a list of reals prettily
@@ -152,19 +148,19 @@ def print_reals(
         if end > len_reals:
             end = len_reals
         print(
-            " " + separator.join(format.format(r) for r in reals[start:end]), file=file
+            " " + separator.join(format.format(r) for r in reals[start:end]), file=file,
         )
         start = start + no_per_line
     # end for i
-    return
 
 
 def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
-    """
-    Print a 3x3 matrix.
+    """Print a 3x3 matrix.
 
     Parameters
     ----------
+    title : string
+        A title for the printing
     array : tensor 3x3
         The array to be printed
     format : str, optional
@@ -177,6 +173,7 @@ def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
     Returns
     -------
     None
+
     """
     #
     # Print out a 3x3 tensor matrix
@@ -187,4 +184,3 @@ def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
     for i in range(3):
         print("      " + " ".join(format.format(p) for p in array[i]), file=file)
     # end for i
-    return

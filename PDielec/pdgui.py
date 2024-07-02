@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-PDgui driver program to calculate dielectric response at infrared and THz frequencies
+"""PDgui driver program to calculate dielectric response at infrared and THz frequencies.
 
 Process command line arguments and start a GUI application with optional splash screen.
 
@@ -22,7 +21,6 @@ No explicit input parameters are taken by the function. Instead, it parses comma
 
 Notes
 -----
-
     - The -nosplash flag disables the splash screen.
     - The -v, -version, or --version flags print the program version and exit.
     - The -exit or --exit flag forces the program to exit immediately after processing arguments.
@@ -46,8 +44,7 @@ version = PDielec.__init__.__version__
 
 
 def main():
-    """
-    Process command line arguments and start a GUI application with optional splash screen.
+    """Process command line arguments and start a GUI application with optional splash screen.
 
     No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
 
@@ -85,19 +82,20 @@ def main():
     - To run a script:
 
     >>>    pdgui -script script.py
+
     """
     show_splash = True
     force_exit = False
     debug = False
     for token in sys.argv:
-        if token == "-nosplash" or token == "--nosplash":
+        if token in ( "-nosplash", "--nosplash" ):
             show_splash = False
-        elif token == "-v" or token == "-version" or token == "--version":
+        elif token in ( "-v", "-version", "--version" ):
             print("Version ", version)
-            exit()
-        elif token == "-exit" or token == "--exit":
+            sys.exit()
+        elif token in ( "-exit", "--exit" ):
             force_exit = True
-        elif token == "-d" or token == "-debug" or token == "--debug":
+        elif token in ( "-d", "-debug", "--debug" ):
             debug = True
 
     app = QApplication(sys.argv)
@@ -109,7 +107,7 @@ def main():
             print("Looking for ", splashfile)
         if not os.path.isfile(splashfile):
             splashfile = os.path.join(
-                dirname, "../../lib/site-packages/PDielec/GUI/splash.png"
+                dirname, "../../lib/site-packages/PDielec/GUI/splash.png",
             )
             if debug:
                 print("Looking for ", splashfile)
@@ -135,7 +133,6 @@ def main():
         if show_splash:
             splash.finish(ex)
         app.exec_()
-    return
 
 
 if __name__ == "__main__":

@@ -1,6 +1,4 @@
-"""
-PyMieScatt package
-------------------
+"""PyMieScatt package.
 
 Routines taken from PyMieScatt
 http://pymiescatt.readthedocs.io/en/latest
@@ -53,8 +51,7 @@ crossover = 0.01
 
 
 def coerceDType(d):
-    """
-    Convert input data to a NumPy array if not already one.
+    """Convert input data to a NumPy array if not already one.
 
     Parameters
     ----------
@@ -73,16 +70,15 @@ def coerceDType(d):
 
     >>> coerceDType(np.array([1, 2, 3]))
     array([1, 2, 3])
+
     """
     if type(d) is not np.ndarray:
         return np.array(d)
-    else:
-        return d
+    return d
 
 
 def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
-    """
-    Calculate Mie scattering efficiencies or cross sections for a spherical particle.
+    """Calculate Mie scattering efficiencies or cross sections for a spherical particle.
 
     Parameters
     ----------
@@ -131,6 +127,7 @@ def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=Fals
 
     >>> MieQ(1.33 + 0.001j, 0.55, 1.0, nMedium=1.0, asDict=True, asCrossSection=True)
     {'Cext': 0.8, 'Csca': 0.2, 'Cabs': 0.6, 'g': 0.05, 'Cpr': 0.7, 'Cback': 0.02, 'Cratio': 0.1}
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ
     nMedium = nMedium.real
@@ -159,7 +156,7 @@ def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=Fals
     g1 = [np.append(x, 0.0) for x in g1]
     g = (4 / (qsca * x2)) * np.sum(
         (n2 * (an.real * g1[0] + an.imag * g1[1] + bn.real * g1[2] + bn.imag * g1[3]))
-        + (n3 * (an.real * bn.real + an.imag * bn.imag))
+        + (n3 * (an.real * bn.real + an.imag * bn.imag)),
     )
 
     qpr = qext - qsca * g
@@ -183,26 +180,21 @@ def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=Fals
                 Cback=cback,
                 Cratio=cratio,
             )
-        else:
-            return cext, csca, cabs, g, cpr, cback, cratio
-    else:
-        if asDict:
-            return dict(
-                Qext=qext,
-                Qsca=qsca,
-                Qabs=qabs,
-                g=g,
-                Qpr=qpr,
-                Qback=qback,
-                Qratio=qratio,
-            )
-        else:
-            return qext, qsca, qabs, g, qpr, qback, qratio
-
+        return cext, csca, cabs, g, cpr, cback, cratio
+    if asDict:
+        return dict(
+            Qext=qext,
+            Qsca=qsca,
+            Qabs=qabs,
+            g=g,
+            Qpr=qpr,
+            Qback=qback,
+            Qratio=qratio,
+        )
+    return qext, qsca, qabs, g, qpr, qback, qratio
 
 def Mie_ab(m, x):
-    """
-    Compute the Mie scattering coefficients a_n and b_n.
+    r"""Compute the Mie scattering coefficients a_n and b_n.
 
     Parameters
     ----------
@@ -232,6 +224,7 @@ def Mie_ab(m, x):
     ----------
     - Bohren, C. F., & Huffman, D. R. (1983). Absorption and Scattering of Light by Small Particles. Wiley.
     - Wiscombe, W. J. (1980). Improved Mie scattering algorithms. Applied Optics, 19(9), 1505.
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_ab
     mx = m * x
@@ -267,8 +260,7 @@ def Mie_ab(m, x):
 
 
 def Mie_cd(m, x):
-    """
-    Calculate the Mie scattering coefficients for given size parameter and relative refractive index.
+    """Calculate the Mie scattering coefficients for given size parameter and relative refractive index.
 
     Parameters
     ----------
@@ -306,6 +298,7 @@ def Mie_cd(m, x):
     >>> x = 2.5
     >>> cn, dn = Mie_cd(m, x)
     >>> print(cn, dn)
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_cd
     mx = m * x
@@ -319,7 +312,7 @@ def Mie_cd(m, x):
     for j in np.arange(nmx, 1, -1):
         cnx[int(j) - 2] = j - mx * mx / (cnx[int(j) - 1] + j)
 
-    cnn = np.array([cnx[b] for b in range(0, len(n))])
+    cnn = np.array([cnx[b] for b in range(len(n))])
 
     jnx = np.sqrt(np.pi / (2 * x)) * jv(nu, x)
     jnmx = np.sqrt((2 * mx) / np.pi) / jv(nu, mx)
@@ -345,10 +338,9 @@ def Mie_cd(m, x):
 
 
 def RayleighMieQ(
-    m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False
+    m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False,
 ):
-    """
-    Calculate the optical properties of a sphere for a given refractive index, wavelength, and diameter according to the Rayleigh-Scattering approximation.
+    """Calculate the optical properties of a sphere for a given refractive index, wavelength, and diameter according to the Rayleigh-Scattering approximation.
 
     Parameters
     ----------
@@ -391,6 +383,7 @@ def RayleighMieQ(
 
     >>> RayleighMieQ(1.5+0.1j, 550, 100, asDict=True, asCrossSection=True)
     {'Cext': cext, 'Csca': csca, 'Cabs': cabs, 'g': 0, 'Cpr': cpr, 'Cback': cback, 'Cratio': cratio}
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#RayleighMieQ
     nMedium = nMedium.real
@@ -399,7 +392,7 @@ def RayleighMieQ(
     x = np.pi * diameter / wavelength
     if x == 0:
         return 0, 0, 0, 1.5, 0, 0, 0
-    elif x > 0:
+    if x > 0:
         LL = (m**2 - 1) / (m**2 + 2)  # Lorentz-Lorenz term
         LLabsSq = np.abs(LL) ** 2
         qsca = 8 * LLabsSq * (x**4) / 3  # B&H eq 5.8
@@ -427,26 +420,23 @@ def RayleighMieQ(
                     Cback=cback,
                     Cratio=cratio,
                 )
-            else:
-                return cext, csca, cabs, g, cpr, cback, cratio
-        else:
-            if asDict:
-                return dict(
-                    Qext=qext,
-                    Qsca=qsca,
-                    Qabs=qabs,
-                    g=g,
-                    Qpr=qpr,
-                    Qback=qback,
-                    Qratio=qratio,
-                )
-            else:
-                return qext, qsca, qabs, g, qpr, qback, qratio
+            return cext, csca, cabs, g, cpr, cback, cratio
+        if asDict:
+            return dict(
+                Qext=qext,
+                Qsca=qsca,
+                Qabs=qabs,
+                g=g,
+                Qpr=qpr,
+                Qback=qback,
+                Qratio=qratio,
+            )
+        return qext, qsca, qabs, g, qpr, qback, qratio
+    return None
 
 
 def AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
-    """
-    Calculate the Mie scattering efficiencies for spheres, using either the Rayleigh, or the full Mie solution.
+    """Calculate the Mie scattering efficiencies for spheres, using either the Rayleigh, or the full Mie solution.
 
     The function chooses between Rayleigh scattering (for small particles) and full Mie scattering based on
     the effective size parameter of the particles. This allows for the automatic selection of the most
@@ -491,6 +481,7 @@ def AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=
       the particle's diameter, the medium's refractive index, and the wavelength of the light.
     - The actual implementation of the Rayleigh and Mie scattering calculations (`RayleighMieQ` and `MieQ` functions respectively)
       is not detailed here.
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#AutoMieQ
     nMedium = nMedium.real
@@ -498,7 +489,7 @@ def AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=
     x_eff = np.pi * diameter / wavelength_eff
     if x_eff == 0:
         return 0, 0, 0, 1.5, 0, 0, 0
-    elif x_eff < crossover:
+    if x_eff < crossover:
         return RayleighMieQ(
             m,
             wavelength,
@@ -507,22 +498,20 @@ def AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=
             asDict=asDict,
             asCrossSection=asCrossSection,
         )
-    else:
-        return MieQ(
-            m,
-            wavelength,
-            diameter,
-            nMedium,
-            asDict=asDict,
-            asCrossSection=asCrossSection,
-        )
+    return MieQ(
+        m,
+        wavelength,
+        diameter,
+        nMedium,
+        asDict=asDict,
+        asCrossSection=asCrossSection,
+    )
 
 
 def LowFrequencyMieQ(
-    m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False
+    m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False,
 ):
-    """
-    Calculate the Mie scattering efficiencies for low-frequency approximation.
+    """Calculate the Mie scattering efficiencies for low-frequency approximation.
 
     Parameters
     ----------
@@ -559,6 +548,7 @@ def LowFrequencyMieQ(
 
     >>> LowFrequencyMieQ(1.5+0.1j, 0.55, 0.1)
     (output values vary)
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#LowFrequencyMieQ
     nMedium = nMedium.real
@@ -567,7 +557,7 @@ def LowFrequencyMieQ(
     x = np.pi * diameter / wavelength
     if x == 0:
         return 0, 0, 0, 1.5, 0, 0, 0
-    elif x > 0:
+    if x > 0:
         n = np.arange(1, 3)
         n1 = 2 * n + 1
         n2 = n * (n + 2) / (n + 1)
@@ -578,7 +568,7 @@ def LowFrequencyMieQ(
 
         qext = (2 / x2) * np.sum(n1 * (an.real + bn.real))
         qsca = (2 / x2) * np.sum(
-            n1 * (an.real**2 + an.imag**2 + bn.real**2 + bn.imag**2)
+            n1 * (an.real**2 + an.imag**2 + bn.real**2 + bn.imag**2),
         )
         qabs = qext - qsca
 
@@ -594,7 +584,7 @@ def LowFrequencyMieQ(
                     + bn.imag * g1[3]
                 )
             )
-            + (n3 * (an.real * bn.real + an.imag * bn.imag))
+            + (n3 * (an.real * bn.real + an.imag * bn.imag)),
         )
 
         qpr = qext - qsca * g
@@ -619,26 +609,23 @@ def LowFrequencyMieQ(
                     Cback=cback,
                     Cratio=cratio,
                 )
-            else:
-                return cext, csca, cabs, g, cpr, cback, cratio
-        else:
-            if asDict:
-                return dict(
-                    Qext=qext,
-                    Qsca=qsca,
-                    Qabs=qabs,
-                    g=g,
-                    Qpr=qpr,
-                    Qback=qback,
-                    Qratio=qratio,
-                )
-            else:
-                return qext, qsca, qabs, g, qpr, qback, qratio
+            return cext, csca, cabs, g, cpr, cback, cratio
+        if asDict:
+            return dict(
+                Qext=qext,
+                Qsca=qsca,
+                Qabs=qabs,
+                g=g,
+                Qpr=qpr,
+                Qback=qback,
+                Qratio=qratio,
+            )
+        return qext, qsca, qabs, g, qpr, qback, qratio
+    return None
 
 
 def LowFrequencyMie_ab(m, x):
-    """
-    Calculate the low-frequency Mie scattering coefficients.
+    """Calculate the low-frequency Mie scattering coefficients.
 
     Parameters
     ----------
@@ -669,6 +656,7 @@ def LowFrequencyMie_ab(m, x):
     This function does not explicitly raise any exceptions, but note that it relies on
     numpy for mathematical operations, so errors could be raised by numpy operations due
     to invalid inputs.
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#LowFrequencyMie_ab
     # B&H page 131
@@ -692,8 +680,7 @@ def LowFrequencyMie_ab(m, x):
 
 
 def AutoMie_ab(m, x):
-    """
-    Calculate the Mie scattering coefficients a and b.
+    """Calculate the Mie scattering coefficients a and b.
 
     Parameters
     ----------
@@ -710,18 +697,17 @@ def AutoMie_ab(m, x):
     Notes
     -----
     This function decides to use the LowFrequencyMie_ab() function for calculations if the size parameter `x` is below a certain threshold (`crossover`), otherwise it uses the Mie_ab() function for higher values of `x`. The `crossover` value must be predefined or accessible in the function's scope.
+
     """
     if x < crossover:
         return LowFrequencyMie_ab(m, x)
-    else:
-        return Mie_ab(m, x)
+    return Mie_ab(m, x)
 
 
 def Mie_SD(
-    m, wavelength, dp, ndp, nMedium=1.0, SMPS=True, interpolate=False, asDict=False
+    m, wavelength, dp, ndp, nMedium=1.0, SMPS=True, interpolate=False, asDict=False,
 ):
-    """
-    Calculate the Mie Scattering parameters based on a supplied size distribution.
+    """Calculate the Mie Scattering parameters based on a supplied size distribution.
 
     Parameters
     ----------
@@ -764,6 +750,7 @@ def Mie_SD(
     >>> ndp = np.array([1e12, 0.5e12])  # Number concentrations
     >>> results = Mie_SD(m, wavelength, dp, ndp, SMPS=True, asDict=True)
     >>> print(results['Bext'], results['Bsca'], results['Babs'])
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_SD
     nMedium = nMedium.real
@@ -786,7 +773,7 @@ def Mie_SD(
 
     for i in range(_length):
         Q_ext[i], Q_sca[i], Q_abs[i], g[i], Q_pr[i], Q_back[i], Q_ratio[i] = AutoMieQ(
-            m, wavelength, dp[i], nMedium
+            m, wavelength, dp[i], nMedium,
         )
 
     if SMPS:
@@ -808,10 +795,9 @@ def Mie_SD(
 
     if asDict:
         return dict(
-            Bext=Bext, Bsca=Bsca, Babs=Babs, G=bigG, Bpr=Bpr, Bback=Bback, Bratio=Bratio
+            Bext=Bext, Bsca=Bsca, Babs=Babs, G=bigG, Bpr=Bpr, Bback=Bback, Bratio=Bratio,
         )
-    else:
-        return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio
+    return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio
 
 
 def ScatteringFunction(
@@ -826,8 +812,7 @@ def ScatteringFunction(
     angleMeasure="radians",
     normalization=None,
 ):
-    """
-    Calculate the scattering function for given parameters using the Mie theory.
+    """Calculate the scattering function for given parameters using the Mie theory.
 
     Parameters
     ----------
@@ -881,6 +866,7 @@ def ScatteringFunction(
     >>> nMedium = 1.33
     >>> scattering = ScatteringFunction(m, wavelength, diameter, nMedium=nMedium)
     >>> measure, SL, SR, SU = scattering
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#ScatteringFunction
     nMedium = nMedium.real
@@ -946,8 +932,7 @@ def SF_SD(
     angleMeasure="radians",
     normalization=None,
 ):
-    """
-    Calculate the scattering function SD for given parameters and return the scattering intensities for left, right, and unpolarized light.
+    """Calculate the scattering function SD for given parameters and return the scattering intensities for left, right, and unpolarized light.
 
     Parameters
     ----------
@@ -991,6 +976,7 @@ def SF_SD(
     See Also
     --------
     ScatteringFunction : Another function (not detailed here) that is presumably used in this calculation for obtaining the scattering data based on the input parameters.
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#SF_SD
     nMedium = nMedium.real
@@ -1010,7 +996,7 @@ def SF_SD(
         "space": space,
         "normalization": None,
     }
-    for n, d in zip(ndp, dp):
+    for n, d in zip(ndp, dp, strict=False):
         measure, l, r, u = ScatteringFunction(m, wavelength, d, **kwargs)
         SL += l * n
         SR += r * n
@@ -1032,15 +1018,14 @@ def SF_SD(
 
 
 def MieS1S2(m, x, mu):
-    """
-    Calculate the scattering parameters S1 and S2 for Mie scattering.
+    """Calculate the scattering parameters S1 and S2 for Mie scattering.
 
     Parameters
     ----------
     m : complex
         The complex refractive index of the scattering particles.
     x : float
-        The size parameter of the particle, defined as \(2 \pi r / \lambda\), where \(r\) is the particle radius and \(\lambda\) is the wavelength of the incident light.
+        The size parameter of the particle, defined as \\(2 \\pi r / \\lambda\\), where \\(r\\) is the particle radius and \\(\\lambda\\) is the wavelength of the incident light.
     mu : array_like
         An array of cosine values of the scattering angles.
 
@@ -1051,7 +1036,7 @@ def MieS1S2(m, x, mu):
 
     Notes
     -----
-    This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \(a_n\) and \(b_n\), and the `MiePiTau` function to compute the angle-dependent functions \(\pi_n\) and \(\tau_n\). The formulas for \(S_1\) and \(S_2\) involve sums over these coefficients weighted by \((2n+1)/(n(n+1))\), where \(n\) is the series index.
+    This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \\(a_n\\) and \\(b_n\\), and the `MiePiTau` function to compute the angle-dependent functions \\(\\pi_n\\) and \\(\tau_n\\). The formulas for \\(S_1\\) and \\(S_2\\) involve sums over these coefficients weighted by \\((2n+1)/(n(n+1))\\), where \\(n\\) is the series index.
 
     Examples
     --------
@@ -1060,6 +1045,7 @@ def MieS1S2(m, x, mu):
     >>> mu = np.array([1.0, 0.5])  # Cosine of the scattering angles
     >>> S1, S2 = MieS1S2(m, x, mu)
     >>> print(S1, S2)
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieS1S2
     nmax = np.round(2 + x + 4 * np.power(x, 1 / 3))
@@ -1073,8 +1059,7 @@ def MieS1S2(m, x, mu):
 
 
 def MiePiTau(mu, nmax):
-    """
-    Calculate the Mie \(\pi\) and \(\tau\) functions for given argument and maximum order.
+    """Calculate the Mie \\(\\pi\\) and \\(\tau\\) functions for given argument and maximum order.
 
     Parameters
     ----------
@@ -1086,11 +1071,11 @@ def MiePiTau(mu, nmax):
     Returns
     -------
     tuple
-        A tuple containing two numpy arrays. The first array corresponds to the \(\pi\) values and the second to the \(\tau\) values for the orders from 0 to \(nmax-1\).
+        A tuple containing two numpy arrays. The first array corresponds to the \\(\\pi\\) values and the second to the \\(\tau\\) values for the orders from 0 to \\(nmax-1\\).
 
     Notes
     -----
-    The Mie \(\pi\) and \(\tau\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
+    The Mie \\(\\pi\\) and \\(\tau\\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
 
     Examples
     --------
@@ -1098,6 +1083,7 @@ def MiePiTau(mu, nmax):
     >>> pi, tau = MiePiTau(mu, nmax)
     >>> print(pi)
     >>> print(tau)
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MiePiTau
     p = np.zeros(int(nmax))
@@ -1113,8 +1099,7 @@ def MiePiTau(mu, nmax):
 
 
 def MatrixElements(m, wavelength, diameter, mu, nMedium=1.0):
-    """
-    Calculate the scattering matrix elements for a spherical scatterer.
+    """Calculate the scattering matrix elements for a spherical scatterer.
 
     Parameters
     ----------
@@ -1146,6 +1131,7 @@ def MatrixElements(m, wavelength, diameter, mu, nMedium=1.0):
     >>> diameter = 0.05
     >>> mu = np.linspace(-1, 1, 5)
     >>> S11, S12, S33, S34 = MatrixElements(m, wavelength, diameter, mu)
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MatrixElements
     nMedium = nMedium.real
@@ -1162,10 +1148,9 @@ def MatrixElements(m, wavelength, diameter, mu, nMedium=1.0):
 
 
 def MieQ_withDiameterRange(
-    m, wavelength, nMedium=1.0, diameterRange=(10, 1000), nd=1000, logD=False
+    m, wavelength, nMedium=1.0, diameterRange=(10, 1000), nd=1000, logD=False,
 ):
-    """
-    Calculate Mie scattering parameters over a range of particle diameters.
+    """Calculate Mie scattering parameters over a range of particle diameters.
 
     This function calculates the efficiency factors for extinction (Qext),
     scattering (Qsca), absorption (Qabs), the asymmetry factor (g),
@@ -1226,6 +1211,7 @@ def MieQ_withDiameterRange(
     This function requires the `numpy` library for numerical operations and assumes
     there exists a function `AutoMieQ` that calculates the Mie efficiencies for a
     single particle diameter.
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ_withDiameterRange
     nMedium = nMedium.real
@@ -1233,7 +1219,7 @@ def MieQ_withDiameterRange(
     wavelength /= nMedium
     if logD:
         diameters = np.logspace(
-            np.log10(diameterRange[0]), np.log10(diameterRange[1]), nd
+            np.log10(diameterRange[0]), np.log10(diameterRange[1]), nd,
         )
     else:
         diameters = np.linspace(diameterRange[0], diameterRange[1], nd)
@@ -1249,10 +1235,9 @@ def MieQ_withDiameterRange(
 
 
 def MieQ_withWavelengthRange(
-    m, diameter, nMedium=1.0, wavelengthRange=(100, 1600), nw=1000, logW=False
+    m, diameter, nMedium=1.0, wavelengthRange=(100, 1600), nw=1000, logW=False,
 ):
-    """
-    Calculate Mie scattering efficiencies for a range of wavelengths.
+    """Calculate Mie scattering efficiencies for a range of wavelengths.
 
     Parameters
     ----------
@@ -1308,6 +1293,7 @@ def MieQ_withWavelengthRange(
     Calculate for a range of varying complex refractive indices:
 
     >>> MieQ_withWavelengthRange(m=[1.5 + 0.1j, 1.6 + 0.1j], diameter=200, wavelengthRange=(100, 200), nw=2)
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ_withWavelengthRange
     nMedium = nMedium.real
@@ -1316,7 +1302,7 @@ def MieQ_withWavelengthRange(
     if isinstance(_m, complex) and len(_wavelengthRange) == 2:
         if logW:
             wavelengths = np.logspace(
-                np.log10(_wavelengthRange[0]), np.log10(_wavelengthRange[1]), nw
+                np.log10(_wavelengthRange[0]), np.log10(_wavelengthRange[1]), nw,
             )
         else:
             wavelengths = np.linspace(_wavelengthRange[0], _wavelengthRange[1], nw)
@@ -1324,14 +1310,14 @@ def MieQ_withWavelengthRange(
     elif type(_m) in [np.ndarray, list, tuple] and len(_wavelengthRange) == len(_m):
         wavelengths = _wavelengthRange
         _qD = [
-            MieQ(emm, wavelength, diameter) for emm, wavelength in zip(_m, wavelengths)
+            MieQ(emm, wavelength, diameter) for emm, wavelength in zip(_m, wavelengths, strict=False)
         ]
     else:
         warnings.warn(
             "Error: the size of the input data is mismatched. Please examine your inputs and try again.",
             stacklevel=2,
         )
-        return
+        return None
 
     qext = np.array([q[0] for q in _qD])
     qsca = np.array([q[1] for q in _qD])
@@ -1344,8 +1330,7 @@ def MieQ_withWavelengthRange(
 
 
 def MieQ_withSizeParameterRange(m, nMedium=1.0, xRange=(1, 10), nx=1000, logX=False):
-    """
-    Calculate optical properties over a range of size parameters using Mie theory.
+    r"""Calculate optical properties over a range of size parameters using Mie theory.
 
     Parameters
     ----------
@@ -1383,7 +1368,6 @@ def MieQ_withSizeParameterRange(m, nMedium=1.0, xRange=(1, 10), nx=1000, logX=Fa
 
     Examples
     --------
-
     ::
 
         import numpy as np
@@ -1439,8 +1423,7 @@ def Mie_Lognormal(
     decomposeMultimodal=False,
     asDict=False,
 ):
-    """
-    Perform Mie scattering calculations for lognormally distributed particles.
+    """Perform Mie scattering calculations for lognormally distributed particles.
 
     Parameters
     ----------
@@ -1484,6 +1467,7 @@ def Mie_Lognormal(
     Notes
     -----
     The function optionally warns the user if the specified particle size distribution may not be compact within the given interval or if there aren't enough parameters to fully specify each mode in the case of a multimodal distribution. This function is particularly useful in the analysis and simulation of light scattering by particles following a lognormal size distribution.
+
     """
     #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_Lognormal
     if gamma is None:
@@ -1493,7 +1477,7 @@ def Mie_Lognormal(
     wavelength /= nMedium
     ithPart = lambda gammai, dp, dpgi, sigmagi: (                           # noqa <E731>
         gammai / (np.sqrt(2 * np.pi) * np.log(sigmagi) * dp)
-    ) * np.exp(-((np.log(dp) - np.log(dpgi)) ** 2) / (2 * np.log(sigmagi) ** 2)) 
+    ) * np.exp(-((np.log(dp) - np.log(dpgi)) ** 2) / (2 * np.log(sigmagi) ** 2))
     dp = np.logspace(np.log10(lower), np.log10(upper), numberOfBins)
     if all([type(x) in [list, tuple, np.ndarray] for x in [geoStdDev, geoMean]]):
         # multimodal
@@ -1503,7 +1487,7 @@ def Mie_Lognormal(
             gamma = [float(x / np.sum(gamma)) for x in gamma]
             ndpi = [
                 numberOfParticles * ithPart(g, dp, dpg, sg)
-                for g, dpg, sg in zip(gamma, geoMean, geoStdDev)
+                for g, dpg, sg in zip(gamma, geoMean, geoStdDev, strict=False)
             ]
             ndp = np.sum(ndpi, axis=0)
         elif len(gamma) == len(geoStdDev) == len(geoMean):
@@ -1511,15 +1495,15 @@ def Mie_Lognormal(
             gamma = [float(x / np.sum(gamma)) for x in gamma]
             ndpi = [
                 numberOfParticles * ithPart(g, dp, dpg, sg)
-                for g, dpg, sg in zip(gamma, geoMean, geoStdDev)
+                for g, dpg, sg in zip(gamma, geoMean, geoStdDev, strict=False)
             ]
             ndp = np.sum(ndpi, axis=0)
         else:
             # user problem
             warnings.warn(
-                "Not enough parameters to fully specify each mode.", stacklevel=2
+                "Not enough parameters to fully specify each mode.", stacklevel=2,
             )
-            return None
+            #jk return None
     else:
         # unimodal
         decomposeMultimodal = False
@@ -1530,7 +1514,7 @@ def Mie_Lognormal(
             stacklevel=2,
         )
     Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio = Mie_SD(
-        m, wavelength, dp, ndp, SMPS=False
+        m, wavelength, dp, ndp, SMPS=False,
     )
     if returnDistribution:
         if decomposeMultimodal:
@@ -1549,35 +1533,30 @@ def Mie_Lognormal(
                     ndp,
                     ndpi,
                 )
-            else:
-                return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio, dp, ndp, ndpi
-        else:
-            if asDict:
-                return (
-                    dict(
-                        Bext=Bext,
-                        Bsca=Bsca,
-                        Babs=Babs,
-                        bigG=bigG,
-                        Bpr=Bpr,
-                        Bback=Bback,
-                        Bratio=Bratio,
-                    ),
-                    dp,
-                    ndp,
-                )
-            else:
-                return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio, dp, ndp
-    else:
+            return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio, dp, ndp, ndpi
         if asDict:
-            return dict(
-                Bext=Bext,
-                Bsca=Bsca,
-                Babs=Babs,
-                bigG=bigG,
-                Bpr=Bpr,
-                Bback=Bback,
-                Bratio=Bratio,
+            return (
+                dict(
+                    Bext=Bext,
+                    Bsca=Bsca,
+                    Babs=Babs,
+                    bigG=bigG,
+                    Bpr=Bpr,
+                    Bback=Bback,
+                    Bratio=Bratio,
+                ),
+                dp,
+                ndp,
             )
-        else:
-            return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio
+        return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio, dp, ndp
+    if asDict:
+        return dict(
+            Bext=Bext,
+            Bsca=Bsca,
+            Babs=Babs,
+            bigG=bigG,
+            Bpr=Bpr,
+            Bback=Bback,
+            Bratio=Bratio,
+        )
+    return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio

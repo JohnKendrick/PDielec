@@ -12,9 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-MainTab module
-"""
+"""MainTab module."""
 
 import os.path
 import platform
@@ -39,8 +37,7 @@ from PDielec.Utilities import Debug, find_program_from_name, pdgui_get_reader
 
 
 class MainTab(QWidget):
-    """
-    MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application. It is tailored for analyzing quantum chemistry or molecular dynamics simulation output files, offering functionalities such as file processing, data analysis, and settings management for quantum mechanics / molecular mechanics (QM/MM) programs.
+    """MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application. It is tailored for analyzing quantum chemistry or molecular dynamics simulation output files, offering functionalities such as file processing, data analysis, and settings management for quantum mechanics / molecular mechanics (QM/MM) programs.
 
     Parameters
     ----------
@@ -77,13 +74,13 @@ class MainTab(QWidget):
     Methods
     -------
     on_script_button_clicked()
-        Handles actions to be taken when the 'Save settings' button is clicked.
+        Handle actions to be taken when the 'Save settings' button is clicked.
     on_excel_button_clicked()
-        Handles actions to be taken when the 'Save results' button is clicked, typically involving writing data to an Excel file.
+        Handle actions to be taken when the 'Save results' button is clicked, typically involving writing data to an Excel file.
     on_calculation_button_clicked()
         Initiates the processing of the output file and the refreshing of related UI components and data representations.
     writeSpreadsheet()
-        Writes the current settings and analysis results to an Excel file specified by `excelfile`.
+        Write the current settings and analysis results to an Excel file specified by `excelfile`.
     read_output_file()
         Reads and processes the output file specified at initialization, updating UI and data structures based on its content.
     on_scriptsfile_le_changed(text)
@@ -102,11 +99,11 @@ class MainTab(QWidget):
         Requests a refresh of the interface and data representation.
     refresh(force=False)
         Refreshes the UI and data based on current settings and file contents, with an optional force parameter to enforce refreshing even if it's not marked as required.
+
     """
 
     def __init__(self, parent, program, filename, excelfile, debug=False):
-        """
-        Initialize the main GUI component, loading settings and preparing the interface.
+        """Initialize the main GUI component, loading settings and preparing the interface.
 
         Parameters
         ----------
@@ -129,6 +126,7 @@ class MainTab(QWidget):
         on the operating system and prepares for any necessary calculations or data retrieval
         based on the provided filename. Debug mode can be used to receive extra information about
         the processing steps.
+
         """
         super(QWidget, self).__init__(parent)
         global debugger
@@ -202,18 +200,18 @@ class MainTab(QWidget):
         #
         self.file_le = QLineEdit(self)
         self.file_le.setToolTip(
-            "Enter output file or script for processing (press return)"
+            "Enter output file or script for processing (press return)",
         )
         self.file_le.setText(self.settings["Output file name"])
         self.file_le.returnPressed.connect(self.on_file_le_return)
         self.file_le.textChanged.connect(self.on_file_le_changed)
         label = QLabel("Analyse this output file")
         label.setToolTip(
-            "Enter output file for analysis or choose a script to process (press return)"
+            "Enter output file for analysis or choose a script to process (press return)",
         )
         file_button = QPushButton(" File manager ")
         file_button.setToolTip(
-            "Open a file manager to choose a file for analysis or choose a script to process"
+            "Open a file manager to choose a file for analysis or choose a script to process",
         )
         file_button.clicked.connect(self.on_file_button_clicked)
         file_button.resize(file_button.sizeHint())
@@ -227,18 +225,18 @@ class MainTab(QWidget):
         #
         self.resultsfile_le = QLineEdit(self)
         self.resultsfile_le.setToolTip(
-            "Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified, the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in."
+            "Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified, the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.",
         )
         self.resultsfile_le.setText(self.settings["Excel file name"])
         self.resultsfile_le.returnPressed.connect(self.on_excel_button_clicked)
         self.resultsfile_le.textChanged.connect(self.on_resultsfile_le_changed)
         label = QLabel("Excel spread sheet")
         label.setToolTip(
-            "Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in."
+            "Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.",
         )
         excel_button = QPushButton(" Save results ")
         excel_button.setToolTip(
-            "Save the results of calculation to the excel spreadsheet specified"
+            "Save the results of calculation to the excel spreadsheet specified",
         )
         excel_button.clicked.connect(self.on_excel_button_clicked)
         excel_button.resize(excel_button.sizeHint())
@@ -252,18 +250,18 @@ class MainTab(QWidget):
         #
         self.scriptsfile_le = QLineEdit(self)
         self.scriptsfile_le.setToolTip(
-            'Provide the name of a python script file to save the program settings to when the "Save settings" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.'
+            'Provide the name of a python script file to save the program settings to when the "Save settings" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.',
         )
         self.scriptsfile_le.setText(self.settings["Script file name"])
         self.scriptsfile_le.returnPressed.connect(self.on_script_button_clicked)
         self.scriptsfile_le.textChanged.connect(self.on_scriptsfile_le_changed)
         label = QLabel("Script filename")
         label.setToolTip(
-            'Provide the name of a python script file to save the program settings to when the "Save settings" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.'
+            'Provide the name of a python script file to save the program settings to when the "Save settings" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.',
         )
         script_button = QPushButton(" Save settings ")
         script_button.setToolTip(
-            "Save the setttings of calculation to a python file.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in."
+            "Save the setttings of calculation to a python file.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.",
         )
         script_button.clicked.connect(self.on_script_button_clicked)
         script_button.resize(script_button.sizeHint())
@@ -299,7 +297,7 @@ class MainTab(QWidget):
         vbox.addLayout(form)
         # output window for unit cell
         self.cell_window_l = QLabel(
-            "Unit-cell (Angstrom) from " + self.settings["Output file name"], self
+            "Unit-cell (Angstrom) from " + self.settings["Output file name"], self,
         )
         vbox.addWidget(self.cell_window_l)
         self.cell_window_w = QListWidget(self)
@@ -309,7 +307,7 @@ class MainTab(QWidget):
         vbox.addWidget(self.cell_window_w)
         # output window for frequencies
         self.frequencies_window_l = QLabel(
-            "Frequencies from " + self.settings["Output file name"], self
+            "Frequencies from " + self.settings["Output file name"], self,
         )
         vbox.addWidget(self.frequencies_window_l)
         self.frequencies_window = QListWidget(self)
@@ -323,11 +321,9 @@ class MainTab(QWidget):
             self.on_calculation_button_clicked()
         QCoreApplication.processEvents()
         debugger.print("Finished:: initialising ")
-        return
 
     def on_script_button_clicked(self):
-        """
-        Handle the script button click event.
+        """Handle the script button click event.
 
         This function is executed when the script button is clicked. It checks if the specified script file exists in the specified directory. If it does, it prompts the user to either overwrite the existing file or cancel the action. If the file does not exist, it creates a new script file. It uses a debugger to log actions taken during the process.
 
@@ -362,11 +358,9 @@ class MainTab(QWidget):
             debugger.print("Creating a new script", filename)
             self.notebook.print_settings(filename=filename)
         debugger.print("Finished:: on_script_button clicked")
-        return
 
     def on_excel_button_clicked(self):
-        """
-        Handles the event triggered when Excel button is clicked.
+        """Handle the event triggered when Excel button is clicked.
 
         This function initiates the process of writing data to the Excel spreadsheet when the designated button is clicked in the UI. It prints log messages at the start and end of the operation.
 
@@ -381,15 +375,14 @@ class MainTab(QWidget):
         See Also
         --------
         notebook.writeSpreadsheet : The method called to write data to the spreadsheet.
+
         """
         debugger.print("Start:: on_excel_button clicked")
         self.notebook.writeSpreadsheet()
         debugger.print("Finished:: on_excel_button clicked")
-        return
 
     def on_calculation_button_clicked(self):
-        """
-        Handle the event triggered by the calculation button click.
+        """Handle the event triggered by the calculation button click.
 
         It proceeds to read an output file which is the result of a previous calculation. It checks if the settings tab exists within a notebook interface (e.g., a tabbed GUI component) and refreshes it if it does. Finally, it sets a flag indicating that a new calculation is not required anymore.
 
@@ -413,8 +406,7 @@ class MainTab(QWidget):
         debugger.print("Finished:: on_calculation_button_clicked")
 
     def writeSpreadsheet(self):
-        """
-        Writes data to the configured spreadsheet.
+        """Write data to the configured spreadsheet.
 
         This method encompasses the process of selecting the 'Main' worksheet,
         deleting the existing content on it, and writing down new settings and frequency
@@ -452,8 +444,7 @@ class MainTab(QWidget):
         return
 
     def read_output_file(self):
-        """
-        Reads the output file specified in the settings, processes it, and updates the UI elements accordingly.
+        """Read the output file specified in the settings, processes it, and updates the UI elements accordingly.
 
         Processes the output file indicated by the settings of the object. It performs several checks to ensure
         the file exists, is accessible, and contains valid data that can be read and processed. It extracts
@@ -486,14 +477,14 @@ class MainTab(QWidget):
         debugger.print("Read output file - clear list widgets")
         self.cell_window_w.clear()
         self.cell_window_l.setText(
-            "Unit-cell (Angstrom) from " + self.settings["Output file name"]
+            "Unit-cell (Angstrom) from " + self.settings["Output file name"],
         )
         self.frequencies_window.clear()
         self.frequencies_window_l.setText(
-            "Frequencies from " + self.settings["Output file name"]
+            "Frequencies from " + self.settings["Output file name"],
         )
         self.reader = pdgui_get_reader(
-            self.settings["Program"], [filename], self.settings["QM program"]
+            self.settings["Program"], [filename], self.settings["QM program"],
         )
         if self.reader is None:
             print("Error in reading files - program  is ", self.settings["Program"])
@@ -531,7 +522,7 @@ class MainTab(QWidget):
         # end if debug
         if len(self.reader.unit_cells) == 0:
             print(
-                "Error in reading output files - program  is ", self.settings["Program"]
+                "Error in reading output files - program  is ", self.settings["Program"],
             )
             print("Error in reading output files - filename is ", filename)
             print("Need to choose the file and program properly")
@@ -597,18 +588,19 @@ class MainTab(QWidget):
         debugger.print("Finished:: read_output_file")
 
     def on_scriptsfile_le_changed(self, text):
-        """
-        Respond to changes in the scripts file input field.
+        """Respond to changes in the scripts file input field.
 
         Parameters
         ----------
         text : str
+            The latest text in the input field
 
         Returns
         -------
         None
 
             The new text of the scripts file input field. This parameter may not be used inside the function as the function retrieves the text from the QLineEdit widget directly.
+
         """
         debugger.print("Start:: on_scriptsfile_changed", text)
         text = self.scriptsfile_le.text()
@@ -616,8 +608,7 @@ class MainTab(QWidget):
         debugger.print("Finished:: on_scriptsfile_changed", text)
 
     def on_resultsfile_le_changed(self, text):
-        """
-        Handle changes to the results file text input field.
+        """Handle changes to the results file text input field.
 
         Parameters
         ----------
@@ -627,6 +618,7 @@ class MainTab(QWidget):
         Returns
         -------
         None
+
         """
         debugger.print("Start:: on_resultsfile_changed", text)
         text = self.resultsfile_le.text()
@@ -634,8 +626,7 @@ class MainTab(QWidget):
         debugger.print("Finished:: on_resultsfile_changed", text)
 
     def on_file_button_clicked(self):
-        """
-        Handle the "Open file" button click event in the GUI.
+        """Handle the "Open file" button click event in the GUI.
 
         This method is triggered upon clicking the "Open File" button in a graphical user interface. It facilitates the selection of an output file generated by various software tools (`castep`, `abinit`, `gulp`, `vasp`, `qe`, `crystal`, `phonopy`, `experiment`, `pdgui`, or any file type). Based on the selected file, it finds the corresponding program that generated the file, updates various settings in the application according to the detected program, sets the working directory to the location of the selected file, updates the GUI with the new output file name, and refreshes relevant parts of the application depending on whether the program is `pdgui` or another supported type.
 
@@ -646,6 +637,7 @@ class MainTab(QWidget):
         Returns
         -------
         None
+
         """
         debugger.print("Start:: on_file_button_clicked ", self.file_le.text())
         # Open a file chooser
@@ -692,7 +684,7 @@ class MainTab(QWidget):
             self.settings["Output file name"] = os.path.basename(filename)
             self.file_le.setText(self.settings["Output file name"])
             debugger.print(
-                "new file name", self.directory, self.settings["Output file name"]
+                "new file name", self.directory, self.settings["Output file name"],
             )
             self.notebook.deleteAllScenarios()
             if self.settings["Program"] == "pdgui":
@@ -719,11 +711,9 @@ class MainTab(QWidget):
                 self.calculationRequired = True
                 self.refresh()
         debugger.print("Finished:: on_file_button_clicked ", self.file_le.text())
-        return
 
     def getFullFileName(self):
-        """
-        Return the full file name based on the directory and output file name settings.
+        """Return the full file name based on the directory and output file name settings.
 
         Parameters
         ----------
@@ -733,12 +723,12 @@ class MainTab(QWidget):
         -------
         str
             The full path of the file, combining the directory and the output file name setting.
+
         """
         return os.path.join(self.directory, self.settings["Output file name"])
 
     def getRelativeFileName(self):
-        """
-        Get the relative filename specified in settings.
+        """Get the relative filename specified in settings.
 
         Parameters
         ----------
@@ -748,12 +738,12 @@ class MainTab(QWidget):
         -------
         str
             The file name specified in the settings as 'Output file name'.
+
         """
         return self.settings["Output file name"]
 
     def on_file_le_return(self):
-        """
-        Handle the return action for a file entry line edit.
+        """Handle the return action for a file entry line edit.
 
         It performs a series of steps to process the specified file, including finding a program associated with the file, updating various settings related to the chosen file and potentially the program determined, and initiating different actions or calculations based on the program type.
 
@@ -775,6 +765,7 @@ class MainTab(QWidget):
         - Depending on the program associated with the filename, it might read the script or mark the interface for refresh and calculation.
         - The actual actions, especially involving UI updates (e.g., setting window title, deleting scenarios, reading script) or marking for refresh and calculation, are dependent on the context and design of the surrounding application and GUI structure.
         - Specific behaviors, such as how 'pdgui' program type is specially handled or the resetting of certain settings, is contingent on the broader application logic and requirements.
+
         """
         debugger.print("Start:: on_file_le_return ", self.file_le.text())
         filename = self.file_le.text()
@@ -790,7 +781,7 @@ class MainTab(QWidget):
             debugger.print("new file name", self.settings["Output file name"])
             self.notebook.deleteAllScenarios()
             self.settings["Program"] = find_program_from_name(
-                self.settings["Output file name"]
+                self.settings["Output file name"],
             )
             if self.settings["Program"] == "pdgui":
                 #
@@ -817,8 +808,7 @@ class MainTab(QWidget):
         return
 
     def on_file_le_changed(self, text):
-        """
-        Handles changes to the file location input field.
+        """Handle changes to the file location input field.
 
         The new output file name is stored and a flag set to require re-calculations
 
@@ -838,8 +828,7 @@ class MainTab(QWidget):
         debugger.print("Finished:: on_file_changed", text)
 
     def on_program_cb_activated(self, index):
-        """
-        Handle program selection change in a combobox and update settings accordingly.
+        """Handle program selection change in a combobox and update settings accordingly.
 
         This method updates the program settings based on the user's selection from a combobox.
         It specifically handles cases where the selected program is one of several predefined
@@ -885,8 +874,7 @@ class MainTab(QWidget):
         debugger.print("Finished:: on_program_combobox_activated", index)
 
     def requestRefresh(self):
-        """
-        Request to refresh.
+        """Request to refresh.
 
         Marks the current instance as requiring a refresh.
 
@@ -897,14 +885,14 @@ class MainTab(QWidget):
         Returns
         -------
         None
+
         """
         debugger.print("Start:: requestRefresh")
         self.refreshRequired = True
         debugger.print("Finished:: requestRefresh")
 
     def refresh(self, force=False):
-        """
-        Refresh the current interface or force it to refresh, applying settings changes.
+        """Refresh the current interface or force it to refresh, applying settings changes.
 
         Parameters
         ----------
@@ -923,6 +911,7 @@ class MainTab(QWidget):
         - Sets the program combo box and filenames according to the updated settings.
         - Triggers a recalculation if required after settings update.
         - Unblocks signals for all child widgets after refresh.
+
         """
         debugger.print("Start:: refresh", force)
         if not self.refreshRequired and not force:
@@ -956,7 +945,7 @@ class MainTab(QWidget):
         self.resultsfile_le.setText(self.settings["Excel file name"])
         if self.calculationRequired:
             debugger.print(
-                "on_calculation_button_clicked called from MainTab.refresh()"
+                "on_calculation_button_clicked called from MainTab.refresh()",
             )
             self.on_calculation_button_clicked()
         self.refreshRequired = False

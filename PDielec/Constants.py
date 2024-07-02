@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-The Constants module supplies some numerical constants
+"""The Constants module supplies some numerical constants.
 
 The following are some fundamental definitions.
 The values were supplied from the NIST web site

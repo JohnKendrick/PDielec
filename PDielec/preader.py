@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Read the contents of a directory containing DFT output and create a csv style file of information
+"""Read the contents of a directory containing DFT output and create a csv style file of information.
 
 ::
 
@@ -51,26 +50,21 @@ import numpy as np
 import psutil
 
 import PDielec.__init__
-import PDielec.Calculator as Calculator
-import PDielec.DielectricFunction as DielectricFunction
-import PDielec.Utilities as Utilities
+from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
 
 version = PDielec.__init__.__version__
 
 
 def set_affinity_on_worker():
-    """
-    When a new worker process is created, the affinity is set to all CPUs.
-    """
+    """When a new worker process is created, the affinity is set to all CPUs."""
     # JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
     # JK for the time being this is simply commented out, but might be useful at some point
     # os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 
 def read_a_file(calling_parameters):
-    """
-    Read data from a file and process it based on the given parameters.
+    """Read data from a file and process it based on the given parameters.
 
     Parameters
     ----------
@@ -140,7 +134,7 @@ def read_a_file(calling_parameters):
         normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
         # from the normal modes and the born charges calculate the oscillator strengths of each mode
         oscillator_strengths = Calculator.oscillator_strengths(
-            normal_modes, born_charges
+            normal_modes, born_charges,
         )
         modified_frequencies_cm1 = reader.frequencies
         modified_frequencies_cm1.sort()
@@ -221,10 +215,7 @@ def read_a_file(calling_parameters):
     frequencies_cm1.sort()
     unitCell = reader.get_unit_cell()
     a, b, c, alpha, beta, gamma = unitCell.convert_unitcell_to_abc()
-    if not no_calculation:
-        eps0 = np.real(ionicv)
-    else:
-        eps0 = np.array(reader.zerof_static_dielectric)
+    eps0 = np.array(reader.zerof_static_dielectric) if no_calculation else np.real(ionicv)
     eps0_xx = str(eps0[0, 0])
     eps0_yy = str(eps0[1, 1])
     eps0_zz = str(eps0[2, 2])
@@ -348,8 +339,7 @@ def read_a_file(calling_parameters):
 
 
 def print_help():
-    """
-    Display the help message for the preader program.
+    """Display the help message for the preader program.
 
     This function prints out the usage of the preader program, including the supported flags and their descriptions.
 
@@ -364,6 +354,7 @@ def print_help():
         >>> print_help()
 
     No output is returned by this function as it directs its message to `sys.stderr` and exits the program.
+
     """
     print(
         "preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....",
@@ -454,13 +445,11 @@ def print_help():
         file=sys.stderr,
     )
     print("  Version ", version, file=sys.stderr)
-    exit()
+    sys.exit()
 
 
 def main():
-    """
-    Process command line arguments
-
+    """Process command line arguments.
 
     ::
 
@@ -531,7 +520,7 @@ def main():
                     '-masses must be followed by "average" "isotope" or "program"',
                     file=sys.stderr,
                 )
-                exit()
+                sys.exit()
         elif token == "-mass":
             itoken += 1
             element = tokens[itoken]
@@ -542,7 +531,7 @@ def main():
             print_help()
         elif token == "-version":
             print("  Version ", version, file=sys.stderr)
-            exit()
+            sys.exit()
         elif token == "-nocalculation":
             global_no_calculation = True
         elif token == "-pickle":
@@ -553,7 +542,7 @@ def main():
                     f"Error: pickle file {picklefile} already exists",
                     file=sys.stderr,
                 )
-                exit()
+                sys.exit()
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
@@ -568,7 +557,7 @@ def main():
             "Please use -program to define the package used to generate the output files",
             file=sys.stderr,
         )
-        exit()
+        sys.exit()
 
     if program not in [
         "auto",
@@ -582,12 +571,12 @@ def main():
         "experiment",
     ]:
         print("Program is not recognised: ", program, file=sys.stderr)
-        exit()
+        sys.exit()
 
     if program == "phonopy":
         if qmprogram not in ["abinit", "castep", "crystal", "gulp", "qe", "vasp"]:
             print("Phonopy QM program is not recognised: ", qmprogram, file=sys.stderr)
-            exit()
+            sys.exit()
         print("  QM program used by Phonopy is: ", qmprogram, file=sys.stderr)
 
     print("  Program is ", program, file=sys.stderr)
@@ -595,9 +584,9 @@ def main():
     for f in files:
         if not os.path.isfile(f):
             print(
-                "Error file requested for analysis does not exist", f, file=sys.stderr
+                "Error file requested for analysis does not exist", f, file=sys.stderr,
             )
-            exit()
+            sys.exit()
 
     if global_no_calculation:
         print("  No calculations has been requested", file=sys.stderr)
@@ -651,7 +640,7 @@ def main():
                 prog,
                 qmprogram,
                 debug,
-            )
+            ),
         )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file, calling_parameters)
@@ -667,7 +656,7 @@ def main():
                 pickle.dump(reader, picklefd)
     # Print out the results
     print(
-        "directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6...."
+        "directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6....",
     )
     for name in files:
         for string in results_dictionary[name]:

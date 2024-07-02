@@ -13,9 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Read the contents of a directory containing Phonopy input and output files.
-"""
+"""Read the contents of a directory containing Phonopy input and output files."""
 
 import numpy as np
 
@@ -23,8 +21,7 @@ from PDielec.GenericOutputReader import GenericOutputReader
 
 
 class PhonopyOutputReader(GenericOutputReader):
-    """
-    Read the contents of a directory containing Phonopy input and output files.
+    """Read the contents of a directory containing Phonopy input and output files.
 
     Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
 
@@ -39,11 +36,11 @@ class PhonopyOutputReader(GenericOutputReader):
     -----
     This method sets the type of the output to 'Phonopy output' and
     associates a quantum mechanics (QM) reader object with the instance.
+
     """
 
     def __init__(self, names, qmreader):
-        """
-        Constructor for creating a new instance of the class.
+        """Initialise an instance of a PhonopyOutputReader.
 
         Parameters
         ----------
@@ -56,16 +53,15 @@ class PhonopyOutputReader(GenericOutputReader):
         -----
         This method sets the type of the output to 'Phonopy output' and
         associates a quantum mechanics (QM) reader object with the instance.
+
         """
         GenericOutputReader.__init__(self, names)
         # We have to use the qm reader to do the reading of the QM files
         self.type = "Phonopy output"
         self.qmreader = qmreader
-        return
 
     def _read_output_files(self):
-        """
-        Read the Phonopy files in the directory.
+        """Read the Phonopy files in the directory.
 
         Uses the qmreader to read in the electronic structure information and copies it to the current object.
         Then it reads the dynamical matrix from phonopy
@@ -106,11 +102,9 @@ class PhonopyOutputReader(GenericOutputReader):
         self.zerof_static_dielectric = self.qmreader.zerof_static_dielectric
         # Calculate dynamical matrix
         self.read_dynamical_matrix()
-        return
 
     def read_dynamical_matrix(self):
-        """
-        Read and process the dynamical matrix from output files.
+        """Read and process the dynamical matrix from output files.
 
         This method reads the dynamical matrix and other relevant data from the specified
         output files, calculates the Hessian matrix, converts its units, and computes the
@@ -147,6 +141,7 @@ class PhonopyOutputReader(GenericOutputReader):
           to distinguish between real and imaginary modes.
         - Mass-weighted normal modes are then computed for each ion based on the eigenvectors, and the
           frequencies and normal modes are stored in corresponding instance attributes.
+
         """
         #
         # Yaml imports of large files are really slow....
@@ -202,4 +197,3 @@ class PhonopyOutputReader(GenericOutputReader):
                 mode.append(modea)
             self.mass_weighted_normal_modes.append(mode)
         # end for i
-        return

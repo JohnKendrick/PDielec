@@ -13,27 +13,23 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Helper Routines - Useful for scripting and in Jupyter Notebooks
+"""Helper Routines - Useful for scripting and in Jupyter Notebooks.
 
 These routines are a useful starting point for investigating the way the code operates
 """
 
 import numpy as np
 
-import PDielec.Calculator as Calculator
-import PDielec.DielectricFunction as DielectricFunction
-import PDielec.Utilities as Utilities
+from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
 from PDielec.GUI.SingleCrystalScenarioTab import solve_single_crystal_equations
 from PDielec.Materials import External, MaterialsDataBase
 
 
 def calculateDFTPermittivityObject(
-    reader, sigma=5.0, eckart=True, mass_definition="Average"
+    reader, sigma=5.0, eckart=True, mass_definition="Average",
 ):
-    """
-    Define a permittivity object for the DFT calculation from the given reader
+    """Define a permittivity object for the DFT calculation from the given reader.
 
     This routine reads in the details of the DFT calculation
     Calculates the hessian and normal modes
@@ -98,14 +94,14 @@ def calculateDFTPermittivityObject(
         normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
         # from the normal modes and the born charges calculate the oscillator strengths of each mode
         oscillator_strengths = Calculator.oscillator_strengths(
-            normal_modes, born_charges
+            normal_modes, born_charges,
         )
     # calculate the intensities from the trace of the oscillator strengths
     intensities = Calculator.infrared_intensities(oscillator_strengths)
     # Decide which modes to select
     modes_selected = []
     mode_list = []
-    for _index, (f, intensity) in enumerate(zip(frequencies_cm1, intensities)):
+    for _index, (f, intensity) in enumerate(zip(frequencies_cm1, intensities, strict=False)):
         if f > 10.0 and intensity > 1.0e-6:
             modes_selected.append(True)
         else:
@@ -136,8 +132,7 @@ def getMaterial(
     eckart=True,
     mass_definition="Average",
 ):
-    """
-    Get a material with the given name.
+    """Get a material with the given name.
 
     If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
     If the name is a material name in the material database, this is used instead.
@@ -174,6 +169,7 @@ def getMaterial(
     material1 = get_material("example.dft")
     material2 = get_material("gold")
     ```
+
     """
     # Let's see if the name is a file name that can be read
     program = Utilities.find_program_from_name(name)
@@ -181,11 +177,11 @@ def getMaterial(
         reader = Utilities.get_reader(name, program, qmprogram)
         reader.read_output()
         permittivityObject = calculateDFTPermittivityObject(
-            reader, sigma=5.0, eckart=eckart, mass_definition=mass_definition
+            reader, sigma=5.0, eckart=eckart, mass_definition=mass_definition,
         )
         cell = reader.get_unit_cell()
         material = External(
-            "Dielectric layer", permittivityObject=permittivityObject, cell=cell
+            "Dielectric layer", permittivityObject=permittivityObject, cell=cell,
         )
     else:
         dataBase = MaterialsDataBase(dataBaseName)
@@ -203,8 +199,7 @@ def calculateSingleCrystalSpectrum(
     global_azimuthal_angle,
     method="Scattering matrix",
 ):
-    """
-    Calculate a single crystal spectrum.
+    """Calculate a single crystal spectrum.
 
     Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle
     the global azimuthal angle and optional specification of the method of calculation.
@@ -291,10 +286,9 @@ def calculateSingleCrystalSpectrum(
 
 
 def calculatePowderSpectrum(
-    frequencies_cm1, dielectric, matrix, volume_fraction, method="Maxwell-Garnett"
+    frequencies_cm1, dielectric, matrix, volume_fraction, method="Maxwell-Garnett",
 ):
-    """
-    Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
+    """Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
 
     Parameters
     ----------
@@ -325,6 +319,7 @@ def calculatePowderSpectrum(
     volume_fraction = 0.1
     absorption,permittivity = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
     ```
+
     """
     method = method.lower()
     particle_size_mu = 0

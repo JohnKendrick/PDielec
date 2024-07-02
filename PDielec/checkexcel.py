@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-The checkexcel package reads in two excel files and check that the float contents are the same
+"""The checkexcel package reads in two excel files and check that the float contents are the same.
 
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 
@@ -30,8 +29,7 @@ global threshold
 
 def main():
     # Start processing the directories
-    """
-    Compare two Excel files for any significant numerical changes and report discrepancies.
+    """Compare two Excel files for any significant numerical changes and report discrepancies.
 
     This script takes in two Excel files as arguments and optionally,
     a threshold for numerical comparison and a flag for full sheet comparison.
@@ -70,6 +68,7 @@ def main():
     - The script will immediately exit with usage instructions if less than two file paths are provided.
     - Numerical difference is calculated only for numeric data. For text data, a simplified equivalence check is done.
     - The script output includes printing to standard error for usage, errors, or status, with optional ANSI color highlighting.
+
     """
     if len(sys.argv) <= 1:
         print("checkexcel file file2 [-thresh 1.0E-3] [-f]", file=sys.stderr)
@@ -88,7 +87,7 @@ def main():
             "            by default Settings and Scenarios are not included    ",
             file=sys.stderr,
         )
-        exit()
+        sys.exit()
 
     threshold = 1.0e-3
     tokens = sys.argv[1:]
@@ -184,11 +183,11 @@ def main():
         #
         # Loop over rows
         #
-        for row_index, (row1, row2) in enumerate(zip(ws1.rows, ws2.rows)):
+        for row_index, (row1, row2) in enumerate(zip(ws1.rows, ws2.rows, strict=False)):
             #
             # Loop over cells
             #
-            for col_index, (cell1, cell2) in enumerate(zip(row1, row2)):
+            for col_index, (cell1, cell2) in enumerate(zip(row1, row2, strict=False)):
                 value1 = cell1.value
                 value2 = cell2.value
                 if cell1 is None and cell2 is None:
@@ -204,60 +203,58 @@ def main():
                         value2,
                         percentage_error,
                     )
-                else:
-                    if value1 != value2:
-                        if (
-                            value1 is not None
-                            and value2 is not None
-                            and cell1.data_type == "n"
-                            and cell2.data_type == "n"
-                        ):
-                            #
-                            # Flag an error which is numeric
-                            #
-                            percentage_error = 100.0 * abs(
-                                2.0
-                                * (value1 - value2)
-                                / (abs(value1) + abs(value2) + 2)
-                            )
-                            if percentage_error > 100.0 * threshold:
-                                nerrors += 1
-                                if percentage_error > max_percentage_error:
-                                    max_percentage_error = percentage_error
-                                    error = (
-                                        sheet,
-                                        row_index,
-                                        col_index,
-                                        value1,
-                                        value2,
-                                        percentage_error,
-                                    )
-                                # if percentage error
-                            else:
-                                if percentage_error > max_percentage_error:
-                                    max_percentage_error = percentage_error
-                            # if percentage error > threshold
-                        else:
-                            #
-                            # This is a non-numeric error
-                            # Remove any back or forward slashes to avoid problems with filenames in linux/windows
-                            #
-                            if isinstance(value1, str):
-                                value1 = value1.replace("\\", "")
-                                value1 = value1.replace("/", "")
-                            if isinstance(value2, str):
-                                value2 = value2.replace("\\", "")
-                                value2 = value2.replace("/", "")
-                            if value1 != value2:
-                                nerrors += 1
+                elif value1 != value2:
+                    if (
+                        value1 is not None
+                        and value2 is not None
+                        and cell1.data_type == "n"
+                        and cell2.data_type == "n"
+                    ):
+                        #
+                        # Flag an error which is numeric
+                        #
+                        percentage_error = 100.0 * abs(
+                            2.0
+                            * (value1 - value2)
+                            / (abs(value1) + abs(value2) + 2),
+                        )
+                        if percentage_error > 100.0 * threshold:
+                            nerrors += 1
+                            if percentage_error > max_percentage_error:
+                                max_percentage_error = percentage_error
                                 error = (
                                     sheet,
                                     row_index,
                                     col_index,
                                     value1,
                                     value2,
-                                    0.0,
+                                    percentage_error,
                                 )
+                            # if percentage error
+                        elif percentage_error > max_percentage_error:
+                            max_percentage_error = percentage_error
+                        # if percentage error > threshold
+                    else:
+                        #
+                        # This is a non-numeric error
+                        # Remove any back or forward slashes to avoid problems with filenames in linux/windows
+                        #
+                        if isinstance(value1, str):
+                            value1 = value1.replace("\\", "")
+                            value1 = value1.replace("/", "")
+                        if isinstance(value2, str):
+                            value2 = value2.replace("\\", "")
+                            value2 = value2.replace("/", "")
+                        if value1 != value2:
+                            nerrors += 1
+                            error = (
+                                sheet,
+                                row_index,
+                                col_index,
+                                value1,
+                                value2,
+                                0.0,
+                            )
                         # if cell1.data_type
                     # if value1 != value2
                 # if cell1 is none
@@ -269,19 +266,19 @@ def main():
         print(
             "  "
             + colored("ERRORS:", "red")
-            + f"({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}"
+            + f"({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}",
         )
     elif nerrors > 0:
         print(
             "  "
             + colored("ERRORS:", "red")
-            + f"({nerrors}) Dimensions of spreadsheet were wrong                                    "
+            + f"({nerrors}) Dimensions of spreadsheet were wrong                                    ",
         )
     else:
         print(
             "  "
             + colored("OK:", "blue")
-            + f" {file1} = {file2} -- max %error={max_percentage_error}"
+            + f" {file1} = {file2} -- max %error={max_percentage_error}",
         )
     return nerrors, row, col, sheet, file1, value1, file2, value2, max_percentage_error
 

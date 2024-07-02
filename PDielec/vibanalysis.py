@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
-"""
-vibAnalysis is a Python tool written by Filipe Teixeira the original is available on
-github at https://github.com/teixeirafilipe/vibAnalysis.
+"""vibAnalysis is a Python tool written by Filipe Teixeira
+
+The original is available on github at https://github.com/teixeirafilipe/vibAnalysis.
 
 The package uses the Vibrational Mode Decomoposition method to describe the normal modes of a molecule.
 It has been modified to interface directly with PDielec package and to treat periodic systems at the phonon gamma point.
@@ -510,7 +510,7 @@ class System:
     def normalizeVibrations(self):
         for i in range(len(self.vibrations)):
             self.vibrations[i].displacements /= np.linalg.norm(
-                self.vibrations[i].displacements
+                self.vibrations[i].displacements,
             )
 
     def removeVibrations(self, elst=None):
@@ -524,7 +524,7 @@ class System:
 
     def sortVibrations(self):
         self.vibrations = sorted(
-            self.vibrations, key=lambda x: x.frequency, reverse=True
+            self.vibrations, key=lambda x: x.frequency, reverse=True,
         )
 
 
@@ -534,7 +534,8 @@ class System:
 def readMopac2016(ifn):
     """Opens a MOPAC2016 output file ifn and returns A System object.
     Depending on Linear and Transition, freqs and modes will be
-    pruned out of the translational and rotational components."""
+    pruned out of the translational and rotational components.
+    """
     with open(ifn) as f:
         data = f.readlines()
     o = System()
@@ -568,7 +569,7 @@ def readMopac2016(ifn):
             break
     if (istart < 0) or (iend < istart):
         print(
-            "ERROR: Could not read MOPAC output: invalid format for normal coordinate analysis.\n"
+            "ERROR: Could not read MOPAC output: invalid format for normal coordinate analysis.\n",
         )
         sys.exit(1)
     tfreq = []
@@ -621,7 +622,7 @@ def readMopac2016(ifn):
                     np.array(list(map(float, tdisp[i]))),
                     ir=tir[i],
                     sym=tsym[i],
-                )
+                ),
             )
         else:
             o.vibrations.append(
@@ -630,7 +631,7 @@ def readMopac2016(ifn):
                     3 * natoms,
                     np.array(list(map(float, tdisp[i]))),
                     sym=tsym[i],
-                )
+                ),
             )
     return o
 
@@ -638,7 +639,8 @@ def readMopac2016(ifn):
 def readHess(ifn):
     """Opens Orca Hess file ifn and returns A System object.
     Depending on Linear and Transition, freqs and modes will be
-    pruned out of the translational and rotational components."""
+    pruned out of the translational and rotational components.
+    """
     with open(ifn) as f:
         data = f.readlines()
     o = System()
@@ -728,12 +730,12 @@ def readHess(ifn):
 
 def readPDielec(ifn):
     """Use PDielec library to read hessian information.
-    only the first 3 modes will be pruned; the translational components."""
+    only the first 3 modes will be pruned; the translational components.
+    """
     # Open the file use pdielec library
     import math
 
-    import PDielec.Calculator as Calculator
-    import PDielec.Utilities as Utilities
+    from PDielec import Calculator, Utilities
     from PDielec.Constants import (
         amu,
         average_masses,
@@ -775,7 +777,7 @@ def readPDielec(ifn):
     scale = 1.1  # Scaling factor for covalent radii
     tolerance = Opts["tol"]  # Tolerance in bonding
     new_cell, natoms, original_atomic_order = cell.calculate_molecular_contents(
-        scale=scale, tolerance=tolerance
+        scale=scale, tolerance=tolerance,
     )
     print("Bonding tolerance", tolerance, file=sys.stderr)
     print("Number of molecules", len(new_cell.molecules), file=sys.stderr)
@@ -792,13 +794,13 @@ def readPDielec(ifn):
             new_mass_weighted_normal_modes[imode, i + 1] = mode[old_index][1]
             new_mass_weighted_normal_modes[imode, i + 2] = mode[old_index][2]
             new_normal_modes[imode, i + 0] = new_mass_weighted_normal_modes[
-                imode, i + 0
+                imode, i + 0,
             ] / math.sqrt(masses[index])
             new_normal_modes[imode, i + 1] = new_mass_weighted_normal_modes[
-                imode, i + 1
+                imode, i + 1,
             ] / math.sqrt(masses[index])
             new_normal_modes[imode, i + 2] = new_mass_weighted_normal_modes[
-                imode, i + 2
+                imode, i + 2,
             ] / math.sqrt(masses[index])
 
     #
@@ -806,7 +808,7 @@ def readPDielec(ifn):
     #
     o = System()
     for el, m, c in zip(
-        new_cell.element_names, new_cell.atomic_masses, new_cell.xyz_coordinates
+        new_cell.element_names, new_cell.atomic_masses, new_cell.xyz_coordinates, strict=False,
     ):
         # print('Adding atom ',el.lower(),c,m)
         o.addAtom(el.lower(), c, m)
@@ -838,7 +840,8 @@ def readG09log(ifn):
     """Opens Gaussian09 log file ifn and returns a System object with
     information regarding the system and vibrations.
     Depending on Linear and Transition, freqs and modes will be
-    pruned out of the translational and rotational components."""
+    pruned out of the translational and rotational components.
+    """
     o = System()
     logging.info(f"Opening Gaussian log file: {ifn:s}")
     with open(ifn) as f:
@@ -849,7 +852,7 @@ def readG09log(ifn):
         if "NAtoms=" in data[i]:
             natoms = int(data[i].split()[1])
             logging.info(
-                f"Expecting {natoms} atoms from reading line {i + 1}"
+                f"Expecting {natoms} atoms from reading line {i + 1}",
             )
             break
     # symbols = []
@@ -932,7 +935,7 @@ def readG09log(ifn):
     # send information to System:
     for n in range(len(freqs)):
         o.vibrations.append(
-            Vibration(freqs[n], 3 * natoms, modes[:, n], irInt[n], raInt[n], sym[n])
+            Vibration(freqs[n], 3 * natoms, modes[:, n], irInt[n], raInt[n], sym[n]),
         )
     # normalize normal modes
     # for i in range(np.shape(modes)[1]):
@@ -956,11 +959,11 @@ def readUserIC(fn):
                 o.append([2, int(l[1]) - 1, int(l[2]) - 1, int(l[3]) - 1])
             elif l[0].upper() == "O":
                 o.append(
-                    [3, int(l[1]) - 1, int(l[2]) - 1, int(l[3]) - 1, int(l[4]) - 1]
+                    [3, int(l[1]) - 1, int(l[2]) - 1, int(l[3]) - 1, int(l[4]) - 1],
                 )
             elif l[0].upper() == "T":
                 o.append(
-                    [4, int(l[1]) - 1, int(l[2]) - 1, int(l[3]) - 1, int(l[4]) - 1]
+                    [4, int(l[1]) - 1, int(l[2]) - 1, int(l[3]) - 1, int(l[4]) - 1],
                 )
             else:
                 continue
@@ -968,7 +971,7 @@ def readUserIC(fn):
 
 
 def modeStr(mode, symbs):
-    """returns a formatted string describing mode"""
+    """Returns a formatted string describing mode"""
     o = ""
     if mode[0] == 1:  # bond
         o = "BOND %s%d %s%d" % (
@@ -1013,7 +1016,8 @@ def modeStr(mode, symbs):
 
 def punchIC(o, s):
     """Punches a list of internal coordinates and their
-    meassured values to file o"""
+    meassured values to file o
+    """
     o.write("\n\nList of Internal Coordinates and their values\n")
     for i in range(len(s.intcoords)):
         desc = modeStr(s.intcoords[i], s.symbol)
@@ -1030,7 +1034,7 @@ def punchIC(o, s):
 
 
 def animateMode(tfn, s, m, nsteps=50, damp=0.33):
-    """displaces geo over vibrational displacement m and punches a xyz file tfn"""
+    """Displaces geo over vibrational displacement m and punches a xyz file tfn"""
     natoms = len(s.atoms)
     with open(tfn, "w") as tf:
         v = damp * np.sin(np.linspace(0 - 0, 2.0 * np.pi, nsteps))
@@ -1041,12 +1045,12 @@ def animateMode(tfn, s, m, nsteps=50, damp=0.33):
             for i in range(natoms):
                 tf.write(
                     " %3s %10.6f %10.6f %10.6f\n"
-                    % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2])
+                    % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2]),
                 )
 
 
 def animateIC(tfn, s, m, nsteps=50, damp=0.33):
-    """displaces geo over internal coordinate m and punches a xyz file tfn"""
+    """Displaces geo over internal coordinate m and punches a xyz file tfn"""
     natoms = len(s.atoms)
     with open(tfn, "w") as tf:
         v = damp * np.sin(np.linspace(0 - 0, 2.0 * np.pi, nsteps))
@@ -1057,7 +1061,7 @@ def animateIC(tfn, s, m, nsteps=50, damp=0.33):
             for i in range(natoms):
                 tf.write(
                     " %3s %10.6f %10.6f %10.6f\n"
-                    % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2])
+                    % (s.symbol[i], g[3 * i], g[(3 * i) + 1], g[(3 * i) + 2]),
                 )
 
 
@@ -1072,11 +1076,11 @@ def printResults(o, s):
                 o.write("\n\n*** Vibrational Mode Linear Decomposition (VMLD) ***\n")
             elif a == "VMBLD":
                 o.write(
-                    "\n\n*** Vibrational Mode Bayesian Linear Decomposition (VMBLD) ***\n"
+                    "\n\n*** Vibrational Mode Bayesian Linear Decomposition (VMBLD) ***\n",
                 )
             elif a == "VMARD":
                 o.write(
-                    "\n\n*** Vibrational Mode Automatic Relevance Determination (VMARD) ***\n"
+                    "\n\n*** Vibrational Mode Automatic Relevance Determination (VMARD) ***\n",
                 )
             # jk n=1
             for n, vib in enumerate(s.vibrations):
@@ -1108,7 +1112,7 @@ def printResults(o, s):
                                 vib.analysis[a][j],
                                 np.abs(w[j]) * 100,
                                 modeStr(s.intcoords[j], s.symbol),
-                            )
+                            ),
                         )
                 if natts == 0:
                     o.write(" Mode too disperse!\n")
@@ -1120,37 +1124,37 @@ def printResults(o, s):
                             vib.analysis[a][j],
                             np.abs(w[j]) * 100,
                             modeStr(s.intcoords[j], s.symbol),
-                        )
+                        ),
                     )
                 else:
                     gwr[1:] = gwr[1:] / np.sum(gwr[1:])
                 o.write(
                     " Shown Composition:  %5.1f%% BOND, %5.1f%% ANGLE, %5.1f%% OUT, %5.1f%% TOR\n"
-                    % tuple(100.0 * (gwr[1:]))
+                    % tuple(100.0 * (gwr[1:])),
                 )
                 o.write(
                     " Total Composition:  %5.1f%% BOND, %5.1f%% ANGLE, %5.1f%% OUT, %5.1f%% TOR\n"
-                    % tuple(100.0 * gw[1:])
+                    % tuple(100.0 * gw[1:]),
                 )
                 if a in ["VMLD", "VMBLD", "VMARD"]:  # punch additional info
                     o.write(" R**2 = %6.4f\n" % (vib.analysis["%s_R2" % (a)]))
                     o.write(
                         " Explained Variance = %5.1f %%\n"
-                        % (vib.analysis["%s_EV" % (a)] * 100.0)
+                        % (vib.analysis["%s_EV" % (a)] * 100.0),
                     )
             if a == "VMP":
                 o.write("\n*** End of Vibrational Mode Projection (VMP) ***\n")
             elif a == "VMLD":
                 o.write(
-                    "\n*** End of Vibrational Mode Linear Decomposition (VMLD) ***\n"
+                    "\n*** End of Vibrational Mode Linear Decomposition (VMLD) ***\n",
                 )
             elif a == "VMBLD":
                 o.write(
-                    "\n*** End of Vibrational Mode Bayesian Linear Decomposition (VMBLD) ***\n"
+                    "\n*** End of Vibrational Mode Bayesian Linear Decomposition (VMBLD) ***\n",
                 )
             elif a == "VMARD":
                 o.write(
-                    "\n*** End of Vibrational Mode Automatic Relevance Determination (VMARD) ***\n"
+                    "\n*** End of Vibrational Mode Automatic Relevance Determination (VMARD) ***\n",
                 )
 
 
@@ -1159,20 +1163,22 @@ def printResults(o, s):
 
 def bondLength(geo, bl):
     """Returns distance between atoms bl[1] and bl[0]
-    (numbering starts at 0) in geometry geo"""
+    (numbering starts at 0) in geometry geo
+    """
     return np.linalg.norm(geo[bl[1]] - geo[bl[0]])
 
 
 def angleAmp(geo, al, deg=False):
     """Returns amplitude (optnialy in degs) for the valence angle formed by
-    the atoms in al, with al[1] being the apex (numbering starts at 0)."""
+    the atoms in al, with al[1] being the apex (numbering starts at 0).
+    """
     r01 = geo[al[0]] - geo[al[1]]
     r21 = geo[al[2]] - geo[al[1]]
     logging.debug(
         f"""Vectors for angle {al[0] + 1}, {al[1] + 1} and {al[2] + 1}:
         R01 = {r01} (norm: {np.linalg.norm(r01)})
         R21 = {r21} (norm: {np.linalg.norm(r21)})
-        R01 (dot) R02 = {np.dot(r01, r21)}"""
+        R01 (dot) R02 = {np.dot(r01, r21)}""",
     )
     r01 = r01 / np.linalg.norm(r01)
     r21 = r21 / np.linalg.norm(r21)
@@ -1180,11 +1186,11 @@ def angleAmp(geo, al, deg=False):
         f"""Normalized vectors for angle {al[0] + 1}, {al[1] + 1} and {al[2] + 1}:
         R01 = {r01} (norm: {np.linalg.norm(r01)})
         R21 = {r21} (norm: {np.linalg.norm(r21)})
-        R01 (dot) R02 = {np.dot(r01, r21)}"""
+        R01 (dot) R02 = {np.dot(r01, r21)}""",
     )
     phi = np.arccos(np.round(np.dot(r01, r21), decimals=12))
     logging.info(
-        f"Angle between atoms {al[0] + 1}, {al[1] + 1} and {al[2] + 1} = {np.rad2deg(phi):7.2f} degs.\n"
+        f"Angle between atoms {al[0] + 1}, {al[1] + 1} and {al[2] + 1} = {np.rad2deg(phi):7.2f} degs.\n",
     )
     if deg:
         phi = np.rad2deg(phi)
@@ -1193,7 +1199,8 @@ def angleAmp(geo, al, deg=False):
 
 def oopAmp(geo, al, deg=False):
     """Returns amplitude (optnialy in degs) for the out-of-plane angle formed by
-    the atoms in al, with al[1] being the central atom (numbering starts at 0)."""
+    the atoms in al, with al[1] being the central atom (numbering starts at 0).
+    """
     r1 = geo[al[0]] - geo[al[1]]
     r2 = geo[al[2]] - geo[al[1]]
     r3 = geo[al[3]] - geo[al[1]]
@@ -1210,7 +1217,7 @@ def oopAmp(geo, al, deg=False):
         R3 = {r3} (norm: {np.linalg.norm(r3)})
         N1 = {n1} (norm: {np.linalg.norm(n1)})
         N2 = {n2} (norm: {np.linalg.norm(n2)})
-        N1 (dot) N2 = {np.dot(n1, n2)}"""
+        N1 (dot) N2 = {np.dot(n1, n2)}""",
     )
     if atmp > 1.0:
         phi = np.arccos(1.0)
@@ -1227,7 +1234,7 @@ def oopAmp(geo, al, deg=False):
         phi = (2.0 * np.pi) - phi
     logging.info(
         f"""Amplitude for OOP angle {al[0] + 1}, {al[2] + 1}, {al[3] + 1} and {al[1] + 1}: {np.rad2deg(phi):+7.2f} degs.
-        """
+        """,
     )
     if deg:
         phi = np.rad2deg(phi)
@@ -1237,7 +1244,8 @@ def oopAmp(geo, al, deg=False):
 def torsionAmp(geo, al, deg=False):
     """Returns amplitude (optnialy in degs) for the 0-1-2-3 torsion angle formed by
     the atoms in al, with al[1] and al[2] defining the central bond
-    (numbering starts at 0)."""
+    (numbering starts at 0).
+    """
     r1 = geo[al[0]] - geo[al[1]]
     r2 = geo[al[2]] - geo[al[1]]
     r3 = geo[al[3]] - geo[al[2]]
@@ -1275,7 +1283,8 @@ def torsionAmp(geo, al, deg=False):
 def makeIC(o, useric=None):
     """Automatically identifies internal coordinates using
     connectivity deduced from covalent radii and generates
-    Wilson's S matrix for the specified geometry"""
+    Wilson's S matrix for the specified geometry
+    """
     ## Parameters from Global Opts
     if useric is None:
         useric = []
@@ -1343,9 +1352,8 @@ def makeIC(o, useric=None):
                         centred[common] < valence[common]
                     ):
                         langles.append(candidate)
-                else:
-                    if candidate not in langles:
-                        langles.append(candidate)
+                elif candidate not in langles:
+                    langles.append(candidate)
     # find dihedrals (torsions) and out-of-plane (outs)
     # exclude if any of the angles is larger than 179 degs
     for i in range(len(langles)):
@@ -1380,9 +1388,8 @@ def makeIC(o, useric=None):
                                 [a1, a2, a3, a4] not in loop
                             ):
                                 loop.append([a1, a2, a3, a4])
-                        else:
-                            if [a1, a2, a3, a4] not in loop:
-                                loop.append([a1, a2, a3, a4])
+                        elif [a1, a2, a3, a4] not in loop:
+                            loop.append([a1, a2, a3, a4])
                 # now the torsions...
                 else:
                     candidate = []
@@ -1429,9 +1436,8 @@ def makeIC(o, useric=None):
                     ):
                         if Opts["doTors"]:
                             ltors.append(candidate)
-                    else:
-                        if candidate != [] and Opts["doTors"]:
-                            ltors.append(candidate)
+                    elif candidate != [] and Opts["doTors"]:
+                        ltors.append(candidate)
     # calc S for bonds
     o.S = np.zeros((3 * natoms, len(lbonds) + len(langles) + len(loop) + len(ltors)))
     o.intcoords = []
@@ -1552,7 +1558,8 @@ def makeIC(o, useric=None):
 def VMP(of, s):
     """Performs a simple projection of the normal modes
     over the internal coordinates S stored in system s. Other inputs:
-    - of: handle for the output file (for logging)"""
+    - of: handle for the output file (for logging)
+    """
     of.write("\nStarting: Normal Mode Projection\n")
     if len(s.intcoords) > len(s.vibrations):
         of.write(" More internal coordinates than frequencies, expect\n")
@@ -1570,7 +1577,8 @@ def VMLD(of, s):
     over the internal coordinates stored in the system s.
     Inputs:
     - of: handle for the output file
-    - s:  the system"""
+    - s:  the system
+    """
     of.write("\nStarting: Vibrational Mode Linear Decomposition\n")
     if len(s.intcoords) > len(s.vibrations):
         of.write(" More internal coordinates than frequencies, expect\n")
@@ -1591,7 +1599,8 @@ def VMBLD(of, s):
     Ridge Regression.
     Inputs:
     - of: handle for the output file
-    - s:  the system"""
+    - s:  the system
+    """
     of.write("\nStarting: Vibrational Mode Bayesian Linear Decomposition\n")
     if len(s.intcoords) > len(s.vibrations):
         of.write(" More internal coordinates than frequencies, expect\n")
@@ -1615,7 +1624,8 @@ def VMARD(of, s):
     over the internal coordinates stored in the system s.
     Inputs:
     - of: handle for the output file
-    - s:  the system"""
+    - s:  the system
+    """
     of.write("\nStarting: Vibrational Mode Automatic Relevance Determination\n")
     if len(s.intcoords) > len(s.vibrations):
         of.write(" More internal coordinates than frequencies, expect\n")
@@ -1707,7 +1717,7 @@ Options:
     A 1 4 3 -> Angle formed betweem 4-1 and 4-3
 
 \n"""
-            % (sys.argv[0])
+            % (sys.argv[0]),
         )
         sys.exit(1)
     arg = sys.argv[1:-1]
@@ -1875,7 +1885,7 @@ Options:
         )
     else:
         logging.basicConfig(
-            level=logging.WARNING, format="%(levelname)s:%(funcName)s: %(message)s"
+            level=logging.WARNING, format="%(levelname)s:%(funcName)s: %(message)s",
         )
     with open(ofn + ".nma", "w") as of:
         of.write("""###############################################################
@@ -1940,7 +1950,7 @@ same added coordinates.\n""")
             for icidx in Opts["anic"]:
                 tfn = "%s.i%03d.xyz" % (ofn, icidx)
                 of.write(
-                    "Animating internal coordinate %d to file: %s\n" % (icidx, tfn)
+                    "Animating internal coordinate %d to file: %s\n" % (icidx, tfn),
                 )
                 animateIC(tfn, system, icidx - 1)
             of.write("\n")

@@ -13,9 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-The SuperCell module
-"""
+"""The SuperCell module."""
 
 import numpy as np
 
@@ -23,8 +21,7 @@ from PDielec.Plotter import print_ints, print_reals
 
 
 class SuperCell:
-    """
-    Hold super-cell information; the unit cell and the super-cell size.
+    """Hold super-cell information; the unit cell and the super-cell size.
 
     Parameters
     ----------
@@ -48,15 +45,14 @@ class SuperCell:
     -----
     This method automatically invokes the createImages method at the end of initialization.
 
-    See also
+    See Also
     --------
-
     :class:`~PDielec.UnitCell.UnitCell`
+
     """
 
     def __init__(self, aUnitCell, anImageSpecifier):
-        """
-        Initialize the supercell with a unit cell and an image specifier.
+        """Initialize the supercell with a unit cell and an image specifier.
 
         Parameters
         ----------
@@ -79,6 +75,7 @@ class SuperCell:
         Notes
         -----
         This method automatically invokes the createImages method at the end of initialization.
+
         """
         self.unitCell = aUnitCell  # the unit cell on which everything is based
         self.imageList = None  # a list of the images of the unit cell
@@ -91,8 +88,7 @@ class SuperCell:
         self.calculateXYZ()
 
     def print(self):
-        """
-        Print the contents of the SuperCell
+        """Print the contents of the SuperCell.
 
         Parameters
         ----------
@@ -113,6 +109,7 @@ class SuperCell:
         sc=SC.SuperCell(uc,imageSpecifier)
         sc.print()
         ```
+
         """
         print("SuperCell")
         print_ints("Image_specifier", self.imageSpecifier)
@@ -136,8 +133,7 @@ class SuperCell:
                 print_ints("", bond)
 
     def createImages(self, anImageSpecifier):
-        """
-        Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].
+        """Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].
 
         Parameters
         ----------
@@ -150,6 +146,7 @@ class SuperCell:
         -------
         list
             A list of created images.
+
         """
         ia, jb, kc = anImageSpecifier
         if ia < 1 or jb < 1 or kc < 1:
@@ -163,8 +160,7 @@ class SuperCell:
                     self.imageList.append((i, j, k))
 
     def getElementNames(self):
-        """
-        Calculate and return the element names of the supercell.
+        """Calculate and return the element names of the supercell.
 
         Parameters
         ----------
@@ -174,6 +170,7 @@ class SuperCell:
         -------
         list
             The element names of the supercell.
+
         """
         names = []
         cell_names = self.unitCell.element_names
@@ -183,8 +180,7 @@ class SuperCell:
         return names
 
     def calculateNormalModes(self, modes):
-        """
-        Calculate and return the normal modes of the supercell.
+        """Calculate and return the normal modes of the supercell.
 
         Normal modes are initially an np array of nmodes, 3*nions.
         The number of modes stays the same but the number of ions
@@ -202,6 +198,7 @@ class SuperCell:
             of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the
             number of ions per mode. The shape may vary as the number of ions increases with the
             number of images.
+
         """
         nmodes, nions3 = np.shape(modes)
         mult = len(self.imageList)
@@ -218,8 +215,7 @@ class SuperCell:
         return normal_modes
 
     def calculateXYZ(self):
-        """
-        Calculate and return the cartesian coordinates of the supercell.
+        """Calculate and return the cartesian coordinates of the supercell.
 
         The fractional cell coordinates of the unit cell are used to calculate the XYZ coordinates of the super-cell
 
@@ -231,6 +227,7 @@ class SuperCell:
         -------
         output : array
             The Cartesian coordinates of the supercell.
+
         """
         self.XYZ = []
         coords = []
@@ -246,8 +243,7 @@ class SuperCell:
         return self.XYZ
 
     def calculateBonds(self):
-        """
-        Calculate the bonding in the supercell.
+        """Calculate the bonding in the supercell.
 
         Parameters
         ----------
@@ -262,6 +258,7 @@ class SuperCell:
         -----
         The bonding in the unit-cell is assumed to be valid whole-molecule bonding
         the bonds are not recalculated, just extended into the super-cell
+
         """
         self.bonds = []
         natoms = self.unitCell.nions
@@ -276,8 +273,7 @@ class SuperCell:
         return self.bonds
 
     def getBoundingBox(self, originABC=None):
-        """
-        Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
+        """Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
 
         Return a box with 8 corners and 12 edges which represent the supercel in cartesian space
         - Corners in abc space
@@ -303,6 +299,7 @@ class SuperCell:
         Notes
         -----
         The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
+
         """
         if originABC is None:
             originABC = [0, 0, 0]
@@ -343,8 +340,9 @@ class SuperCell:
         return corners_xyz, edges
 
     def calculateCentreOfBox(self):
-        """
-        This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.
+        """Calculate the centre of the super-cell in cartesian coordinates.
+
+        This is not the centre of mass, but the geometric centre of the box.
 
         Parameters
         ----------
@@ -354,18 +352,17 @@ class SuperCell:
         -------
         vector
             The centre of the images in the box
+
         """
         i, j, k = self.imageSpecifier
         i = 0.5 * float(i)
         j = 0.5 * float(j)
         k = 0.5 * float(k)
         ijk = [i, j, k]
-        centre = self.unitCell.convert_abc_to_xyz(ijk)
-        return centre
+        return self.unitCell.convert_abc_to_xyz(ijk)
 
     def calculateCentreOfMass(self, output="xyz"):
-        """
-        Calculate the center of mass for a molecular structure.
+        """Calculate the center of mass for a molecular structure.
 
         Parameters
         ----------
@@ -384,6 +381,7 @@ class SuperCell:
             If 'abc', returns tuple with mass and a numpy.ndarray of fractional coordinates of the center of mass.
             For any other value of `output`, returns a tuple containing the total mass (float), Cartesian
             coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.
+
         """
         # Calculate the centre of mass
         # The centre of mass can be returned as 'xyz' space or 'abc' space
@@ -405,5 +403,5 @@ class SuperCell:
         return {"xyz"   : cm_xyz,
                 "mass"  : mass,
                 "abc"   : cm_fractional,
-                "all"   : (mass, cm_xyz, cm_fractional)
+                "all"   : (mass, cm_xyz, cm_fractional),
                }.get(output)

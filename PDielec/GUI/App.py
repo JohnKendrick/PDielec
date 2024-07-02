@@ -12,9 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-App Module
-"""
+"""App Module."""
 
 import os.path
 import sys
@@ -23,7 +21,7 @@ from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 import PDielec.__init__
-import PDielec.Utilities as Utilities
+from PDielec import Utilities
 from PDielec.GUI.NoteBook import NoteBook
 from PDielec.Utilities import Debug
 
@@ -31,8 +29,7 @@ version = PDielec.__init__.__version__
 
 
 class App(QMainWindow):
-    """
-    A class representing the main application window.
+    """A class representing the main application window.
 
     This class initializes the main application window with various configurations based on command line arguments and environment variables. It includes functionalities to read scripts, handle command line inputs, set up multiprocessing or threading as needed, and manage application events.
 
@@ -78,11 +75,11 @@ class App(QMainWindow):
         Executes the commands from a script file and optionally sets the spreadsheet file name.
     closeEvent(event)
         Handles the close event, ensuring that multiprocessing pools are properly closed.
+
     """
 
     def __init__(self, args, progressbar):
-        """
-        Initialize the GUI with user-specified options from command-line arguments.
+        """Initialize the GUI with user-specified options from command-line arguments.
 
         Parameters
         ----------
@@ -114,6 +111,7 @@ class App(QMainWindow):
         - To specify a script to run: `--script my_script.py`
         - To set the number of CPUs used: `--cpus 4`
         - For help: `--help`
+
         """
         super().__init__()
         program = ""
@@ -133,70 +131,48 @@ class App(QMainWindow):
         # Look at the environment to see if the number of cpus is specified
         token = os.getenv("PDIELEC_NUM_PROCESSORS")
         ncpus = int(token) if token is not None else 0
-        # Look at the environment to see if the number of threading is specified
+        # Look at the environment to see if threading is specified
+        threading = False
         token = os.getenv("PDIELEC_THREADING")
-        if token is not None:
-            threading = not (token == "FALSE" or token == "false")
-        else:
-            threading = False
+        threading = token not in ( "FALSE", "false", "False" )
         parameters = []
         program_has_been_specified = False
         # Process any instructions on the input line
         while itoken < ntokens:
             token = tokens[itoken]
-            if token == "-d" or token == "-debug" or token == "--debug":
+            if token in ( "-d", "-debug", "--debug" ):
                 self.debug = True
-            elif token == "-nosplash" or token == "--nosplash":
+            elif token in ( "-nosplash", "--nosplash" ):
                 # just ignore --nosplash
                 pass
-            elif (
-                token == "-exit"
-                or token == "--exit"
-                or token == "-quit"
-                or token == "--quit"
-            ):
+            elif token in ( "-exit", "--exit", "-quit", "--quit" ):
                 self.program_exit = True
-            elif token == "-script" or token == "--script":
+            elif token in ( "-script", "--script" ):
                 itoken += 1
                 self.scripting = True
                 self.scriptname = tokens[itoken]
-            elif (
-                token == "-spreadsheet"
-                or token == "--spreadsheet"
-                or token == "-xls"
-                or token == "--xls"
-            ):
+            elif token in ( "-spreadsheet", "--spreadsheet", "-xls", "--xls" ):
                 itoken += 1
                 spreadsheet_name = tokens[itoken]
-            elif token == "-program" or token == "--program":
+            elif token in ( "-program", "--program" ):
                 itoken += 1
                 program = tokens[itoken]
                 program_has_been_specified = True
-            elif (
-                token == "-threading"
-                or token == "--threading"
-                or token == "-threads"
-                or token == "--threads"
-            ):
+            elif token in ( "-threading", "--threading", "-threads", "--threads" ):
                 threading = True
-            elif token == "-cpus" or token == "--cpus":
+            elif token in ( "-cpus", "--cpus" ):
                 itoken += 1
                 ncpus = int(tokens[itoken])
-            elif token == "-scenario" or token == "--scenario":
+            elif token in ( "-scenario" , "--scenario" ):
                 itoken += 1
                 default_scenario = tokens[itoken]
-                if default_scenario != "powder" and default_scenario != "crystal":
+                if default_scenario not in ("powder", "crystal"):
                     print("Error in default scenario: must be 'powder' or 'crystal'")
                     self.print_usage()
-                    exit()
-            elif (
-                token[0:0] == "-"
-                or token == "-h"
-                or token == "-help"
-                or token == "--help"
-            ):
+                    sys.exit()
+            elif token[0:0] == "-" or token in ( "-h", "-help", "--help" ):
                 self.print_usage()
-                exit()
+                sys.exit()
             else:
                 parameters.append(token)
             itoken += 1
@@ -222,7 +198,7 @@ class App(QMainWindow):
             spreadsheet_name = parameters[2]
         else:
             self.print_usage()
-            exit()
+            sys.exit()
         #
         # Continue
         #
@@ -274,11 +250,9 @@ class App(QMainWindow):
             self.notebook.pool.join()
             self.notebook.pool = None
         debugger.print("Finished:: Initialising")
-        return
 
     def print_usage(self):
-        """
-        Print usage information for the PDielec package's graphical user interface.
+        """Print usage information for the PDielec package's graphical user interface.
 
         This function prints the general usage information, available commands, and options for the graphical user interface to the PDielec package.
 
@@ -308,49 +282,49 @@ class App(QMainWindow):
         - `-exit`: Exit the program after executing any script.
         - `-help`: Prints out help information.
         - `-debug`: Switches on debugging information.
+
         """
         print("pdgui - graphical user interface to the PDielec package")
         print("pdgui [program] filename [spreadsheet] [options]")
         print("     program      The name of the program which created the outputfile")
         print(
-            "                  Should be one of; vasp, phonopy, gulp, castep, abinit or qe"
+            "                  Should be one of; vasp, phonopy, gulp, castep, abinit or qe",
         )
         print(
-            "                  If the program is not given a best guess is made from the output filename"
+            "                  If the program is not given a best guess is made from the output filename",
         )
         print("    filename      The name of the output file")
         print(
-            " spreadsheet file The optional name of a spreadsheet (file must end with .xlsx"
+            " spreadsheet file The optional name of a spreadsheet (file must end with .xlsx",
         )
         print(
-            "                  If this option is used program, filename must also be specified"
+            "                  If this option is used program, filename must also be specified",
         )
         print(
-            '   -scenario type Change the default scenario to "type"; either "powder" to "crystal"'
+            '   -scenario type Change the default scenario to "type"; either "powder" to "crystal"',
         )
         print("-spreadsheet file An alternative way of specifying the spread sheet")
         print("    -program      An alternative way of specifying the program")
         print("     -script file The initial commands are read from a script file")
         print(
-            "   -nosplash      No splash screen is presented (useful for batch running)"
+            "   -nosplash      No splash screen is presented (useful for batch running)",
         )
         print("  -threading      Uses threads rather than multiprocessing")
         print(
-            "       -cpus 0    Specify the number of processors or tasks (0 means all available"
+            "       -cpus 0    Specify the number of processors or tasks (0 means all available",
         )
         print("    -version      Print the version of the code")
         print("       -exit      Exit the program after executing any script")
         print("       -help      Prints out this help information")
         print("      -debug      Switches on debugging information")
-        return
 
     def setMyWindowTitle(self, title):
-        """
-        Set the window title with the provided title appended to the PDGui version.
+        """Set the window title with the provided title appended to the PDGui version.
 
         Parameters
         ----------
         title : str
+            The window title
 
         Returns
         -------
@@ -360,14 +334,13 @@ class App(QMainWindow):
         Notes
         -----
         This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
+
         """
         self.title = f"PDGui {self.version}  - " + title
         self.setWindowTitle(self.title)
-        return
 
     def readScript(self, scriptname, spreadsheet_name=""):
-        """
-        Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
+        """Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
 
         Parameters
         ----------
@@ -415,7 +388,7 @@ class App(QMainWindow):
         # The command line excel file overrides that in the script
         if spreadsheet_name != "":
             debugger.print(
-                "readScript overwriting spread sheet name:", spreadsheet_name
+                "readScript overwriting spread sheet name:", spreadsheet_name,
             )
             self.notebook.mainTab.settings["Excel file name"] = spreadsheet_name
         debugger.print("readScript notebook refresh")
@@ -425,8 +398,7 @@ class App(QMainWindow):
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
-        """
-        Handle the close event of the application.
+        """Handle the close event of the application.
 
         This method is called automatically when the close event is fired, typically when
         the user tries to close the application window. It ensures that the multiprocessing
@@ -435,6 +407,7 @@ class App(QMainWindow):
         Parameters
         ----------
         event : QCloseEvent
+            The Qt close event
 
         Returns
         -------
@@ -454,6 +427,7 @@ class App(QMainWindow):
 
         When the application is about to close, this method ensures clean termination
         of multiprocessing resources and performs any additional base class close event handling.
+
         """
         debugger.print("Close event has been captured")
         self.notebook.pool.close()

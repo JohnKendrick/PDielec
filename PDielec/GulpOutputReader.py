@@ -13,12 +13,11 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Module to read the contents of a Gulp output file
-"""
+"""Module to read the contents of a Gulp output file."""
 
 import os
 import re
+import sys
 
 import numpy as np
 
@@ -27,8 +26,7 @@ from PDielec.UnitCell import UnitCell
 
 
 class GulpOutputReader(GenericOutputReader):
-    """
-    Read the contents of a Gulp output file.
+    """Read the contents of a Gulp output file.
 
     Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
 
@@ -85,11 +83,11 @@ class GulpOutputReader(GenericOutputReader):
     - nosym: make sure the calculation is done in P1.
     Also includes options for various modifications and optimizations like qeq, molq, optimise, conp, qok,
     nomodcoord, and prop.
+
     """
 
     def __init__(self, names):
-        """
-        Constructor for initializing the Gulp output reader object.
+        """Initialise the Gulp output reader object.
 
         Parameters
         ----------
@@ -130,6 +128,7 @@ class GulpOutputReader(GenericOutputReader):
         Notes
         -----
         This constructor inherits from `GenericOutputReader` and is designed specifically for reading and parsing Gulp output files.
+
         """
         GenericOutputReader.__init__(self, names)
         self._gulpfile = names[0]
@@ -146,11 +145,9 @@ class GulpOutputReader(GenericOutputReader):
         self.nshells = None
         self.nions_irreducible = None
         self._atom_types = None
-        return
 
     def _read_output_files(self):
-        """
-        Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.
+        """Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.
 
         Parameters
         ----------
@@ -159,6 +156,7 @@ class GulpOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """
         self.manage = {}  # Empty the dictionary matching phrases
         self.manage["nions"] = (
@@ -220,36 +218,37 @@ class GulpOutputReader(GenericOutputReader):
         self._read_output_file(self._gulpfile)
 
     def _read_elastic_constants(self, line):
-        """
-        Read the elastic constants.
+        """Read the elastic constants.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line
 
         Returns
         -------
         None
+
         """
-        for _skip in range(0, 5):
+        for _skip in range(5):
             line = self.file_descriptor.readline()
         elastic = []
-        for _skip in range(0, 6):
+        for _skip in range(6):
             elastic.append([float(f) for f in line.split()[1:]])
             line = self.file_descriptor.readline()
         self.elastic_constant_tensor = np.array(elastic)
         if self.debug:
             print("Elastic constant tensor")
             print(self.elastic_constant_tensor)
-        return
 
     def _read_frequencies(self, line):
-        """
-        Read the frequencies
+        """Read the frequencies.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line
+
         """
         self.frequencies = []
         self.mass_weighted_normal_modes = []
@@ -272,16 +271,16 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()  # Raman
             line = self.file_descriptor.readline()
             columns = []
-            for _n in range(0, ncolumns):
+            for _n in range(ncolumns):
                 columns.append([])
-            for _i in range(0, nions):
+            for _i in range(nions):
                 line = self.file_descriptor.readline()
                 modex = [float(f) for f in line.split()[2:]]
                 line = self.file_descriptor.readline()
                 modey = [float(f) for f in line.split()[2:]]
                 line = self.file_descriptor.readline()
                 modez = [float(f) for f in line.split()[2:]]
-                for n, (x, y, z) in enumerate(zip(modex, modey, modez)):
+                for n, (x, y, z) in enumerate(zip(modex, modey, modez, strict=False)):
                     columns[n].append([x, y, z])
                 # end for x, y, z (columns)
             # end loop over atoms
@@ -291,44 +290,47 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
 
     def _read_total_number_of_atoms(self, line):
-        """
-        Read the number of atoms.
+        """Read the number of atoms.
 
         Parameters
         ----------
         line : str
+            The starting line
 
         Returns
         -------
         None
+
         """
         self.nions = int(line.split()[4])
 
     def _read_number_of_irreducible_atoms(self, line):
-        """
-        Read the number of irreducible atoms
+        """Read the number of irreducible atoms.
 
         Parameters
         ----------
         line : str
+            The starting line
 
         Returns
         -------
         None
+
         """
         self.nions_irreducible = int(line.split()[5])
 
     def _read_lattice(self, line):
-        """
-        Read the lattice vectors.
+        """Read the lattice vectors.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line
 
         Returns
         -------
         None
+
         """
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
@@ -351,7 +353,7 @@ class GulpOutputReader(GenericOutputReader):
         if len(self._cartesian_coordinates) == 0:
             if len(self._fractional_coordinates) == 0:
                 print("Error no coordinates fraction or cartesian found")
-                exit()
+                sys.exit()
             for atom_frac in self._fractional_coordinates:
                 atom_cart = cell.convert_abc_to_xyz(atom_frac)
                 self.cartesian_coordinates.append(atom_cart)
@@ -364,16 +366,17 @@ class GulpOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
 
     def _read_cellcontents(self, line):
-        """
-        Read the cell contents in xyz space
+        """Read the cell contents in xyz space.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line
 
         Returns
         -------
         None
+
         """
         self._atom_types = []
         self.masses = []
@@ -383,9 +386,9 @@ class GulpOutputReader(GenericOutputReader):
         self.nshells = 0
         self.atom_type_list = []
         self.ions_per_type = [0 for i in range(self.nspecies)]
-        for _skip in range(0, 5):
+        for _skip in range(5):
             line = self.file_descriptor.readline()
-        for _ion in range(0, self.nions):
+        for _ion in range(self.nions):
             line = self.file_descriptor.readline()
             atom_type = line.split()[1].capitalize()
             coreshell = line.split()[2]
@@ -412,19 +415,19 @@ class GulpOutputReader(GenericOutputReader):
                 self.born_charges.append(a)
             # end loop over charges
         # end if len()
-        return
 
     def _read_cellcontentsf(self, line):
-        """
-        Read the cell contents in fractional space.
+        """Read the cell contents in fractional space.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line
 
         Returns
         -------
         None
+
         """
         self._atom_types = []
         self.masses = []
@@ -433,9 +436,9 @@ class GulpOutputReader(GenericOutputReader):
         self.ncores = 0
         self.nshells = 0
         self.atom_type_list = []
-        for _skip in range(0, 5):
+        for _skip in range(5):
             line = self.file_descriptor.readline()
-        for _ion in range(0, self.nions):
+        for _ion in range(self.nions):
             line = self.file_descriptor.readline()
             atom_type = line.split()[1].capitalize()
             coreshell = line.split()[2]
@@ -458,15 +461,14 @@ class GulpOutputReader(GenericOutputReader):
                 self.born_charges.append(a)
             # end loop over charges
         # end if len()
-        return
 
     def _read_species(self, line):
-        """
-        Read species information
+        """Read species information.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line
 
         Returns
         -------
@@ -476,7 +478,7 @@ class GulpOutputReader(GenericOutputReader):
         self.species = []
         self.mass_per_type = []
         self._mass_dictionary = {}
-        for _skip in range(0, 6):
+        for _skip in range(6):
             line = self.file_descriptor.readline()
         n = len(line.split())
         while n > 1:
@@ -490,11 +492,9 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
             n = len(line.split())
         self.nspecies = len(self.species)
-        return
 
     def _read_born_charges(self, line):
-        """
-        Read the born charges from the gulp file.
+        """Read the born charges from the gulp file.
 
         This function reads the born charges as arranged in the gulp file. Each column
         in the output fetched refers to a given field direction, and each row refers
@@ -505,7 +505,7 @@ class GulpOutputReader(GenericOutputReader):
         Parameters
         ----------
         line : str
-            Ignored
+            The starting line (ignored)
 
         Returns
         -------
@@ -529,9 +529,10 @@ class GulpOutputReader(GenericOutputReader):
         the atomic displacement in each of the field directions. The reformatted output aligns
         these displacements into a more conventional tensor format for further processing or
         analysis.
+
         """
         self.born_charges = []
-        for _skip in range(0, 5):
+        for _skip in range(5):
             line = self.file_descriptor.readline()
         for _i in range(self.nions):
             b = []
@@ -546,17 +547,17 @@ class GulpOutputReader(GenericOutputReader):
             self.born_charges.append(b)
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
-        return
 
     def _read_optical_dielectric(self, line):
-        """
-        Read optical dielectric constant
+        """Read optical dielectric constant.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line
+
         """
-        for _skip in range(0, 5):
+        for _skip in range(5):
             line = self.file_descriptor.readline()
         # this is the zero frequency optical dielectric constant
         self.zerof_optical_dielectric = []
@@ -565,21 +566,21 @@ class GulpOutputReader(GenericOutputReader):
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
         line = self.file_descriptor.readline()
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
-        return
 
     def _read_static_dielectric(self, line):
-        """
-        Read static dielectric constant
+        """Read static dielectric constant.
 
         Parameters
         ----------
         line : str (not used)
+            The starting line 
 
         Returns
         -------
         None
+
         """
-        for _skip in range(0, 5):
+        for _skip in range(5):
             line = self.file_descriptor.readline()
         # this is the zero frequency static dielectric constant
         self.zerof_static_dielectric = []
@@ -588,49 +589,49 @@ class GulpOutputReader(GenericOutputReader):
         self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
         line = self.file_descriptor.readline()
         self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
-        return
 
     def _read_temperature(self, line):
-        """
-        Read temperature
+        """Read temperature.
 
         Parameters
         ----------
         line : str
+            The starting line 
 
         Returns
         -------
         None
+
         """
         self.temperature = float(line.split()[4])
-        return
 
     def _read_external_pressure(self, line):
-        """
-        Read external pressure
+        """Read external pressure.
 
         Parameters
         ----------
         line : str
+            The starting line 
 
         Returns
         -------
         None
+
         """
         self.pressure = float(line.split()[4])
-        return
 
     def _read_energies(self, line):
-        """
-        Read energies
+        """Read energies.
 
         Parameters
         ----------
         line : str
+            The starting line 
 
         Returns
         -------
         None
+
         """
         # line = self.file_descriptor.readline()
         self.final_free_energy = float(line.split()[4])
@@ -638,4 +639,3 @@ class GulpOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         # self.final_0K_energy = float(line.split()[5])
         self.final_energy_without_entropy = self.final_free_energy
-        return

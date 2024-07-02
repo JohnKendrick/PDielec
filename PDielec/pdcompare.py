@@ -13,22 +13,21 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-PDielec driver program to compare a collection of spreadsheets with spectra
+"""PDielec driver program to compare a collection of spreadsheets with spectra.
 
-        pdcompare file1 file2...
-            pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
-                -column column  Take the data for cross correlation from column
-                C Averaged
-                D MG
-                E Mie/0.1
-                F Mie/1.0
-                G Mie/2.0
-                H Mie/3.0
-                -rmax rmax  Use rows from rmin to rmax
-                -rmin rmin  Use rows from rmin to rmax (rows start from 2)
-                -sheet [molar/absorption/real/imaginary/atr]
-                -excel filename
+pdcompare file1 file2...
+pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+-column column  Take the data for cross correlation from column
+C Averaged
+D MG
+E Mie/0.1
+F Mie/1.0
+G Mie/2.0
+H Mie/3.0
+-rmax rmax  Use rows from rmin to rmax
+-rmin rmin  Use rows from rmin to rmax (rows start from 2)
+-sheet [molar/absorption/real/imaginary/atr]
+-excel filename
 """
 
 import sys
@@ -38,38 +37,37 @@ from openpyxl import load_workbook
 
 
 def main():
-    """
-    Main Driver routine for pdcompare - reads a collection of spreadsheets with spectra and compares the spectra.
+    """Driver routine for pdcompare - reads a collection of spreadsheets with spectra and compares the spectra.
 
-        pdcompare file1 file2...
-            pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
-                -column column  Take the data for cross correlation from column
-                C Averaged
-                D MG
-                E Mie/0.1
-                F Mie/1.0
-                G Mie/2.0
-                H Mie/3.0
-                -rmax rmax  Use rows from rmin to rmax
-                -rmin rmin  Use rows from rmin to rmax (rows start from 2)
-                -sheet [molar/absorption/real/imaginary/atr]
-                -excel filename
+    pdcompare file1 file2...
+        pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+            -column column  Take the data for cross correlation from column
+            C Averaged
+            D MG
+            E Mie/0.1
+            F Mie/1.0
+            G Mie/2.0
+            H Mie/3.0
+            -rmax rmax  Use rows from rmin to rmax
+            -rmin rmin  Use rows from rmin to rmax (rows start from 2)
+            -sheet [molar/absorption/real/imaginary/atr]
+            -excel filename
     """
 
     def show_usage():
-        """
-        Show pdcompare usage
+        """Show pdcompare usage.
 
         Examples
         --------
         >>> # Example usage of pdcompare
+
         """
         print("pdcompare file1 file2...")
         print(
-            "pdcompare: Calculates the cross-correlation of spectra calculated using pdielec"
+            "pdcompare: Calculates the cross-correlation of spectra calculated using pdielec",
         )
         print(
-            "         -column column  Take the data for cross correlation from column"
+            "         -column column  Take the data for cross correlation from column",
         )
         print("                         C Averaged")
         print("                         D MG      ")
@@ -81,12 +79,11 @@ def main():
         print("         -rmin rmin  Use rows from rmin to rmax (rows start from 2)")
         print("         -sheet [molar/absorption/real/imaginary/atr]")
         print("         -excel filename")
-        return
 
     # check usage
     if len(sys.argv) <= 1:
         show_usage()
-        exit()
+        sys.exit()
 
     sheet_dict = {
         "molar": "Molar Absorption",
@@ -129,7 +126,7 @@ def main():
     if len(names) <= 0:
         print("No files were specified")
         show_usage()
-        exit(1)
+        sys.exit(1)
 
     print("Comparison based on ", sheet, sheet_dict[sheet])
     sheet = sheet_dict[sheet]

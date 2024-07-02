@@ -12,17 +12,14 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-SpreadSheetMamager module
-"""
+"""SpreadSheetMamager module."""
 
 import numpy as np
 import xlsxwriter as xlsx
 
 
 class SpreadSheetManager:
-    """
-    A manager for handling operations on an Excel workbook via xlsxwriter.
+    """A manager for handling operations on an Excel workbook via xlsxwriter.
 
     This class provides methods for managing a workbook with various tabs
     (named worksheets), writing data to these worksheets, and handling complex
@@ -68,12 +65,12 @@ class SpreadSheetManager:
         Deletes all content from the currently selected worksheet.
     close()
         Closes the workbook, finalizing it for output.
+
     """
 
     def __init__(self, filename):
         # Manage a spread sheet for PDielec / PDGui
-        """
-        Initialize the instance with the given filename.
+        """Initialize the instance with the given filename.
 
         This constructor initializes an Excel workbook with predefined tab names and settings. It prepares the workbook for data entry and analysis across various predefined categories related to powder and crystal property analysis.
 
@@ -111,6 +108,7 @@ class SpreadSheetManager:
         --------
         >>> my_excel_file = ExcelFileHandler("example.xlsx")
         >>> my_excel_file.add_data_to_sheet("Main", data)
+
         """
         self.workbook = xlsx.Workbook(filename)
         self.closed = False
@@ -147,8 +145,7 @@ class SpreadSheetManager:
         self.openWorkSheet(self.name)
 
     def openWorkSheet(self, tab):
-        """
-        Open a new worksheet in a workbook.
+        """Open a new worksheet in a workbook.
 
         Parameters
         ----------
@@ -165,6 +162,7 @@ class SpreadSheetManager:
         Otherwise, it creates a new worksheet with the name `tab`, initializes its position,
         maximum column, maximum row, and marks it as opened within the workbook data structures
         handled by the instance.
+
         """
         if self.opened[tab]:
             return
@@ -175,8 +173,7 @@ class SpreadSheetManager:
         self.opened[tab] = True
 
     def selectWorkSheet(self, name):
-        """
-        Selects or opens a worksheet by name.
+        """Select or open a worksheet by name.
 
         Parameters
         ----------
@@ -192,14 +189,14 @@ class SpreadSheetManager:
         This method selects a worksheet if it is already opened. If the worksheet is not
         currently open, it attempts to open the worksheet by calling `openWorkSheet` with
         the worksheet name.
+
         """
         self.name = name
         if not self.opened[name]:
             self.openWorkSheet(self.name)
 
     def writeNextRow(self, items, row=None, col=None, check=""):
-        """
-        Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
+        """Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
 
         Parameters
         ----------
@@ -222,6 +219,7 @@ class SpreadSheetManager:
         - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
         - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
         - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
+
         """
         oldRow, oldCol = self.positions[self.name]
         if col is None:
@@ -247,8 +245,7 @@ class SpreadSheetManager:
         row += 1
 
     def write(self, row, col, item):
-        """
-        Writes an item to a specific position in the active worksheet, handling complex numbers.
+        """Write an item to a specific position in the active worksheet, handling complex numbers.
 
         Parameters
         ----------
@@ -286,8 +283,7 @@ class SpreadSheetManager:
             self.positions[self.name] = (row + 1, col + 1)
 
     def delete(self):
-        """
-        Delete all the data in the current worksheet.
+        """Delete all the data in the current worksheet.
 
         Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string.
         After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
@@ -301,16 +297,15 @@ class SpreadSheetManager:
         None
 
         """
-        for row in range(0, self.max_row[self.name]):
-            for col in range(0, self.max_col[self.name]):
+        for row in range(self.max_row[self.name]):
+            for col in range(self.max_col[self.name]):
                 self.worksheets[self.name].write(row, col, "")
         self.positions[self.name] = (-1, 0)
         self.max_col[self.name] = 0
         self.max_row[self.name] = 0
 
     def close(self):
-        """
-        Close the workbook if it hasn't been closed already.
+        """Close the workbook if it hasn't been closed already.
 
         Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.
 
@@ -321,6 +316,7 @@ class SpreadSheetManager:
         Returns
         -------
         None
+
         """
         if not self.closed:
             self.workbook.close()
