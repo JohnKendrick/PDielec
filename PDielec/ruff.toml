@@ -1,0 +1,31 @@
+line-length = 120
+[lint]
+#
+select = [
+    "D",   # Docstring issues
+    "E",   # pycodestyle
+    "F",   # Pyflakes
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I",   # isort
+    "PLR", # Refactor
+    "RET", # return statements
+]
+#
+ignore = [
+    "E741",    # character such as "l"
+    "E501",    # line too long
+    "UP031",   # Use f-string instead of %
+    "PLR0913", # Too many arguments in function definition
+    "PLR2004", # replace constant number with constant variable
+    "PLR0912", # too many branches
+    "PLR0915", # too many statements
+    "D301",    # replace backslashes in doctrings with 'r"""
+    "D203",    # Ignore no blank line before class
+    "D213",    # Ignore multi line summary second line
+    "PLR1711", # Useless return statement
+]
+#
+[lint.per-file-ignores]
+"vibanalysis.py" = ["D","RET","SIM"]
