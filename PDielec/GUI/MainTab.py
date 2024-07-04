@@ -296,9 +296,9 @@ class MainTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         # If the filename was given then force it to be read and processed
-        if filename != '':
-            debugger.print('Reading output file in maintab initialisation')
-            self.on_calculation_button_clicked()
+        #jkif filename != '':
+        #jk    debugger.print('Reading output file in maintab initialisation')
+        #jk    self.on_calculation_button_clicked()
         QCoreApplication.processEvents()
         debugger.print('Finished:: initialising ')
         return

@@ -126,11 +126,10 @@ def find_program_from_name( filename ):
                 return 'phonopy'
             else:
                 return 'qe'
+        elif os.path.isfile(head+'phonopy.yaml'):
+            return 'phonopy'
         else:
-            if os.path.isfile(head+'phonopy.yaml'):
-                return 'phonopy'
-            else:
-                return 'crystal'
+            return 'crystal'
     if ext ==  '.dynG':
         return 'qe'
     if ext ==  '.exp':
@@ -293,7 +292,6 @@ def pdgui_get_reader(program,names,qmprogram):
     reader = None
     program = program.lower()
     qmprogram = qmprogram.lower()
-    print("get_reader",names,program,qmprogram)
     if program == "":
         #  This is the old behaviour.  It copes with VASP, CASTEP and Crystal
         #  If names[0] is a directory then we will use a vaspoutputreader
@@ -337,8 +335,6 @@ def pdgui_get_reader(program,names,qmprogram):
                 seedname = names[0]
             checkfiles.append(seedname+".castep")
         elif program == "phonopy":
-            print("make it to the phonopy reader")
-            print("get_reader",names,program,qmprogram)
             # We only have a VASP / Phonopy interface
             # Creat a list of phonopy files
             pnames = []
@@ -351,10 +347,7 @@ def pdgui_get_reader(program,names,qmprogram):
             checkfiles = pnames
         else:
             checkfiles = names
-        #jk print("")
-        #jk print("Program used to perform the phonon calculation was: {}".format(program))
         for f in checkfiles:
-            #jk print("The file containing the output is: {}".format(f))
             if not os.path.isfile(f):
                 print(f"Output files created by program: {program}")
                 print(f"Error: file not available: {f}")
@@ -374,7 +367,6 @@ def pdgui_get_reader(program,names,qmprogram):
         elif program == "qe":
             reader = QEOutputReader(names)
         elif program == "phonopy":
-            print(pnames)
             # Which QM program was used by PHONOPY?
             if qmprogram == "castep":
                 qmreader = CastepOutputReader(vnames)
@@ -384,7 +376,6 @@ def pdgui_get_reader(program,names,qmprogram):
                 qmreader = GulpOutputReader(vnames)
             elif qmprogram == "crystal":
                 qmreader = CrystalOutputReader(vnames)
-                print("I got here 2")
             elif qmprogram == "abinit":
                 qmreader = AbinitOutputReader(vnames)
             elif qmprogram == "qe":
