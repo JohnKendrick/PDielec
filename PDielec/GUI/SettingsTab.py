@@ -12,29 +12,32 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-SettingsTab module
-'''
+"""SettingsTab module
+"""
 # -*- coding: utf8 -*-
+
 import numpy as np
-import PDielec.Calculator as Calculator
-import PDielec.DielectricFunction as  DielectricFunction
-from PyQt5.QtWidgets            import  QWidget, QApplication
-from PyQt5.QtWidgets            import  QComboBox, QLabel
-from PyQt5.QtWidgets            import  QCheckBox
-from PyQt5.QtGui                import  QFont
-from PyQt5.QtWidgets            import  QVBoxLayout, QFormLayout
-from PyQt5.QtWidgets            import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
-from PyQt5.QtWidgets            import  QSizePolicy
-from PyQt5.QtCore               import  Qt, QSize, QCoreApplication
-from PDielec.Constants          import  wavenumber, amu, angstrom
-from PDielec.Constants          import  average_masses, isotope_masses
-from PDielec.Utilities          import  Debug
-from functools                  import  partial
+from PyQt5.QtCore import QCoreApplication, QSize, Qt
+from PyQt5.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QLabel,
+    QSizePolicy,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
+
+from PDielec import Calculator, DielectricFunction
+from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
+from PDielec.Utilities import Debug
+
 
 class FixedQTableWidget(QTableWidget):
-    """
-    A custom QTableWidget with fixed number of rows and columns.
+    """A custom QTableWidget with fixed number of rows and columns.
 
     This widget is designed to have a fixed size based on a specified number of rows and columns, rather than adjusting dynamically to the content it displays. If the number of rows and columns isn't specifically provided, it defaults to the current count of rows and columns in the widget.
 
@@ -57,10 +60,11 @@ class FixedQTableWidget(QTableWidget):
     See Also
     --------
     QTableWidget : The base class from which this class is derived.
-    """    
+
+    """
+
     def __init__(self, *args, parent=None, rows=None, columns=None):
-        """
-        Initialize a QTableWidget instance.
+        """Initialize a QTableWidget instance.
 
         Parameters
         ----------
@@ -72,14 +76,14 @@ class FixedQTableWidget(QTableWidget):
             The initial number of rows in the table. Default is None.
         columns : int, optional
             The initial number of columns in the table. Default is None.
+
         """        
         self.columns = columns
         self.rows = rows
         super(QTableWidget, self).__init__(*args)
 
     def sizeHint(self):
-        """
-        Calculate the suggested dimensions for the widget based on its content.
+        """Calculate the suggested dimensions for the widget based on its content.
 
         This method calculates the preferred size of the widget by summing up the widths of all columns and the heights of all rows, including any scrollbars, headers, and frame widths.
 
@@ -91,6 +95,7 @@ class FixedQTableWidget(QTableWidget):
         -------
         QSize
             The calculated size that suggests the optimal dimensions for the widget. The width is determined by the total width of all columns, the vertical header width, the vertical scrollbar width, and twice the frame width. The height is determined by the total height of all rows, the horizontal header height, the horizontal scrollbar height, and twice the frame width.
+
         """        
         width = 0
         if self.columns == None:
@@ -115,8 +120,7 @@ class FixedQTableWidget(QTableWidget):
         return QSize(width,height)
 
 class SettingsTab(QWidget):
-    """
-    A class for managing and displaying settings related to optical permittivity, mass calculation, and vibrational calculations for crystal structures within a GUI application.
+    """A class for managing and displaying settings related to optical permittivity, mass calculation, and vibrational calculations for crystal structures within a GUI application.
 
     This class allows for the configuration of various simulation parameters, such as Eckart conditions, Born charge neutrality, atomic mass definitions, and optical permittivity values. It also enables the calculation of infrared intensities, dielectric functions, and permittivity values based on these settings.
 
@@ -210,10 +214,11 @@ class SettingsTab(QWidget):
         Returns the crystal permittivity for the specified frequencies.
     getCrystalPermittivityObject()
         Returns the crystal permittivity object used for calculations.
-    """    
+
+    """
+
     def __init__(self, parent, debug=False):
-        """
-        Initializes the QWidget object with specific settings for an application.
+        """Initializes the QWidget object with specific settings for an application.
 
         Parameters
         ----------
@@ -225,6 +230,7 @@ class SettingsTab(QWidget):
         Notes
         -----
         This method sets up various elements of the interface, including checkboxes, comboBoxes, spinBoxes, and tableWidgets with predefined settings and connects various signals and slots. Settings related to the Eckart flag, neutral Born charges, sigma values, mass definition, and optical permittivity are initialized. Additionally, UI elements for adjusting these settings are created. It involves initializing debugging capabilities, setting up a notebook reference, and various flags and settings necessary for the functionality of the application.
+
         """        
         super(QWidget, self).__init__(parent)
         global debugger
@@ -352,8 +358,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: initialisation')
 
     def setElementMass(self,element,mass):
-        """
-        Set the mass value of a specific element in the GUI.
+        """Set the mass value of a specific element in the GUI.
 
         This method updates the mass value for a specified element in the graphical user interface (GUI). It also triggers various updates in the GUI to reflect this change, including updating the mass selection and recalculating modes if required.
 
@@ -372,6 +377,7 @@ class SettingsTab(QWidget):
         -----
         - This method assumes that `self.settings`, `self.masses_dict`, `self.mass_cb`, and other related attributes are already defined in the class.
         - It triggers a refresh of the GUI and potentially recalculates selected modes based on the new mass settings.
+
         """        
         debugger.print('Start::  setElementMass',element,mass)
         self.settings['Mass definition'] = 'gui'
@@ -384,8 +390,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished::  setElementMass',element,mass)
 
     def createIntensityTable(self):
-        """
-        Generate the intensity table for spectroscopy analysis.
+        """Generate the intensity table for spectroscopy analysis.
 
         This method is responsible for creating a table that includes calculated intensities, frequencies, oscillator strengths, 
         and other related parameters required for spectroscopic analysis. It adapts based on reader settings, mass definitions, 
@@ -415,6 +420,7 @@ class SettingsTab(QWidget):
         - `Calculator.oscillator_strengths`: For calculating oscillator strengths based on normal modes and born charges.
         - `Calculator.infrared_intensities`: For the calculation of infrared intensities from oscillator strengths.
         - `Calculator.ionic_permittivity`: For calculating the ionic permittivity based on mode list, oscillator strengths, and frequencies.
+
         """        
         debugger.print('Start:: createIntensityTable')
         self.reader = self.notebook.reader
@@ -513,8 +519,7 @@ class SettingsTab(QWidget):
         return
 
     def requestRefresh(self):
-        """
-        Request to refresh the environment or state.
+        """Request to refresh the environment or state.
 
         This method sets a flag to indicate that a refresh is required, logging the start and end of its execution.
 
@@ -525,6 +530,7 @@ class SettingsTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: requestRefresh')
         self.refreshRequired = True
@@ -533,8 +539,7 @@ class SettingsTab(QWidget):
         return
 
     def writeSpreadsheet(self):
-        """
-        Writes the configuration and calculation results to the associated spreadsheet.
+        """Writes the configuration and calculation results to the associated spreadsheet.
 
         This function iterates through various settings and results stored within the object, such as optical permittivity, mass definitions, and vibrational mode calculations. For each setting or result, it writes the relevant information to a new row in the spreadsheet. The spreadsheet is expected to have a 'Settings' worksheet, which this function selects and updates with the provided values.
 
@@ -545,6 +550,7 @@ class SettingsTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: writeSpreadsheet')
         sp = self.notebook.spreadsheet
@@ -588,8 +594,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: writeSpreadsheet')
 
     def redraw_output_tw(self):
-        """
-        Redraws the output table widget with updated values.
+        """Redraws the output table widget with updated values.
 
         This method loops through frequencies, sigmas, and intensities, updating the table widget rows
         with new items representing these values and custom flags for item behavior. It also calculates
@@ -620,7 +625,7 @@ class SettingsTab(QWidget):
             # Sigma and check / unchecked column
             items = []
             itemFlags = []
-            item = QTableWidgetItem('{0:.1f}'.format(sigma))
+            item = QTableWidgetItem(f'{sigma:.1f}')
             if self.modes_selected[i]:
                 item.setCheckState(Qt.Checked)
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
@@ -635,16 +640,16 @@ class SettingsTab(QWidget):
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
             # Frequency column cm-1
-            items.append(QTableWidgetItem('{0:.4f}'.format(f) ) )
+            items.append(QTableWidgetItem(f'{f:.4f}' ) )
             itemFlags.append( freqFlags )
             # Intensity column Debye2/Angs2/amu
-            items.append(QTableWidgetItem('{0:.4f}'.format(intensity) ) )
+            items.append(QTableWidgetItem(f'{intensity:.4f}' ) )
             itemFlags.append( otherFlags )
             # Integrated molar absorption L/mole/cm/cm
-            items.append(QTableWidgetItem('{0:.2f}'.format(intensity*4225.6) ) )
+            items.append(QTableWidgetItem(f'{intensity*4225.6:.2f}' ) )
             itemFlags.append( otherFlags )
             # Maximum extinction L/mole/cm
-            items.append(QTableWidgetItem('{0:.2f}'.format(2*intensity*4225.6/self.sigmas_cm1[i]/np.pi) ) )
+            items.append(QTableWidgetItem(f'{2*intensity*4225.6/self.sigmas_cm1[i]/np.pi:.2f}' ) )
             itemFlags.append( otherFlags )
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
@@ -657,8 +662,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: redraw_output_tw')
 
     def on_sigma_changed(self):
-        """
-        Updates the sigma value in settings and applies it across the frequency range, then refreshes the output.
+        """Updates the sigma value in settings and applies it across the frequency range, then refreshes the output.
 
         This method is triggered when the sigma value has been changed. It updates the stored sigma value in the settings,
         applies the new sigma value across the pre-defined frequency range, redraws the output table widget, and then
@@ -671,6 +675,7 @@ class SettingsTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: redraw_output_tw')
         self.settings['Sigma value'] = self.sigma_sb.value()
@@ -682,8 +687,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: on_sigma_changed')
 
     def on_mass_cb_activated(self,index):
-        """
-        Handles activation of a combobox option in a mass-related setting.
+        """Handles activation of a combobox option in a mass-related setting.
 
         This method updates the current mass definition based on the selected option
         from a combobox, updates related settings, and refreshes the GUI accordingly.
@@ -709,6 +713,7 @@ class SettingsTab(QWidget):
         --------
         set_masses_tw : A method to update the masses table widget based on the selection.
         refresh : A method to refresh the UI components.
+
         """        
         debugger.print('Start:: on_mass_combobox_activated', self.mass_cb.currentText())
         self.settings['Mass definition'] = self.mass_definition_options[index]
@@ -724,8 +729,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: on_mass_combobox_activated', self.mass_cb.currentText())
 
     def set_masses_tw(self):
-        """
-        Set the element masses in the table widget based on the mass_definition setting.
+        """Set the element masses in the table widget based on the mass_definition setting.
 
         This method updates the element masses table widget with masses according to the selected mass definition mode ('average', 'program', 'isotope', 'gui'). It retrieves species information from the reader attribute, calculates or fetches the corresponding masses, and updates an internal dictionary and the table widget accordingly. Signals from the table widget are temporarily blocked to prevent unwanted event triggers during updates.
 
@@ -736,6 +740,7 @@ class SettingsTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: set_masses_tw')
         if self.reader:
@@ -778,24 +783,24 @@ class SettingsTab(QWidget):
                 qw = QTableWidgetItem()
                 if self.settings['Mass definition'] == 'program':
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText('{0:.6f}'.format(mass))
+                    qw.setText(f'{mass:.6f}')
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     self.element_masses_tw.setItem(0,i, qw )
                 elif self.settings['Mass definition'] == 'average':
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText('{0:.6f}'.format(average_masses[element]))
+                    qw.setText(f'{average_masses[element]:.6f}')
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print('average',average_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings['Mass definition'] == 'isotope':
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText('{0:.6f}'.format(isotope_masses[element]))
+                    qw.setText(f'{isotope_masses[element]:.6f}')
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print('isotope',isotope_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings['Mass definition'] == 'gui':
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText('{0:.6f}'.format(self.masses_dictionary[element]))
+                    qw.setText(f'{self.masses_dictionary[element]:.6f}')
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print('gui',self.masses_dictionary[element])
                     self.element_masses_tw.setItem(0,i, qw )
@@ -807,8 +812,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: set_masses_tw')
 
     def on_output_tw_itemChanged(self, item):
-        """
-        Handle item changes in the output table widget.
+        """Handle item changes in the output table widget.
 
         This method is called when an item in the output table widget (`output_tw`) is changed. It manages the selection state of modes based on the state of checkbox items in the first column, updates the "sigmas_cm1" and "frequencies_cm1" lists based on the user input in the respective columns, refreshes the widget, and processes pending GUI events.
 
@@ -832,6 +836,7 @@ class SettingsTab(QWidget):
         --------
         redraw_output_tw : Redraws the output table widget.
         refresh : Refreshes the internal state based on the latest changes.
+
         """        
         self.output_tw.blockSignals(True)
         debugger.print('Start:: on_output_tw_itemChanged', item.row(), item.column() )
@@ -869,8 +874,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: on_output_tw_itemChanged')
 
     def on_element_masses_tw_itemClicked(self, item):
-        """
-        Handles the item clicked event on the element mass table widget.
+        """Handles the item clicked event on the element mass table widget.
 
         The only thing this function does is to make sure that signal from the `element_masses_tw` table widget are not blocked,
 
@@ -882,14 +886,14 @@ class SettingsTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: on_element_masses_tw_itemClicked)', item.row(),item.column() )
         self.element_masses_tw.blockSignals(False)
         debugger.print('Finished:: on_element_masses_tw_itemClicked)' )
 
     def on_element_masses_tw_itemChanged(self, item):
-        """
-        Handle item changed event in the mass table widget.
+        """Handle item changed event in the mass table widget.
 
         This function is triggered whenever a cell in the masses table widget is edited. It updates the internal masses dictionary based on the new value provided in the table cell. Additionally, it sets some UI components to reflect the change and flags the need for recalculation and refresh.
 
@@ -908,6 +912,7 @@ class SettingsTab(QWidget):
         - `self.masses_dictionary` is a dict where keys are element symbols and values are their masses.
         - `self.refreshRequired` and `self.recalculate_selected_modes` are boolean flags used to indicate that a refresh and a recalculation are necessary.
         - `self.refresh()` is a method that refreshes or updates the UI components as needed based on the new changes.
+
         """        
         debugger.print('Start:: on_element_masses_tw_itemChanged)', item.row(), item.column() )
         elements = self.reader.getSpecies()
@@ -923,8 +928,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: on_element_masses_tw_itemChanged)' )
 
     def on_optical_tw_itemChanged(self, item):
-        """
-        Handle item change events for an optical permittivity table.
+        """Handle item change events for an optical permittivity table.
 
         This method updates the optical permittivity settings based on changes made to the table widget items. It enforces symmetry in the optical permittivity matrix, marks the settings as edited, and triggers a series of updates and recalculations.
 
@@ -945,6 +949,7 @@ class SettingsTab(QWidget):
         - Calls `refresh_optical_permittivity_tw` to refresh the optical permittivity table widget.
         - Flags `refreshRequired`, `recalculate_selected_modes`, and `refresh` methods/attributes for further actions.
         - Processes any pending events with `QCoreApplication.processEvents()` to ensure the UI remains responsive.
+
         """        
         debugger.print('Start::on_optical_itemChanged)', item.row(), item.column(), item.text() )
         self.settings['Optical permittivity'][item.row()][item.column()] = float(item.text())
@@ -959,8 +964,7 @@ class SettingsTab(QWidget):
         return
 
     def on_optical_tw_itemClicked(self, item):
-        """
-        Handle item clicked event for an optical widget's table item.
+        """Handle item clicked event for an optical widget's table item.
 
         This method is designed to be connected to the itemClicked signal of a table widget
         in a graphical user interface built with PyQt or PySide. When a table widget item
@@ -976,6 +980,7 @@ class SettingsTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: on_optical_itemClicked)', item.row(), item.column() )
         self.optical_tw.blockSignals(False)
@@ -984,8 +989,7 @@ class SettingsTab(QWidget):
         return
 
     def refresh(self, force=False):
-        """
-        Refreshes the current state based on notebook content changes or user request.
+        """Refreshes the current state based on notebook content changes or user request.
 
         This method updates the GUI components such as tables for masses, optical permittivity, sigma value, Eckart term checkbox, and Born charges checkbox based on the changes made in the notebook or when forced by the user. It also triggers refreshes for any associated scenarios, plotting, analysis, and fitting tabs. The method blocks all signals from widgets during the update process to prevent unwanted calls to event handlers.
 
@@ -1006,6 +1010,7 @@ class SettingsTab(QWidget):
         - Unblocks all QWidget signals after updates are applied.
         - Manages internal flags to keep track of the need for refreshes and calculations.
         - Processes all pending Qt events with `QCoreApplication.processEvents()`.
+
         """        
         debugger.print('Start:: refresh', force )
         if not self.reader and self.notebook.reader:
@@ -1060,8 +1065,7 @@ class SettingsTab(QWidget):
         return
 
     def refresh_optical_permittivity_tw(self):
-        """
-        Refresh the table widget with optical permittivity values.
+        """Refresh the table widget with optical permittivity values.
 
         This function takes no parameters explicitly, it operates on the instance's attributes.
         It updates the `optical_tw` table widget with optical permittivity values from the `settings` attribute.
@@ -1083,13 +1087,14 @@ class SettingsTab(QWidget):
             - The table widget's signals are temporarily blocked to prevent unintended side-effects during the update.
             - `Qt.AlignHCenter | Qt.AlignVCenter` is used to center-align the text, assuming `Qt` and `QTableWidgetItem` are properly imported and used.
             - The `QCoreApplication.processEvents()` call forces the application to process all pending events, ensuring the UI updates in real-time.
+
         """        
         debugger.print('Start:: refresh_optical_permittivity')
         optical = self.settings['Optical permittivity']
         self.optical_tw.blockSignals(True)
         for i,row in enumerate(optical):
             for j, value in enumerate(row):
-                qw = QTableWidgetItem('{0:.4f}'.format(value) )
+                qw = QTableWidgetItem(f'{value:.4f}' )
                 qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                 self.optical_tw.setItem(i,j,qw)
         self.optical_tw.blockSignals(False)
@@ -1098,8 +1103,7 @@ class SettingsTab(QWidget):
         return
 
     def set_optical_permittivity_tw(self):
-        """
-        Set the optical permittivity in the current settings.
+        """Set the optical permittivity in the current settings.
 
         This method sets the 'Optical permittivity' value in the settings to the value of `zerof_optical_dielectric` from the reader, triggers a refresh for the optical permittivity widget, and marks the selected modes for recalculation. It also signals that a refresh is required in the application and ensures the GUI events are processed to keep the application responsive.
 
@@ -1122,8 +1126,7 @@ class SettingsTab(QWidget):
         return
 
     def on_born_changed(self):
-        """
-        Handle changes in the Born checkbox state.
+        """Handle changes in the Born checkbox state.
 
         This method is triggered when the state of the Born checkbox changes. It updates the settings to reflect the new state, marks the session for refresh and recalculation, and then refreshes the UI.
 
@@ -1134,6 +1137,7 @@ class SettingsTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: on_born_change ', self.born_cb.isChecked())
         self.settings['Neutral Born charges'] = self.born_cb.isChecked()
@@ -1146,8 +1150,7 @@ class SettingsTab(QWidget):
         return
 
     def on_eckart_changed(self):
-        """
-        Handles changes in the Eckart flag state.
+        """Handles changes in the Eckart flag state.
 
         This function is triggered when the state of the Eckart checkbox changes.
         It logs the state change, updates the settings to reflect the new state,
@@ -1173,8 +1176,7 @@ class SettingsTab(QWidget):
         return
 
     def calculate(self,vs_cm1):
-        """
-        Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.
+        """Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.
 
         Parameters
         ----------
@@ -1207,8 +1209,7 @@ class SettingsTab(QWidget):
         return
 
     def getCrystalPermittivity(self,vs_cm1):
-        """
-        Return the crystal permittivity
+        """Return the crystal permittivity
 
         Parameters
         ----------
@@ -1219,6 +1220,7 @@ class SettingsTab(QWidget):
         -------
         self.crystal_permittivity : array_like
             The crystal permittivity (a 3x3 tensor) at each frequency
+
         """
         debugger.print('Start:: get_crystal_permittivity', self.refreshRequired)
         if self.calculationRequired or self.refreshRequired or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
@@ -1230,8 +1232,7 @@ class SettingsTab(QWidget):
 
 
     def getCrystalPermittivityObject(self):
-        """
-        Return the crystal permittivity object
+        """Return the crystal permittivity object
 
         Parameters
         ----------
@@ -1241,7 +1242,8 @@ class SettingsTab(QWidget):
         -------
         self.CrystalPermittivityObject : a permittivity object
             An instance of dielectric function
-         """
+
+        """
         debugger.print('Start:: getCrystalPermittivityObject', self.refreshRequired)
         if self.calculationRequired or self.refreshRequired:
             debugger.print('getCrystalPermittivityObject refreshing and recalculating' )

@@ -13,17 +13,14 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-Simple IO interface 
+"""Simple IO interface
 
 This aims to reproduce the python readline() io method, with limited functionality but much faster.
 
-'''
-import sys
+"""
 #
 class pdielec_io:
-    """
-    A class for reading lines from a file and providing an interface similar to file objects.
+    """A class for reading lines from a file and providing an interface similar to file objects.
 
     The class opens a file upon initialization, reads its lines into memory,
     and allows sequential reading of these lines through the readline method.
@@ -56,10 +53,11 @@ class pdielec_io:
     close()
         Resets the reading process by resetting the current line index and
         deleting all lines read from the file from memory.
-    """    
+
+    """
+
     def __init__(self, filename, mode):
-        """
-        Initialize the object with a file's content.
+        """Initialize the object with a file's content.
 
         Parameters
         ----------
@@ -76,8 +74,7 @@ class pdielec_io:
         self.end = len(self.lines)
 
     def readline(self):
-        """
-        Read and return the next line from the stored lines.
+        """Read and return the next line from the stored lines.
 
         This method reads a line from the current position within an internal list of lines
         and then advances the position so that subsequent calls will return subsequent lines.
@@ -91,6 +88,7 @@ class pdielec_io:
         -------
         str
             The next line in the internal list of lines, or an empty string if the end of the list is reached.
+
         """        
         if self.index >= self.end:
             line = ''
@@ -100,8 +98,7 @@ class pdielec_io:
         return line
 
     def close(self):
-        """
-        Closes the current object session.
+        """Closes the current object session.
 
         Resets the index to 0 and deletes the lines attribute from the object.
 
@@ -116,6 +113,7 @@ class pdielec_io:
         Notes
         -----
         This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.
+
         """        
         self.index = 0
         del(self.lines)

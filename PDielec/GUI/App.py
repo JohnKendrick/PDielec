@@ -12,23 +12,23 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-App Module
-'''
-import sys
+"""App Module
+"""
 import os.path
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtCore    import QCoreApplication
-from PDielec.GUI.NoteBook import NoteBook
-import PDielec.Utilities  as Utilities
-from PDielec.Utilities import Debug
+import sys
+
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
 import PDielec.__init__
+from PDielec import Utilities
+from PDielec.GUI.NoteBook import NoteBook
+from PDielec.Utilities import Debug
+
 version = PDielec.__init__.__version__
 
 class App(QMainWindow):
-
-    """
-    A class representing the main application window.
+    """A class representing the main application window.
 
     This class initializes the main application window with various configurations based on command line arguments and environment variables. It includes functionalities to read scripts, handle command line inputs, set up multiprocessing or threading as needed, and manage application events.
 
@@ -74,10 +74,11 @@ class App(QMainWindow):
         Executes the commands from a script file and optionally sets the spreadsheet file name.
     closeEvent(event)
         Handles the close event, ensuring that multiprocessing pools are properly closed.
-    """    
+
+    """
+
     def __init__(self, args, progressbar):
-        """
-        Initialize the GUI with user-specified options from command-line arguments.
+        """Initialize the GUI with user-specified options from command-line arguments.
 
         Parameters
         ----------
@@ -109,6 +110,7 @@ class App(QMainWindow):
         - To specify a script to run: `--script my_script.py`
         - To set the number of CPUs used: `--cpus 4`
         - For help: `--help`
+
         """        
         super().__init__()
         program = ''
@@ -208,7 +210,7 @@ class App(QMainWindow):
         # Continue
         #
         self.version = version
-        self.title = 'PDGui - Using PDielec library {} '.format(self.version)
+        self.title = f'PDGui - Using PDielec library {self.version} '
         self.left = 10
         self.top = 30
         self.width = 900
@@ -247,8 +249,7 @@ class App(QMainWindow):
         return
 
     def print_usage(self):
-        """
-        Print usage information for the PDielec package's graphical user interface.
+        """Print usage information for the PDielec package's graphical user interface.
 
         This function prints the general usage information, available commands, and options for the graphical user interface to the PDielec package.
 
@@ -278,6 +279,7 @@ class App(QMainWindow):
         - `-exit`: Exit the program after executing any script.
         - `-help`: Prints out help information.
         - `-debug`: Switches on debugging information.
+
         """        
         print('pdgui - graphical user interface to the PDielec package')
         print('pdgui [program] filename [spreadsheet] [options]')
@@ -301,8 +303,7 @@ class App(QMainWindow):
         return
 
     def setMyWindowTitle(self,title):
-        """
-        Set the window title with the provided title appended to the PDGui version.
+        """Set the window title with the provided title appended to the PDGui version.
 
         Parameters
         ----------
@@ -316,14 +317,14 @@ class App(QMainWindow):
         Notes
         -----
         This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
+
         """        
-        self.title = 'PDGui {}  - '.format(self.version) + title
+        self.title = f'PDGui {self.version}  - ' + title
         self.setWindowTitle(self.title)
         return
 
     def readScript(self,scriptname,spreadsheet_name=''):
-        """
-        Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
+        """Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
 
         Parameters
         ----------
@@ -353,7 +354,7 @@ class App(QMainWindow):
         scriptname = os.path.basename(scriptname)
         # If a script is used there are no prompts for overwriting files etc.
         self.notebook.overwriting = True
-        with open(scriptname,'r') as fd:
+        with open(scriptname) as fd:
             #lines = fd.readlines()
             script = fd.read()
             exec(script)
@@ -379,8 +380,7 @@ class App(QMainWindow):
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
-        """
-        Handle the close event of the application.
+        """Handle the close event of the application.
 
         This method is called automatically when the close event is fired, typically when
         the user tries to close the application window. It ensures that the multiprocessing
@@ -408,6 +408,7 @@ class App(QMainWindow):
 
         When the application is about to close, this method ensures clean termination
         of multiprocessing resources and performs any additional base class close event handling.
+
         """        
         debugger.print('Close event has been captured')
         self.notebook.pool.close()

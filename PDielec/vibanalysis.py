@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-# -*- coding: utf8 -*-
 """
 vibAnalysis is a Python tool written by Filipe Teixeira the original is available on 
 github at https://github.com/teixeirafilipe/vibAnalysis.
@@ -32,15 +31,16 @@ Full details of the options available can be viewed at https://github.com/teixei
 # Original file is va.py.original
 #
 
-from __future__ import print_function, division
-import numpy as np
-import sys
-import os
 import logging
+import os
+import sys
+from importlib import reload
+
+import numpy as np
+import sklearn as skl
 import sklearn.linear_model as sklm
 import sklearn.metrics as skmt
-import sklearn as skl
-from importlib import reload
+
 
 def InitialiseVaOpts():
     """Define default options for the Vibanalysis package"""
@@ -91,7 +91,7 @@ def InitialiseVaOpts():
     storsions=1.0
 ## Object Classes ##
 
-class Atom():
+class Atom:
         def __init__(self,symbol,r,mass=None):
                 self.symbol=symbol.capitalize()
                 self.mass=mass
@@ -99,12 +99,12 @@ class Atom():
                         mass=Masses[Symbols.index(symbol.lower())]
                 self.r=np.array(r)
         def punch(self):
-                o="{self.symbol:2s} {self.mass:8.4f}".format(self=self)
+                o=f"{self.symbol:2s} {self.mass:8.4f}"
                 for i in range(3):
                         o += " %+16.4f"%(self.r[i])
                 return(o)
 
-class Vibration():
+class Vibration:
         def __init__(self,freq,ndegs,adv=[],ir=None,raman=None,sym=''):
                 self.frequency=float(freq)
                 if(len(adv)==0):
@@ -163,7 +163,7 @@ class Vibration():
                         o += ")"
                 return o
 
-class System():
+class System:
         def __init__(self):
                 self.atoms=[]
                 self.geo=np.array([])
@@ -175,10 +175,10 @@ class System():
                 self.ADM=None
         def punch(self):
                 o="System Data:\n"
-                o += ("Number of atoms = {self.natoms}\n".format(self=self))
+                o += (f"Number of atoms = {self.natoms}\n")
                 o += "\nAtoms, Masses and Positions:\n"
                 for a in self.atoms:
-                        o += "{}\n".format(a.punch())
+                        o += f"{a.punch()}\n"
                 return(o)
         def addAtom(self,symbol,pos,mass=None):
                 self.atoms.append(Atom(symbol,pos,mass))
@@ -249,7 +249,7 @@ def readMopac2016(ifn):
         """Opens a MOPAC2016 output file ifn and returns A System object.
         Depending on Linear and Transition, freqs and modes will be
         pruned out of the translational and rotational components."""
-        f=open(ifn,'r')
+        f=open(ifn)
         data=f.readlines()
         f.close()
         o=System()
@@ -333,7 +333,7 @@ def readHess(ifn):
         """Opens Orca Hess file ifn and returns A System object.
         Depending on Linear and Transition, freqs and modes will be
         pruned out of the translational and rotational components."""
-        f=open(ifn,'r')
+        f=open(ifn)
         data=f.readlines()
         f.close()
         o=System()
@@ -419,10 +419,10 @@ def readPDielec(ifn):
         """Use PDielec library to read hessian information.
         only the first 3 modes will be pruned; the translational components."""
         # Open the file use pdielec library
-        import PDielec.Utilities as Utilities
-        import PDielec.Calculator as Calculator
-        from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses, covalent_radii
         import math
+
+        from PDielec import Calculator, Utilities
+        from PDielec.Constants import amu, average_masses
         # Use as many defaults as possible
         # First determine the program used to create the output file
         program = Utilities.find_program_from_name(ifn)
@@ -513,8 +513,8 @@ def readG09log(ifn):
         Depending on Linear and Transition, freqs and modes will be
         pruned out of the translational and rotational components."""
         o=System()
-        logging.info("Opening Gaussian log file: {:s}".format(ifn))
-        f=open(ifn,'r')
+        logging.info(f"Opening Gaussian log file: {ifn:s}")
+        f=open(ifn)
         data=f.readlines()
         f.close()
         # get number of atoms
@@ -522,7 +522,7 @@ def readG09log(ifn):
         for i in range(len(data)):
                 if('NAtoms=' in data[i]):
                         natoms=int(data[i].split()[1])
-                        logging.info("Expecting {} atoms from reading line {}".format(natoms,i+1))
+                        logging.info(f"Expecting {natoms} atoms from reading line {i+1}")
                         break
         symbols=[]
         mass=np.zeros(natoms)
@@ -612,7 +612,7 @@ def readG09log(ifn):
 def readUserIC(fn):
         """Reads additional internal coordinates defined by the user"""
         o=[]
-        f=open(fn,'r')
+        f=open(fn)
         udata=f.readlines()
         f.close()
         for line in udata:
@@ -765,18 +765,18 @@ def angleAmp(geo,al,deg=False):
         the atoms in al, with al[1] being the apex (numbering starts at 0)."""
         r01=geo[al[0]]-geo[al[1]]
         r21=geo[al[2]]-geo[al[1]]
-        logging.debug("""Vectors for angle {}, {} and {}:
-        R01 = {} (norm: {})
-        R21 = {} (norm: {})
-        R01 (dot) R02 = {}""".format(al[0]+1,al[1]+1,al[2]+1,r01,np.linalg.norm(r01),r21,np.linalg.norm(r21),np.dot(r01,r21)))
+        logging.debug(f"""Vectors for angle {al[0]+1}, {al[1]+1} and {al[2]+1}:
+        R01 = {r01} (norm: {np.linalg.norm(r01)})
+        R21 = {r21} (norm: {np.linalg.norm(r21)})
+        R01 (dot) R02 = {np.dot(r01,r21)}""")
         r01=r01/np.linalg.norm(r01)
         r21=r21/np.linalg.norm(r21)
-        logging.debug("""Normalized vectors for angle {}, {} and {}:
-        R01 = {} (norm: {})
-        R21 = {} (norm: {})
-        R01 (dot) R02 = {}""".format(al[0]+1,al[1]+1,al[2]+1,r01,np.linalg.norm(r01),r21,np.linalg.norm(r21),np.dot(r01,r21)))
+        logging.debug(f"""Normalized vectors for angle {al[0]+1}, {al[1]+1} and {al[2]+1}:
+        R01 = {r01} (norm: {np.linalg.norm(r01)})
+        R21 = {r21} (norm: {np.linalg.norm(r21)})
+        R01 (dot) R02 = {np.dot(r01,r21)}""")
         phi=np.arccos(np.round(np.dot(r01,r21),decimals=12))
-        logging.info("Angle between atoms {}, {} and {} = {:7.2f} degs.\n".format(al[0]+1,al[1]+1,al[2]+1,np.rad2deg(phi)))
+        logging.info(f"Angle between atoms {al[0]+1}, {al[1]+1} and {al[2]+1} = {np.rad2deg(phi):7.2f} degs.\n")
         if(deg):
                 phi=np.rad2deg(phi)
         return phi
@@ -793,19 +793,13 @@ def oopAmp(geo,al,deg=False):
         n1=np.cross(r1,r2)
         n2=np.cross(r3,r2)
         atmp=np.dot(n1,n2)/(np.linalg.norm(n1)*np.linalg.norm(n2))
-        logging.debug("""Normalized vectors for OOP angle {}, {}, {} and {}:
-        R1 = {} (norm: {})
-        R2 = {} (norm: {})
-        R3 = {} (norm: {})
-        N1 = {} (norm: {})
-        N2 = {} (norm: {})
-        N1 (dot) N2 = {}""".format(al[0]+1,al[2]+1,al[3]+1,al[1]+1,
-        r1,np.linalg.norm(r1),
-        r2,np.linalg.norm(r2),
-        r3,np.linalg.norm(r3),
-        n1,np.linalg.norm(n1),
-        n2,np.linalg.norm(n2),
-        np.dot(n1,n2)))
+        logging.debug(f"""Normalized vectors for OOP angle {al[0]+1}, {al[2]+1}, {al[3]+1} and {al[1]+1}:
+        R1 = {r1} (norm: {np.linalg.norm(r1)})
+        R2 = {r2} (norm: {np.linalg.norm(r2)})
+        R3 = {r3} (norm: {np.linalg.norm(r3)})
+        N1 = {n1} (norm: {np.linalg.norm(n1)})
+        N2 = {n2} (norm: {np.linalg.norm(n2)})
+        N1 (dot) N2 = {np.dot(n1,n2)}""")
         if(atmp>1.0):
                 phi=np.arccos(1.0)
         elif(atmp<-1.0):
@@ -819,8 +813,8 @@ def oopAmp(geo,al,deg=False):
         nc=np.cross(n1p,n2p)
         if(np.dot(nc,r1)>0.0):
                 phi = (2.0*np.pi)-phi
-        logging.info("""Amplitude for OOP angle {}, {}, {} and {}: {:+7.2f} degs.
-        """.format(al[0]+1,al[2]+1,al[3]+1,al[1]+1, np.rad2deg(phi)))
+        logging.info(f"""Amplitude for OOP angle {al[0]+1}, {al[2]+1}, {al[3]+1} and {al[1]+1}: {np.rad2deg(phi):+7.2f} degs.
+        """)
         if(deg):
                 phi=np.rad2deg(phi)
         return phi
@@ -930,9 +924,8 @@ def makeIC(o,useric=[]):
                                 if(Opts["doAutoSel"]):
                                         if((candidate not in langles)and(centred[common]<valence[common])):
                                                 langles.append(candidate)
-                                else:
-                                        if(candidate not in langles):
-                                                langles.append(candidate)
+                                elif(candidate not in langles):
+                                        langles.append(candidate)
         #find dihedrals (torsions) and out-of-plane (outs)
         #exclude if any of the angles is larger than 179 degs
         for i in range(len(langles)):
@@ -963,9 +956,8 @@ def makeIC(o,useric=[]):
                                                                 teta=oopAmp(geo,[a1,a2,a3,a4])
                                                                 if((np.abs(teta-np.pi)<Opts['oopTol'])and([a1,a2,a3,a4] not in loop)):
                                                                         loop.append([a1,a2,a3,a4])
-                                                        else:
-                                                                if([a1,a2,a3,a4] not in loop):
-                                                                        loop.append([a1,a2,a3,a4])
+                                                        elif([a1,a2,a3,a4] not in loop):
+                                                                loop.append([a1,a2,a3,a4])
                                 # now the torsions...
                                 else:
                                         candidate=[]
@@ -981,10 +973,9 @@ def makeIC(o,useric=[]):
                                                 if((candidate!=[])and(candidate[1:]not in [h[1:] for h in ltors])):
                                                         if(Opts['doTors']):
                                                                 ltors.append(candidate)
-                                        else:
-                                                if(candidate!=[]):
-                                                        if(Opts['doTors']):
-                                                                ltors.append(candidate)
+                                        elif(candidate!=[]):
+                                                if(Opts['doTors']):
+                                                        ltors.append(candidate)
         #calc S for bonds
         o.S=np.zeros((3*natoms,len(lbonds)+len(langles)+len(loop)+len(ltors)))
         o.intcoords=[]

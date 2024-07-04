@@ -13,17 +13,18 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Read the contents of a directory containing DFT output and create a pickled filed
+"""Read the contents of a directory containing DFT output and create a pickled filed
 """
 import sys
+
 import dill as pickle
+
 import PDielec.__init__
+
 version = PDielec.__init__.__version__
 
 def print_help():
-    """
-    Print help information to standard error and exit the program.
+    """Print help information to standard error and exit the program.
 
     This function prints out instructions for using a command-line tool that reads in a pickled file. The file should have been created with a specific flag ('-pickle') using the 'preader' command. It also outputs the version of the program.
 
@@ -40,8 +41,7 @@ def print_help():
     exit()
 
 def main():
-    """
-    Main program entry point.
+    """Main program entry point.
 
      his function reads a serialized object from a pickle file specified as the first command line argument. It deserializes objects from the file until it reaches the end of the file and then iterates through these objects, printing their details and the details of their last unit cell.
 
@@ -66,6 +66,7 @@ def main():
     Note
     ----
     The function requires the 'sys' and 'pickle' modules to be imported.
+
     """    
     #
     # Print out the help file if there is nothing else on the command line
@@ -91,12 +92,12 @@ def main():
         except EOFError:
             pass
     #
-    print('Read in {} readers'.format(len(readers)))
+    print(f'Read in {len(readers)} readers')
     #
     # Loop over the readers and print out some information - assign a variable
     #
     for reader in readers:
-        print('NEW READER type={}, file={}'.format(reader.type,reader.names[0]))
+        print(f'NEW READER type={reader.type}, file={reader.names[0]}')
         reader.print()
         print('LAST CELL')
         lastcell = reader.get_unit_cell()

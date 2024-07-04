@@ -13,22 +13,21 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-graphdatagenerator command
-'''
+"""graphdatagenerator command
+"""
 import sys
+
 import numpy as np
 from openpyxl import load_workbook
 
 
 def main():
-    '''
-    Main driver routine for graphdatagenerator.
+    """Main driver routine for graphdatagenerator.
 
     This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates the results.
     It is a utility programme and not part of the main PDielec or PDGui packages
 
-   ::
+    ::
 
        graphdatagenerator file1 file2...
        graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec
@@ -42,15 +41,15 @@ def main():
                 -sheet [molar/absorption/real/imaginary/atr]
                 -excel filename
 
-    '''
+    """
     def show_usage():
-        '''
-        Show graphdatagenerator usage.
+        """Show graphdatagenerator usage.
 
         Returns
         -------
         None
-        '''
+
+        """
         print('graphdatagenerator file1 file2...')
         print('graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec')
         print('         -column column  Take the data from column in each spreadsheet')
@@ -145,8 +144,8 @@ def main():
         # print('Work sheet names for ',f1_name)
         # print(wb1.get_sheet_names())
         ws1 = wb1[sheet]
-        range1 = '{}{}'.format(column,rmin)
-        range2 = '{}{}'.format(column,rmax)
+        range1 = f'{column}{rmin}'
+        range2 = f'{column}{rmax}'
         col1 = np.array([[i.value for i in j] for j in ws1[range1:range2]])
         # Convert to a 1D array
         col1 = col1[:,0]

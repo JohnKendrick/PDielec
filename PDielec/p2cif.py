@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Read the contents of a directory containing DFT output and create a cif file of the structure
+"""Read the contents of a directory containing DFT output and create a cif file of the structure
 
 This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
 
@@ -38,35 +37,31 @@ Command-line usage examples:
     ```
     python script_name.py -debug -program gulp file1 file2 ...
     ```
+
 """
-from __future__ import print_function
-import os, sys
-import psutil
-from PDielec.VaspOutputReader import VaspOutputReader
-from PDielec.CastepOutputReader import CastepOutputReader
-from PDielec.GulpOutputReader import GulpOutputReader
-from PDielec.CrystalOutputReader import CrystalOutputReader
-from PDielec.AbinitOutputReader import AbinitOutputReader
-from PDielec.QEOutputReader import QEOutputReader
-from PDielec.PhonopyOutputReader import PhonopyOutputReader
-import PDielec.Utilities as Utilities
+import os
+import sys
 from multiprocessing import Pool
 
+import psutil
+
+from PDielec import Utilities
+
+
 def set_affinity_on_worker():
-    """
-    When a new worker process is created, the affinity is set to all CPUs.
+    """When a new worker process is created, the affinity is set to all CPUs.
 
     Notes
     -----
     None.
+
     """
     #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
     #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
-    """
-    Read data from a file and process it using specified reader utilities.
+    """Read data from a file and process it using specified reader utilities.
 
     Parameters
     ----------
@@ -89,6 +84,7 @@ def read_a_file( calling_parameters):
     This function requires that a `Utilities` class with a `get_reader` method is available 
     in the scope where this function is used. The `get_reader` method should return an object 
     with a `read_output` method and a `unit_cells` attribute that is a list.
+
     """    
     name, program, qmprogram, debug = calling_parameters
     reader = Utilities.get_reader(name,program,qmprogram)
@@ -98,8 +94,7 @@ def read_a_file( calling_parameters):
 
 def main():
     # Start processing the directories
-    """
-    Main entry point for processing and converting files.
+    """Main entry point for processing and converting files.
 
     This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
 
@@ -125,6 +120,7 @@ def main():
         ```
         python script_name.py -debug -program gulp file1 file2 ...
         ```
+
     """    
     if len(sys.argv) <= 1 :
         print('p2cif -program program filenames .....', file=sys.stderr)
@@ -162,12 +158,12 @@ def main():
         print('Please use -program to define the package used to generate the output files',file=sys.stderr)
         exit()
 
-    if not program in ['abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment','auto']:
+    if program not in ['abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment','auto']:
         print('Program is not recognised: ',program,file=sys.stderr)
         exit()
 
     if program == 'phonopy':
-        if not qmprogram in ['abinit','castep','crystal','gulp','qe','vasp']:
+        if qmprogram not in ['abinit','castep','crystal','gulp','qe','vasp']:
             print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
             exit()
         print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)

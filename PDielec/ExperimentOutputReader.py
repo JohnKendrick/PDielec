@@ -13,20 +13,19 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-Read the contents of a directory containing Experiment input and output files.
-'''
+"""Read the contents of a directory containing Experiment input and output files."""
 import re
+
 import numpy as np
-from PDielec.UnitCell import UnitCell
+
+from PDielec import DielectricFunction
+from PDielec.Calculator import initialise_diagonal_tensor
 from PDielec.GenericOutputReader import GenericOutputReader
-from PDielec.Calculator          import initialise_diagonal_tensor
-import PDielec.DielectricFunction as DielectricFunction
+from PDielec.UnitCell import UnitCell
 
 
 class ExperimentOutputReader(GenericOutputReader):
-    """
-    Read the contents of a directory containing Experiment input and output files.
+    """Read the contents of a directory containing Experiment input and output files.
 
     Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
 
@@ -49,11 +48,11 @@ class ExperimentOutputReader(GenericOutputReader):
         Initially None, intended for storing oscillator strengths data.
     frequencies : NoneType or Various types
         Initially None, intended for storing frequencies data.
+
     """
 
     def __init__(self, names):
-        """
-        Initialize an instance of the class.
+        """Initialize an instance of the class.
 
         Parameters
         ----------
@@ -74,6 +73,7 @@ class ExperimentOutputReader(GenericOutputReader):
             Initially None, intended for storing oscillator strengths data.
         frequencies : NoneType or Various types
             Initially None, intended for storing frequencies data.
+
         """        
         GenericOutputReader.__init__(self, names)
         self.type                    = 'Experimental output'
@@ -84,8 +84,7 @@ class ExperimentOutputReader(GenericOutputReader):
         self.frequencies = None
 
     def _read_line(self):
-        """
-        Read and return the next non-comment, non-empty line from the file.
+        """Read and return the next non-comment, non-empty line from the file.
 
         This method reads lines from a file, skipping over any lines that are
         either empty, contain only whitespace, or start with the '#' character
@@ -104,6 +103,7 @@ class ExperimentOutputReader(GenericOutputReader):
         Notes
         -----
         - Lines consisting solely of whitespace characters (spaces, tabs, newlines) are considered empty.
+
         """        
         line = self.file_descriptor.readline()
         while not line.strip() or line[0] == '#':
@@ -111,8 +111,7 @@ class ExperimentOutputReader(GenericOutputReader):
         return line
 
     def _read_output_files(self):
-        """
-        Define the search strings and read the Experiment files in the directory.
+        """Define the search strings and read the Experiment files in the directory.
 
         Parameters
         ----------
@@ -121,6 +120,7 @@ class ExperimentOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['lattice']       = (re.compile('lattice'),          self._read_lattice_vectors)
@@ -144,16 +144,17 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_constant_model(self, line):
-        """
-        Read in a full constant dielectric tensor 3 values on each line.
+        """Read in a full constant dielectric tensor 3 values on each line.
 
         Parameters
         ----------
         line : str
+            Line to be read (not used)
 
         Returns
         -------
         None
+
         """
         od = []
         line = self._read_line()
@@ -176,18 +177,19 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_interpolate1_model(self, line):
-        """
-        Read in a tabulated permittivity and use it for interpolation.
+        """Read in a tabulated permittivity and use it for interpolation.
 
         Only a single permittivity is given (real & imaginary) which is taken to be isotropic
 
         Parameters
         ----------
         line : str
+            Line to be read (not used)
 
         Returns
         -------
         None
+
         """
         line = self._read_line()
         line = line.lower()
@@ -215,20 +217,20 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_interpolate3_model(self, line):
-        """
-        Read in a tabulated permittivity and use it for interpolation.
+        """Read in a tabulated permittivity and use it for interpolation.
 
         Three permittivities are given from the diagonal components of the tensor
 
         Parameters
         ----------
         line : str
+            Line to be read (not used)
 
         Returns
         -------
         None
+
         """
-        full_eps = []
         line = self._read_line()
         line = line.lower()
         line = line.replace(',',' ')
@@ -263,20 +265,20 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_interpolate6_model(self, line):
-        """
-        Read in a tabulated permittivity and use it for interpolation.
+        """Read in a tabulated permittivity and use it for interpolation.
 
         This is a full 6 parameter permittivity matrix
 
         Parameters
         ----------
         line : str
+            Line to be read
 
         Returns
         -------
         None
+
         """
-        full_eps = []
         line = self._read_line()
         line = line.lower()
         line = line.replace(',',' ')
@@ -323,12 +325,12 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_drude_lorentz_model(self, line):
-        """
-        Read in the drude_lorentz model parameters.
+        """Read in the drude_lorentz model parameters.
 
         Parameters
         ----------
         line : str
+            line to be read
 
         Returns
         -------
@@ -347,18 +349,18 @@ class ExperimentOutputReader(GenericOutputReader):
         zz  1
         413.7 1050.0  22.2
         ```
+
         """
         omegas_all = []
         strengths_all = []
         gammas_all = []
-        for diag in range(0,3):
+        for _diag in range(0,3):
             line = self._read_line().split()
-            element = line[0]
             n = int(line[1])
             omegas = []
             strengths = []
             gammas = []
-            for i in range(n):
+            for _i in range(n):
                 line = self._read_line().split()
                 omegas.append(float(line[0]))
                 strengths.append(float(line[1]))
@@ -377,14 +379,14 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_fpsq_model(self, line):
-        """
-        Read in the fpsq model parameters.
+        """Read in the fpsq model parameters.
 
         There is a separator between each diagonal contribution to the permittivity.
 
         Parameters
         ----------
         line : str
+            Line to be processed
 
         Returns
         -------
@@ -418,20 +420,20 @@ class ExperimentOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """
         omega_tos_all = []
         gamma_tos_all = []
         omega_los_all = []
         gamma_los_all = []
-        for diag in range(0,3):
+        for _diag in range(0,3):
             line = self._read_line().split()
-            element = line[0]
             n = int(line[1])
             omega_tos = []
             gamma_tos = []
             omega_los = []
             gamma_los = []
-            for i in range(n):
+            for _i in range(n):
                 line = self._read_line().split()
                 omega_tos.append(float(line[0]))
                 gamma_tos.append(float(line[1]))
@@ -452,8 +454,7 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_frequencies(self, line):
-        """
-        Reads frequencies and oscillator strengths from a line and appends them to the object's attributes.
+        """Read frequencies and oscillator strengths from a line and append them to the object's attributes.
 
         Parameters
         ----------
@@ -475,11 +476,12 @@ class ExperimentOutputReader(GenericOutputReader):
         and the second entry is the oscillator strength. It also uses '_read_line' method, which is not defined in the snippet,
         to read each subsequent line for the frequencies and their oscillator strengths. Furthermore, 'initialise_diagonal_tensor'
         is used to convert the scalar strength values into tensor form, which is not detailed here.
+
         """        
         nfreq = int(line.split()[1])
         self.frequencies = []
         self.oscillator_strengths = []
-        for i in range(nfreq):
+        for _i in range(nfreq):
             line = self._read_line()
             self.frequencies.append(float(line.split()[0]))
             strength = float(line.split()[1])
@@ -487,8 +489,7 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_species(self, line):
-        """
-        Read species information from a line.
+        """Read species information from a line.
 
         Parameters
         ----------
@@ -502,11 +503,12 @@ class ExperimentOutputReader(GenericOutputReader):
         Notes
         -----
         This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.
+
         """        
         nspecies = int(line.split()[1])
         self.species = []
         self.masses_per_type = []
-        for i in range(nspecies):
+        for _i in range(nspecies):
             line = self._read_line()
             species = line.split()[0]
             self.species.append(species)
@@ -516,18 +518,19 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_cpk_lattice_vectors(self, line):
-        """
-        Process a cpk input file with cell information
+        """Process a cpk input file with cell information.
 
         The lattice vectors are assumed to be in Angstrom
 
         Parameters
         ----------
         line : str
+            Line to be processed (not used)
 
         Returns
         -------
         None
+
         """
         line = line.lower()
         split_line = line.split()
@@ -557,8 +560,7 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_lattice_vectors(self, line):
-        """
-        Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.
+        """Read and process lattice vectors from an input line, then updates internal structures with the new unit cell.
 
         This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
         The lattice vectors are assumed to be in Angstrom
@@ -575,6 +577,7 @@ class ExperimentOutputReader(GenericOutputReader):
         See Also
         --------
         UnitCell : A class or function used to represent and manipulate unit cell information.
+
         """        
         line = self._read_line()
         scalar = float(line.split()[0])
@@ -593,8 +596,7 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_cpk_coords(self, line):
-        """
-        Read CPK coordinates from a given line and update class attributes accordingly.
+        """Read CPK coordinates from a given line and update class attributes accordingly.
 
         The coordinates are assumed to be in Angstrom
 
@@ -609,7 +611,6 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Notes
         -----
-
         - This method directly modifies several attributes of the class instance it 
           belongs to, including lists of species, ions, and masses, as well as data 
           structures related to unit cells.
@@ -627,7 +628,6 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Raises
         ------
-
         - This function implicitly assumes correct formatting and content of the input data. 
           If the data is not correctly formatted or if `_read_line` fails to read further 
           lines as expected, unexpected behavior or errors could occur.
@@ -635,6 +635,7 @@ class ExperimentOutputReader(GenericOutputReader):
         See Also
         --------
         _read_line : Method used to read the next line for continued parsing.
+
         """        
         line = self._read_line()
         line = line.lower()
@@ -665,14 +666,13 @@ class ExperimentOutputReader(GenericOutputReader):
         # end while
         self.unit_cells[-1].set_xyz_coordinates(ions,units='Angstrom')
         self.unit_cells[-1].set_element_names(species_list)
-        if self.oscillator_strengths == None:
+        if self.oscillator_strengths is None:
             self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )
-        if self.frequencies == None:
-            self.frequencies = np.zeros( (3*self.nions) )
+        if self.frequencies is None:
+            self.frequencies = np.zeros( 3*self.nions )
 
     def _read_fractional_coordinates(self, line):
-        """
-        Read and process fractional coordinates from a string line.
+        """Read and process fractional coordinates from a string line.
 
         This method reads a string representing a line containing the number of ions followed by the fractional coordinates and species of each ion. It updates the instance variables associated with the ions' type, position, mass, and further initializes oscillator strengths and frequencies arrays if they haven't been initialized yet.
 
@@ -696,14 +696,14 @@ class ExperimentOutputReader(GenericOutputReader):
         - Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays if they haven't been already.
 
         Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
+
         """        
-        n = 0
         ions = []
         self.nions = int(line.split()[1])
         self.ions_per_type = [ 0 for s in self.species ]
         self.masses = []
         species_list = []
-        for n in range(self.nions):
+        for _n in range(self.nions):
             line = self._read_line()
             species = line.split()[0]
             index = self._ion_type_index[species]
@@ -714,15 +714,14 @@ class ExperimentOutputReader(GenericOutputReader):
             self.masses.append(self.masses_per_type[index])
         self.unit_cells[-1].set_fractional_coordinates(ions)
         self.unit_cells[-1].set_element_names(species_list)
-        if self.oscillator_strengths == None:
+        if self.oscillator_strengths is None:
             self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )
-        if self.frequencies == None:
-            self.frequencies = np.zeros( (3*self.nions) )
+        if self.frequencies is None:
+            self.frequencies = np.zeros( 3*self.nions )
         return
 
     def _read_static_dielectric(self, line):
-        """
-        Read and process static dielectric data.
+        """Read and process static dielectric data.
 
         Parameters
         ----------
@@ -747,6 +746,7 @@ class ExperimentOutputReader(GenericOutputReader):
         ------
         ValueError
             If the input lines cannot be converted into complex numbers.
+
         """        
         # the is epsilon infinity
         od = []
@@ -768,8 +768,7 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def calculate_mass_weighted_normal_modes(self):
-        """
-        Calculate the mass weight normal modes
+        """Calculate the mass weight normal modes.
 
         Parameters
         ----------
@@ -780,6 +779,7 @@ class ExperimentOutputReader(GenericOutputReader):
         np.array
             Returns an array for the mass weighted normal modes which in this case is zero
             The array has a shape 3*nions, nions, 3
+
         """        
         self.mass_weighted_normal_modes = np.zeros( (3*self.nions,self.nions,3) )
         return self.mass_weighted_normal_modes

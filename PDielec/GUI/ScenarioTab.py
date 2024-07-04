@@ -12,22 +12,20 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-ScenarioTab module
-'''
+"""ScenarioTab module
+"""
 # -*- coding: utf8 -*-
-from PyQt5.QtWidgets   import  QWidget, QHBoxLayout, QPushButton, QLabel, QLineEdit
-from PyQt5.QtWidgets   import  QFileDialog
-from PyQt5.QtCore      import  Qt
-from PDielec.Utilities import  Debug
-from PDielec           import __file__  as PDielec_init_filename
-from PDielec.Materials import MaterialsDataBase
-from PDielec.Materials import Material
 import os
 
+from PyQt5.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
+
+from PDielec import __file__ as PDielec_init_filename
+from PDielec.Materials import MaterialsDataBase
+from PDielec.Utilities import Debug
+
+
 class ScenarioTab(QWidget):
-    """
-    A class representing a tab for scenario configurations within a user interface.
+    """A class representing a tab for scenario configurations within a user interface.
 
     This class provides functionalities for managing and interacting with scenarios.
     It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
@@ -101,10 +99,10 @@ class ScenarioTab(QWidget):
     switchScenarioButtonClicked()
         Handle the scenario when a button has been clicked.
 
-    """    
+    """
+
     def __init__(self, parent, debug=False):
-        """
-        This the initialiser for ScenarioTabs.
+        """This the initialiser for ScenarioTabs.
 
         Parameters
         ----------
@@ -112,6 +110,7 @@ class ScenarioTab(QWidget):
             The parent widget.
         debug : bool, optional
             Flag to turn debugging messages on or off.
+
         """
         super(QWidget, self).__init__(parent)
         global debugger
@@ -148,8 +147,7 @@ class ScenarioTab(QWidget):
         debugger.print('Finished:: initialiser')
 
     def openDataBase(self):
-        '''
-        Open the database and set the material names.
+        """Open the database and set the material names.
 
         Parameters
         ----------
@@ -159,7 +157,7 @@ class ScenarioTab(QWidget):
         -------
         None
 
-        '''
+        """
         selfilter = 'Spreadsheet (*.xlsx)'
         filename,myfilter = QFileDialog.getOpenFileName(self,'Open spreadsheet','','Spreadsheet (*.xls);;Spreadsheet (*.xlsx);;All files(*)',selfilter)
         # Process the filename
@@ -178,8 +176,7 @@ class ScenarioTab(QWidget):
         return
 
     def getNoCalculationsRequired(self):
-        """
-        Get the number of spectra that need recalculating from this scenario.
+        """Get the number of spectra that need recalculating from this scenario.
 
         Parameters
         ----------
@@ -189,6 +186,7 @@ class ScenarioTab(QWidget):
         -------
         int
             The number of spectra requiring recalculation.
+
         """
         if self.refreshRequired:
             result = self.noCalculationsRequired
@@ -198,8 +196,7 @@ class ScenarioTab(QWidget):
         return result
 
     def requestRefresh(self):
-        """
-        Request a refresh of the scenario
+        """Request a refresh of the scenario
 
         Parameters
         ----------
@@ -208,14 +205,14 @@ class ScenarioTab(QWidget):
         Returns
         -------
         None
+
         """
         debugger.print(self.settings['Legend'], 'requestRefresh')
         self.refreshRequired = True
         return
 
     def set_reader(self,reader):
-        '''
-        Set the reader associated with this scenario
+        """Set the reader associated with this scenario
 
         Parameters
         ----------
@@ -224,15 +221,15 @@ class ScenarioTab(QWidget):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print(self.settings['Legend'], 'set_reader')
         self.refreshRequired = True
         self.reader = reader
         return
 
     def setScenarioIndex(self,index):
-        '''
-        Set the index for the current scenario.  Also set a default legend name based on the index
+        """Set the index for the current scenario.  Also set a default legend name based on the index
 
         Parameters
         ----------
@@ -242,7 +239,8 @@ class ScenarioTab(QWidget):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print(self.settings['Legend'], 'setScenarioIndex',index)
         self.scenarioIndex = index
         text = self.settings['Legend']
@@ -253,8 +251,7 @@ class ScenarioTab(QWidget):
         return
 
     def print_settings(self):
-        '''
-        Print all the settings for this scenario.
+        """Print all the settings for this scenario.
 
         Parameters
         ----------
@@ -263,7 +260,8 @@ class ScenarioTab(QWidget):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print(self.settings['Legend'], 'print_settings')
         print('#')
         print('# Scenario tab')
@@ -273,8 +271,7 @@ class ScenarioTab(QWidget):
             print(key, self.settings[key])
 
     def on_legend_le_changed(self,text):
-        '''
-        Handle a change in the scenario legend.
+        """Handle a change in the scenario legend.
 
         Parameters
         ----------
@@ -285,15 +282,14 @@ class ScenarioTab(QWidget):
         -------
         None
 
-        '''
+        """
         debugger.print(self.settings['Legend'], 'on_legend_le_changed',text)
         # self.refreshRequired = True
         self.settings['Legend'] = text
         return
 
     def  add_scenario_buttons(self):
-        """
-        Add a set of scenario buttons in an hbox. Return the hbox.
+        """Add a set of scenario buttons in an hbox. Return the hbox.
 
         Parameters
         ----------
@@ -303,6 +299,7 @@ class ScenarioTab(QWidget):
         -------
         hbox
             The hbox containing the scenario buttons.
+
         """
         debugger.print(self.settings['Legend'], 'add_scenario_buttons start')
         hbox = QHBoxLayout()
@@ -326,8 +323,7 @@ class ScenarioTab(QWidget):
         return hbox
 
     def addScenarioButtonClicked(self):
-        '''
-        Handle when the "add another scenario" button has been clicked.
+        """Handle when the "add another scenario" button has been clicked.
 
         Parameters
         ----------
@@ -336,15 +332,15 @@ class ScenarioTab(QWidget):
         Returns
         -------
         None
-        '''
+
+        """
         # Add another scenario
         debugger.print(self.settings['Legend'], 'addScenarioButtonClicked')
         self.notebook.addScenario(copyFromIndex=self.scenarioIndex)
         return
 
     def deleteScenarioButtonClicked(self):
-        '''
-        Handle when a delete button has been clicked.
+        """Handle when a delete button has been clicked.
 
         Parameters
         ----------
@@ -353,14 +349,14 @@ class ScenarioTab(QWidget):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print(self.settings['Legend'], 'deleteScenarioButtonClicked')
         self.notebook.deleteScenario(self.scenarioIndex)
         return
 
     def switchScenarioButtonClicked(self):
-        '''
-        Handle the switch scenario when a button has been clicked.
+        """Handle the switch scenario when a button has been clicked.
 
         Asks the notebook to change the scenario type (Powder or Crystal) to the other.
 
@@ -371,7 +367,8 @@ class ScenarioTab(QWidget):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print(self.settings['Legend'],'switchScenarioButtonClicked')
         self.notebook.switchScenario(self.scenarioIndex)
         return

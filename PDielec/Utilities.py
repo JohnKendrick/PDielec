@@ -13,27 +13,25 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-Utility Functions
+"""Utility Functions
 
 A set of utility functions that may be used anywhere in the package.
-'''
+"""
 
-from __future__ import print_function
 import os
 
-from PDielec.VaspOutputReader import VaspOutputReader
-from PDielec.PhonopyOutputReader import PhonopyOutputReader
-from PDielec.CastepOutputReader import CastepOutputReader
-from PDielec.GulpOutputReader import GulpOutputReader
-from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.AbinitOutputReader import AbinitOutputReader
-from PDielec.QEOutputReader import QEOutputReader
+from PDielec.CastepOutputReader import CastepOutputReader
+from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.ExperimentOutputReader import ExperimentOutputReader
+from PDielec.GulpOutputReader import GulpOutputReader
+from PDielec.PhonopyOutputReader import PhonopyOutputReader
+from PDielec.QEOutputReader import QEOutputReader
+from PDielec.VaspOutputReader import VaspOutputReader
+
 
 def printsp(name,matrix):
-    '''
-    Utility routine for printing 4x4 matrices or 4 vectors.
+    """Utility routine for printing 4x4 matrices or 4 vectors.
 
     Parameters
     ----------
@@ -46,7 +44,8 @@ def printsp(name,matrix):
     Notes
     -----
     None
-    '''
+
+    """
     print('')
     print(name)
     if len(matrix.shape) == 1:
@@ -67,8 +66,7 @@ def printsp(name,matrix):
 
 def find_program_from_name( filename ):
     # Determine the program to use from the file name being used
-    """
-    Determine the simulation program from a given filename.
+    """Determine the simulation program from a given filename.
 
     Parameters
     ----------
@@ -86,7 +84,6 @@ def find_program_from_name( filename ):
 
     Examples
     --------
-
     ::
 
         program = find_program_from_name('./data/structure.castep')
@@ -131,8 +128,7 @@ def find_program_from_name( filename ):
     return ''
 
 def get_reader( name, program, qmprogram):
-    """
-    Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
+    """Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
 
     This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.
 
@@ -158,6 +154,7 @@ def get_reader( name, program, qmprogram):
     --------
     >>> reader = get_reader("output.log", "castep", "")
     >>> reader = get_reader("output", "phonopy", "vasp")
+
     """    
     fulldirname = name
     head,tail = os.path.split(fulldirname)
@@ -191,7 +188,7 @@ def get_reader( name, program, qmprogram):
         names = []
         for n in [ name1, name2, name3, name4 ]:
             if os.path.isfile(n):
-                if not n in names:
+                if n not in names:
                     names.append(n)
         reader = QEOutputReader( names )
     elif program == "phonopy":
@@ -237,8 +234,7 @@ def get_reader( name, program, qmprogram):
 
 
 def pdgui_get_reader(program,names,qmprogram):
-    """
-    Get the appropriate reader based on the provided program and file names.
+    """Get the appropriate reader based on the provided program and file names.
 
     This function determines the correct output reader to use based on the program specified and the presence of certain files
     in the provided directory or file names list. It supports various quantum mechanics and molecular dynamics
@@ -279,6 +275,7 @@ def pdgui_get_reader(program,names,qmprogram):
 
     >>> qm_reader = pdgui_get_reader('phonopy', ['path/to/phonopy/files'], 'vasp')
     >>> print(qm_reader)
+
     """    
     reader = None
     program = program.lower()
@@ -289,13 +286,13 @@ def pdgui_get_reader(program,names,qmprogram):
         #  If names[0] is a directory then we will use a vaspoutputreader
         #  Otherwise it is a seedname for castep, or a gulp output file, or a crystal output file
         if os.path.isdir(names[0]):
-            print('Analysing VASP directory: {} '.format(names[0]))
+            print(f'Analysing VASP directory: {names[0]} ')
             outcarfile = os.path.join(names[0], "OUTCAR")
             kpointsfile = os.path.join(names[0], "KPOINTS")
             if not os.path.isfile(outcarfile):
                 print("Error: NO OUTCAR FILE IN DIRECTORY")
                 reader = None
-                return
+                return None
             reader = VaspOutputReader( [outcarfile, kpointsfile] )
         elif names[0].find("OUTCAR") >= 0 and os.path.isfile("OUTCAR"):
             reader = VaspOutputReader(names)
@@ -343,8 +340,8 @@ def pdgui_get_reader(program,names,qmprogram):
         for f in checkfiles:
             #jk print("The file containing the output is: {}".format(f))
             if not os.path.isfile(f):
-                print("Output files created by program: {}".format(program))
-                print("Error: file not available: {}".format(f))
+                print(f"Output files created by program: {program}")
+                print(f"Error: file not available: {f}")
                 reader = None
                 return reader
         # The files requested are available so read them
@@ -382,9 +379,8 @@ def pdgui_get_reader(program,names,qmprogram):
     # end if
     return reader
 
-class Debug():
-    """
-    A class aimed at providing a structured way to include debug messages in code.
+class Debug:
+    """A class aimed at providing a structured way to include debug messages in code.
 
     Methods
     -------
@@ -396,10 +392,11 @@ class Debug():
     Notes
     -----
     The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
-    """    
+
+    """
+
     def __init__(self,debug,text,level=0):
-        """
-        Initialize an instance with debug status, text, and optional level.
+        """Initialize an instance with debug status, text, and optional level.
 
         Parameters
         ----------
@@ -409,6 +406,7 @@ class Debug():
             The text associated with the instance.
         level : int, optional
             The level of the instance, by default 0.
+
         """        
         self.debug = debug
         self.text  = text
@@ -416,8 +414,7 @@ class Debug():
         return
 
     def print(self,*args,level=0):
-        """
-        Prints message if debugging level allows.
+        """Prints message if debugging level allows.
 
         Parameters
         ----------
@@ -431,6 +428,7 @@ class Debug():
         -----
         This method will only print the message if the instance's `debug` flag is True
         and the provided `level` is less than or equal to the instance's `level`.
+
         """        
         if self.debug:
             if level <= self.level:
@@ -438,8 +436,7 @@ class Debug():
         return
 
     def state(self,):
-        """
-        Get the debug state.
+        """Get the debug state.
 
         Parameters
         ----------
@@ -448,6 +445,7 @@ class Debug():
         Returns
         -------
         The current debug state.
+
         """        
         return self.debug
 

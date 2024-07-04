@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-The Constants module supplies some numerical constants
+"""The Constants module supplies some numerical constants.
 
 The following are some fundamental definitions.  
 The values were supplied from the NIST web site 
@@ -89,7 +88,7 @@ elemental_colours is a dictionary of an RGB list for each element
 atomic_number_to_element is a dictionary which has an atomic number key and returns an element string
 
 element_to_atomic_number a dictionary which an has an element name key and a content of the atomic number 
-'''
+"""
 
 import numpy as np
 

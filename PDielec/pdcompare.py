@@ -13,55 +13,53 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-PDielec driver program to compare a collection of spreadsheets with spectra
+"""PDielec driver program to compare a collection of spreadsheets with spectra
 
-        pdcompare file1 file2...
-            pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
-                -column column  Take the data for cross correlation from column
-                C Averaged
-                D MG      
-                E Mie/0.1 
-                F Mie/1.0 
-                G Mie/2.0 
-                H Mie/3.0 
-                -rmax rmax  Use rows from rmin to rmax              
-                -rmin rmin  Use rows from rmin to rmax (rows start from 2)
-                -sheet [molar/absorption/real/imaginary/atr]
-                -excel filename
-'''
-from __future__ import print_function
+pdcompare file1 file2...
+pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+-column column  Take the data for cross correlation from column
+C Averaged
+D MG      
+E Mie/0.1 
+F Mie/1.0 
+G Mie/2.0 
+H Mie/3.0 
+-rmax rmax  Use rows from rmin to rmax              
+-rmin rmin  Use rows from rmin to rmax (rows start from 2)
+-sheet [molar/absorption/real/imaginary/atr]
+-excel filename
+"""
 import sys
+
 import numpy as np
 from openpyxl import load_workbook
 
 
 def main():
-    '''
-    Main Driver routine for pdcompare - reads a collection of spreadsheets with spectra and compares the spectra.
+    """Main Driver routine for pdcompare - reads a collection of spreadsheets with spectra and compares the spectra.
 
-        pdcompare file1 file2...
-            pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
-                -column column  Take the data for cross correlation from column
-                C Averaged
-                D MG      
-                E Mie/0.1 
-                F Mie/1.0 
-                G Mie/2.0 
-                H Mie/3.0 
-                -rmax rmax  Use rows from rmin to rmax              
-                -rmin rmin  Use rows from rmin to rmax (rows start from 2)
-                -sheet [molar/absorption/real/imaginary/atr]
-                -excel filename
-    '''
+    pdcompare file1 file2...
+        pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+            -column column  Take the data for cross correlation from column
+            C Averaged
+            D MG      
+            E Mie/0.1 
+            F Mie/1.0 
+            G Mie/2.0 
+            H Mie/3.0 
+            -rmax rmax  Use rows from rmin to rmax              
+            -rmin rmin  Use rows from rmin to rmax (rows start from 2)
+            -sheet [molar/absorption/real/imaginary/atr]
+            -excel filename
+    """
     def show_usage():
-        '''
-        Show pdcompare usage
+        """Show pdcompare usage
 
         Examples
         --------
         >>> # Example usage of pdcompare
-        '''
+
+        """
         print('pdcompare file1 file2...')
         print('pdcompare: Calculates the cross-correlation of spectra calculated using pdielec')
         print('         -column column  Take the data for cross correlation from column')
@@ -161,8 +159,8 @@ def main():
         # print('Work sheet names for ',f1_name)
         # print(wb1.get_sheet_names())
         ws1 = wb1[sheet]
-        range1 = '{}{}'.format(column,rmin)
-        range2 = '{}{}'.format(column,rmax)
+        range1 = f'{column}{rmin}'
+        range2 = f'{column}{rmax}'
         col1 = np.array([[i.value for i in j] for j in ws1[range1:range2]])
         # Convert to a 1D array
         col1 = col1[:,0]

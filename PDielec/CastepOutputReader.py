@@ -13,20 +13,19 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-CastepOutputReader module
-'''
+"""CastepOutputReader module."""
 
-import re
 import os
+import re
+
 import numpy as np
-from PDielec.UnitCell import UnitCell
+
 from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 class CastepOutputReader(GenericOutputReader):
-    """
-    Read the contents of a Castep output file.
+    """Read the contents of a Castep output file.
 
     Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
 
@@ -39,11 +38,11 @@ class CastepOutputReader(GenericOutputReader):
     -----
     - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
     - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
+
     """
 
     def __init__(self, filenames):
-        """
-        Initialize a new instance of the class CastepOutputReader.
+        """Initialize a new instance of the class CastepOutputReader.
 
         This constructor initializes the class with data from the provided filenames. It sets up the necessary properties for further operations, including identifying and setting up key output files (.castep and .phonon files) from the given filenames. Additional properties related to electronic calculations, phonon calculations, and ionic types are also initialized but not explicitly defined.
 
@@ -61,11 +60,10 @@ class CastepOutputReader(GenericOutputReader):
         ------
         ValueError
             If the first filename does not contain '.castep' or '.phonon', implying it may not be suitable for initializing this class instance as intended. (Note: This exception raising is implied and should ideally be added to the code to handle cases where filenames do not meet expected criteria.)
+
         """        
         GenericOutputReader.__init__(self, filenames)
-        if filenames[0].find(".castep"):
-            seedname, ext = os.path.splitext(filenames[0])
-        elif filenames[0].find(".phonon"):
+        if filenames[0].find(".castep") or filenames[0].find(".phonon"):
             seedname, ext = os.path.splitext(filenames[0])
         self._castepfile             = seedname+".castep"
         self._phononfile             = seedname+".phonon"
@@ -88,9 +86,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_output_files(self):
-        """
-        Define the strings needed for searching the files
-        process the output files
+        """Define the strings needed for searching the files process the output files.
 
         Parameters
         ----------
@@ -99,6 +95,7 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['spin']          = (re.compile(' *net spin   of'), self._read_spin)
@@ -125,8 +122,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_nbranches(self, line):
-        """
-        Parse the number of branches from a line of text from the phonon file and set it to an instance variable.
+        """Parse the number of branches from a line of text from the phonon file and set it to an instance variable.
 
         Parameters
         ----------
@@ -142,12 +138,12 @@ class CastepOutputReader(GenericOutputReader):
         Notes
         -----
         This function does not return anything as it sets the parsed number directly to an instance variable named `_nbranches`.
+
         """        
         self._nbranches = int(line.split()[3])
 
     def _read_frequencies(self, line):
-        """
-        Read and process frequencies, intensities, and normal modes from  phonon file.
+        """Read and process frequencies, intensities, and normal modes from  phonon file.
 
         This method assumes a specific format of the input file, where frequencies, intensities, and normal mode coordinates are listed in a sequential order. Frequencies and intensities are read first, followed by normal mode vectors for each mode.
 
@@ -174,22 +170,23 @@ class CastepOutputReader(GenericOutputReader):
         - This method directly modifies the instance attributes `mass_weighted_normal_modes`, `frequencies`, and `_intensities`.
         - It is assumed that `self.file_descriptor` is an open file object from which the data is read.
         - The method relies on the internal variable `self._nbranches` to determine the number of modes to read, and `self.nions` for the number of ions per mode.
+
         """        
         self.mass_weighted_normal_modes = []
         # maybe should use _nbranches
         frequencies = []
         intensities = []
         normal_modes = []
-        for imode in range(self._nbranches):
+        for _imode in range(self._nbranches):
             line = self.file_descriptor.readline()
             frequencies.append(float(line.split()[1]))
             intensities.append(float(line.split()[2]))
 
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
-        for imode in range(self._nbranches):
+        for _imode in range(self._nbranches):
             a = []
-            for ion in range(self.nions):
+            for _ion in range(self.nions):
                 line = self.file_descriptor.readline()
                 a.append([float(line.split()[2]), float(line.split()[4]), float(line.split()[6])])
             # end for ion
@@ -209,8 +206,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_kpoint_grid(self, line):
-        """
-        Parse and set the k-point grid dimensions from the given line.
+        """Parse and set the k-point grid dimensions from the given line.
 
         This method updates the `kpoint_grid` attribute of the object with the k-point grid dimensions obtained from parsing the specified line. The k-point grid dimensions are expected to be located at the 8th, 9th, and 10th positions (1-based indexing) in the line, separated by spaces.
 
@@ -222,13 +218,13 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.kpoint_grid = [ int(line.split()[7]), int(line.split()[8]), int(line.split()[9]) ]
         return
 
     def _read_kpoints(self, line):
-        """
-        Extract number of k-points from a given line of text and update the instance variable.
+        """Extract number of k-points from a given line of text and update the instance variable.
 
         Parameters
         ----------
@@ -242,13 +238,13 @@ class CastepOutputReader(GenericOutputReader):
         Notes
         -----
         This function assumes the number of k-points is always located at the 6th position (index 5) when the line is split by whitespace. It directly updates the `kpoints` attribute of the class instance.
+
         """        
         self.kpoints = int(line.split()[5])
         return
 
     def _read_nbands(self, line):
-        """
-        Extracts the number of bands from a given line and sets it to the 'nbands' attribute of the class.
+        """Extract the number of bands from a given line and set it to the 'nbands' attribute of the class.
 
         Parameters
         ----------
@@ -258,13 +254,13 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.nbands = int(line.split()[4])
         return
 
     def _read_pseudoatom(self, line):
-        """
-        Read and process a pseudoatom line from a data file.
+        """Read and process a pseudoatom line from a data file.
 
         Parameters
         ----------
@@ -278,6 +274,7 @@ class CastepOutputReader(GenericOutputReader):
         Notes
         -----
         This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.
+
         """        
         species = line.split()[5].capitalize()
         # These are two private dictionary to map the species name to a type index
@@ -288,8 +285,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_cellcontents(self, line):
-        """
-        Read the cell contents from an input file and updates the class attributes accordingly.
+        """Read the cell contents from an input file and updates the class attributes accordingly.
 
         This method reads the real lattice vectors, current cell volume, total number of ions, 
         species, and fractional coordinates from the input file, and updates the relevant class 
@@ -307,6 +303,7 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         line = self._read_till_phrase(re.compile(' *Real Lattice'))
         line = self.file_descriptor.readline()
@@ -347,7 +344,7 @@ class CastepOutputReader(GenericOutputReader):
         self.atom_type_list = []
         self.species = []
         species_list = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             atom_type = line.split()[1].capitalize()
             species_list.append(atom_type)
@@ -368,8 +365,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_masses(self, line):
-        """
-        Read and parse masses from a file, categorizing them by species.
+        """Read and parse masses from a file, categorizing them by species.
 
         This method reads lines from an opened file associated with the instance, extracting the species name, its mass, and the number of ions per species. It updates instance attributes to store this information, organizing masses both by type and in total.
 
@@ -398,15 +394,14 @@ class CastepOutputReader(GenericOutputReader):
             self._ion_index_type[self.nspecies] = species
             self.masses_per_type.append(mass)
             self.nspecies += 1
-            for j in range(nions):
+            for _j in range(nions):
                 self.masses.append(mass)
             line = self.file_descriptor.readline()
         # end while loop
         return
 
     def _read_born_charges(self, line):
-        """
-        Read the born charges from the castep file.
+        """Read the born charges from the castep file.
 
         This function reads the born charges from a provided castep file and arranges the output tensor. Initially, each column of the output refers to a given field direction, and each row refers to the atomic displacement, organizing the numbers in the format `[[a1x a2x a3x], [a1y a2y a3y], [a1z a2z a3z]]`. The function then rearranges these numbers into the desired format: `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`, where 1, 2, 3 are the field directions, and x, y, z represent the atomic displacements.
 
@@ -419,10 +414,11 @@ class CastepOutputReader(GenericOutputReader):
         -------
         ndarray
             An array where each row represents the born charges for a particular atomic displacement arranged in the format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.
+
         """
         line = self.file_descriptor.readline()
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             b = []
             line = self.file_descriptor.readline()
             b.append([float(f) for f in line.split()[2:5]])
@@ -436,8 +432,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_dielectric(self, line):
-        """
-        Read and parse dielectric data from a file.
+        """Read and parse dielectric data from a file.
 
         This method reads dielectric data from the currently opened file associated with the object. It updates the object's properties for zero-frequency optical and static dielectric constants.
 
@@ -455,6 +450,7 @@ class CastepOutputReader(GenericOutputReader):
         The function assumes that the file's current position is at the correct start point for reading dielectric data. It reads three consecutive lines from the file, each expected to contain six floating point numbers. The first three numbers of each line are appended to 'zerof_optical_dielectric', and the latter three numbers to 'zerof_static_dielectric'. 
 
         This method modifies the state of the object by updating the 'zerof_optical_dielectric' and 'zerof_static_dielectric' lists with new data read from the file. 
+
         """        
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
@@ -473,8 +469,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_skip4(self, line):
-        """
-        Read and skip the next four lines from the current file position.
+        """Read and skip the next four lines from the current file position.
 
         This method reads and discards the next four lines from the file
         associated with this object's file_descriptor attribute.
@@ -488,6 +483,7 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.file_descriptor.readline()
         self.file_descriptor.readline()
@@ -496,8 +492,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_external_pressure(self, line):
-        """
-        Parse an external pressure value from a string and set it.
+        """Parse an external pressure value from a string and set it.
 
         Parameters
         ----------
@@ -511,13 +506,13 @@ class CastepOutputReader(GenericOutputReader):
         Notes
         -----
         This function updates the `pressure` attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.
+
         """        
         self.pressure = float(line.split()[2])
         return
 
     def _read_pspot(self, line):
-        """
-        Read potential spots from a file and store them.
+        """Read potential spots from a file and store them.
 
         This method reads a specific number of lines determined by the `nspecies` attribute from
         the file associated with `file_descriptor`, processes them to extract potential spot
@@ -532,15 +527,15 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
-        for i in range(self.nspecies):
+        for _i in range(self.nspecies):
             line = self.file_descriptor.readline()
             self._pspots[line.split()[0]] = line.split()[1]
         return
 
     def _read_spin(self, line):
-        """
-        Read and set the spin value from a given line of text.
+        """Read and set the spin value from a given line of text.
 
         The spin is extracted from the sixth element (index 5) of the splitted line.
 
@@ -552,13 +547,13 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.spin = int(float(line.split()[5]))
         return
 
     def _read_energy_cutoff(self, line):
-        """
-        Extract the energy cutoff value from a given line and store it in the object.
+        """Extract the energy cutoff value from a given line and store it in the object.
 
         This method reads a line of text, expects to find a numeric value at the 7th position (0-indexed) in a space-separated list, converts this value to a float, and stores it as the energy cutoff property of the object.
 
@@ -570,13 +565,13 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.energy_cutoff = float(line.split()[6])
         return
 
     def _read_ediff(self, line):
-        """
-        Reads and sets the energy difference from a given line of text.
+        """Read and set the energy difference from a given line of text.
 
         This is a private method intended to parse and store the energy difference
         from a standardized formatted line of text.
@@ -591,13 +586,13 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self._ediff = float(line.split()[2])
         return
 
     def _read_nelect(self, line):
-        """
-        Extracts the number of electrons from a line and assigns it.
+        """Extract the number of electrons from a line and assign it.
 
         Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance variable `electrons`.
 
@@ -615,8 +610,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_energies(self, line):
-        """
-        Read and store energy values from a given line.
+        """Read and store energy values from a given line.
 
         Extracts energy-related data from a specified line and updates relevant attributes of the object. Assumes that the sixth (index 5) element in the second line contains the final free energy, the fifth (index 4) element in the given line contains the DFT energy, which is appended to a list, and also set as the final energy without entropy. Additionally, updates the number of geometry steps based on the length of the energiesDFT list.
 
@@ -648,8 +642,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_energies2(self, line):
-        """
-        Parse a line of text to read energies and update properties.
+        """Parse a line of text to read energies and update properties.
 
         This method reads energies from a given line of text and updates various energy
         related properties of the object.
@@ -669,6 +662,7 @@ class CastepOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.energiesDFT.append(float(line.split()[3]))
         self.final_energy_without_entropy = float(line.split()[3])
@@ -678,8 +672,7 @@ class CastepOutputReader(GenericOutputReader):
 
         
     def _read_energies3(self, line):
-        """
-        Read energy values from a line of text and append to class attributes.
+        """Read energy values from a line of text and append to class attributes.
 
         This method parses a line of text, extracts the energy value from the sixth
         position (index 5), converts it into a float, and appends it to the class's
@@ -701,6 +694,7 @@ class CastepOutputReader(GenericOutputReader):
         -----
         This method directly modifies the attributes of the class instance it belongs
         to. It does not return any value.
+
         """        
         self.energiesDFT_disp.append(float(line.split()[5]))
         self.final_energy_without_entropy = float(line.split()[5])
@@ -709,8 +703,7 @@ class CastepOutputReader(GenericOutputReader):
         return
         
     def _read_convergence(self, line):
-        """
-        Reads convergence data from a file and updates internal lists with values.
+        """Read convergence data from a file and update internal lists.
 
         This internal method reads specific lines from a file that is already opened and updates internal lists for de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on the values found in those lines.
 
@@ -728,6 +721,7 @@ class CastepOutputReader(GenericOutputReader):
         This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line). 
 
         The function does not return any value, but it updates the internal state of the object it is a part of.
+
         """        
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()

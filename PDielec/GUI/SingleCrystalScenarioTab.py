@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 #
 # Copyright 2024 John Kendrick & Andrew Burnett
 #
@@ -13,35 +12,42 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-SingleCrystalScenarioTab module
-'''
-import os.path
-import os
-import numpy as np
+"""SingleCrystalScenarioTab module
+"""
 import copy
-import PDielec.Calculator            as Calculator
-import PDielec.DielectricFunction    as DielectricFunction
-import PDielec.Materials             as Materials
-import PDielec.GTMcore               as GTM
-from PyQt5.QtWidgets                import QToolBar, QHeaderView, QAction
-from PyQt5.QtWidgets                import QPushButton, QWidget, QFrame, QToolButton
-from PyQt5.QtWidgets                import QSpacerItem, QCheckBox
-from PyQt5.QtWidgets                import QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets                import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets                import QSpinBox,QDoubleSpinBox
-from PyQt5.QtWidgets                import QSizePolicy, QApplication, QStyle
-from PyQt5.QtWidgets                import QTableWidget, QTableWidgetItem
-from PyQt5.QtCore                   import QCoreApplication, Qt, QSize
-from PyQt5.QtGui                    import QIcon
-from PDielec.Constants              import wavenumber, avogadro_si, angstrom, speed_light_si
-from PDielec.Utilities              import Debug
-from PDielec.GUI.ScenarioTab        import ScenarioTab
-from PDielec.Materials              import MaterialsDataBase
-from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer,ShowLayerWindow
-from functools                      import partial
-from itertools                      import product
-from scipy                          import signal
+from functools import partial
+from itertools import product
+
+import numpy as np
+from PyQt5.QtCore import QCoreApplication, QSize, Qt
+from PyQt5.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QFrame,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QSizePolicy,
+    QSpacerItem,
+    QSpinBox,
+    QStyle,
+    QTableWidget,
+    QVBoxLayout,
+    QWidget,
+)
+from scipy import signal
+
+import PDielec.GTMcore as GTM
+from PDielec import Materials
+from PDielec.Constants import speed_light_si, wavenumber
+from PDielec.GUI.ScenarioTab import ScenarioTab
+from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
+from PDielec.Materials import MaterialsDataBase
+from PDielec.Utilities import Debug
 
 thickness_conversion_factors = {'ang':1.0E-10, 'nm':1.0E-9, 'um':1.0E-6, 'mm':1.0E-3, 'cm':1.0E-2}
 thickness_units = list(thickness_conversion_factors.keys())
@@ -64,8 +70,7 @@ def solve_single_crystal_equations(
         exponent_threshold            ,
         v                             ,
         ):
-    """
-    This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.
+    """This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.
 
     Parameters
     ----------
@@ -147,8 +152,7 @@ def solve_single_crystal_equations(
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
 class SingleCrystalScenarioTab(ScenarioTab):
-    """
-    A tab class for handling a single crystal scenario.
+    """A tab class for handling a single crystal scenario.
 
     This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
 
@@ -286,10 +290,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
          A widget to the the slice thickness
     smoothingWidget
          A widget to handle the smoothing information
-    """    
+
+    """
+
     def __init__(self, parent, debug=False ):
-        """
-        Initialize the Single Crystal Scenario Tab.
+        """Initialize the Single Crystal Scenario Tab.
 
         This initializer sets up the GUI components, populates settings with default values, 
         and prepares the tab for interaction. It inherits from a parent scenario, initializes
@@ -343,6 +348,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         The initializer also connects UI elements with corresponding event handlers, sets up
         a QVBoxLayout for the tab, and adds UI components systematically to form a structured 
         layout for the user interface.
+
         """        
         ScenarioTab.__init__(self,parent)
         global debugger
@@ -498,12 +504,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print('Finished:: initialiser')
 
     def redrawLayerTable(self):
-        '''
-        Redraw the layer table widget.
+        """Redraw the layer table widget.
 
         Adds a row for each layer in the gadget.
         The row is drawn using redrawLayerTableRow()
-        '''
+        """
         self.layerTable_tw.setRowCount(1)
         rowCount = 0
         for sequenceNumber,layer in enumerate(self.layers):
@@ -524,8 +529,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.layerTable_tw.setCellWidget(rowCount-1,0,newLayer_cb)
 
     def redrawLayerTableRow(self,sequenceNumber,layer,rowCount,firstLayer,lastLayer):
-        '''
-        Draw a row of the layer table.
+        """Draw a row of the layer table.
 
         Each row has a material name, a thickness (and unit), an h, k, l option and a toolbar
         to move or delete the layer in the list.
@@ -548,7 +552,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         None
 
-        '''
+        """
         # Create a layer button
         material = layer.getMaterial()
         materialName = material.getName()
@@ -650,8 +654,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def drawLayerTable(self):
-        '''
-        Draw a table with all the layers in it.
+        """Draw a table with all the layers in it.
 
         Each layer has a row in the table showing, name, thickness, h,k,l, azimuthal angle, options and a toolbar
 
@@ -663,7 +666,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         None
 
-        '''
+        """
         self.layerTable_tw = QTableWidget()
         self.layerTable_tw.setToolTip('Define the layers in the system\nThe layer at the top of the list is the superstrate\nThe layer at the bottom is the substrate\nThe calculated, DFT, permittivity is called the \'Dielectric layer\'')
         self.layerTable_tw.itemChanged.connect(self.on_layerTable_itemChanged)
@@ -700,8 +703,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return self.layerTable_tw
 
     def deleteLayer(self,x,layer,layerIndex):
-        '''
-        Handle a delete layer button press.
+        """Handle a delete layer button press.
 
         Parameters
         ----------
@@ -715,7 +717,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         new = layerIndex + 1
         if layerIndex == 0 and layer[new].isTensor():
             #  Only allow scalar materials as the superstrate
@@ -729,8 +732,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def moveLayerUp(self,x,layer,layerIndex):
-        '''
-        Move a layer up (sequence number gets smaller by 1).
+        """Move a layer up (sequence number gets smaller by 1).
 
         Parameters
         ----------
@@ -744,7 +746,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         if layerIndex < 1:
             return
         if layerIndex == 1 and layer.isTensor():
@@ -761,8 +764,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def moveLayerDown(self,x,layer,layerIndex):
-        '''
-        Move a layer down (sequence number gets larger by 1).
+        """Move a layer down (sequence number gets larger by 1).
 
         Parameters
         ----------
@@ -776,7 +778,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         last = len(self.layers) - 1
         if layerIndex >= last:
             return
@@ -794,8 +797,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def createToolBarMoveUpButton(self,layer,layerIndex,nLayers):
-        '''
-        Create the move up button as part of the layer toolbar.
+        """Create the move up button as part of the layer toolbar.
 
         Parameters
         ----------
@@ -809,7 +811,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         moveUpButton = QPushButton()
         moveUpButton.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowUp))
         moveUpButton.clicked.connect(lambda x: self.moveLayerUp(x,layer,layerIndex))
@@ -820,8 +823,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return moveUpButton
 
     def createToolBarMoveDownButton(self,layer,layerIndex,nLayers):
-        '''
-        Create the move down button as part of the layer toolbar.
+        """Create the move down button as part of the layer toolbar.
 
         Parameters
         ----------
@@ -835,7 +837,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         moveDownButton = QPushButton()
         moveDownButton.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowDown))
         moveDownButton.clicked.connect(lambda x: self.moveLayerDown(x,layer,layerIndex))
@@ -846,8 +849,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return moveDownButton
 
     def createToolBarDeleteButton(self,layer,layerIndex,nLayers):
-        '''
-        Create the delete button as part of the layer toolbar.
+        """Create the delete button as part of the layer toolbar.
 
         Parameters
         ----------
@@ -861,7 +863,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         deleteButton = QPushButton()
         deleteButton.setIcon(QApplication.style().standardIcon(QStyle.SP_DialogCloseButton))
         deleteButton.clicked.connect(lambda x: self.deleteLayer(x,layer,layerIndex))
@@ -872,8 +875,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return deleteButton
 
     def createToolBar(self,layer,layerIndex,nLayers):
-        '''
-        Create the tool bar used for the material layer.
+        """Create the tool bar used for the material layer.
 
         Parameters
         ----------
@@ -887,9 +889,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         if nLayers <= 1:
-            return
+            return None
         frame = QFrame()
         frame_layout = QHBoxLayout()
         frame.setLayout(frame_layout)
@@ -916,8 +919,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return frame
         
     def newLayerWidget(self):
-        """
-        Create and return a new layer widget as a QComboBox.
+        """Create and return a new layer widget as a QComboBox.
 
         Returns a QComboBox widget configured for creating a new layer in a graphical user interface.
         The combo box is initialized with a default item for creating a new layer, followed by any existing layer names.
@@ -935,6 +937,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -----
         - The first item in the combo box is a placeholder for creating a new layer, indicated by "New layer...".
         - The combo box is connected to the `on_newLayer_cb_activated` method, which should handle the action performed upon selecting an item from the combo box.
+
         """        
         newLayer_cb = QComboBox()
         newLayer_cb.setToolTip('Create a new layer')
@@ -946,8 +949,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return newLayer_cb
 
     def on_layerTable_itemChanged(self,item):
-        '''
-        Handle a change to the layer table.
+        """Handle a change to the layer table.
 
         An empty routine as changes are handled by other routines
 
@@ -958,13 +960,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         print('on_layerTable_itemChanged: ',item)
         return
 
     def on_newLayer_cb_activated(self,index):
-        '''
-        Handle a new layer button click
+        """Handle a new layer button click
 
         Based on the index chosen a new material is created and added to the list of layers.
         The settings dictionary is updated and a refresh is forced.
@@ -978,7 +980,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         None
 
-        '''
+        """
         if index == 0:
             return
         # Subtract 1 from the index because the widget thinks the list includes 'New layer...' at the start
@@ -997,8 +999,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_print_button_clicked(self,x,layer):
-        '''
-        Print the permittivity for the layer
+        """Print the permittivity for the layer
 
         The print button is only visible if in debug mode.
         The permittivity is printed to a csv file with a name containing the material involved.
@@ -1013,7 +1014,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         material = layer.getMaterial()
         permittivityObject = material.getPermittivityObject()
         name = material.getName()
@@ -1024,8 +1026,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_option_cb_activated(self,index,layer):
-        '''
-        The incoherence option combo box has been activated.
+        """The incoherence option combo box has been activated.
 
         - The layer's incoherent options are changed
         - The number of calculations requested is updated
@@ -1042,7 +1043,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print('on_incoherence_cb_activated', index,layer.getName())
         option = incoherentOptions[index]
         layer.setIncoherentOption(option)
@@ -1052,8 +1054,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_film_thickness_sb_changed(self,value,layer):
-        '''
-        Handle film thickness spin box change.
+        """Handle film thickness spin box change.
 
         - The thickness of the film in this layer is changed
         - The settings dictionary is regenerated
@@ -1069,7 +1070,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print('on_film_thickness_sb_changed', value, layer.getName())
         layer.setThickness(value)
         self.generateLayerSettings()
@@ -1077,8 +1079,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_thickness_units_cb_activated(self, index, layer):
-        """
-        Handles the activation of a thickness unit option in a combo box.
+        """Handles the activation of a thickness unit option in a combo box.
 
         - the thickness unit of this layer is changed
         - the settings dictionary is updated
@@ -1094,6 +1095,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: on_thickness_units_cb_activated',index,layer.getName())
         unit = thickness_units[index]
@@ -1103,8 +1105,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_azimuthal_angle_sb_changed(self,value,layer):
-        '''
-        Handle azimuthal spin box change.
+        """Handle azimuthal spin box change.
 
         - The azimuthal angle of a layer is changed to the value given.
         - The laboratory frame information is updated
@@ -1121,7 +1122,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print('on_azimuthal_angl_sb_changed', value, layer.getName())
         layer.setAzimuthal(value)
         layer.changeLabFrameInfo()
@@ -1130,8 +1132,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_hkl_sb_changed(self,value,hkorl,layer):
-        '''
-        Handle a change in h, k, or l
+        """Handle a change in h, k, or l
 
         The h, k and l parameters determine the surface of the film
         - determine the value of h, k or l
@@ -1151,7 +1152,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print('on_hkl_sb_changed', value)
         hkl = layer.getHKL()
         hkl[hkorl] = value
@@ -1162,8 +1164,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def generateLayerSettings(self):
-        '''
-        Generate the settings dictionary for every layer
+        """Generate the settings dictionary for every layer
 
         Parameters
         ----------
@@ -1173,7 +1174,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         list
             A list of dictionary settings for each layer.
-        '''
+
+        """
         debugger.print(self.settings['Legend'],'generateLayerSettings')
         self.settings['Layer material names']  = []
         self.settings['Layer hkls']            = []
@@ -1193,8 +1195,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def setMaterialNames(self):
-        """
-        Set and append a material name to the list of material names.
+        """Set and append a material name to the list of material names.
 
         This function retrieves the current list of material names from the database using
         `self.DataBase.getSheetNames()`, appends 'Dielectric layer' to the list, and returns the updated list.
@@ -1207,6 +1208,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         list
             The list of material names including the appended default 'Dielectric layer'.
+
         """        
         # Get the list of material names from the database
         materialNames = self.DataBase.getSheetNames()
@@ -1214,8 +1216,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return materialNames
 
     def printLayerSettings(self,message):
-        """
-        Print the settings related to the layers.
+        """Print the settings related to the layers.
 
         Parameters
         ----------
@@ -1231,6 +1232,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         This function prints the settings associated with layers, including material names, HKL values (Miller indices for the crystallographic planes), azimuthal angles, thicknesses with their units, flags indicating whether the layer is dielectric, and options for incoherent scattering, if applicable.
 
         This function does not return any value. It is primarily used for debugging or informative purposes to quickly display the current configuration of layer settings within a class that has `settings` as an attribute storing these properties.
+
         """        
         print(message)
         print(self.settings['Layer material names'])
@@ -1243,8 +1245,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         print()
 
     def settings2Layers(self):
-        '''
-        Read the layer settings and generate a list of layers.
+        """Read the layer settings and generate a list of layers.
 
         This method reads all the entries in the settings dictionary
         to create a list of layers
@@ -1257,7 +1258,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         list
             A list of layers generated from the layer settings.
-        '''
+
+        """
         debugger.print(self.settings['Legend'],'settings2Layers')
         self.layers = []
         self.materialNames = self.setMaterialNames()
@@ -1280,8 +1282,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def getMaterialFromDataBase(self,name,permittivity=None):
-        '''
-        Get the given material from the database.
+        """Get the given material from the database.
 
         - If name is 'DielectricLayer' then a material is defined from the crystal permittivity of the DFT information
         - If name is 'Material defined manually' the the permittivity parameter is used
@@ -1297,7 +1298,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         if name == 'Dielectric layer':
             # Create the dielectric material
             crystalPermittivityObject = self.notebook.settingsTab.getCrystalPermittivityObject()
@@ -1311,8 +1313,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return material
 
     def getDielectricLayerIndex(self):
-        '''
-        Return the index of the dielectric layer in the list of layers.
+        """Return the index of the dielectric layer in the list of layers.
 
         - Sorts through the list of layers and reports the index of the first layer that came from the provided DFT calculation
         - If there is no such layer then the value None is returned
@@ -1325,7 +1326,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         int or None
             The index of the dielectric layer in the list.
-        '''
+
+        """
         for index,layer in enumerate(self.layers):
             if layer.isDielectric():
                 self.dielectricLayer = layer
@@ -1333,8 +1335,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return None
 
     def on_layer_button_clicked(self,x,layer,layerIndex):
-        '''
-        Handle a click on the show layer widget.
+        """Handle a click on the show layer widget.
 
         A new window is shown with additional information about material in the layer.
         For materials with a 3x3 tensor permittivity the window shows the relationship between the laboratory and crystal coordinates.
@@ -1352,7 +1353,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         None
 
-        '''
+        """
         # Create the dialog box with all the information on the layer, work on a copy of the layer
         if layerIndex == 0:
             message = 'Superstrate layer'
@@ -1371,8 +1372,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def globalAzimuthalWidget(self):
-        '''
-        Create a global azimuthal angle widget.
+        """Create a global azimuthal angle widget.
 
         This widget is shown in the main single crystal scenarion tab.
         Any change in this angle affects all layers.
@@ -1384,7 +1384,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         self.global_azimuthal_angle_sb = QDoubleSpinBox(self)
         self.global_azimuthal_angle_sb.setToolTip('Define the global azimuthal angle for all layers (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal layers in the laboratory frame is shown in the edit layers window')
         self.global_azimuthal_angle_sb.setRange(-180,360)
@@ -1396,8 +1397,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return label,self.global_azimuthal_angle_sb
 
     def angleOfIncidenceWidget(self):
-        '''
-        Create an angle of incidence widget.
+        """Create an angle of incidence widget.
 
         This widget is used in the layer table widget to control the azimuthal angle of a single layer.
 
@@ -1408,7 +1408,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         self.angle_of_incidence_sb = QDoubleSpinBox(self)
         self.angle_of_incidence_sb.setToolTip('Define the angle of incidence, (normal incidence is 0 degrees)')
         self.angle_of_incidence_sb.setRange(0,90)
@@ -1420,8 +1421,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return label,self.angle_of_incidence_sb
 
     def partialIncoherenceWidget(self):
-        '''
-        Create a partial incoherence widget
+        """Create a partial incoherence widget
 
         Parameters
         ----------
@@ -1430,7 +1430,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         hbox = QHBoxLayout()
         self.percentage_partial_incoherence_sb = QSpinBox()
         self.percentage_partial_incoherence_sb.setToolTip('Define the maximum percentage changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence\nFor thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees\nIf the value of the percentage incoherence is zero, no incoherence is calculated')
@@ -1451,8 +1452,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return label,hbox
 
     def smoothingWidget(self):
-        '''
-        Create a smoothing widget used by the partial incoherence method
+        """Create a smoothing widget used by the partial incoherence method
 
         Parameters
         ----------
@@ -1461,7 +1461,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         hbox = QHBoxLayout()
         self.partially_incoherent_kernel_sb = QSpinBox()
         self.partially_incoherent_kernel_sb.setRange(1,1001)
@@ -1482,8 +1483,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return label,hbox
 
     def sliceThicknessWidget(self):
-        """
-        Create a widget for setting slice thickness and its units.
+        """Create a widget for setting slice thickness and its units.
 
         This method sets up a QSpinBox for specifying slice thickness in a range of 0 to 10000, with steps of 1 unit. It also sets up a QComboBox for selecting the unit of thickness (nm, um, mm, or cm). Both the spinbox and combobox values are initialized based on `self.settings`. The method arranges these widgets along with a descriptive label into a horizontal layout which is then returned. 
 
@@ -1495,6 +1495,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         tuple
             A tuple containing a QLabel and QHBoxLayout. The QLabel describes the purpose of the slice thickness setting, and the QHBoxLayout contains the QSpinBox and QComboBox for adjusting the slice thickness and selecting its unit, respectively.
+
         """        
         self.slice_thickness_sb = QSpinBox()
         self.slice_thickness_sb.setToolTip('Define a slice thickness to subdivide thick films\nA value of zero means no slicing is performed')
@@ -1519,8 +1520,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return label,hbox
 
     def on_slice_thickness_sb_changed(self,value):
-        """
-        Updates the 'Slice thickness' setting based on a new value and marks refresh as required.
+        """Updates the 'Slice thickness' setting based on a new value and marks refresh as required.
 
         Parameters
         ----------
@@ -1537,8 +1537,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_slice_thickness_unit_cb_activated(self,index):
-        """
-        Handles the activation of a slice thickness unit selection.
+        """Handles the activation of a slice thickness unit selection.
 
         This method updates the settings to reflect the newly selected
         slice thickness unit based on its index in the thickness_units list.
@@ -1552,14 +1551,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """        
         self.refreshRequired = True
         self.settings['Slice thickness unit'] = thickness_units[index]
         return
 
     def openDB_button_clicked(self):
-        '''
-        Open a new materials' database.
+        """Open a new materials' database.
 
         After the database is opened a refresh is requested.
 
@@ -1570,7 +1569,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         debugger.print('Start:: openDB_button_clicked')
         self.openDataBase()
         self.refresh(force=True)
@@ -1578,8 +1578,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_partially_incoherent_kernel_sb_changed(self,value):
-        """
-        Handles the change in the partially incoherent kernel spinbox value.
+        """Handles the change in the partially incoherent kernel spinbox value.
 
         Parameters
         ----------
@@ -1589,6 +1588,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """        
         debugger.print(self.settings['Legend'],'on_partially_incoherent_kernel_sb_changed', value)
         self.refreshRequired = True
@@ -1596,8 +1596,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_partially_incoherent_polynomial_sb_changed(self,value):
-        """
-        Handles changes to the partially incoherent polynomial spinbox value.
+        """Handles changes to the partially incoherent polynomial spinbox value.
 
         This method updates the relevant setting based on the new value and marks
         the need for refreshment. It also logs the change using the debugger.
@@ -1610,6 +1609,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """        
         debugger.print(self.settings['Legend'],'on_partially_incoherent_polynomial_sb_changed', value)
         self.refreshRequired = True
@@ -1617,8 +1617,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_partially_incoherent_samples_sb_changed(self,value):
-        """
-        Handles the change in partially incoherent samples setting.
+        """Handles the change in partially incoherent samples setting.
 
         Parameters
         ----------
@@ -1628,6 +1627,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """        
         debugger.print(self.settings['Legend'],'on_partially_incoherent_samples_sb_changed', value)
         self.refreshRequired = True
@@ -1636,8 +1636,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_percentage_partial_incoherence_sb_changed(self,value):
-        """
-        Handle changes in percentage partial incoherence spinner box value.
+        """Handle changes in percentage partial incoherence spinner box value.
 
         This method updates the 'Percentage partial incoherence' setting based on the new value provided by the relevant spinner box. It marks that a refresh is required and logs the change using the configured debugger.
 
@@ -1649,6 +1648,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """        
         debugger.print(self.settings['Legend'],'on_percentage_partial_incoherence_sb_changed', value)
         self.refreshRequired = True
@@ -1656,8 +1656,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_global_azimuthal_angle_sb_changed(self,value):
-        """
-        Handles the change in global azimuthal angle setting.
+        """Handles the change in global azimuthal angle setting.
 
         This method updates the 'Global azimuthal angle' in the settings 
         based on the given value and marks a refresh as required.
@@ -1670,6 +1669,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """        
         debugger.print(self.settings['Legend'],'on_global_azimuthal_angl_sb_changed', value)
         self.refreshRequired = True
@@ -1677,8 +1677,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_angle_of_incidence_sb_changed(self,value):
-        """
-        Updates the 'Angle of incidence' setting and marks refresh as required upon a change in the angle of incidence spinbox value.
+        """Updates the 'Angle of incidence' setting and marks refresh as required upon a change in the angle of incidence spinbox value.
 
         A refresh is requested
 
@@ -1698,8 +1697,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def refresh(self,force=False):
-        """
-        Refresh the current state, optionally forcing a refresh.
+        """Refresh the current state, optionally forcing a refresh.
 
         This method updates the current state based on various settings and conditions. It checks
         if a refresh is required or if a forceful refresh is requested. It then updates several
@@ -1791,8 +1789,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def set_noCalculationsRequired(self):
-        '''
-        Determine the number of calculations required.
+        """Determine the number of calculations required.
 
         The routine first works out the number of layers needing phase averaging,
         then it looks at the number of partial incoherent calculations being performed.
@@ -1804,7 +1801,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
-        '''
+
+        """
         # First see how many layers are using phase averaging
         self.number_of_average_incoherent_layers = 0
         for layer in self.layers:
@@ -1822,8 +1820,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def on_mode_cb_activated(self, index):
-        """
-        Handle the activation of the mode combo box in the GUI.
+        """Handle the activation of the mode combo box in the GUI.
 
         Parameters
         ----------
@@ -1844,6 +1841,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         - Calls generateLayerSettings to update the layer settings according to the new mode.
         - Forces a refresh of the display to reflect any changes.
         - Sets a flag indicating that a refresh is required.
+
         """        
         debugger.print(self.settings['Legend'],'Start:: on_mode_cb_activated')
         if index == 0:
@@ -1871,8 +1869,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                             psi,
                             angleOfIncidence,
                             sliceThickness, exponent_threshold):
-        """
-        Calculates the incoherent component of light reflectance and transmission
+        """Calculates the incoherent component of light reflectance and transmission
         by averaging over the phase shift.
 
         Parameters
@@ -1904,6 +1901,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             - p_absorbtance
             - s_absorbtance
             - epsilon
+
         """
         debugger.print(self.settings['Legend'],'Start:: partially_incoherent_calculator')
         #
@@ -1968,8 +1966,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                             psi,
                             angleOfIncidence,
                             sliceThickness, exponent_threshold):
-        """
-        Calculates the incoherent component of light reflectance and transmission
+        """Calculates the incoherent component of light reflectance and transmission
         by sampling the path length in the incident medium.
 
         Parameters
@@ -2001,6 +1998,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             - p_absorbtance
             - s_absorbtance
             - epsilon
+
         """
         debugger.print(self.settings['Legend'],'Start:: partially_incoherent_calculator')
         #
@@ -2079,8 +2077,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                             psi,
                             angleOfIncidence,
                             sliceThickness, exponent_threshold):
-        """
-        Calculates the coherent component of light reflectance and transmission.
+        """Calculates the coherent component of light reflectance and transmission.
 
         Parameters
         ----------
@@ -2111,6 +2108,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             - p_absorbtance
             - s_absorbtance
             - epsilon
+
         """
         debugger.print(self.settings['Legend'],'Entering the coherent_calculator function')
         #
@@ -2157,8 +2155,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return ( p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance, epsilon )
 
     def calculate(self,vs_cm1):
-        """
-        Performs simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
+        """Performs simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
 
         Parameters
         ----------
@@ -2172,6 +2169,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Notes
         -----
         This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence and slice thickness. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
+
         """        
         debugger.print(self.settings['Legend'],'Start:: calculate - number of frequencies',len(vs_cm1))
         if not self.calculationRequired:
@@ -2248,8 +2246,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def get_result(self, vs_cm1, plot_type):
-        """
-        Return a particular result
+        """Return a particular result
 
         Parameters
         ----------
@@ -2267,6 +2264,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         -------
         list of floats
             The results to be plotted
+
         """
         debugger.print(self.settings['Legend'],'Start:: get_result',len(vs_cm1),plot_type)
         self.get_results(vs_cm1)
@@ -2288,8 +2286,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             return None
 
     def get_results(self, vs_cm1):
-        """
-        Return the results of the single crystal calculation
+        """Return the results of the single crystal calculation
 
         If a refresh has been requested it is performed before the calculate method is called.
 
@@ -2301,6 +2298,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """
         debugger.print(self.settings['Legend'],'Start:: get_results',len(vs_cm1),self.refreshRequired)
         if len(vs_cm1)>0 and (self.refreshRequired or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
@@ -2314,8 +2312,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def greyed_out(self):
-        """
-        Have a look through the settings and see if we need to grey anything out.
+        """Have a look through the settings and see if we need to grey anything out.
 
         Parameters
         ----------
@@ -2324,6 +2321,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         Returns
         -------
         None
+
         """
         # At the moment it appears there is nothing to do.
         debugger.print(self.settings['Legend'],'Finished:: greyed_out')

@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Read the contents of a directory containing DFT output and create a csv style file of information
+"""Read the contents of a directory containing DFT output and create a csv style file of information
 
 ::
 
@@ -41,29 +40,29 @@ Read the contents of a directory containing DFT output and create a csv style fi
                If the file exists it is not overwritten
       -version print the version of PDielec library being used
 """
-import numpy as np
-import os, sys
-import psutil
-import PDielec.DielectricFunction as DielectricFunction
-import dill as pickle
-import PDielec.Calculator as Calculator
-import PDielec.Utilities as Utilities
-import PDielec.__init__
-from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
+import os
+import sys
 from multiprocessing.dummy import Pool
+
+import dill as pickle
+import numpy as np
+import psutil
+
+import PDielec.__init__
+from PDielec import Calculator, DielectricFunction, Utilities
+from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
+
 version = PDielec.__init__.__version__
 
 def set_affinity_on_worker():
-    """
-    When a new worker process is created, the affinity is set to all CPUs.
+    """When a new worker process is created, the affinity is set to all CPUs.
     """
     #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
     #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
-    """
-    Read data from a file and process it based on the given parameters.
+    """Read data from a file and process it based on the given parameters.
 
     Parameters
     ----------
@@ -110,7 +109,7 @@ def read_a_file( calling_parameters):
         if neutral:
             reader.neutralise_born_charges()
         # What mass definition are we using?
-        if not mass_definition == "program" or mass_dictionary:
+        if mass_definition != "program" or mass_dictionary:
             if mass_definition == "average":
                 reader.change_masses(average_masses, mass_dictionary)
             elif mass_definition == "isotope":
@@ -169,10 +168,7 @@ def read_a_file( calling_parameters):
                     if ignore:
                         ignore_modes.append(mode)
                 # ignore modes with low real frequency
-                elif np.real(modified_frequencies_cm1[mode])/wavenumber < threshold_frequency:
-                    ignore_modes.append(mode)
-                # ignore modes with imaginary frequency
-                elif abs(np.imag(modified_frequencies_cm1[mode]))/wavenumber > 1.0e-6:
+                elif np.real(modified_frequencies_cm1[mode])/wavenumber < threshold_frequency or abs(np.imag(modified_frequencies_cm1[mode]))/wavenumber > 1.0e-6:
                     ignore_modes.append(mode)
                 # end if intensity
             # end for
@@ -273,8 +269,7 @@ def read_a_file( calling_parameters):
     return reader,name,results_string
 
 def print_help():
-    """
-    Display the help message for the preader program.
+    """Display the help message for the preader program.
 
     This function prints out the usage of the preader program, including the supported flags and their descriptions.
 
@@ -289,6 +284,7 @@ def print_help():
         >>> print_help()
 
     No output is returned by this function as it directs its message to `sys.stderr` and exits the program.
+
     """    
     print('preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....', file=sys.stderr)
     print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
@@ -317,9 +313,7 @@ def print_help():
 
 
 def main():
-    """
-    Process command line arguments
-
+    """Process command line arguments
 
     ::
 
@@ -405,7 +399,7 @@ def main():
             itoken += 1
             picklefile = tokens[itoken]
             if os.path.isfile(picklefile):
-                print('Error: pickle file {} already exists'.format(picklefile),file=sys.stderr)
+                print(f'Error: pickle file {picklefile} already exists',file=sys.stderr)
                 exit()
         elif token == "-program":
             itoken += 1
@@ -420,12 +414,12 @@ def main():
         print('Please use -program to define the package used to generate the output files',file=sys.stderr)
         exit()
 
-    if not program in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment']:
+    if program not in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment']:
         print('Program is not recognised: ',program,file=sys.stderr)
         exit()
 
     if program == 'phonopy':
-        if not qmprogram in ['abinit','castep','crystal','gulp','qe','vasp']:
+        if qmprogram not in ['abinit','castep','crystal','gulp','qe','vasp']:
             print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
             exit()
         print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
@@ -446,7 +440,7 @@ def main():
         if neutral:
             print('  The -neutral flag will be ignored',file=sys.stderr)
             neutral = False
-        if not mass_definition == "program":
+        if mass_definition != "program":
             print('  The average and isotope mass definitions will be ignored',file=sys.stderr)
             mass_definition = "program"
         if mass_dictionary:
@@ -468,7 +462,7 @@ def main():
         prog = program
         if program == "auto":
             prog = find_program_from_name(name)
-            print('  Analysing {} generated by {}'.format(name,prog),file=sys.stderr)
+            print(f'  Analysing {name} generated by {prog}',file=sys.stderr)
         calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, prog, qmprogram, debug) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)

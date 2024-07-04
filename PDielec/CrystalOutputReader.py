@@ -13,22 +13,21 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-A module to read contents of a directory containing Crystal input and output files.
-'''
-import re
+"""A module to read contents of a directory containing Crystal input and output files."""
 import math
 import os
+import re
+
 import numpy as np
+
 from PDielec.Constants import amu, hartree2ev
-from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.IO import pdielec_io
+from PDielec.UnitCell import UnitCell
 
 
 class CrystalOutputReader(GenericOutputReader):
-    """
-    Read contents of a directory containing Crystal input and output files.
+    """Read contents of a directory containing Crystal input and output files.
 
     Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
 
@@ -40,11 +39,11 @@ class CrystalOutputReader(GenericOutputReader):
     Notes
     -----
     This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+
     """
 
     def __init__(self, filenames):
-        """
-        Initialize an instance of the class which handles crystal output.
+        """Initialize an instance of the class which handles crystal output.
 
         Parameters
         ----------
@@ -54,6 +53,7 @@ class CrystalOutputReader(GenericOutputReader):
         Notes
         -----
         This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+
         """        
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'Crystal output'
@@ -62,14 +62,14 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_output_files(self):
-        """
-        Read the Crystal files in the directory.
+        """Read the Crystal files in the directory.
 
         Define the strings used to search for the required information and then process the file
 
         Returns
         -------
         None
+
         """
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['masses']   = (re.compile(' ATOMS ISOTOPIC MASS'), self._read_masses)
@@ -89,8 +89,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_energy(self, line):
-        """
-        Reads and sets the free energy and energy without entropy from a line.
+        """Read and set the free energy and energy without entropy from a line.
 
         Parameters
         ----------
@@ -110,13 +109,13 @@ class CrystalOutputReader(GenericOutputReader):
         electronvolts (eV) using a conversion factor stored in `hartree2ev`.
 
         There are no return values. Modifications are made directly to the instance attributes.
+
         """        
         self.final_free_energy = hartree2ev*float(line.split()[3])
         self.final_energy_without_entropy = hartree2ev*float(line.split()[3])
 
     def _read_energy2(self, line):
-        """
-        Read and set the final free energy and final energy without entropy from a line of text.
+        """Read and set the final free energy and final energy without entropy from a line of text.
 
         This method reads a line of text that contains energy values and updates the
         instance's final free energy and final energy without entropy attributes.
@@ -137,8 +136,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.final_energy_without_entropy = hartree2ev*float(line.split()[5])
 
     def _read_energy3(self, line):
-        """
-        Parse energy information from a given line of text and update object properties.
+        """Parse energy information from a given line of text and update object properties.
 
         Parameters
         ----------
@@ -149,13 +147,13 @@ class CrystalOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.final_free_energy = hartree2ev*float(line.split()[2])
         self.final_energy_without_entropy = hartree2ev*float(line.split()[2])
 
     def _read_electrons(self, line):
-        """
-        Parse the number of electrons from a string and assign it to the instance variable.
+        """Parse the number of electrons from a string and assign it to the instance variable.
 
         Parameters
         ----------
@@ -165,12 +163,12 @@ class CrystalOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.electrons = int(line.split()[5])
 
     def _read_kpoints(self, line):
-        """
-        Parse a line of text to extract k-point grid dimensions and the total number of k-points.
+        """Parse a line of text to extract k-point grid dimensions and the total number of k-points.
 
         The function sets the object's kpoint_grid attribute to a list of three integers representing the grid dimensions, and the kpoints attribute to an integer representing the total number of k-points.
 
@@ -182,13 +180,13 @@ class CrystalOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         self.kpoint_grid = [ int(line.split()[2]), int(line.split()[3]), int(line.split()[4]) ]
         self.kpoints = int(line.split()[12])
 
     def _read_epsilon(self, line):
-        """
-        Reads epsilon values from a formatted file and updates the optical dielectric matrix.
+        """Read epsilon values from a formatted file and update the optical dielectric matrix.
 
         This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object's `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their 'XX', 'YY', 'ZZ', 'XY', 'XZ', and 'YZ' labels in the file. The method expects the values in a specific format and parses them accordingly.
 
@@ -223,12 +221,18 @@ class CrystalOutputReader(GenericOutputReader):
                 epsilon = float(linea[4])
             else:
                 epsilon = float(linea[3])
-            if component == "XX": optical_dielectric[0][0] = epsilon
-            if component == "YY": optical_dielectric[1][1] = epsilon
-            if component == "ZZ": optical_dielectric[2][2] = epsilon
-            if component == "XY": optical_dielectric[0][1] = epsilon
-            if component == "XZ": optical_dielectric[0][2] = epsilon
-            if component == "YZ": optical_dielectric[1][2] = epsilon
+            if component == "XX" : 
+                optical_dielectric[0][0] = epsilon
+            elif component == "YY" : 
+                optical_dielectric[1][1] = epsilon
+            elif component == "ZZ" : 
+                optical_dielectric[2][2] = epsilon
+            elif component == "XY" : 
+                optical_dielectric[0][1] = epsilon
+            elif component == "XZ" : 
+                optical_dielectric[0][2] = epsilon
+            elif component == "YZ" : 
+                optical_dielectric[1][2] = epsilon
             # read the next line
             linea = self.file_descriptor.readline().split()
         # symmetrize
@@ -239,8 +243,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_masses(self, line):
-        """
-        Read and parse the masses from a file descriptor line by line.
+        """Read and parse the masses from a file descriptor line by line.
 
         This private method reads mass information from consecutive lines of a
         file, updating a list of masses and a list of masses per species type.
@@ -269,6 +272,7 @@ class CrystalOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
@@ -285,8 +289,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_eigenvectors(self, line):
-        """
-        Read eigenvectors from appropriate file.
+        """Read eigenvectors from appropriate file.
 
         This function attempts to read eigenvectors for a given molecular system. It first checks for
         the file 'HESSFREQ.DAT' in the specified `open_directory`. If the file exists, it reads the
@@ -303,6 +306,7 @@ class CrystalOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         if os.path.isfile(self.open_directory+"/HESSFREQ.DAT"):
             # print("Reading Hessian from HESSFREQ.DAT",file=sys.stderr)
@@ -317,8 +321,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_hessfreq_dat(self,filename):
-        """
-        Reads a Hessian frequency data from a given file and updates the dynamical matrix.
+        """Read a Hessian frequency data from a given file and update the dynamical matrix.
 
         Parameters
         ----------
@@ -340,7 +343,7 @@ class CrystalOutputReader(GenericOutputReader):
         n = 0
         massweight = np.zeros(nmodes)
         for a in range(self.nions):
-            for j in range(3):
+            for _j in range(3):
                 massweight[n] = 1.0 / math.sqrt(self.masses[a]*amu)
                 n = n + 1
         # We read the hessian and store the mass weighted matrix
@@ -363,8 +366,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_output_eigenvectors(self, line):
-        """
-        Read and process output eigenvectors from a file descriptor.
+        """Read and process output eigenvectors from a file descriptor.
 
         This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the square root of the atom's masses to generate mass-weighted normal modes, and normalizes these modes.
 
@@ -382,6 +384,7 @@ class CrystalOutputReader(GenericOutputReader):
         - This method directly modifies the `frequencies` and `mass_weighted_normal_modes` attributes of the class instance.
         - Atoms' masses are used to compute mass-weighted normal modes
         - Normalization of each mass-weighted mode is performed at the end of the method.
+
         """        
         self.file_descriptor.readline()
         self.frequencies = []
@@ -390,7 +393,7 @@ class CrystalOutputReader(GenericOutputReader):
         nmodes = 3 * self.nions
         self.frequencies = []
         # Loop over all the modes
-        for j in range(nmodes):
+        for _j in range(nmodes):
             # They come in columns of 6 so after 6 modes we read the frequencies and initialse the 6 new modes
             n = n + 1
             if n >= 6:
@@ -428,12 +431,12 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_born_charges(self, line):
-        """
-        Read the born charges from the output file.
+        """Read the born charges from the output file.
 
         Parameters
         ----------
         line : str
+            The current line
 
         Returns
         -------
@@ -445,6 +448,7 @@ class CrystalOutputReader(GenericOutputReader):
                  [a3x a3y a3z]]
     
             where 1, 2, 3 represent the field directions and x, y, z are the atomic displacements.
+
         """
         # Extract directory containing the output file
         if os.path.isfile(self.open_directory+"/BORN.DAT"):
@@ -460,8 +464,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_born_charges_from_born_dat(self,filename):
-        """
-        Read born charges from a .born.dat file and store them in the instance variable.
+        """Read born charges from a .born.dat file and store them in the instance variable.
 
         This method reads born charges for each ion from a specified file, which contains 
         data in three lines per ion. It transposes the read charge matrix and stores 
@@ -475,10 +478,11 @@ class CrystalOutputReader(GenericOutputReader):
         Returns
         -------
         None
+
         """        
         fd2 = pdielec_io(filename, 'r')
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             b = []
             line = fd2.readline()
             b.append([float(line.split()[0]), float(line.split()[1]), float(line.split()[2])])
@@ -494,14 +498,14 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_born_charges_from_output(self, line):
-        """
-        Read Born charges from output file.
+        """Read Born charges from output file.
 
         This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the `born_charges` list attribute.
 
         Parameters
         ----------
         line : str
+            The current line (not used)
 
         Returns
         -------
@@ -510,12 +514,13 @@ class CrystalOutputReader(GenericOutputReader):
         Note
         ----
         This method directly modifies the `born_charges` attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's formatted in a specific way expected by the logic of this method.
+
         """        
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
@@ -531,8 +536,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_ionic_dielectric(self, line):
-        """
-        Read ionic dielectric data from the file and store in an instance variable.
+        """Read ionic dielectric data from the file and store in an instance variable.
 
         This method reads the next four lines from the file associated with the
         instance's file descriptor. The second, third, and fourth lines are expected 
@@ -556,6 +560,7 @@ class CrystalOutputReader(GenericOutputReader):
         It is assumed that the file has been adequately positioned before this method
         is called, as it starts reading from the current position of the file
         descriptor's pointer.
+
         """        
         # Read the ionic contribution to the static dielectric
         line = self.file_descriptor.readline()
@@ -571,8 +576,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_lattice_vectors(self, line):
-        """
-        Read lattice vectors from a file and update the corresponding properties.
+        """Read lattice vectors from a file and update the corresponding properties.
 
         This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates a new `UnitCell` object with these vectors, and updates the unit cell collection of the object. It also updates the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the last unit cell based on existing class attributes.
 
@@ -604,8 +608,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_fractional_coordinates(self, line):
-        """
-        Read and store fractional coordinates from a file line.
+        """Read and store fractional coordinates from a file line.
 
         This method processes a line in the file to extract the number of ions and 
         then reads the successive lines to acquire the fractional coordinates, species, 
@@ -636,6 +639,7 @@ class CrystalOutputReader(GenericOutputReader):
             The total number of unique species.
         ions_per_type : list of int
             A count of ions per species type.
+
         """        
         self.nions = int(line.split()[12])
         line = self.file_descriptor.readline()
@@ -644,7 +648,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.species = []
         self.species_list = []
         self.atom_type_list = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             species = line.split()[3].capitalize()
             self.species_list.append(species)

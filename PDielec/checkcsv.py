@@ -13,54 +13,54 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-The checkcsv command read in two csv files and check that the float contents are the same
+"""The checkcsv command read in two csv files and check that the float contents are the same.
 
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
-'''
-from __future__ import print_function
+"""
 import sys
 from os.path import splitext
+
 from termcolor import colored
+
 global separator
 global threshold
 
 def compare_lines( line1, line2, swapped):
-  """
-    Compare two lines of text to find and report differences in numerical values.
+  """Compare two lines of text to find and report differences in numerical values.
 
-    Parameters
-    ----------
-    line1 : str
-        The first line of text to be compared.
-    line2 : str
-        The second line of text to be compared.
-    swapped : bool
-        A flag indicating if the comparison allows for the first numerical value to be 
-        considered as swapped, i.e., if an absolute difference of 1 between the first
-        numerical values in each line should be ignored.
+  Parameters
+  ----------
+  line1 : str
+      The first line of text to be compared.
+  line2 : str
+      The second line of text to be compared.
+  swapped : bool
+      A flag indicating if the comparison allows for the first numerical value to be 
+      considered as swapped, i.e., if an absolute difference of 1 between the first
+      numerical values in each line should be ignored.
 
-    Returns
-    -------
-    tuple : A tuple containing the following elements:
-        - store_error : bool (A flag indicating if an error was stored during comparison.)
-        - nerrors : int (The total number of errors detected in the comparison.)
-        - max_percentage_error : float (The maximum percentage error found during comparisons.)
-        - keep_word1 : str (The word from line1 that resulted in the maximum percentage error.)
-        - keep_word2 : str (The word from line2 that resulted in the maximum percentage error.)
+  Returns
+  -------
+  tuple : A tuple containing the following elements:
+      - store_error : bool (A flag indicating if an error was stored during comparison.)
+      - nerrors : int (The total number of errors detected in the comparison.)
+      - max_percentage_error : float (The maximum percentage error found during comparisons.)
+      - keep_word1 : str (The word from line1 that resulted in the maximum percentage error.)
+      - keep_word2 : str (The word from line2 that resulted in the maximum percentage error.)
 
-    Notes
-    -----
-    - The function makes use of two globals: `separator`, a string defining how to split
-      the lines into words, and `threshold`, a float defining the percentage error
-      threshold above which a discrepancy is considered an error.
-    - The function compares corresponding numerical values in `line1` and `line2`. Non-numeric 
-      words are ignored in the error calculation, but they contribute to the discrepancy count
-      if one word is numeric and the corresponding word is not.
-    - Special consideration is given to the word "processors" in the fourth position; 
-      if present and matching in both lines, it's an immediate pass, regardless of subsequent content.
-    - The function also allows for a tolerance in the comparison of the first numeric values 
-      of the lines if `swapped` is True, ignoring a discrepancy of exactly 1.
+  Notes
+  -----
+  - The function makes use of two globals: `separator`, a string defining how to split
+    the lines into words, and `threshold`, a float defining the percentage error
+    threshold above which a discrepancy is considered an error.
+  - The function compares corresponding numerical values in `line1` and `line2`. Non-numeric 
+    words are ignored in the error calculation, but they contribute to the discrepancy count
+    if one word is numeric and the corresponding word is not.
+  - Special consideration is given to the word "processors" in the fourth position; 
+    if present and matching in both lines, it's an immediate pass, regardless of subsequent content.
+  - The function also allows for a tolerance in the comparison of the first numeric values 
+    of the lines if `swapped` is True, ignoring a discrepancy of exactly 1.
+
   """    
   global separator
   global threshold
@@ -117,18 +117,18 @@ def compare_lines( line1, line2, swapped):
 
 
 def isfloat(value):
-  """
-    Check if the given value can be converted to float.
+  """Check if the given value can be converted to float.
 
-    Parameters
-    ----------
-    value : any
-        The value to be checked.
+  Parameters
+  ----------
+  value : any
+      The value to be checked.
 
-    Returns
-    -------
-    bool
-        Returns True if value can be converted to float, False otherwise.
+  Returns
+  -------
+  bool
+      Returns True if value can be converted to float, False otherwise.
+
   """    
   try:
     float(value)
@@ -137,8 +137,7 @@ def isfloat(value):
     return False
 
 def main():
-    """
-    Compares two files line by line to check for significant changes based on a provided threshold.
+    """Compares two files line by line to check for significant changes based on a provided threshold.
 
     This script takes at least two arguments that are file names along with optional arguments for
     separator (`-sep`) and threshold value (`-thresh`). It compares numbers from corresponding lines
@@ -175,6 +174,7 @@ def main():
     -----
     The command-line arguments need to be parsed using `sys.argv`.
     The comparison formula used is `2*abs(f1-f2)/(f1+f2+2)`.
+
     """    
     global separator
     global threshold
@@ -215,9 +215,7 @@ def main():
     file_name,extension = splitext(file1)
     if extension == '.csv':
         separator = ','
-    elif extension == '.txt':
-        separator = None
-    elif extension == '.out':
+    elif extension == '.txt' or extension == '.out':
         separator = None
     # Read the command line again
     files = []
@@ -291,9 +289,9 @@ def main():
        # end if not
     #end for line1, line2
     if nerrors > 0:
-      print('  '+colored('ERRORS:','red')+"({}) LARGEST ON LINE {} OF {}({}) and {}({}) -- max %error={}".format(nerrors, keep_line_number, file1,keep_word1,file2,keep_word2,max_percentage_error))
+      print('  '+colored('ERRORS:','red')+f"({nerrors}) LARGEST ON LINE {keep_line_number} OF {file1}({keep_word1}) and {file2}({keep_word2}) -- max %error={max_percentage_error}")
     else:
-      print('  '+colored('OK:','blue')+" {} = {} -- max %error={}" .format(file1,file2,max_percentage_error))
+      print('  '+colored('OK:','blue')+f" {file1} = {file2} -- max %error={max_percentage_error}")
     # end
     return (nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error)
 

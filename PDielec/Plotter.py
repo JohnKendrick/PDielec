@@ -13,16 +13,13 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-Do some pretty printing for the dielectric functions
+"""Do some pretty printing for the dielectric functions
 """
 import sys
-import numpy as np
 
 
 def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" "):
-    """
-    Print ints data.
+    """Print ints data.
 
     Parameters
     ----------
@@ -42,6 +39,7 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
     Returns
     -------
     None
+
     """
     #
     # Print out a list of ints prettily
@@ -62,8 +60,7 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
     return
 
 def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout, separator=" "):
-    """
-    Print strings data.
+    """Print strings data.
 
     Parameters
     ----------
@@ -83,6 +80,7 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
     Returns
     -------
     None
+
     """
     #
     # Print out a list of strings prettily
@@ -104,8 +102,7 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
 
 
 def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "):
-    """
-    Print reals data
+    """Print reals data
 
     Parameters
     ----------
@@ -125,6 +122,7 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
     Returns
     -------
     None
+
     """
     #
     # Print out a list of reals prettily
@@ -146,8 +144,7 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
 
 
 def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
-    """
-    Print a 3x3 matrix.
+    """Print a 3x3 matrix.
 
     Parameters
     ----------
@@ -163,6 +160,7 @@ def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
     Returns
     -------
     None
+
     """
     #
     # Print out a 3x3 tensor matrix

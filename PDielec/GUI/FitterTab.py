@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 #
 # Copyright 2024 John Kendrick & Andrew Burnett
 #
@@ -13,36 +12,45 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-FitterTab module
-'''
+"""FitterTab module
+"""
 import os.path
-import numpy as np
-import PDielec.Calculator as Calculator
-from PyQt5.QtWidgets    import  QPushButton, QWidget, QProgressBar
-from PyQt5.QtWidgets    import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
-from PyQt5.QtWidgets    import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets    import  QSpinBox
-from PyQt5.QtWidgets    import  QFileDialog
-from PyQt5.QtWidgets    import  QTableWidgetItem
-from PyQt5.QtWidgets    import  QSizePolicy
-from PyQt5.QtWidgets    import  QCheckBox
-from PyQt5.QtWidgets    import  QTabWidget
-from PyQt5.QtCore       import  Qt
-from PyQt5.QtCore       import  QCoreApplication
-from PDielec.Utilities   import  Debug
-from PDielec.GUI.SettingsTab import  FixedQTableWidget
+
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
+import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QFileDialog,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QProgressBar,
+    QPushButton,
+    QSizePolicy,
+    QSpinBox,
+    QTableWidgetItem,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize
 
+from PDielec import Calculator
+from PDielec.GUI.SettingsTab import FixedQTableWidget
+from PDielec.Utilities import Debug
+
+
 def is_float(element):
-    """
-    Test to see if element is a float.
+    """Test to see if element is a float.
 
     Parameters
     ----------
@@ -52,6 +60,7 @@ def is_float(element):
     -------
     bool
         True if the element is a float, False otherwise.
+
     """
     #If you expect None to be passed:
     if element is None: 
@@ -63,8 +72,7 @@ def is_float(element):
         return False
 
 def find_delimiter(filename):
-    """
-    Find the delimiter used in a CSV file.
+    """Find the delimiter used in a CSV file.
 
     Parameters
     ----------
@@ -80,6 +88,7 @@ def find_delimiter(filename):
     -----
     This function uses the `csv.Sniffer` class to deduce the delimiter of
     the given file by analyzing the first 5000 bytes of the file.
+
     """        
     import csv
     sniffer = csv.Sniffer()
@@ -88,8 +97,7 @@ def find_delimiter(filename):
     return delimiter
 
 def read_experimental_file(file_name,frequency_column=1, spectrum_column=2, sheet_name=None, debug=False):
-    """
-    Read an experimental file.
+    """Read an experimental file.
 
     Parameters
     ----------
@@ -139,8 +147,9 @@ def read_experimental_file(file_name,frequency_column=1, spectrum_column=2, shee
                    experimental_spectrum.append(float(row[spectrum_column-1]))
     else:
         # Read in a xlsx file, discard alphanumerics
-        from openpyxl import load_workbook
         import warnings
+
+        from openpyxl import load_workbook
         if debug:
             print('FitterTab: Reading xlsx file::')
         with warnings.catch_warnings():
@@ -164,8 +173,7 @@ def resample_experimental_spectrum(calculated_frequencies,
                                    experimental_frequencies, experimental_spectrum,
                                    baseline_removal='False', HPFilter_lambda=7.0,
                                    debug=False, ):
-    """
-    Resample the experimental spectrum to match calculated frequencies and optionally apply baseline removal.
+    """Resample the experimental spectrum to match calculated frequencies and optionally apply baseline removal.
 
     This method modifies the experimental spectrum to align with the calculated 
     frequencies. It pads the spectrum at both ends with zeros outside the calculated
@@ -231,8 +239,7 @@ def resample_experimental_spectrum(calculated_frequencies,
 
 def calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum,
                               scaling_factor=1.0, debug=False):
-    """
-    Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
+    """Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
 
     The calculated and experimental spectra share the same frequencies (xaxis).  If a scaling factor is applied, 
     the calculated spectrum x-axis is rescaled according to the scaling factor.
@@ -261,6 +268,7 @@ def calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum,
     Notes
     -----
     The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum's x-axis is performed using cubic interpolation.
+
     """        
     if debug:
         print('Start:: calculateCrossCorrelation',scaling_factor)
@@ -295,8 +303,7 @@ def calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum,
 
 def calculateSpectralDifference(xaxis,calculated_spectrum,experimental_spectrum,
                             spectral_threshold=0.05, scaling_factor=1.0, debug=False):
-    """
-    Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.
+    """Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.
 
     Parameters
     ----------
@@ -324,6 +331,7 @@ def calculateSpectralDifference(xaxis,calculated_spectrum,experimental_spectrum,
     - If the resampled experimental spectrum is empty, the method returns 0.0 immediately.
     - Uses cubic interpolation for scaling the calculated spectrum.
     - Normalization is performed based on the maximum value in the experimental spectrum.
+
     """        
     if debug:
         print('FitterTab: calculateSpectralDifference',scaling_factor)
@@ -351,8 +359,7 @@ def calculateSpectralDifference(xaxis,calculated_spectrum,experimental_spectrum,
     return rmse
 
 class FitterTab(QWidget):
-    """
-    A class for managing and displaying a spectroscopic fitting interface within a QWidget.
+    """A class for managing and displaying a spectroscopic fitting interface within a QWidget.
     Initialize the main widget with its components and connect signals to slots.
 
     This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.
@@ -431,10 +438,11 @@ class FitterTab(QWidget):
         Refreshes the interface based on current settings and data.
     requestRefresh(self)
         Requests a refresh of the interface.
-    """    
+
+    """
+
     def __init__(self, parent, debug=False):
-        """
-        Initialize the main widget with its components and connect signals to slots.
+        """Initialize the main widget with its components and connect signals to slots.
 
         This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.
 
@@ -448,6 +456,7 @@ class FitterTab(QWidget):
         Notes
         -----
         The function initializes a complex UI for spectral analysis, handling settings such as file names for experimental data, fitting types, frequency scaling, and more. It also prepares the UI for user interactions, setting up signals and slots for UI components like buttons, line edits, and combo boxes. Additionally, it initializes data structures for storing spectral data and analysis results.
+
         """        
         super(QWidget, self).__init__(parent)
         global debugger
@@ -639,16 +648,16 @@ class FitterTab(QWidget):
         hbox = QHBoxLayout()
         self.cross_correlation_le = QLineEdit(self)
         self.cross_correlation_le.setEnabled(False)
-        self.cross_correlation_le.setText('{}'.format(0.0))
+        self.cross_correlation_le.setText(f'{0.0}')
         self.lag_frequency_le = QLineEdit(self)
         self.lag_frequency_le.setEnabled(False)
-        self.lag_frequency_le.setText('{}'.format(0.0))
+        self.lag_frequency_le.setText(f'{0.0}')
         self.frequency_scaling_le = QLineEdit(self)
         self.frequency_scaling_le.setEnabled(False)
         self.frequency_scaling_le.setText('{}'.format(self.settings['Frequency scaling factor']))
         self.rmse_le = QLineEdit(self)
         self.rmse_le.setEnabled(False)
-        self.rmse_le.setText('{}'.format(0.0))
+        self.rmse_le.setText(f'{0.0}')
         hbox.addWidget(self.cross_correlation_le)
         hbox.addWidget(self.lag_frequency_le)
         hbox.addWidget(self.frequency_scaling_le)
@@ -671,8 +680,7 @@ class FitterTab(QWidget):
         debugger.print('Finished:: Initialising')
 
     def on_iterations_sb_changed(self):
-        """
-        Handle changes in the iterations spin box value.
+        """Handle changes in the iterations spin box value.
 
         This method is called when the iterations spin box value is changed. It updates the 'Number of iterations' setting with the new value and flags that a refresh is required.
 
@@ -683,6 +691,7 @@ class FitterTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on_iterations_sb_changed')
         self.settings['Number of iterations'] = self.iterations_sb.value()
@@ -690,8 +699,7 @@ class FitterTab(QWidget):
         return
 
     def on_independent_yaxes_cb_changed(self,value):
-        """
-        Handles the change of state for the independent Y-axes checkbox.
+        """Handles the change of state for the independent Y-axes checkbox.
 
         Parameters
         ----------
@@ -705,6 +713,7 @@ class FitterTab(QWidget):
         Notes
         -----
         This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refreshRequired' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
+
         """        
         debugger.print('independent_yaxes_cb_changed',value)
         self.settings['Independent y-axes'] = self.independent_yaxes_cb.isChecked()
@@ -712,8 +721,7 @@ class FitterTab(QWidget):
         return
 
     def on_optimise_frequency_scaling_cb_changed(self,value):
-        """
-        Handles changes in the frequency scaling optimization option.
+        """Handles changes in the frequency scaling optimization option.
 
         This method updates the 'Optimise frequency scaling' setting based on the state of a checkbox and marks that a refresh is required based on the new setting.
 
@@ -733,8 +741,7 @@ class FitterTab(QWidget):
         return
 
     def on_spectrum_scaling_cb_changed(self,value):
-        """
-        Handles the change event of the spectrum scaling checkbox.
+        """Handles the change event of the spectrum scaling checkbox.
 
         This method is triggered whenever the spectrum scaling checkbox's state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.
 
@@ -754,8 +761,7 @@ class FitterTab(QWidget):
         return
 
     def on_hpfilter_lambda_sb_changed(self,value):
-        """
-        Handle changes to the high-pass filter lambda scrollbar value.
+        """Handle changes to the high-pass filter lambda scrollbar value.
 
         Parameters
         ----------
@@ -776,8 +782,7 @@ class FitterTab(QWidget):
         return
 
     def on_spectrum_scaling_factor_sb_changed(self,value):
-        """
-        Handles the change in spectrum scaling factor.
+        """Handles the change in spectrum scaling factor.
 
         Parameters
         ----------
@@ -791,6 +796,7 @@ class FitterTab(QWidget):
         Notes
         -----
         This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.
+
         """        
         debugger.print('on_spectrum_scaling_factor_cb_changed',value)
         self.refreshRequired = True
@@ -801,8 +807,7 @@ class FitterTab(QWidget):
         return
 
     def on_baseline_cb_changed(self,value):
-        """
-        Handle the change event of the baseline checkbox.
+        """Handle the change event of the baseline checkbox.
 
         This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and marks refresh as required.
 
@@ -814,6 +819,7 @@ class FitterTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on_baseline_cb_changed',value)
         self.refreshRequired = True
@@ -821,8 +827,7 @@ class FitterTab(QWidget):
         return
 
     def on_spectral_difference_threshold_sb_changed(self,value):
-        """
-        Handle changes in spectral difference threshold setting.
+        """Handle changes in spectral difference threshold setting.
 
         This function is called when the 'Spectral difference threshold' setting is changed.
         It updates the setting value, converting it to a float, and sets a flag indicating that a refresh is required.
@@ -835,6 +840,7 @@ class FitterTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on_spectral_difference_threshold_sb_changed',value)
         self.refreshRequired = True
@@ -845,8 +851,7 @@ class FitterTab(QWidget):
         return
 
     def on_frequency_scaling_factor_sb_changed(self,value):
-        """
-        Handle changes in the frequency scaling factor setting.
+        """Handle changes in the frequency scaling factor setting.
 
         This function changes the frequency scaling factor setting. It updates the setting with the new value and marks a refresh as necessary. It also handles conversion errors gracefully.
 
@@ -862,6 +867,7 @@ class FitterTab(QWidget):
         Notes
         -----
         - The `self.refreshRequired` flag is set to True regardless of whether the conversion succeeds.
+
         """        
         debugger.print('on_frequency_scaling_factor_cb_changed',value)
         self.refreshRequired = True
@@ -872,8 +878,7 @@ class FitterTab(QWidget):
         return
 
     def replotButton1Clicked(self):
-        """
-        Handle the click event on the replot button.
+        """Handle the click event on the replot button.
 
         This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot operation and invokes the refresh method to update the plot.
 
@@ -888,6 +893,7 @@ class FitterTab(QWidget):
         Notes
         -----
         This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and it bookmarks the last button pressed as 'replotButton1Clicked'. It also calls the `self.refresh` method to initiate the replotting process.
+
         """        
         debugger.print('Start:: replotButton1Clicked')
         self.refreshRequired = True
@@ -898,8 +904,7 @@ class FitterTab(QWidget):
         return
 
     def replotButton2Clicked(self):
-        """
-        Handle the event when the second replot button is clicked.
+        """Handle the event when the second replot button is clicked.
 
         This method updates various attributes to indicate that a refresh of the plot is required,
         specifically with a frequency shift. It records that this button was the last one pressed
@@ -923,8 +928,7 @@ class FitterTab(QWidget):
         return
 
     def plot(self,experiment,xs,ys,legends,label):
-        """
-        Plot experimental and calculated data on the same or separate y-axes.
+        """Plot experimental and calculated data on the same or separate y-axes.
 
         This method plots provided experimental and calculated data sets using Matplotlib. It supports plotting
         data with independent y-axes and applying frequency shift and scaling to the x-axis. The plot appearance,
@@ -951,6 +955,7 @@ class FitterTab(QWidget):
         ------
         ValueError
             If `xs`, `ys`, and `legends` lists do not have the same length.
+
         """        
         # Plot the experimental values on the left y-axis
         # Plot all the others in xs, ys on the right x-axis
@@ -1004,8 +1009,7 @@ class FitterTab(QWidget):
         debugger.print('Finished:: plot')
 
     def fittingButtonClicked(self):
-        """
-        Handles the click event on the fitting button.
+        """Handles the click event on the fitting button.
 
         This method toggles the fitting process on and off. When clicked,
         it changes the button's text accordingly to reflect the current
@@ -1043,8 +1047,7 @@ class FitterTab(QWidget):
     def optimiseFit(self):
         # Optimise the fit of the first scenario to the experimental data
         # First determine who many variables we have
-        """
-        Optimise the fit based on the initial and adjusted sigmas and potential frequency scaling.
+        """Optimise the fit based on the initial and adjusted sigmas and potential frequency scaling.
 
         Instructions for determining the best fitting parameters for the model are conducted
         within the constraints of predefined modes. The function iterates to minimize the discrepancy
@@ -1072,6 +1075,7 @@ class FitterTab(QWidget):
 
         It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
         `fit_list` to store the indexes of modes that are being fitted.
+
         """        
         debugger.print('Start:: optimiseFit')
         self.functionCalls = 0
@@ -1093,8 +1097,7 @@ class FitterTab(QWidget):
         return final_point
 
     def optimiseFunction(self,variables) :
-        """
-        Optimise the fitting function based on given variables.
+        """Optimise the fitting function based on given variables.
 
         This method adjusts internal settings based on an array of variables to
         optimise the fitting function according to the predefined criteria
@@ -1132,6 +1135,7 @@ class FitterTab(QWidget):
             If the calculation is not in progress (indicated by
             `calculationInProgress` being `False`), it immediately returns a
             predefined extremely negative value (e.g., -9.9e+99).
+
         """        
         if not self.calculationInProgress:
             return -9.9E99
@@ -1165,8 +1169,7 @@ class FitterTab(QWidget):
 
 
     def redraw_sigmas_tw(self):
-        """
-        Redraw the table widget for sigmas.
+        """Redraw the table widget for sigmas.
 
         This method updates the table widget `sigmas_tw` used for displaying sigma, frequency, and intensity
         information. It checks if the data lists (`sigmas_cm1`, `frequencies_cm1`, and `intensities`) are non-empty
@@ -1187,6 +1190,7 @@ class FitterTab(QWidget):
         - `sigmas_cm1`, `frequencies_cm1`, and `intensities` are lists that store sigma, frequency, and intensity data, respectively.
         - `modes_selected` and `modes_fitted` are lists that store boolean values indicating whether a mode is selected and
           whether it is fitted, respectively.
+
         """        
         debugger.print('Start:: redraw_sigmas_tw')
         if len(self.sigmas_cm1) <= 0:
@@ -1198,7 +1202,7 @@ class FitterTab(QWidget):
             # Sigma and check / unchecked column
             items = []
             itemFlags = []
-            item = QTableWidgetItem('{0:.2f}'.format(sigma))
+            item = QTableWidgetItem(f'{sigma:.2f}')
             if self.modes_selected[i]:
                 if self.modes_fitted[i]:
                     item.setCheckState(Qt.Checked)
@@ -1213,10 +1217,10 @@ class FitterTab(QWidget):
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
             # Frequency column cm-1
-            items.append(QTableWidgetItem('{0:.4f}'.format(f) ) )
+            items.append(QTableWidgetItem(f'{f:.4f}' ) )
             itemFlags.append( otherFlags )
             # Intensity column Debye2/Angs2/amu
-            items.append(QTableWidgetItem('{0:.4f}'.format(intensity) ) )
+            items.append(QTableWidgetItem(f'{intensity:.4f}' ) )
             itemFlags.append( otherFlags )
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
@@ -1230,8 +1234,7 @@ class FitterTab(QWidget):
 
     def on_fitting_type_cb_activated(self,index):
         # Change in fitting type
-        """
-        Handle the activation of a fitting type option.
+        """Handle the activation of a fitting type option.
 
         This method updates the current settings to reflect the selected fitting type based on the provided index. It also marks the state as requiring a refresh.
 
@@ -1251,8 +1254,7 @@ class FitterTab(QWidget):
 
     def on_scenario_cb_activated(self,index):
         # Change in Scenario to be used for fitting
-        """
-        Handle scenario combobox activation.
+        """Handle scenario combobox activation.
 
         This function is triggered when a scenario combobox option is selected. It logs the activation with the selected index, marks that a refresh is required, and updates the settings to reflect the new scenario.
 
@@ -1264,6 +1266,7 @@ class FitterTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on_scenario_cb_activated', index)
         self.refreshRequired = True
@@ -1271,8 +1274,7 @@ class FitterTab(QWidget):
 
     def on_spectrafile_le_return(self):
         # Handle a return in the experimental file name line editor
-        """
-        Handle file selection for experimental spectra.
+        """Handle file selection for experimental spectra.
 
         This method is executed when an action associated with the `spectrafile_le` widget is performed. It prompts the user to select a file if the currently specified file does not exist or cannot be found. It updates the application's settings with the new file name, if a file is selected.
 
@@ -1289,6 +1291,7 @@ class FitterTab(QWidget):
         The method first checks if the file specified in the `spectrafile_le` widget exists. If it does not, a file dialog is opened for the user to select a file. If a file is selected, the method updates the application's settings and the text of the `spectrafile_le` widget to reflect the new file name. Additionally, it sets a flag indicating that a refresh is required and that the experimental file needs to be read again. Finally, it triggers the last button pressed action.
 
         This method utilizes `os.path.isfile` to check file existence, `QFileDialog` for file selection. 
+
         """        
         debugger.print('Start:: on_spectrafile_le_return')
         file_name = self.spectrafile_le.text()
@@ -1310,8 +1313,7 @@ class FitterTab(QWidget):
         return
 
     def on_spectrafile_le_changed(self,text):
-        """
-        Handle changes to the spectra file input field.
+        """Handle changes to the spectra file input field.
 
         This method is triggered when the text of the spectrum file input field changes. It updates the 'Experimental file name' setting with the new text, marks the current experimental file as unread, and indicates that a refresh is required.
 
@@ -1327,6 +1329,7 @@ class FitterTab(QWidget):
         Notes
         -----
         The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text` argument.
+
         """        
         debugger.print('on_spectrafile_le_changed', text)
         text = self.spectrafile_le.text()
@@ -1335,8 +1338,7 @@ class FitterTab(QWidget):
         self.experimental_file_has_been_read = False
 
     def on_sigmas_tw_itemChanged(self, item):
-        """
-        Handle item changed event in a table widget for sigma values.
+        """Handle item changed event in a table widget for sigma values.
 
         This method updates mode fitting status and sigma values based on changes in a table widget,
         redraws the table widget, and refreshes output based on the modifications. It also handles error
@@ -1357,6 +1359,7 @@ class FitterTab(QWidget):
         - Triggers UI update methods to reflect changes in the table widget and other dependent UI components.
         - Blocks and unblocks signals from the table widget to prevent recursive item change events during updates.
         - Processes all pending events for the application to ensure UI updates are immediately applied.
+
         """        
         debugger.print('Start:: on_sigmas_tw_itemChanged', item)
         self.sigmas_tw.blockSignals(True)
@@ -1389,8 +1392,7 @@ class FitterTab(QWidget):
 
 
     def print_settings(self):
-        """
-        Prints the settings attributes of the instance.
+        """Prints the settings attributes of the instance.
 
         Parameters
         ----------
@@ -1401,6 +1403,7 @@ class FitterTab(QWidget):
         None
 
         Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
+
         """        
         debugger.print('print_settings')
         for key in self.settings:
@@ -1408,8 +1411,7 @@ class FitterTab(QWidget):
         return
 
     def replot(self):
-        """
-        Replots the experimental spectrum along with calculated frequencies and spectra.
+        """Replots the experimental spectrum along with calculated frequencies and spectra.
 
         This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related information such as legends and labels.
 
@@ -1436,8 +1438,7 @@ class FitterTab(QWidget):
         return
 
     def refresh(self,force=False):
-        """
-        Refreshes the state of the application based on user-defined conditions and settings.
+        """Refreshes the state of the application based on user-defined conditions and settings.
 
         Parameters
         ----------
@@ -1453,6 +1454,7 @@ class FitterTab(QWidget):
         The refresh process involves several key steps including checking if a refresh is required, updating plotting data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no frequencies, it returns early. Additionally, if `force` is True, it ignores the check for whether a refresh is required and proceeds with the refresh.
 
         After updating relevant class attributes and GUI components, the function recalculates cross-correlation, root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these metrics.
+
         """        
         debugger.print('Start:: refresh', force)
         if not self.refreshRequired and not force:
@@ -1543,10 +1545,10 @@ class FitterTab(QWidget):
                                                 scaling_factor=scaling_factor,
                                                 spectral_threshold=spectral_threshold,
                                                 debug=debugger.state())
-        self.cross_correlation_le.setText('{:6.4f}'.format(self.xcorr0))
-        self.lag_frequency_le.setText('{:8.2f}'.format(self.lag))
+        self.cross_correlation_le.setText(f'{self.xcorr0:6.4f}')
+        self.lag_frequency_le.setText(f'{self.lag:8.2f}')
         self.frequency_scaling_le.setText('{:8.2f}'.format(self.settings['Frequency scaling factor']))
-        self.rmse_le.setText('{:.2e}'.format(self.rmse))
+        self.rmse_le.setText(f'{self.rmse:.2e}')
         self.replot()
         #
         # Unblock signals after refresh
@@ -1558,8 +1560,7 @@ class FitterTab(QWidget):
         return
 
     def requestRefresh(self):
-        """
-        Request a refresh of the interface.
+        """Request a refresh of the interface.
 
         Parameters
         ----------

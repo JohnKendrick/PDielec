@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""
-A Makefile style system for testing and installing PDGui and PDielec
+"""A Makefile style system for testing and installing PDGui and PDielec
 
 This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
 
@@ -41,20 +40,18 @@ Command line options
     - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 """
 
-import os
-import sys
-from PDielec.preader     import main as main_preader
-from PDielec.pdgui       import main as main_pdgui
-from PDielec.checkcsv    import main as main_checkcsv
-from PDielec.checkexcel  import main as main_checkexcel
-from PDielec.p2cif       import main as main_p2cif
-from PDielec.vibanalysis import main as main_vibanalysis
-import numpy as np
 import contextlib
 import functools
-from shutil import copyfile
+import os
 import subprocess
+import sys
 import time
+from shutil import copyfile
+
+import numpy as np
+
+from PDielec.checkcsv import main as main_checkcsv
+from PDielec.checkexcel import main as main_checkexcel
 
 # Force a flush on print, needed for Windows
 print = functools.partial(print, flush=True)
@@ -188,8 +185,7 @@ benchmarks = [
     ]
 
 def usage():
-    """
-    Print usage instructions for the command line tool.
+    """Print usage instructions for the command line tool.
 
     This function outputs instructions to `sys.stderr` for using the command line tool, including available commands and options. It also handles platform-specific instructions for Linux systems.
 
@@ -243,8 +239,7 @@ def usage():
     exit()
 
 def checkLocalExecutables():
-    '''
-    Check to see if the rootDirectory has the executables we need.
+    """Check to see if the rootDirectory has the executables we need.
 
     Parameters
     ----------
@@ -255,7 +250,8 @@ def checkLocalExecutables():
     -------
     bool
         True if the executables are found, False otherwise.
-    '''
+
+    """
     global rootDirectory
     os.chdir(rootDirectory)
     if not os.path.isfile('preader'):
@@ -269,8 +265,7 @@ def checkLocalExecutables():
     return True
 
 def install(scripts):
-    """
-    Install a set of scripts into a specified directory.
+    """Install a set of scripts into a specified directory.
 
     Parameters
     ----------
@@ -290,39 +285,39 @@ def install(scripts):
     ------
     This function does not explicitly raise exceptions, but subprocess.run 
     may raise exceptions related to the execution of shell commands.
+
     """    
     print('Performing installation of scripts into ',scripts)
     global rootDirectory
     mychdir(rootDirectory)
     print('Installing preader',end='')
-    subprocess.run('cp -P preader {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P preader {scripts}',shell=True)
     print(',p1reader',end='')
-    subprocess.run('cp -P p1reader {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P p1reader {scripts}',shell=True)
     print(',pdgui',end='')
-    subprocess.run('cp -P pdgui {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P pdgui {scripts}',shell=True)
     print(',p2cif',end='')
-    subprocess.run('cp -P p2cif {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P p2cif {scripts}',shell=True)
     print(',pdcompare',end='')
-    subprocess.run('cp -P pdcompare {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P pdcompare {scripts}',shell=True)
     print(',graphdatagenerator',end='')
-    subprocess.run('cp -P graphdatagenerator {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P graphdatagenerator {scripts}',shell=True)
     print(',vibanalysis',end='')
-    subprocess.run('cp -P vibanalysis {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P vibanalysis {scripts}',shell=True)
     print(',pdmake',end='')
-    subprocess.run('cp -P pdmake {}'.format(scripts),shell=True)
+    subprocess.run(f'cp -P pdmake {scripts}',shell=True)
     print(',python scripts')
-    subprocess.run('mkdir -p {}/PDielec'.format(scripts),shell=True)
-    subprocess.run('mkdir -p {}/PDielec/GUI'.format(scripts),shell=True)
-    subprocess.run('cp -r PDielec/*.py {}/PDielec'.format(scripts),shell=True)
-    subprocess.run('cp -r PDielec/GUI/*.py {}/PDielec/GUI/'.format(scripts),shell=True)
-    subprocess.run('cp -r PDielec/GUI/*.png {}/PDielec/GUI/'.format(scripts),shell=True)
+    subprocess.run(f'mkdir -p {scripts}/PDielec',shell=True)
+    subprocess.run(f'mkdir -p {scripts}/PDielec/GUI',shell=True)
+    subprocess.run(f'cp -r PDielec/*.py {scripts}/PDielec',shell=True)
+    subprocess.run(f'cp -r PDielec/GUI/*.py {scripts}/PDielec/GUI/',shell=True)
+    subprocess.run(f'cp -r PDielec/GUI/*.png {scripts}/PDielec/GUI/',shell=True)
     print('Finished installation of scripts into ',scripts)
 
 @contextlib.contextmanager
 def redirect(file):
     # capture all outputs to a log file while still printing it
-    """
-    Redirect the standard output to a specified file.
+    """Redirect the standard output to a specified file.
 
     This function is a context manager that redirects `sys.stdout` to a file,
     optionally suppressing stderr output if not in debug mode. It is useful for
@@ -352,6 +347,7 @@ def redirect(file):
     AttributeError
         If an attribute not supported by the `sys.stdout` is being accessed through
         the Logger class.
+
     """    
     class Logger:
         def __init__(self, file):
@@ -381,8 +377,7 @@ def redirect(file):
             sys.stderr = sys.__stderr__
 
 def readNmaFile(file):
-    """
-    Read and extract data from an NMA file.
+    """Read and extract data from an NMA file.
 
     Parameters
     ----------
@@ -409,12 +404,13 @@ def readNmaFile(file):
     ------
     FileNotFoundError
         If the file specified by the 'file' parameter does not exist.
+
     """    
     nmodes = 0
     frequencies = []
     rsquared = []
     explained = []
-    with open(file,'r') as fd:
+    with open(file) as fd:
         line = fd.readline()
         while line:
             splits = line.split()
@@ -438,8 +434,7 @@ def readNmaFile(file):
     return np.sum(f),np.sum(r),np.sum(e)
 
 def compareNmaFiles(file1,file2):
-    """
-    Compare two NMA files for differences within a tolerance.
+    """Compare two NMA files for differences within a tolerance.
 
     Parameters
     ----------
@@ -460,6 +455,7 @@ def compareNmaFiles(file1,file2):
     which returns the frequency (f), redox (r), and energy (e) values 
     for each file. The comparison is done based on a tolerance of 1e-06, 
     and the total number of differences in these values are counted and returned.
+
     """    
     f1,r1,e1 = readNmaFile(file1)
     f2,r2,e2 = readNmaFile(file2)
@@ -473,8 +469,7 @@ def compareNmaFiles(file1,file2):
     return nerrors
 
 def compareFiles(file1,file2):
-    """
-    Compare two text files for differences.
+    """Compare two text files for differences.
 
     This function opens and reads two text files line by line and then compares them word by word,
     ignoring certain punctuation marks. If any differences are found in either numeric values
@@ -505,10 +500,11 @@ def compareFiles(file1,file2):
     - For numerical comparison, the function employs a relative difference check to
       determine if two numbers should be considered different, taking into account
       floating-point inaccuracies.
+
     """    
     global debug
-    fd1 = open(file1,'r')
-    fd2 = open(file2,'r')
+    fd1 = open(file1)
+    fd2 = open(file2)
     lines1 = fd1.readlines()
     lines2 = fd2.readlines()
     nerrors = 0
@@ -544,8 +540,7 @@ def compareFiles(file1,file2):
 
 
 def runP2CifTest(title, instructions, regenerate):
-    '''
-    Run a test on p2cif.
+    """Run a test on p2cif.
 
     Parameters
     ----------
@@ -555,7 +550,8 @@ def runP2CifTest(title, instructions, regenerate):
         The command line parameters.
     regenerate : bool
         Set to True if the reference file is overwritten.
-    '''
+
+    """
     global rootDirectory
     global useLocal
     print(title,end='',flush=True)
@@ -581,7 +577,7 @@ def runP2CifTest(title, instructions, regenerate):
     if not regenerate:
         nerrors = compareFiles('all.cif', 'all.ref.cif')
         if nerrors > 0:
-            print(' {} ERRORS:'.format(nerrors))
+            print(f' {nerrors} ERRORS:')
         else:
             print(' OK:')
         # end if
@@ -591,8 +587,7 @@ def runP2CifTest(title, instructions, regenerate):
     return
 
 def runVibAnalysis(title, instructions, regenerate):
-    '''
-    Run a vibanalysis test.
+    """Run a vibanalysis test.
 
     Parameters
     ----------
@@ -602,7 +597,8 @@ def runVibAnalysis(title, instructions, regenerate):
         The command line parameters.
     regenerate : bool
         Set to True if the reference file is overwritten.
-    '''
+
+    """
     global rootDirectory
     global useLocal
     print(title,end='',flush=True)
@@ -631,7 +627,7 @@ def runVibAnalysis(title, instructions, regenerate):
     if not regenerate:
         nerrors = compareNmaFiles(nmafile, reffile)
         if nerrors > 0:
-            print(' {} ERRORS:'.format(nerrors))
+            print(f' {nerrors} ERRORS:')
         else:
             print(' OK:')
         # end if
@@ -642,8 +638,7 @@ def runVibAnalysis(title, instructions, regenerate):
     return
 
 def runPreaderTest(title, instructions, regenerate):
-    '''
-    Run a preader test.
+    """Run a preader test.
 
     Parameters
     ----------
@@ -653,7 +648,8 @@ def runPreaderTest(title, instructions, regenerate):
         The command line parameters.
     regenerate : bool, optional
         Set to true if the reference file is overwritten. Default is False.
-    '''
+
+    """
     global debug
     global rootDirectory
     global useLocal
@@ -685,9 +681,9 @@ def runPreaderTest(title, instructions, regenerate):
             result = main_checkcsv()
         nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error = result
         if nerrors > 0:
-            print(' ERRORS:'+"LARGEST ON LINE {} - max %error={}".format(nerrors, keep_line_number, max_percentage_error))
+            print(' ERRORS:'+f"LARGEST ON LINE {nerrors} - max %error={keep_line_number}")
         else:
-            print(' OK:'+" - max %error={}" .format(max_percentage_error))
+            print(' OK:'+f" - max %error={max_percentage_error}")
         # end if
     else:
         print(' Regenerated:')
@@ -695,8 +691,7 @@ def runPreaderTest(title, instructions, regenerate):
     return
 
 def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
-    '''
-    Run a pdgui test.
+    """Run a pdgui test.
 
     Parameters
     ----------
@@ -706,7 +701,8 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
         The command line parameters.
     regenerate : bool
         Set to true if the reference file is overwritten.
-    '''
+
+    """
     global viewing
     global start_time
     global debug
@@ -735,15 +731,15 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
                 result = main_checkexcel()
             nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
             if nerrors > 0:
-                print('{} ERRORS:'.format(nerrors)+"{}@{},{} - max %error={}".format(sheet,row,col, max_percentage_error))
+                print(f'{nerrors} ERRORS:'+f"{sheet}@{row},{col} - max %error={max_percentage_error}")
             else:
-                print(' OK:'+" - max %error={}" .format(max_percentage_error))
+                print(' OK:'+f" - max %error={max_percentage_error}")
             # end if
         elif benchmarks:
             end_time = time.time()
             elapsed_time = end_time - start_time
             start_time = end_time
-            print(' OK:'+" - elapsed time {:.3f}s" .format(elapsed_time))
+            print(' OK:'+f" - elapsed time {elapsed_time:.3f}s")
         elif not benchmarks:
             # If we asked for a benchmarking then don't do a regenerate
             copyfile('results.xlsx','results.ref.xlsx')
@@ -753,8 +749,7 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     return
 
 def changePadding(all):
-    """
-    Change the padding based on the maximum length of elements in a list or the predefined setting.
+    """Change the padding based on the maximum length of elements in a list or the predefined setting.
 
     Parameters
     ----------
@@ -772,6 +767,7 @@ def changePadding(all):
     that stores the default padding value. If the maximum length of an element in the list is
     less than 'settings['padding']', the function returns 'settings['padding']'. Otherwise,
     it returns the maximum length found.
+
     """    
     global settings
     maxlen = 0
@@ -782,8 +778,7 @@ def changePadding(all):
     return maxlen
 
 def runTests(testlist, testType, regenerate):
-    '''
-    Run the tests given in the directories stored in testlist.
+    """Run the tests given in the directories stored in testlist.
 
     Parameters
     ----------
@@ -793,7 +788,8 @@ def runTests(testlist, testType, regenerate):
         The type of tests to run.
     regenerate : bool
         If True, the test data will be regenerated.
-    '''
+
+    """
     global start_time
     global debug
     mychdir(os.path.join(rootDirectory,'Examples'))
@@ -818,8 +814,8 @@ def runTests(testlist, testType, regenerate):
             print('RunTest: directory=',directory)
         if not os.path.isdir(directory):
             print('Error: command needs to be executed in the PDielec home directory')
-            print('       current directory is {}'.format(homedir))
-            print('       required directory is {}'.format(directory))
+            print(f'       current directory is {homedir}')
+            print(f'       required directory is {directory}')
             exit()
         if testType == 'benchmarks':
             runPdMakefile(directory,pdmakefile,regenerate,benchmarks=True)
@@ -828,12 +824,11 @@ def runTests(testlist, testType, regenerate):
     # end for
     elapsed_time = time.time() - test_start_time
     print('--------------------------------------------------')
-    print(convertTestType[testType],'completed in {:.3f}s'.format(elapsed_time))
+    print(convertTestType[testType],f'completed in {elapsed_time:.3f}s')
 
 def readPdMakefile(directory,filename):
     # The first word is the dictionary key, the rest is its value
-    """
-    Read a custom makefile and return the title and instructions.
+    """Read a custom makefile and return the title and instructions.
 
     Parameters
     ----------
@@ -871,21 +866,21 @@ def readPdMakefile(directory,filename):
 
     - It's assumed that `os` module has been imported for `os.getcwd()` to work, though it is not explicitly
       stated in the function definition.
+
     """    
     global settings
     global debug
     instructions = {}
     if debug:
         print('ReadPdMakefile:',directory,filename)
-    with open(filename,'r') as fd:
+    with open(filename) as fd:
         line = fd.readline()[:-1]
         if settings['title'] == 'title':
             title = line.ljust(settings['padding'])
+        elif len(directory)>1:
+            title = directory.ljust(settings['padding'])
         else:
-            if len(directory)>1:
-                title = directory.ljust(settings['padding'])
-            else:
-                title = os.getcwd().ljust(settings['padding'])
+            title = os.getcwd().ljust(settings['padding'])
         line = fd.readline()[:-1]
         while line:
             if len(line)>0 and not line.startswith('#'):
@@ -904,14 +899,14 @@ def readPdMakefile(directory,filename):
     return title,instructions
 
 def mychdir(directory):
-    '''
-    Local version of os.chdir with some testing.
+    """Local version of os.chdir with some testing.
 
     Notes
     -----
     This is a local implementation of os.chdir which includes
     additional testing or functionality tailored to specific needs.
-    '''
+
+    """
     if directory != '':
         if os.path.isdir(directory):
             result = os.chdir(directory)
@@ -924,8 +919,7 @@ def mychdir(directory):
     return
 
 def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
-    '''
-    Run a specific pdMakefile.
+    """Run a specific pdMakefile.
 
     Parameters
     ----------
@@ -942,7 +936,8 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
     -----
     The routine reads the pdmakefile and determines the type of pdmakefile and the instructions
     Then the instructions are processed according to the context (preader, pdgui, p2cif or vibanalysis)
-    '''
+
+    """
     global debug
     homedir = os.getcwd()
     if debug:
@@ -975,8 +970,7 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
     mychdir(homedir)
 
 def runClean():
-    """
-    Clean old results from the Examples directory.
+    """Clean old results from the Examples directory.
 
     This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.
 
@@ -990,6 +984,7 @@ def runClean():
     Raises
     ------
     None
+
     """    
     if os.name == 'nt':
         print('Unable to clean installation in Windows')
@@ -1004,8 +999,7 @@ def runClean():
     print('Cleaning complete')
 
 def runPyInstaller():
-    """
-    Runs the PyInstaller command with specified options and handles platform specific adjustments.
+    """Runs the PyInstaller command with specified options and handles platform specific adjustments.
 
     This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.
     """    
@@ -1018,8 +1012,7 @@ def runPyInstaller():
     subprocess.run('cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui',shell=True)
 
 def runPyPi():
-    """
-    Creates PyPi distribution files, restricted by OS.
+    """Creates PyPi distribution files, restricted by OS.
 
     This function changes the current working directory to `rootDirectory` 
     and runs a series of shell commands that clean up previous distribution files and 
@@ -1036,8 +1029,7 @@ def runPyPi():
     subprocess.run('rm -rf build dist PDielec.egg-info; python -m build ',shell=True)
 
 def testForRootDirectory(path):
-    """
-    Test if a given path contains a subdirectory named 'Examples'.
+    """Test if a given path contains a subdirectory named 'Examples'.
 
     This function checks if the given path has a direct subdirectory
     called 'Examples' and returns a boolean indicating the result.
@@ -1052,6 +1044,7 @@ def testForRootDirectory(path):
     bool
         Returns True if the 'Examples' subdirectory exists within the given path,
         otherwise returns False.
+
     """    
     test = os.path.join(path,'Examples')
     if not os.path.isdir(test):
@@ -1059,8 +1052,7 @@ def testForRootDirectory(path):
     return True
 
 def findRootDirectory(start):
-    '''
-    Find the root directory starting from start.
+    """Find the root directory starting from start.
 
     Parameters
     ----------
@@ -1071,7 +1063,8 @@ def findRootDirectory(start):
     -------
     str
         The root directory path.
-    '''
+
+    """
     lastpath = start
     path = os.path.join(start,'Examples')
     while path != lastpath:
@@ -1083,8 +1076,7 @@ def findRootDirectory(start):
     exit()
 
 def main():
-    """
-    Main routine to process command line arguments and execute actions.
+    """Main routine to process command line arguments and execute actions.
 
     This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
 
@@ -1120,6 +1112,7 @@ def main():
     - It uses global variables for configuration options like `debug`, `viewing`, `settings`, `rootDirectory`, and `useLocal`.
     - Requires the `os`, `sys`, and specific project function imports to function.
     - The script changes the current working directory multiple times, which affects relative path usage.
+
     """    
     global debug
     global viewing
@@ -1193,7 +1186,7 @@ def main():
             pdmakefiles.append(token)
         else:
             usage()
-            exit();
+            exit()
         # endif
     # end while
     #
@@ -1261,7 +1254,7 @@ def main():
             install(scriptsDirectory)
         else:
             usage()
-            exit();
+            exit()
         #end if
     #end for
 

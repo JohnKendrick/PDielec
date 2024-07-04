@@ -13,24 +13,22 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-The checkexcel package reads in two excel files and check that the float contents are the same
+"""The checkexcel package reads in two excel files and check that the float contents are the same.
 
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 
-'''
-from __future__ import print_function
+"""
 import sys
-from termcolor import colored
+
 from openpyxl import load_workbook
+from termcolor import colored
 
 global threshold
 
 def main():
 
     # Start processing the directories
-    """
-    Compare two Excel files for any significant numerical changes and report discrepancies.
+    """Compare two Excel files for any significant numerical changes and report discrepancies.
 
     This script takes in two Excel files as arguments and optionally,
     a threshold for numerical comparison and a flag for full sheet comparison.
@@ -69,6 +67,7 @@ def main():
     - The script will immediately exit with usage instructions if less than two file paths are provided.
     - Numerical difference is calculated only for numeric data. For text data, a simplified equivalence check is done.
     - The script output includes printing to standard error for usage, errors, or status, with optional ANSI color highlighting.
+
     """    
     if len(sys.argv) <= 1 :
         print('checkexcel file file2 [-thresh 1.0E-3] [-f]', file=sys.stderr)
@@ -130,9 +129,9 @@ def main():
         sheets.append('Settings')
         sheets.append('Scenarios')
     for sheet in sheets:
-        if not sheet in  wb1 :
+        if sheet not in wb1 :
             continue
-        if not sheet in  wb2 :
+        if sheet not in wb2 :
             continue
         print('Checking sheet ',sheet)
         ws1 = wb1[sheet]
@@ -169,37 +168,35 @@ def main():
                     nerrors += 1
                     percentage_error = 0.0
                     error = (sheet, row_index, col_index, value1, value2, percentage_error)
-                else:
-                    if value1 != value2:
-                        if value1 is not None and value2 is not None and cell1.data_type == 'n' and cell2.data_type == 'n':
-                            #
-                            # Flag an error which is numeric
-                            #
-                            percentage_error = 100.0*abs(2.0*(value1 - value2)/(abs(value1) + abs(value2)+2))
-                            if percentage_error > 100.*threshold:
-                                nerrors += 1
-                                if percentage_error > max_percentage_error:
-                                    max_percentage_error = percentage_error
-                                    error = (sheet, row_index, col_index, value1, value2, percentage_error)
-                                # if percentage error
-                            else:
-                                if percentage_error > max_percentage_error:
-                                    max_percentage_error = percentage_error
-                            # if percentage error > threshold
-                        else:
-                            #
-                            # This is a non-numeric error
-                            # Remove any back or forward slashes to avoid problems with filenames in linux/windows
-                            #
-                            if isinstance(value1,str):
-                                value1 = value1.replace('\\','')
-                                value1 = value1.replace('/','')
-                            if isinstance(value2,str):
-                                value2 = value2.replace('\\','')
-                                value2 = value2.replace('/','')
-                            if value1 != value2:
-                                nerrors += 1
-                                error = (sheet, row_index, col_index, value1, value2, 0.0)
+                elif value1 != value2:
+                    if value1 is not None and value2 is not None and cell1.data_type == 'n' and cell2.data_type == 'n':
+                        #
+                        # Flag an error which is numeric
+                        #
+                        percentage_error = 100.0*abs(2.0*(value1 - value2)/(abs(value1) + abs(value2)+2))
+                        if percentage_error > 100.*threshold:
+                            nerrors += 1
+                            if percentage_error > max_percentage_error:
+                                max_percentage_error = percentage_error
+                                error = (sheet, row_index, col_index, value1, value2, percentage_error)
+                            # if percentage error
+                        elif percentage_error > max_percentage_error:
+                            max_percentage_error = percentage_error
+                        # if percentage error > threshold
+                    else:
+                        #
+                        # This is a non-numeric error
+                        # Remove any back or forward slashes to avoid problems with filenames in linux/windows
+                        #
+                        if isinstance(value1,str):
+                            value1 = value1.replace('\\','')
+                            value1 = value1.replace('/','')
+                        if isinstance(value2,str):
+                            value2 = value2.replace('\\','')
+                            value2 = value2.replace('/','')
+                        if value1 != value2:
+                            nerrors += 1
+                            error = (sheet, row_index, col_index, value1, value2, 0.0)
                         # if cell1.data_type
                     # if value1 != value2
                 # if cell1 is none
@@ -208,11 +205,11 @@ def main():
     # for sheet
     if error is not None:
         sheet,row,col,value1,value2,max_percentage_error = error
-        print('  '+colored('ERRORS:','red')+'({}) LARGEST ON ROW,COL {},{} OF SHEET {}, {}({}) and {}({}) -- max %error={}'.format(nerrors, row,col,sheet,file1,value1,file2,value2,max_percentage_error))
+        print('  '+colored('ERRORS:','red')+f'({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}')
     elif nerrors > 0:
-        print('  '+colored('ERRORS:','red')+'({}) Dimensions of spreadsheet were wrong                                    '.format(nerrors))
+        print('  '+colored('ERRORS:','red')+f'({nerrors}) Dimensions of spreadsheet were wrong                                    ')
     else:
-        print('  '+colored('OK:','blue')+" {} = {} -- max %error={}" .format(file1,file2,max_percentage_error))
+        print('  '+colored('OK:','blue')+f" {file1} = {file2} -- max %error={max_percentage_error}")
     return nerrors, row,col,sheet,file1,value1,file2,value2,max_percentage_error
 
 if __name__=="__main__":

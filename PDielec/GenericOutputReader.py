@@ -13,23 +13,21 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-Generic reader of output files. An actual reader should inherit from this class.
-
-'''
-from __future__ import print_function
+"""Generic reader of output files. An actual reader should inherit from this class."""
 import math
 import os
 import sys
+
 import numpy as np
-from PDielec.Constants  import wavenumber, avogadro_si, amu
-from PDielec.Plotter    import print3x3, print_reals, print_strings, print_ints
+
 from PDielec.Calculator import cleanup_symbol
-from PDielec.IO         import pdielec_io
+from PDielec.Constants import amu, avogadro_si, wavenumber
+from PDielec.IO import pdielec_io
+from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
+
 
 class GenericOutputReader:
-    """
-    Generic reader of output files. Actual reader should inherit from this class.
+    """Generic reader of output files. Actual reader should inherit from this class.
     Examples of readers with this base class:
 
     - :class:`~PDielec.AbinitOutputReader`
@@ -109,11 +107,11 @@ class GenericOutputReader:
 
     original_born_charges_are_being_used : bool
         Signifies whether original Born charges are in use, defaults to True.
+
     """
 
     def __init__(self, filenames):
-        """
-        A constructor for initializing an instance of a class with various properties.
+        """A constructor for initializing an instance of a class with various properties.
 
         Parameters
         ----------
@@ -181,8 +179,7 @@ class GenericOutputReader:
         return
 
     def read_output(self):
-        """
-        Interface to the private read output files methods.
+        """Interface to the private read output files methods.
 
         Parameters
         ----------
@@ -191,13 +188,13 @@ class GenericOutputReader:
         Returns
         -------
         None
+
         """
         self._read_output_files()
         return
 
     def reset_masses(self):
-        """
-        Reset the mass values to the program's defaults.
+        """Reset the mass values to the program's defaults.
 
         This function resets the mass dictionary of an object to the values specified
         by the object's `program_mass_dictionary`. Typically used when needing to revert
@@ -229,6 +226,7 @@ class GenericOutputReader:
     
         Make sure that `program_mass_dictionary` is set properly before calling this
         method to avoid setting the masses to an unintended state.
+
         """        
         mass_dictionary = {}
         if self.debug:
@@ -237,8 +235,7 @@ class GenericOutputReader:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
     def getSpecies(self):
-        """
-        Return a list of cleaned species symbols.
+        """Return a list of cleaned species symbols.
 
         This method applies a specified cleanup function to each element of 
         the `species` attribute and returns the resulting list.
@@ -251,12 +248,12 @@ class GenericOutputReader:
         -------
         list
             A list of cleaned species symbols.
+
         """        
         return [ cleanup_symbol(el) for el in self.species ]
 
     def mass_dictionary(self):
-        """
-        Generate a dictionary mapping chemical species symbols to their masses.
+        """Generate a dictionary mapping chemical species symbols to their masses.
 
         Parameters
         ----------
@@ -274,6 +271,7 @@ class GenericOutputReader:
         Examples
         --------
         Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
+
         """        
         dictionary = {}
         for symbol,mass in zip(self.species,self.masses_per_type):
@@ -285,8 +283,7 @@ class GenericOutputReader:
         return dictionary
 
     def set_edited_masses(self,masses):
-        """
-        Sets the edited masses attribute if the length matches the original masses attribute.
+        """Sets the edited masses attribute if the length matches the original masses attribute.
 
         Parameters
         ----------
@@ -304,6 +301,7 @@ class GenericOutputReader:
         Returns
         -------
         None
+
         """        
         if len(masses) == len(self.masses):
             self.edited_masses = masses
@@ -313,8 +311,7 @@ class GenericOutputReader:
         return
 
     def change_masses(self, new_masses, mass_dictionary):
-        """
-        Change the masses of elements in a output reader.
+        """Change the masses of elements in a output reader.
 
         This function updates the masses of the elements within the reader according to the new masses provided. If the object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the simulation's internal mass dictionary based on the provided `new_masses` and an optional external `mass_dictionary` for overrides. If debugging is enabled, various diagnostic messages will be printed during the function's execution.
 
@@ -336,6 +333,7 @@ class GenericOutputReader:
         - If `self.edited_masses` is already set to a truthy value, it bypasses the update process and uses these values instead.
         - `self.species` and `self.atom_type_list` are expected to be iterable attributes of the object containing symbols for elements and types of atoms, respectively.
         - Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
+
         """        
         if self.edited_masses:
             # This is pretty crude!  If the reader has this variable set then we
@@ -371,8 +369,7 @@ class GenericOutputReader:
         return
 
     def print(self):
-        """
-        Print information about the reader.
+        """Print information about the reader.
 
         Parameters
         ----------
@@ -385,28 +382,29 @@ class GenericOutputReader:
         Notes
         -----
         This function prints out detailed information about the reader it is run on.
+
         """
         # Generic printing of information
         print("")
         print("Summary of information contained in the QM/MM Reader")
         print("")
-        print("Number of atoms: {:5d}".format(self.nions))
+        print(f"Number of atoms: {self.nions:5d}")
         print("")
-        print("Number of species: {:5d}".format(self.nspecies))
+        print(f"Number of species: {self.nspecies:5d}")
         print_strings("Species:", self.species)
         print_ints("Number of atoms for each species:", self.ions_per_type)
         print_reals("Mass of each species:", self.masses_per_type,format="{:10.6f}")
         print_ints("Atom type list:", self.atom_type_list)
         print("")
-        print("Number of kpoints: {:5d}".format(self.kpoints))
+        print(f"Number of kpoints: {self.kpoints:5d}")
         print("")
-        print("Kpoint grid      : {:5d} {:5d} {:5d}".format(self.kpoint_grid[0], self.kpoint_grid[1], self.kpoint_grid[2]))
+        print(f"Kpoint grid      : {self.kpoint_grid[0]:5d} {self.kpoint_grid[1]:5d} {self.kpoint_grid[2]:5d}")
         print("")
-        print("Energy cutoff (eV): {:f}".format(self.energy_cutoff))
+        print(f"Energy cutoff (eV): {self.energy_cutoff:f}")
         print("")
-        print("final_free_energy(eV): {:f}".format(self.final_free_energy))
+        print(f"final_free_energy(eV): {self.final_free_energy:f}")
         print("")
-        print("geomsteps: {:f}".format(self.geomsteps))
+        print(f"geomsteps: {self.geomsteps:f}")
         print("")
         print_reals("DFT energies (eV):", self.energiesDFT,format="{:10.8f}")
         print("")
@@ -417,23 +415,22 @@ class GenericOutputReader:
         print_reals("Frequencies (cm-1):", self.frequencies)
         print_reals("Masses (amu):", self.masses,format="{:10.6f}")
         for i, charges in enumerate(self.born_charges):
-            title = "Born Charges for Atom {:d}".format(i)
+            title = f"Born Charges for Atom {i:d}"
             print3x3(title, charges)
         print3x3("Epsilon inf: ", self.zerof_optical_dielectric)
         print3x3("Unit cell: ", self.unit_cells[-1].lattice)
         print(" ")
-        print("Volume of cell: {:f}".format(self.volume))
+        print(f"Volume of cell: {self.volume:f}")
         mtotal = 0.0
         for m in self.masses:
             mtotal = mtotal + m
-        print("Total mass is: {:f} g/mol".format(mtotal))
-        print("Density is: {:f} g/cc".format(mtotal/(avogadro_si * self.volume * 1.0e-24)))
+        print(f"Total mass is: {mtotal:f} g/mol")
+        print(f"Density is: {mtotal/(avogadro_si * self.volume * 1.0e-24):f} g/cc")
         print(" ")
         return
 
     def get_unit_cell(self):
-        """
-        Return the last unit cell in the reader
+        """Return the last unit cell in the reader
 
         The routine adds the current set of masses to the unit cell
 
@@ -447,7 +444,6 @@ class GenericOutputReader:
             The last unit cell read by the reader
 
         """
-
         # Access the last unit cell in the reader
         cell = self.unit_cells[-1]
         # Add the current masses in the reader to the unit cell
@@ -456,8 +452,7 @@ class GenericOutputReader:
         return cell
 
     def get_crystal_density(self):
-        """
-        Return the crystal density in g/cc
+        """Return the crystal density in g/cc
 
         The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc
 
@@ -471,7 +466,6 @@ class GenericOutputReader:
             Density in g/cc
 
         """
-
         mtotal = 0.0
         for m in self.masses:
             mtotal = mtotal + m
@@ -479,8 +473,7 @@ class GenericOutputReader:
         return density
 
     def _read_output_files(self):
-        """
-        Read the through the output files.
+        """Read the through the output files.
 
         Parameters
         ----------
@@ -493,14 +486,14 @@ class GenericOutputReader:
         Notes
         -----
         This method is over-ridden by the child class
+
         """
         # Define the search keys to be looked for in the files
         print("Error _read_output_files must be defined by the actual file reader")
         return
 
     def _read_output_file(self, name):
-        """
-        Read through the file 'name' for key words. The keywords are established in _read_output_files.
+        """Read through the file 'name' for key words. The keywords are established in _read_output_files.
 
         Parameters
         ----------
@@ -513,6 +506,7 @@ class GenericOutputReader:
         Notes
         -----
         The actual implementation for identifying keywords is handled by the `_read_output_files` method.
+
         """
         # Check to see if the file exists....
         if not os.path.isfile(name):
@@ -531,7 +525,7 @@ class GenericOutputReader:
                 if self.manage[k][0].match(line):
                     method   = self.manage[k][1]
                     if self.debug:
-                        print('_read_output_file({}): Match found {}'.format(name,k))
+                        print(f'_read_output_file({name}): Match found {k}')
                     method(line)
                     break
                 # end if
@@ -542,8 +536,7 @@ class GenericOutputReader:
         return
 
     def _symmetric_orthogonalisation(self, A):
-        """
-        Private routine to perform symmetric orthogonalization.
+        """Private routine to perform symmetric orthogonalization.
 
         Parameters
         ----------
@@ -572,8 +565,7 @@ class GenericOutputReader:
         return Ak
 
     def calculate_mass_weighted_normal_modes(self):
-        """
-        Calculate the mass weighted normal modes from the hessian.
+        """Calculate the mass weighted normal modes from the hessian.
   
         The hessian itself is constructed from the frequencies and normal modes
         Any changes to the atomic masses is applied
@@ -587,6 +579,7 @@ class GenericOutputReader:
         -------
         mass_weighted_normal_modes : np.array
            the mass weighted normal modes
+
         """
         #
         # Reconstruct the massweighted hessian
@@ -692,8 +685,7 @@ class GenericOutputReader:
         return self.mass_weighted_normal_modes
 
     def project(self, hessian):
-        """
-        Apply projection operators to remove translation.
+        """Apply projection operators to remove translation.
 
         Parameters
         ----------
@@ -704,6 +696,7 @@ class GenericOutputReader:
         -------
         np.array
             The matrix with translational modes projected out.
+
         """
         #
         new_hessian = np.zeros_like(hessian)
@@ -732,8 +725,7 @@ class GenericOutputReader:
         return new_hessian
 
     def _read_till_phrase(self,phrase):
-        """
-        Read lines from the current file until a match with phrase is found.
+        """Read lines from the current file until a match with phrase is found.
         Once a match is found, return the matching line.
 
         Parameters
@@ -745,6 +737,7 @@ class GenericOutputReader:
         -------
         str
             The line from the file that matches the phrase.
+
         """
         line = ""
         while not phrase.match(line):
@@ -752,8 +745,7 @@ class GenericOutputReader:
         return line
 
     def _dynamical_matrix(self, hessian):
-        """
-        Process the dynamical matrix.
+        """Process the dynamical matrix.
 
         Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally storing the frequencies and normal modes.
 
@@ -772,6 +764,7 @@ class GenericOutputReader:
         - Translational modes are projected out.
         - The hessian is diagonalised.
         - Finally, the frequencies and normal modes are stored.
+
         """
         if self.debug:
             print("_dynamical_matrix")
@@ -834,8 +827,7 @@ class GenericOutputReader:
         return
 
     def reset_born_charges(self):
-        """
-        Resets the born charges to their original values if they are not currently being used.
+        """Resets the born charges to their original values if they are not currently being used.
 
         This method restores the `born_charges` attribute of the instance to the value stored in `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
 
@@ -850,13 +842,13 @@ class GenericOutputReader:
         Notes
         -----
         This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
+
         """        
         if not self.original_born_charges_are_being_used:
             self.born_charges = self.original_born_charges
 
     def neutralise_born_charges(self):
-        """
-        Neutralise Born charges within the object.
+        """Neutralise Born charges within the object.
 
         Changes the state of `original_born_charges_are_being_used` 
         to False and saves the current `born_charges` as `original_born_charges` if
@@ -877,6 +869,7 @@ class GenericOutputReader:
         This method is intended to be used within a context where Born charges 
         (representative of the polarization of ions in a solid under an electric field) 
         need to be neutralized or altered from their original state.
+
         """        
         if self.original_born_charges_are_being_used:
             self.original_born_charges = self.born_charges
@@ -885,8 +878,7 @@ class GenericOutputReader:
         return
 
     def _born_charge_sum_rule(self):
-        """
-        Apply a simple charge sum rule to all the elements of the born matrices
+        """Apply a simple charge sum rule to all the elements of the born matrices
 
         Parameters
         ----------
@@ -899,6 +891,7 @@ class GenericOutputReader:
         Notes
         -----
         This function applies a straightforward summation rule to the elements of the born matrices,
+
         """
         total = np.zeros((3, 3))
         born_charges = np.array(self.original_born_charges)
@@ -911,8 +904,7 @@ class GenericOutputReader:
         return
 
     def _modify_mass_weighting(self,hessian,new):
-        """
-        Modify the Hessian matrix based on new mass weighting.
+        """Modify the Hessian matrix based on new mass weighting.
 
         This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the square root of the product of elements from a new weighting (`new`). 
 
@@ -946,8 +938,7 @@ class GenericOutputReader:
         return new_hessian
 
     def _remove_mass_weighting(self,hessian,old):
-        """
-        Remove mass-weighting from a Hessian matrix.
+        """Remove mass-weighting from a Hessian matrix.
 
         Parameters
         ----------
@@ -974,6 +965,7 @@ class GenericOutputReader:
         is used to compute the square root of the product of mass weights for the 
         appropriate matrix element, thereby removing the mass weighting from the 
         original Hessian matrix.
+
         """        
         new_hessian = np.empty_like(hessian)
         ipos = -1

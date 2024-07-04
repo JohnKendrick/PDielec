@@ -1,5 +1,4 @@
-'''
-PDGui: GUI for processing DFT calculations for infrared and terahertz spectroscopy
+"""PDGui: GUI for processing DFT calculations for infrared and terahertz spectroscopy
 
 The MIT License (MIT)
 
@@ -22,6 +21,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-'''
+"""
 # Created by setup.py, whilst creating a new PyPi release
 __version__ = "8.1.1"

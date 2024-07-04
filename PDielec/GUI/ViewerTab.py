@@ -12,29 +12,43 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-ViewerTab module
-'''
+"""ViewerTab module
+"""
 import os
+from collections import deque
+
 import numpy as np
-from collections              import  deque
-from PyQt5.QtWidgets          import  QPushButton, QWidget
-from PyQt5.QtWidgets          import  QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets          import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets          import  QSpinBox, QTabWidget, QDoubleSpinBox
-from PyQt5.QtWidgets          import  QSizePolicy, QColorDialog, QMessageBox, QApplication
-from PyQt5.QtCore             import  Qt
-from PDielec.Constants        import  wavenumber, angstrom
-from PDielec.Constants        import  elemental_colours
-# Import plotting requirements
-from PDielec.Utilities        import Debug
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (
+    QApplication,
+    QColorDialog,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QMessageBox,
+    QPushButton,
+    QSizePolicy,
+    QSpinBox,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
+
+from PDielec.Constants import elemental_colours
 from PDielec.GUI.OpenGLWidget import OpenGLWidget
+
 # Need the SuperCell class
-from PDielec.SuperCell        import SuperCell
+from PDielec.SuperCell import SuperCell
+
+# Import plotting requirements
+from PDielec.Utilities import Debug
+
 
 class ViewerTab(QWidget):
-    """
-    A class representing a viewer tab in a graphical user interface, specifically for visualizing 
+    """A class representing a viewer tab in a graphical user interface, specifically for visualizing
     molecular structures and vibrational modes.
 
     This class integrates several widgets to enable the selection and visualization of various 
@@ -144,10 +158,11 @@ class ViewerTab(QWidget):
         Write out a cif file
     setColour
         Set the colour of the specified element
-    """    
+
+    """
+
     def __init__(self, parent, debug=False ):
-        """
-        Initializes the viewer tab with default settings, UI components, and signal connections.
+        """Initializes the viewer tab with default settings, UI components, and signal connections.
 
         Parameters
         ----------
@@ -163,6 +178,7 @@ class ViewerTab(QWidget):
         and options for plotting type and light switches. It initializes default settings for visualization,
         sets up connections for UI component signals to their respective slot methods, and arranges all UI components
         using layout managers. Also, it sets up OpenGL widget for rendering.
+
         """        
         super(QWidget, self).__init__(parent)
         global debugger
@@ -230,7 +246,7 @@ class ViewerTab(QWidget):
         # Add frequency of mode
         self.frequency_le = QLineEdit(self)
         self.frequency_le.setEnabled(False)
-        self.frequency_le.setText('{}'.format(0.0))
+        self.frequency_le.setText(f'{0.0}')
         label = QLabel('Frequency (cm-1)', self)
         form.addRow(label, self.frequency_le)
         #
@@ -320,9 +336,9 @@ class ViewerTab(QWidget):
         self.light_switches_cb.setToolTip('Toogle the light switches on or off')
         for index,light in enumerate(self.light_switches):
             if light:
-                string = 'switch light {} off'.format(index)
+                string = f'switch light {index} off'
             else:
-                string = 'switch light {} on'.format(index)
+                string = f'switch light {index} on'
             self.light_switches_cb.addItem(string)
         self.light_switches_cb.activated.connect(self.on_light_switches_cb_activated)
         #
@@ -334,7 +350,7 @@ class ViewerTab(QWidget):
         for el in self.species:
             r,g,b,a = self.element_colours[el]
             button = QPushButton(el)
-            button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(r,g,b,a))
+            button.setStyleSheet(f'background-color:rgba( {r}, {g}, {b}, {a});')
             button.clicked.connect(self.on_coloured_element_clicked)
             self.element_coloured_buttons.append(button)
             self.element_coloured_hbox.addWidget(button)
@@ -412,8 +428,7 @@ class ViewerTab(QWidget):
         debugger.print('Finished:: initialisation')
 
     def on_filename_le_return(self):
-        """
-        Handles the event triggered by the return key press within the filename input field.
+        """Handles the event triggered by the return key press within the filename input field.
 
         This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It primarily invokes the filename button click event handler, simulating a click operation on the associated button.
 
@@ -424,14 +439,14 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on filename le return pressed')
         self.on_filename_button_clicked(True)
         return
 
     def on_filename_le_changed(self,text):
-        """
-        Handle changes to the filename line edit.
+        """Handle changes to the filename line edit.
 
         This method is triggered when the text in the filename line edit changes. It updates the internal state to reflect the new filename.
 
@@ -443,14 +458,14 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on filename le changed', text)
         self.image_filename = text
         return
 
     def on_filename_button_clicked(self,boolean):
-        """
-        Handles the action triggered by clicking the filename button.
+        """Handles the action triggered by clicking the filename button.
 
         This method checks if the selected filename has a valid extension and exists. If any 
         checks fail, it alerts the user and aborts the operation. Otherwise, it proceeds to 
@@ -475,6 +490,7 @@ class ViewerTab(QWidget):
         The valid file extensions are .mp4, .avi, .png, .gif, and .cif. The method modifies the `plot_type_index` 
         attribute of the caller object, saves the data or image into the specified file format, and ensures 
         the application's cursor is restored to its default state after the operation completes.
+
         """        
         debugger.print('on filename button clicked')
         #button = self.sender()
@@ -502,11 +518,7 @@ class ViewerTab(QWidget):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if extension == '.png':
             self.opengl_widget.snapshot(filename)
-        elif extension == '.avi':
-            self.opengl_widget.save_movie(filename)
-        elif extension == '.mp4':
-            self.opengl_widget.save_movie(filename)
-        elif extension == '.gif':
+        elif extension == '.avi' or extension == '.mp4' or extension == '.gif':
             self.opengl_widget.save_movie(filename)
         elif extension == '.cif':
             self.save_cif(filename)
@@ -515,8 +527,7 @@ class ViewerTab(QWidget):
         return
 
     def on_super_cell_changed_a(self,newa):
-        """
-        Update the 'a' parameter of the 'Super Cell' setting and refresh the object state.
+        """Update the 'a' parameter of the 'Super Cell' setting and refresh the object state.
 
         This function takes a new value for 'a', updates the 'Super Cell' setting of the object
         accordingly (while keeping 'b' and 'c' parameters unchanged), marks the object as
@@ -530,6 +541,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         a,b,c = self.settings['Super Cell']
         a = newa
@@ -539,8 +551,7 @@ class ViewerTab(QWidget):
         return
 
     def on_super_cell_changed_b(self,newb):
-        """
-        Update the 'b' component of the 'Super Cell' setting and trigger a refresh.
+        """Update the 'b' component of the 'Super Cell' setting and trigger a refresh.
 
         This function takes a new value for 'b', updates the 'Super Cell' setting of the object
         accordingly (while keeping 'a' and 'c' parameters unchanged), marks the object as
@@ -554,6 +565,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         a,b,c = self.settings['Super Cell']
         b = newb
@@ -563,8 +575,7 @@ class ViewerTab(QWidget):
         return
 
     def on_super_cell_changed_c(self,newc):
-        """
-        Update the 'c' component of the 'Super Cell' setting and refresh the object.
+        """Update the 'c' component of the 'Super Cell' setting and refresh the object.
 
         This function takes a new value for 'c', updates the 'Super Cell' setting of the object
         accordingly (while keeping 'a' and 'b' parameters unchanged), marks the object as
@@ -578,6 +589,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         a,b,c = self.settings['Super Cell']
         c = newc
@@ -587,8 +599,7 @@ class ViewerTab(QWidget):
         return
 
     def on_coloured_element_clicked(self,boolean):
-        """
-        Handle a click event on an element with colour functionality.
+        """Handle a click event on an element with colour functionality.
 
         A colour dialogue is invoked and the chosen colour is assigned to the element in question
         The settings dictionary is updated with the new colours and a refresh requested
@@ -601,6 +612,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on coloured elements clicked')
         button = self.sender()
@@ -617,8 +629,7 @@ class ViewerTab(QWidget):
         return
 
     def on_coloured_button_clicked(self,boolean):
-        """
-        Handle the event when a coloured button is clicked.
+        """Handle the event when a coloured button is clicked.
 
         This function triggers a color dialog upon the click of a designated button. It captures the selected color and applies it to a specific setting based on the button's label (e.g., Background, Cell, Bonds, Arrows). The settings are modified to include the chosen color, and a refresh is triggered to apply the changes.
 
@@ -630,6 +641,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on coloured button clicked')
         button = self.sender()
@@ -653,8 +665,7 @@ class ViewerTab(QWidget):
 
 
     def on_light_switches_cb_activated(self, index):
-        """
-        Activate or deactivate the light switch based on the current state and updates the GUI accordingly.
+        """Activate or deactivate the light switch based on the current state and updates the GUI accordingly.
 
         Parameters
         ----------
@@ -669,9 +680,9 @@ class ViewerTab(QWidget):
         debugger.print('on_light_switches_cb_activated')
         self.light_switches[index] = not self.light_switches[index]
         if self.light_switches[index]:
-            string = 'switch light {} off'.format(index)
+            string = f'switch light {index} off'
         else:
-            string = 'switch light {} on'.format(index)
+            string = f'switch light {index} on'
         self.light_switches_cb.setItemText(index,string)
         self.opengl_widget.defineLights()
         self.calculate()
@@ -679,8 +690,7 @@ class ViewerTab(QWidget):
         return
 
     def on_maximum_displacement_changed(self,value):
-        """
-        Handle changes to the maximum displacement setting.
+        """Handle changes to the maximum displacement setting.
 
         This method updates the 'Maximum displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
 
@@ -701,8 +711,7 @@ class ViewerTab(QWidget):
         return
 
     def on_atom_scaling_changed(self,value):
-        """
-        Handle changes to atom scaling settings.
+        """Handle changes to atom scaling settings.
 
         This method updates the atom scaling setting based on a new value,
         recalculates relevant data, and triggers a plot update.
@@ -724,8 +733,7 @@ class ViewerTab(QWidget):
         return
 
     def on_arrow_radius_changed(self,value):
-        """
-        Handle the event where the arrow's radius value is changed.
+        """Handle the event where the arrow's radius value is changed.
 
         This method updates the setting for the arrow's radius, recalculates, and replots based on the new value.
 
@@ -737,6 +745,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on arrow_radius changed ', value)
         self.settings['Arrow radius'] = value
@@ -745,8 +754,7 @@ class ViewerTab(QWidget):
         return
 
     def on_cell_radius_changed(self,value):
-        """
-        Handle the event when the cell radius setting is changed.
+        """Handle the event when the cell radius setting is changed.
 
         This method updates the 'Cell radius' setting with the new value, recalculates 
         the necessary data, and then replots the results.
@@ -759,6 +767,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on cell_radius changed ', value)
         self.settings['Cell radius'] = value
@@ -767,8 +776,7 @@ class ViewerTab(QWidget):
         return
 
     def on_bond_radius_changed(self,value):
-        """
-        Handle bond radius change events.
+        """Handle bond radius change events.
 
         This method updates the 'Bond radius' setting with the new value, recalculates 
         the necessary data, and then replots the results.
@@ -781,6 +789,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on_bond_radius_changed')
         self.settings['Bond radius'] = value
@@ -789,8 +798,7 @@ class ViewerTab(QWidget):
         return
 
     def on_selected_mode_changed(self):
-        """
-        Handle the changes when a new vibrational mode is selected in the UI.
+        """Handle the changes when a new vibrational mode is selected in the UI.
 
         This function updates the application state based on the newly selected vibrational mode. It
         updates the displayed frequency, removes existing arrows from the OpenGL widget, 
@@ -804,6 +812,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on_selected_mode_changed')
         if self.frequencies_cm1 is None or len(self.frequencies_cm1) < 1:
@@ -826,8 +835,7 @@ class ViewerTab(QWidget):
         return
 
     def on_plottype_cb_changed(self, index):
-        """
-        Handle the change in plot type selection.
+        """Handle the change in plot type selection.
 
         This method updates the plot type index based on the user's selection and then
         re-plots the data according to the new plot type.
@@ -850,8 +858,7 @@ class ViewerTab(QWidget):
         return
 
     def calculate(self):
-        """
-        Perform calculations related to the notebook object, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
+        """Perform calculations related to the notebook object, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
 
         Parameters
         ----------
@@ -933,8 +940,7 @@ class ViewerTab(QWidget):
         return
 
     def setColour(self, element, colour):
-        """
-        Set the colour of a specified element in the interface.
+        """Set the colour of a specified element in the interface.
 
         Parameters
         ----------
@@ -954,6 +960,7 @@ class ViewerTab(QWidget):
         myObject.setColour('Cell', 'red')            # Sets the cell colour to red
         myObject.setColour('customElement', 'blue')  # Sets a custom element's colour to blue
         ```
+
         """        
         debugger.print('setcolour')
         if element == 'Background' or element == 'background':
@@ -968,8 +975,7 @@ class ViewerTab(QWidget):
         return
 
     def calculatePhasePositions(self):
-        """
-        Calculate and update the phase positions for the normal mode of a molecular structure visualization.
+        """Calculate and update the phase positions for the normal mode of a molecular structure visualization.
 
         This function calculates the phase positions for all atoms in a molecular structure over a range of phase steps. It updates the visualization by adding spheres and cylinders to represent atoms and bonds in different phase positions. The phase steps are adjusted to be odd in number, ensuring symmetry around zero phase. The function directly modifies the OpenGL widget used for visualization by deleting existing graphical representations and creating new ones based on the calculated positions.
 
@@ -1024,8 +1030,7 @@ class ViewerTab(QWidget):
         # Write a single cif file containing all the phase information for discplacement along a mode
         # First transform to abc coordinates from xyz
         #
-        """
-        Save the crystallographic information file (CIF) for different phases.
+        """Save the crystallographic information file (CIF) for different phases.
 
         A copy is made of the current unit cell and a cell is wrtten out for each phase of the vibration
 
@@ -1041,6 +1046,7 @@ class ViewerTab(QWidget):
         Notes
         -----
         This method relies on the `self.unit_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
+
         """        
         import copy
         unitcell = copy.deepcopy(self.unit_cell)
@@ -1054,8 +1060,7 @@ class ViewerTab(QWidget):
                 unitcell.write_cif(description,file_=fd)
 
     def plot(self):
-        """
-        Plot data based on the instance's current plot type.
+        """Plot data based on the instance's current plot type.
     
         This method selects a plotting routine based on the value of `self.plot_type_index`.
         It does an early return if `self.reader` is None, indicating there might be no data
@@ -1083,8 +1088,7 @@ class ViewerTab(QWidget):
         debugger.print('Finished:: plot')
 
     def plot_none(self):
-        """
-        Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
+        """Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
 
         This method is intended to reset or clear the current state of the Open GL widget by disabling any arrow visuals, stopping any animations that might be running, and then updating the widget to reflect these changes.
 
@@ -1105,8 +1109,7 @@ class ViewerTab(QWidget):
         return
 
     def plot_animation(self):
-        """
-        Initiates and displays an animation of a vibrational mode in an OpenGL widget.
+        """Initiates and displays an animation of a vibrational mode in an OpenGL widget.
 
         This method controls the display of a predefined animation within 
         an OpenGL widget. It hides any arrows, triggers a visual update, 
@@ -1130,8 +1133,7 @@ class ViewerTab(QWidget):
         return
 
     def plot_arrows(self):
-        """
-        Plot arrows showing the vibrational mode of a molecule
+        """Plot arrows showing the vibrational mode of a molecule
 
         This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.
 
@@ -1142,6 +1144,7 @@ class ViewerTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('Start:: plot_arrows')
         self.opengl_widget.showArrows(True)
@@ -1151,8 +1154,7 @@ class ViewerTab(QWidget):
         return
 
     def requestRefresh(self):
-        """
-        Initiates a refresh request.
+        """Initiates a refresh request.
 
         This method sets an internal flag to indicate that a refresh is required.
 
@@ -1170,8 +1172,7 @@ class ViewerTab(QWidget):
         debugger.print('Finished:: requestRefresh')
 
     def refresh(self,force=False):
-        """
-        Refresh the state of the object, optionally forcing the refresh.
+        """Refresh the state of the object, optionally forcing the refresh.
 
         This method updates the object's state by recalculating and refreshing its components. It checks whether a refresh is necessary or if it has been forced. It iterates through child widgets to block signals, updates settings from a notebook, adjusts visual elements based on these settings, and ultimately recalculates and replots data.
 
@@ -1192,6 +1193,7 @@ class ViewerTab(QWidget):
         - It updates various widget properties and settings based on attributes of the notebook associated with the object.
         - The function finally recalculates and re-plots based on the latest data and settings, then restores the standard cursor and marks the refresh as complete.
         - Debug statements are interspersed throughout for tracking the refresh process's progress.
+
         """        
         debugger.print('Start:: refresh')
         if not self.refreshRequired and not force:
@@ -1217,9 +1219,9 @@ class ViewerTab(QWidget):
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         for index,light in enumerate(self.light_switches):
             if light:
-                string = 'switch light {} off'.format(index)
+                string = f'switch light {index} off'
             else:
-                string = 'switch light {} on'.format(index)
+                string = f'switch light {index} on'
             self.light_switches_cb.setItemText(index,string)
         #
         # Colours list of buttons with element colours
@@ -1247,7 +1249,7 @@ class ViewerTab(QWidget):
             for el in self.species:
                 r,g,b,a = self.element_colours[el]
                 button = QPushButton(el)
-                button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(r,g,b,a))
+                button.setStyleSheet(f'background-color:rgba( {r}, {g}, {b}, {a});')
                 button.clicked.connect(self.on_coloured_element_clicked)
                 self.element_coloured_buttons.append(button)
                 self.element_coloured_hbox.addWidget(button)
@@ -1255,7 +1257,7 @@ class ViewerTab(QWidget):
             debugger.print('update element colours widget')
             for el,button in zip(self.species,self.element_coloured_buttons):
                 r,g,b,a = self.element_colours[el]
-                button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(r,g,b,a))
+                button.setStyleSheet(f'background-color:rgba( {r}, {g}, {b}, {a});')
         #
         # Colours list of buttons with colours
         #

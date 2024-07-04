@@ -12,31 +12,40 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''
-AnalysisTab Module
-'''
+"""AnalysisTab Module
+"""
 import math
-import numpy as np
-import PDielec.Calculator as Calculator
-from PyQt5.QtWidgets  import  QWidget, QApplication
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
-from PyQt5.QtWidgets  import  QSizePolicy, QTableWidgetItem
-from PyQt5.QtCore     import  Qt, QCoreApplication
-from PDielec.Constants import  covalent_radii
+
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
-from matplotlib.ticker import MaxNLocator
+import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from PDielec.Utilities import Debug
+from matplotlib.ticker import MaxNLocator
+from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDoubleSpinBox,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QSizePolicy,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
+
+from PDielec import Calculator
+from PDielec.Constants import covalent_radii
 from PDielec.GUI.SettingsTab import FixedQTableWidget
+from PDielec.Utilities import Debug
+
 
 class AnalysisTab(QWidget):
-    """
-    A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.
+    """A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.
 
     This class inherits from QWidget
     Key features include plotting vibrational mode decompositions
@@ -133,10 +142,11 @@ class AnalysisTab(QWidget):
         Generates a plot based on molecular composition of vibrational energy.
     plot_internal_external(self)
         Generates a plot based on the decomposition of vibrational energy into internal and external movements.
-    """    
+
+    """
+
     def __init__(self, parent, debug=False ):
-        """
-        Initializes the analysis tab with configurable settings and plotting capabilities.
+        """Initializes the analysis tab with configurable settings and plotting capabilities.
 
         Parameters
         ----------
@@ -144,6 +154,7 @@ class AnalysisTab(QWidget):
             The parent widget or object, typically the main application or main window in which this widget will be embedded.
         debug : bool, optional
             Indicates if debugging is enabled for this widget. The default is False.
+
         """        
         super(QWidget, self).__init__(parent)
         global debugger
@@ -234,7 +245,7 @@ class AnalysisTab(QWidget):
         # Add number of molecules found
         self.molecules_le = QLineEdit(self)
         self.molecules_le.setEnabled(False)
-        self.molecules_le.setText('{}'.format(self.number_of_molecules))
+        self.molecules_le.setText(f'{self.number_of_molecules}')
         self.molecules_le.setToolTip('The bonding tolerances can change the number of molecules found')
         label = QLabel('Number of molecules found', self)
         label.setToolTip('The bonding tolerances can change the number of molecules found')
@@ -292,8 +303,7 @@ class AnalysisTab(QWidget):
         #QCoreApplication.processEvents()
 
     def on_element_radii_tw_itemClicked(self,item):
-        """
-        Handle the item clicked event for a TableWidget related to element radii.
+        """Handle the item clicked event for a TableWidget related to element radii.
 
         Parameters
         ----------
@@ -308,12 +318,12 @@ class AnalysisTab(QWidget):
         -----
         This function unblocks signals for the `element_radii_tw` TableWidget after an item click
         event has occurred, allowing subsequent events to be processed.
+
         """        
         self.element_radii_tw.blockSignals(False)
 
     def on_element_radii_tw_itemChanged(self,item):
-        """
-        Respond to changes in element radii within a widget.
+        """Respond to changes in element radii within a widget.
 
         Parameters
         ----------
@@ -323,6 +333,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         if self.reader is None:
             return
@@ -339,8 +350,7 @@ class AnalysisTab(QWidget):
             pass
 
     def set_radii_tw(self):
-        """
-        Set or update the atomic radii in the GUI's table widget based on the current settings and active file.
+        """Set or update the atomic radii in the GUI's table widget based on the current settings and active file.
 
         This method updates the radii configuration within the element radii table widget of the GUI. It first ensures that
         a reader object, a program, and a filename are set and available. If any of these are missing, the process is aborted
@@ -355,6 +365,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         self.reader = self.notebook.mainTab.reader
         program = self.notebook.mainTab.settings['Program']
@@ -382,7 +393,7 @@ class AnalysisTab(QWidget):
         self.element_radii_tw.setVerticalHeaderLabels([''])
         for i,(radius,element) in enumerate(zip(radii,self.species)):
             qw = QTableWidgetItem()
-            qw.setText('{0:.6f}'.format(radius))
+            qw.setText(f'{radius:.6f}')
             qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
             self.element_radii_tw.setItem(0,i, qw )
         self.element_radii_tw.blockSignals(False)
@@ -391,8 +402,7 @@ class AnalysisTab(QWidget):
         return
 
     def setCovalentRadius(self,element,radius):
-        """
-        Set the covalent radius for a given element and update the plot.
+        """Set the covalent radius for a given element and update the plot.
 
         Parameters
         ----------
@@ -404,6 +414,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         self.element_radii[element] = radius
         self.set_radii_tw()
@@ -411,8 +422,7 @@ class AnalysisTab(QWidget):
         self.plot()
 
     def writeSpreadsheet(self):
-        """
-        Write analysis data into a selected worksheet in the notebook's spreadsheet.
+        """Write analysis data into a selected worksheet in the notebook's spreadsheet.
 
         This method assumes the existence of a spreadsheet object within the notebook
         attribute of the class instance. It selects a worksheet named 'Analysis',
@@ -426,6 +436,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         if self.notebook.spreadsheet is None:
             return
@@ -448,8 +459,7 @@ class AnalysisTab(QWidget):
 
 
     def on_width_changed(self,value):
-        """
-        Handle changes to the width property.
+        """Handle changes to the width property.
 
         This method is called when the width property of an object is changed. It updates the stored width value in the object's settings and then re-plots the object to reflect the new width.
 
@@ -461,14 +471,14 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on width changed ', value)
         self.settings['Bar width'] = value
         self.plot()
 
     def on_scale_changed(self,value):
-        """
-        Handles the event when the scale setting is changed.
+        """Handles the event when the scale setting is changed.
 
         This function is typically connected to a signal that is emitted when the
         scaling factor for the covalent radius is adjusted in a graphical user interface.
@@ -484,6 +494,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         debugger.print('on scale_le changed ', value)
         self.settings['Covalent radius scaling'] = value
@@ -492,8 +503,7 @@ class AnalysisTab(QWidget):
         self.plot()
 
     def on_tolerance_changed(self,value):
-        """
-        Handle the event when the tolerance value changes.
+        """Handle the event when the tolerance value changes.
 
         This function updates the 'Bonding tolerance' setting based on the provided value, marks the system as requiring a refresh, and then recalculates and replots the data.
 
@@ -514,8 +524,7 @@ class AnalysisTab(QWidget):
         self.plot()
 
     def on_title_changed(self,text):
-        """
-        Handle title change events.
+        """Handle title change events.
 
         Parameters
         ----------
@@ -525,6 +534,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         self.settings['title'] = text
         if self.subplot is not None:
@@ -533,8 +543,7 @@ class AnalysisTab(QWidget):
         debugger.print('on title change ', self.settings['title'])
 
     def on_vmin_changed(self):
-        """
-        Handles the change in minimum value of frequency.
+        """Handles the change in minimum value of frequency.
 
         Parameters
         ----------
@@ -544,6 +553,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         self.vmin_sb.blockSignals(True)
         vmin = self.vmin_sb.value()
@@ -560,8 +570,7 @@ class AnalysisTab(QWidget):
         return
 
     def on_vmax_changed(self):
-        """
-        Handle the change in maximum value for frequency.
+        """Handle the change in maximum value for frequency.
 
         Parameters
         ----------
@@ -588,8 +597,7 @@ class AnalysisTab(QWidget):
         return
 
     def requestRefresh(self):
-        """
-        Marks the instance as requiring a refresh.
+        """Marks the instance as requiring a refresh.
 
         Sets the instance attribute `refreshRequired` to True, indicating that a refresh is necessary.
 
@@ -605,8 +613,7 @@ class AnalysisTab(QWidget):
         self.refreshRequired = True
 
     def refresh(self, force=False):
-        """
-        Refresh the widget state, optionally enforcing refresh.
+        """Refresh the widget state, optionally enforcing refresh.
 
         This method updates the widgets' states and values according to the current settings. It first checks if a refresh is required or if the `force` parameter is set to `True`. If neither condition is met, it exits early. Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission during state update. It then updates various UI components with new settings values, calculates and plots according to the updated settings, and finally re-enables signals for all child QWidget instances.
 
@@ -618,6 +625,7 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         if not self.refreshRequired and not force:
             debugger.print('return with no refresh', self.refreshRequired, force)
@@ -632,7 +640,7 @@ class AnalysisTab(QWidget):
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.scale_sp.setValue(self.settings['Covalent radius scaling'])
         self.tolerance_sp.setValue(self.settings['Bonding tolerance'])
-        self.molecules_le.setText('{}'.format(self.number_of_molecules))
+        self.molecules_le.setText(f'{self.number_of_molecules}')
         self.width_sp.setValue(self.settings['Bar width'])
         self.title_le.setText(self.settings['title'])
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
@@ -647,8 +655,7 @@ class AnalysisTab(QWidget):
         return
 
     def on_plottype_cb_changed(self, index):
-        """
-        Handle a change in plot type selection.
+        """Handle a change in plot type selection.
 
         Parameters
         ----------
@@ -658,14 +665,14 @@ class AnalysisTab(QWidget):
         Returns
         -------
         None
+
         """        
         self.plot_type_index = index
         debugger.print('Plot type index changed to ', self.plot_type_index)
         self.plot()
 
     def calculate(self):
-        """
-        Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
+        """Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
 
         This method orchestrates the calculation process, setting up necessary parameters, processing molecular contents
         based on the provided settings, calculating normal modes and their mass weighting, and finally computing the energy
@@ -721,7 +728,7 @@ class AnalysisTab(QWidget):
             if self.notebook.viewerTab is not None:
                 self.notebook.viewerTab.requestRefresh()
             self.number_of_molecules = nmols
-        self.molecules_le.setText('{}'.format(self.number_of_molecules))
+        self.molecules_le.setText(f'{self.number_of_molecules}')
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
@@ -773,8 +780,7 @@ class AnalysisTab(QWidget):
         QApplication.restoreOverrideCursor()
 
     def plot(self):
-        """
-        Plot the spectroscopic data based on the selected plot type.
+        """Plot the spectroscopic data based on the selected plot type.
 
         This method selects between two plotting strategies: 'internal_external'
         or 'molecular', depending on the state of `plot_type_index`. If no data
@@ -795,6 +801,7 @@ class AnalysisTab(QWidget):
         contain frequency data, and `self.plot_type_index` to determine the plotting
         strategy. It calls `self.plot_internal_external()` or `self.plot_molecular()`
         based on the value of `self.plot_type_index`.
+
         """        
         if self.reader is None:
             return
@@ -806,8 +813,7 @@ class AnalysisTab(QWidget):
             self.plot_molecular()
 
     def plot_molecular(self):
-        """
-        Plot the molecular composition of vibrational energy.
+        """Plot the molecular composition of vibrational energy.
 
         This method visualizes the distribution of vibrational energy across different molecules
         within specified frequency limits. It creates a bar chart representing the percentage of 
@@ -835,6 +841,7 @@ class AnalysisTab(QWidget):
           tick locations on the x-axis.
         - Assumes matplotlib, specifically the `matplotlib.pyplot` and `matplotlib.ticker.MaxNLocator` classes,
           are appropriately imported or accessible within the scope.
+
         """        
         self.subplot = None
         self.figure.clf()
@@ -880,8 +887,7 @@ class AnalysisTab(QWidget):
         self.canvas.draw_idle()
 
     def plot_internal_external(self):
-        """
-        Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.
+        """Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.
 
         Parameters
         ----------
@@ -898,6 +904,7 @@ class AnalysisTab(QWidget):
         - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.
         - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.
         - The method updates the canvas with the newly plotted data.
+
         """        
         self.subplot = None
         self.figure.clf()
