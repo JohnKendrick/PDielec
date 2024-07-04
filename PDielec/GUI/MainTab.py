@@ -167,10 +167,21 @@ class MainTab(QWidget):
         self.program_cb.addItem('Crystal')
         self.program_cb.addItem('Experiment')
         self.program_cb.addItem('Gulp')
-        self.program_cb.addItem('Phonopy - VASP')
+        self.program_cb.addItem('Phonopy')
         self.program_cb.addItem('Quantum Espresso')
         self.program_cb.addItem('Vasp')
         self.program_cb.addItem('PDGui')
+        
+        self.program_qb = QComboBox(self)
+        self.program_qb.setToolTip('Choose QM program for phonopy')
+        self.program_qb.addItem('Abinit')
+        self.program_qb.addItem('Castep')
+        self.program_qb.addItem('Crystal')
+        self.program_qb.addItem('Vasp')
+        self.program_qb.addItem('Quantum Espresso')
+        
+
+        
         prtext = self.settings['Program'].capitalize()
         qmtext = self.settings['QM program'].capitalize()
         if prtext == 'Qe':
@@ -178,24 +189,22 @@ class MainTab(QWidget):
         elif prtext == 'Vasp':
             prtext = 'VASP'
             self.settings['QM program'] = 'vasp'
-        elif prtext == 'Phonopy':
-            if qmtext != '':
-                prtext = prtext + ' - ' + qmtext
-        index = self.program_cb.findText(prtext, Qt.MatchFixedString)
-        if index >=0:
-            self.program_cb.setCurrentIndex(index)
-        elif self.settings['Program'] == 'phonopy':
-            index = 4
+        if qmtext == 'Qe':
+            qmtext = 'Quantum Espresso'
+        elif qmtext == 'Vasp':
+            qmtext = 'VASP'
             self.settings['QM program'] = 'vasp'
-            self.program_cb.setCurrentIndex(index)
-        else:
-            self.settings['Program'] = 'castep'
-            index = 1
-            self.program_cb.setCurrentIndex(index)
         self.program_cb.activated.connect(self.on_program_cb_activated)
         label = QLabel('QM/MM Program ')
         label.setToolTip('Choose QM/MM program')
         form.addRow(label, self.program_cb)
+        self.program_qb.activated.connect(self.on_program_qb_activated)
+        label = QLabel('QM Program for Phonopy')
+        label.setToolTip('QM Program for Phonopy')
+        form.addRow(label, self.program_qb)
+        self.program_qb.setEnabled(False)
+        
+        
         #
         # The file selector
         #
@@ -430,6 +439,7 @@ class MainTab(QWidget):
 
         """        
         debugger.print('Start:: read_output_file')
+        debugger.print('Program =', self.settings['Program'], 'QMProgram =', self.settings['QM program'])
         if self.settings['Output file name'] == '':
             debugger.print('Finished:: read_output_file output file is blank')
             return
@@ -439,16 +449,18 @@ class MainTab(QWidget):
             debugger.print('Finished:: read_output_file output file does not exist')
             return
         debugger.print('Read output file - clear list widgets')
+        debugger.print(self.settings['Program'],[ filename ], self.settings['QM program'])
         self.cell_window_w.clear()
         self.cell_window_l.setText('Unit-cell (Angstrom) from '+self.settings['Output file name'])
         self.frequencies_window.clear()
         self.frequencies_window_l.setText('Frequencies from '+self.settings['Output file name'])
         self.reader = pdgui_get_reader(self.settings['Program'],[ filename ], self.settings['QM program'] )
+        
         if self.reader is None:
             print('Error in reading files - program  is ',self.settings['Program'])
             print('Error in reading files - filename is ',filename)
             print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','A reader has not be created for this filename: '+filename)
+            QMessageBox.about(self,'Processing output file','A reader has not been created for this filename: '+filename)
             debugger.print('Finished:: read_output_file reader is none')
             return
         #switch on debugging in the reader
@@ -596,17 +608,18 @@ class MainTab(QWidget):
         elif self.settings['Program'] == 'crystal':
             selfilter = 'Crystal 14 (*.out)'
         elif self.settings['Program'] == 'phonopy':
-            selfilter = 'Phonopy (OUTCAR*)'
+            selfilter = 'Phonopy (*)'
         elif self.settings['Program'] == 'experiment':
             selfilter = 'Experiment (*.exp)'
         elif self.settings['Program'] == 'pdgui':
             selfilter = 'PDGui (*.py)'
         else:
             selfilter = 'All files (*)'
-        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Abinit (*.out);;Castep (*.castep);;Crystal 14 (*.out);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (OUTCAR*);;QE (*.dynG);;VASP (OUTCAR*);;PDGui (*.py);;All files(*)',selfilter)
+        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Abinit (*.out);;Castep (*.castep);;Crystal 14 (*.out);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;QE (*.dynG);;VASP (OUTCAR*);;PDGui (*.py);;All files(*)',selfilter)
         # Process the filename
         if filename != '':
             program = find_program_from_name(filename)
+
             if program == '':
                 debugger.print('Program not found from filename',filename)
                 debugger.print('Proceeding with defaults',self.settings['Program'])
@@ -786,23 +799,44 @@ class MainTab(QWidget):
         debugger.print('Start:: on_program_combobox_activated', index)
         debugger.print('on_program_combobox_activated', self.program_cb.currentText())
         text = self.program_cb.currentText()
+        qmtext = self.program_qb.currentText()
         self.settings['Program'] = text.lower()
-        self.settings['QM program'] = ''
-        if text == 'Phonopy - VASP':
-            self.settings['Program']   = 'phonopy'
-            self.settings['QM program'] = 'vasp'
-        elif text == 'Phonopy - QE':
-            self.settings['Program']   = 'phonopy'
-            self.settings['QM program'] = 'qe'
-        elif text == 'Phonopy - Crystal':
-            self.settings['Program']   = 'phonopy'
-            self.settings['QM program'] = 'crystal'
+        self.settings['QM program'] = qmtext.lower()
+        if text == 'Phonopy':
+            self.program_qb.setEnabled(True)
+            if qmtext == 'vasp':
+                self.settings['QM program'] = 'vasp'
+            elif qmtext == 'crystal':
+                self.settings['QM program'] = 'crystal'
+            elif qmtext == 'castep':
+                self.settings['QM program'] = 'castep'
+            elif qmtext == 'qe':
+                self.settings['QM program'] = 'qe'
         elif text == 'Quantum Espresso':
             self.settings['Program']   = 'qe'
         debugger.print('Program is now  ', self.settings['Program'])
         debugger.print('QM program is now', self.settings['QM program'])
         self.calculationRequired = True
         debugger.print('Finished:: on_program_combobox_activated', index)
+        
+    def on_program_qb_activated(self,index):
+        debugger.print('Start:: on_program_qmbox_activated', index)
+        debugger.print('on_program_qmbox_activated', self.program_qb.currentText())
+        text = self.program_cb.currentText()
+        qmtext = self.program_qb.currentText()
+        self.settings['QM program'] = qmtext.lower()
+        if qmtext == 'vasp':
+            self.settings['QM program'] = 'vasp'
+        elif qmtext == 'crystal':
+            self.settings['QM program'] = 'crystal'
+        elif qmtext == 'castep':
+            self.settings['QM program'] = 'castep'
+        elif qmtext == 'qe':
+            self.settings['QM program'] = 'qe'
+        debugger.print('Program is now  ', self.settings['Program'])
+        debugger.print('QM program is now', self.settings['QM program'])
+        self.calculationRequired = True
+        debugger.print('Finished:: on_program_qmbox_activated', index)
 
     def requestRefresh(self):
         """Request to refresh.
@@ -859,20 +893,11 @@ class MainTab(QWidget):
         elif prtext == 'Vasp':
             prtext = 'VASP'
             self.settings['QM program'] = 'vasp'
-        elif prtext == 'Phonopy':
-            if qmtext != '':
-                prtext = prtext + ' - ' + qmtext
-        index = self.program_cb.findText(prtext, Qt.MatchFixedString)
-        if index >=0:
-            self.program_cb.setCurrentIndex(index)
-        elif self.settings['Program'] == 'phonopy':
-            index = 4
+        if qmtext == 'Qe':
+            qmtext = 'Quantum Espresso'
+        elif qmtext == 'Vasp':
+            qmtext = 'VASP'
             self.settings['QM program'] = 'vasp'
-            self.program_cb.setCurrentIndex(index)
-        else:
-            self.settings['Program'] = 'castep'
-            index = 1
-            self.program_cb.setCurrentIndex(index)
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
         if self.calculationRequired:
