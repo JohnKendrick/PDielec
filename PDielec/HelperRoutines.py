@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Helper Routines - Useful for scripting and in Jupyter Notebooks
+"""Helper Routines - Useful for scripting and in Jupyter Notebooks.
 
 These routines are a useful starting point for investigating the way the code operates
 """
@@ -27,7 +27,7 @@ from PDielec.Materials import External, MaterialsDataBase
 
 
 def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition='Average'):
-    """Define a permittivity object for the DFT calculation from the given reader
+    """Define a permittivity object for the DFT calculation from the given reader.
 
     This routine reads in the details of the DFT calculation
     Calculates the hessian and normal modes
@@ -97,7 +97,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
     # Decide which modes to select
     modes_selected = []
     mode_list = []
-    for index,(f,intensity) in enumerate(zip(frequencies_cm1,intensities)):
+    for f,intensity in zip(frequencies_cm1,intensities):
         if f > 10.0 and intensity > 1.0E-6:
             modes_selected.append(True)
         else:
@@ -113,7 +113,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
     permittivityObject.setEpsilonInfinity(epsilon_inf)
     return permittivityObject
 
-def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp',eckart=True,mass_definition='Average'):
+def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',eckart=True,mass_definition='Average'):
     """Get a material with the given name.
 
     If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
@@ -126,9 +126,6 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp',ecka
         The name of the material, which can be a file name or a material name existing in the database.
     dataBaseName : str
         The name of the database which will be searched from the material
-    qmprogram : str, optional
-        The name of the QM program used in the case of Phonopy DFT calculations
-        Defaults to 'vasp'
     eckart  : boolean, optional
         If true apply eckart conditions in the reader. Defaults to true.
     mass_definition : string or list of floats, optional
@@ -154,9 +151,10 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp',ecka
 
     """
     # Let's see if the name is a file name that can be read
-    program = Utilities.find_program_from_name(name)
+    test = Utilities.find_program_from_name(name)
+    program,qm_program = Utilities.find_program_from_name(name)
     if len(program) > 1:
-        reader = Utilities.get_reader(name,program,qmprogram)
+        reader = Utilities.get_reader(name,program,qm_program)
         reader.read_output()
         permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
@@ -307,7 +305,7 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
     absorptionCoefficient = []
     molarAbsorptionCoefficient = []
     sp_atr = []
-    for v,method,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
+    for _v,_method,_size_mu,_size_sigma,_shape,_data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
          permittivity.append(trace)
          absorptionCoefficient.append(absorption_coefficient)
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)

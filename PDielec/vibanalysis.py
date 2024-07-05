@@ -425,8 +425,7 @@ def readPDielec(ifn):
         from PDielec.Constants import amu, average_masses
         # Use as many defaults as possible
         # First determine the program used to create the output file
-        program = Utilities.find_program_from_name(ifn)
-        qmprogram = 'vasp'
+        program,qmprogram = Utilities.find_program_from_name(ifn)
         # Create the reader
         reader = Utilities.get_reader(ifn,program,qmprogram)
         # Assume that projection is going to be used

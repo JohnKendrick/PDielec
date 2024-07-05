@@ -114,6 +114,7 @@ class App(QMainWindow):
         """        
         super().__init__()
         program = ''
+        qm_program = ''
         filename = ''
         spreadsheet_name = ''
         self.program_exit = False
@@ -165,6 +166,9 @@ class App(QMainWindow):
                 itoken += 1
                 program = tokens[itoken]
                 program_has_been_specified = True
+            elif token == '-qmprogram' or token == '--qmprogram':
+                itoken += 1
+                qm_program = tokens[itoken]
             elif token == '-threading' or token == '--threading' or token == '-threads' or token == '--threads':
                 threading = True
             elif token == '-cpus' or token == '--cpus':
@@ -191,7 +195,7 @@ class App(QMainWindow):
         elif len(parameters) == 1:
             filename = parameters[0]
             if not program_has_been_specified:
-                program = Utilities.find_program_from_name(filename)
+                program,qm_program = Utilities.find_program_from_name(filename)
         elif len(parameters) == 2:
             if program_has_been_specified:
                 print('Warning: program has been specified twice')
@@ -223,13 +227,14 @@ class App(QMainWindow):
         debugger.print('Start:: Initialising')
         debugger.print('About to open the notebook')
         debugger.print('Program is', program)
+        debugger.print('QM program is', qm_program)
         debugger.print('Filename is', filename)
         debugger.print('Spreadsheet is', spreadsheet_name)
         debugger.print('Script is', self.scriptname)
         debugger.print('The default scenario is', default_scenario)
         debugger.print('No. of cpus is', ncpus)
         debugger.print('Threading is', threading)
-        self.notebook = NoteBook(self, program, filename, spreadsheet_name, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading, default_scenario=default_scenario)
+        self.notebook = NoteBook(self, program, qm_program, filename, spreadsheet_name, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading, default_scenario=default_scenario)
         debugger.print('About to call setCentralWidget')
         self.setCentralWidget(self.notebook)
         debugger.print('Finished call setCentralWidget')
@@ -286,12 +291,14 @@ class App(QMainWindow):
         print('     program      The name of the program which created the outputfile')
         print('                  Should be one of; vasp, phonopy, gulp, castep, abinit or qe')
         print('                  If the program is not given a best guess is made from the output filename')
+        print('                  If the program is phonopy specify the qm program with -qmprogram')
         print('    filename      The name of the output file')
         print(' spreadsheet file The optional name of a spreadsheet (file must end with .xlsx')
         print('                  If this option is used program, filename must also be specified')
         print('   -scenario type Change the default scenario to \"type\"; either \"powder\" to \"crystal\"')
         print('-spreadsheet file An alternative way of specifying the spread sheet')
-        print('    -program      An alternative way of specifying the program')
+        print('    -program      Specify the program used to generate the output')
+        print('  -qmprogram      Specify the qm program used with phonopy')
         print('     -script file The initial commands are read from a script file')
         print('   -nosplash      No splash screen is presented (useful for batch running)')
         print('  -threading      Uses threads rather than multiprocessing')

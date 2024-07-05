@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Utility Functions
+"""Utility Functions.
 
 A set of utility functions that may be used anywhere in the package.
 """
@@ -31,11 +31,14 @@ from PDielec.VaspOutputReader import VaspOutputReader
 
 
 def printsp(name,matrix):
-    """Utility routine for printing 4x4 matrices or 4 vectors.
+    """Print 4x4 matrices or 4 vectors.
 
     Parameters
     ----------
-    None
+    name : string
+        The name of the matrix
+    matrix : 4x4 or 4 array
+        The matrix to be printed
 
     Returns
     -------
@@ -75,8 +78,9 @@ def find_program_from_name( filename ):
 
     Returns
     -------
-    str
-        A string representing the simulation program the file is associated with. Possible returns are 'phonopy', 'vasp', 'gulp', 'castep', 'abinit', 'qe', 'crystal', 'experiment', 'pdgui', or an empty string if the program cannot be determined.
+    (str1,str2)
+        A tuple of 2 strings, the first, str1, is the program name that was used to calculate the frequencies.
+        In the case of phonopy, the second string is the QM program that calculates the forces
 
     Notes
     -----
@@ -88,11 +92,12 @@ def find_program_from_name( filename ):
 
         program = find_program_from_name('./data/structure.castep')
         print(program)
-        # Output: 'castep'
+        # Output: ("castep","")
     
         program = find_program_from_name('path/to/simulation/OUTCAR')
         print(program)
-        # Depends on the presence of 'phonopy.yaml', could be 'phonopy' or 'vasp'
+        # Output: ("phonopy","vasp")
+        # Depends on the presence of 'phonopy.yaml'
 
     """    
     head,tail = os.path.split(filename)
@@ -103,40 +108,43 @@ def find_program_from_name( filename ):
         head = head+'/'
     if tail == 'OUTCAR':
         if os.path.isfile(head+'phonopy.yaml'):
-            return 'phonopy'
+            return 'phonopy','vasp'
         else:
-            return 'vasp'
+            return 'vasp',''
     if ext == '.gout':
-        return 'gulp'
+        return 'gulp',''
     if ext == '.born':
-        return 'phonopy'
+        return 'phonopy','vasp'
     if ext == '.castep':
             if os.path.isfile(head+'phonopy.yaml'):
-                return 'phonopy'
+                return 'phonopy','castep'
             else:
-                return 'castep'
+                return 'castep',''
     if ext ==  '.out':
         if os.path.isfile(head+root+'.files'):
             if os.path.isfile(head+'phonopy.yaml'):
-                return 'phonopy'
+                return 'phonopy','abinit'
             else:
-                return 'abinit'
+                return 'abinit',''
         elif os.path.isfile(head+root+'.dynG'):
             if os.path.isfile(head+'phonopy.yaml'):
-                return 'phonopy'
+                return 'phonopy','qe'
             else:
-                return 'qe'
+                return 'qe',''
         elif os.path.isfile(head+'phonopy.yaml'):
-            return 'phonopy'
+            return 'phonopy','crystal'
         else:
-            return 'crystal'
+            return 'crystal',''
     if ext ==  '.dynG':
-        return 'qe'
+        if os.path.isfile(head+'phonopy.yaml'):
+            return 'phonopy','qe'
+        else:
+            return 'qe',''
     if ext ==  '.exp':
-        return 'experiment'
+        return 'experiment',''
     if ext ==  '.py':
-        return 'pdgui'
-    return ''
+        return 'pdgui',''
+    return '',''
 
 def get_reader( name, program, qmprogram):
     """Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
@@ -326,7 +334,6 @@ def pdgui_get_reader(program,names,qmprogram):
         #
         # First Check that the file(s) we requested are there
         #
-        print("get_reader",names,program,qmprogram)
         checkfiles = []
         if program == "castep":
             if names[0].find(".castep") >= 0:

@@ -186,7 +186,7 @@ def main():
     for name in files:
         prog = program
         if program == 'auto':
-            prog = Utilities.find_program_from_name(name)
+            prog,qmprogram = Utilities.find_program_from_name(name)
         calling_parameters.append( (name, prog, qmprogram, debug) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)
