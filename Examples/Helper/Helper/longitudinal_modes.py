@@ -29,8 +29,7 @@ from PDielec.Constants  import angs2bohr, amu, wavenumber
 def longitudinal_frequencies(file):
     '''Calculate longitudinal frequencies'''
     # Set up the reader for this file
-    qmprogram = 'vasp'
-    program = Utilities.find_program_from_name(file)
+    program,qmprogram = Utilities.find_program_from_name(file)
     reader = Utilities.get_reader(file,program,qmprogram)
     # Initiate reading of the file
     reader.read_output()
