@@ -18,7 +18,7 @@ import os.path
 import platform
 
 import numpy as np
-from PyQt5.QtCore import QCoreApplication, QSize, Qt
+from PyQt5.QtCore import QCoreApplication, QSize
 from PyQt5.QtWidgets import (
     QComboBox,
     QFileDialog,
@@ -134,25 +134,25 @@ class MainTab(QWidget):
         """        
         super(QWidget, self).__init__(parent)
         global debugger
-        debugger = Debug(debug, 'MainTab')
-        debugger.print('Start:: initialising ',program, filename, excelfile)
+        debugger = Debug(debug, "MainTab")
+        debugger.print("Start:: initialising ",program, filename, excelfile)
         self.debug = debug
         self.settings = {}
-        if program != '':
-            self.settings['Program'] = program.lower()
+        if program != "":
+            self.settings["Program"] = program.lower()
         else:
-            self.settings['Program'] = 'castep'
-        self.settings['QM program'] = qm_program.lower()
+            self.settings["Program"] = "castep"
+        self.settings["QM program"] = qm_program.lower()
         self.directory = os.path.dirname(filename)
-        self.settings['Output file name'] = os.path.basename(filename)
-        self.settings['Excel file name'] = excelfile
-        self.settings['Script file name'] = ''
-        if 'Window' in platform.platform():
-            self.settings['Compatibility mode'] = 'Window'
-        elif 'Linux' in platform.platform():
-            self.settings['Compatibility mode'] = 'Linux'
+        self.settings["Output file name"] = os.path.basename(filename)
+        self.settings["Excel file name"] = excelfile
+        self.settings["Script file name"] = ""
+        if "Window" in platform.platform():
+            self.settings["Compatibility mode"] = "Window"
+        elif "Linux" in platform.platform():
+            self.settings["Compatibility mode"] = "Linux"
         else:
-            self.settings['Compatibility mode'] = 'Linux'
+            self.settings["Compatibility mode"] = "Linux"
         self.notebook = parent
         self.reader = None
         self.frequencies_cm1 = None
@@ -165,46 +165,46 @@ class MainTab(QWidget):
         # The program combobox
         #
         self.program_cb = QComboBox(self)
-        self.program_cb.setToolTip('Choose QM/MM program')
-        self.program_cb.addItem('Abinit')
-        self.program_cb.addItem('Castep')
-        self.program_cb.addItem('Crystal')
-        self.program_cb.addItem('Experiment')
-        self.program_cb.addItem('Gulp')
-        self.program_cb.addItem('Phonopy')
-        self.program_cb.addItem('Quantum Espresso')
-        self.program_cb.addItem('Vasp')
-        self.program_cb.addItem('PDGui')
+        self.program_cb.setToolTip("Choose QM/MM program")
+        self.program_cb.addItem("Abinit")
+        self.program_cb.addItem("Castep")
+        self.program_cb.addItem("Crystal")
+        self.program_cb.addItem("Experiment")
+        self.program_cb.addItem("Gulp")
+        self.program_cb.addItem("Phonopy")
+        self.program_cb.addItem("Quantum Espresso")
+        self.program_cb.addItem("Vasp")
+        self.program_cb.addItem("PDGui")
         
         self.program_qb = QComboBox(self)
-        self.program_qb.setToolTip('Choose QM program for phonopy')
-        self.program_qb.addItem('Abinit')
-        self.program_qb.addItem('Castep')
-        self.program_qb.addItem('Crystal')
-        self.program_qb.addItem('Vasp')
-        self.program_qb.addItem('Quantum Espresso')
+        self.program_qb.setToolTip("Choose QM program for phonopy")
+        self.program_qb.addItem("Abinit")
+        self.program_qb.addItem("Castep")
+        self.program_qb.addItem("Crystal")
+        self.program_qb.addItem("Vasp")
+        self.program_qb.addItem("Quantum Espresso")
         
 
         
-        prtext = self.settings['Program'].capitalize()
-        qmtext = self.settings['QM program'].capitalize()
-        if prtext == 'Qe':
-            prtext = 'Quantum Espresso'
-        elif prtext == 'Vasp':
-            prtext = 'VASP'
-            self.settings['QM program'] = 'vasp'
-        if qmtext == 'Qe':
-            qmtext = 'Quantum Espresso'
-        elif qmtext == 'Vasp':
-            qmtext = 'VASP'
-            self.settings['QM program'] = 'vasp'
+        prtext = self.settings["Program"].capitalize()
+        qmtext = self.settings["QM program"].capitalize()
+        if prtext == "Qe":
+            prtext = "Quantum Espresso"
+        elif prtext == "Vasp":
+            prtext = "VASP"
+            self.settings["QM program"] = "vasp"
+        if qmtext == "Qe":
+            qmtext = "Quantum Espresso"
+        elif qmtext == "Vasp":
+            qmtext = "VASP"
+            self.settings["QM program"] = "vasp"
         self.program_cb.activated.connect(self.on_program_cb_activated)
-        label = QLabel('QM/MM Program ')
-        label.setToolTip('Choose QM/MM program')
+        label = QLabel("QM/MM Program ")
+        label.setToolTip("Choose QM/MM program")
         form.addRow(label, self.program_cb)
         self.program_qb.activated.connect(self.on_program_qb_activated)
-        label = QLabel('QM Program for Phonopy')
-        label.setToolTip('QM Program for Phonopy')
+        label = QLabel("QM Program for Phonopy")
+        label.setToolTip("QM Program for Phonopy")
         form.addRow(label, self.program_qb)
         self.program_qb.setEnabled(False)
         
@@ -213,14 +213,14 @@ class MainTab(QWidget):
         # The file selector
         #
         self.file_le = QLineEdit(self)
-        self.file_le.setToolTip('Enter output file or script for processing (press return)')
-        self.file_le.setText(self.settings['Output file name'])
+        self.file_le.setToolTip("Enter output file or script for processing (press return)")
+        self.file_le.setText(self.settings["Output file name"])
         self.file_le.returnPressed.connect(self.on_file_le_return)
         self.file_le.textChanged.connect(self.on_file_le_changed)
-        label = QLabel('Analyse this output file')
-        label.setToolTip('Enter output file for analysis or choose a script to process (press return)')
-        file_button = QPushButton(' File manager ')
-        file_button.setToolTip('Open a file manager to choose a file for analysis or choose a script to process')
+        label = QLabel("Analyse this output file")
+        label.setToolTip("Enter output file for analysis or choose a script to process (press return)")
+        file_button = QPushButton(" File manager ")
+        file_button.setToolTip("Open a file manager to choose a file for analysis or choose a script to process")
         file_button.clicked.connect(self.on_file_button_clicked)
         file_button.resize(file_button.sizeHint())
         file_button_size = file_button.size()
@@ -232,14 +232,14 @@ class MainTab(QWidget):
         # Store results
         #
         self.resultsfile_le = QLineEdit(self)
-        self.resultsfile_le.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified, the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.')
-        self.resultsfile_le.setText(self.settings['Excel file name'])
+        self.resultsfile_le.setToolTip("Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified, the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.")
+        self.resultsfile_le.setText(self.settings["Excel file name"])
         self.resultsfile_le.returnPressed.connect(self.on_excel_button_clicked)
         self.resultsfile_le.textChanged.connect(self.on_resultsfile_le_changed)
-        label = QLabel('Excel spread sheet')
-        label.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.')
-        excel_button = QPushButton(' Save results ')
-        excel_button.setToolTip('Save the results of calculation to the excel spreadsheet specified')
+        label = QLabel("Excel spread sheet")
+        label.setToolTip("Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.")
+        excel_button = QPushButton(" Save results ")
+        excel_button.setToolTip("Save the results of calculation to the excel spreadsheet specified")
         excel_button.clicked.connect(self.on_excel_button_clicked)
         excel_button.resize(excel_button.sizeHint())
         excel_button_size = excel_button.size()
@@ -251,14 +251,14 @@ class MainTab(QWidget):
         # Store a script
         #
         self.scriptsfile_le = QLineEdit(self)
-        self.scriptsfile_le.setToolTip('Provide the name of a python script file to save the program settings to when the \"Save settings\" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
-        self.scriptsfile_le.setText(self.settings['Script file name'])
+        self.scriptsfile_le.setToolTip('Provide the name of a python script file to save the program settings to when the "Save settings" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
+        self.scriptsfile_le.setText(self.settings["Script file name"])
         self.scriptsfile_le.returnPressed.connect(self.on_script_button_clicked)
         self.scriptsfile_le.textChanged.connect(self.on_scriptsfile_le_changed)
-        label = QLabel('Script filename')
-        label.setToolTip('Provide the name of a python script file to save the program settings to when the \"Save settings\" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
-        script_button = QPushButton(' Save settings ')
-        script_button.setToolTip('Save the setttings of calculation to a python file.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
+        label = QLabel("Script filename")
+        label.setToolTip('Provide the name of a python script file to save the program settings to when the "Save settings" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
+        script_button = QPushButton(" Save settings ")
+        script_button.setToolTip("Save the setttings of calculation to a python file.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.")
         script_button.clicked.connect(self.on_script_button_clicked)
         script_button.resize(script_button.sizeHint())
         script_button_size = script_button.size()
@@ -284,7 +284,7 @@ class MainTab(QWidget):
         #jk # add form layout
         vbox.addLayout(form)
         # output window for unit cell
-        self.cell_window_l = QLabel('Unit-cell (Angstrom) from '+self.settings['Output file name'], self)
+        self.cell_window_l = QLabel("Unit-cell (Angstrom) from "+self.settings["Output file name"], self)
         vbox.addWidget(self.cell_window_l)
         self.cell_window_w = QListWidget(self)
         fm = self.cell_window_w.fontMetrics()
@@ -292,7 +292,7 @@ class MainTab(QWidget):
         self.cell_window_w.setMaximumHeight(6*h)
         vbox.addWidget(self.cell_window_w)
         # output window for frequencies
-        self.frequencies_window_l = QLabel('Frequencies from '+self.settings['Output file name'], self)
+        self.frequencies_window_l = QLabel("Frequencies from "+self.settings["Output file name"], self)
         vbox.addWidget(self.frequencies_window_l)
         self.frequencies_window = QListWidget(self)
         vbox.addWidget(self.frequencies_window)
@@ -300,11 +300,11 @@ class MainTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         # If the filename was given then force it to be read and processed
-        #jkif filename != '':
-        #jk    debugger.print('Reading output file in maintab initialisation')
-        #jk    self.on_calculation_button_clicked()
+        if filename != '':
+            debugger.print('Reading output file in maintab initialisation')
+            self.on_calculation_button_clicked()
         QCoreApplication.processEvents()
-        debugger.print('Finished:: initialising ')
+        debugger.print("Finished:: initialising ")
         return
 
     def on_script_button_clicked(self):
@@ -321,23 +321,23 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: on_script_button clicked')
-        debugger.print('on_script_button clicked, directory=',self.directory)
-        filename=os.path.join(self.directory,self.settings['Script file name'])
+        debugger.print("Start:: on_script_button clicked")
+        debugger.print("on_script_button clicked, directory=",self.directory)
+        filename=os.path.join(self.directory,self.settings["Script file name"])
         if os.path.exists(filename):
-            debugger.print('Script file already exists',self.directory)
+            debugger.print("Script file already exists",self.directory)
             if self.notebook.overwriting:
-                debugger.print('Overwriting existing script anyway',filename)
+                debugger.print("Overwriting existing script anyway",filename)
                 self.notebook.print_settings(filename=filename)
             else:
-                answer = QMessageBox.question(self,'','Script file already exists.  Continue?', QMessageBox.Yes | QMessageBox.No)
+                answer = QMessageBox.question(self,"","Script file already exists.  Continue?", QMessageBox.Yes | QMessageBox.No)
                 if answer == QMessageBox.Yes:
-                    debugger.print('Overwriting existing script',filename)
+                    debugger.print("Overwriting existing script",filename)
                     self.notebook.print_settings(filename=filename)
         else:
-            debugger.print('Creating a new script',filename)
+            debugger.print("Creating a new script",filename)
             self.notebook.print_settings(filename=filename)
-        debugger.print('Finished:: on_script_button clicked')
+        debugger.print("Finished:: on_script_button clicked")
         return
 
     def on_excel_button_clicked(self):
@@ -358,9 +358,9 @@ class MainTab(QWidget):
         notebook.writeSpreadsheet : The method called to write data to the spreadsheet.
 
         """        
-        debugger.print('Start:: on_excel_button clicked')
+        debugger.print("Start:: on_excel_button clicked")
         self.notebook.writeSpreadsheet()
-        debugger.print('Finished:: on_excel_button clicked')
+        debugger.print("Finished:: on_excel_button clicked")
         return
 
     def on_calculation_button_clicked(self):
@@ -377,7 +377,7 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: on_calculation_button_clicked')
+        debugger.print("Start:: on_calculation_button_clicked")
         #
         # Read the output file
         #
@@ -385,7 +385,7 @@ class MainTab(QWidget):
         if self.notebook.settingsTab is not None:
             self.notebook.settingsTab.refresh(force=True)
         self.calculationRequired = False
-        debugger.print('Finished:: on_calculation_button_clicked')
+        debugger.print("Finished:: on_calculation_button_clicked")
 
     def writeSpreadsheet(self):
         """Writes data to the configured spreadsheet.
@@ -405,24 +405,24 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: writeSpreadsheet')
+        debugger.print("Start:: writeSpreadsheet")
         sp = self.notebook.spreadsheet
         if sp is None:
-            debugger.print('Finished:: writeSpreadsheet sp is None')
+            debugger.print("Finished:: writeSpreadsheet sp is None")
             return
-        sp.selectWorkSheet('Main')
+        sp.selectWorkSheet("Main")
         sp.delete()
-        debugger.print('writeSpreadsheet',self.settings)
-        sp.writeNextRow( ['Main Tab Settings'], col=1 )
-        sp.writeNextRow( ['Directory',self.directory], col=1 )
+        debugger.print("writeSpreadsheet",self.settings)
+        sp.writeNextRow( ["Main Tab Settings"], col=1 )
+        sp.writeNextRow( ["Directory",self.directory], col=1 )
         for item in sorted(self.settings):
             sp.writeNextRow([item,self.settings[item]], col=1, check=1)
-        sp.writeNextRow( [''], col=1 )
+        sp.writeNextRow( [""], col=1 )
         if self.frequencies_cm1 is not None:
-            sp.writeNextRow( ['Frequencies (cm1) as read from the output file'], col=1 )
+            sp.writeNextRow( ["Frequencies (cm1) as read from the output file"], col=1 )
             for ifreq in enumerate(self.frequencies_cm1):
                 sp.writeNextRow(ifreq, col=1, check=1)
-        debugger.print('Finished:: writeSpreadsheet')
+        debugger.print("Finished:: writeSpreadsheet")
         return
 
     def read_output_file(self):
@@ -442,30 +442,30 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: read_output_file')
-        debugger.print('Program =', self.settings['Program'], 'QMProgram =', self.settings['QM program'])
-        if self.settings['Output file name'] == '':
-            debugger.print('Finished:: read_output_file output file is blank')
+        debugger.print("Start:: read_output_file")
+        debugger.print("Program =", self.settings["Program"], "QMProgram =", self.settings["QM program"])
+        if self.settings["Output file name"] == "":
+            debugger.print("Finished:: read_output_file output file is blank")
             return
-        filename = os.path.join(self.directory,self.settings['Output file name'])
+        filename = os.path.join(self.directory,self.settings["Output file name"])
         if not os.path.isfile(filename):
-            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+filename)
-            debugger.print('Finished:: read_output_file output file does not exist')
+            QMessageBox.about(self,"Processing output file","The filename for the output file to be processed is not correct: "+filename)
+            debugger.print("Finished:: read_output_file output file does not exist")
             return
-        debugger.print('Read output file - clear list widgets')
-        debugger.print(self.settings['Program'],[ filename ], self.settings['QM program'])
+        debugger.print("Read output file - clear list widgets")
+        debugger.print(self.settings["Program"],[ filename ], self.settings["QM program"])
         self.cell_window_w.clear()
-        self.cell_window_l.setText('Unit-cell (Angstrom) from '+self.settings['Output file name'])
+        self.cell_window_l.setText("Unit-cell (Angstrom) from "+self.settings["Output file name"])
         self.frequencies_window.clear()
-        self.frequencies_window_l.setText('Frequencies from '+self.settings['Output file name'])
-        self.reader = pdgui_get_reader(self.settings['Program'],[ filename ], self.settings['QM program'] )
+        self.frequencies_window_l.setText("Frequencies from "+self.settings["Output file name"])
+        self.reader = pdgui_get_reader(self.settings["Program"],[ filename ], self.settings["QM program"] )
         
         if self.reader is None:
-            print('Error in reading files - program  is ',self.settings['Program'])
-            print('Error in reading files - filename is ',filename)
-            print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','A reader has not been created for this filename: '+filename)
-            debugger.print('Finished:: read_output_file reader is none')
+            print("Error in reading files - program  is ",self.settings["Program"])
+            print("Error in reading files - filename is ",filename)
+            print("Need to choose the file and program properly")
+            QMessageBox.about(self,"Processing output file","A reader has not been created for this filename: "+filename)
+            debugger.print("Finished:: read_output_file reader is none")
             return
         #switch on debugging in the reader
         self.reader.debug = self.debug
@@ -475,20 +475,20 @@ class MainTab(QWidget):
             try:
                 self.reader.read_output()
             except:
-                print('Error in reading output files - program  is ',self.settings['Program'])
-                print('Error in reading output files - filename is ',filename)
-                print('Need to choose the file and program properly')
-                QMessageBox.about(self,'Processing output file','Error on reading the output file using read_output(): '+filename)
-                debugger.print('Finished:: read_output_file error on reading')
+                print("Error in reading output files - program  is ",self.settings["Program"])
+                print("Error in reading output files - filename is ",filename)
+                print("Need to choose the file and program properly")
+                QMessageBox.about(self,"Processing output file","Error on reading the output file using read_output(): "+filename)
+                debugger.print("Finished:: read_output_file error on reading")
                 return
             # end try
         # end if debug
         if len(self.reader.unit_cells) == 0:
-            print('Error in reading output files - program  is ',self.settings['Program'])
-            print('Error in reading output files - filename is ',filename)
-            print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','The output file has no unit cells in it: '+filename)
-            debugger.print('Finished:: read_output_file output file has no unit cell')
+            print("Error in reading output files - program  is ",self.settings["Program"])
+            print("Error in reading output files - filename is ",filename)
+            print("Need to choose the file and program properly")
+            QMessageBox.about(self,"Processing output file","The output file has no unit cells in it: "+filename)
+            debugger.print("Finished:: read_output_file output file has no unit cell")
             return
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
@@ -498,51 +498,51 @@ class MainTab(QWidget):
         a = cell.lattice[0]
         b = cell.lattice[1]
         c = cell.lattice[2]
-        self.cell_window_w.addItem('                                  ')
-        self.cell_window_w.addItem(f'a = {a[0]: 4.5f}   {a[1]:4.5f}   {a[2]: 4.5f}')
-        self.cell_window_w.addItem(f'b = {b[0]: 4.5f}   {b[1]:4.5f}   {b[2]: 4.5f}')
-        self.cell_window_w.addItem(f'c = {c[0]: 4.5f}   {c[1]:4.5f}   {c[2]: 4.5f}')
-        self.cell_window_w.addItem('                                  ')
+        self.cell_window_w.addItem("                                  ")
+        self.cell_window_w.addItem(f"a = {a[0]: 4.5f}   {a[1]:4.5f}   {a[2]: 4.5f}")
+        self.cell_window_w.addItem(f"b = {b[0]: 4.5f}   {b[1]:4.5f}   {b[2]: 4.5f}")
+        self.cell_window_w.addItem(f"c = {c[0]: 4.5f}   {c[1]:4.5f}   {c[2]: 4.5f}")
+        self.cell_window_w.addItem("                                  ")
         self.frequencies_cm1 = np.sort(self.reader.frequencies)
         for f in self.frequencies_cm1:
-            self.frequencies_window.addItem(f'{f:.3f}')
+            self.frequencies_window.addItem(f"{f:.3f}")
         # tell the settings tab to update the widgets that depend on the contents of the reader
-        debugger.print('processing a return in reading the output file')
+        debugger.print("processing a return in reading the output file")
         # Update any scenarios
         if self.notebook.scenarios is not None:
-            debugger.print('about to refresh scenarios')
-            debugger.print(f'notebook has {len(self.notebook.scenarios)} scenarios')
+            debugger.print("about to refresh scenarios")
+            debugger.print(f"notebook has {len(self.notebook.scenarios)} scenarios")
             for tab in self.notebook.scenarios:
                 tab.requestRefresh()
         else:
-            debugger.print('notebook has no scenarios yet')
+            debugger.print("notebook has no scenarios yet")
         # Update the plotting tab
         if self.notebook.plottingTab is not None:
-            debugger.print('about to refresh plottingtab')
+            debugger.print("about to refresh plottingtab")
             self.notebook.plottingTab.requestRefresh()
         else:
-            debugger.print('notebook has no plotting tab yet')
+            debugger.print("notebook has no plotting tab yet")
         # Update the analysis tab
         if self.notebook.analysisTab is not None:
-            debugger.print('about to refresh analysisTab')
+            debugger.print("about to refresh analysisTab")
             self.notebook.analysisTab.requestRefresh()
         else:
-            debugger.print('notebook has no analysis tab yet')
+            debugger.print("notebook has no analysis tab yet")
         # Update the viewer tab
         if self.notebook.viewerTab is not None:
-            debugger.print('about to refresh viewerTab')
+            debugger.print("about to refresh viewerTab")
             self.notebook.viewerTab.requestRefresh()
         else:
-            debugger.print('notebook has no viewer tab yet')
+            debugger.print("notebook has no viewer tab yet")
         # Update the fitter tab
         if self.notebook.fitterTab is not None:
             # There is a subtle problem with the modes that are to be fitted, they need resetting
             self.notebook.fitterTab.modes_fitted = []
-            debugger.print('about to refresh fitterTab')
+            debugger.print("about to refresh fitterTab")
             self.notebook.fitterTab.requestRefresh()
         else:
-            debugger.print('notebook has no fitter tab yet')
-        debugger.print('Finished:: read_output_file')
+            debugger.print("notebook has no fitter tab yet")
+        debugger.print("Finished:: read_output_file")
 
     def on_scriptsfile_le_changed(self, text):
         """Respond to changes in the scripts file input field.
@@ -558,10 +558,10 @@ class MainTab(QWidget):
             The new text of the scripts file input field. This parameter may not be used inside the function as the function retrieves the text from the QLineEdit widget directly.
 
         """        
-        debugger.print('Start:: on_scriptsfile_changed', text)
+        debugger.print("Start:: on_scriptsfile_changed", text)
         text = self.scriptsfile_le.text()
-        self.settings['Script file name'] = text
-        debugger.print('Finished:: on_scriptsfile_changed', text)
+        self.settings["Script file name"] = text
+        debugger.print("Finished:: on_scriptsfile_changed", text)
 
     def on_resultsfile_le_changed(self, text):
         """Handle changes to the results file text input field.
@@ -576,10 +576,10 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: on_resultsfile_changed', text)
+        debugger.print("Start:: on_resultsfile_changed", text)
         text = self.resultsfile_le.text()
-        self.settings['Excel file name'] = text
-        debugger.print('Finished:: on_resultsfile_changed', text)
+        self.settings["Excel file name"] = text
+        debugger.print("Finished:: on_resultsfile_changed", text)
 
     def on_file_button_clicked(self):
         """Handle the "Open file" button click event in the GUI.
@@ -595,55 +595,55 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: on_file_button_clicked ', self.file_le.text())
+        debugger.print("Start:: on_file_button_clicked ", self.file_le.text())
         # Open a file chooser
         #options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
-        if self.settings['Program'] == 'castep':
-            selfilter = 'Castep (*.castep)'
-        elif self.settings['Program'] == 'abinit':
-            selfilter = 'Abinit (*.out)'
-        elif self.settings['Program'] == 'gulp':
-            selfilter = 'Gulp (*.gout)'
-        elif self.settings['Program'] == 'vasp':
-            selfilter = 'VASP (OUTCAR*)'
-        elif self.settings['Program'] == 'qe':
-            selfilter = 'QE (*.dynG)'
-        elif self.settings['Program'] == 'crystal':
-            selfilter = 'Crystal 14 (*.out)'
-        elif self.settings['Program'] == 'phonopy':
-            selfilter = 'Phonopy (*)'
-        elif self.settings['Program'] == 'experiment':
-            selfilter = 'Experiment (*.exp)'
-        elif self.settings['Program'] == 'pdgui':
-            selfilter = 'PDGui (*.py)'
+        if self.settings["Program"] == "castep":
+            selfilter = "Castep (*.castep)"
+        elif self.settings["Program"] == "abinit":
+            selfilter = "Abinit (*.out)"
+        elif self.settings["Program"] == "gulp":
+            selfilter = "Gulp (*.gout)"
+        elif self.settings["Program"] == "vasp":
+            selfilter = "VASP (OUTCAR*)"
+        elif self.settings["Program"] == "qe":
+            selfilter = "QE (*.dynG)"
+        elif self.settings["Program"] == "crystal":
+            selfilter = "Crystal 14 (*.out)"
+        elif self.settings["Program"] == "phonopy":
+            selfilter = "Phonopy (*)"
+        elif self.settings["Program"] == "experiment":
+            selfilter = "Experiment (*.exp)"
+        elif self.settings["Program"] == "pdgui":
+            selfilter = "PDGui (*.py)"
         else:
-            selfilter = 'All files (*)'
-        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Abinit (*.out);;Castep (*.castep);;Crystal 14 (*.out);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;QE (*.dynG);;VASP (OUTCAR*);;PDGui (*.py);;All files(*)',selfilter)
+            selfilter = "All files (*)"
+        filename,myfilter = QFileDialog.getOpenFileName(self,"Open MM/QM Output file","","Abinit (*.out);;Castep (*.castep);;Crystal 14 (*.out);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;QE (*.dynG);;VASP (OUTCAR*);;PDGui (*.py);;All files(*)",selfilter)
         # Process the filename
-        if filename != '':
+        if filename != "":
             program,qmprogram = find_program_from_name(filename)
-            if program == '':
-                debugger.print('Program not found from filename',filename)
-                debugger.print('Proceeding with defaults',self.settings['Program'])
+            if program == "":
+                debugger.print("Program not found from filename",filename)
+                debugger.print("Proceeding with defaults",self.settings["Program"])
             else:
-                debugger.print('Program found from filename',program,filename)
-                self.settings['Program'] = program
-                self.settings['QM program'] = qmprogram
+                debugger.print("Program found from filename",program,filename)
+                self.settings["Program"] = program
+                self.settings["QM program"] = qmprogram
             self.directory = os.path.dirname(filename)
             self.notebook.app.setMyWindowTitle(self.directory)
-            self.settings['Output file name'] = os.path.basename(filename)
-            self.file_le.setText(self.settings['Output file name'])
-            debugger.print('new file name', self.directory, self.settings['Output file name'])
+            self.settings["Output file name"] = os.path.basename(filename)
+            self.file_le.setText(self.settings["Output file name"])
+            debugger.print("new file name", self.directory, self.settings["Output file name"])
             self.notebook.deleteAllScenarios()
-            if self.settings['Program'] == 'pdgui':
+            if self.settings["Program"] == "pdgui":
                 #
                 # If we have changed the file then reset some of the settingsTab settings
                 # before we read in the script.
                 #
                 if self.notebook.settingsTab is not None:
-                    self.notebook.settingsTab.settings['Optical permittivity'] = None
-                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.settings["Optical permittivity"] = None
+                    self.notebook.settingsTab.settings["Mass definition"] = "average"
                     self.notebook.settingsTab.sigmas_cm1 = []
                     self.notebook.settingsTab.requestRefresh()
                 self.notebook.app.readScript(filename)
@@ -652,14 +652,14 @@ class MainTab(QWidget):
                 # If we have changed the file then reset some of the settingsTab settings
                 #
                 if self.notebook.settingsTab is not None:
-                    self.notebook.settingsTab.settings['Optical permittivity'] = None
-                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.settings["Optical permittivity"] = None
+                    self.notebook.settingsTab.settings["Mass definition"] = "average"
                     self.notebook.settingsTab.sigmas_cm1 = []
                     self.notebook.settingsTab.requestRefresh()
                 self.refreshRequired = True
                 self.calculationRequired = True
                 self.refresh()
-        debugger.print('Finished:: on_file_button_clicked ', self.file_le.text())
+        debugger.print("Finished:: on_file_button_clicked ", self.file_le.text())
         return
 
     def getFullFileName(self):
@@ -675,7 +675,7 @@ class MainTab(QWidget):
             The full path of the file, combining the directory and the output file name setting.
 
         """        
-        return os.path.join(self.directory,self.settings['Output file name'])
+        return os.path.join(self.directory,self.settings["Output file name"])
 
     def getRelativeFileName(self):
         """Get the relative filename specified in settings.
@@ -690,7 +690,7 @@ class MainTab(QWidget):
             The file name specified in the settings as 'Output file name'.
 
         """        
-        return self.settings['Output file name']
+        return self.settings["Output file name"]
 
     def on_file_le_return(self):
         """Handle the return action for a file entry line edit.
@@ -717,27 +717,27 @@ class MainTab(QWidget):
         - Specific behaviors, such as how 'pdgui' program type is specially handled or the resetting of certain settings, is contingent on the broader application logic and requirements.
 
         """        
-        debugger.print('Start:: on_file_le_return ', self.file_le.text())
+        debugger.print("Start:: on_file_le_return ", self.file_le.text())
         filename = self.file_le.text()
-        if filename != '':
+        if filename != "":
             program,qmprogram = find_program_from_name(filename)
-            if program == '':
-                debugger.print('Finished:: on_file_le_return ')
+            if program == "":
+                debugger.print("Finished:: on_file_le_return ")
                 return
-            self.settings['Program'] = program
-            self.settings['QM program'] = qmprogram
+            self.settings["Program"] = program
+            self.settings["QM program"] = qmprogram
             self.directory = os.path.dirname(os.path.abspath(filename))
             self.notebook.app.setMyWindowTitle(self.directory)
-            self.settings['Output file name'] = os.path.basename(filename)
-            debugger.print('new file name', self.settings['Output file name'])
+            self.settings["Output file name"] = os.path.basename(filename)
+            debugger.print("new file name", self.settings["Output file name"])
             self.notebook.deleteAllScenarios()
-            if self.settings['Program'] == 'pdgui':
+            if self.settings["Program"] == "pdgui":
                 #
                 # If we are reading a script the reset the defaults before reading the script
                 #
                 if self.notebook.settingsTab is not None:
-                    self.notebook.settingsTab.settings['Optical permittivity'] = None
-                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.settings["Optical permittivity"] = None
+                    self.notebook.settingsTab.settings["Mass definition"] = "average"
                     self.notebook.settingsTab.sigmas_cm1 = []
                 self.notebook.app.readScript(filename)
             else:
@@ -746,13 +746,13 @@ class MainTab(QWidget):
                 # this is only done if it is not a script
                 #
                 if self.notebook.settingsTab is not None:
-                    self.notebook.settingsTab.settings['Optical permittivity'] = None
-                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.settings["Optical permittivity"] = None
+                    self.notebook.settingsTab.settings["Mass definition"] = "average"
                     self.notebook.settingsTab.sigmas_cm1 = []
                 self.refreshRequired = True
                 self.calculationRequired = True
                 self.refresh()
-        debugger.print('Finished:: on_file_le_return ', self.file_le.text())
+        debugger.print("Finished:: on_file_le_return ", self.file_le.text())
         return
 
     def on_file_le_changed(self, text):
@@ -770,10 +770,10 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: on_file_changed', text)
-        self.settings['Output file name'] = text
+        debugger.print("Start:: on_file_changed", text)
+        self.settings["Output file name"] = text
         self.calculationRequired = True
-        debugger.print('Finished:: on_file_changed', text)
+        debugger.print("Finished:: on_file_changed", text)
 
     def on_program_cb_activated(self,index):
         """Handle program selection change in a combobox and update settings accordingly.
@@ -800,47 +800,47 @@ class MainTab(QWidget):
         - Sets `calculationRequired` attribute to `True`.
 
         """        
-        debugger.print('Start:: on_program_combobox_activated', index)
-        debugger.print('on_program_combobox_activated', self.program_cb.currentText())
+        debugger.print("Start:: on_program_combobox_activated", index)
+        debugger.print("on_program_combobox_activated", self.program_cb.currentText())
         text = self.program_cb.currentText()
         qmtext = self.program_qb.currentText()
-        self.settings['Program'] = text.lower()
-        self.settings['QM program'] = qmtext.lower()
-        if text == 'Phonopy':
+        self.settings["Program"] = text.lower()
+        self.settings["QM program"] = qmtext.lower()
+        if text == "Phonopy":
             self.program_qb.setEnabled(True)
-            if qmtext == 'vasp':
-                self.settings['QM program'] = 'vasp'
-            elif qmtext == 'crystal':
-                self.settings['QM program'] = 'crystal'
-            elif qmtext == 'castep':
-                self.settings['QM program'] = 'castep'
-            elif qmtext == 'qe':
-                self.settings['QM program'] = 'qe'
-        elif text == 'Quantum Espresso':
-            self.settings['Program']   = 'qe'
-        debugger.print('Program is now  ', self.settings['Program'])
-        debugger.print('QM program is now', self.settings['QM program'])
+            if qmtext == "vasp":
+                self.settings["QM program"] = "vasp"
+            elif qmtext == "crystal":
+                self.settings["QM program"] = "crystal"
+            elif qmtext == "castep":
+                self.settings["QM program"] = "castep"
+            elif qmtext == "qe":
+                self.settings["QM program"] = "qe"
+        elif text == "Quantum Espresso":
+            self.settings["Program"]   = "qe"
+        debugger.print("Program is now  ", self.settings["Program"])
+        debugger.print("QM program is now", self.settings["QM program"])
         self.calculationRequired = True
-        debugger.print('Finished:: on_program_combobox_activated', index)
+        debugger.print("Finished:: on_program_combobox_activated", index)
         
     def on_program_qb_activated(self,index):
-        debugger.print('Start:: on_program_qmbox_activated', index)
-        debugger.print('on_program_qmbox_activated', self.program_qb.currentText())
+        debugger.print("Start:: on_program_qmbox_activated", index)
+        debugger.print("on_program_qmbox_activated", self.program_qb.currentText())
         text = self.program_cb.currentText()
         qmtext = self.program_qb.currentText()
-        self.settings['QM program'] = qmtext.lower()
-        if qmtext == 'vasp':
-            self.settings['QM program'] = 'vasp'
-        elif qmtext == 'crystal':
-            self.settings['QM program'] = 'crystal'
-        elif qmtext == 'castep':
-            self.settings['QM program'] = 'castep'
-        elif qmtext == 'qe':
-            self.settings['QM program'] = 'qe'
-        debugger.print('Program is now  ', self.settings['Program'])
-        debugger.print('QM program is now', self.settings['QM program'])
+        self.settings["QM program"] = qmtext.lower()
+        if qmtext == "vasp":
+            self.settings["QM program"] = "vasp"
+        elif qmtext == "crystal":
+            self.settings["QM program"] = "crystal"
+        elif qmtext == "castep":
+            self.settings["QM program"] = "castep"
+        elif qmtext == "qe":
+            self.settings["QM program"] = "qe"
+        debugger.print("Program is now  ", self.settings["Program"])
+        debugger.print("QM program is now", self.settings["QM program"])
         self.calculationRequired = True
-        debugger.print('Finished:: on_program_qmbox_activated', index)
+        debugger.print("Finished:: on_program_qmbox_activated", index)
 
     def requestRefresh(self):
         """Request to refresh.
@@ -856,9 +856,9 @@ class MainTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: requestRefresh')
+        debugger.print("Start:: requestRefresh")
         self.refreshRequired = True
-        debugger.print('Finished:: requestRefresh')
+        debugger.print("Finished:: requestRefresh")
 
     def refresh(self,force=False):
         """Refresh the current interface or force it to refresh, applying settings changes.
@@ -882,7 +882,7 @@ class MainTab(QWidget):
         - Unblocks signals for all child widgets after refresh.
 
         """        
-        debugger.print('Start:: refresh', force)
+        debugger.print("Start:: refresh", force)
         if not self.refreshRequired and not force:
             return
         #
@@ -890,22 +890,22 @@ class MainTab(QWidget):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
-        prtext = self.settings['Program'].capitalize()
-        qmtext = self.settings['QM program'].capitalize()
-        if prtext == 'Qe':
-            prtext = 'Quantum Espresso'
-        elif prtext == 'Vasp':
-            prtext = 'VASP'
-            self.settings['QM program'] = 'vasp'
-        if qmtext == 'Qe':
-            qmtext = 'Quantum Espresso'
-        elif qmtext == 'Vasp':
-            qmtext = 'VASP'
-            self.settings['QM program'] = 'vasp'
-        self.file_le.setText(self.settings['Output file name'])
-        self.resultsfile_le.setText(self.settings['Excel file name'])
+        prtext = self.settings["Program"].capitalize()
+        qmtext = self.settings["QM program"].capitalize()
+        if prtext == "Qe":
+            prtext = "Quantum Espresso"
+        elif prtext == "Vasp":
+            prtext = "VASP"
+            self.settings["QM program"] = "vasp"
+        if qmtext == "Qe":
+            qmtext = "Quantum Espresso"
+        elif qmtext == "Vasp":
+            qmtext = "VASP"
+            self.settings["QM program"] = "vasp"
+        self.file_le.setText(self.settings["Output file name"])
+        self.resultsfile_le.setText(self.settings["Excel file name"])
         if self.calculationRequired:
-            debugger.print('on_calculation_button_clicked called from MainTab.refresh()')
+            debugger.print("on_calculation_button_clicked called from MainTab.refresh()")
             self.on_calculation_button_clicked()
         self.refreshRequired = False
         #
@@ -913,5 +913,5 @@ class MainTab(QWidget):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
-        debugger.print('Finished:: refresh', force)
+        debugger.print("Finished:: refresh", force)
         return
