@@ -3,7 +3,7 @@
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'phonopy'
-tab.settings['QM program'] = 'vasp'
+tab.settings['Phonopy QM program'] = 'vasp'
 tab.settings['Output file name'] = 'OUTCAR.born'
 #
 # SettingsTab

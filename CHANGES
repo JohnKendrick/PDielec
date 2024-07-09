@@ -1,6 +1,14 @@
 version 8.1.2
    Added a .nojekyll file into the docs/ directory to stop git hub pages over processing things
    Changed the name PDielec to pdielec in setup.py to help with Windows install on conda-forge
+   Changed the find_program_from_name() function to return (program,qmprogram).  Affected routines are;
+       - Utilities.py, HelperRoutines.py p1reader.py, preader.py, vibanalysis,py, App.py, NoteBook.py, 
+       - MainTab.py, p2cif.py.
+       - Also changes in Helper/ and Jupyter/ Example directories.
+    Removed the slicing capability as it is no longer needed
+    Added new code for handling Phonopy DFT programs other than Vasp
+    The materials database is now cached to improve performance
+    The materials database is now kept open, instead of repeated opening and closing
 version 8.1.1
   The documentation has been revamped.  An API description is now generated from each class and routine.
   The examples of Jupyter notebooks has been added to.
