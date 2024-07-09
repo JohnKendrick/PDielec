@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Materials DataBase
+"""Materials DataBase.
 
 An interface to the spreadsheet which holds materials data
 """
@@ -63,6 +63,8 @@ class MaterialsDataBase:
         The path to the Excel spreadsheet containing materials data.
     sheetNames : list
         A list of strings representing the names of the sheets within the Excel spreadsheet.
+    cache : dictionary
+        A dictionary of materials that have been read from the database
     debug : bool, optional
         A flag indicating whether debugging information should be printed. Default is False.
 
@@ -107,37 +109,37 @@ class MaterialsDataBase:
 
         """
         global debugger
-        debugger = Debug(debug,'MaterialsDataBase')
-        debugger.print('Start:: initialise')
-        if len(filename)> 5 and (filename.endswith('xlsx') or filename.endswith('XLSX')) and os.path.isfile(filename):
+        debugger = Debug(debug,"MaterialsDataBase")
+        debugger.print("Start:: initialise")
+        if len(filename)> 5 and (filename.endswith("xlsx") or filename.endswith("XLSX")) and os.path.isfile(filename):
             self.filename = os.path.relpath(filename)
-            workbook = xl.load_workbook(self.filename,data_only=True)
-            self.sheetNames = workbook.sheetnames
-            debugger.print('Sheet names:: ',self.sheetNames)
+            self.workbook = xl.load_workbook(self.filename,data_only=True)
+            self.sheetNames = self.workbook.sheetnames
+            debugger.print("Sheet names:: ",self.sheetNames)
             # Close the work book while it is not in use
-            workbook.close()
+            # workbook.close()
         else:
             # Try opening the default database
             PDielec_Directory = os.path.dirname(PDielec_init_filename)
-            filename  = os.path.join(PDielec_Directory, 'MaterialsDataBase.xlsx')
+            filename  = os.path.join(PDielec_Directory, "MaterialsDataBase.xlsx")
             filename  = os.path.relpath(filename)
             if os.path.isfile(filename):
                 self.filename = filename
-                workbook = xl.load_workbook(self.filename,data_only=True)
+                self.workbook = xl.load_workbook(self.filename,data_only=True)
                 self.sheetNames = workbook.sheetnames
-                debugger.print('Sheet names from default database ',self.sheetNames)
+                debugger.print("Sheet names from default database ",self.sheetNames)
                 # Close the work book while it is not in use
-                workbook.close()
+                # workbook.close()
             else:
                 self.filename = None
                 self.sheetNames = None
-                print('  Error: MaterialsDataBase filename not valid',filename)
-    
-        debugger.print('Finished:: initialise')
+                print("  Error: MaterialsDataBase filename not valid",filename)
+        self.cache = {}
+        debugger.print("Finished:: initialise")
         return
 
     def getFileName(self):
-        """Return the filename
+        """Return the filename.
 
         Parameters
         ----------
@@ -169,12 +171,12 @@ class MaterialsDataBase:
 
         """
         result = False
-        if 'Information' in self.sheetNames[0]:
+        if "Information" in self.sheetNames[0]:
             result = True
         return result
 
     def getSheetNames(self):
-        """Returns a list of the sheetnames in the database.
+        """Return a list of the sheetnames in the database.
 
         As well as the sheets in the database, there are some default materials which will be added
         to the list of materials and which are provided internally by this module.
@@ -195,21 +197,21 @@ class MaterialsDataBase:
             fullList = self.sheetNames[1:].copy()
         # Append any in-built materials
         # This list is taken from the original powder code before version 8.0
-        if 'air' not in fullList:
-            fullList.append('air')
-        if 'vacuum' not in fullList:
-            fullList.append('vacuum')
-        if 'ptfe' not in fullList:
-            fullList.append('ptfe')
-        if 'ldpe' not in fullList:
-            fullList.append('ldpe')
-        if 'mdpe' not in fullList:
-            fullList.append('mdpe')
-        if 'kbr' not in fullList:
-            fullList.append('kbr')
-        if 'nujol' not in fullList:
-            fullList.append('nujol')
-        debugger.print('getSheetNames:: ',fullList)
+        if "air" not in fullList:
+            fullList.append("air")
+        if "vacuum" not in fullList:
+            fullList.append("vacuum")
+        if "ptfe" not in fullList:
+            fullList.append("ptfe")
+        if "ldpe" not in fullList:
+            fullList.append("ldpe")
+        if "mdpe" not in fullList:
+            fullList.append("mdpe")
+        if "kbr" not in fullList:
+            fullList.append("kbr")
+        if "nujol" not in fullList:
+            fullList.append("nujol")
+        debugger.print("getSheetNames:: ",fullList)
         return sorted(fullList, key=lambda s: s.casefold())
 
     def getMaterial(self,sheet):
@@ -229,60 +231,66 @@ class MaterialsDataBase:
             The material object created from the excel sheet data.
 
         """
-        debugger.print('getMaterial:: ',sheet)
+        debugger.print("getMaterial:: ",sheet)
+        # Lets see if the material is in the cache
+        if sheet in self.cache:
+            debugger.print("getMaterial:: using the cache")
+            print("JK30 getMaterial:: using the cache",sheet)
+            return self.cache[sheet]
         # Define a set of back-up materials that the program can use even if the sheet name is not in the spreadsheet
+        print("JK31 getMaterial:: NOT using the cache",sheet)
         if self.sheetNames is None or sheet not in self.sheetNames:
-            if sheet == 'air':
-                material = Constant('air',permittivity=1.0,density=0.001225)
-            elif sheet == 'vacuum':
-                material = Constant('vacuum',permittivity=1.0,density=0.0)
-            elif sheet == 'ptfe':
-                material = Constant('ptfe',permittivity=1.0,density=2.2)
-            elif sheet == 'ldpe':
-                material = Constant('ldpe',permittivity=2.25,density=0.925)
-            elif sheet == 'mdpe':
-                material = Constant('mdpe',permittivity=2.25,density=0.933)
-            elif sheet == 'kbr':
-                material = Constant('kbr',permittivity=2.25,density=2.75)
-            elif sheet == 'nujol':
-                material = Constant('nujol',permittivity=2.155,density=0.838)
+            if sheet == "air":
+                material = Constant("air",permittivity=1.0,density=0.001225)
+            elif sheet == "vacuum":
+                material = Constant("vacuum",permittivity=1.0,density=0.0)
+            elif sheet == "ptfe":
+                material = Constant("ptfe",permittivity=1.0,density=2.2)
+            elif sheet == "ldpe":
+                material = Constant("ldpe",permittivity=2.25,density=0.925)
+            elif sheet == "mdpe":
+                material = Constant("mdpe",permittivity=2.25,density=0.933)
+            elif sheet == "kbr":
+                material = Constant("kbr",permittivity=2.25,density=2.75)
+            elif sheet == "nujol":
+                material = Constant("nujol",permittivity=2.155,density=0.838)
             else:
-                print('Error in getMaterial sheet ',sheet,' not in self.sheetNames',self.sheetNames,file=sys.stderr)
-                material = Constant('vacuum',permittivity=1.0,density=0.0)
+                print("Error in getMaterial sheet ",sheet," not in self.sheetNames",self.sheetNames,file=sys.stderr)
+                material = Constant("vacuum",permittivity=1.0,density=0.0)
             return material
         # Carry on with the spreadsheet
-        workbook = xl.load_workbook(self.filename,data_only=True)
-        worksheet = workbook[sheet]
+        # workbook = xl.load_workbook(self.filename,data_only=True)
+        worksheet = self.workbook[sheet]
         unitCell = None
         avector = bvector = cvector = None
         a = b = c = alpha = beta = gamma = None
         for i in range(20):
-            cell1 = 'G'+str(i+1)
-            cell2 = 'H'+str(i+1)
+            cell1 = "G"+str(i+1)
+            cell2 = "H"+str(i+1)
             token = worksheet[cell1].value
             if token is not None:
                 token = token.lower()
-                if 'entry' in token:
+                if "entry" in token:
                     entry = worksheet[cell2].value.lower()
-                elif 'density' in token:
+                elif "density" in token:
                     density = float(worksheet[cell2].value)
-                elif 'a_vector' in token:
-                    avector = [ float(cell.value) for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
-                elif 'b_vector' in token:
-                    bvector = [ float(cell.value) for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
-                elif 'c_vector' in token:
-                    cvector = [ float(cell.value) for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
-                elif token == 'a:':
+                elif "a_vector" in token:
+                    avector = [ float(cell.value) for cell in [ worksheet["I"+str(i+1)], worksheet["J"+str(i+1)], worksheet["K"+str(i+1)] ] ]
+                elif "b_vector" in token:
+                    bvector = [ float(cell.value) for cell in [ worksheet["I"+str(i+1)], worksheet["J"+str(i+1)], worksheet["K"+str(i+1)] ] ]
+                elif "c_vector" in token:
+                    cvector = [ float(cell.value) for cell in [ worksheet["I"+str(i+1)], worksheet["J"+str(i+1)], worksheet["K"+str(i+1)] ] ]
+                elif token == "a:":
                     a = float(worksheet[cell2].value)
-                elif token == 'b:':
+                elif token == "b:":
                     b = float(worksheet[cell2].value)
-                elif token == 'c:':
+                elif token == "c:":
                     c = float(worksheet[cell2].value)
-                elif 'alpha' in token:
+                elif "alpha" in token:
                     alpha = float(worksheet[cell2].value)
-                elif 'beta' in token:
+                elif "beta" in token:
                     beta = float(worksheet[cell2].value)
-                elif 'gamma' in token:
+                elif "gamma" in token:
                     gamma = float(worksheet[cell2].value)
         #
         if avector is not None and bvector is not None and cvector is not None:
@@ -290,22 +298,24 @@ class MaterialsDataBase:
         elif a is not None and b is not None and c is not None and alpha is not None and beta is not None and gamma is not None:
             unitCell = UnitCell(a=a,b=b,c=c,alpha=alpha,beta=beta,gamma=gamma)
         # Process the entry type
-        if 'constant' in entry and 'refractive' in entry:
+        if "constant" in entry and "refractive" in entry:
             material = self.readConstantRefractiveIndex(sheet,worksheet,density)
-        elif 'constant' in entry and ('permitt' in entry or 'dielec' in entry):
+        elif "constant" in entry and ("permitt" in entry or "dielec" in entry):
             material = self.readConstantPermittivity(sheet,worksheet,density)
-        elif 'tabulated' in entry and 'refractive' in entry:
+        elif "tabulated" in entry and "refractive" in entry:
             material = self.readTabulatedRefractiveIndex(sheet,worksheet,density)
-        elif 'tabulated' in entry and ('permitt' in entry or 'dielec' in entry):
+        elif "tabulated" in entry and ("permitt" in entry or "dielec" in entry):
             material = self.readTabulatedPermittivity(sheet,worksheet,density)
-        elif 'lorentz' in entry and 'drude' in entry:
+        elif "lorentz" in entry and "drude" in entry:
             material = self.readLorentzDrude(sheet,worksheet,density,unitCell)
-        elif 'fpsq' in entry:
+        elif "fpsq" in entry:
             material = self.readFPSQ(sheet,worksheet,density,unitCell)
-        elif 'sellmeier' in entry:
+        elif "sellmeier" in entry:
             material = self.readSellmeier(sheet,worksheet,density,unitCell)
         # Close the work book
-        workbook.close()
+        # workbook.close()
+        # Add the material to the cache
+        self.cache[sheet] = material
         return material
 
     def readConstantRefractiveIndex(self,sheet,worksheet,density):
@@ -326,13 +336,12 @@ class MaterialsDataBase:
 
         """
         # Constant refractive index
-        n = float(worksheet['C2'].value)
-        k = float(worksheet['D2'].value)
+        n = float(worksheet["C2"].value)
+        k = float(worksheet["D2"].value)
         nk = complex(n, k)
         permittivity = Calculator.calculate_permittivity(nk)
-        debugger.print('Constant refractive:: ',nk,permittivity,density)
-        material = Constant(sheet,permittivity=permittivity,density=density)
-        return material
+        debugger.print("Constant refractive:: ",nk,permittivity,density)
+        return Constant(sheet,permittivity=permittivity,density=density)
 
     def readConstantPermittivity(self,sheet,worksheet,density):
         """Read constant permittivity data from the spreadsheet.
@@ -352,12 +361,11 @@ class MaterialsDataBase:
 
         """
         # Constant permittivity
-        eps_r = float(worksheet['C2'].value)
-        eps_i = float(worksheet['D2'].value)
+        eps_r = float(worksheet["C2"].value)
+        eps_i = float(worksheet["D2"].value)
         permittivity = complex(eps_r, eps_i)
-        debugger.print('Constant permittivity:: ',permittivity,density)
-        material = Constant(sheet,permittivity=permittivity,density=density)
-        return material
+        debugger.print("Constant permittivity:: ",permittivity,density)
+        return Constant(sheet,permittivity=permittivity,density=density)
 
     def readTabulatedRefractiveIndex(self,sheet,worksheet,density):
         """Read tabulated refractive index data from the spreadsheet.
@@ -379,7 +387,7 @@ class MaterialsDataBase:
         # Tabulated refractive index
         permittivities = []
         vs_cm1 = []
-        for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
+        for a, c, d in zip(worksheet["A"][1:] ,worksheet["C"][1:] , worksheet["D"][1:]):
             if a.value is None or c.value is None or d.value is None:
                 break
             try:
@@ -390,10 +398,9 @@ class MaterialsDataBase:
                permittivity = Calculator.calculate_permittivity(nk)
                permittivities.append(permittivity)
                vs_cm1.append(v)
-            except:
-                print('Error in Tabulated: ',a.value,c.value,d.value)
-        material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
-        return material
+            except Exception:
+                print("Error in Tabulated: ",a.value,c.value,d.value)
+        return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
 
     def readTabulatedPermittivity(self,sheet,worksheet,density):
         """Read tabulated permittivity data from the spreadsheet.
@@ -415,7 +422,7 @@ class MaterialsDataBase:
         # Tabulated permittivity
         permittivities = []
         vs_cm1 = []
-        for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
+        for a, c, d in zip(worksheet["A"][1:] ,worksheet["C"][1:] , worksheet["D"][1:]):
             if a.value is None or c.value is None or d.value is None:
                 break
             v = float(a.value)
@@ -424,8 +431,7 @@ class MaterialsDataBase:
             permittivity = complex(eps_r, eps_i)
             permittivities.append(permittivity)
             vs_cm1.append(v)
-        material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
-        return material
+        return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
 
     def readLorentzDrude(self,sheet,worksheet,density,unitCell):
         """Read Drude-Lorentz data from the spreadsheet.
@@ -448,15 +454,14 @@ class MaterialsDataBase:
         """
         # Lorentz-Drude model for permittivity
         epsilon_infinity = np.zeros( (3,3) )
-        directions = [[], [], []]
         omegas = [[], [], []]
         strengths = [[], [], []]
         gammas = [[], [], []]
-        for a, b, c, d, e in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:]) :
+        for a, b, c, d, e in zip(worksheet["A"][1:] ,worksheet["B"][1:] , worksheet["C"][1:], worksheet["D"][1:], worksheet["E"][1:]) :
             try:
                 if a.value is not None:
                     direction = a.value
-                index = ['xx','yy','zz'].index(direction)
+                index = ["xx","yy","zz"].index(direction)
                 if b.value is not None:
                     epsilon_infinity[[index],[index]] = float(b.value)
                 if c.value is not None:
@@ -465,11 +470,10 @@ class MaterialsDataBase:
                     strengths[index].append(float(d.value))
                 if e.value is not None:
                     gammas[index].append(float(e.value))
-            except:
-                print('Error in Lorentz-Drude: ',a.value,b.value,c.value,d.value,e.value)
+            except Exception:
+                print("Error in Lorentz-Drude: ",a.value,b.value,c.value,d.value,e.value)
                 return None
-        material = DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
-        return material
+        return DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
 
     def readFPSQ(self,sheet,worksheet,density,unitCell):
         """Read FPSQ data from the spreadsheet.
@@ -492,16 +496,15 @@ class MaterialsDataBase:
         """
         # FPSQ model for permittivity
         epsilon_infinity = np.zeros( (3,3) )
-        directions = [[], [], []]
         omega_tos = [[], [], []]
         gamma_tos = [[], [], []]
         omega_los = [[], [], []]
         gamma_los = [[], [], []]
-        for a, b, c, d, e, f in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:], worksheet['F'][1:]) :
+        for a, b, c, d, e, f in zip(worksheet["A"][1:] ,worksheet["B"][1:] , worksheet["C"][1:], worksheet["D"][1:], worksheet["E"][1:], worksheet["F"][1:]) :
             try:
                 if a.value is not None:
                     direction = a.value
-                index = ['xx','yy','zz'].index(direction)
+                index = ["xx","yy","zz"].index(direction)
                 if b.value is not None:
                     epsilon_infinity[[index],[index]] = float(b.value)
                 if c.value is not None:
@@ -512,11 +515,10 @@ class MaterialsDataBase:
                     omega_los[index].append(float(e.value))
                 if f.value is not None:
                     gamma_los[index].append(float(f.value))
-            except:
-                print('Error in FPSQ: ',a.value,b.value,c.value,d.value,e.value,f.value)
+            except Exception:
+                print("Error in FPSQ: ",a.value,b.value,c.value,d.value,e.value,f.value)
                 return None
-        material = FPSQ(sheet,epsilon_infinity,omega_tos,gamma_tos,omega_los,gamma_los,density=density,cell=unitCell)
-        return material
+        return FPSQ(sheet,epsilon_infinity,omega_tos,gamma_tos,omega_los,gamma_los,density=density,cell=unitCell)
 
     def readSellmeier(self,sheet,worksheet,density,unitCell):
         """Read Sellmeier data from the spreadsheet.
@@ -538,20 +540,18 @@ class MaterialsDataBase:
 
         """
         # Sellmeier model for refractive index
-        directions = []
         Bs = []
         Cs = []
-        for b, c in zip(worksheet['A'][1:] , worksheet['B'][1:] ) :
+        for b, c in zip(worksheet["A"][1:] , worksheet["B"][1:] ) :
             try:
                 if b.value is not None:
                     Bs.append(float(b.value))
                 if c.value is not None:
                     Cs.append(float(c.value))
-            except:
-                print('Error in Sellmeier: ',b.value,c.value)
+            except Exception:
+                print("Error in Sellmeier: ",b.value,c.value)
                 return None
-        material = Sellmeier(sheet,Bs,Cs,density=density,cell=unitCell)
-        return material
+        return Sellmeier(sheet,Bs,Cs,density=density,cell=unitCell)
         
 class Material:
     """A class for representing materials with properties like name, density, permittivity, and unit cell.
@@ -651,7 +651,7 @@ class Material:
     """
 
     def __init__(self, name, density=None, permittivityObject=None, cell=None):
-        """A Material has the following parameters
+        """Initialise a material with the following parameters.
 
         Parameters
         ----------
@@ -672,10 +672,10 @@ class Material:
         self.density            = density
         self.cell               = cell
         self.name               = name
-        self.type               = 'Base Class'
+        self.type               = "Base Class"
         self.permittivityObject = permittivityObject
         if self.density is None and self.cell is not None:
-            self.density = self.cell.getDensity('cm')
+            self.density = self.cell.getDensity("cm")
 
     def getName(self):
         """Get the name attribute of the object.
@@ -693,7 +693,7 @@ class Material:
         return self.name
 
     def getInformation(self):
-        """Returns information about the material.
+        """Return information about the material.
 
         Parameters
         ----------
@@ -706,10 +706,10 @@ class Material:
 
         """
         result = self.type
-        if 'Tabulate' in self.type:
+        if "Tabulate" in self.type:
             low = self.permittivityObject.getLowestFrequency()
             high = self.permittivityObject.getHighestFrequency()
-            result += f' freq range {low:.0f}-{high:.0f}' # + ' value at 0 {}'.format(self.permittivityObject.function()(0))
+            result += f" freq range {low:.0f}-{high:.0f}" # + ' value at 0 {}'.format(self.permittivityObject.function()(0))
         # result += ' value at 0 {}'.format(self.permittivityObject.function()(0))
         return result
 
@@ -725,19 +725,19 @@ class Material:
         None
 
         """
-        print('Material name:',self.name)
-        print('Material density:',self.density)
-        print('Material type:',self.type)
-        print('Material is scalar?:',self.isScalar())
-        print('Material is tensor?:',self.isTensor())
-        print('Material permittivity:',self.getInformation())
+        print("Material name:",self.name)
+        print("Material density:",self.density)
+        print("Material type:",self.type)
+        print("Material is scalar?:",self.isScalar())
+        print("Material is tensor?:",self.isTensor())
+        print("Material permittivity:",self.getInformation())
         if self.cell is not None:
-            print('Material unit cell')
+            print("Material unit cell")
             self.cell.print()
         return
 
     def isScalar(self):
-        """Returns true if the material returns a scalar permittivity.
+        """Return true if the material returns a scalar permittivity.
 
         Parameters
         ----------
@@ -752,7 +752,7 @@ class Material:
         return self.permittivityObject.isScalar()
 
     def isTensor(self):
-        """Returns true if the material returns a tensor permittivity.
+        """Return true if the material returns a tensor permittivity.
 
         Parameters
         ----------
@@ -772,6 +772,7 @@ class Material:
         Parameters
         ----------
         permittivityObject : a permittivity object (dielectric function object)
+            The permittivity object is used to calculate the permittivity of the material
 
         Returns
         -------
@@ -782,7 +783,7 @@ class Material:
         return
 
     def getPermittivityObject(self):
-        """Returns the permittivity object.
+        """Return the permittivity object.
 
         Parameters
         ----------
@@ -797,7 +798,7 @@ class Material:
         return self.permittivityObject
 
     def getPermittivityFunction(self):
-        """Returns the permittivity function.
+        """Return the permittivity function.
 
         Parameters
         ----------
@@ -812,7 +813,7 @@ class Material:
         return self.permittivityObject.function()
 
     def setFrequencies(self,frequencies):
-        """Sets the frequencies for a Lorentzian permittivity
+        """Set the frequencies for a Lorentzian permittivity.
 
         Parameters
         ----------
@@ -828,7 +829,7 @@ class Material:
         return 
 
     def getFrequencies(self):
-        """Gets the frequencies for a Lorentzian permittivity
+        """Get the frequencies for a Lorentzian permittivity.
 
         Parameters
         ----------
@@ -843,7 +844,7 @@ class Material:
         return self.permittivityObject.getFrequencies()
 
     def setOscillatorStrengths(self,strengths):
-        """Sets the oscillator strengths for a Lorentzian permittivity
+        """Set the oscillator strengths for a Lorentzian permittivity.
 
         Parameters
         ----------
@@ -859,7 +860,7 @@ class Material:
         return 
 
     def getOscillatorStrengths(self):
-        """Gets the oscillator strengths for a Lorentzian permittivity
+        """Get the oscillator strengths for a Lorentzian permittivity.
 
         The oscillator strength of each transition is a 3x3 matrix
 
@@ -877,7 +878,7 @@ class Material:
 
 
     def setSigmas(self,sigmas):
-        """Sets the sigma parameters for a Lorentzian permittivity
+        """Set the sigma parameters for a Lorentzian permittivity.
 
         Parameters
         ----------
@@ -893,7 +894,7 @@ class Material:
         return 
 
     def getSigmas(self):
-        """Gets the sigma parameters for a Lorentzian permittivity
+        """Get the sigma parameters for a Lorentzian permittivity.
 
         Parameters
         ----------
@@ -909,11 +910,12 @@ class Material:
 
 
     def setDensity(self, value):
-        """Set the density
+        """Set the density.
 
         Parameters
         ----------
         value : float
+            The value of the density
 
         Returns
         -------
@@ -924,7 +926,7 @@ class Material:
         return
 
     def getDensity(self):
-        """Return the density
+        """Return the density.
 
         Parameters
         ----------
@@ -938,11 +940,12 @@ class Material:
         return self.density
 
     def setCell(self, cell):
-        """Set the unit cell
+        """Set the unit cell.
 
         Parameters
         ----------
         cell : a unit cell
+            Set the unit cell of the material
 
         Returns
         -------
@@ -955,7 +958,7 @@ class Material:
         return
 
     def getCell(self):
-        """Return the cell
+        """Return the cell.
 
         Parameters
         ----------
@@ -984,6 +987,7 @@ class Constant(Material):
 
     def __init__(self, name, permittivity=None, density=None, cell=None):
         """Create an instance of a material with a constant scalar permittivity.
+
         Permittivity is the value of the permittivity and can be complex.
 
         Parameters
@@ -999,7 +1003,7 @@ class Constant(Material):
 
         """
         super().__init__(name, density=density, permittivityObject=DielectricFunction.ConstantScalar(permittivity), cell=cell)
-        self.type = 'Constant permittivity'
+        self.type = "Constant permittivity"
 
 
 class External(Material):
@@ -1012,6 +1016,7 @@ class External(Material):
 
     def __init__(self, name, permittivityObject=None, density=None, cell=None):
         """Create an instance of a material which has the permittivity object specified externally.
+
         The permittivity can be a complex number.
 
         Parameters
@@ -1032,7 +1037,7 @@ class External(Material):
 
         """
         super().__init__(name, density=density, permittivityObject=permittivityObject, cell=cell)
-        self.type = 'External permittivity'
+        self.type = "External permittivity"
 
 
 class DrudeLorentz(Material):
@@ -1099,7 +1104,7 @@ class DrudeLorentz(Material):
         permittivityObject = DielectricFunction.DrudeLorentz( omegas, strengths, gammas)
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
-        self.type = 'Drude-Lorentz'
+        self.type = "Drude-Lorentz"
 
 class FPSQ(Material):
     """Class representing a material with a FPSQ model for permittivity.
@@ -1136,7 +1141,7 @@ class FPSQ(Material):
         ----------
         name : str
             The name of the material.
-        eps0 : list or ndarray
+        epsinf : list or ndarray
             Epsilon infinity (ε∞), either a 3x3 list or a 3x3 array.
         omega_tos : list
             The transverse optical (TO) frequencies.
@@ -1156,7 +1161,7 @@ class FPSQ(Material):
         permittivityObject = DielectricFunction.FPSQ( omega_tos, gamma_tos, omega_los, gamma_los)
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
-        self.type = 'FPSQ'
+        self.type = "FPSQ"
 
 class Sellmeier(Material):
     """A class to define materials using the Sellmeier model for permittivity.
@@ -1208,7 +1213,7 @@ class Sellmeier(Material):
         """
         permittivityObject = DielectricFunction.Sellmeier( Bs, Cs)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
-        self.type = 'Sellmeier'
+        self.type = "Sellmeier"
 
 
 class Tabulated(Material):
@@ -1270,14 +1275,14 @@ class Tabulated(Material):
             elif m== 6:
                 permittivityObject = DielectricFunction.Tabulate6(vs,eps[0], eps[1], eps[2], eps[3], eps[4], eps[5])
             else:
-                print('Error in Tabulated, shape of parameters is wrong')
+                print("Error in Tabulated, shape of parameters is wrong")
         else:
             permittivityObject = DielectricFunction.TabulateScalar(vs,eps)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
-        self.type = 'Tabulated permittivity'
+        self.type = "Tabulated permittivity"
 
     def setEpsilonInfinity(self,eps):
-        """Sets the value of epsilon infinity for the material
+        """Set the value of epsilon infinity for the material.
 
         Parameters
         ----------
@@ -1289,9 +1294,6 @@ class Tabulated(Material):
         None
 
         """
-        if isinstance(eps,float):
-            eps = eps*np.eye(3)
-        else:
-            eps = np.array(eps)
+        eps = eps*np.eye(3) if isinstance(eps,float) else np.array(eps)
         self.permittivityObject.setEpsilonInfinity(eps)
 
