@@ -259,9 +259,7 @@ class PowderScenarioTab(ScenarioTab):
         self.matrix_cb = QComboBox(self)
         self.matrix_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.matrix_cb.setToolTip("Define the permittivity and density of the support matrix")
-        print('jk28',self.DataBase.getFileName())
         self.materialNames = self.DataBase.getSheetNames()
-        print('jk29',self.materialNames)
         self.matrix_cb.addItems(self.materialNames)
         if self.settings["Matrix"] not in self.materialNames:
             self.settings["Matrix"] = self.materialNames[0]
@@ -1357,7 +1355,7 @@ class PowderScenarioTab(ScenarioTab):
             self.settings["Materials database"] = self.DataBase.getFileName()
             self.database_le.setText(self.settings["Materials database"])
             # Update the possible  material names from the database
-            self.materialNames = self.setMaterialNames()
+            self.materialNames = self.DataBase.getSheetNames()
         self.materialDefinedManually = False
         if self.settings["Matrix"] == "Material defined manually":
             self.materialDefinedManually = True

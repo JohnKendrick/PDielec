@@ -235,10 +235,8 @@ class MaterialsDataBase:
         # Lets see if the material is in the cache
         if sheet in self.cache:
             debugger.print("getMaterial:: using the cache")
-            print("JK30 getMaterial:: using the cache",sheet)
             return self.cache[sheet]
         # Define a set of back-up materials that the program can use even if the sheet name is not in the spreadsheet
-        print("JK31 getMaterial:: NOT using the cache",sheet)
         if self.sheetNames is None or sheet not in self.sheetNames:
             if sheet == "air":
                 material = Constant("air",permittivity=1.0,density=0.001225)
