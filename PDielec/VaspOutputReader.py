@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""VASP output reader
-"""
+"""VASP output reader."""
 
 import re
 
@@ -26,11 +25,12 @@ from PDielec.UnitCell import UnitCell
 
 
 def myfloat(string):
-    """A replacement for float() which will return a large number if it finds a * in the string.
+    """Replace float(), return a large number if it finds a * in the string.
 
     Parameters
     ----------
     string : str
+        The string to be analysed as a float
 
     Returns
     -------
@@ -38,11 +38,9 @@ def myfloat(string):
         A standard float conversion of the input or a large number if '*' is found in the input.
 
     """
-    if '*' in string:
+    if "*" in string:
         return 9999.999
-    else:
-        return float(string)
-
+    return float(string)
 
 class VaspOutputReader(GenericOutputReader):
     """Read the contents of a directory containing VASP input and output files.
@@ -96,7 +94,7 @@ class VaspOutputReader(GenericOutputReader):
 
         """        
         GenericOutputReader.__init__(self, names)
-        self.type                    = 'Vasp output'
+        self.type                    = "Vasp output"
         self._pspots                  = {}
         self._ediff                   = 0.0
         self._pulay                  = None
@@ -120,33 +118,33 @@ class VaspOutputReader(GenericOutputReader):
 
         """
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['ionspertype']  = (re.compile('   ions per type ='), self._read_ionspertype)
+        self.manage["ionspertype"]  = (re.compile("   ions per type ="), self._read_ionspertype)
         # self.manage['masses_skip']  = (re.compile('  Mass of Ions in am'), self._read_skip4)
-        self.manage['pspots']       = (re.compile(' POTCAR:'), self._read_pspot)
-        self.manage['arrays']       = (re.compile(' Dimension of arrays:'), self._read_array_dimensions)
+        self.manage["pspots"]       = (re.compile(" POTCAR:"), self._read_pspot)
+        self.manage["arrays"]       = (re.compile(" Dimension of arrays:"), self._read_array_dimensions)
         #self.manage['masses']       = (re.compile('   POMASS ='), self._read_masses)
-        self.manage['spin']         = (re.compile('   ISPIN  = '), self._read_spin)
-        self.manage['encut']        = (re.compile('   ENCUT  = '), self._read_encut)
-        self.manage['ediff']        = (re.compile('   EDIFF  = '), self._read_ediff)
-        self.manage['ibrion']       = (re.compile('   IBRION = '), self._read_ibrion)
-        self.manage['potim']        = (re.compile('   POTIM  = '), self._read_potim)
-        self.manage['nelect']       = (re.compile('   NELECT = '), self._read_nelect)
-        self.manage['lattice']      = (re.compile('  volume of cell :'), self._read_lattice_vectors)
-        self.manage['fractional']   = (re.compile(' position of ions in fractional coordinates'), self._read_fractional_coordinates)
-        self.manage['forces']       = (re.compile(' POSITION  *TOTAL-FORCE'), self._read_forces)
-        self.manage['energy']       = (re.compile('  FREE ENERGIE OF THE ION'), self._read_energy)
-        self.manage['magnet']       = (re.compile(' number of electron '), self._read_magnet)
-        self.manage['pressure']     = (re.compile('  external pressure ='), self._read_external_pressure)
-        self.manage['skip1']        = (re.compile(' old parameters found'), self._read_skip4)
-        self.manage['staticDielectric']  = (re.compile(' MACROSCOPIC STATIC DIELECTRIC TENSOR .including'), self._read_static_dielectric)
-        self.manage['staticIonic']  = (re.compile(' MACROSCOPIC STATIC DIELECTRIC TENSOR IONIC CONT'), self._read_ionic_dielectric)
-        self.manage['bornCharges']  = (re.compile(' BORN EFFECTIVE CHARGES'), self._read_born_charges)
-        self.manage['eigenvectors'] = (re.compile(' Eigenvectors and eige'), self._read_eigenvectors)
-        self.manage['eigenskip']    = (re.compile(' Eigenvectors after division'), self._read_skip4)
-        self.manage['elastic']      = (re.compile(' TOTAL ELASTIC MODULI'), self._read_elastic_constants)
-        self.manage['kpoint']      = (re.compile('^Gamma'), self._read_kpoint_grid)
-        self.manage['species']      = (re.compile('^ *Atomic configuration'), self._read_species)
-        self.manage['newmasses']  = (re.compile('  Mass of Ions in am'), self._read_newmasses)
+        self.manage["spin"]         = (re.compile("   ISPIN  = "), self._read_spin)
+        self.manage["encut"]        = (re.compile("   ENCUT  = "), self._read_encut)
+        self.manage["ediff"]        = (re.compile("   EDIFF  = "), self._read_ediff)
+        self.manage["ibrion"]       = (re.compile("   IBRION = "), self._read_ibrion)
+        self.manage["potim"]        = (re.compile("   POTIM  = "), self._read_potim)
+        self.manage["nelect"]       = (re.compile("   NELECT = "), self._read_nelect)
+        self.manage["lattice"]      = (re.compile("  volume of cell :"), self._read_lattice_vectors)
+        self.manage["fractional"]   = (re.compile(" position of ions in fractional coordinates"), self._read_fractional_coordinates)
+        self.manage["forces"]       = (re.compile(" POSITION  *TOTAL-FORCE"), self._read_forces)
+        self.manage["energy"]       = (re.compile("  FREE ENERGIE OF THE ION"), self._read_energy)
+        self.manage["magnet"]       = (re.compile(" number of electron "), self._read_magnet)
+        self.manage["pressure"]     = (re.compile("  external pressure ="), self._read_external_pressure)
+        self.manage["skip1"]        = (re.compile(" old parameters found"), self._read_skip4)
+        self.manage["staticDielectric"]  = (re.compile(" MACROSCOPIC STATIC DIELECTRIC TENSOR .including"), self._read_static_dielectric)
+        self.manage["staticIonic"]  = (re.compile(" MACROSCOPIC STATIC DIELECTRIC TENSOR IONIC CONT"), self._read_ionic_dielectric)
+        self.manage["bornCharges"]  = (re.compile(" BORN EFFECTIVE CHARGES"), self._read_born_charges)
+        self.manage["eigenvectors"] = (re.compile(" Eigenvectors and eige"), self._read_eigenvectors)
+        self.manage["eigenskip"]    = (re.compile(" Eigenvectors after division"), self._read_skip4)
+        self.manage["elastic"]      = (re.compile(" TOTAL ELASTIC MODULI"), self._read_elastic_constants)
+        self.manage["kpoint"]      = (re.compile("^Gamma"), self._read_kpoint_grid)
+        self.manage["species"]      = (re.compile("^ *Atomic configuration"), self._read_species)
+        self.manage["newmasses"]  = (re.compile("  Mass of Ions in am"), self._read_newmasses)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -169,7 +167,7 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         maxf = 0.0
         rmsf = 0.0
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             forces = [ float(f) for f in line.split()[3:6] ]
             for f in forces:
@@ -188,7 +186,7 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_species(self, line):
-        """Reads species from a file and updates species information.
+        """Read species from a file and updates species information.
 
         This method reads the number of lines for a species, computes the total charge from these lines, and appends the corresponding element to the species list. It utilizes the atomic_number_to_element dictionary to map the computed total charge to an element symbol.
 
@@ -210,7 +208,7 @@ class VaspOutputReader(GenericOutputReader):
         nlines = int(line.split()[0])
         line = self.file_descriptor.readline()
         zcharge = 0.0
-        for i in range(nlines):
+        for _i in range(nlines):
             line = self.file_descriptor.readline()
             zcharge = zcharge + float(line.split()[4])
         self.species.append(atomic_number_to_element[int(zcharge+0.001)])
@@ -242,7 +240,7 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_ionspertype(self, line):
-        """Reads and stores the number of ions per species from a given line.
+        """Read and store the number of ions per species from a given line.
 
         This method processes a string that contains information about the number of ions for each type/species. It updates the attributes `ions_per_type` and `nspecies` of the class.
 
@@ -261,13 +259,14 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_newmasses(self, line):
-        """Reads and processes the "newmasses" from a line in the file descriptor.
+        """Read and process the "newmasses" from a line in the file descriptor.
 
         This internal method parses a single line from the file descriptor to read the masses associated with different atom types in a molecular system. Based on the number of species (`nspecies`) and ions per type, it updates `masses_per_type`, `masses`, `atom_type_list`, and `species_list` lists with the parsed and computed information.
 
         Parameters
         ----------
         line : str
+            Line is a string (not used)
 
         Returns
         -------
@@ -280,7 +279,7 @@ class VaspOutputReader(GenericOutputReader):
         mass_string = line[12:]
         start = 0
         increment = 6
-        for i in range(self.nspecies):
+        for _i in range(self.nspecies):
             mass = mass_string[start:start+increment]
             self.masses_per_type.append(float(mass))
             start = start + increment
@@ -289,7 +288,7 @@ class VaspOutputReader(GenericOutputReader):
         self.species_list = []
         for k, mass in enumerate(self.masses_per_type):
             n = self.ions_per_type[k]
-            for i in range(n):
+            for _i in range(n):
                 self.atom_type_list.append(k)
                 self.masses.append(mass)
                 self.species_list.append(self.species[k])
@@ -341,20 +340,16 @@ class VaspOutputReader(GenericOutputReader):
         self.frequencies = []
         self.mass_weighted_normal_modes = []
         n = 3 * self.nions
-        for i in range(n):
+        for _i in range(n):
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
             imaginary = (line.split()[1] == "f/i=")
-            if imaginary:
-                # represent imaginary by negative real
-                freq = -float(line.split()[6])
-            else:
-                freq = float(line.split()[7])
+            freq = -float(line.split()[6]) if imaginary else float(line.split()[7])
             # end if
             self.frequencies.append(freq)
             line = self.file_descriptor.readline()
             a = []
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 line = self.file_descriptor.readline()
                 a.append([float(line.split()[3]), float(line.split()[4]), float(line.split()[5])])
             # end for j
@@ -387,7 +382,7 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         self.born_charges = []
-        for i in range(self.nions):
+        for _i in range(self.nions):
             line = self.file_descriptor.readline()
             b = []
             b.append([float(line.split()[1]), float(line.split()[2]), float(line.split()[3])])
@@ -451,7 +446,7 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_ionic_dielectric(self, line):
-        """Reads ionic dielectric constants from a file and updates the zero-frequency static dielectric constant.
+        """Read ionic dielectric constants from a file and update the zero-frequency static dielectric constant.
 
         This method assumes the presence of two successive lines in the file corresponding to two dielectric constant values. If any of these lines are marked with an asterisk (*) as missing or do not contain at least three numeric values, default values are used instead. The method calculates the sum of the existing zero-frequency optical dielectric constants and the newly read ionic dielectric constants and updates the corresponding class attribute with this sum.
 
@@ -477,15 +472,15 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         # the is zero frequency ionic contribution to the static dielectric
         ionic_dielectric = []
-        if '*' in line or len(line.split()) < 3:
+        if "*" in line or len(line.split()) < 3:
             line = "99999.999 99999.999 99999.999"
         ionic_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        if '*' in line or len(line.split()) < 3:
+        if "*" in line or len(line.split()) < 3:
             line = "99999.999 99999.999 99999.999"
         ionic_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        if '*' in line or len(line.split()) < 3:
+        if "*" in line or len(line.split()) < 3:
             line = "99999.999 99999.999 99999.999"
         ionic_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         array1 = np.array(self.zerof_optical_dielectric)
@@ -518,15 +513,15 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         # the is epsilon infinity
         self.zerof_optical_dielectric = []
-        if '*' in line or len(line.split()) < 3:
+        if "*" in line or len(line.split()) < 3:
             line = "99999.999 99999.999 99999.999"
         self.zerof_optical_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        if '*' in line or len(line.split()) < 3:
+        if "*" in line or len(line.split()) < 3:
             line = "99999.999 99999.999 99999.999"
         self.zerof_optical_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        if '*' in line or len(line.split()) < 3:
+        if "*" in line or len(line.split()) < 3:
             line = "99999.999 99999.999 99999.999"
         self.zerof_optical_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         return
@@ -662,7 +657,7 @@ class VaspOutputReader(GenericOutputReader):
         bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        cell = UnitCell(avector, bvector, cvector,units='Angstrom')
+        cell = UnitCell(avector, bvector, cvector,units="Angstrom")
         if self.ncells > 0:
             cell.set_fractional_coordinates(self.unit_cells[-1].fractional_coordinates)
             cell.set_element_names(self.species_list)
@@ -690,9 +685,8 @@ class VaspOutputReader(GenericOutputReader):
         None
 
         """        
-        n = 0
         ions = []
-        for n in range(self.nions):
+        for _n in range(self.nions):
             line = self.file_descriptor.readline()
             ions.append([float(f) for f in line.split()[0:3]])
         self.unit_cells[-1].set_fractional_coordinates(ions)
@@ -765,6 +759,7 @@ class VaspOutputReader(GenericOutputReader):
         Parameters
         ----------
         line : str
+            String to be processed
 
         Returns
         -------
@@ -798,7 +793,7 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_nelect(self, line):
-        """Reads and sets the number of electrons from a given line.
+        """Read and set the number of electrons from a given line.
 
         Parameters
         ----------
@@ -852,7 +847,7 @@ class VaspOutputReader(GenericOutputReader):
             self.magnetization = 0.0
 
     def _read_energy(self, line):
-        """Reads the energy-related values from a file and updates the instance attributes with these values.
+        """Read the energy-related values from a file and update the instance attributes with these values.
 
         Parameters
         ----------

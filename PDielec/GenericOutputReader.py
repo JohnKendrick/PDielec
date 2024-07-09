@@ -28,6 +28,7 @@ from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
 
 class GenericOutputReader:
     """Generic reader of output files. Actual reader should inherit from this class.
+
     Examples of readers with this base class:
 
     - :class:`~PDielec.AbinitOutputReader`
@@ -111,7 +112,7 @@ class GenericOutputReader:
     """
 
     def __init__(self, filenames):
-        """A constructor for initializing an instance of a class with various properties.
+        """Initialise an instance of the reader.
 
         Parameters
         ----------
@@ -123,7 +124,7 @@ class GenericOutputReader:
         self._outputfiles               = filenames
         self.names                      = [os.path.abspath(f) for f in filenames]
         self.debug                      = False
-        self.type                       = 'Unkown'
+        self.type                       = "Unkown"
         self.ncells                     = 0
         self.unit_cells                 = []
         self.nsteps                     = 0
@@ -148,7 +149,7 @@ class GenericOutputReader:
         self.born_charges               = []
         self.manage                     = {}
         self.iterations                 = {}
-        self.file_descriptor            = ''
+        self.file_descriptor            = ""
         self.pressure                   = 0
         self.pressures                  = []
         self.magnetization              = 0.0
@@ -283,7 +284,7 @@ class GenericOutputReader:
         return dictionary
 
     def set_edited_masses(self,masses):
-        """Sets the edited masses attribute if the length matches the original masses attribute.
+        """Set the edited masses attribute if the length matches the original masses attribute.
 
         Parameters
         ----------
@@ -306,7 +307,7 @@ class GenericOutputReader:
         if len(masses) == len(self.masses):
             self.edited_masses = masses
         else:
-            print('Error unable to edited_masses')
+            print("Error unable to edited_masses")
             self.edited_masses = None
         return
 
@@ -430,7 +431,7 @@ class GenericOutputReader:
         return
 
     def get_unit_cell(self):
-        """Return the last unit cell in the reader
+        """Return the last unit cell in the reader.
 
         The routine adds the current set of masses to the unit cell
 
@@ -452,7 +453,7 @@ class GenericOutputReader:
         return cell
 
     def get_crystal_density(self):
-        """Return the crystal density in g/cc
+        """Return the crystal density in g/cc.
 
         The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc
 
@@ -469,8 +470,7 @@ class GenericOutputReader:
         mtotal = 0.0
         for m in self.masses:
             mtotal = mtotal + m
-        density = mtotal/(avogadro_si * self.volume * 1.0e-24)
-        return density
+        return mtotal/(avogadro_si * self.volume * 1.0e-24)
 
     def _read_output_files(self):
         """Read the through the output files.
@@ -498,6 +498,7 @@ class GenericOutputReader:
         Parameters
         ----------
         name : str
+            The file name of the output file
 
         Returns
         -------
@@ -513,19 +514,19 @@ class GenericOutputReader:
             print("Warning file is not present: ", name, file=sys.stderr)
             return
         # Open file and store file name and directory
-        self.file_descriptor = pdielec_io(name, 'r')
+        self.file_descriptor = pdielec_io(name, "r")
         self.open_filename = name
         self.open_directory = os.path.dirname(name)
         if self.open_directory == "":
             self.open_directory = "."
         # Loop through the contents of the file a line at a time and parse the contents
         line = self.file_descriptor.readline()
-        while line != '':
+        while line != "":
             for k in self.manage:
                 if self.manage[k][0].match(line):
                     method   = self.manage[k][1]
                     if self.debug:
-                        print(f'_read_output_file({name}): Match found {k}')
+                        print(f"_read_output_file({name}): Match found {k}")
                     method(line)
                     break
                 # end if
@@ -552,7 +553,7 @@ class GenericOutputReader:
         n = np.size(A, 0)
         unity = np.eye(n)
         Ak = A
-        for k in range(3):
+        for _k in range(3):
             Bk = np.dot(Ak, Ak.T)
             error = unity - Bk
             Ck = np.linalg.inv(unity + Bk)
@@ -676,7 +677,7 @@ class GenericOutputReader:
         for i in range(nmodes):
             mode = []
             n = 0
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
                 n = n + 3
                 mode.append(modea)
@@ -721,11 +722,11 @@ class GenericOutputReader:
         # Now project out
         new_hessian = np.dot(np.dot(P1.T, hessian), P1)
         new_hessian = np.dot(np.dot(P2.T, new_hessian), P2)
-        new_hessian = np.dot(np.dot(P3.T, new_hessian), P3)
-        return new_hessian
+        return np.dot(np.dot(P3.T, new_hessian), P3)
 
     def _read_till_phrase(self,phrase):
         """Read lines from the current file until a match with phrase is found.
+
         Once a match is found, return the matching line.
 
         Parameters
@@ -751,7 +752,8 @@ class GenericOutputReader:
 
         Parameters
         ----------
-        None
+        hessian : nxn array of floats
+            The second derivative matrix
 
         Returns
         -------
@@ -816,7 +818,7 @@ class GenericOutputReader:
         for i in range(nmodes):
             mode = []
             n = 0
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
                 n = n + 3
                 mode.append(modea)
@@ -827,7 +829,7 @@ class GenericOutputReader:
         return
 
     def reset_born_charges(self):
-        """Resets the born charges to their original values if they are not currently being used.
+        """Reset the born charges to their original values if they are not currently being used.
 
         This method restores the `born_charges` attribute of the instance to the value stored in `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
 
@@ -878,7 +880,7 @@ class GenericOutputReader:
         return
 
     def _born_charge_sum_rule(self):
-        """Apply a simple charge sum rule to all the elements of the born matrices
+        """Apply a simple charge sum rule to all the elements of the born matrices.
 
         Parameters
         ----------
@@ -898,7 +900,7 @@ class GenericOutputReader:
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
         if self.debug:
-            print('born charge sum', total)
+            print("born charge sum", total)
         new_born_charges = born_charges - total
         self.born_charges = new_born_charges.tolist()
         return
@@ -924,11 +926,11 @@ class GenericOutputReader:
         ipos = -1
         new_hessian = np.empty_like(hessian)
         for i in range(self.nions):
-            for ix in range(3):
+            for _ix in range(3):
                 ipos += 1
                 jpos = -1
                 for j in range(self.nions):
-                    for jx in range(3):
+                    for _jx in range(3):
                         jpos += 1
                         new_hessian[ipos,jpos] = hessian[ipos,jpos] / math.sqrt(  new[i]*new[j] )
                     # end for jx
@@ -970,11 +972,11 @@ class GenericOutputReader:
         new_hessian = np.empty_like(hessian)
         ipos = -1
         for i in range(self.nions):
-            for ix in range(3):
+            for _ix in range(3):
                 ipos += 1
                 jpos = -1
                 for j in range(self.nions):
-                    for jx in range(3):
+                    for _jx in range(3):
                         jpos += 1
                         new_hessian[ipos,jpos] = hessian[ipos,jpos] * math.sqrt( old[i]*old[j] )
                     # end for jx

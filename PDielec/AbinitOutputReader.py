@@ -61,7 +61,7 @@ class AbinitOutputReader(GenericOutputReader):
 
         """        
         GenericOutputReader.__init__(self, filenames)
-        self.type = 'Abinit output files'
+        self.type = "Abinit output files"
         self._acell = None
         self._charges = None
         return
@@ -80,27 +80,27 @@ class AbinitOutputReader(GenericOutputReader):
         """
         # Define the search keys to be looked for in the files
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['dynamical']  = (re.compile('  Dynamical matrix,'), self._read_dynamical)
-        self.manage['bornCharges']  = (re.compile('  Effective charges,'), self._read_born_charges)
-        self.manage['epsilon']  = (re.compile('  Dielectric tensor,'), self._read_epsilon)
-        self.manage['masses']   = (re.compile('              amu '), self._read_masses)
-        self.manage['nions']    = (re.compile('            natom '), self._read_natom)
-        self.manage['lattice']  = (re.compile('            rprim '), self._read_lattice_vectors)
-        self.manage['xred']  = (re.compile('             xred '), self._read_xred)
-        self.manage['typat']    = (re.compile('            typat '), self._read_typat)
-        self.manage['ntypat']   = (re.compile('           ntypat '), self._read_ntypat)
-        self.manage['acell']    = (re.compile('            acell '), self._read_acell)
-        self.manage['nkpt']    = (re.compile('             nkpt '), self._read_kpoints)
-        self.manage['band']    = (re.compile('            nband '), self._read_band)
-        self.manage['band1']    = (re.compile('            nband1 '), self._read_band)
-        self.manage['occupancy']    = (re.compile('              occ '), self._read_occupancy)
-        self.manage['occupancy1']    = (re.compile('              occ1 '), self._read_occupancy)
-        self.manage['ecut']    = (re.compile('^ *ecut '), self._read_energy_cutoff)
-        self.manage['kptrlatt']    = (re.compile('         kptrlatt '), self._read_kpoint_grid)
-        self.manage['electrons']    = (re.compile('  fully or partial'), self._read_electrons)
-        self.manage['pressure']    = (re.compile('-Cartesian.*GPa'), self._read_pressure)
-        self.manage['znucl']    = (re.compile('^  *znucl '), self._read_znucl)
-        self.manage['totalenergy']    = (re.compile('^  *Total energy '), self._read_total_energy)
+        self.manage["dynamical"]  = (re.compile("  Dynamical matrix,"), self._read_dynamical)
+        self.manage["bornCharges"]  = (re.compile("  Effective charges,"), self._read_born_charges)
+        self.manage["epsilon"]  = (re.compile("  Dielectric tensor,"), self._read_epsilon)
+        self.manage["masses"]   = (re.compile("              amu "), self._read_masses)
+        self.manage["nions"]    = (re.compile("            natom "), self._read_natom)
+        self.manage["lattice"]  = (re.compile("            rprim "), self._read_lattice_vectors)
+        self.manage["xred"]  = (re.compile("             xred "), self._read_xred)
+        self.manage["typat"]    = (re.compile("            typat "), self._read_typat)
+        self.manage["ntypat"]   = (re.compile("           ntypat "), self._read_ntypat)
+        self.manage["acell"]    = (re.compile("            acell "), self._read_acell)
+        self.manage["nkpt"]    = (re.compile("             nkpt "), self._read_kpoints)
+        self.manage["band"]    = (re.compile("            nband "), self._read_band)
+        self.manage["band1"]    = (re.compile("            nband1 "), self._read_band)
+        self.manage["occupancy"]    = (re.compile("              occ "), self._read_occupancy)
+        self.manage["occupancy1"]    = (re.compile("              occ1 "), self._read_occupancy)
+        self.manage["ecut"]    = (re.compile("^ *ecut "), self._read_energy_cutoff)
+        self.manage["kptrlatt"]    = (re.compile("         kptrlatt "), self._read_kpoint_grid)
+        self.manage["electrons"]    = (re.compile("  fully or partial"), self._read_electrons)
+        self.manage["pressure"]    = (re.compile("-Cartesian.*GPa"), self._read_pressure)
+        self.manage["znucl"]    = (re.compile("^  *znucl "), self._read_znucl)
+        self.manage["totalenergy"]    = (re.compile("^  *Total energy "), self._read_total_energy)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -660,7 +660,7 @@ class AbinitOutputReader(GenericOutputReader):
         avector = [f * self._acell[0] for f in avector]
         bvector = [f * self._acell[1] for f in bvector]
         cvector = [f * self._acell[2] for f in cvector]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume('Angstrom')
+        self.volume = self.unit_cells[-1].getVolume("Angstrom")
         return

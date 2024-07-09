@@ -11,6 +11,7 @@ select = [
     "I",   # isort
     "PLR", # Refactor
     "RET", # return statements
+    "Q",   # quoting
 ]
 #
 ignore = [
@@ -28,4 +29,6 @@ ignore = [
 ]
 #
 [lint.per-file-ignores]
-"vibanalysis.py" = ["D","RET","SIM"]
+"Mie.py" = ["RET","SIM","PLR","B","E712","E721","E731"]
+"Utilities.py" = ["PLR0911","RET505"]
+"vibanalysis.py" = ["D","F","RET","SIM","PLR","B","E"]

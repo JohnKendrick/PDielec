@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Do some pretty printing for the dielectric functions
-"""
+"""Do some pretty printing for the dielectric functions."""
 import sys
 
 
@@ -50,7 +49,7 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
         print(title, file=file)
     nlines = int((len_ints - 1) / no_per_line) + 1
     start = 0
-    for i in range(nlines):
+    for _i in range(nlines):
         end = start + no_per_line
         if end > len_ints:
             end = len_ints
@@ -91,7 +90,7 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
         print(title, file=file)
     nlines = int((len_strings - 1) / no_per_line) + 1
     start = 0
-    for i in range(nlines):
+    for _i in range(nlines):
         end = start + no_per_line
         if end > len_strings:
             end = len_strings
@@ -102,7 +101,7 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
 
 
 def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "):
-    """Print reals data
+    """Print reals data.
 
     Parameters
     ----------
@@ -133,7 +132,7 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
         print(title, file=file)
     nlines = int((len_reals - 1) / no_per_line) + 1
     start = 0
-    for i in range(nlines):
+    for _i in range(nlines):
         end = start + no_per_line
         if end > len_reals:
             end = len_reals
@@ -148,6 +147,8 @@ def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
 
     Parameters
     ----------
+    title : str
+        A title for the print
     array : tensor 3x3
         The array to be printed
     format : str, optional 

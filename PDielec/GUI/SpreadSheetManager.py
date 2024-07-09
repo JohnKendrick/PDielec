@@ -12,8 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""SpreadSheetMamager module
-"""
+"""SpreadSheetMamager module."""
 import numpy as np
 import xlsxwriter as xlsx
 
@@ -112,23 +111,23 @@ class SpreadSheetManager:
         """        
         self.workbook = xlsx.Workbook(filename)
         self.closed = False
-        self.tab_names = ['Main', 'Settings', 'Scenarios',
-                'Powder Molar Absorption (cells)',
-                'Powder Molar Absorption (atoms)',
-                'Powder Molar Absorption (mols)',
-                'Powder Absorption',
-                'Powder Real Permittivity',
-                'Powder Imaginary Permittivity',
-                'Powder ATR Reflectance',
-                'Analysis',
-                'Crystal R_p',
-                'Crystal R_s',
-                'Crystal T_p',
-                'Crystal T_s',
-                'Crystal A_p',
-                'Crystal A_s',
-                'Real Crystal Permittivity',
-                'Imag Crystal Permittivity' ]
+        self.tab_names = ["Main", "Settings", "Scenarios",
+                "Powder Molar Absorption (cells)",
+                "Powder Molar Absorption (atoms)",
+                "Powder Molar Absorption (mols)",
+                "Powder Absorption",
+                "Powder Real Permittivity",
+                "Powder Imaginary Permittivity",
+                "Powder ATR Reflectance",
+                "Analysis",
+                "Crystal R_p",
+                "Crystal R_s",
+                "Crystal T_p",
+                "Crystal T_s",
+                "Crystal A_p",
+                "Crystal A_s",
+                "Real Crystal Permittivity",
+                "Imag Crystal Permittivity" ]
         self.worksheets = {}
         # Positions points to where we write to next
         self.positions  = {}
@@ -137,7 +136,7 @@ class SpreadSheetManager:
         self.opened     = {}
         for tab in self.tab_names:
             self.opened[tab] = False
-        self.name = 'Main'
+        self.name = "Main"
         self.openWorkSheet(self.name)
 
     def openWorkSheet(self,tab):
@@ -169,7 +168,7 @@ class SpreadSheetManager:
         self.opened[tab] = True
 
     def selectWorkSheet(self,name):
-        """Selects or opens a worksheet by name.
+        """Select or opens a worksheet by name.
 
         Parameters
         ----------
@@ -191,8 +190,8 @@ class SpreadSheetManager:
         if not self.opened[name]:
             self.openWorkSheet(self.name)
 
-    def writeNextRow(self,items, row=None, col=None, check=''):
-        """Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
+    def writeNextRow(self,items, row=None, col=None, check=""):
+        """Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
 
         Parameters
         ----------
@@ -223,7 +222,7 @@ class SpreadSheetManager:
         if row is None:
             row = oldRow
         if col == 0:
-            print('We have a problem, col is 0')
+            print("We have a problem, col is 0")
         self.write(row,0,check)
         for item in items:
             if isinstance(item,list):
@@ -241,7 +240,7 @@ class SpreadSheetManager:
         row += 1
 
     def write(self,row,col,item):
-        """Writes an item to a specific position in the active worksheet, handling complex numbers.
+        """Write an item to a specific position in the active worksheet, handling complex numbers.
 
         Parameters
         ----------
@@ -295,7 +294,7 @@ class SpreadSheetManager:
         """        
         for row in range(0,self.max_row[self.name]):
             for col in range(0, self.max_col[self.name]):
-                self.worksheets[self.name].write(row,col,'')
+                self.worksheets[self.name].write(row,col,"")
         self.positions[self.name] = (-1,0)
         self.max_col[self.name] = 0
         self.max_row[self.name] = 0

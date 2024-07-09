@@ -1,4 +1,4 @@
-"""PDielec: library for processing DFT calculations for infrared and terahertz spectroscopy
+"""PDielec: library for processing DFT calculations for infrared and terahertz spectroscopy.
 
 The MIT License (MIT)
 

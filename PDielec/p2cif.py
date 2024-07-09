@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Read the contents of a directory containing DFT output and create a cif file of the structure
+"""Read the contents of a directory containing DFT output and create a cif file of the structure.
 
 This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
 
@@ -94,7 +94,7 @@ def read_a_file( calling_parameters):
 
 def main():
     # Start processing the directories
-    """Main entry point for processing and converting files.
+    """Process and convert files.
 
     This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
 
@@ -123,22 +123,22 @@ def main():
 
     """    
     if len(sys.argv) <= 1 :
-        print('p2cif -program program filenames .....', file=sys.stderr)
-        print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-        print('           \"phonopy\", \"qe\", \"vasp\", \"experiment\", \"auto\"               ', file=sys.stderr)
-        print('           The default is auto, so the program tries to guess the package from   ', file=sys.stderr)
-        print('           the contents of the directory.  However this is not fool-proof!       ', file=sys.stderr)
-        print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
-        print('           in auto mode if the file was created by a phonopy VASP is assumed     ', file=sys.stderr)
-        print('  -debug   to switch on more debug information                                   ', file=sys.stderr)
-        exit()
+        print("p2cif -program program filenames .....", file=sys.stderr)
+        print('  "program" must be one of "abinit", "castep", "crystal", "gulp"       ', file=sys.stderr)
+        print('           "phonopy", "qe", "vasp", "experiment", "auto"               ', file=sys.stderr)
+        print("           The default is auto, so the program tries to guess the package from   ", file=sys.stderr)
+        print("           the contents of the directory.  However this is not fool-proof!       ", file=sys.stderr)
+        print("           If phonopy is used it must be followed by the QM package              ", file=sys.stderr)
+        print("           in auto mode if the file was created by a phonopy VASP is assumed     ", file=sys.stderr)
+        print("  -debug   to switch on more debug information                                   ", file=sys.stderr)
+        sys.exit()
 
     files = []
     tokens = sys.argv[1:]
     ntokens = len(tokens)-1
     itoken = -1
-    program = 'auto'
-    qmprogram = 'vasp'
+    program = "auto"
+    qmprogram = "vasp"
     debug = False
     while itoken < ntokens:
         itoken += 1
@@ -148,32 +148,37 @@ def main():
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
-            if program == 'phonopy':
+            if program == "phonopy":
                 itoken += 1
                 qmprogram = tokens[itoken]
         else:
             files.append(token)
 
+    if program == "qe":
+        program = "quantum espresso"
+    if qmprogram == "qe":
+        program = "quantum espresso"
+
     if len(program) < 1:
-        print('Please use -program to define the package used to generate the output files',file=sys.stderr)
-        exit()
+        print("Please use -program to define the package used to generate the output files",file=sys.stderr)
+        sys.exit()
 
-    if program not in ['abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment','auto']:
-        print('Program is not recognised: ',program,file=sys.stderr)
-        exit()
+    if program not in ["abinit","castep","crystal","gulp","quantum espresso","vasp","phonopy","experiment","auto"]:
+        print("Program is not recognised: ",program,file=sys.stderr)
+        sys.exit()
 
-    if program == 'phonopy':
-        if qmprogram not in ['abinit','castep','crystal','gulp','qe','vasp']:
-            print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
-            exit()
-        print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
+    if program == "phonopy":
+        if qmprogram not in ["abinit","castep","crystal","gulp","quantum espresso","vasp"]:
+            print("Phonopy QM program is not recognised: ",qmprogram,file=sys.stderr)
+            sys.exit()
+        print("  QM program used by Phonopy is: ",qmprogram,file=sys.stderr)
 
-    print('  Program is ',program,file=sys.stderr)
+    print("  Program is ",program,file=sys.stderr)
 
     for f in files:
         if not os.path.isfile(f):
-            print('Error file requested for analysis does not exist',f,file=sys.stderr)
-            exit()
+            print("Error file requested for analysis does not exist",f,file=sys.stderr)
+            sys.exit()
 
     #
     # Create a pool of processors to handle reading the files
@@ -185,14 +190,14 @@ def main():
     files.sort()
     for name in files:
         prog = program
-        if program == 'auto':
+        if program == "auto":
             prog,qmprogram = Utilities.find_program_from_name(name)
         calling_parameters.append( (name, prog, qmprogram, debug) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)
     results_map_object.wait()
     results = results_map_object.get()
-    for name,cell in results:
+    for _name,cell in results:
         cell.write_cif(file_=sys.stdout)
     #
     p.close()

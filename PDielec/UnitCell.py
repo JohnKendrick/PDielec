@@ -13,12 +13,11 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Hold unit cell information and its associated calculated properties.
-
-"""
+"""Hold unit cell information and its associated calculated properties."""
 
 import math
 import sys
+from contextlib import nullcontext
 
 import numpy as np
 
@@ -28,20 +27,19 @@ from PDielec.Plotter import print_ints, print_reals, print_strings
 
 
 def convert_length_units(value, units_in, units_out):
-    """"
-    Convert between different length units
+    """"Convert between different length units.
 
     The 'internal' unit is taken to be the Angstrom so units are relative to the Angstrom
     The unit strings are made lowercase, so case should be irrelevant
 
     Parameters
     ----------
+    value : float or list of floats or a numpy array
+        The value(s) for which the conversion is to be made.
     units_in : str
         The units of the input value(s). Can be one of '
     units_out : str
         The units of the output value(s). Must be one of 'a.u. au bohr ang angs angstrom nm um mm cm m'
-    input_value : float or list of floats or a numpy array
-        The value(s) for which the conversion is to be made.
 
     Returns
     -------
@@ -54,18 +52,18 @@ def convert_length_units(value, units_in, units_out):
 
     """
     # the conversion dictionary has a value that converts the key unit to angstroms
-    angstroms = { 'a.u.'       : 0.5291772, 
-                  'au'         : 0.5291772, 
-                  'bohr'       : 0.5291772, 
-                  'ang'        : 1.0000000,
-                  'angs'       : 1.0000000,
-                  'angstrom'   : 1.0000000,
-                  'angstroms'  : 1.0000000,
-                  'nm'         : 1.0E1    ,
-                  'um'         : 1.0E4    ,
-                  'mm'         : 1.0E7    ,
-                  'cm'         : 1.0E8    ,
-                  'm'          : 1.0E10   ,
+    angstroms = { "a.u."       : 0.5291772, 
+                  "au"         : 0.5291772, 
+                  "bohr"       : 0.5291772, 
+                  "ang"        : 1.0000000,
+                  "angs"       : 1.0000000,
+                  "angstrom"   : 1.0000000,
+                  "angstroms"  : 1.0000000,
+                  "nm"         : 1.0E1    ,
+                  "um"         : 1.0E4    ,
+                  "mm"         : 1.0E7    ,
+                  "cm"         : 1.0E8    ,
+                  "m"          : 1.0E10   ,
                  }
     units_in  = units_in.lower()
     units_out = units_out.lower()
@@ -121,7 +119,7 @@ class UnitCell:
 
     """
 
-    def __init__(self, a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom'):
+    def __init__(self, a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units="Angstrom"):
         """Initialize the class instance with optional lattice parameters and calculate the reciprocal lattice.
 
         Parameters
@@ -174,15 +172,13 @@ class UnitCell:
             self.lattice[2] = c
         self._calculate_reciprocal_lattice(self.lattice)
 
-    def write_cif(self, filename=None, file_=sys.stdout):
+    def write_cif(self, filename=None):
         """Write the crystallographic information file (CIF) representation of a structure.
 
         Parameters
         ----------
         filename : str, optional
             The name of the file to be written. If not provided, the CIF data is printed to stdout.
-        file\_ : object, optional
-            An output stream object. Default is sys.stdout.
 
         Returns
         -------
@@ -207,40 +203,39 @@ class UnitCell:
         >>> cell.write_cif('example.cif')
 
         """        
-        # Open the filename if it is given
-        if filename is not None:
-            file_ = open(filename,'w')
-        abc = convert_length_units( [self.a, self.b, self.c],self.units,'Angstrom' )
-        volume = self.getVolume('Angstrom')
+        abc = convert_length_units( [self.a, self.b, self.c],self.units,"Angstrom" )
+        volume = self.getVolume("Angstrom")
         spg_symbol, spg_number = self.find_symmetry()
-        if filename is not None:
-            print('data_'+filename,file=file_)
-        else:
-            print('data_',         file=file_)
-        print(f'_symmetry_space_group_name_H-M \'{spg_symbol}\'',file=file_)
-        print(f'_symmetry_Int_Tables_number      {spg_number}  ',file=file_)
-        print(f'_cell_length_a      {abc[0]:12.6f}',     file=file_)
-        print(f'_cell_length_b      {abc[1]:12.6f}',     file=file_)
-        print(f'_cell_length_c      {abc[2]:12.6f}',     file=file_)
-        print(f'_cell_angle_alpha   {self.alpha:12.6f}', file=file_)
-        print(f'_cell_angle_beta    {self.beta:12.6f}',  file=file_)
-        print(f'_cell_angle_gamma   {self.gamma:12.6f}', file=file_)
-        print(f'_cell_volume        {volume:12.6f}',     file=file_)
-        print('loop_',                                           file=file_)
-        print('_atom_site_label',                                file=file_)
-        print('_atom_site_type_symbol',                          file=file_)
-        print('_atom_site_fract_x',                              file=file_)
-        print('_atom_site_fract_y',                              file=file_)
-        print('_atom_site_fract_z',                              file=file_)
-        for i,(frac,el) in enumerate(zip(self.fractional_coordinates,self.element_names)):
-            symbol = el+str(i+1)
-            print( f'{symbol} {el} {frac[0]:12.6f} {frac[1]:12.6f} {frac[2]:12.6f}', file=file_)
-        print(' ',                                               file=file_)
-        print('#END',                                            file=file_)
-        print(' ',                                               file=file_)
+        # Open the filename if it is given
+        with open(filename,"w") if filename else nullcontext(sys.stdout) as file_:
+            if filename is not None:
+                print("data_"+filename,file=file_)
+            else:
+                print("data_",         file=file_)
+            print(f"_symmetry_space_group_name_H-M '{spg_symbol}'",file=file_)
+            print(f"_symmetry_Int_Tables_number      {spg_number}  ",file=file_)
+            print(f"_cell_length_a      {abc[0]:12.6f}",     file=file_)
+            print(f"_cell_length_b      {abc[1]:12.6f}",     file=file_)
+            print(f"_cell_length_c      {abc[2]:12.6f}",     file=file_)
+            print(f"_cell_angle_alpha   {self.alpha:12.6f}", file=file_)
+            print(f"_cell_angle_beta    {self.beta:12.6f}",  file=file_)
+            print(f"_cell_angle_gamma   {self.gamma:12.6f}", file=file_)
+            print(f"_cell_volume        {volume:12.6f}",     file=file_)
+            print("loop_",                                           file=file_)
+            print("_atom_site_label",                                file=file_)
+            print("_atom_site_type_symbol",                          file=file_)
+            print("_atom_site_fract_x",                              file=file_)
+            print("_atom_site_fract_y",                              file=file_)
+            print("_atom_site_fract_z",                              file=file_)
+            for i,(frac,el) in enumerate(zip(self.fractional_coordinates,self.element_names)):
+                symbol = el+str(i+1)
+                print( f"{symbol} {el} {frac[0]:12.6f} {frac[1]:12.6f} {frac[2]:12.6f}", file=file_)
+            print(" ",                                               file=file_)
+            print("#END",                                            file=file_)
+            print(" ",                                               file=file_)
         return
 
-    def getBoundingBox(self, units='Angstrom'):
+    def getBoundingBox(self, units="Angstrom"):
         """Generate the corners and edges of a bounding box.
 
         This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
@@ -301,7 +296,7 @@ class UnitCell:
         edges   = convert_length_units(edges  ,self.units,units)
         return corners_xyz,edges
 
-    def getDensity(self, units='cm'):
+    def getDensity(self, units="cm"):
         """Calculate the density of the crystal.
   
         Returns the density in g/cc.  If the mass is not known, then returns 1.0
@@ -326,7 +321,7 @@ class UnitCell:
         return self.density
 
     def print(self):
-        """Prints the details of the given unit cell.
+        """Print the details of the given unit cell.
 
         This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.
 
@@ -340,33 +335,33 @@ class UnitCell:
 
         """        
         spg_symbol, spg_number = self.find_symmetry()
-        print      ('Space group international symbol is: ',spg_symbol)
-        print      ('Space group number is              : ',spg_number)
-        print      ('Units for length are: ', self.units)
-        print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')
-        print_reals('Unit Cell alpha,beta,gamma',[self.alpha, self.beta, self.gamma], format='{:12.6f}')
-        print_reals('lattice', self.lattice[0], format='{:12.6f}')
-        print_reals('', self.lattice[1], format='{:12.6f}')
-        print_reals('', self.lattice[2], format='{:12.6f}')
-        print_strings('Element names',self.element_names)
-        print_reals('Element masses',self.atomic_masses)
+        print      ("Space group international symbol is: ",spg_symbol)
+        print      ("Space group number is              : ",spg_number)
+        print      ("Units for length are: ", self.units)
+        print_reals("Unit Cell a,b,c ",[self.a, self.b, self.c], format="{:12.6f}")
+        print_reals("Unit Cell alpha,beta,gamma",[self.alpha, self.beta, self.gamma], format="{:12.6f}")
+        print_reals("lattice", self.lattice[0], format="{:12.6f}")
+        print_reals("", self.lattice[1], format="{:12.6f}")
+        print_reals("", self.lattice[2], format="{:12.6f}")
+        print_strings("Element names",self.element_names)
+        print_reals("Element masses",self.atomic_masses)
         if len(self.element_names) > 0:
-            print_reals('Fractional coords',self.fractional_coordinates[0], format='{:12.6f}')
+            print_reals("Fractional coords",self.fractional_coordinates[0], format="{:12.6f}")
             for frac in self.fractional_coordinates[1:]:
-                print_reals('',frac, format='{:12.6f}')
-            print_reals('Cartesian coords',self.xyz_coordinates[0], format='{:12.6f}')
+                print_reals("",frac, format="{:12.6f}")
+            print_reals("Cartesian coords",self.xyz_coordinates[0], format="{:12.6f}")
             for xyz in self.xyz_coordinates[1:]:
-                print_reals('',xyz, format='{:12.6f}')
+                print_reals("",xyz, format="{:12.6f}")
             if self.molecules:
                 for molid,atoms in enumerate(self.molecules):
-                    mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atom_list=atoms,output='all')
-                    molstring = 'Molecule '+str(molid)+':'
-                    print_ints('Atoms in '+molstring,atoms)
-                    print_reals('Mass of '+molstring,[ mass ], format='{:12.6f}')
-                    print_reals('Centre of Mass  (xyz) of '+molstring, cm_xyz, format='{:12.6f}')
-                    print_reals('Centre of Mass (frac) of '+molstring, cm_frac,format='{:12.6f}')
+                    mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atom_list=atoms,output="all")
+                    molstring = "Molecule "+str(molid)+":"
+                    print_ints("Atoms in "+molstring,atoms)
+                    print_reals("Mass of "+molstring,[ mass ], format="{:12.6f}")
+                    print_reals("Centre of Mass  (xyz) of "+molstring, cm_xyz, format="{:12.6f}")
+                    print_reals("Centre of Mass (frac) of "+molstring, cm_frac,format="{:12.6f}")
 
-    def calculateCentreOfMass(self,atom_list=None, output='xyz'):
+    def calculateCentreOfMass(self,atom_list=None, output="xyz"):
         """Calculate the centre of mass for a given set of atoms.
 
         Parameters
@@ -407,7 +402,7 @@ class UnitCell:
         # Calculate the centre of mass - if the atom list is given just use that
         # The centre of mass can be returned in as 'xyz' space or 'abc' space
         # if output='all' a tuple of (mass,cm_xyz,cm_abc) is returned
-        if atom_list == None:
+        if atom_list is None:
             atom_list = range(self.nions)
         mass = 0.0
         cm = np.zeros(3)
@@ -415,16 +410,13 @@ class UnitCell:
             mass += self.atomic_masses[atom_index]
             cm = cm + self.atomic_masses[atom_index] * self.xyz_coordinates[atom_index]
         cm_xyz = cm / mass
-        if output == 'xyz':
-            return cm_xyz
-        elif output == 'mass':
-            return mass
-        elif output == 'abc':
-            cm_fractional = self.convert_xyz_to_abc(cm_xyz)
-            return cm_fractional
-        else:
-            cm_fractional = self.convert_xyz_to_abc(cm_xyz)
-            return mass, cm_xyz, cm_fractional
+        cm_fractional = self.convert_xyz_to_abc(cm_xyz)
+        return {
+            "xyz"  : cm_xyz,
+            "mass" : mass,
+            "abc"  : cm_fractional,
+            "all"  : (mass, cm_xyz, cm_fractional ),
+        }.get(output, (mass, cm_xyz, cm_fractional))
 
     def get_atomic_numbers(self):
         """Get the atomic numbers for the elements.
@@ -494,23 +486,23 @@ class UnitCell:
         alpha = np.arccos(np.dot(self.lattice[1], self.lattice[2]) / (b*c))
         return a, b, c, np.degrees(alpha), np.degrees(beta), np.degrees(gamma)
 
-    def convert_abc_to_unitcell(self, a, b, c, alpha_degs, beta_degs, gamma_degs):
-        """Convert a, b, c, alpha, beta, gamma to a unit cell
+    def convert_abc_to_unitcell(self, a, b, c, alpha, beta, gamma):
+        """Convert a, b, c, alpha, beta, gamma to a unit cell.
 
         Parameters
         ----------
         a : type
-            Description of parameter `a`.
+            Unit cell `a`.
         b : type
-            Description of parameter `b`.
+            Unit cell `b`.
         c : type
-            Description of parameter `c`.
+            Unit cell `c`.
         alpha : type
-            Description of parameter `alpha`.
+            Unit cell alpha in degrees.
         beta : type
-            Description of parameter `beta`.
+            Unit cell beta` in degrees.
         gamma : type
-            Description of parameter `gamma`.
+            Unit cell gamma` in degrees.
 
         Returns
         -------
@@ -519,9 +511,9 @@ class UnitCell:
 
         """
         # This is castep convention, need to check it works with vasp
-        alpha = np.radians(alpha_degs)
-        beta = np.radians(beta_degs)
-        gamma = np.radians(gamma_degs)
+        alpha = np.radians(alpha)
+        beta = np.radians(beta)
+        gamma = np.radians(gamma)
         lattice = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
         lattice[2] = [0.0, 0.0, c]
         lattice[1] = [0.0, b*np.sin(alpha), b*np.cos(alpha)]
@@ -533,11 +525,11 @@ class UnitCell:
         return self.lattice
 
     def _calculate_reciprocal_lattice(self, lattice):
-        """Calculate the reciprocal lattice
+        """Calculate the reciprocal lattice.
 
         Parameters
         ----------
-        3x3 list of floats
+        lattice : 3x3 list of floats
             Lattice as [a, b, c] where a/b/c are [x,y,z]
 
         Returns
@@ -554,8 +546,8 @@ class UnitCell:
         self.inverse_lattice = np.linalg.inv(self.lattice)
         self.reciprocal_lattice = self.inverse_lattice
 
-    def getVolume(self, units='cm'):
-        """Calculate the volume
+    def getVolume(self, units="cm"):
+        """Calculate the volume.
 
         Parameters
         ----------
@@ -568,8 +560,7 @@ class UnitCell:
 
         """
         lattice = convert_length_units(self.lattice,self.units,units)
-        volume = np.abs(np.dot(lattice[0], np.cross(lattice[1], lattice[2])))
-        return volume
+        return np.abs(np.dot(lattice[0], np.cross(lattice[1], lattice[2])))
 
     def convert_xyz_to_abc(self, xyz):
         """Convert xyz coordinates to abc lattice coordinates.
@@ -577,22 +568,24 @@ class UnitCell:
         Parameters
         ----------
         xyz: list of coordinates
+            List of coordinates in xyz space
 
         Returns
         -------
-        abc : list of fractional coordinates
+        abc : list of 3 floats
+            List of fractional coordinates
 
         """
         xyz = np.array(xyz)
-        abc = np.dot(xyz, self.reciprocal_lattice)
-        return abc
+        return np.dot(xyz, self.reciprocal_lattice)
 
     def convert_hkl_to_xyz(self, hkl):
         """Convert hkl miller indices to xyz coordinates.
 
         Parameters
         ----------
-        hkl : list of hkl coordinates
+        hkl : list 3 ints
+            List if hkls
 
         Returns
         -------
@@ -600,15 +593,15 @@ class UnitCell:
 
         """
         hkl = np.array(hkl)
-        xyz = np.dot(hkl, self.reciprocal_lattice.T)
-        return xyz
+        return np.dot(hkl, self.reciprocal_lattice.T)
 
     def convert_abc_to_xyz(self, abc):
         """Convert abc coordinates to xyz coordinates.
 
         Parameters
         ----------
-        abc : list of fractional coordinates
+        abc : list 3 floats
+            List of fractional coordinates
 
         Returns
         -------
@@ -616,15 +609,15 @@ class UnitCell:
 
         """
         abc = np.array(abc)
-        xyz = np.dot(abc, self.lattice)
-        return xyz
+        return np.dot(abc, self.lattice)
 
     def convert_hkl_to_xyz2(self, hkl):
-        """Convert hkl coordinates to xyz coordinates (written as a check on convert_hkl_to_xyz)
+        """Convert hkl coordinates to xyz coordinates (written as a check on convert_hkl_to_xyz).
 
         Parameters
         ----------
-        hkl : list of hkl miller indices
+        hkl : list 3 ints
+            List of hkls
 
         Returns
         -------
@@ -651,16 +644,16 @@ class UnitCell:
         norm = np.linalg.norm(normal)
         if norm < 1.0e-8:
             print("Error in unit cell, calculation of normal to miller index failed")
-            exit(1)
-        normal = normal / norm
-        return normal
+            sys.exit(1)
+        return normal / norm
 
     def set_fractional_coordinates(self, coords):
         """Set the fractional coordinates and calculate the xyz coordinates.
 
         Parameters
         ----------
-        coords : a list of fractional coordinates
+        coords : a list 3 floats
+            Fractional coordinates
 
         Returns
         -------
@@ -672,12 +665,12 @@ class UnitCell:
         self.nions = len(coords)
         return
 
-    def set_xyz_coordinates(self, coords, units='Angstrom'):
+    def set_xyz_coordinates(self, coords, units="Angstrom"):
         """Set the xyz coordinates and calculate the fractional coordinates.
 
         Parameters
         ----------
-        coords : a list of xyz coordinates
+        coords : list of 3 floats
             A list of xyz coordinates, the unit of length must agree with the lattice
         units : str
             A unit of length for the input values.  The default is Angstrom.
@@ -722,7 +715,7 @@ class UnitCell:
 
         Parameters
         ----------
-        atom_labels : list
+        atom_labels : list of strings
             A list containing the labels of atoms.
 
         Returns
@@ -767,7 +760,10 @@ class UnitCell:
 
         Parameters
         ----------
-        None
+        symprec : float
+            Determine the accuracy of the coordinates for symmetry determination
+        angle_tolerance : float
+            Determine the accuracy of the angles for symmetry determination
 
         Returns
         -------
@@ -777,17 +773,17 @@ class UnitCell:
         """
         atomic_nos = self.get_atomic_numbers()
         if len(atomic_nos) <= 0:
-            return 'P 1', 1
+            return "P 1", 1
         from spglib import get_spacegroup
         cell = ( self.lattice, self.fractional_coordinates, atomic_nos )
         spacegroup = get_spacegroup(cell, symprec=symprec,angle_tolerance=angle_tolerance)
         sp = spacegroup.split()
         symbol = sp[0]
-        number = int(sp[1].replace('(','').replace(')',''))
+        number = int(sp[1].replace("(","").replace(")",""))
         return symbol,number
 
     def calculate_molecular_contents(self, scale=1.1, tolerance=0.1, radii=None):
-        """Finds whole molecules in the unit cell.
+        """Find whole molecules in the unit cell.
 
         Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
         A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
@@ -854,7 +850,7 @@ class UnitCell:
             Atom_box_id.append(abc)
             try:
                 BoxAtoms[abc].append(i)
-            except:
+            except Exception:
                 BoxAtoms[abc] = [i]
         # Calculate the neighbouring boxes for each occupied box
         for abc in BoxAtoms:
@@ -1027,7 +1023,7 @@ class UnitCell:
         return new_unit_cell, len(new_molecules), old_order
 
     def get_bonds(self):
-        """Returns a list of bonds for the unit cell
+        """Return a list of bonds for the unit cell.
 
         It also returns a list of the bond lengths in angstrom
 
@@ -1045,12 +1041,12 @@ class UnitCell:
         bond_lengths = []
         for i,j in self.bonds:
             bond_length = calculate_distance(self.xyz_coordinates[i],self.xyz_coordinates[j])
-            bond_length = convert_length_units(bond_length,self.units,'Angstrom')
+            bond_length = convert_length_units(bond_length,self.units,"Angstrom")
             bond_lengths.append(bond_length)
         return self.bonds, bond_lengths
 
     def get_bond_angles(self):
-        """Returns a list of atoms that form bonded angles for the unit cell
+        """Return a list of atoms that form bonded angles for the unit cell.
 
         It also returns a list of the angles in degrees
 
@@ -1089,7 +1085,7 @@ class UnitCell:
         return angle_list, angles
 
     def get_torsions(self):
-        """Returns a list of atoms that form torsion angles for the unit cell
+        """Return a list of atoms that form torsion angles for the unit cell.
 
         It also returns a list of the angles in degrees
 
@@ -1109,18 +1105,14 @@ class UnitCell:
         torsion_list = []
         for i,j,k in angle_list:
             for l1,l2 in self.bonds:
-                if l1 == i and l2 != j:
-                    if (l2,i,j,k) not in torsion_list:
-                        torsion_list.append( (l2,i,j,k) )
-                if l2 == i and l1 != j:
-                    if (l1,i,j,k) not in torsion_list:
-                        torsion_list.append( (l1,i,j,k) )
-                if l1 == k and l2 != j:
-                    if (i,j,k,l2) not in torsion_list:
-                        torsion_list.append( (i,j,k,l2) )
-                if l2 == k and l1 != j:
-                    if (i,j,k,l1) not in torsion_list:
-                        torsion_list.append( (i,j,k,l1) )
+                if l1 == i and l2 != j and (l2,i,j,k) not in torsion_list:
+                    torsion_list.append( (l2,i,j,k) )
+                if l2 == i and l1 != j and (l1,i,j,k) not in torsion_list:
+                    torsion_list.append( (l1,i,j,k) )
+                if l1 == k and l2 != j and (i,j,k,l2) not in torsion_list:
+                    torsion_list.append( (i,j,k,l2) )
+                if l2 == k and l1 != j and (i,j,k,l1) not in torsion_list:
+                    torsion_list.append( (i,j,k,l1) )
         # Calculate the value of the torsion angle
         angles = []
         for i,j,k,l in torsion_list:
@@ -1133,7 +1125,7 @@ class UnitCell:
         return torsion_list, angles
 
     def set_bonds(self, bonds):
-        """Define a list of bonds for the unit cell
+        """Define a list of bonds for the unit cell.
 
         Some checking is performed.  If the bonds has duplicates but in a different order, then they are removed.
 
@@ -1168,7 +1160,8 @@ class UnitCell:
 
         Parameters
         ----------
-        None
+        molecules : list of 3 floats
+            A list of molecules
 
         Returns
         -------

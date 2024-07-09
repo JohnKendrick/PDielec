@@ -1,4 +1,4 @@
-"""PDGui: GUI for processing DFT calculations for infrared and terahertz spectroscopy
+"""PDGui: GUI for processing DFT calculations for infrared and terahertz spectroscopy.
 
 The MIT License (MIT)
 

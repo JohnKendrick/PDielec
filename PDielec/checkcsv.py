@@ -68,23 +68,19 @@ def compare_lines( line1, line2, swapped):
   nerrors = 0
   percentage_error = 0.0
   max_percentage_error = 0.0
-  keep_word1 = ''
-  keep_word2 = ''
-  index = 0
+  keep_word1 = ""
+  keep_word2 = ""
   len1 = len(line1.split(separator))
   len2 = len(line2.split(separator))
-  if len1 == len2:
-      if len1 > 4:
-          word1 = line1.split(separator)[3]
-          word2 = line2.split(separator)[3]
-          if word1 == word2  and word1 == "processors":
-              # Ignore this line 'cos the number of processors used depends on the machine
-              return (store_error, nerrors, max_percentage_error, keep_word1, keep_word2)
-          # end if word1 == word2
-      # end if len1 > 4
+  if len1 == len2 and len1 > 4:
+      word1 = line1.split(separator)[3]
+      word2 = line2.split(separator)[3]
+      if word1 == word2  and word1 == "processors":
+          # Ignore this line 'cos the number of processors used depends on the machine
+          return (store_error, nerrors, max_percentage_error, keep_word1, keep_word2)
+      # end if word1 == word2 and len1 > 4
   #end if len1 == len2
-  for word1,word2 in zip(line1.split(separator),line2.split(separator)):
-    index += 1
+  for index,(word1,word2) in enumerate(zip(line1.split(separator),line2.split(separator))):
     if isfloat(word1):
         if not isfloat(word2):
             nerrors +=1
@@ -137,7 +133,7 @@ def isfloat(value):
     return False
 
 def main():
-    """Compares two files line by line to check for significant changes based on a provided threshold.
+    """Compare two files line by line to check for significant changes based on a provided threshold.
 
     This script takes at least two arguments that are file names along with optional arguments for
     separator (`-sep`) and threshold value (`-thresh`). It compares numbers from corresponding lines
@@ -180,14 +176,14 @@ def main():
     global threshold
     # Start processing the directories
     if len(sys.argv) <= 1 :
-        print('checkcsv file file2 [-sep blanks] [-thresh 3.0E-2]', file=sys.stderr)
-        print('         Compare the two files for any significant changes', file=sys.stderr)
+        print("checkcsv file file2 [-sep blanks] [-thresh 3.0E-2]", file=sys.stderr)
+        print("         Compare the two files for any significant changes", file=sys.stderr)
         print('         The default separator is "blanks" for txt/out files', file=sys.stderr)
         print('         and "," for csv files', file=sys.stderr)
-        print('         Numbers f1 and f2 in each file are compared', file=sys.stderr)
-        print('         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold', file=sys.stderr)
-        print('         The default value for threshold is 3.0E-2 ', file=sys.stderr)
-        exit()
+        print("         Numbers f1 and f2 in each file are compared", file=sys.stderr)
+        print("         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold", file=sys.stderr)
+        print("         The default value for threshold is 3.0E-2 ", file=sys.stderr)
+        sys.exit()
 
     threshold = 3.0E-2
     separator = None
@@ -198,12 +194,12 @@ def main():
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
-        if token == '-sep':
+        if token == "-sep":
             itoken +=1
             separator = tokens[itoken]
-            if separator == 'blanks':
+            if separator == "blanks":
                 separator = None
-        elif token == '-thresh':
+        elif token == "-thresh":
             itoken +=1
             threshold = float(tokens[itoken])
         else:
@@ -213,85 +209,78 @@ def main():
     file1 = files[0]
     file2 = files[1]
     file_name,extension = splitext(file1)
-    if extension == '.csv':
-        separator = ','
-    elif extension == '.txt' or extension == '.out':
+    if extension == ".csv":
+        separator = ","
+    elif extension in (".txt", ".out"):
         separator = None
     # Read the command line again
     files = []
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
-        if token == '-sep':
+        if token == "-sep":
             itoken +=1
             separator = tokens[itoken]
-            if separator == 'blanks':
+            if separator == "blanks":
                 separator = None
-        elif token == '-thresh':
+        elif token == "-thresh":
             itoken +=1
             threshold = float(tokens[itoken])
         else:
             files.append(tokens[itoken])
         # end if
     # end while
-    fd1 = open(file1)
-    fd2 = open(file2)
-    #
-    line1_errors = []
-    line2_errors = []
-    line_numbers_with_error = []
     keep_line_number = 0
     keep_word1 = 0
     keep_word2 = 0
     nerrors = 0
     store_error = False
     max_percentage_error = 0.0
-    max_percentage_error2= 0.0
-    line_number = 0
     compare_next_line = False
-    for line1,line2 in zip(fd1,fd2):
-      line_number += 1
-      if not compare_next_line:
-          store_error, nerror, percentage_error, keep_word1c, keep_word2c = compare_lines(line1,line2,False)
-          max_percentage_error = max(max_percentage_error,percentage_error)
-          if store_error:
-              # if there was an error let's see if two lines are swapped
-              line1a = line1
-              line2a = line2
-              compare_next_line = True
-      else:
-          # There was an error on the previous line, see if lines are swapped
-          store_error1, nerror1, percentage_error1, keep_word1a, keep_word2a = compare_lines(line1,line2a,True)
-          store_error2, nerror2, percentage_error2, keep_word1b, keep_word2b = compare_lines(line2,line1a,True)
-          compare_next_line = False
-          keep_word1 = keep_word1a
-          keep_word2 = keep_word2a
-          keep_line_number = line_number
-          if store_error1 or store_error2:
-              # There is still an error on the swapped lines so we have an error on line1 and line1a
-              nerrors += nerror
-              if percentage_error > max_percentage_error:
-                  max_percentage_error = percentage_error
-                  keep_word1 = keep_word1c
-                  keep_word2 = keep_word2c
-                  keep_line_number = line_number - 1
-              store_error, nerror, percentage_error, keep_word1c, keep_word2c = compare_lines(line1,line2,False)
-              nerrors += nerror
-              if percentage_error > max_percentage_error:
-                  max_percentage_error = percentage_error
-                  keep_word1 = keep_word1c
-                  keep_word2 = keep_word2c
-                  keep_line_number = line_number
-          else:
-              # The swapped lines are the same so there is no error
-              store_error = False
-          # endif
-       # end if not
-    #end for line1, line2
+    with open(file1) as fd1, open(file2) as fd2:
+        for line_number,(line1,line2) in enumerate(zip(fd1,fd2)):
+            if not compare_next_line:
+                store_error, nerror, percentage_error, keep_word1c, keep_word2c = compare_lines(line1,line2,False)
+                max_percentage_error = max(max_percentage_error,percentage_error)
+                if store_error:
+                    # if there was an error let's see if two lines are swapped
+                    line1a = line1
+                    line2a = line2
+                    compare_next_line = True
+            else:
+                # There was an error on the previous line, see if lines are swapped
+                store_error1, nerror1, percentage_error1, keep_word1a, keep_word2a = compare_lines(line1,line2a,True)
+                store_error2, nerror2, percentage_error2, keep_word1b, keep_word2b = compare_lines(line2,line1a,True)
+                compare_next_line = False
+                keep_word1 = keep_word1a
+                keep_word2 = keep_word2a
+                keep_line_number = line_number
+                if store_error1 or store_error2:
+                    # There is still an error on the swapped lines so we have an error on line1 and line1a
+                    nerrors += nerror
+                    if percentage_error > max_percentage_error:
+                        max_percentage_error = percentage_error
+                        keep_word1 = keep_word1c
+                        keep_word2 = keep_word2c
+                        keep_line_number = line_number - 1
+                    store_error, nerror, percentage_error, keep_word1c, keep_word2c = compare_lines(line1,line2,False)
+                    nerrors += nerror
+                    if percentage_error > max_percentage_error:
+                        max_percentage_error = percentage_error
+                        keep_word1 = keep_word1c
+                        keep_word2 = keep_word2c
+                        keep_line_number = line_number
+                else:
+                    # The swapped lines are the same so there is no error
+                    store_error = False
+                # endif store_error1...
+            # end if not
+        #end for line1, line2
+    # Close open files
     if nerrors > 0:
-      print('  '+colored('ERRORS:','red')+f"({nerrors}) LARGEST ON LINE {keep_line_number} OF {file1}({keep_word1}) and {file2}({keep_word2}) -- max %error={max_percentage_error}")
+      print("  "+colored("ERRORS:","red")+f"({nerrors}) LARGEST ON LINE {keep_line_number} OF {file1}({keep_word1}) and {file2}({keep_word2}) -- max %error={max_percentage_error}")
     else:
-      print('  '+colored('OK:','blue')+f" {file1} = {file2} -- max %error={max_percentage_error}")
+      print("  "+colored("OK:","blue")+f" {file1} = {file2} -- max %error={max_percentage_error}")
     # end
     return (nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error)
 

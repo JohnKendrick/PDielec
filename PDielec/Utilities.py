@@ -19,6 +19,7 @@ A set of utility functions that may be used anywhere in the package.
 """
 
 import os
+import sys
 
 from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.CastepOutputReader import CastepOutputReader
@@ -49,21 +50,21 @@ def printsp(name,matrix):
     None
 
     """
-    print('')
+    print("")
     print(name)
     if len(matrix.shape) == 1:
         columns = matrix.shape[0]
-        string = ''
+        string = ""
         for i in range(columns):
-            string = string + f'{matrix[i]:+.5f}' + '   '
+            string = string + f"{matrix[i]:+.5f}" + "   "
         print(string)
     else:
         rows = matrix.shape[0]
         columns = matrix.shape[1]
         for j in range(rows):
-            string = ''
+            string = ""
             for i in range(columns):
-                string = string + f'{matrix[j,i]:+.5f}' + '   '
+                string = string + f"{matrix[j,i]:+.5f}" + "   "
             print(string)
     return
 
@@ -102,49 +103,46 @@ def find_program_from_name( filename ):
     """    
     head,tail = os.path.split(filename)
     root,ext = os.path.splitext(tail)
-    if head == '':
-        head = './'
-    else:
-        head = head+'/'
-    if tail == 'OUTCAR':
-        if os.path.isfile(head+'phonopy.yaml'):
-            return 'phonopy','vasp'
+    head = "./" if head == "" else head+"/"
+    if tail == "OUTCAR":
+        if os.path.isfile(head+"phonopy.yaml"):
+            return "phonopy","vasp"
         else:
-            return 'vasp',''
-    if ext == '.gout':
-        return 'gulp',''
-    if ext == '.born':
-        return 'phonopy','vasp'
-    if ext == '.castep':
-            if os.path.isfile(head+'phonopy.yaml'):
-                return 'phonopy','castep'
+            return "vasp",""
+    if ext == ".gout":
+        return "gulp",""
+    if ext == ".born":
+        return "phonopy","vasp"
+    if ext == ".castep":
+            if os.path.isfile(head+"phonopy.yaml"):
+                return "phonopy","castep"
             else:
-                return 'castep',''
-    if ext ==  '.out':
-        if os.path.isfile(head+root+'.files'):
-            if os.path.isfile(head+'phonopy.yaml'):
-                return 'phonopy','abinit'
+                return "castep",""
+    if ext ==  ".out":
+        if os.path.isfile(head+root+".files"):
+            if os.path.isfile(head+"phonopy.yaml"):
+                return "phonopy","abinit"
             else:
-                return 'abinit',''
-        elif os.path.isfile(head+root+'.dynG'):
-            if os.path.isfile(head+'phonopy.yaml'):
-                return 'phonopy','qe'
+                return "abinit",""
+        elif os.path.isfile(head+root+".dynG"):
+            if os.path.isfile(head+"phonopy.yaml"):
+                return "phonopy","quantum espresso"
             else:
-                return 'qe',''
-        elif os.path.isfile(head+'phonopy.yaml'):
-            return 'phonopy','crystal'
+                return "quantum espresso",""
+        elif os.path.isfile(head+"phonopy.yaml"):
+            return "phonopy","crystal"
         else:
-            return 'crystal',''
-    if ext ==  '.dynG':
-        if os.path.isfile(head+'phonopy.yaml'):
-            return 'phonopy','qe'
+            return "crystal",""
+    if ext ==  ".dynG":
+        if os.path.isfile(head+"phonopy.yaml"):
+            return "phonopy","quantum espresso"
         else:
-            return 'qe',''
-    if ext ==  '.exp':
-        return 'experiment',''
-    if ext ==  '.py':
-        return 'pdgui',''
-    return '',''
+            return "quantum espresso",""
+    if ext ==  ".exp":
+        return "experiment",""
+    if ext ==  ".py":
+        return "pdgui",""
+    return "",""
 
 def get_reader( name, program, qmprogram):
     """Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
@@ -175,6 +173,8 @@ def get_reader( name, program, qmprogram):
     >>> reader = get_reader("output", "phonopy", "vasp")
 
     """    
+    program = program.lower()
+    qmprogram = qmprogram.lower()
     fulldirname = name
     head,tail = os.path.split(fulldirname)
     root,ext = os.path.splitext(tail)
@@ -183,7 +183,7 @@ def get_reader( name, program, qmprogram):
         reader = CastepOutputReader( names )
     elif program == "vasp":
         name1 = name
-        name2 = os.path.join(head,'KPOINTS')
+        name2 = os.path.join(head,"KPOINTS")
         names = [ name1, name2 ]
         reader = VaspOutputReader( names )
     elif program == "gulp":
@@ -195,10 +195,10 @@ def get_reader( name, program, qmprogram):
     elif program == "abinit":
         names = [ name ]
         reader = AbinitOutputReader( names )
-    elif program == "qe":
-        tail1 = root+'.dynG'
-        tail2 = root+'.log'
-        tail3 = root+'.out'
+    elif program == "quantum espresso":
+        tail1 = root+".dynG"
+        tail2 = root+".log"
+        tail3 = root+".out"
         name1 = os.path.join(head,tail2)
         name2 = os.path.join(head,tail3)
         name3 = os.path.join(head,tail)
@@ -206,24 +206,21 @@ def get_reader( name, program, qmprogram):
         name4 = os.path.join(head,tail1)
         names = []
         for n in [ name1, name2, name3, name4 ]:
-            if os.path.isfile(n):
-                if n not in names:
-                    names.append(n)
+            if os.path.isfile(n) and n not in names:
+                names.append(n)
         reader = QEOutputReader( names )
     elif program == "phonopy":
         # The order is important
-        pname1 = os.path.join(head,'qpoints.yaml')
-        pname2 = os.path.join(head,'phonopy.yaml')
-        # Only works for VASP at the moment
-
+        pname1 = os.path.join(head,"qpoints.yaml")
+        pname2 = os.path.join(head,"phonopy.yaml")
         # Which QM program was used by PHONOPY?
         if qmprogram == "castep":
             print("Error in qmreader",qmprogram)
-            exit()
+            sys.exit()
             qmreader = CastepOutputReader(names)
         elif qmprogram == "vasp":
             vname1 = name
-            vname2 = os.path.join(head,'KPOINTS')
+            vname2 = os.path.join(head,"KPOINTS")
             pnames = [ pname1, pname2 ]
             vnames = [ vname1, vname2 ]
             pnames.extend(vnames)
@@ -231,7 +228,7 @@ def get_reader( name, program, qmprogram):
             qmreader = VaspOutputReader(vnames)
         elif qmprogram == "gulp":
             print("Error in qmreader",qmprogram)
-            exit()
+            sys.exit()
             qmreader = GulpOutputReader(names)
         elif qmprogram == "crystal":
             names = [ name ]
@@ -239,17 +236,17 @@ def get_reader( name, program, qmprogram):
             print("I got here 4")
         elif qmprogram == "abinit":
             print("Error in qmreader",qmprogram)
-            exit()
+            sys.exit()
             qmreader = AbinitOutputReader(names)
-        elif qmprogram == "qe":
+        elif qmprogram == "quantum espresso":
             print("Error in qmreader",qmprogram)
-            exit()
+            sys.exit()
             qmreader = QEOutputReader(names)
         # The QM reader is used to get info about the QM calculation
         reader = PhonopyOutputReader(pnames,qmreader)
     else:
-        print('Program name not recognized',program,file=sys.stderr)
-        exit()
+        print("Program name not recognized",program,file=sys.stderr)
+        sys.exit()
     return reader
 
 
@@ -305,7 +302,7 @@ def pdgui_get_reader(program,names,qmprogram):
         #  If names[0] is a directory then we will use a vaspoutputreader
         #  Otherwise it is a seedname for castep, or a gulp output file, or a crystal output file
         if os.path.isdir(names[0]):
-            print(f'Analysing VASP directory: {names[0]} ')
+            print(f"Analysing VASP directory: {names[0]} ")
             outcarfile = os.path.join(names[0], "OUTCAR")
             kpointsfile = os.path.join(names[0], "KPOINTS")
             if not os.path.isfile(outcarfile):
@@ -324,9 +321,9 @@ def pdgui_get_reader(program,names,qmprogram):
         elif os.path.isfile(names[0]+".castep") and os.path.isfile(names[0]+".castep"):
             reader = CastepOutputReader([names[0]+".castep"])
         else:
-            print('No valid file name has been found on the command line')
-            print('Try using the -program option to specify the')
-            print('files which will be read')
+            print("No valid file name has been found on the command line")
+            print("Try using the -program option to specify the")
+            print("files which will be read")
             reader = None
     else:
         # New Specification of Program used to define the input files
@@ -346,8 +343,8 @@ def pdgui_get_reader(program,names,qmprogram):
             # Creat a list of phonopy files
             pnames = []
             head,tail = os.path.split(names[0])
-            pnames.append(os.path.join(head,'qpoints.yaml'))
-            pnames.append(os.path.join(head,'phonopy.yaml'))
+            pnames.append(os.path.join(head,"qpoints.yaml"))
+            pnames.append(os.path.join(head,"phonopy.yaml"))
             # Creat a list of VASP files NB.  They all have to be in the same directory
             vnames = names
             pnames.extend(vnames)
@@ -358,8 +355,7 @@ def pdgui_get_reader(program,names,qmprogram):
             if not os.path.isfile(f):
                 print(f"Output files created by program: {program}")
                 print(f"Error: file not available: {f}")
-                reader = None
-                return reader
+                return None
         # The files requested are available so read them
         if program == "castep":
             reader = CastepOutputReader(names)
@@ -371,7 +367,7 @@ def pdgui_get_reader(program,names,qmprogram):
             reader = CrystalOutputReader(names)
         elif program == "abinit":
             reader = AbinitOutputReader(names)
-        elif program == "qe":
+        elif program == "quantum espresso":
             reader = QEOutputReader(names)
         elif program == "phonopy":
             # Which QM program was used by PHONOPY?
@@ -385,7 +381,7 @@ def pdgui_get_reader(program,names,qmprogram):
                 qmreader = CrystalOutputReader(vnames)
             elif qmprogram == "abinit":
                 qmreader = AbinitOutputReader(vnames)
-            elif qmprogram == "qe":
+            elif qmprogram == "quantum espresso":
                 qmreader = QEOutputReader(vnames)
             # The QM reader is used to get info about the QM calculation
             reader = PhonopyOutputReader(pnames,qmreader)
@@ -430,7 +426,7 @@ class Debug:
         return
 
     def print(self,*args,level=0):
-        """Prints message if debugging level allows.
+        """Print message if debugging level allows.
 
         Parameters
         ----------
@@ -446,9 +442,8 @@ class Debug:
         and the provided `level` is less than or equal to the instance's `level`.
 
         """        
-        if self.debug:
-            if level <= self.level:
-                print(self.text,*args)
+        if self.debug and level <= self.level:
+            print(self.text,*args)
         return
 
     def state(self,):

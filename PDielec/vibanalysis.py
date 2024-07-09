@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
-"""
-vibAnalysis is a Python tool written by Filipe Teixeira the original is available on 
+"""vibAnalysis is a Python tool written by Filipe Teixeira the original is available on
 github at https://github.com/teixeirafilipe/vibAnalysis.
 
 The package uses the Vibrational Mode Decomoposition method to describe the normal modes of a molecule.
@@ -50,36 +49,36 @@ def InitialiseVaOpts():
     global Radii
     # General Options
     Opts={}
-    Opts['isLinear']=False
-    Opts['isTState']=False
-    Opts['cut']='auto'
-    Opts['cutval']=0.1
-    Opts['delta']=0.01
-    Opts['tol']=0.2
-    Opts['doOuts']=True
-    Opts['doTors']=True
-    Opts['doMWD']=True
-    Opts['doMWS']=False
-    Opts['doAutoSel']=False
-    Opts['doVMP']=False
-    Opts['doVMLD']=False
-    Opts['doVMBLD']=False
-    Opts['doVMARD']=True
-    Opts['input']='PDIELEC'
-    Opts['aniMode']=[]
-    Opts['anic']=[]
-    Opts['oopp']=True
-    Opts['oopTol']=np.deg2rad(5.0)
+    Opts["isLinear"]=False
+    Opts["isTState"]=False
+    Opts["cut"]="auto"
+    Opts["cutval"]=0.1
+    Opts["delta"]=0.01
+    Opts["tol"]=0.2
+    Opts["doOuts"]=True
+    Opts["doTors"]=True
+    Opts["doMWD"]=True
+    Opts["doMWS"]=False
+    Opts["doAutoSel"]=False
+    Opts["doVMP"]=False
+    Opts["doVMLD"]=False
+    Opts["doVMBLD"]=False
+    Opts["doVMARD"]=True
+    Opts["input"]="PDIELEC"
+    Opts["aniMode"]=[]
+    Opts["anic"]=[]
+    Opts["oopp"]=True
+    Opts["oopTol"]=np.deg2rad(5.0)
     # General Data
     Bohr2Ang=0.5291772
-    Symbols=['h','he','li','be','b','c','n','o','f','ne',
-'na','mg','al','si','p','s','cl','ar', 'k','ca','sc',
-'ti','v','cr','mn','fe','co','ni','cu','zn','ga','ge',
-'as','se','br','kr', 'rb', 'sr', 'y', 'zr', 'nb', 'mo', 
-'tc','ru', 'rh', 'pd', 'ag', 'cd', 'in', 'sn', 'sb', 'te',
-'i', 'xe', 'cs', 'ba', 'la', 'ce', 'pr', 'nd', 'pm', 'sm', 
-'eu', 'gd', 'tb', 'dy', 'ho', 'er', 'tm', 'yb', 'lu',
-'hf', 'ta', 'w', 're', 'os', 'ir', 'pt', 'au', 'hg', 'tl', 'pb', 'bi']
+    Symbols=["h","he","li","be","b","c","n","o","f","ne",
+"na","mg","al","si","p","s","cl","ar", "k","ca","sc",
+"ti","v","cr","mn","fe","co","ni","cu","zn","ga","ge",
+"as","se","br","kr", "rb", "sr", "y", "zr", "nb", "mo", 
+"tc","ru", "rh", "pd", "ag", "cd", "in", "sn", "sb", "te",
+"i", "xe", "cs", "ba", "la", "ce", "pr", "nd", "pm", "sm", 
+"eu", "gd", "tb", "dy", "ho", "er", "tm", "yb", "lu",
+"hf", "ta", "w", "re", "os", "ir", "pt", "au", "hg", "tl", "pb", "bi"]
 
     Masses=[1.007825, 4.002602, 6.94, 9.0121831, 10.81, 12.0000, 14.007, 15.9949159, 18.998403163, 20.1797, 22.98976928, 24.305, 26.9815385, 28.085, 30.973761998, 32.06, 35.45, 39.948, 39.0983, 40.078, 44.955908, 47.867, 50.9415, 51.9961, 54.938044, 55.845, 58.933194, 58.6934, 63.546, 65.38, 69.723, 72.63, 74.921595, 78.971, 79.904, 83.798, 85.4678, 87.62, 88.90584, 91.224, 92.90637, 95.95, 97, 101.07, 102.9055, 106.42, 107.8682, 112.414, 114.818, 118.71, 121.76, 127.6, 126.90447, 131.293, 132.90545196, 137.327, 138.90547, 140.116, 140.90766, 144.242, 145, 150.36, 151.964, 157.25, 158.92535, 162.5, 164.93033, 167.259, 168.93422, 173.054, 174.9668, 178.49, 180.94788, 183.84, 186.207, 190.23, 192.217, 195.084, 196.966569, 200.592, 204.38, 207.2, 208.9804]
 
@@ -105,7 +104,7 @@ class Atom:
                 return(o)
 
 class Vibration:
-        def __init__(self,freq,ndegs,adv=[],ir=None,raman=None,sym=''):
+        def __init__(self,freq,ndegs,adv=[],ir=None,raman=None,sym=""):
                 self.frequency=float(freq)
                 if(len(adv)==0):
                         self.displacements=np.zeros(ndegs)
@@ -125,33 +124,33 @@ class Vibration:
                 if(len(d)!=len(self.displacements)):
                         print("Warnning: New displacements do not conform to previous.")
                 self.displacements=np.array(d)
-        def editIntensity(self,val,t='IR'):
-                if(t.upper()=='IR'):
+        def editIntensity(self,val,t="IR"):
+                if(t.upper()=="IR"):
                         self.intIR=float(val)
-                elif(t.upper()=='RAMAN'):
+                elif(t.upper()=="RAMAN"):
                         self.intRaman=float(val)
         def addVMP(self,vmp):
-                self.analysis['VMP']=np.array(vmp)
+                self.analysis["VMP"]=np.array(vmp)
         def addVMLD(self,coefs,r2=0.0,exvar=0.0):
-                self.analysis['VMLD']=np.array(coefs)
-                self.analysis['VMLD_R2']=r2
-                self.analysis['VMLD_EV']=exvar
+                self.analysis["VMLD"]=np.array(coefs)
+                self.analysis["VMLD_R2"]=r2
+                self.analysis["VMLD_EV"]=exvar
         def addVMBLD(self,coefs,r2=0.0,exvar=0.0):
-                self.analysis['VMBLD']=np.array(coefs)
-                self.analysis['VMBLD_R2']=r2
-                self.analysis['VMBLD_EV']=exvar
+                self.analysis["VMBLD"]=np.array(coefs)
+                self.analysis["VMBLD_R2"]=r2
+                self.analysis["VMBLD_EV"]=exvar
         def addVMARD(self,coefs,r2=0.0,exvar=0.0):
-                self.analysis['VMARD']=np.array(coefs)
-                self.analysis['VMARD_R2']=r2
-                self.analysis['VMARD_EV']=exvar
+                self.analysis["VMARD"]=np.array(coefs)
+                self.analysis["VMARD_R2"]=r2
+                self.analysis["VMARD_EV"]=exvar
         def string(self,n=-1):
-                o=''
+                o=""
                 #jk if(n>0):
                 if(n>=0):
                         o="Mode %3d: %8.2f cm-1 "%(n,self.frequency)
                 else:
                         o="Mode at %8.2f cm-1 "%(self.frequency)
-                if(self.symmetry.strip()!=''):
+                if(self.symmetry.strip()!=""):
                         o += "(%s) "%(self.symmetry)
                 if(self.intIR != None):
                         o += "(IR: %5.1f"%(self.intIR)
@@ -185,9 +184,9 @@ class System:
                 self.natoms = len(self.atoms)
         def addVibration(self,frequency):
                 self.vibrations.append(Vibration(frequency,3*self.natoms))
-        def addVibIntensity(self,idx,val,kind='IR'):
+        def addVibIntensity(self,idx,val,kind="IR"):
                 self.vibrations[idx].editIntensity(val,kind)
-        def addVibSymmetry(self,idx,sym=''):
+        def addVibSymmetry(self,idx,sym=""):
                 self.vibrations[idx].symmetry=sym
         def addDisplacements(self,idx,displacements):
                 self.vibrations[idx].editDisplacements(displacements)
@@ -248,7 +247,8 @@ class System:
 def readMopac2016(ifn):
         """Opens a MOPAC2016 output file ifn and returns A System object.
         Depending on Linear and Transition, freqs and modes will be
-        pruned out of the translational and rotational components."""
+        pruned out of the translational and rotational components.
+        """
         f=open(ifn)
         data=f.readlines()
         f.close()
@@ -256,14 +256,14 @@ def readMopac2016(ifn):
         # read geometry (in angs) and atomic symbols, get masses from internal lib
         natoms=-1
         for i in range(len(data)):
-                if('Empirical Formula:' in data[i]):
+                if("Empirical Formula:" in data[i]):
                         natoms=int(data[i].split()[-2])
                         break
         if(natoms<1):
-                print('ERROR: Could not read MOPAC output: no empirical formula!\n')
+                print("ERROR: Could not read MOPAC output: no empirical formula!\n")
                 sys.exit(1)
         for i in range(len(data)):
-                if ('ORIENTATION OF MOLECULE IN FORCE CALCULATION' in data[i]):
+                if ("ORIENTATION OF MOLECULE IN FORCE CALCULATION" in data[i]):
                         for j in range(i+4,i+4+natoms):
                                 l=data[j].split()
                                 o.addAtom(l[1].lower(),np.array(list(map(float,l[2:5]))),Masses[Symbols.index(l[1].lower())])
@@ -272,13 +272,13 @@ def readMopac2016(ifn):
         istart=-1
         iend=-1
         for i in range(len(data)):
-                if(' NORMAL COORDINATE ANALYSIS' in data[i]):
+                if(" NORMAL COORDINATE ANALYSIS" in data[i]):
                         istart=i+1
-                if('MASS-WEIGHTED COORDINATE ANALYSIS' in data[i]):
+                if("MASS-WEIGHTED COORDINATE ANALYSIS" in data[i]):
                         iend=i-1
                         break
         if((istart<0) or(iend<istart)):
-                print('ERROR: Could not read MOPAC output: invalid format for normal coordinate analysis.\n')
+                print("ERROR: Could not read MOPAC output: invalid format for normal coordinate analysis.\n")
                 sys.exit(1)
         tfreq=[]
         tir=[]
@@ -288,7 +288,7 @@ def readMopac2016(ifn):
         curr=0
         last=0
         while(n<iend):
-                if('Root No.' in data[n]):
+                if("Root No." in data[n]):
                         curr=len(data[n].split())-2
                         for i in range(curr):
                                 tdisp.append([])
@@ -313,7 +313,7 @@ def readMopac2016(ifn):
                 n += 1
         # read T-DIPOLE as sorrrugate for IR intensities
         for i in range(len(data)):
-                if('T-DIPOLE' in data[i]):
+                if("T-DIPOLE" in data[i]):
                         tir.append(float(data[i].split()[1]))
         # assemble output System
         putir=True
@@ -332,14 +332,15 @@ def readMopac2016(ifn):
 def readHess(ifn):
         """Opens Orca Hess file ifn and returns A System object.
         Depending on Linear and Transition, freqs and modes will be
-        pruned out of the translational and rotational components."""
+        pruned out of the translational and rotational components.
+        """
         f=open(ifn)
         data=f.readlines()
         f.close()
         o=System()
         # read masses, geometry (in angs) and atomic symbols
         for i in range(len(data)):
-                if ('$atoms' in data[i]):
+                if ("$atoms" in data[i]):
                         natoms=int(data[i+1])
                         for j in range(i+2,i+2+natoms):
                                 l=data[j].split()
@@ -347,14 +348,14 @@ def readHess(ifn):
                         break
         # read frequency list
         for i in range(len(data)):
-                if ('$vibrational_frequencies' in data[i]):
+                if ("$vibrational_frequencies" in data[i]):
                         nfreqs=int(data[i+1])
                         for j in range(i+2,i+2+nfreqs):
                                 o.addVibration(float(data[j].split()[1]))
                         break
         # read normal mode displacements
         for i in range(len(data)):
-                if ('$normal_modes' in data [i]):
+                if ("$normal_modes" in data [i]):
                         ndegs=int(data[i+1].split()[0])
                         ipos=i+2
                         break
@@ -384,10 +385,10 @@ def readHess(ifn):
         # read IR intensities
         found=False
         for i in range(len(data)):
-                if ('$ir_spectrum' in data [i]):
+                if ("$ir_spectrum" in data [i]):
                         nfreqs=int(data[i+1])
                         for j in range(nfreqs):
-                                o.addVibIntensity(j,float(data[j+i+2].split()[1]),'IR')
+                                o.addVibIntensity(j,float(data[j+i+2].split()[1]),"IR")
                         found=True
                         break
         if(not found):
@@ -395,20 +396,20 @@ def readHess(ifn):
         # read Raman intensities
         found=False
         for i in range(len(data)):
-                if ('$raman_spectrum' in data [i]):
+                if ("$raman_spectrum" in data [i]):
                         nfreqs=int(data[i+1])
                         for j in range(nfreqs):
-                                o.addVibIntensity(j,float(data[j+i+2].split()[1]),'Raman')
+                                o.addVibIntensity(j,float(data[j+i+2].split()[1]),"Raman")
                         found=True
                         break
         if(not found):
                 print("Warnning: Raman intensities not found.")
         # prune rotational and translational modes from freqs, modes, and Ints
-        if(Opts['isLinear'] and Opts['isTState']):
+        if(Opts["isLinear"] and Opts["isTState"]):
                 excl=list(range(1,6))
-        elif(Opts['isLinear'] and not Opts['isTState']):
+        elif(Opts["isLinear"] and not Opts["isTState"]):
                 excl=list(range(5))
-        elif((not Opts['isLinear']) and Opts['isTState']):
+        elif((not Opts["isLinear"]) and Opts["isTState"]):
                 excl=list(range(1,7))
         else:
                 excl=list(range(6))
@@ -417,7 +418,8 @@ def readHess(ifn):
 
 def readPDielec(ifn):
         """Use PDielec library to read hessian information.
-        only the first 3 modes will be pruned; the translational components."""
+        only the first 3 modes will be pruned; the translational components.
+        """
         # Open the file use pdielec library
         import math
 
@@ -456,10 +458,10 @@ def readPDielec(ifn):
         cell = reader.get_unit_cell()
         # We need to see if we can generate whole molecules using translational symmetry
         scale = 1.1      # Scaling factor for covalent radii
-        tolerance  = Opts['tol']  # Tolerance in bonding
+        tolerance  = Opts["tol"]  # Tolerance in bonding
         new_cell,natoms,original_atomic_order = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance)
-        print('Bonding tolerance',tolerance,file=sys.stderr)
-        print('Number of molecules',len(new_cell.molecules),file=sys.stderr)
+        print("Bonding tolerance",tolerance,file=sys.stderr)
+        print("Number of molecules",len(new_cell.molecules),file=sys.stderr)
         # Reorder the normal mode atoms so that the mass weighted normal modes order 
         # agrees with the ordering in the cell_of_molecules cell
         nmodes,nions,temp = np.shape(normal_modes)
@@ -499,7 +501,7 @@ def readPDielec(ifn):
             # Multiplying by 4225.6 should give Absorption in L/mole/cm2 
             # I am doing this because otherwise there are lots of zero intensities in the output
             # print('Adding IR intensity ',i,4255.6*intens)
-            o.addVibIntensity(i,4255.6*intens,'IR')
+            o.addVibIntensity(i,4255.6*intens,"IR")
         # no Raman intensities
         # prune translational modes from freqs, modes, and Ints
         #JK excl=list(range(3))
@@ -510,7 +512,8 @@ def readG09log(ifn):
         """Opens Gaussian09 log file ifn and returns a System object with
         information regarding the system and vibrations.
         Depending on Linear and Transition, freqs and modes will be
-        pruned out of the translational and rotational components."""
+        pruned out of the translational and rotational components.
+        """
         o=System()
         logging.info(f"Opening Gaussian log file: {ifn:s}")
         f=open(ifn)
@@ -519,7 +522,7 @@ def readG09log(ifn):
         # get number of atoms
         natoms=-1
         for i in range(len(data)):
-                if('NAtoms=' in data[i]):
+                if("NAtoms=" in data[i]):
                         natoms=int(data[i].split()[1])
                         logging.info(f"Expecting {natoms} atoms from reading line {i+1}")
                         break
@@ -530,7 +533,7 @@ def readG09log(ifn):
         #read (last) geometry in standard orientation
         istart=-1
         for i in range(len(data)):
-                if('Standard orientation:' in data[i]):
+                if("Standard orientation:" in data[i]):
                         istart=i+5
         if(istart>0):
                 for i in range(istart,istart+natoms):
@@ -539,7 +542,7 @@ def readG09log(ifn):
         #read masses
         istart = -1
         for i in range(len(data)):
-                if('- Thermochemistry -' in data[i]):
+                if("- Thermochemistry -" in data[i]):
                         istart=i+3
                         break
         if(istart>0):
@@ -558,7 +561,7 @@ def readG09log(ifn):
         modes=np.zeros((3*natoms,0))
         for i in range(len(data)):
                 mstart=-1
-                if('Frequencies -- ' in data[i]):
+                if("Frequencies -- " in data[i]):
                         # read symmetries
                         l=data[i-1].split()
                         for f in l:
@@ -568,14 +571,14 @@ def readG09log(ifn):
                         for f in l:
                                 freqs.append(float(f))
                         for j in range(i+1,i+9):
-                                if('Atom' in data[j]):
+                                if("Atom" in data[j]):
                                         mstart=j+1
                                         break
-                                if('IR Inten    --' in data[j]):
+                                if("IR Inten    --" in data[j]):
                                         l=data[j].split()[3:]
                                         for f in l:
                                                 irInt.append(float(f))
-                                if('Raman Activ --' in data[j]):
+                                if("Raman Activ --" in data[j]):
                                         l=data[j].split()[3:]
                                         for f in l:
                                                 raInt.append(float(f))
@@ -615,26 +618,26 @@ def readUserIC(fn):
         udata=f.readlines()
         f.close()
         for line in udata:
-                if('#' in line):
+                if("#" in line):
                         continue
-                elif(line.strip()==''):
+                elif(line.strip()==""):
                         continue
                 else:
                         l=line.split()
-                        if(l[0].upper()=='B'):
+                        if(l[0].upper()=="B"):
                                 o.append([1,int(l[1])-1,int(l[2])-1])
-                        elif(l[0].upper()=='A'):
+                        elif(l[0].upper()=="A"):
                                 o.append([2,int(l[1])-1,int(l[2])-1,int(l[3])-1])
-                        elif(l[0].upper()=='O'):
+                        elif(l[0].upper()=="O"):
                                 o.append([3,int(l[1])-1,int(l[2])-1,int(l[3])-1,int(l[4])-1])
-                        elif(l[0].upper()=='T'):
+                        elif(l[0].upper()=="T"):
                                 o.append([4,int(l[1])-1,int(l[2])-1,int(l[3])-1,int(l[4])-1])
                         else:
                                 continue
         return(o)
 
 def modeStr(mode,symbs):
-        """returns a formatted string describing mode"""
+        """Returns a formatted string describing mode"""
         o=""
         if(mode[0]==1): # bond
                 o="BOND %s%d %s%d"%(symbs[mode[1]].capitalize(),mode[1]+1,symbs[mode[2]].capitalize(),mode[2]+1)
@@ -648,7 +651,8 @@ def modeStr(mode,symbs):
 
 def punchIC(o,s):
         """Punches a list of internal coordinates and their
-        meassured values to file o"""
+        meassured values to file o
+        """
         o.write("\n\nList of Internal Coordinates and their values\n")
         for i in range(len(s.intcoords)):
                 desc=modeStr(s.intcoords[i],s.symbol)
@@ -664,9 +668,9 @@ def punchIC(o,s):
         o.write("\n")
 
 def animateMode(tfn,s,m,nsteps=50,damp=0.33):
-        """displaces geo over vibrational displacement m and punches a xyz file tfn"""
+        """Displaces geo over vibrational displacement m and punches a xyz file tfn"""
         natoms=len(s.atoms)
-        tf=open(tfn,'w')
+        tf=open(tfn,"w")
         v=damp*np.sin(np.linspace(0-0,2.0*np.pi,nsteps))
         for n in range(nsteps):
                 g = s.geo.copy()
@@ -677,9 +681,9 @@ def animateMode(tfn,s,m,nsteps=50,damp=0.33):
         tf.close()
 
 def animateIC(tfn,s,m,nsteps=50,damp=0.33):
-        """displaces geo over internal coordinate m and punches a xyz file tfn"""
+        """Displaces geo over internal coordinate m and punches a xyz file tfn"""
         natoms=len(s.atoms)
-        tf=open(tfn,'w')
+        tf=open(tfn,"w")
         v=damp*np.sin(np.linspace(0-0,2.0*np.pi,nsteps))
         for n in range(nsteps):
                 g = s.geo.copy()
@@ -691,32 +695,32 @@ def animateIC(tfn,s,m,nsteps=50,damp=0.33):
 
 def printResults(o,s):
         """Prints the results of the analysis stored in system s onto file o"""
-        lanalysis=['VMP','VMLD','VMBLD','VMARD']
+        lanalysis=["VMP","VMLD","VMBLD","VMARD"]
         for a in lanalysis:
                 if(a in s.vibrations[0].analysis.keys()):
-                        if(a=='VMP'):
+                        if(a=="VMP"):
                                 o.write("\n\n*** Vibrational Mode Projection (VMP) ***\n")
-                        elif(a=='VMLD'):
+                        elif(a=="VMLD"):
                                 o.write("\n\n*** Vibrational Mode Linear Decomposition (VMLD) ***\n")
-                        elif(a=='VMBLD'):
+                        elif(a=="VMBLD"):
                                 o.write("\n\n*** Vibrational Mode Bayesian Linear Decomposition (VMBLD) ***\n")
-                        elif(a=='VMARD'):
+                        elif(a=="VMARD"):
                                 o.write("\n\n*** Vibrational Mode Automatic Relevance Determination (VMARD) ***\n")
                         #jk n=1
                         n=0
                         for vib in s.vibrations:
-                                o.write('\n'+vib.string(n)+'\n')
+                                o.write("\n"+vib.string(n)+"\n")
                                 #calculate weights
                                 w=vib.analysis[a]/np.sum(np.abs(vib.analysis[a]))
                                 n += 1
                                 cut = 0.0 # cut = all
-                                if(Opts['cut'] == 'auto'):
+                                if(Opts["cut"] == "auto"):
                                         cut = len(s.vibrations)/(10.0*len(s.intcoords))
-                                elif(Opts['cut'] == 'val'):
-                                        cut = Opts['cutval']
-                                elif(Opts['cut'] == 'q1'):
+                                elif(Opts["cut"] == "val"):
+                                        cut = Opts["cutval"]
+                                elif(Opts["cut"] == "q1"):
                                         cut = np.percentile(w,75)
-                                elif(Opts['cut']=='d9'):
+                                elif(Opts["cut"]=="d9"):
                                         cut = np.percentile(w,90)
                                 widx = list(np.argsort(np.abs(w)))
                                 widx.reverse()
@@ -740,28 +744,30 @@ def printResults(o,s):
                                         gwr[1:]=gwr[1:]/np.sum(gwr[1:])
                                 o.write(" Shown Composition:  %5.1f%% BOND, %5.1f%% ANGLE, %5.1f%% OUT, %5.1f%% TOR\n"%tuple(100.0*(gwr[1:])))
                                 o.write(" Total Composition:  %5.1f%% BOND, %5.1f%% ANGLE, %5.1f%% OUT, %5.1f%% TOR\n"%tuple(100.0*gw[1:]))
-                                if( a in ['VMLD','VMBLD','VMARD']): #punch additional info
+                                if( a in ["VMLD","VMBLD","VMARD"]): #punch additional info
                                         o.write(" R**2 = %6.4f\n"%(vib.analysis["%s_R2"%(a)]))
                                         o.write(" Explained Variance = %5.1f %%\n"%(vib.analysis["%s_EV"%(a)]*100.0))
-                        if(a=='VMP'):
+                        if(a=="VMP"):
                                 o.write("\n*** End of Vibrational Mode Projection (VMP) ***\n")
-                        elif(a=='VMLD'):
+                        elif(a=="VMLD"):
                                 o.write("\n*** End of Vibrational Mode Linear Decomposition (VMLD) ***\n")
-                        elif(a=='VMBLD'):
+                        elif(a=="VMBLD"):
                                 o.write("\n*** End of Vibrational Mode Bayesian Linear Decomposition (VMBLD) ***\n")
-                        elif(a=='VMARD'):
+                        elif(a=="VMARD"):
                                 o.write("\n*** End of Vibrational Mode Automatic Relevance Determination (VMARD) ***\n")
 
 ## Support Functions ##
 
 def bondLength(geo,bl):
         """Returns distance between atoms bl[1] and bl[0]
-        (numbering starts at 0) in geometry geo"""
+        (numbering starts at 0) in geometry geo
+        """
         return np.linalg.norm(geo[bl[1]]-geo[bl[0]])
 
 def angleAmp(geo,al,deg=False):
         """Returns amplitude (optnialy in degs) for the valence angle formed by
-        the atoms in al, with al[1] being the apex (numbering starts at 0)."""
+        the atoms in al, with al[1] being the apex (numbering starts at 0).
+        """
         r01=geo[al[0]]-geo[al[1]]
         r21=geo[al[2]]-geo[al[1]]
         logging.debug(f"""Vectors for angle {al[0]+1}, {al[1]+1} and {al[2]+1}:
@@ -782,7 +788,8 @@ def angleAmp(geo,al,deg=False):
 
 def oopAmp(geo,al,deg=False):
         """Returns amplitude (optnialy in degs) for the out-of-plane angle formed by
-        the atoms in al, with al[1] being the central atom (numbering starts at 0)."""
+        the atoms in al, with al[1] being the central atom (numbering starts at 0).
+        """
         r1=geo[al[0]]-geo[al[1]]
         r2=geo[al[2]]-geo[al[1]]
         r3=geo[al[3]]-geo[al[1]]
@@ -821,7 +828,8 @@ def oopAmp(geo,al,deg=False):
 def torsionAmp(geo,al,deg=False):
         """Returns amplitude (optnialy in degs) for the 0-1-2-3 torsion angle formed by
         the atoms in al, with al[1] and al[2] defining the central bond
-        (numbering starts at 0)."""
+        (numbering starts at 0).
+        """
         r1=geo[al[0]]-geo[al[1]]
         r2=geo[al[2]]-geo[al[1]]
         r3=geo[al[3]]-geo[al[2]]
@@ -856,12 +864,13 @@ def torsionAmp(geo,al,deg=False):
         return phi
 
 def makeIC(o,useric=[]):
-        """Automatically identifies internal coordinates using 
+        """Automatically identifies internal coordinates using
         connectivity deduced from covalent radii and generates
-        Wilson's S matrix for the specified geometry"""
+        Wilson's S matrix for the specified geometry
+        """
         ## Parameters from Global Opts
-        delta=Opts['delta']
-        tol=Opts['tol']
+        delta=Opts["delta"]
+        tol=Opts["tol"]
         o.makeGeo()
         geo=np.copy(o.geo)
         o.intcoords=[] # each coord is a tuple of 5 ints: coord type + 4 atom idxs
@@ -946,14 +955,14 @@ def makeIC(o,useric=[]):
                                         a1=tmplst[0]
                                         a3=tmplst[1]
                                         a4=tmplst[2]
-                                        if(Opts['doOuts']):
+                                        if(Opts["doOuts"]):
                                                 #check if none of the involved angles are 180
                                                 if((angleAmp(geo,[a1,a2,a3],True)<179.0)and
                                                    (angleAmp(geo,[a1,a2,a4],True)<179.0)and
                                                          (angleAmp(geo,[a3,a2,a4],True)<179.0)):
-                                                        if(Opts['oopp']):
+                                                        if(Opts["oopp"]):
                                                                 teta=oopAmp(geo,[a1,a2,a3,a4])
-                                                                if((np.abs(teta-np.pi)<Opts['oopTol'])and([a1,a2,a3,a4] not in loop)):
+                                                                if((np.abs(teta-np.pi)<Opts["oopTol"])and([a1,a2,a3,a4] not in loop)):
                                                                         loop.append([a1,a2,a3,a4])
                                                         elif([a1,a2,a3,a4] not in loop):
                                                                 loop.append([a1,a2,a3,a4])
@@ -970,10 +979,10 @@ def makeIC(o,useric=[]):
                                                 candidate=[langles[i][0],langles[i][1],langles[j][1],langles[j][0]]
                                         if(Opts["doAutoSel"]):
                                                 if((candidate!=[])and(candidate[1:]not in [h[1:] for h in ltors])):
-                                                        if(Opts['doTors']):
+                                                        if(Opts["doTors"]):
                                                                 ltors.append(candidate)
                                         elif(candidate!=[]):
-                                                if(Opts['doTors']):
+                                                if(Opts["doTors"]):
                                                         ltors.append(candidate)
         #calc S for bonds
         o.S=np.zeros((3*natoms,len(lbonds)+len(langles)+len(loop)+len(ltors)))
@@ -1086,9 +1095,10 @@ def makeIC(o,useric=[]):
 ## Analysis Functions ##
 
 def VMP(of,s):
-        """ Performs a simple projection of the normal modes 
+        """Performs a simple projection of the normal modes
         over the internal coordinates S stored in system s. Other inputs:
-        - of: handle for the output file (for logging)"""
+        - of: handle for the output file (for logging)
+        """
         of.write("\nStarting: Normal Mode Projection\n")
         if(len(s.intcoords)>len(s.vibrations)):
                 of.write(" More internal coordinates than frequencies, expect\n")
@@ -1101,11 +1111,12 @@ def VMP(of,s):
         of.write("\nEnding: Normal Mode Projection\n")
 
 def VMLD(of,s):
-        """ Performs a Linear Decomposition of the vibrational modes 
+        """Performs a Linear Decomposition of the vibrational modes
         over the internal coordinates stored in the system s.
         Inputs:
         - of: handle for the output file
-        - s:  the system"""
+        - s:  the system
+        """
         of.write("\nStarting: Vibrational Mode Linear Decomposition\n")
         if(len(s.intcoords)>len(s.vibrations)):
                 of.write(" More internal coordinates than frequencies, expect\n")
@@ -1120,12 +1131,13 @@ def VMLD(of,s):
         of.write("\nEnding: Vibrational Mode Linear Decomposition\n")
 
 def VMBLD(of,s):
-        """ Performs a Linear Decomposition of the vibrational modes 
+        """Performs a Linear Decomposition of the vibrational modes
         over the internal coordinates stored in the system s using Bayesian 
         Ridge Regression.
         Inputs:
         - of: handle for the output file
-        - s:  the system"""
+        - s:  the system
+        """
         of.write("\nStarting: Vibrational Mode Bayesian Linear Decomposition\n")
         if(len(s.intcoords)>len(s.vibrations)):
                 of.write(" More internal coordinates than frequencies, expect\n")
@@ -1143,12 +1155,13 @@ def VMBLD(of,s):
         of.write("\nEnding: Vibrational Mode Bayesian Linear Decomposition\n")
 
 def VMARD(of,s):
-        """ Performs a Linear Decomposition of the vibrational modes 
+        """Performs a Linear Decomposition of the vibrational modes
         using Bayesian regression with Automatic Relevance Determination
         over the internal coordinates stored in the system s.
         Inputs:
         - of: handle for the output file
-        - s:  the system"""
+        - s:  the system
+        """
         of.write("\nStarting: Vibrational Mode Automatic Relevance Determination\n")
         if(len(s.intcoords)>len(s.vibrations)):
                 of.write(" More internal coordinates than frequencies, expect\n")
@@ -1244,165 +1257,165 @@ Options:
         inic=False
         invm=False
         debug=False
-        ofn='va.out'
+        ofn="va.out"
         useric=[]
         while(n<len(arg)):
-                if(arg[n]=='--linear'):
+                if(arg[n]=="--linear"):
                         inic=False
                         invm=False
-                        Opts['isLinear']=True
-                elif(arg[n]=='--ts'):
+                        Opts["isLinear"]=True
+                elif(arg[n]=="--ts"):
                         inic=False
                         invm=False
-                        Opts['isTState']=True
-                elif(arg[n]=='--mwd'):
+                        Opts["isTState"]=True
+                elif(arg[n]=="--mwd"):
                         inic=False
                         invm=False
-                        Opts['doMWD']=True
-                elif(arg[n]=='--nomwd'):
+                        Opts["doMWD"]=True
+                elif(arg[n]=="--nomwd"):
                         inic=False
                         invm=False
-                        Opts['doMWD']=False
-                elif(arg[n]=='--debug'):
+                        Opts["doMWD"]=False
+                elif(arg[n]=="--debug"):
                         debug=True
-                elif(arg[n]=='--mws'):
+                elif(arg[n]=="--mws"):
                         inic=False
                         invm=False
-                        Opts['doMWS']=True
-                elif(arg[n]=='--nomws'):
+                        Opts["doMWS"]=True
+                elif(arg[n]=="--nomws"):
                         inic=False
                         invm=False
-                        Opts['doMWS']=False
-                elif(arg[n]=='--autosel'):
+                        Opts["doMWS"]=False
+                elif(arg[n]=="--autosel"):
                         inic=False
                         invm=False
-                        Opts['doAutoSel']=True
-                elif(arg[n]=='--noouts'):
+                        Opts["doAutoSel"]=True
+                elif(arg[n]=="--noouts"):
                         inic=False
                         invm=False
-                        Opts['doOuts']=False
-                elif(arg[n]=='--strictplanes'):
+                        Opts["doOuts"]=False
+                elif(arg[n]=="--strictplanes"):
                         inic=False
                         invm=False
-                        Opts['oopp']=True
-                elif(arg[n]=='--nostrictplanes'):
+                        Opts["oopp"]=True
+                elif(arg[n]=="--nostrictplanes"):
                         inic=False
                         invm=False
-                        Opts['oopp']=False
-                elif(arg[n]=='--notors'):
+                        Opts["oopp"]=False
+                elif(arg[n]=="--notors"):
                         inic=False
                         invm=False
-                        Opts['doTors']=False
-                elif(arg[n]=='--addic'):
+                        Opts["doTors"]=False
+                elif(arg[n]=="--addic"):
                         useric=readUserIC(arg[n+1])
                         n += 1
-                elif(arg[n]=='--cut'):
+                elif(arg[n]=="--cut"):
                         inic=False
                         invm=False
-                        if(arg[n+1]=='auto'):
-                                Opts['cut']='auto'
-                        elif(arg[n+1]=='d9'):
-                                Opts['cut']='d9'
-                        elif(arg[n+1]=='q1'):
-                                Opts['cut']='q1'
-                        elif(arg[n+1]=='all'):
-                                Opts['cut']='all'
+                        if(arg[n+1]=="auto"):
+                                Opts["cut"]="auto"
+                        elif(arg[n+1]=="d9"):
+                                Opts["cut"]="d9"
+                        elif(arg[n+1]=="q1"):
+                                Opts["cut"]="q1"
+                        elif(arg[n+1]=="all"):
+                                Opts["cut"]="all"
                         else:
-                                Opts['cut']='val'
-                                Opts['cutval']=float(arg[n+1])/100.0
+                                Opts["cut"]="val"
+                                Opts["cutval"]=float(arg[n+1])/100.0
                         n += 1
-                elif(arg[n]=='--delta'):
+                elif(arg[n]=="--delta"):
                         inic=False
                         invm=False
-                        Opts['delta']=float(arg[n+1])
+                        Opts["delta"]=float(arg[n+1])
                         n += 1
-                elif(arg[n]=='--ooptol'):
+                elif(arg[n]=="--ooptol"):
                         inic=False
                         invm=False
-                        Opts['oopTol']=np.deg2rad(float(arg[n+1]))
+                        Opts["oopTol"]=np.deg2rad(float(arg[n+1]))
                         n += 1
-                elif(arg[n]=='--tol'):
+                elif(arg[n]=="--tol"):
                         inic=False
                         invm=False
-                        Opts['tol']=float(arg[n+1])/100.0
+                        Opts["tol"]=float(arg[n+1])/100.0
                         n += 1
-                elif(arg[n]=='--input'):
+                elif(arg[n]=="--input"):
                         inic=False
                         invm=False
-                        if(arg[n+1]=='hess'):
-                                Opts['input']='OrcaHess'
-                        elif(arg[n+1]=='g09'):
-                                Opts['input']='G09OUT'
-                        elif(arg[n+1]=='mopac' or arg[n+1]=='mopac2016'):
-                                Opts['input']='MOPAC2016'
-                        elif(arg[n+1]=='pdielec' or arg[n+1]=='PDielec'):
-                                Opts['input']='PDIELEC'
+                        if(arg[n+1]=="hess"):
+                                Opts["input"]="OrcaHess"
+                        elif(arg[n+1]=="g09"):
+                                Opts["input"]="G09OUT"
+                        elif(arg[n+1]=="mopac" or arg[n+1]=="mopac2016"):
+                                Opts["input"]="MOPAC2016"
+                        elif(arg[n+1]=="pdielec" or arg[n+1]=="PDielec"):
+                                Opts["input"]="PDIELEC"
                         else:
-                                print('ERROR: Input format not implemented!\n')
+                                print("ERROR: Input format not implemented!\n")
                                 sys.exit(1)
                         n += 1
-                elif(arg[n]=='--vm'):
+                elif(arg[n]=="--vm"):
                         inic=False
                         invm=True
-                elif(arg[n]=='--ic'):
+                elif(arg[n]=="--ic"):
                         inic=True
                         invm=False
                 ## commands ##
-                elif(arg[n]=='--vmp'):
+                elif(arg[n]=="--vmp"):
                         inic=False
                         invm=False
-                        Opts['doVMP']=True
-                elif(arg[n]=='--novmp'):
+                        Opts["doVMP"]=True
+                elif(arg[n]=="--novmp"):
                         inic=False
                         invm=False
-                        Opts['doVMP']=False
-                elif(arg[n]=='--vmld'):
+                        Opts["doVMP"]=False
+                elif(arg[n]=="--vmld"):
                         inic=False
                         invm=False
-                        Opts['doVMLD']=True
-                elif(arg[n]=='--novmld'):
+                        Opts["doVMLD"]=True
+                elif(arg[n]=="--novmld"):
                         inic=False
                         invm=False
-                        Opts['doVMLD']=False
-                elif(arg[n]=='--vmbld'):
+                        Opts["doVMLD"]=False
+                elif(arg[n]=="--vmbld"):
                         inic=False
                         invm=False
-                        Opts['doVMBLD']=True
-                elif(arg[n]=='--novmbld'):
+                        Opts["doVMBLD"]=True
+                elif(arg[n]=="--novmbld"):
                         inic=False
                         invm=False
-                        Opts['doVMBLD']=False
-                elif(arg[n]=='--vmard'):
+                        Opts["doVMBLD"]=False
+                elif(arg[n]=="--vmard"):
                         inic=False
                         invm=False
-                        Opts['doVMARD']=True
-                elif(arg[n]=='--novmard'):
+                        Opts["doVMARD"]=True
+                elif(arg[n]=="--novmard"):
                         inic=False
                         invm=False
-                        Opts['doVMARD']=False
+                        Opts["doVMARD"]=False
                 elif(inic):
-                        Opts['anic'].append(int(arg[n]))
+                        Opts["anic"].append(int(arg[n]))
                 elif(invm):
-                        Opts['aniMode'].append(int(arg[n]))
+                        Opts["aniMode"].append(int(arg[n]))
                 n += 1
         ifn=sys.argv[-1]
         #Create name/basename for output file
-        if(Opts['input']=='OrcaHess'):
+        if(Opts["input"]=="OrcaHess"):
                 ofn=ifn[:-5]
-        if(Opts['input']=='G09OUT'):
+        if(Opts["input"]=="G09OUT"):
                 ofn=ifn[:-4]
-        if(Opts['input']=='MOPAC2016'):
+        if(Opts["input"]=="MOPAC2016"):
                 ofn=ifn[:-4]
-        if(Opts['input']=='PDIELEC'):
+        if(Opts["input"]=="PDIELEC"):
                 ofn = os.path.splitext(ifn)[0]
         if(debug):
-                logging.basicConfig(filename=ofn+'.debug',
-                                    filemode='w',
+                logging.basicConfig(filename=ofn+".debug",
+                                    filemode="w",
                                     format="%(levelname)s:%(funcName)s: %(message)s",
                                     level=logging.DEBUG)
         else:
                 logging.basicConfig(level=logging.WARNING,format="%(levelname)s:%(funcName)s: %(message)s")
-        of=open(ofn+'.nma','w')
+        of=open(ofn+".nma","w")
         of.write("""###############################################################
 #                                                             #
 #   vibAnalysis - version 1.2.2                               #
@@ -1414,23 +1427,23 @@ Options:
 #                                                             #
 ###############################################################\n""")
         # Read Geometry, Masses, Frequencies and Vibrational Mode Displacements
-        if(Opts['input']=='OrcaHess'):
+        if(Opts["input"]=="OrcaHess"):
                 of.write("\nOpening Hess file: %s\n\n"%(ifn))
                 system=readHess(ifn)
-        elif(Opts['input']=='G09OUT'):
+        elif(Opts["input"]=="G09OUT"):
                 of.write("\nOpening Gaussian09 output file: %s\n\n"%(ifn))
                 system=readG09log(ifn)
-        elif(Opts['input']=='MOPAC2016'):
+        elif(Opts["input"]=="MOPAC2016"):
                 of.write("\nOpening MOPAC 2016 output file: %s\n\n"%(ifn))
                 system=readMopac2016(ifn)
-        elif(Opts['input']=='PDIELEC'):
+        elif(Opts["input"]=="PDIELEC"):
                 of.write("\nOpening using PDielec library : %s\n\n"%(ifn))
                 system=readPDielec(ifn)
         logging.debug(system.punch())
         ## If MW, mass-weight the normal modes
         # Orca's hess is not mass-weighted, but normalized
         # Gaussian's log is not mass-weighted, but normalized
-        if(Opts['doMWD']):
+        if(Opts["doMWD"]):
                 of.write("\nMass-weighting the atomic displacements...\n\n") #OLD
                 system.massWeightVibrations()
                 system.normalizeVibrations()
@@ -1441,7 +1454,7 @@ Options:
         of.write("\nGenerating Internal Coordinates...\n")
         makeIC(system,useric)
         # normalize S
-        if(Opts['doMWS']):
+        if(Opts["doMWS"]):
                 system.massWeightS()
         system.normalizeS()
         of.write("Internal Coordinates Generated: %d\n"%(len(system.intcoords)))
@@ -1453,28 +1466,28 @@ coordinates, please be sure to re-run this program with the
 same added coordinates.\n""")
         punchIC(of,system)
         ## Animate modes?
-        if(len(Opts['aniMode'])>0):
+        if(len(Opts["aniMode"])>0):
                 of.write("\n")
-                for mode in Opts['aniMode']:
+                for mode in Opts["aniMode"]:
                         tfn="%s.v%03d.xyz"%(ofn,mode)
                         of.write("Animating mode %d to file: %s\n"%(mode,tfn))
                         animateMode(tfn,system,mode-1)
                 of.write("\n")
-        if(len(Opts['anic'])>0):
+        if(len(Opts["anic"])>0):
                 of.write("\n")
-                for icidx in Opts['anic']:
+                for icidx in Opts["anic"]:
                         tfn="%s.i%03d.xyz"%(ofn,icidx)
                         of.write("Animating internal coordinate %d to file: %s\n"%(icidx,tfn))
                         animateIC(tfn,system,icidx-1)
                 of.write("\n")
         ## Do the analysis
-        if(Opts['doVMP']):
+        if(Opts["doVMP"]):
                 VMP(of,system)
-        if(Opts['doVMLD']):
+        if(Opts["doVMLD"]):
                 VMLD(of,system)
-        if(Opts['doVMBLD']):
+        if(Opts["doVMBLD"]):
                 VMBLD(of,system)
-        if(Opts['doVMARD']):
+        if(Opts["doVMARD"]):
                 VMARD(of,system)
         ## Print the final analysis
         printResults(of,system)
@@ -1482,5 +1495,5 @@ same added coordinates.\n""")
         of.close()
 
 
-if(__name__=='__main__'):
+if(__name__=="__main__"):
         main()

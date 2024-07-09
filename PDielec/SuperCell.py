@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""The SuperCell module
-"""
+"""The SuperCell module."""
 
 import numpy as np
 
@@ -77,7 +76,7 @@ class SuperCell:
         -----
         This method automatically invokes the createImages method at the end of initialization.
 
-        """        
+        """
         self.unitCell       = aUnitCell         # the unit cell on which everything is based
         self.imageList      = None              # a list of the images of the unit cell
         self.imageSpecifier = anImageSpecifier  # the specification used to create the imageList
@@ -87,7 +86,7 @@ class SuperCell:
         self.calculateXYZ()
 
     def print(self):
-        """Print the contents of the SuperCell
+        """Print the contents of the SuperCell.
 
         Parameters
         ----------
@@ -110,26 +109,26 @@ class SuperCell:
         ```
 
         """
-        print('SuperCell')
-        print_ints('Image_specifier',self.imageSpecifier)
+        print("SuperCell")
+        print_ints("Image_specifier",self.imageSpecifier)
         self.unitCell.print()
-        print('SuperCell Image list')
+        print("SuperCell Image list")
         for l in self.imageList:
-            print_ints('',l)
+            print_ints("",l)
         corners,edges = self.getBoundingBox()
-        print('SuperCell Corners')
+        print("SuperCell Corners")
         for corner in corners:
-            print_reals('',corner,format='{:12.6f}')
+            print_reals("",corner,format="{:12.6f}")
         if self.XYZ is not None:
             print()
-            print('SuperCell XYZ (Coordinates)')
+            print("SuperCell XYZ (Coordinates)")
             for xyz in self.XYZ:
-                print_reals('',xyz,format='{:12.6f}')
+                print_reals("",xyz,format="{:12.6f}")
         if len(self.bonds) > 0:
             print()
-            print('SuperCell Bond list')
+            print("SuperCell Bond list")
             for bond in self.bonds:
-                print_ints('',bond)
+                print_ints("",bond)
 
     def createImages(self,anImageSpecifier):
         """Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].
@@ -173,7 +172,7 @@ class SuperCell:
         """
         names = []
         cell_names = self.unitCell.element_names
-        for  i,j,k in self.imageList:
+        for  _i,_j,_k in self.imageList:
             names.extend( cell_names )
         #end for i,j,k
         return names
@@ -204,7 +203,7 @@ class SuperCell:
         normal_modes = np.zeros( (nmodes, mult*nions3) )
         for mode_index,mode in enumerate(modes):
             pos = 0
-            for  i,j,k in self.imageList:
+            for  _i,_j,_k in self.imageList:
                 for m in mode:
                   normal_modes[mode_index,pos] = m
                   pos += 1
@@ -262,19 +261,17 @@ class SuperCell:
         self.bonds = []
         natoms = self.unitCell.nions
         bonds = self.unitCell.bonds
-        cell = 0
-        for i,j,k in self.imageList:
+        for cell in range(len(self.imageList)):
             for na,nb in bonds:
               na += cell*natoms
               nb += cell*natoms
               self.bonds.append( (na,nb) )
             # end for na,nb
-            cell += 1
         #end for i,j,k
         return self.bonds
 
 
-    def getBoundingBox(self,originABC=[0,0,0]):
+    def getBoundingBox(self,originABC=None):
         """Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
 
         Return a box with 8 corners and 12 edges which represent the supercel in cartesian space
@@ -302,7 +299,9 @@ class SuperCell:
         -----
         The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
 
-        """        
+        """
+        if originABC is None:
+            originABC = [0.0, 0.0, 0.0]
         i,j,k = self.imageSpecifier
         i = float(i)
         j = float(j)
@@ -340,7 +339,9 @@ class SuperCell:
         return corners_xyz,edges
 
     def calculateCentreOfBox(self):
-        """This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.
+        """Calculate the centre of the super-cell in cartesian coordinates.
+
+        This is the centre of the box, not the centre of mass
 
         Parameters
         ----------
@@ -357,11 +358,10 @@ class SuperCell:
         j = 0.5*float(j)
         k = 0.5*float(k)
         ijk = [ i,j,k ]
-        centre = self.unitCell.convert_abc_to_xyz(ijk)
-        return centre
+        return self.unitCell.convert_abc_to_xyz(ijk)
 
 
-    def calculateCentreOfMass(self,output='xyz'):
+    def calculateCentreOfMass(self,output="xyz"):
         """Calculate the center of mass for a molecular structure.
 
         Parameters
@@ -382,7 +382,7 @@ class SuperCell:
             For any other value of `output`, returns a tuple containing the total mass (float), Cartesian
             coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.
 
-        """        
+        """
         # Calculate the centre of mass 
         # The centre of mass can be returned as 'xyz' space or 'abc' space
         # if output='all' a tuple of (mass,cm_xyz,cm_abc) is returned
@@ -398,13 +398,9 @@ class SuperCell:
         #end for i,j,k
         cm_fractional = cm_fractional/len(self.imageList)
         cm_xyz = self.unitCell.convert_abc_to_xyz(cm_fractional)
-        if output == 'xyz':
-            return cm_xyz
-        elif output == 'mass':
-            return mass
-        elif output == 'abc':
-            return cm_fractional
-        else:
-            return mass, cm_xyz, cm_fractional
-
-
+        return {
+            "xyz"  : cm_xyz,
+            "mass" : mass,
+            "abc"  : cm_fractional,
+            "all"  : (mass, cm_xyz, cm_fractional ),
+        }.get(output, (mass, cm_xyz, cm_fractional))

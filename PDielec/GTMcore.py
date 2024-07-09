@@ -1,4 +1,5 @@
-"""This file is part of the pyGTM module.
+"""The pyGTM module.
+
 It has been heavily modified by John Kendrick for inclusion in the PDielec library
 Quite a lot has been removed as the fields spatial distribution was not needed
 Thanks to the authors of the original code for all their hard work
@@ -102,7 +103,7 @@ c_const = speed_light_si
 eps0 = epsilon_0_si            # Doesn't appear to be used
 
 def vacuum_eps(f):
-    """Vacuum permittivity function
+    """Vacuum permittivity function.
 
     Parameters
     ----------
@@ -117,7 +118,7 @@ def vacuum_eps(f):
     """
     try:
         return np.ones(len(f))
-    except:
+    except Exception:
         return 1.0 + 0.0j
     
 def exact_inv_2x2(M):
@@ -125,7 +126,7 @@ def exact_inv_2x2(M):
 
     Parameters
     ----------
-    m : complex 2x2 array
+    M : complex 2x2 array
         The matrix of which to find the inverse.
 
     Returns
@@ -142,11 +143,11 @@ def exact_inv_2x2(M):
 
     
 def exact_inv_3x3(M):
-    """Calculate the inverse of a 3x3 complex matrix M
+    """Calculate the inverse of a 3x3 complex matrix M.
 
     Parameters
     ----------
-    m : complex 3x3 array
+    M : complex 3x3 array
         The matrix to be inverted.
 
     Returns
@@ -202,10 +203,10 @@ def exact_inv_4x4(M):
 
     if detA == 0:
         try:
-            print('Warning 4x4 inversion problem 1')
+            print("Warning 4x4 inversion problem 1")
             result = np.clongdouble(lag.pinv(np.cdouble(M)))
-        except:
-            print('Warning 4x4 inversion problem 2')
+        except Exception:
+            print("Warning 4x4 inversion problem 2")
             result = np.clongdouble(lag.pinv(np.complex64(M)))
         return result
 
@@ -230,15 +231,14 @@ def exact_inv_4x4(M):
     B[3, 2] = A[0, 0] * A[1, 2] * A[3, 1] + A[0, 1] * A[1, 0] * A[3, 2] + A[0, 2] * A[1, 1] * A[3, 0] - A[0, 0] * A[1, 1] * A[3, 2] - A[0, 1] * A[1, 2] * A[3, 0] - A[0, 2] * A[1, 0] * A[3, 1]
     B[3, 3] = A[0, 0] * A[1, 1] * A[2, 2] + A[0, 1] * A[1, 2] * A[2, 0] + A[0, 2] * A[1, 0] * A[2, 1] - A[0, 0] * A[1, 2] * A[2, 1] - A[0, 1] * A[1, 0] * A[2, 2] - A[0, 2] * A[1, 1] * A[2, 0]
 
-    out = B.T / detA
-    return out
+    return B.T / detA
 
 
 ###########################
 #### The Layer Class   ####
 ###########################
 class Layer:
-    """Layer class. An instance is a single layer:
+    """Layer class. An instance is a single layer.
     
     The inherited layer classes wich are used in PDielec are:
 
@@ -374,7 +374,7 @@ class Layer:
         self.set_euler(theta, phi, psi)        # set orientation of crystal axis w/ respect to the lab frame
 
     def isCoherent(self):
-        """Returns True if the layer is a coherent layer
+        """Return True if the layer is a coherent layer.
 
         Parameters
         ----------
@@ -390,7 +390,7 @@ class Layer:
 
 
     def set_thickness(self, thickness):
-        """Sets the layer thickness.
+        """Set the layer thickness.
 
         Parameters
         ----------
@@ -405,12 +405,12 @@ class Layer:
         self.thick = thickness
 
     def set_epsilon(self, epsilon_function):
-        """Sets the dielectric function.
+        """Set the dielectric function.
 
         Parameters
         ----------
-        epsilon : complex function
-            A complex function representing the dielectric function.
+        epsilon_function : complex function
+            A function representing the complex dielectric function.
 
         Returns
         -------
@@ -420,7 +420,7 @@ class Layer:
         self.epsilon_tensor_function = epsilon_function
 
     def calculate_epsilon(self, f_in):
-        """Sets the value of epsilon in the (rotated) lab frame.
+        """Set the value of epsilon in the (rotated) lab frame.
 
         Parameters
         ----------
@@ -453,7 +453,7 @@ class Layer:
 
 
     def set_euler(self,theta,phi,psi):
-        """Sets the values for the Euler rotations angles.
+        """Set the values for the Euler rotations angles.
 
         Parameters
         ----------
@@ -563,7 +563,7 @@ class Layer:
         self.Delta[3,3] = -S[1,2]
 
     def calculate_q(self):
-        """Calculates the 4 out-of-plane wavevectors for the current layer.
+        """Calculate the 4 out-of-plane wavevectors for the current layer.
 
         Parameters
         ----------
@@ -689,7 +689,7 @@ class Layer:
         return
         
     def calculate_gamma(self, zeta):
-        """Calculate the gamma matrix
+        """Calculate the gamma matrix.
 
         Parameters
         ----------
@@ -807,7 +807,7 @@ class Layer:
         return
 
     def calculate_transfer_matrix(self, f, zeta):
-        """Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
+        """Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`.
 
         Parameters
         ----------
@@ -828,7 +828,7 @@ class Layer:
         return
 
     def calculate_ai(self,zeta):
-        """Calculate A_i
+        """Calculate A_i.
 
         Boundary matrix :math:`A_i` of the layer.
 
@@ -848,6 +848,7 @@ class Layer:
 
     def update_tm(self, f, zeta):
         """Shortcut to recalculate all layer properties.
+
         Appropriate for a transfer matrix method
 
         Parameters
@@ -911,7 +912,7 @@ class Layer:
         return
 
     def calculate_propagation_exponents(self,f):
-        """Routine to calculate the propagation exponents
+        """Calculate the propagation exponents.
 
         Parameters
         ----------
@@ -924,7 +925,7 @@ class Layer:
         return
 
     def calculate_propagation_matrix(self,f):
-        """Routine to calculate the matrix Ki (or Pi depending on the paper)
+        """Calculate the matrix Ki (or Pi depending on the paper).
 
         Parameters
         ----------
@@ -954,8 +955,7 @@ class Layer:
 ### The Layer Sub Classes   ###
 ###############################
 class CoherentLayer(Layer):
-    """Define a coherent layer inherits from Layer class.
-    """
+    """Define a coherent layer inherits from Layer class."""
 
     def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of a coherent layer.
@@ -995,6 +995,7 @@ class CoherentLayer(Layer):
         Parameters
         ----------
         b : a pyGTM layer class
+            The second layer for which the scattering matrix will be calculated
 
         Returns
         -------
@@ -1053,8 +1054,7 @@ class CoherentLayer(Layer):
         return
 
 class SemiInfiniteLayer(CoherentLayer):
-    """Define a semi-infinite layer, inherits from CoherentLayer class.
-    """
+    """Define a semi-infinite layer, inherits from CoherentLayer class."""
 
     def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of a semi-infinite layer.
@@ -1085,7 +1085,7 @@ class SemiInfiniteLayer(CoherentLayer):
         return
 
     def calculate_propagation_exponents(self,f):
-        """Routine to calculate the propagation exponents
+        """Calculate the propagation exponents.
 
         For the semi-infinite case the propagation exponents are set to 0
 
@@ -1103,7 +1103,7 @@ class SemiInfiniteLayer(CoherentLayer):
         return
 
     def calculate_propagation_matrix(self,f):
-        """Routine to calculate the matrix Ki (or Pi) depending on the paper.
+        """Calculate the matrix Ki (or Pi) depending on the paper.
 
         This routine makes the material transparent. It is therefore suitable for 
         a semi-infinite layer.
@@ -1119,8 +1119,7 @@ class SemiInfiniteLayer(CoherentLayer):
 
         """
         self.calculate_propagation_exponents(f)
-        Ki = np.eye( 4, dtype=np.clongdouble)
-        return  Ki
+        return np.eye( 4, dtype=np.clongdouble)
         
 class IncoherentIntensityLayer(CoherentLayer):
     """Define an incoherent layer using intensity transfer matrices.
@@ -1194,7 +1193,7 @@ class IncoherentAveragePhaseLayer(CoherentLayer):
         return
 
     def calculate_propagation_exponents(self,f):
-        """Routine to calculate the matrix Ki (or Pi depending on the paper).
+        """Calculate the matrix Ki (or Pi depending on the paper).
 
         A phase shift is included in the calculation.
         The phase shift can vary between 0 and :math:`\pi`.
@@ -1251,7 +1250,7 @@ class IncoherentPhaseLayer(CoherentLayer):
         return
 
     def calculate_propagation_exponents(self,f):
-        """Routine to calculate the matrix Ki (or Pi) depending on the paper.
+        """Calculate the matrix Ki (or Pi) depending on the paper.
 
         This routine is taken from Arteaga et al., Thin Solid Films 2014, 571, 701-705.
         The propagation matrix is suitable for incoherent films. In Passler, the ordering is:
@@ -1346,6 +1345,7 @@ class IncoherentThickLayer(CoherentLayer):
         Parameters
         ----------
         b : pyGTM layer
+            The second layer
 
         Returns
         -------
@@ -1393,7 +1393,7 @@ class System:
 
     """
 
-    def __init__(self, substrate=None, superstrate=None, layers=[]):
+    def __init__(self, substrate=None, superstrate=None, layers=None):
         """Initialise the system for a transfer matrix calculation.
 
         Parameters
@@ -1402,11 +1402,12 @@ class System:
             The substrate should be semi-infinite, default is None
         superstrate : pyGTM layer, optional
             The superstrate must be semi-infinite, default is None
-        layers : list of pyGTM layers, default is an empty list
+        layers : list of pyGTM layers
+             default is an empty list
 
         """
         self.layers=[]
-        if len(layers)>0:
+        if layers is not None:
             self.layers=layers
 
         ## system transfer matrix
@@ -1423,7 +1424,7 @@ class System:
             self.superstrate=Layer() ## should default to 1µm of vacuum
 
     def set_substrate(self,sub):
-        """Sets the substrate.
+        """Set the substrate.
 
         Parameters
         ----------
@@ -1438,7 +1439,7 @@ class System:
         self.substrate=sub
 
     def set_superstrate(self,sup):
-        """Set the superstrate
+        """Set the superstrate.
 
         Parameters
         ----------
@@ -1453,7 +1454,7 @@ class System:
         self.superstrate=sup
 
     def get_all_layers(self):
-        """Returns the list of all layers in the system.
+        """Return the list of all layers in the system.
 
         Returns
         -------
@@ -1484,7 +1485,7 @@ class System:
         return self.layers[pos]
 
     def get_superstrate(self):
-        """Returns the System's superstrate.
+        """Return the System's superstrate.
 
         Parameters
         ----------
@@ -1499,7 +1500,7 @@ class System:
         return self.superstrate
 
     def get_substrate(self):
-        """Returns the System's substrate.
+        """Return the System's substrate.
 
         Parameters
         ----------
@@ -1553,10 +1554,10 @@ class System:
         if pos >= 0 and pos < len(self.layers):
             self.layers.pop(pos)
         else:
-            print('Wrong position given. No layer deleted')
+            print("Wrong position given. No layer deleted")
 
     def initialize_sys(self, f):
-        """Sets the values of epsilon at the given frequency in all the layers.
+        """Set the values of epsilon at the given frequency in all the layers.
 
         Parameters
         ----------
@@ -1580,6 +1581,7 @@ class System:
 
     def calculate_GammaStar(self,f, zeta_sys):
         """Calculate the whole system's transfer matrix.
+
         If one layer is incoherent then intensities rather than amplitudes are used
 
         Parameters
@@ -1779,7 +1781,7 @@ class TransferMatrixSystem(System):
     to distinguish itself from a system which uses the scattering matrix method
     """
 
-    def __init__(self, substrate=None, superstrate=None, layers=[]):
+    def __init__(self, substrate=None, superstrate=None, layers=None):
         """Initialize a new instance of the system with optional substrate, superstrate, and layers.
 
         Use for transfer matrix method calculations using the original pyGTM methods
@@ -1804,7 +1806,7 @@ class ScatteringMatrixSystem(System):
 
     """
 
-    def __init__(self, substrate=None, superstrate=None, layers=[]):
+    def __init__(self, substrate=None, superstrate=None, layers=None):
         """Initialize a new instance of the System class suitable for scattering matrix calculations.
 
         Parameters
@@ -1892,7 +1894,7 @@ class ScatteringMatrixSystem(System):
         return self.Stotal
 
     def calculate_r_t(self, zeta_sys):
-        """Calculate the reflectance and transmittance coefficients using scattering matrix information
+        """Calculate the reflectance and transmittance coefficients using scattering matrix information.
 
         Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
 
@@ -2021,7 +2023,7 @@ class SMatrix:
     """
 
     def __init__(self, S=None):
-        """Class to store a scattering matrix and to allow multiplication of matrices.
+        """Initialise a class to store a scattering matrix and to allow multiplication of matrices.
 
         Parameters
         ----------
@@ -2065,7 +2067,7 @@ class SMatrix:
         return
 
     def redheffer(self,b):
-        """Routine to calculate the product of S-matrices.
+        """Calculate the product of S-matrices.
 
         Parameters
         ----------
@@ -2095,7 +2097,7 @@ class SMatrix:
         return Sab
 
     def calculateS(self):
-        """Calculate and assign the scattering parameter matrix, S
+        """Calculate and assign the scattering parameter matrix, S.
 
         Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
 

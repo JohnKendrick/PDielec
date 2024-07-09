@@ -56,8 +56,8 @@ class CrystalOutputReader(GenericOutputReader):
 
         """        
         GenericOutputReader.__init__(self, filenames)
-        self.type                    = 'Crystal output'
-        self.hessian_symmetrisation  = 'crystal'
+        self.type                    = "Crystal output"
+        self.hessian_symmetrisation  = "crystal"
         self._fractional_coordinates = []
         return
 
@@ -72,18 +72,18 @@ class CrystalOutputReader(GenericOutputReader):
 
         """
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['masses']   = (re.compile(' ATOMS ISOTOPIC MASS'), self._read_masses)
-        self.manage['lattice']  = (re.compile(' DIRECT LATTICE VECTORS CARTESIAN COMPONENTS'), self._read_lattice_vectors)
-        self.manage['fractional']  = (re.compile(' ATOMS IN THE ASYMMETRIC UNIT'), self._read_fractional_coordinates)
-        self.manage['bornCharges']  = (re.compile(' ATOMIC BORN CHARGE TENSOR'), self._read_born_charges)
-        self.manage['eigenvectors']  = (re.compile(' NORMAL MODES NORMALIZ'), self._read_eigenvectors)
-        self.manage['staticIonic']  = (re.compile(' SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO '), self._read_ionic_dielectric)
-        self.manage['epsilon']  = (re.compile(' SUSCEPTIBILITY '), self._read_epsilon)
-        self.manage['kpoints']  = (re.compile(' SHRINK\. FACT\.\('), self._read_kpoints)
-        self.manage['electrons']  = (re.compile(' N\. OF ELECTRONS'), self._read_electrons)
-        self.manage['energy']  = (re.compile(' TOTAL ENERGY\(DFT\)'), self._read_energy)
-        self.manage['energy2']  = (re.compile(' TOTAL ENERGY + DISP'), self._read_energy2)
-        self.manage['energy3']  = (re.compile(' *CENTRAL POINT'), self._read_energy3)
+        self.manage["masses"]   = (re.compile(" ATOMS ISOTOPIC MASS"), self._read_masses)
+        self.manage["lattice"]  = (re.compile(" DIRECT LATTICE VECTORS CARTESIAN COMPONENTS"), self._read_lattice_vectors)
+        self.manage["fractional"]  = (re.compile(" ATOMS IN THE ASYMMETRIC UNIT"), self._read_fractional_coordinates)
+        self.manage["bornCharges"]  = (re.compile(" ATOMIC BORN CHARGE TENSOR"), self._read_born_charges)
+        self.manage["eigenvectors"]  = (re.compile(" NORMAL MODES NORMALIZ"), self._read_eigenvectors)
+        self.manage["staticIonic"]  = (re.compile(" SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO "), self._read_ionic_dielectric)
+        self.manage["epsilon"]  = (re.compile(" SUSCEPTIBILITY "), self._read_epsilon)
+        self.manage["kpoints"]  = (re.compile(" SHRINK\. FACT\.\("), self._read_kpoints)
+        self.manage["electrons"]  = (re.compile(" N\. OF ELECTRONS"), self._read_electrons)
+        self.manage["energy"]  = (re.compile(" TOTAL ENERGY\(DFT\)"), self._read_energy)
+        self.manage["energy2"]  = (re.compile(" TOTAL ENERGY + DISP"), self._read_energy2)
+        self.manage["energy3"]  = (re.compile(" *CENTRAL POINT"), self._read_energy3)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -337,7 +337,7 @@ class CrystalOutputReader(GenericOutputReader):
         _dynamical_matrix : Updates the dynamical matrix of the system using the processed Hessian matrix.
 
         """        
-        fd2 = pdielec_io(filename, 'r')
+        fd2 = pdielec_io(filename, "r")
         nmodes = self.nions*3
         # Create a mass weighting vector
         n = 0
@@ -480,7 +480,7 @@ class CrystalOutputReader(GenericOutputReader):
         None
 
         """        
-        fd2 = pdielec_io(filename, 'r')
+        fd2 = pdielec_io(filename, "r")
         self.born_charges = []
         for _i in range(self.nions):
             b = []
@@ -599,9 +599,9 @@ class CrystalOutputReader(GenericOutputReader):
         bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume('Angstrom')
+        self.volume = self.unit_cells[-1].getVolume("Angstrom")
         # The fractional coordinates are specified before the lattice vectors
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
         self.unit_cells[-1].set_element_names(self.species_list)

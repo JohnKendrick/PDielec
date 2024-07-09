@@ -1,5 +1,4 @@
-"""PyMieScatt package
-------------------
+"""PyMieScatt package.
 
 Routines taken from PyMieScatt 
 http://pymiescatt.readthedocs.io/en/latest
@@ -446,7 +445,7 @@ def AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=
   """    
   #  http://pymiescatt.readthedocs.io/en/latest/forward.html#AutoMieQ
   nMedium = nMedium.real
-  m_eff = m / nMedium
+  #jk m_eff = m / nMedium
   wavelength_eff = wavelength / nMedium
   x_eff = np.pi*diameter/wavelength_eff
   if x_eff==0:
@@ -706,7 +705,7 @@ def Mie_SD(m, wavelength, dp, ndp, nMedium=1.0, SMPS=True, interpolate=False, as
   else:
     return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio
 
-def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None):
+def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space="theta", angleMeasure="radians", normalization=None):
   """Calculate the scattering function for given parameters using the Mie theory.
 
   Parameters
@@ -771,14 +770,14 @@ def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngl
 
   _steps = int(1+(maxAngle-minAngle)/angularResolution) # default 361
 
-  if angleMeasure in ['radians','RADIANS','rad','RAD']:
+  if angleMeasure in ["radians","RADIANS","rad","RAD"]:
     adjust = np.pi/180
-  elif angleMeasure in ['gradians','GRADIANS','grad','GRAD']:
+  elif angleMeasure in ["gradians","GRADIANS","grad","GRAD"]:
     adjust = 1/200
   else:
     adjust = 1
 
-  if space in ['q','qspace','QSPACE','qSpace']:
+  if space in ["q","qspace","QSPACE","qSpace"]:
     # _steps *= 10
     _steps += 1
     if minAngle==0:
@@ -801,11 +800,11 @@ def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngl
     SL[j] = (np.sum(np.conjugate(S1)*S1)).real
     SR[j] = (np.sum(np.conjugate(S2)*S2)).real
     SU[j] = (SR[j]+SL[j])/2
-  if normalization in ['m','M','max','MAX']:
+  if normalization in ["m","M","max","MAX"]:
     SL /= np.max(SL)
     SR /= np.max(SR)
     SU /= np.max(SU)
-  elif normalization in ['t','T','total','TOTAL']:
+  elif normalization in ["t","T","total","TOTAL"]:
     SL /= trapz(SL,measure)
     SR /= trapz(SR,measure)
     SU /= trapz(SU,measure)
@@ -813,7 +812,7 @@ def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngl
     measure = (4*np.pi/wavelength)*np.sin(measure/2)*(diameter/2)
   return measure,SL,SR,SU
 
-def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None):
+def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space="theta", angleMeasure="radians", normalization=None):
   """Calculate the scattering function SD for given parameters and return the scattering intensities for left, right, and unpolarized light.
 
   Parameters
@@ -871,26 +870,26 @@ def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angular
   SL = np.zeros(_steps)
   SR = np.zeros(_steps)
   SU = np.zeros(_steps)
-  kwargs = {'minAngle':minAngle,
-            'maxAngle':maxAngle,
-            'angularResolution':angularResolution,
-            'space':space,
-            'normalization':None}
+  kwargs = {"minAngle":minAngle,
+            "maxAngle":maxAngle,
+            "angularResolution":angularResolution,
+            "space":space,
+            "normalization":None}
   for n,d in zip(ndp,dp):
     measure,l,r,u = ScatteringFunction(m,wavelength,d,**kwargs)
     SL += l*n
     SR += r*n
     SU += u*n
-  if normalization in ['n','N','number','particles']:
+  if normalization in ["n","N","number","particles"]:
     _n = trapz(ndp,dp)
     SL /= _n
     SR /= _n
     SU /= _n
-  elif normalization in ['m','M','max','MAX']:
+  elif normalization in ["m","M","max","MAX"]:
     SL /= np.max(SL)
     SR /= np.max(SR)
     SU /= np.max(SU)
-  elif normalization in ['t','T','total','TOTAL']:
+  elif normalization in ["t","T","total","TOTAL"]:
     SL /= trapz(SL,measure)
     SR /= trapz(SR,measure)
     SU /= trapz(SU,measure)

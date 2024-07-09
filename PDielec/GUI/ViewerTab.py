@@ -12,8 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""ViewerTab module
-"""
+"""ViewerTab module."""
 import os
 from collections import deque
 
@@ -48,8 +47,7 @@ from PDielec.Utilities import Debug
 
 
 class ViewerTab(QWidget):
-    """A class representing a viewer tab in a graphical user interface, specifically for visualizing
-    molecular structures and vibrational modes.
+    """A class representing a viewer tab in a graphical user interface, specifically for visualizing molecular structures and vibrational modes.
 
     This class integrates several widgets to enable the selection and visualization of various 
     parameters relevant to molecular structures and their vibrational modes. It allows for 
@@ -162,7 +160,7 @@ class ViewerTab(QWidget):
     """
 
     def __init__(self, parent, debug=False ):
-        """Initializes the viewer tab with default settings, UI components, and signal connections.
+        """Initialise the viewer tab with default settings, UI components, and signal connections.
 
         Parameters
         ----------
@@ -182,29 +180,29 @@ class ViewerTab(QWidget):
         """        
         super(QWidget, self).__init__(parent)
         global debugger
-        debugger = Debug(debug,'ViewerTab')
-        debugger.print('Start:: initialisation')
+        debugger = Debug(debug,"ViewerTab")
+        debugger.print("Start:: initialisation")
         self.debug = debug
         self.refreshRequired = True
-        self.setWindowTitle('Viewer')
+        self.setWindowTitle("Viewer")
         self.settings = {}
         self.UVW = deque()
-        self.settings['Selected mode'] = 4
-        self.settings['Atom scaling'] = 0.5
-        self.settings['Maximum displacement']  = 1.0
-        self.settings['Bond colour']           = [  80,  80,  80, 255 ]
-        self.settings['Bond radius']           = 0.1
-        self.settings['Cell colour']           = [ 255,   0,   0, 255 ]
-        self.settings['Cell radius']           = 0.1
-        self.settings['Background colour']     = [ 120, 120, 120, 255 ]
-        self.settings['Arrow colour']          = [   0, 255,   0, 255 ]
-        self.settings['Arrow radius']          = 0.07
-        self.settings['Number of phase steps'] = 41
-        self.settings['Super Cell'] =  [ 1, 1, 1 ]
+        self.settings["Selected mode"] = 4
+        self.settings["Atom scaling"] = 0.5
+        self.settings["Maximum displacement"]  = 1.0
+        self.settings["Bond colour"]           = [  80,  80,  80, 255 ]
+        self.settings["Bond radius"]           = 0.1
+        self.settings["Cell colour"]           = [ 255,   0,   0, 255 ]
+        self.settings["Cell radius"]           = 0.1
+        self.settings["Background colour"]     = [ 120, 120, 120, 255 ]
+        self.settings["Arrow colour"]          = [   0, 255,   0, 255 ]
+        self.settings["Arrow radius"]          = 0.07
+        self.settings["Number of phase steps"] = 41
+        self.settings["Super Cell"] =  [ 1, 1, 1 ]
         self.light_switches = [False]*8
         self.light_switches[0] = True
         self.light_switches[1] = True
-        self.plot_types = ['Animation','Arrows','No arrows or animation']
+        self.plot_types = ["Animation","Arrows","No arrows or animation"]
         self.plot_type_index = 1
         self.number_of_molecules = 0
         self.unit_cell = None
@@ -213,13 +211,13 @@ class ViewerTab(QWidget):
         self.cell_corners = None
         # element_colours is a dictionary
         self.element_colours = elemental_colours
-        self.settings['Element colours'] = None
+        self.settings["Element colours"] = None
         self.element_names = []
         self.species       = []
         self.element_coloured_buttons = []
         self.bond_cell_background_arrow_buttons = []
-        self.bond_cell_background_arrow_names = ['Background','Cell','Bonds','Arrows']
-        self.image_filename = ''
+        self.bond_cell_background_arrow_names = ["Background","Cell","Bonds","Arrows"]
+        self.image_filename = ""
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -237,28 +235,28 @@ class ViewerTab(QWidget):
             self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
         else:
             self.selected_mode_sb.setRange(1,2000)
-        self.selected_mode_sb.setValue(self.settings['Selected mode'])
-        self.selected_mode_sb.setToolTip('Set the mode to be visualised')
+        self.selected_mode_sb.setValue(self.settings["Selected mode"])
+        self.selected_mode_sb.setToolTip("Set the mode to be visualised")
         self.selected_mode_sb.valueChanged.connect(self.on_selected_mode_changed)
-        label = QLabel('Select phonon mode', self)
-        label.setToolTip('Set the mode to be visualised')
+        label = QLabel("Select phonon mode", self)
+        label.setToolTip("Set the mode to be visualised")
         form.addRow(label, self.selected_mode_sb)
         # Add frequency of mode
         self.frequency_le = QLineEdit(self)
         self.frequency_le.setEnabled(False)
-        self.frequency_le.setText(f'{0.0}')
-        label = QLabel('Frequency (cm-1)', self)
+        self.frequency_le.setText(f"{0.0}")
+        label = QLabel("Frequency (cm-1)", self)
         form.addRow(label, self.frequency_le)
         #
         # The super-cell
         #
         self.super_cell_widget = QWidget(self)
-        self.super_cell_widget.setToolTip('Generate a super-cell')
+        self.super_cell_widget.setToolTip("Generate a super-cell")
         self.super_cell_hbox = QHBoxLayout()
         self.super_cell_spinBoxes = []
         super_cell_changed = [self.on_super_cell_changed_a, self.on_super_cell_changed_b, self.on_super_cell_changed_c]
-        super_cell_tooltip = ['Size in a', 'Size in b', 'Size in c']
-        for i,change_function,tip in zip(self.settings['Super Cell'],super_cell_changed,super_cell_tooltip):
+        super_cell_tooltip = ["Size in a", "Size in b", "Size in c"]
+        for change_function,tip in zip(super_cell_changed,super_cell_tooltip):
             spinBox = QSpinBox(self)
             spinBox.setToolTip(tip)
             spinBox.setRange(1,5)
@@ -274,8 +272,8 @@ class ViewerTab(QWidget):
         self.atom_scaling_sb.setRange(0.01,5.0)
         self.atom_scaling_sb.setSingleStep(0.1)
         self.atom_scaling_sb.setDecimals(2)
-        self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
-        self.atom_scaling_sb.setToolTip('Scale the covalent radii to determine the size of the atomic spheres')
+        self.atom_scaling_sb.setValue(self.settings["Atom scaling"])
+        self.atom_scaling_sb.setToolTip("Scale the covalent radii to determine the size of the atomic spheres")
         self.atom_scaling_sb.valueChanged.connect(self.on_atom_scaling_changed)
         #
         # The bond width
@@ -284,8 +282,8 @@ class ViewerTab(QWidget):
         self.bond_radius_sb.setRange(0.01,1.0)
         self.bond_radius_sb.setSingleStep(0.1)
         self.bond_radius_sb.setDecimals(2)
-        self.bond_radius_sb.setValue(self.settings['Bond radius'])
-        self.bond_radius_sb.setToolTip('Determines the size of the bonds drawn')
+        self.bond_radius_sb.setValue(self.settings["Bond radius"])
+        self.bond_radius_sb.setToolTip("Determines the size of the bonds drawn")
         self.bond_radius_sb.valueChanged.connect(self.on_bond_radius_changed)
         #
         # The cell width
@@ -294,8 +292,8 @@ class ViewerTab(QWidget):
         self.cell_radius_sb.setRange(0.01,1.0)
         self.cell_radius_sb.setSingleStep(0.1)
         self.cell_radius_sb.setDecimals(2)
-        self.cell_radius_sb.setValue(self.settings['Cell radius'])
-        self.cell_radius_sb.setToolTip('Determines the radius of the cell outline')
+        self.cell_radius_sb.setValue(self.settings["Cell radius"])
+        self.cell_radius_sb.setToolTip("Determines the radius of the cell outline")
         self.cell_radius_sb.valueChanged.connect(self.on_cell_radius_changed)
         #
         # The arrow radius
@@ -304,8 +302,8 @@ class ViewerTab(QWidget):
         self.arrow_radius_sb.setRange(0.01,1.0)
         self.arrow_radius_sb.setSingleStep(0.1)
         self.arrow_radius_sb.setDecimals(2)
-        self.arrow_radius_sb.setValue(self.settings['Arrow radius'])
-        self.arrow_radius_sb.setToolTip('Determines the radius of the arrow outline')
+        self.arrow_radius_sb.setValue(self.settings["Arrow radius"])
+        self.arrow_radius_sb.setToolTip("Determines the radius of the arrow outline")
         self.arrow_radius_sb.valueChanged.connect(self.on_arrow_radius_changed)
         #
         # The maximum displacement
@@ -314,31 +312,28 @@ class ViewerTab(QWidget):
         self.maximum_displacement_sb.setRange(0.1,10.0)
         self.maximum_displacement_sb.setSingleStep(0.1)
         self.maximum_displacement_sb.setDecimals(1)
-        self.maximum_displacement_sb.setValue(self.settings['Maximum displacement'])
-        self.maximum_displacement_sb.setToolTip('Set the size of the maximum displacement')
+        self.maximum_displacement_sb.setValue(self.settings["Maximum displacement"])
+        self.maximum_displacement_sb.setToolTip("Set the size of the maximum displacement")
         self.maximum_displacement_sb.valueChanged.connect(self.on_maximum_displacement_changed)
         #
         # Add a comb box to select which type of plot
         #
         self.plottype_cb = QComboBox(self)
-        self.plottype_cb.setToolTip('The plot can either be an animation or the modes can be shown by arrow')
+        self.plottype_cb.setToolTip("The plot can either be an animation or the modes can be shown by arrow")
         for choice in self.plot_types:
             self.plottype_cb.addItem(choice)
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         self.plottype_cb.currentIndexChanged.connect(self.on_plottype_cb_changed)
-        label = QLabel('Choose the plot type', self)
-        label.setToolTip('The plot can either be an animation or the modes can be shown by arrow')
+        label = QLabel("Choose the plot type", self)
+        label.setToolTip("The plot can either be an animation or the modes can be shown by arrow")
         form.addRow(label, self.plottype_cb)
         #
         # Light switches
         #
         self.light_switches_cb = QComboBox(self)
-        self.light_switches_cb.setToolTip('Toogle the light switches on or off')
+        self.light_switches_cb.setToolTip("Toogle the light switches on or off")
         for index,light in enumerate(self.light_switches):
-            if light:
-                string = f'switch light {index} off'
-            else:
-                string = f'switch light {index} on'
+            string = f"switch light {index} off" if light else f"switch light {index} on"
             self.light_switches_cb.addItem(string)
         self.light_switches_cb.activated.connect(self.on_light_switches_cb_activated)
         #
@@ -350,7 +345,7 @@ class ViewerTab(QWidget):
         for el in self.species:
             r,g,b,a = self.element_colours[el]
             button = QPushButton(el)
-            button.setStyleSheet(f'background-color:rgba( {r}, {g}, {b}, {a});')
+            button.setStyleSheet(f"background-color:rgba( {r}, {g}, {b}, {a});")
             button.clicked.connect(self.on_coloured_element_clicked)
             self.element_coloured_buttons.append(button)
             self.element_coloured_hbox.addWidget(button)
@@ -361,11 +356,11 @@ class ViewerTab(QWidget):
         self.coloured_buttons_widget = QWidget(self)
         self.bond_cell_background_arrow_buttons = []
         hbox = QHBoxLayout()
-        button_colours = [  (r,g,b,a) for (r,g,b,a) in [self.settings['Background colour'], self.settings['Cell colour'], self.settings['Bond colour'],self.settings['Arrow colour']] ]
+        button_colours = [  (r,g,b,a) for (r,g,b,a) in [self.settings["Background colour"], self.settings["Cell colour"], self.settings["Bond colour"],self.settings["Arrow colour"]] ]
         self.bond_cell_background_arrow_buttons = []
         for col, name in zip(button_colours, self.bond_cell_background_arrow_names):
             button = QPushButton(name)
-            button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(*col))
+            button.setStyleSheet("background-color:rgba( {}, {}, {}, {});".format(*col))
             button.clicked.connect(self.on_coloured_button_clicked)
             self.bond_cell_background_arrow_buttons.append(button)
             hbox.addWidget(button)
@@ -375,40 +370,40 @@ class ViewerTab(QWidget):
         #
         self.settingsTab = QTabWidget(self)
         #self.settingsTab.currentChanged.connect(self.on_settingsTab_currentChanged)
-        self.settingsTab.addTab(self.coloured_elements_widget, 'Elements')
-        self.settingsTab.addTab(self.coloured_buttons_widget, 'Colours')
-        self.settingsTab.addTab(self.atom_scaling_sb, 'Atom Scaling')
-        self.settingsTab.addTab(self.super_cell_widget, 'Super Cell')
-        self.settingsTab.addTab(self.light_switches_cb, 'Lighting')
-        self.settingsTab.addTab(self.maximum_displacement_sb, 'Maximum Displacement')
-        self.settingsTab.addTab(self.bond_radius_sb, 'Bond Radius')
-        self.settingsTab.addTab(self.cell_radius_sb, 'Cell Radius')
-        self.settingsTab.addTab(self.arrow_radius_sb, 'Arrow Radius')
-        label = QLabel('Settings', self)
+        self.settingsTab.addTab(self.coloured_elements_widget, "Elements")
+        self.settingsTab.addTab(self.coloured_buttons_widget, "Colours")
+        self.settingsTab.addTab(self.atom_scaling_sb, "Atom Scaling")
+        self.settingsTab.addTab(self.super_cell_widget, "Super Cell")
+        self.settingsTab.addTab(self.light_switches_cb, "Lighting")
+        self.settingsTab.addTab(self.maximum_displacement_sb, "Maximum Displacement")
+        self.settingsTab.addTab(self.bond_radius_sb, "Bond Radius")
+        self.settingsTab.addTab(self.cell_radius_sb, "Cell Radius")
+        self.settingsTab.addTab(self.arrow_radius_sb, "Arrow Radius")
+        label = QLabel("Settings", self)
         form.addRow(label,self.settingsTab)
         #
         # Add buttons to save a png or movie
         #
         hbox = QHBoxLayout()
         self.filename_le = QLineEdit(self)
-        self.filename_le.setToolTip('Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.')
+        self.filename_le.setToolTip("Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.")
         self.filename_le.setText(self.image_filename)
         self.filename_le.textChanged.connect(self.on_filename_le_changed)
         self.filename_le.returnPressed.connect(self.on_filename_le_return)
-        self.png_filename_button = QPushButton('Save as png')
+        self.png_filename_button = QPushButton("Save as png")
         self.png_filename_button.clicked.connect(self.on_filename_button_clicked)
-        self.png_filename_button.setToolTip('Save the image as a png file with arrows')
-        self.mp4_filename_button = QPushButton('Save as mp4')
+        self.png_filename_button.setToolTip("Save the image as a png file with arrows")
+        self.mp4_filename_button = QPushButton("Save as mp4")
         self.mp4_filename_button.clicked.connect(self.on_filename_button_clicked)
-        self.mp4_filename_button.setToolTip('Save the animation as an mp4/avi file')
-        self.gif_filename_button = QPushButton('Save as gif')
+        self.mp4_filename_button.setToolTip("Save the animation as an mp4/avi file")
+        self.gif_filename_button = QPushButton("Save as gif")
         self.gif_filename_button.clicked.connect(self.on_filename_button_clicked)
-        self.gif_filename_button.setToolTip('Save the animation as a gif file')
-        self.cif_filename_button = QPushButton('Save as cif')
+        self.gif_filename_button.setToolTip("Save the animation as a gif file")
+        self.cif_filename_button = QPushButton("Save as cif")
         self.cif_filename_button.clicked.connect(self.on_filename_button_clicked)
-        self.cif_filename_button.setToolTip('Save the animation as a cif file')
-        label = QLabel('Image file name', self)
-        label.setToolTip('Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.')
+        self.cif_filename_button.setToolTip("Save the animation as a cif file")
+        label = QLabel("Image file name", self)
+        label.setToolTip("Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.")
         hbox.addWidget(self.filename_le)
         hbox.addWidget(self.png_filename_button)
         hbox.addWidget(self.mp4_filename_button)
@@ -425,10 +420,10 @@ class ViewerTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
-        debugger.print('Finished:: initialisation')
+        debugger.print("Finished:: initialisation")
 
     def on_filename_le_return(self):
-        """Handles the event triggered by the return key press within the filename input field.
+        """Handle the event triggered by the return key press within the filename input field.
 
         This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It primarily invokes the filename button click event handler, simulating a click operation on the associated button.
 
@@ -441,7 +436,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on filename le return pressed')
+        debugger.print("on filename le return pressed")
         self.on_filename_button_clicked(True)
         return
 
@@ -460,12 +455,12 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on filename le changed', text)
+        debugger.print("on filename le changed", text)
         self.image_filename = text
         return
 
     def on_filename_button_clicked(self,boolean):
-        """Handles the action triggered by clicking the filename button.
+        """Handle the action triggered by clicking the filename button.
 
         This method checks if the selected filename has a valid extension and exists. If any 
         checks fail, it alerts the user and aborts the operation. Otherwise, it proceeds to 
@@ -492,7 +487,7 @@ class ViewerTab(QWidget):
         the application's cursor is restored to its default state after the operation completes.
 
         """        
-        debugger.print('on filename button clicked')
+        debugger.print("on filename button clicked")
         #button = self.sender()
         #text = button.text()
         #
@@ -500,12 +495,9 @@ class ViewerTab(QWidget):
         #
         filename = self.image_filename
         root,extension = os.path.splitext(filename)
-        valid_extension = ( extension == '.mp4' or extension == '.avi' or extension == '.png' or extension == '.gif' or extension == '.cif' )
-        if filename == '' or not valid_extension:
-            debugger.print('Aborting on filename button clicked', filename)
-            debugger.print('Aborting on filename button clicked', valid_extension)
-            debugger.print('Aborting on filename button clicked', extension)
-            QMessageBox.about(self,'Image file name', 'The file name for the image is not valid '+filename)
+        if filename == "" or extension not in (".mp4", ".avi", ".png", ".gif", ".cif" ):
+            debugger.print("Aborting on filename button clicked", filename)
+            QMessageBox.about(self,"Image file name", "The file name for the image is not valid "+filename)
             return
         #
         # The filename will be opened in the directory of the output file which was read in mainTab
@@ -516,11 +508,11 @@ class ViewerTab(QWidget):
         #
         old_plot_type = self.plot_type_index
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        if extension == '.png':
+        if extension == ".png":
             self.opengl_widget.snapshot(filename)
-        elif extension == '.avi' or extension == '.mp4' or extension == '.gif':
+        elif extension in ( ".avi", ".mp4", ".gif" ):
             self.opengl_widget.save_movie(filename)
-        elif extension == '.cif':
+        elif extension == ".cif":
             self.save_cif(filename)
         self.plot_type_index = old_plot_type
         QApplication.restoreOverrideCursor()
@@ -543,9 +535,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        a,b,c = self.settings['Super Cell']
+        a,b,c = self.settings["Super Cell"]
         a = newa
-        self.settings['Super Cell'] =  [ a, b, c ]
+        self.settings["Super Cell"] =  [ a, b, c ]
         self.refreshRequired = True
         self.refresh()
         return
@@ -567,9 +559,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        a,b,c = self.settings['Super Cell']
+        a,b,c = self.settings["Super Cell"]
         b = newb
-        self.settings['Super Cell'] =  [ a, b, c ]
+        self.settings["Super Cell"] =  [ a, b, c ]
         self.refreshRequired = True
         self.refresh()
         return
@@ -591,9 +583,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        a,b,c = self.settings['Super Cell']
+        a,b,c = self.settings["Super Cell"]
         c = newc
-        self.settings['Super Cell'] =  [ a, b, c ]
+        self.settings["Super Cell"] =  [ a, b, c ]
         self.refreshRequired = True
         self.refresh()
         return
@@ -614,7 +606,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on coloured elements clicked')
+        debugger.print("on coloured elements clicked")
         button = self.sender()
         text = button.text()
         colourChooser = QColorDialog()
@@ -623,7 +615,7 @@ class ViewerTab(QWidget):
         colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         self.element_colours[text] = rgba
-        self.settings['Element colours'] = [ self.element_colours[el] for el in self.species ]
+        self.settings["Element colours"] = [ self.element_colours[el] for el in self.species ]
         self.refreshRequired = True
         self.refresh()
         return
@@ -643,7 +635,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on coloured button clicked')
+        debugger.print("on coloured button clicked")
         button = self.sender()
         text = button.text()
         colourChooser = QColorDialog()
@@ -651,14 +643,14 @@ class ViewerTab(QWidget):
             return
         colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
-        if text == 'Background':
-            self.settings['Background colour'] = rgba
-        elif text == 'Cell':
-            self.settings['Cell colour'] = rgba
-        elif text == 'Bonds':
-            self.settings['Bond colour'] = rgba
-        elif text == 'Arrows':
-            self.settings['Arrow colour'] = rgba
+        if text == "Background":
+            self.settings["Background colour"] = rgba
+        elif text == "Cell":
+            self.settings["Cell colour"] = rgba
+        elif text == "Bonds":
+            self.settings["Bond colour"] = rgba
+        elif text == "Arrows":
+            self.settings["Arrow colour"] = rgba
         self.refreshRequired = True
         self.refresh()
         return
@@ -677,12 +669,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on_light_switches_cb_activated')
+        debugger.print("on_light_switches_cb_activated")
         self.light_switches[index] = not self.light_switches[index]
-        if self.light_switches[index]:
-            string = f'switch light {index} off'
-        else:
-            string = f'switch light {index} on'
+        string = f"switch light {index} off" if self.light_switches[index] else f"switch light {index} on"
         self.light_switches_cb.setItemText(index,string)
         self.opengl_widget.defineLights()
         self.calculate()
@@ -704,8 +693,8 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on maximum_displacement changed ', value)
-        self.settings['Maximum displacement'] = value
+        debugger.print("on maximum_displacement changed ", value)
+        self.settings["Maximum displacement"] = value
         self.calculate()
         self.plot()
         return
@@ -726,8 +715,8 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on atom_scaling changed ', value)
-        self.settings['Atom scaling'] = value
+        debugger.print("on atom_scaling changed ", value)
+        self.settings["Atom scaling"] = value
         self.calculate()
         self.plot()
         return
@@ -747,8 +736,8 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on arrow_radius changed ', value)
-        self.settings['Arrow radius'] = value
+        debugger.print("on arrow_radius changed ", value)
+        self.settings["Arrow radius"] = value
         self.calculate()
         self.plot()
         return
@@ -769,8 +758,8 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on cell_radius changed ', value)
-        self.settings['Cell radius'] = value
+        debugger.print("on cell_radius changed ", value)
+        self.settings["Cell radius"] = value
         self.calculate()
         self.plot()
         return
@@ -791,8 +780,8 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on_bond_radius_changed')
-        self.settings['Bond radius'] = value
+        debugger.print("on_bond_radius_changed")
+        self.settings["Bond radius"] = value
         self.calculate()
         self.plot()
         return
@@ -814,22 +803,22 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on_selected_mode_changed')
+        debugger.print("on_selected_mode_changed")
         if self.frequencies_cm1 is None or len(self.frequencies_cm1) < 1:
-           debugger.print('on_selected_mode_changed aborting')
+           debugger.print("on_selected_mode_changed aborting")
            return
-        debugger.print('on selected_mode change mode was ', self.settings['Selected mode'])
-        self.settings['Selected mode'] = self.selected_mode_sb.value()
-        debugger.print('on selected_mode change mode is now ', self.settings['Selected mode'])
-        self.frequency_le.setText('{:.5f}'.format(self.frequencies_cm1[self.settings['Selected mode']-1]))
+        debugger.print("on selected_mode change mode was ", self.settings["Selected mode"])
+        self.settings["Selected mode"] = self.selected_mode_sb.value()
+        debugger.print("on selected_mode change mode is now ", self.settings["Selected mode"])
+        self.frequency_le.setText("{:.5f}".format(self.frequencies_cm1[self.settings["Selected mode"]-1]))
         self.opengl_widget.deleteArrows()
-        maxR = np.max( np.abs(np.array(self.UVW[self.settings['Selected mode']-1])))
+        maxR = np.max( np.abs(np.array(self.UVW[self.settings["Selected mode"]-1])))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
             self.plot_type_index = 2
-        arrow_scaling = self.settings['Maximum displacement'] / maxR
-        for uvw in self.UVW[self.settings['Selected mode']-1]:
-            self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
+        arrow_scaling = self.settings["Maximum displacement"] / maxR
+        for uvw in self.UVW[self.settings["Selected mode"]-1]:
+            self.opengl_widget.addArrows( self.settings["Arrow colour"],self.settings["Arrow radius"], uvw, arrow_scaling )
         self.calculate()
         self.plot()
         return
@@ -851,9 +840,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('on_plottype_cb_changed')
+        debugger.print("on_plottype_cb_changed")
         self.plot_type_index = index
-        debugger.print('Plot type index changed to ', self.plot_type_index)
+        debugger.print("Plot type index changed to ", self.plot_type_index)
         self.plot()
         return
 
@@ -869,21 +858,21 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: calculate')
+        debugger.print("Start:: calculate")
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
-        program = settings['Program']
+        program = settings["Program"]
         filename = self.notebook.mainTab.getFullFileName()
-        debugger.print('calculate program file name',program, filename)
+        debugger.print("calculate program file name",program, filename)
         self.reader = self.notebook.reader
         if self.reader is None:
-            debugger.print('Finished:: calculate - reader is None')
+            debugger.print("Finished:: calculate - reader is None")
             return
-        if program == '':
-            debugger.print('Finished:: calculate - program is blank')
+        if program == "":
+            debugger.print("Finished:: calculate - program is blank")
             return
-        if filename == '':
-            debugger.print('Finished:: calculate - filename is blank')
+        if filename == "":
+            debugger.print("Finished:: calculate - filename is blank")
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
@@ -911,12 +900,12 @@ class ViewerTab(QWidget):
         self.element_names = self.super_cell.getElementNames()
         self.species = self.reader.getSpecies()
         covalent_radii = self.notebook.analysisTab.element_radii
-        self.radii = [self.settings['Atom scaling']*covalent_radii[el] for el in self.element_names ]
+        self.radii = [self.settings["Atom scaling"]*covalent_radii[el] for el in self.element_names ]
         self.colours = [ self.element_colours[el] for el in self.element_names ]
         # reorder the displacement info in the normal modes into U,V and W lists
         # Using deque here rather than a simple list as the memory allocation doesn't have to be contiguous
         self.UVW.clear()
-        for mode,displacements in enumerate(self.normal_modes):
+        for displacements in self.normal_modes:
             uvw = deque()
             for i in range(0,len(displacements),3):
                 uvw.append( displacements[i:i+3] )
@@ -924,19 +913,19 @@ class ViewerTab(QWidget):
         # CalculatePhasePositions stores all the sphere and bond information
         self.calculatePhasePositions()
         # Add the arrows
-        debugger.print('calculate: Selected mode',self.settings['Selected mode'])
-        maxR = np.max( np.abs(np.array(self.UVW[self.settings['Selected mode']-1])))
+        debugger.print("calculate: Selected mode",self.settings["Selected mode"])
+        maxR = np.max( np.abs(np.array(self.UVW[self.settings["Selected mode"]-1])))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
             self.plot_type_index = 2
-        arrow_scaling = self.settings['Maximum displacement'] / maxR
+        arrow_scaling = self.settings["Maximum displacement"] / maxR
         self.opengl_widget.deleteArrows()
-        for uvw in self.UVW[self.settings['Selected mode']-1]:
-            self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
+        for uvw in self.UVW[self.settings["Selected mode"]-1]:
+            self.opengl_widget.addArrows( self.settings["Arrow colour"],self.settings["Arrow radius"], uvw, arrow_scaling )
         self.opengl_widget.setRotationCentre( centreOfMassXYZ )
         self.opengl_widget.setImageSize()
         QApplication.restoreOverrideCursor()
-        debugger.print('Finished:: calculate')
+        debugger.print("Finished:: calculate")
         return
 
     def setColour(self, element, colour):
@@ -962,13 +951,13 @@ class ViewerTab(QWidget):
         ```
 
         """        
-        debugger.print('setcolour')
-        if element == 'Background' or element == 'background':
-            self.settings['Background colour'] = colour
-        elif element == 'Cell' or element == 'cell':
-            self.settings['Cell colour'] = colour
-        elif element == 'Arrow' or element == 'arrow':
-            self.settings['Arrow colour'] = colour
+        debugger.print("setcolour")
+        if element in ( "Background" , "background" ):
+            self.settings["Background colour"] = colour
+        elif element in ( "Cell" , "cell" ):
+            self.settings["Cell colour"] = colour
+        elif element in ( "Arrow" , "arrow" ):
+            self.settings["Arrow colour"] = colour
         else:
             self.element_colours[element] = colour
         self.plot()
@@ -988,18 +977,18 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('calculatePhasePositions')
+        debugger.print("calculatePhasePositions")
         # we need the number of phase steps to be odd
-        if self.settings['Number of phase steps']%2 == 0:
-            self.settings['Number of phase steps'] += 1
-        UVW = np.array( self.UVW[self.settings['Selected mode']-1] )
+        if self.settings["Number of phase steps"]%2 == 0:
+            self.settings["Number of phase steps"] += 1
+        UVW = np.array( self.UVW[self.settings["Selected mode"]-1] )
         maxR = np.amax(np.abs(UVW))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
             self.plot_type_index = 2
-        self.scale_vibrations = self.settings['Maximum displacement'] / maxR
-        self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
-        n2 = int(self.settings['Number of phase steps']/2)
+        self.scale_vibrations = self.settings["Maximum displacement"] / maxR
+        self.newXYZ       = np.zeros( (self.settings["Number of phase steps"], self.natoms, 3) )
+        n2 = int(self.settings["Number of phase steps"]/2)
         delta = 1.0 / float(n2)
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
         for phase_index,phase in enumerate(phases):
@@ -1011,18 +1000,18 @@ class ViewerTab(QWidget):
         self.opengl_widget.deleteSpheres()
         self.opengl_widget.deleteCylinders()
         self.opengl_widget.createArrays(len(phases))
-        debugger.print('calculatePhasePositions - adding spheres and cylinders')
-        for phase_index, phase in enumerate(phases):
+        debugger.print("calculatePhasePositions - adding spheres and cylinders")
+        for phase_index in range(len(phases)):
             for col, rad, xyz in zip(self.colours, self.radii, self.newXYZ[phase_index]):
                 self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
             for p in self.cell_corners:
-                self.opengl_widget.addSphere(self.settings['Cell colour'], self.settings['Cell radius'], p, phase=phase_index )
+                self.opengl_widget.addSphere(self.settings["Cell colour"], self.settings["Cell radius"], p, phase=phase_index )
             for bond in self.bonds:
                 i,j = bond
-                self.opengl_widget.addCylinder(self.settings['Bond colour'], self.settings['Bond radius'], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
+                self.opengl_widget.addCylinder(self.settings["Bond colour"], self.settings["Bond radius"], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
             for p1,p2 in self.cell_edges:
-                self.opengl_widget.addCylinder(self.settings['Cell colour'], self.settings['Cell radius'], p1, p2, phase=phase_index)
-        debugger.print('calculatePhasePositions - exiting')
+                self.opengl_widget.addCylinder(self.settings["Cell colour"], self.settings["Cell radius"], p1, p2, phase=phase_index)
+        debugger.print("calculatePhasePositions - exiting")
         return
 
     def save_cif(self,filename):
@@ -1050,12 +1039,12 @@ class ViewerTab(QWidget):
         """        
         import copy
         unitcell = copy.deepcopy(self.unit_cell)
-        n2 = int(self.settings['Number of phase steps']/2)
+        n2 = int(self.settings["Number of phase steps"]/2)
         delta = 1.0 / float(n2)
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
-        with open(filename,'w') as fd:
+        with open(filename,"w") as fd:
             for phase_index,phase in enumerate(phases):
-                description = 'mode_'+str(self.settings['Selected mode']-1)+'_phase_'+str(phase)
+                description = "mode_"+str(self.settings["Selected mode"]-1)+"_phase_"+str(phase)
                 unitcell.set_xyz_coordinates(self.newXYZ[phase_index])
                 unitcell.write_cif(description,file_=fd)
 
@@ -1075,9 +1064,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: plot')
+        debugger.print("Start:: plot")
         if self.reader is None:
-            debugger.print('Finished:: plot reader is None')
+            debugger.print("Finished:: plot reader is None")
             return
         if self.plot_type_index == 0:
             self.plot_animation()
@@ -1085,7 +1074,7 @@ class ViewerTab(QWidget):
             self.plot_arrows()
         else:
             self.plot_none()
-        debugger.print('Finished:: plot')
+        debugger.print("Finished:: plot")
 
     def plot_none(self):
         """Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
@@ -1101,15 +1090,15 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: plot_animation')
+        debugger.print("Start:: plot_animation")
         self.opengl_widget.showArrows(False)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
-        debugger.print('Finished:: plot_animation')
+        debugger.print("Finished:: plot_animation")
         return
 
     def plot_animation(self):
-        """Initiates and displays an animation of a vibrational mode in an OpenGL widget.
+        """Initiate and display an animation of a vibrational mode in an OpenGL widget.
 
         This method controls the display of a predefined animation within 
         an OpenGL widget. It hides any arrows, triggers a visual update, 
@@ -1125,15 +1114,15 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: plot_animation')
+        debugger.print("Start:: plot_animation")
         self.opengl_widget.showArrows(False)
         self.opengl_widget.update()
         self.opengl_widget.startAnimation()
-        debugger.print('Finished:: plot_animation')
+        debugger.print("Finished:: plot_animation")
         return
 
     def plot_arrows(self):
-        """Plot arrows showing the vibrational mode of a molecule
+        """Plot arrows showing the vibrational mode of a molecule.
 
         This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.
 
@@ -1146,15 +1135,15 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: plot_arrows')
+        debugger.print("Start:: plot_arrows")
         self.opengl_widget.showArrows(True)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
-        debugger.print('Finished:: plot_arrows')
+        debugger.print("Finished:: plot_arrows")
         return
 
     def requestRefresh(self):
-        """Initiates a refresh request.
+        """Initiate a refresh request.
 
         This method sets an internal flag to indicate that a refresh is required.
 
@@ -1167,9 +1156,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print('Start:: requestRefresh')
+        debugger.print("Start:: requestRefresh")
         self.refreshRequired = True
-        debugger.print('Finished:: requestRefresh')
+        debugger.print("Finished:: requestRefresh")
 
     def refresh(self,force=False):
         """Refresh the state of the object, optionally forcing the refresh.
@@ -1195,11 +1184,11 @@ class ViewerTab(QWidget):
         - Debug statements are interspersed throughout for tracking the refresh process's progress.
 
         """        
-        debugger.print('Start:: refresh')
+        debugger.print("Start:: refresh")
         if not self.refreshRequired and not force:
-            debugger.print('Finished:: refresh aborted',self.refreshRequired,force)
+            debugger.print("Finished:: refresh aborted",self.refreshRequired,force)
             return
-        debugger.print('refresh widget',force)
+        debugger.print("refresh widget",force)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         #
         # Block signals during refresh
@@ -1209,26 +1198,23 @@ class ViewerTab(QWidget):
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         if self.frequencies_cm1 is not None and len(self.frequencies_cm1) > 1:
             self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
-            self.selected_mode_sb.setValue(self.settings['Selected mode'])
-            self.frequency_le.setText('{:.5f}'.format(self.frequencies_cm1[self.settings['Selected mode']-1]))
-        debugger.print('refresh: selected mode is now',self.selected_mode_sb.value())
-        self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
-        self.bond_radius_sb.setValue(self.settings['Bond radius'])
-        self.cell_radius_sb.setValue(self.settings['Cell radius'])
-        self.maximum_displacement_sb.setValue(self.settings['Maximum displacement'])
+            self.selected_mode_sb.setValue(self.settings["Selected mode"])
+            self.frequency_le.setText("{:.5f}".format(self.frequencies_cm1[self.settings["Selected mode"]-1]))
+        debugger.print("refresh: selected mode is now",self.selected_mode_sb.value())
+        self.atom_scaling_sb.setValue(self.settings["Atom scaling"])
+        self.bond_radius_sb.setValue(self.settings["Bond radius"])
+        self.cell_radius_sb.setValue(self.settings["Cell radius"])
+        self.maximum_displacement_sb.setValue(self.settings["Maximum displacement"])
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         for index,light in enumerate(self.light_switches):
-            if light:
-                string = f'switch light {index} off'
-            else:
-                string = f'switch light {index} on'
+            string = f"switch light {index} off" if light else f"switch light {index} on"
             self.light_switches_cb.setItemText(index,string)
         #
         # Colours list of buttons with element colours
         #
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
-            debugger.print('reader is none ')
+            debugger.print("reader is none ")
             self.element_names = []
             self.species = []
         else:
@@ -1236,34 +1222,34 @@ class ViewerTab(QWidget):
             self.unit_cell = self.notebook.analysisTab.cell_of_molecules
             self.element_names = self.unit_cell.element_names
             self.species = self.reader.getSpecies()
-            debugger.print('refresh - species ',self.species)
-            if self.settings['Element colours'] is not None:
-                debugger.print('refresh - processing colours ',self.species)
-                for el,colour in zip(self.species,self.settings['Element colours']):
+            debugger.print("refresh - species ",self.species)
+            if self.settings["Element colours"] is not None:
+                debugger.print("refresh - processing colours ",self.species)
+                for el,colour in zip(self.species,self.settings["Element colours"]):
                     self.element_colours[el] = colour
-            self.settings['Element colours'] = [ self.element_colours[el] for el in self.species ]
+            self.settings["Element colours"] = [ self.element_colours[el] for el in self.species ]
         count = self.element_coloured_hbox.count()
         if count == 0:
-            debugger.print('initialising element colours widget')
+            debugger.print("initialising element colours widget")
             self.element_coloured_buttons = []
             for el in self.species:
                 r,g,b,a = self.element_colours[el]
                 button = QPushButton(el)
-                button.setStyleSheet(f'background-color:rgba( {r}, {g}, {b}, {a});')
+                button.setStyleSheet(f"background-color:rgba( {r}, {g}, {b}, {a});")
                 button.clicked.connect(self.on_coloured_element_clicked)
                 self.element_coloured_buttons.append(button)
                 self.element_coloured_hbox.addWidget(button)
         else:
-            debugger.print('update element colours widget')
+            debugger.print("update element colours widget")
             for el,button in zip(self.species,self.element_coloured_buttons):
                 r,g,b,a = self.element_colours[el]
-                button.setStyleSheet(f'background-color:rgba( {r}, {g}, {b}, {a});')
+                button.setStyleSheet(f"background-color:rgba( {r}, {g}, {b}, {a});")
         #
         # Colours list of buttons with colours
         #
-        button_colours = [  (r,g,b,a) for (r,g,b,a) in [self.settings['Background colour'], self.settings['Cell colour'], self.settings['Bond colour'],self.settings['Arrow colour']] ]
+        button_colours = [  (r,g,b,a) for (r,g,b,a) in [self.settings["Background colour"], self.settings["Cell colour"], self.settings["Bond colour"],self.settings["Arrow colour"]] ]
         for col, button in zip(button_colours, self.bond_cell_background_arrow_buttons):
-            button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(*col))
+            button.setStyleSheet("background-color:rgba( {}, {}, {}, {});".format(*col))
         #
         # Filename
         #
@@ -1277,5 +1263,5 @@ class ViewerTab(QWidget):
         self.plot()
         self.refreshRequired = False
         QApplication.restoreOverrideCursor()
-        debugger.print('Finished:: refresh')
+        debugger.print("Finished:: refresh")
         return

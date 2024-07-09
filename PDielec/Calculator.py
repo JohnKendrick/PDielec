@@ -1308,9 +1308,9 @@ def bruggeman_minimise( eps1, eps2, shape, L, f2, size, epsbr):
     # in fact the second is imaginary and reconstructed in the _brug_minimise routine
     trace = np.trace(epsbr) / 3.0
     variables = np.array([np.real(trace), np.log(1.0 + np.abs(np.imag(trace)))])
-    options = {'xtol': 1.0e-4,
-               'ftol': 1.0E-4}
-    sol = sc.minimize(_brug_minimise_tensor, variables, method='Powell', args=(eps1, eps2, shape, L, f1, size), options=options)
+    options = {"xtol": 1.0e-4,
+               "ftol": 1.0E-4}
+    sol = sc.minimize(_brug_minimise_tensor, variables, method="Powell", args=(eps1, eps2, shape, L, f1, size), options=options)
     if not sol.success:
         print("A Bruggeman solution was not found at this frequency")
     variables = sol.x
@@ -1770,7 +1770,7 @@ def solve_effective_medium_equations(
     if size_mu < 1.0e-12:
         size_mu = 1.0e-12
     size = 2.0*np.pi*size_mu / lambda_mu
-    data = ''
+    data = ""
     # Calculate the permittivity of the matrix as an isotropic tensor at v_cm1
     dielectric_medium = matrixPermittivityFunction(v_cm1) * np.eye(3)
     # Calculate the crystal permittivity at this frequency
@@ -1781,7 +1781,7 @@ def solve_effective_medium_equations(
         refractive_index = refractive_index.conjugate()
     if bubble_vf > 0.0:
         if np.abs(refractive_index.imag) > 1.0e-12:
-            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+            print("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering",file=sys.stderr)
         effdielec,refractive_index = calculate_bubble_refractive_index(v_cm1, refractive_index.real, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
     # Choose which method to apply, the effective dielectric determined with bubbles will be used
@@ -1813,14 +1813,14 @@ def solve_effective_medium_equations(
         previous_solution_shared = effdielec
     elif method == "anisotropic-mie":
         if np.abs(refractive_index.imag) > 1.0E-6:
-            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+            print("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering",file=sys.stderr)
         effdielec = anisotropic_mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     elif method == "mie":
         if np.abs(refractive_index.imag) > 1.0E-6:
-            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+            print("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering",file=sys.stderr)
         effdielec = mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     else:
-        print(f'Unkown dielectric method: {method}')
+        print(f"Unkown dielectric method: {method}")
         sys.exit(1)
     # Average over all directions by taking the trace
     trace = (effdielec[0, 0] + effdielec[1, 1] + effdielec[2, 2]) / 3.0
@@ -2058,7 +2058,7 @@ def orthogonalise_projection_operator(ps):
                    if max_overlap < dotprod:
                        max_overlap = dotprod
    if cycle >= maxcyc:
-       print('WARNING Schmidt Orthogonalisation Failed', max_overlap)
+       print("WARNING Schmidt Orthogonalisation Failed", max_overlap)
        sys.exit()
    return ps
 
@@ -2211,7 +2211,7 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
         try:
             Z = W + pow(10,lambda_value) * (D.dot(D.transpose()))
         except Exception:
-            print('Warning overflow in Hodrick Prescott filter')
+            print("Warning overflow in Hodrick Prescott filter")
         z = sparse.linalg.spsolve(Z, w*y)
         w = damping*(y>z) + (1-damping)*(y<z)
     return y-z
@@ -2271,9 +2271,9 @@ def cleanup_symbol(s):
 
     """
     s = s.capitalize()
-    s = s.replace('_','')
+    s = s.replace("_","")
     for i in string.digits:
-        s = s.replace(i,'')
+        s = s.replace(i,"")
     return s
 
 def determineEulerAngles(R):
@@ -2370,9 +2370,9 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
 
      """
      if debugger is not None:
-         debugger.print('get_pool ncpus = ',ncpus)
-         debugger.print('get_pool threading = ',threading)
-         debugger.print('get_pool initializer = ',initializer)
+         debugger.print("get_pool ncpus = ",ncpus)
+         debugger.print("get_pool threading = ",threading)
+         debugger.print("get_pool initializer = ",initializer)
      # Switch off mkl threading
      try:
          import mkl

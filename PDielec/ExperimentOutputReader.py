@@ -76,7 +76,7 @@ class ExperimentOutputReader(GenericOutputReader):
 
         """        
         GenericOutputReader.__init__(self, names)
-        self.type                    = 'Experimental output'
+        self.type                    = "Experimental output"
         self._ion_type_index = {}
         self.CrystalPermittivity = None
         self.zerof_optical_dielectric = None
@@ -106,7 +106,7 @@ class ExperimentOutputReader(GenericOutputReader):
 
         """        
         line = self.file_descriptor.readline()
-        while not line.strip() or line[0] == '#':
+        while not line.strip() or line[0] == "#":
             line = self.file_descriptor.readline()
         return line
 
@@ -123,22 +123,22 @@ class ExperimentOutputReader(GenericOutputReader):
 
         """
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['lattice']       = (re.compile('lattice'),          self._read_lattice_vectors)
-        self.manage['CPK_LATTICE']   = (re.compile('&CELL'),            self._read_cpk_lattice_vectors)
-        self.manage['cpk_lattice']   = (re.compile('&cell'),            self._read_cpk_lattice_vectors)
-        self.manage['species']       = (re.compile('species'),          self._read_species)
-        self.manage['fractional']    = (re.compile('unitcell'),         self._read_fractional_coordinates)
-        self.manage['CPK_CARTESIANS']= (re.compile('&COORD'),           self._read_cpk_coords)
-        self.manage['cpk_cartesians']= (re.compile('&coord'),           self._read_cpk_coords)
-        self.manage['static']        = (re.compile('static'),           self._read_static_dielectric)
-        self.manage['epsinf']        = (re.compile('epsinf'),           self._read_static_dielectric)
-        self.manage['fpsq']          = (re.compile('fpsq'),             self._read_fpsq_model)
-        self.manage['drude-lorentz'] = (re.compile('drude-lorentz'),    self._read_drude_lorentz_model)
-        self.manage['constant']      = (re.compile('constant'),         self._read_constant_model)
+        self.manage["lattice"]       = (re.compile("lattice"),          self._read_lattice_vectors)
+        self.manage["CPK_LATTICE"]   = (re.compile("&CELL"),            self._read_cpk_lattice_vectors)
+        self.manage["cpk_lattice"]   = (re.compile("&cell"),            self._read_cpk_lattice_vectors)
+        self.manage["species"]       = (re.compile("species"),          self._read_species)
+        self.manage["fractional"]    = (re.compile("unitcell"),         self._read_fractional_coordinates)
+        self.manage["CPK_CARTESIANS"]= (re.compile("&COORD"),           self._read_cpk_coords)
+        self.manage["cpk_cartesians"]= (re.compile("&coord"),           self._read_cpk_coords)
+        self.manage["static"]        = (re.compile("static"),           self._read_static_dielectric)
+        self.manage["epsinf"]        = (re.compile("epsinf"),           self._read_static_dielectric)
+        self.manage["fpsq"]          = (re.compile("fpsq"),             self._read_fpsq_model)
+        self.manage["drude-lorentz"] = (re.compile("drude-lorentz"),    self._read_drude_lorentz_model)
+        self.manage["constant"]      = (re.compile("constant"),         self._read_constant_model)
         # The order of these interpolates is important !
-        self.manage['interpolate3']  = (re.compile('interpolate_3'),    self._read_interpolate3_model)
-        self.manage['interpolate6']  = (re.compile('interpolate_6'),    self._read_interpolate6_model)
-        self.manage['interpolate']   = (re.compile('interpolate'),      self._read_interpolate1_model)
+        self.manage["interpolate3"]  = (re.compile("interpolate_3"),    self._read_interpolate3_model)
+        self.manage["interpolate6"]  = (re.compile("interpolate_6"),    self._read_interpolate6_model)
+        self.manage["interpolate"]   = (re.compile("interpolate"),      self._read_interpolate1_model)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -193,11 +193,11 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(","," ")
         split_line = line.split()
         omegas = []
         eps    = []
-        while split_line[0] != '&end' and split_line[0] != 'end':
+        while split_line[0] != "&end" and split_line[0] != "end":
             omega  = float(split_line[0])
             epsr   = float(split_line[1])
             epsi   = float(split_line[2])
@@ -205,7 +205,7 @@ class ExperimentOutputReader(GenericOutputReader):
             eps.append(complex(epsr,epsi))
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(","," ")
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
@@ -233,13 +233,13 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(","," ")
         split_line = line.split()
         omegas = []
         epsxx = []
         epsyy = []
         epszz = []
-        while split_line[0] != '&end' and split_line[0] != 'end':
+        while split_line[0] != "&end" and split_line[0] != "end":
             omega  = float(split_line[0])
             epsrxx = float(split_line[1])
             epsixx = float(split_line[2])
@@ -253,7 +253,7 @@ class ExperimentOutputReader(GenericOutputReader):
             epszz.append(complex(epsrzz,epsizz))
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(","," ")
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
@@ -281,7 +281,7 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(","," ")
         split_line = line.split()
         omegas = []
         epsxx = []
@@ -290,7 +290,7 @@ class ExperimentOutputReader(GenericOutputReader):
         epsxy = []
         epsxz = []
         epsyz = []
-        while split_line[0] != '&end' and split_line[0] != 'end':
+        while split_line[0] != "&end" and split_line[0] != "end":
             omega  = float(split_line[0])
             epsrxx = float(split_line[1])
             epsixx = float(split_line[2])
@@ -313,7 +313,7 @@ class ExperimentOutputReader(GenericOutputReader):
             epsyz.append(complex(epsryz,epsiyz))
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(","," ")
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
@@ -537,12 +537,12 @@ class ExperimentOutputReader(GenericOutputReader):
         alpha = 90.0
         beta = 90.0
         gamma = 90.0
-        while split_line[0] != '&end' and split_line[0] != 'end':
-            if  split_line[0] == 'abc':
+        while split_line[0] != "&end" and split_line[0] != "end":
+            if  split_line[0] == "abc":
                 a = float(split_line[1])
                 b = float(split_line[2])
                 c = float(split_line[3])
-            elif split_line[0] == 'alpha_beta_gamma':
+            elif split_line[0] == "alpha_beta_gamma":
                 alpha = float(split_line[1])
                 beta = float(split_line[2])
                 gamma = float(split_line[3])
@@ -551,10 +551,10 @@ class ExperimentOutputReader(GenericOutputReader):
             line = line.lower()
             split_line = line.split()
         # end while
-        cell = UnitCell(a,b,c,alpha,beta,gamma,units='Angstrom')
+        cell = UnitCell(a,b,c,alpha,beta,gamma,units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume(units='Angstrom')
+        self.volume = cell.getVolume(units="Angstrom")
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setVolume(self.volume)
         return
@@ -587,10 +587,10 @@ class ExperimentOutputReader(GenericOutputReader):
         bvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
         line = self._read_line()
         cvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
-        cell = UnitCell(avector, bvector, cvector, units='Angstrom')
+        cell = UnitCell(avector, bvector, cvector, units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume('Angstrom')
+        self.volume = cell.getVolume("Angstrom")
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setVolume(self.volume)
         return
@@ -639,12 +639,12 @@ class ExperimentOutputReader(GenericOutputReader):
         """        
         line = self._read_line()
         line = line.lower()
-        line = line.replace(',',' ')
+        line = line.replace(","," ")
         split_line = line.split()
         species_list = []
         ions = []
         self.nspecies = 0
-        while split_line[0] != '&end' and split_line[0] != 'end':
+        while split_line[0] != "&end" and split_line[0] != "end":
             self.nions += 1
             species = line.split()[0]
             if species not in self.species:
@@ -661,10 +661,10 @@ class ExperimentOutputReader(GenericOutputReader):
             self.masses.append(self.masses_per_type[index])
             line = self._read_line()
             line = line.lower()
-            line = line.replace(',',' ')
+            line = line.replace(","," ")
             split_line = line.split()
         # end while
-        self.unit_cells[-1].set_xyz_coordinates(ions,units='Angstrom')
+        self.unit_cells[-1].set_xyz_coordinates(ions,units="Angstrom")
         self.unit_cells[-1].set_element_names(species_list)
         if self.oscillator_strengths is None:
             self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )

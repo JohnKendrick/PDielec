@@ -69,7 +69,7 @@ class CastepOutputReader(GenericOutputReader):
         self._phononfile             = seedname+".phonon"
         self.names                   = [self._castepfile, self._phononfile]
         self._outputfiles            = [self._castepfile, self._phononfile]
-        self.type                    = 'Castep output'
+        self.type                    = "Castep output"
         # Specific Castep Reader Variables
         self._pspots                  = {}
         self._ediff                   = 0.0
@@ -98,25 +98,25 @@ class CastepOutputReader(GenericOutputReader):
 
         """
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['spin']          = (re.compile(' *net spin   of'), self._read_spin)
-        self.manage['nelect']        = (re.compile(' *number of  electrons'), self._read_nelect)
-        self.manage['cellcontents']  = (re.compile(' *Unit Cell'), self._read_cellcontents)
-        self.manage['pspots']        = (re.compile(' *Files used for pseudopotentials:'), self._read_pspot)
-        self.manage['masses']        = (re.compile(' *Mass of species in AMU'), self._read_masses)
-        self.manage['kpoints']       = (re.compile(' *Number of kpoints used'), self._read_kpoints)
-        self.manage['kpoint_grid']   = (re.compile(' *MP grid size for SCF'), self._read_kpoint_grid)
-        self.manage['energies']   = (re.compile(' *Final energy, E'), self._read_energies)
-        self.manage['energies2']   = (re.compile('Final energy ='), self._read_energies2)
-        self.manage['energies3']        = (re.compile('Dispersion corrected final energy'), self._read_energies3)
-        self.manage['energy_cutoff'] = (re.compile(' *plane wave basis set cut'), self._read_energy_cutoff)
-        self.manage['convergence'] = (re.compile('.*finished iteration'), self._read_convergence)
-        self.manage['nbands']        = (re.compile(' *number of bands'), self._read_nbands)
-        self.manage['pressure']      = (re.compile(' *\* *Pressure: '), self._read_external_pressure)
-        self.manage['opticalDielectric']  = (re.compile(' *Optical Permittivity'), self._read_dielectric)
-        self.manage['bornCharges']    = (re.compile(' *Born Effective Charges'), self._read_born_charges)
+        self.manage["spin"]          = (re.compile(" *net spin   of"), self._read_spin)
+        self.manage["nelect"]        = (re.compile(" *number of  electrons"), self._read_nelect)
+        self.manage["cellcontents"]  = (re.compile(" *Unit Cell"), self._read_cellcontents)
+        self.manage["pspots"]        = (re.compile(" *Files used for pseudopotentials:"), self._read_pspot)
+        self.manage["masses"]        = (re.compile(" *Mass of species in AMU"), self._read_masses)
+        self.manage["kpoints"]       = (re.compile(" *Number of kpoints used"), self._read_kpoints)
+        self.manage["kpoint_grid"]   = (re.compile(" *MP grid size for SCF"), self._read_kpoint_grid)
+        self.manage["energies"]   = (re.compile(" *Final energy, E"), self._read_energies)
+        self.manage["energies2"]   = (re.compile("Final energy ="), self._read_energies2)
+        self.manage["energies3"]        = (re.compile("Dispersion corrected final energy"), self._read_energies3)
+        self.manage["energy_cutoff"] = (re.compile(" *plane wave basis set cut"), self._read_energy_cutoff)
+        self.manage["convergence"] = (re.compile(".*finished iteration"), self._read_convergence)
+        self.manage["nbands"]        = (re.compile(" *number of bands"), self._read_nbands)
+        self.manage["pressure"]      = (re.compile(" *\* *Pressure: "), self._read_external_pressure)
+        self.manage["opticalDielectric"]  = (re.compile(" *Optical Permittivity"), self._read_dielectric)
+        self.manage["bornCharges"]    = (re.compile(" *Born Effective Charges"), self._read_born_charges)
         #  For the .phonon file
-        self.manage['frequency']      = (re.compile('     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$'), self._read_frequencies)
-        self.manage['nbranches']      = (re.compile(' Number of branches'), self._read_nbranches)
+        self.manage["frequency"]      = (re.compile("     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$"), self._read_frequencies)
+        self.manage["nbranches"]      = (re.compile(" Number of branches"), self._read_nbranches)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -305,21 +305,21 @@ class CastepOutputReader(GenericOutputReader):
         None
 
         """        
-        line = self._read_till_phrase(re.compile(' *Real Lattice'))
+        line = self._read_till_phrase(re.compile(" *Real Lattice"))
         line = self.file_descriptor.readline()
         avector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
         bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        line = self._read_till_phrase(re.compile(' *Lattice*'))
-        line = self._read_till_phrase(re.compile(' *Current cell volume'))
+        line = self._read_till_phrase(re.compile(" *Lattice*"))
+        line = self._read_till_phrase(re.compile(" *Current cell volume"))
         self.volume = float(line.split()[4])
         self.volumes.append(float(line.split()[4]))
         if self.nions == 0:
-            line = self._read_till_phrase(re.compile(' *Total number of ions in cell'))
+            line = self._read_till_phrase(re.compile(" *Total number of ions in cell"))
             if len(self.unit_cells) == 1:
                 self.nions = int(line.split()[7])
                 line = self.file_descriptor.readline()
@@ -333,7 +333,7 @@ class CastepOutputReader(GenericOutputReader):
         # end if self.nions
         else:
             # Not all Unit Cell output is the same in Castep 17
-            line = self._read_till_phrase(re.compile(' *xxxxxxxxxxxxxxxxxxxxxxxxxxxx'))
+            line = self._read_till_phrase(re.compile(" *xxxxxxxxxxxxxxxxxxxxxxxxxxxx"))
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()

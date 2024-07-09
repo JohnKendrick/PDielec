@@ -12,13 +12,12 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""MainTab module
-"""
+"""MainTab module."""
 import os.path
 import platform
 
 import numpy as np
-from PyQt5.QtCore import QCoreApplication, QSize
+from PyQt5.QtCore import QCoreApplication, QSize, Qt
 from PyQt5.QtWidgets import (
     QComboBox,
     QFileDialog,
@@ -138,11 +137,16 @@ class MainTab(QWidget):
         debugger.print("Start:: initialising ",program, filename, excelfile)
         self.debug = debug
         self.settings = {}
+        # Deal with the case that "qe" is used
+        if program.lower() == "qe":
+            program = "Quantum Espresso"
+        if qm_program.lower() == "qe":
+            qm_program = "Quantum Espresso"
         if program != "":
-            self.settings["Program"] = program.lower()
+            self.settings["Program"] = program.capitalize()
         else:
-            self.settings["Program"] = "castep"
-        self.settings["QM program"] = qm_program.lower()
+            self.settings["Program"] = "Castep"
+        self.settings["Phonopy QM program"] = qm_program.capitalize()
         self.directory = os.path.dirname(filename)
         self.settings["Output file name"] = os.path.basename(filename)
         self.settings["Excel file name"] = excelfile
@@ -175,40 +179,32 @@ class MainTab(QWidget):
         self.program_cb.addItem("Quantum Espresso")
         self.program_cb.addItem("Vasp")
         self.program_cb.addItem("PDGui")
-        
-        self.program_qb = QComboBox(self)
-        self.program_qb.setToolTip("Choose QM program for phonopy")
-        self.program_qb.addItem("Abinit")
-        self.program_qb.addItem("Castep")
-        self.program_qb.addItem("Crystal")
-        self.program_qb.addItem("Vasp")
-        self.program_qb.addItem("Quantum Espresso")
-        
-
-        
-        prtext = self.settings["Program"].capitalize()
-        qmtext = self.settings["QM program"].capitalize()
-        if prtext == "Qe":
-            prtext = "Quantum Espresso"
-        elif prtext == "Vasp":
-            prtext = "VASP"
-            self.settings["QM program"] = "vasp"
-        if qmtext == "Qe":
-            qmtext = "Quantum Espresso"
-        elif qmtext == "Vasp":
-            qmtext = "VASP"
-            self.settings["QM program"] = "vasp"
+        index = self.program_cb.findText(self.settings["Program"], Qt.MatchFixedString)
+        if index >=0:
+            self.program_cb.setCurrentIndex(index)
         self.program_cb.activated.connect(self.on_program_cb_activated)
         label = QLabel("QM/MM Program ")
         label.setToolTip("Choose QM/MM program")
         form.addRow(label, self.program_cb)
-        self.program_qb.activated.connect(self.on_program_qb_activated)
+        #
+        # The phonopy QM combobox
+        self.phonopy_program_cb = QComboBox(self)
+        self.phonopy_program_cb.setToolTip("Choose QM program for Phonopy")
+        self.phonopy_program_cb.addItem("Abinit")
+        self.phonopy_program_cb.addItem("Castep")
+        self.phonopy_program_cb.addItem("Crystal")
+        self.phonopy_program_cb.addItem("Vasp")
+        self.phonopy_program_cb.addItem("Quantum Espresso")
+        index = self.phonopy_program_cb.findText(self.settings["Phonopy QM program"], Qt.MatchFixedString)
+        if index >=0:
+            self.phonopy_program_cb.setCurrentIndex(index)
+        self.phonopy_program_cb.activated.connect(self.on_phonopy_program_cb_activated)
+        self.phonopy_program_cb.setEnabled(False)
+        if self.settings["Program"] == "Phonopy":
+            self.phonopy_program_cb.setEnabled(True)
         label = QLabel("QM Program for Phonopy")
         label.setToolTip("QM Program for Phonopy")
-        form.addRow(label, self.program_qb)
-        self.program_qb.setEnabled(False)
-        
-        
+        form.addRow(label, self.phonopy_program_cb)
         #
         # The file selector
         #
@@ -272,15 +268,6 @@ class MainTab(QWidget):
         hbox.addWidget(self.scriptsfile_le)
         hbox.addWidget(script_button)
         form.addRow(label, hbox)
-        #jk #
-        #jk # Calculation button
-        #jk #
-        #jk self.calculation_button = QPushButton('Read the output file and start the calculation')
-        #jk self.calculation_button.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
-        #jk self.calculation_button.clicked.connect(self.on_calculation_button_clicked)
-        #jk #label = QLabel('Read and calculate')
-        #jk #label.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
-        #jk form.addRow(self.calculation_button)
         #jk # add form layout
         vbox.addLayout(form)
         # output window for unit cell
@@ -300,8 +287,8 @@ class MainTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         # If the filename was given then force it to be read and processed
-        if filename != '':
-            debugger.print('Reading output file in maintab initialisation')
+        if filename != "":
+            debugger.print("Reading output file in maintab initialisation")
             self.on_calculation_button_clicked()
         QCoreApplication.processEvents()
         debugger.print("Finished:: initialising ")
@@ -341,7 +328,7 @@ class MainTab(QWidget):
         return
 
     def on_excel_button_clicked(self):
-        """Handles the event triggered when Excel button is clicked.
+        """Handle the event triggered when Excel button is clicked.
 
         This function initiates the process of writing data to the Excel spreadsheet when the designated button is clicked in the UI. It prints log messages at the start and end of the operation.
 
@@ -388,7 +375,7 @@ class MainTab(QWidget):
         debugger.print("Finished:: on_calculation_button_clicked")
 
     def writeSpreadsheet(self):
-        """Writes data to the configured spreadsheet.
+        """Write data to the configured spreadsheet.
 
         This method encompasses the process of selecting the 'Main' worksheet,
         deleting the existing content on it, and writing down new settings and frequency
@@ -426,7 +413,7 @@ class MainTab(QWidget):
         return
 
     def read_output_file(self):
-        """Reads the output file specified in the settings, processes it, and updates the UI elements accordingly.
+        """Read the output file specified in the settings, process it, and updates the UI elements accordingly.
 
         Processes the output file indicated by the settings of the object. It performs several checks to ensure
         the file exists, is accessible, and contains valid data that can be read and processed. It extracts
@@ -443,7 +430,7 @@ class MainTab(QWidget):
 
         """        
         debugger.print("Start:: read_output_file")
-        debugger.print("Program =", self.settings["Program"], "QMProgram =", self.settings["QM program"])
+        debugger.print("Program =", self.settings["Program"], "QMProgram =", self.settings["Phonopy QM program"])
         if self.settings["Output file name"] == "":
             debugger.print("Finished:: read_output_file output file is blank")
             return
@@ -453,12 +440,12 @@ class MainTab(QWidget):
             debugger.print("Finished:: read_output_file output file does not exist")
             return
         debugger.print("Read output file - clear list widgets")
-        debugger.print(self.settings["Program"],[ filename ], self.settings["QM program"])
+        debugger.print(self.settings["Program"],[ filename ], self.settings["Phonopy QM program"])
         self.cell_window_w.clear()
         self.cell_window_l.setText("Unit-cell (Angstrom) from "+self.settings["Output file name"])
         self.frequencies_window.clear()
         self.frequencies_window_l.setText("Frequencies from "+self.settings["Output file name"])
-        self.reader = pdgui_get_reader(self.settings["Program"],[ filename ], self.settings["QM program"] )
+        self.reader = pdgui_get_reader(self.settings["Program"],[ filename ], self.settings["Phonopy QM program"] )
         
         if self.reader is None:
             print("Error in reading files - program  is ",self.settings["Program"])
@@ -474,7 +461,7 @@ class MainTab(QWidget):
         else:
             try:
                 self.reader.read_output()
-            except:
+            except Exception:
                 print("Error in reading output files - program  is ",self.settings["Program"])
                 print("Error in reading output files - filename is ",filename)
                 print("Need to choose the file and program properly")
@@ -550,6 +537,7 @@ class MainTab(QWidget):
         Parameters
         ----------
         text : str
+            The text of line editor for the scripts file
 
         Returns
         -------
@@ -584,7 +572,7 @@ class MainTab(QWidget):
     def on_file_button_clicked(self):
         """Handle the "Open file" button click event in the GUI.
 
-        This method is triggered upon clicking the "Open File" button in a graphical user interface. It facilitates the selection of an output file generated by various software tools (`castep`, `abinit`, `gulp`, `vasp`, `qe`, `crystal`, `phonopy`, `experiment`, `pdgui`, or any file type). Based on the selected file, it finds the corresponding program that generated the file, updates various settings in the application according to the detected program, sets the working directory to the location of the selected file, updates the GUI with the new output file name, and refreshes relevant parts of the application depending on whether the program is `pdgui` or another supported type.
+        This method is triggered upon clicking the "Open File" button in a graphical user interface. It facilitates the selection of an output file generated by various software tools (`Castep`, `Abinit`, `Gulp`, `Vasp`, `Quantum Espresso`, `Crystal`, `Phonopy`, `Experiment`, `Pdgui`, or any file type). Based on the selected file, it finds the corresponding program that generated the file, updates various settings in the application according to the detected program, sets the working directory to the location of the selected file, updates the GUI with the new output file name, and refreshes relevant parts of the application depending on whether the program is `pdgui` or another supported type.
 
         Parameters
         ----------
@@ -599,23 +587,23 @@ class MainTab(QWidget):
         # Open a file chooser
         #options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
-        if self.settings["Program"] == "castep":
+        if self.settings["Program"] == "Castep":
             selfilter = "Castep (*.castep)"
-        elif self.settings["Program"] == "abinit":
+        elif self.settings["Program"] == "Abinit":
             selfilter = "Abinit (*.out)"
-        elif self.settings["Program"] == "gulp":
+        elif self.settings["Program"] == "Gulp":
             selfilter = "Gulp (*.gout)"
-        elif self.settings["Program"] == "vasp":
+        elif self.settings["Program"] == "Vasp":
             selfilter = "VASP (OUTCAR*)"
-        elif self.settings["Program"] == "qe":
+        elif self.settings["Program"] == "Quantum Espresso":
             selfilter = "QE (*.dynG)"
-        elif self.settings["Program"] == "crystal":
+        elif self.settings["Program"] == "Crystal":
             selfilter = "Crystal 14 (*.out)"
-        elif self.settings["Program"] == "phonopy":
+        elif self.settings["Program"] == "Phonopy":
             selfilter = "Phonopy (*)"
-        elif self.settings["Program"] == "experiment":
+        elif self.settings["Program"] == "Experiment":
             selfilter = "Experiment (*.exp)"
-        elif self.settings["Program"] == "pdgui":
+        elif self.settings["Program"] == "Pdgui":
             selfilter = "PDGui (*.py)"
         else:
             selfilter = "All files (*)"
@@ -628,8 +616,8 @@ class MainTab(QWidget):
                 debugger.print("Proceeding with defaults",self.settings["Program"])
             else:
                 debugger.print("Program found from filename",program,filename)
-                self.settings["Program"] = program
-                self.settings["QM program"] = qmprogram
+                self.settings["Program"] = program.capitalize()
+                self.settings["Phonopy QM program"] = qmprogram.capitalize()
             self.directory = os.path.dirname(filename)
             self.notebook.app.setMyWindowTitle(self.directory)
             self.settings["Output file name"] = os.path.basename(filename)
@@ -725,7 +713,9 @@ class MainTab(QWidget):
                 debugger.print("Finished:: on_file_le_return ")
                 return
             self.settings["Program"] = program
-            self.settings["QM program"] = qmprogram
+            self.settings["Phonopy QM program"] = qmprogram
+            if self.settings["Program"] == "Phonopy":
+                  self.phonopy_program_cb.setEnabled(True)
             self.directory = os.path.dirname(os.path.abspath(filename))
             self.notebook.app.setMyWindowTitle(self.directory)
             self.settings["Output file name"] = os.path.basename(filename)
@@ -756,7 +746,7 @@ class MainTab(QWidget):
         return
 
     def on_file_le_changed(self, text):
-        """Handles changes to the file location input field.
+        """Handle changes to the file location input field.
 
         The new output file name is stored and a flag set to require re-calculations
 
@@ -779,10 +769,7 @@ class MainTab(QWidget):
         """Handle program selection change in a combobox and update settings accordingly.
 
         This method updates the program settings based on the user's selection from a combobox.
-        It specifically handles cases where the selected program is one of several predefined
-        options (`Phonopy - VASP`, `Phonopy - QE`, `Phonopy - Crystal`, `Quantum Espresso`),
-        adjusting both the general program setting and the more specific QM program setting
-        as necessary.
+        It specifically handles cases where the selected program is Phonopy
 
         Parameters
         ----------
@@ -802,43 +789,39 @@ class MainTab(QWidget):
         """        
         debugger.print("Start:: on_program_combobox_activated", index)
         debugger.print("on_program_combobox_activated", self.program_cb.currentText())
-        text = self.program_cb.currentText()
-        qmtext = self.program_qb.currentText()
-        self.settings["Program"] = text.lower()
-        self.settings["QM program"] = qmtext.lower()
-        if text == "Phonopy":
-            self.program_qb.setEnabled(True)
-            if qmtext == "vasp":
-                self.settings["QM program"] = "vasp"
-            elif qmtext == "crystal":
-                self.settings["QM program"] = "crystal"
-            elif qmtext == "castep":
-                self.settings["QM program"] = "castep"
-            elif qmtext == "qe":
-                self.settings["QM program"] = "qe"
-        elif text == "Quantum Espresso":
-            self.settings["Program"]   = "qe"
+        self.settings["Program"] = self.program_cb.currentText()
+        self.phonopy_program_cb.setEnabled(False)
+        if self.settings["Program"] == "Phonopy":
+            self.phonopy_program_cb.setEnabled(True)
         debugger.print("Program is now  ", self.settings["Program"])
-        debugger.print("QM program is now", self.settings["QM program"])
         self.calculationRequired = True
         debugger.print("Finished:: on_program_combobox_activated", index)
         
-    def on_program_qb_activated(self,index):
-        debugger.print("Start:: on_program_qmbox_activated", index)
-        debugger.print("on_program_qmbox_activated", self.program_qb.currentText())
-        text = self.program_cb.currentText()
-        qmtext = self.program_qb.currentText()
-        self.settings["QM program"] = qmtext.lower()
-        if qmtext == "vasp":
-            self.settings["QM program"] = "vasp"
-        elif qmtext == "crystal":
-            self.settings["QM program"] = "crystal"
-        elif qmtext == "castep":
-            self.settings["QM program"] = "castep"
-        elif qmtext == "qe":
-            self.settings["QM program"] = "qe"
-        debugger.print("Program is now  ", self.settings["Program"])
-        debugger.print("QM program is now", self.settings["QM program"])
+    def on_phonopy_program_cb_activated(self,index):
+        """Handle phonopy program selection change in a combobox and update settings accordingly.
+
+        This method updates the phonopy program settings based on the user's selection from a combobox.
+
+        Parameters
+        ----------
+        index : int
+            The index of the selected item in the combobox.
+
+        Returns
+        -------
+        None
+
+        Side Effects
+        ------------
+        - Updates the `settings` dictionary with the selected program and, if applicable,
+          the corresponding QM program.
+        - Sets `calculationRequired` attribute to `True`.
+
+        """        
+        debugger.print("Start:: on_phonopy_program_cb_activated", index)
+        debugger.print("on_program_qmbox_activated", self.phonopy_program_cb.currentText())
+        self.settings["Phonopy QM program"] = self.phonopy_program_cb.currentText()
+        debugger.print("Phonopy QM program is now", self.settings["Phonopy QM program"])
         self.calculationRequired = True
         debugger.print("Finished:: on_program_qmbox_activated", index)
 
@@ -886,22 +869,28 @@ class MainTab(QWidget):
         if not self.refreshRequired and not force:
             return
         #
+        # Handle some changes to the api to make things backwards compatible
+        #
+        if self.settings["Program"] == "qe":
+            self.settings["Program"] = "Quantum Espresso"
+        if self.settings["Phonopy QM program"] == "qe":
+            self.settings["Program"] = "Quantum Espresso"
+        self.settings["Program"] = self.settings["Program"].capitalize()
+        self.settings["Phonopy QM program"] = self.settings["Phonopy QM program"].capitalize()
+        #
         # Block signals during refresh
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
-        prtext = self.settings["Program"].capitalize()
-        qmtext = self.settings["QM program"].capitalize()
-        if prtext == "Qe":
-            prtext = "Quantum Espresso"
-        elif prtext == "Vasp":
-            prtext = "VASP"
-            self.settings["QM program"] = "vasp"
-        if qmtext == "Qe":
-            qmtext = "Quantum Espresso"
-        elif qmtext == "Vasp":
-            qmtext = "VASP"
-            self.settings["QM program"] = "vasp"
+        index = self.program_cb.findText(self.settings["Program"], Qt.MatchFixedString)
+        if index >=0:
+            self.program_cb.setCurrentIndex(index)
+        index = self.phonopy_program_cb.findText(self.settings["Phonopy QM program"], Qt.MatchFixedString)
+        if index >=0:
+            self.phonopy_program_cb.setCurrentIndex(index)
+        self.phonopy_program_cb.setEnabled(False)
+        if self.settings["Program"] == "Phonopy":
+            self.phonopy_program_cb.setEnabled(True)
         self.file_le.setText(self.settings["Output file name"])
         self.resultsfile_le.setText(self.settings["Excel file name"])
         if self.calculationRequired:

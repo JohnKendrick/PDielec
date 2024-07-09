@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Read the contents of a directory containing DFT output and create a pickled filed
-"""
+"""Read the contents of a directory containing DFT output and create a pickled file."""
 import sys
 
 import dill as pickle
@@ -34,14 +33,14 @@ def print_help():
 
     The function explicitly calls `exit()`, which terminates the program execution. This is used here to halt further execution after displaying the help information.
     """    
-    print('pickled_reader filenames', file=sys.stderr)
-    print('  Read in a pickled (actually using dill to pickle the object) reader            ', file=sys.stderr)
-    print('  The pickled file should have been created using preader -pickle                ', file=sys.stderr)
-    print('  Version ',version,file=sys.stderr)
-    exit()
+    print("pickled_reader filenames", file=sys.stderr)
+    print("  Read in a pickled (actually using dill to pickle the object) reader            ", file=sys.stderr)
+    print("  The pickled file should have been created using preader -pickle                ", file=sys.stderr)
+    print("  Version ",version,file=sys.stderr)
+    sys.exit()
 
 def main():
-    """Main program entry point.
+    """Enter point for main program.
 
      his function reads a serialized object from a pickle file specified as the first command line argument. It deserializes objects from the file until it reaches the end of the file and then iterates through these objects, printing their details and the details of their last unit cell.
 
@@ -85,21 +84,21 @@ def main():
     # Open the pickled file as binary and for reading only
     # keep reading until we reach an end of file
     #
-    with open(picklefile,'rb') as f:
+    with open(picklefile,"rb") as f:
         try:
             while True:
                 readers.append(pickle.load(f))
         except EOFError:
             pass
     #
-    print(f'Read in {len(readers)} readers')
+    print(f"Read in {len(readers)} readers")
     #
     # Loop over the readers and print out some information - assign a variable
     #
     for reader in readers:
-        print(f'NEW READER type={reader.type}, file={reader.names[0]}')
+        print(f"NEW READER type={reader.type}, file={reader.names[0]}")
         reader.print()
-        print('LAST CELL')
+        print("LAST CELL")
         lastcell = reader.get_unit_cell()
         lastcell.print()
     # End of for loop over readers

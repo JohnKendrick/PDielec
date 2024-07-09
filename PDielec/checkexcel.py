@@ -70,17 +70,16 @@ def main():
 
     """    
     if len(sys.argv) <= 1 :
-        print('checkexcel file file2 [-thresh 1.0E-3] [-f]', file=sys.stderr)
-        print('         Compare the two excel files for any significant changes', file=sys.stderr)
-        print('         Numbers f1 and f2 in each file are compared', file=sys.stderr)
-        print('         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold', file=sys.stderr)
-        print('         The default value for threshold is 1.0E-3 ', file=sys.stderr)
-        print('         -f forces a full comparison of the sheets ', file=sys.stderr)
-        print('            by default Settings and Scenarios are not included    ', file=sys.stderr)
-        exit()
+        print("checkexcel file file2 [-thresh 1.0E-3] [-f]", file=sys.stderr)
+        print("         Compare the two excel files for any significant changes", file=sys.stderr)
+        print("         Numbers f1 and f2 in each file are compared", file=sys.stderr)
+        print("         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold", file=sys.stderr)
+        print("         The default value for threshold is 1.0E-3 ", file=sys.stderr)
+        print("         -f forces a full comparison of the sheets ", file=sys.stderr)
+        print("            by default Settings and Scenarios are not included    ", file=sys.stderr)
+        sys.exit()
 
     threshold = 1.0E-3
-    separator = None
     tokens = sys.argv[1:]
     ntokens = len(tokens)-1
     itoken = -1
@@ -89,10 +88,10 @@ def main():
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
-        if token == '-thresh':
+        if token == "-thresh":
             itoken +=1
             threshold = float(tokens[itoken])
-        if token == '-f':
+        if token == "-f":
             full = True
         else:
             files.append(tokens[itoken])
@@ -115,25 +114,25 @@ def main():
     max_percentage_error = 0.0
     row = 0
     col = 0
-    sheet = ''
-    file1 = '' 
+    sheet = ""
+    file1 = "" 
     value1 = 0
-    file2 = '' 
+    file2 = "" 
     value2 = 0
     #
     # Loop over sheets
     #
-    sheets = ['Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
+    sheets = ["Powder Molar Absorption (cells)","Powder Absorption","Powder Real Permittivity","Powder Imaginary Permittivity", "Powder ATR Reflectance", "Analysis","Crystal R_p","Crystal R_s","Crystal T_p","Crystal T_s","Real Crystal Permittivity","Imag Crystal Permittivity"]
     if full:
-        sheets.append('Main')
-        sheets.append('Settings')
-        sheets.append('Scenarios')
+        sheets.append("Main")
+        sheets.append("Settings")
+        sheets.append("Scenarios")
     for sheet in sheets:
         if sheet not in wb1 :
             continue
         if sheet not in wb2 :
             continue
-        print('Checking sheet ',sheet)
+        print("Checking sheet ",sheet)
         ws1 = wb1[sheet]
         ws2 = wb2[sheet]
         max_rows1 = ws1.max_row
@@ -141,25 +140,21 @@ def main():
         max_columns1 = ws1.max_column
         max_columns2 = ws2.max_column
         if max_rows1 != max_rows2:
-            print('Error - the number rows in the sheet are not the same',sheet,max_rows1,max_rows2)
+            print("Error - the number rows in the sheet are not the same",sheet,max_rows1,max_rows2)
             nerrors += 1
             continue
         if max_columns1 != max_columns2:
-            print('Error - the number columns in the sheet are not the same',sheet,max_columns1,max_columns2)
+            print("Error - the number columns in the sheet are not the same",sheet,max_columns1,max_columns2)
             nerrors += 1
             continue
         #
         # Loop over rows
         #
-        row_index = 0
-        for row1,row2 in zip(ws1.rows, ws2.rows):
-            row_index += 1
-            col_index = 0
+        for row_index,(row1,row2) in enumerate(zip(ws1.rows, ws2.rows)):
             #
             # Loop over cells
             #
-            for cell1,cell2, in zip(row1,row2):
-                col_index += 1
+            for col_index,(cell1,cell2) in enumerate(zip(row1,row2)):
                 value1 = cell1.value
                 value2 = cell2.value
                 if cell1 is None and cell2 is None:
@@ -169,7 +164,7 @@ def main():
                     percentage_error = 0.0
                     error = (sheet, row_index, col_index, value1, value2, percentage_error)
                 elif value1 != value2:
-                    if value1 is not None and value2 is not None and cell1.data_type == 'n' and cell2.data_type == 'n':
+                    if value1 is not None and value2 is not None and cell1.data_type == "n" and cell2.data_type == "n":
                         #
                         # Flag an error which is numeric
                         #
@@ -189,11 +184,11 @@ def main():
                         # Remove any back or forward slashes to avoid problems with filenames in linux/windows
                         #
                         if isinstance(value1,str):
-                            value1 = value1.replace('\\','')
-                            value1 = value1.replace('/','')
+                            value1 = value1.replace("\\","")
+                            value1 = value1.replace("/","")
                         if isinstance(value2,str):
-                            value2 = value2.replace('\\','')
-                            value2 = value2.replace('/','')
+                            value2 = value2.replace("\\","")
+                            value2 = value2.replace("/","")
                         if value1 != value2:
                             nerrors += 1
                             error = (sheet, row_index, col_index, value1, value2, 0.0)
@@ -205,11 +200,11 @@ def main():
     # for sheet
     if error is not None:
         sheet,row,col,value1,value2,max_percentage_error = error
-        print('  '+colored('ERRORS:','red')+f'({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}')
+        print("  "+colored("ERRORS:","red")+f"({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}")
     elif nerrors > 0:
-        print('  '+colored('ERRORS:','red')+f'({nerrors}) Dimensions of spreadsheet were wrong                                    ')
+        print("  "+colored("ERRORS:","red")+f"({nerrors}) Dimensions of spreadsheet were wrong                                    ")
     else:
-        print('  '+colored('OK:','blue')+f" {file1} = {file2} -- max %error={max_percentage_error}")
+        print("  "+colored("OK:","blue")+f" {file1} = {file2} -- max %error={max_percentage_error}")
     return nerrors, row,col,sheet,file1,value1,file2,value2,max_percentage_error
 
 if __name__=="__main__":

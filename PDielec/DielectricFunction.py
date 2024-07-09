@@ -91,7 +91,7 @@ class DielectricFunction:
 
     """
 
-    possible_epsTypes = ['dft','fpsq','drude-lorentz','sellmeier']
+    possible_epsTypes = ["dft","fpsq","drude-lorentz","sellmeier"]
 
     def __init__(self ):
         """Initialise and instance of the function."""
@@ -114,7 +114,7 @@ class DielectricFunction:
         None
 
         """
-        print('Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function')
+        print("Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function")
         return 
 
 
@@ -150,7 +150,7 @@ class DielectricFunction:
         None
 
         """
-        print('Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function')
+        print("Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function")
         return 
 
 
@@ -185,7 +185,7 @@ class DielectricFunction:
         None
 
         """
-        print('Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function')
+        print("Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function")
         return 
 
 
@@ -397,12 +397,12 @@ class DielectricFunction:
         None
 
         """
-        c = ','
+        c = ","
         with open(file, "w") if file else nullcontext(sys.stdout) as fd:
             if diagonal_only:
-                print('f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag',file=fd)
+                print("f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag",file=fd)
             else:
-                print('f,eps00,epss11,eps22,eps01,eps02,,eps12',file=fd)
+                print("f,eps00,epss11,eps22,eps01,eps02,,eps12",file=fd)
             for v in np.arange(v1_cm1, v2_cm1, v_inc):
                 epsilon = self.calculate(v)
                 if diagonal_only:

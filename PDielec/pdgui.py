@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""PDgui driver program to calculate dielectric response at infrared and THz frequencies
+"""PDgui driver program to calculate dielectric response at infrared and THz frequencies.
 
 Process command line arguments and start a GUI application with optional splash screen.
 
@@ -87,14 +87,14 @@ def main():
     force_exit = False
     debug = False
     for token in sys.argv:
-        if token == '-nosplash' or token == '--nosplash':
+        if token in ( "-nosplash", "--nosplash" ):
             show_splash = False
-        elif token == '-v' or token == '-version' or token == '--version':
-            print('Version ',version)
-            exit()
-        elif token == '-exit' or token == '--exit':
+        elif token in ( "-v", "-version", "--version" ):
+            print("Version ",version)
+            sys.exit()
+        elif token in ( "-exit", "--exit" ):
             force_exit = True
-        elif token == '-d' or token == '-debug' or token == '--debug':
+        elif token in ( "-d", "-debug", "--debug" ):
             debug = True
 
 
@@ -102,22 +102,22 @@ def main():
 
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
-        splashfile = os.path.join(dirname, 'PDielec/GUI/splash.png')
+        splashfile = os.path.join(dirname, "PDielec/GUI/splash.png")
         if debug:
-            print('Looking for ',splashfile)
+            print("Looking for ",splashfile)
         if not os.path.isfile(splashfile):
-            splashfile = os.path.join(dirname, '../../lib/site-packages/PDielec/GUI/splash.png')
+            splashfile = os.path.join(dirname, "../../lib/site-packages/PDielec/GUI/splash.png")
             if debug:
-                print('Looking for ',splashfile)
+                print("Looking for ",splashfile)
         if not os.path.isfile(splashfile):
             for f in sys.path:
-                splashfile = os.path.join(f,'PDielec/GUI/splash.png')
+                splashfile = os.path.join(f,"PDielec/GUI/splash.png")
                 if debug:
-                    print('Looking for ',splashfile)
+                    print("Looking for ",splashfile)
                 if os.path.isfile(splashfile):
                     break
         if debug:
-            print('pdgui: splashfile ',dirname, splashfile)
+            print("pdgui: splashfile ",dirname, splashfile)
         pixmap = QPixmap(splashfile)
         splash = QSplashScreen(pixmap)
         progressbar = QProgressBar(splash)
@@ -133,6 +133,6 @@ def main():
         app.exec_()
     return 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     freeze_support()
     main()

@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Simple IO interface
+"""Simple IO interface.
 
 This aims to reproduce the python readline() io method, with limited functionality but much faster.
 
@@ -91,14 +91,14 @@ class pdielec_io:
 
         """        
         if self.index >= self.end:
-            line = ''
+            line = ""
         else:
             line = self.lines[self.index]
             self.index += 1
         return line
 
     def close(self):
-        """Closes the current object session.
+        """Close the current object session.
 
         Resets the index to 0 and deletes the lines attribute from the object.
 

@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Read the contents of a single file containing DFT output and create a csv style file of information
+"""Read the contents of a single file containing DFT output and create a csv style file of information.
 
 Parse command-line arguments to set program configuration and process a specified file.
 
@@ -40,7 +40,7 @@ from PDielec import Utilities
 version = PDielec.__init__.__version__
 
 def print_help():
-    """Prints the help message for the p1reader program to stderr.
+    """Print the help message for the p1reader program to stderr.
 
     This function displays the usage of the `p1reader` command, including accepted programs, flags, and additional
     optional arguments.
@@ -57,17 +57,17 @@ def print_help():
     >>> print_help()
 
     """    
-    print('p1reader -program program [-version] filename', file=sys.stderr)
-    print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-    print('           \"phonopy\", \"qe\", \"vasp\", \"experiment\", \"auto\"               ', file=sys.stderr)
-    print('           The default is auto, so the program tries to guess the package from   ', file=sys.stderr)
-    print('           the contents of the directory.  However this is not fool-proof!       ', file=sys.stderr)
-    print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
-    print('           in auto mode if the file was created by a phonopy VASP is assumed     ', file=sys.stderr)
-    print('  -debug   to switch on more debug information                                   ', file=sys.stderr)
-    print('  -version print the version of PDielec library being used                       ', file=sys.stderr)
-    print('  Version ',version,file=sys.stderr)
-    exit()
+    print("p1reader -program program [-version] filename", file=sys.stderr)
+    print('  "program" must be one of "abinit", "castep", "crystal", "gulp"       ', file=sys.stderr)
+    print('           "phonopy", "qe", "vasp", "experiment", "auto"               ', file=sys.stderr)
+    print("           The default is auto, so the program tries to guess the package from   ", file=sys.stderr)
+    print("           the contents of the directory.  However this is not fool-proof!       ", file=sys.stderr)
+    print("           If phonopy is used it must be followed by the QM package              ", file=sys.stderr)
+    print("           in auto mode if the file was created by a phonopy VASP is assumed     ", file=sys.stderr)
+    print("  -debug   to switch on more debug information                                   ", file=sys.stderr)
+    print("  -version print the version of PDielec library being used                       ", file=sys.stderr)
+    print("  Version ",version,file=sys.stderr)
+    sys.exit()
 
 
 def main():
@@ -106,52 +106,57 @@ def main():
     """    
     if len(sys.argv) <= 1 :
         print_help()
-    filename = ''
+    filename = ""
     tokens = sys.argv[1:]
     ntokens = len(tokens)-1
     itoken = -1
-    program = 'auto'
-    qmprogram = 'vasp'
+    program = "auto"
+    qmprogram = "vasp"
     debug = False
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
-        token = token.replace('--','-')
+        token = token.replace("--","-")
         if token == "-debug":
             debug = True
         elif token == "-help":
             print_help()
         elif token == "-version":
-            print('  Version ',version,file=sys.stderr)
-            exit()
+            print("  Version ",version,file=sys.stderr)
+            sys.exit()
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
-            if program == 'phonopy':
+            if program == "phonopy":
                 itoken += 1
                 qmprogram = tokens[itoken]
         else:
             filename = tokens[itoken]
 
     if len(program) < 1:
-        print('Please give a filename to be read in',file=sys.stderr)
-        exit()
+        print("Please give a filename to be read in",file=sys.stderr)
+        sys.exit()
 
-    if program not in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment']:
-        print('Program is not recognised: ',program,file=sys.stderr)
-        exit()
+    if program == "qe":
+        program = "quantum espresso"
+    if qmprogram == "qe":
+        program = "quantum espresso"
 
-    if program == 'phonopy':
-        if qmprogram not in ['abinit','castep','crystal','gulp','qe','vasp']:
-            print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
-            exit()
-        print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
+    if program not in ["auto","abinit","castep","crystal","gulp","quantum espresso","vasp","phonopy","experiment"]:
+        print("Program is not recognised: ",program,file=sys.stderr)
+        sys.exit()
 
-    print('  Program is ',program,file=sys.stderr)
+    if program == "phonopy":
+        if qmprogram not in ["abinit","castep","crystal","gulp","quantum espresso","vasp"]:
+            print("Phonopy QM program is not recognised: ",qmprogram,file=sys.stderr)
+            sys.exit()
+        print("  QM program used by Phonopy is: ",qmprogram,file=sys.stderr)
+
+    print("  Program is ",program,file=sys.stderr)
 
     if not os.path.isfile(filename):
-        print('Error file requested for analysis does not exist',filename,file=sys.stderr)
-        exit()
+        print("Error file requested for analysis does not exist",filename,file=sys.stderr)
+        sys.exit()
     #
     # If no program information was given try and work out what package created the outputfile
     #
@@ -160,7 +165,7 @@ def main():
     #
     # Print out what we are doing
     #
-    print(f'  Analysing {filename} generated by {program}, {qmprogram}',file=sys.stderr)
+    print(f"  Analysing {filename} generated by {program}, {qmprogram}",file=sys.stderr)
     #
     # Get the reader from the filename and package used to create it
     #

@@ -13,8 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Read the contents of a directory containing Phonopy input and output files.
-"""
+"""Read the contents of a directory containing Phonopy input and output files."""
 
 import numpy as np
 
@@ -41,7 +40,7 @@ class PhonopyOutputReader(GenericOutputReader):
     """
 
     def __init__(self, names, qmreader):
-        """Constructor for creating a new instance of the class.
+        """Initialise a Phonopy output reader.
 
         Parameters
         ----------
@@ -58,7 +57,7 @@ class PhonopyOutputReader(GenericOutputReader):
         """        
         GenericOutputReader.__init__(self, names)
         # We have to use the qm reader to do the reading of the QM files
-        self.type                    = 'Phonopy output'
+        self.type                    = "Phonopy output"
         self.qmreader                = qmreader
         return
 
@@ -153,26 +152,20 @@ class PhonopyOutputReader(GenericOutputReader):
         import yaml
         try:
             from yaml import CLoader as Loader
-        except:
+        except Exception:
             print("WARNING: Yaml CLoader is not avaiable, using fallback")
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
-        fd = open(self._outputfiles[0])
-        data_q = yaml.load(fd, Loader=Loader)
-        fd.close
+        with open(self._outputfiles[0]) as fd:
+            data_q = yaml.load(fd, Loader=Loader)
         # the second name has to be the phonopy file
-        fd = open(self._outputfiles[1])
-        data_p = yaml.load(fd, Loader=Loader)
-        fd.close
+        with open(self._outputfiles[1]) as fd:
+            data_p = yaml.load(fd, Loader=Loader)
         self._old_masses = []
         for i in range(self.nions):
-            self._old_masses.append(data_p['primitive_cell']['points'][i]['mass'])
-        #qpoints = data_q['phonon'][0]['q-position']
-        # print('q-points',qpoints)
-        #natom = data_q['natom']
-        # print('natom:',natom)
+            self._old_masses.append(data_p["primitive_cell"]["points"][i]["mass"])
         dynmat = []
-        dynmat_data = data_q['phonon'][0]['dynamical_matrix']
+        dynmat_data = data_q["phonon"][0]["dynamical_matrix"]
         for row in dynmat_data:
             vals = np.reshape(row, (-1, 2))
             dynmat.append(vals[:, 0] + vals[:, 1] * 1j)
@@ -195,7 +188,7 @@ class PhonopyOutputReader(GenericOutputReader):
         for i in range(nmodes):
             mode = []
             n = 0
-            for j in range(self.nions):
+            for _j in range(self.nions):
                 modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
                 n = n + 3
                 mode.append(modea)
