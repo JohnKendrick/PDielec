@@ -32,12 +32,12 @@ def powderTest():
     method = 'Maxwell-Garnett' 
     shape = 'Sphere'
     volume_fraction = 0.1
-    absorption = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+    absorption,permittivity = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
     print('')
     print('Powder absorption results')
     print('      freq', ' absorption (cm-1)')
     for f,a in zip(frequencies_cm1,absorption):
-        print('{:10.2f}{:12.5f}'.format(f,a))
+        print(f'{f:10.2f}{a:12.5f}')
     
 def singleCrystalTest():
     '''Test single crystal calculation'''
@@ -58,12 +58,18 @@ def singleCrystalTest():
     incident_angle = 80.0
     global_azimuthal_angle = 0.0
     (reflectance, transmittance, absorptance) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
+    rps = reflectance[0]
+    rss = reflectance[1]
+    tps = transmittance[0]
+    tss = transmittance[1]
+    bps = absorptance[0]
+    bss = absorptance[1]
     # Print single crystal results
     print('')
     print('Single Crystal Results')
     print('      freq', '      r_p', '      r_s', '      t_p', '      t_s', '      a_p', '      a_s')
-    for r,t,a,f in zip(reflectance,transmittance,absorptance,frequencies_cm1):
-        print('{:10.2f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}'.format(f,r[0], r[1], t[0], t[1], a[1], a[1]))
+    for rs,rp,ts,tp,bs,bp,f in zip(rss,rps,tss,tps,bss,bps,frequencies_cm1):
+        print(f'{f:10.2f}{rp:10.5f}{rs:10.5f}{tp:10.5f}{ts:10.5f}{bp:10.5f}{bs:10.5f}')
 
 def main():
     singleCrystalTest()

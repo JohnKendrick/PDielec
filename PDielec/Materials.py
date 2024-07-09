@@ -126,7 +126,7 @@ class MaterialsDataBase:
             if os.path.isfile(filename):
                 self.filename = filename
                 self.workbook = xl.load_workbook(self.filename,data_only=True)
-                self.sheetNames = workbook.sheetnames
+                self.sheetNames = self.workbook.sheetnames
                 debugger.print("Sheet names from default database ",self.sheetNames)
                 # Close the work book while it is not in use
                 # workbook.close()

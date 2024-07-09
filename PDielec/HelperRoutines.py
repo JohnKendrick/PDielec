@@ -222,7 +222,6 @@ def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, glob
     phi = np.radians(0.0)
     psi = np.radians(global_azimuthal_angle)
     incident_angle = np.radians(incident_angle)
-    slice_thickness = 0
     exponent_threshold = 700
     reflp = []
     refls = []
@@ -233,7 +232,7 @@ def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, glob
     for v_cm1 in frequencies_cm1:
         (v,r,R,t,T,epsilon,errors,largest_exponent) = solve_single_crystal_equations(layers,method,
                                                               theta,phi,psi,incident_angle,
-                                                              slice_thickness,exponent_threshold,v_cm1)
+                                                              exponent_threshold,v_cm1)
         reflp.append( R[0] + R[2] )
         refls.append( R[1] + R[3] )
         tranp.append( T[0] )
