@@ -590,7 +590,7 @@ class MainTab(QWidget):
         if self.settings["Program"] == "Castep":
             selfilter = "Castep (*.castep)"
         elif self.settings["Program"] == "Abinit":
-            selfilter = "Abinit (*.out)"
+            selfilter = "Abinit (*.out, *.abo)"
         elif self.settings["Program"] == "Gulp":
             selfilter = "Gulp (*.gout)"
         elif self.settings["Program"] == "Vasp":
@@ -607,7 +607,7 @@ class MainTab(QWidget):
             selfilter = "PDGui (*.py)"
         else:
             selfilter = "All files (*)"
-        filename,myfilter = QFileDialog.getOpenFileName(self,"Open MM/QM Output file","","Abinit (*.out);;Castep (*.castep);;Crystal 14 (*.out);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;QE (*.dynG);;VASP (OUTCAR*);;PDGui (*.py);;All files(*)",selfilter)
+        filename,myfilter = QFileDialog.getOpenFileName(self,"Open MM/QM Output file","","Abinit (*.out, *.abo);;Castep (*.castep);;Crystal 14 (*.out);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;QE (*.dynG);;VASP (OUTCAR*);;PDGui (*.py);;All files(*)",selfilter)
         # Process the filename
         if filename != "":
             program,qmprogram = find_program_from_name(filename)

@@ -3,7 +3,7 @@
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'abinit'
-tab.settings['Output file name'] = 'AlAs.out'
+tab.settings['Output file name'] = 'AlAs.abo'
 #
 # SettingsTab
 #

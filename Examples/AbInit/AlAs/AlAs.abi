@@ -64,6 +64,10 @@
                       # to the type(s) of atom. Here, type 1 is the Aluminum,
                       # type 2 is the Arsenic.
 
+# Pseudo potentials
+pp_dirpath "/home/john/Software/AbInit/abinit-8.10.3/tests/Psps_for_tests"
+pseudos "13al.981214.fhi, 33as.pspnc"
+
 #Definition of the atoms
     natom   2         # There are two atoms
     typat   1 2       # The first is of type 1 (Al), the second is of type 2 (As).

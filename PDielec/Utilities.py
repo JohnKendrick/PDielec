@@ -133,6 +133,11 @@ def find_program_from_name( filename ):
             return "phonopy","crystal"
         else:
             return "crystal",""
+    if ext ==  ".abo":
+        if os.path.isfile(head+"phonopy.yaml"):
+            return "phonopy","abinit"
+        else:
+            return "abinit",""
     if ext ==  ".dynG":
         if os.path.isfile(head+"phonopy.yaml"):
             return "phonopy","quantum espresso"
