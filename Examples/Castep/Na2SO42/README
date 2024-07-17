@@ -1,5 +1,0 @@
-Na2SO42_castep.cif  Optimised structure from Castep
-phonon.cell         CASTEP input file with geometry and kpoints
-phonon.param        CASTEP settings file
-phonon.castep       CASTEP phonon output log
-phonon.phonon       CASTEP phonon output
