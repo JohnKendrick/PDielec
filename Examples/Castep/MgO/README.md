@@ -1,4 +1,5 @@
 # MgO Calculations using Catep 6.1
+
 - application_note_br_permittivity.py		Bruggeman permittivity script for the application notes
 - application_note_br_permittivity.xlsx		Bruggeman permittivity spreadsheet result for the application notes
 - application_note_bruggeman.py			Bruggeman script for the application notes
