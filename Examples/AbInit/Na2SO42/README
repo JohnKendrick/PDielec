@@ -1,5 +1,0 @@
-Na2SO42.files       Specfies the files and pseudopotentials to be used by Abinit
-Na2SO42.in          Input
-Na2SO42.log         Log files
-Na2SO42.out         Output
-Na2SO4_abinit.cif   The abinit optimised structure
