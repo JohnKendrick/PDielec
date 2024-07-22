@@ -1,3 +1,5 @@
+# L-Analine Single Crystal Calculations (Crystal DFT)
+
 In an experimental and computational study of the the vibrational modes of single crystals of l-alanine the experimental transmittance was reported for polarized radiation along each of the principal axes, a-, b- and c-. (See reference below for the published paper)
 
 This directory contains the results of Crystal17 calculations similar to those reported in the paper below. Details of the calculation can be found in phonon.dl2.  The output can be found in phonon.out.  Other files produced by the Crystal17 calculation are BORN.DAT and HESSFREQ.DAT.  These are used by PDGui to calculate the theoretical spectrum.
@@ -21,3 +23,28 @@ We would like to thank the authors of the paper below for providing the experime
 
 JL Allen, TJ Sanders, J Horvat, RA Lewis, KC Rule;  
 Physical Review Letters Vol130, 226901 (2023)
+
+
+| File                  | Description                                       |
+| --------------------- | ------------------------------------------------- |
+| a-axis-calculated.xlsx | Calculated results for a-axis field |
+| a-axis-experimental.xlsx | Experimental results for a-axis field |
+| a-axis.py | PDGui script for a-axis field |
+| b-axis-calculated.xlsx | Calculated results for b-axis field |
+| b-axis-experimental.xlsx | Experimental results for b-axis field |
+| b-axis.py | PDGui script for b-axis field |
+| c-axis-calculated.xlsx | Calculated results for c-axis field |
+| c-axis-experimental.xlsx | Experimental results for c-axis field |
+| c-axis.py | PDGui script for c-axis field |
+| BORN.DAT | Crystal Born file |
+| HESSFREQ.DAT | Crystal Hessian file |
+| command.pdmake | pdmake command for test suite |
+| optimised.cif | A cif file of the optimised structure |
+| phonon.d12 | Crystal input for phonon calculation |
+| phonon.out | Crystal output for phonon calculation |
+| results.ref.xlsx | Reference results for test suite |
+| scattering_matrix.py | Calculations using Scattering Matrix theory |
+| scattering_vs_transfer.py | Script for comparison of Transfer and Scattering matrix theories |
+| script.py | Script to create reference results |
+| transfer_matrix.py | Calculations using Transfer Matrix theory |
+| unpol-experimental.xlsx | Unpolarised experimental results |
