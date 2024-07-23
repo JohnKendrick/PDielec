@@ -3,7 +3,7 @@
 Calculations on the (001) surface of Bi2Se3, with varying azimuthal angle for 0 to 90 in 10 degree steps.
 The 'Thick Slab' model is used, so there is no internal reflection.
 
-| File              | Description                          |
+| **File**          | **Description**                      |
 | ----------------- | ------------------------------------ |
 | INCAR             | VASP input file                      |
 | POSCAR            | VASP input file                      |

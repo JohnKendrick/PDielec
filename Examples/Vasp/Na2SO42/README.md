@@ -3,7 +3,7 @@
 10% volume fraction of Na2(SO4)2 is supported in a ptfe matrix.  Maxwell-Garnett and Bruggeman effective medium theories are used to examine the IR absorption of spheres, plates and needles.
 
 
-| Files                      | Description                                               |
+| **File**                   | **Description**                                           |
 | -------------------------- | --------------------------------------------------------- |
 | Na2SO42_vasp_optimised.cif | Crystal structure from the VASP optimised calculation     |
 | INCAR                      | VASP input settings                                       |

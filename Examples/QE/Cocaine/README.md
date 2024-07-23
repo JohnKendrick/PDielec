@@ -1,6 +1,6 @@
 # Cocaine using Quantum Espresso
 
-| File            | Description                                                               |
+| **File**        | **Description**                                                           |
 | --------------- | ------------------------------------------------------------------------- |
 | phonon.scf.in   |Input to a single point SCF at the optimised geometry                      |
 | phonon.ph.in    |This is a phonon calculation using the wavefunction from the run above     |

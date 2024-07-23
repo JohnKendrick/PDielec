@@ -5,7 +5,7 @@ The use of an experimental file for air is simply a trick to allow the rest of t
 
 The permittivity of Sapphire is described by an FPSQ model taken from Lutterotti and Scardi, Journal of Applied Crystallography 1990, 23, 246-252.  Further details are available in the database.
 
-| File                        | Description                                                                    |
+| **File**                    | **Description**                                                                |
 | --------------------------- | ------------------------------------------------------------------------------ |
 | air.exp                     | Experimental file for air                                                      |
 | a-planes.py                 | Script for the reflectance of all a-planes                                     |

@@ -1,6 +1,6 @@
 # CASTEP Calculation using CASTEP 24.0
 
-| File               | Description                                    |
+| **File**           | **Description**                                |
 | -------------------| ---------------------------------------------- |
 | Na2SO42_castep.cif | Optimised structure from Castep |
 | phonon.cell        | CASTEP input file with geometry and kpoints |

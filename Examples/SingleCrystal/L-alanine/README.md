@@ -25,7 +25,7 @@ JL Allen, TJ Sanders, J Horvat, RA Lewis, KC Rule;
 Physical Review Letters Vol130, 226901 (2023)
 
 
-| File                  | Description                                       |
+| **File**              | **Description**                                   |
 | --------------------- | ------------------------------------------------- |
 | a-axis-calculated.xlsx | Calculated results for a-axis field |
 | a-axis-experimental.xlsx | Experimental results for a-axis field |

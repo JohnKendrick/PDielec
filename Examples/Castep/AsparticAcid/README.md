@@ -2,7 +2,7 @@
 
 Power calculations on Aspartic acid
 
-| File                  | Description                                       |
+| **File**              | **Description**                                   |
 | --------------------- | ------------------------------------------------- |
 | application_note.py   |  Script to run the example described in the application notes |
 | application_note.xlsx |  Spreadsheet of the results used in the applications notes |

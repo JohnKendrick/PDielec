@@ -2,7 +2,7 @@
 
 Calculations performed using Crystal
 
- | File	              | Description					   |
+ | **File**           | **Description**                                    |
  | -------------------| -------------------------------------------------- |
  | BORN.DAT           | Crystal Born file                                  |
  | command.pdmake     | pdmake commands for the test suite                 |

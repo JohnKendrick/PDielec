@@ -28,7 +28,7 @@ The output from this command is stored in qpoints.yaml and phonopy.yaml
 phonopy band.conf was used to generate the band.yaml file.  This contains the displacements of the phonon modes and can be visualised using;
 phononwebsite at http://henriquemiranda.github.io/phononwebsite/
 
-| File               | Description                                               |
+| **File**           | **Description**                                           |
 | ------------------ | --------------------------------------------------------- |
 | band.conf          | phonopy file generated running phonopy                    |
 | band.yaml          | phonopy file generated running phonopy                    |

@@ -2,7 +2,7 @@
 
 Maxwell-Garnett calculations including size effects of 0, 1 and 2 microns of the IR absorption of ZnO in a PTFE support.  DFT calculations are performed using VASP.
 
-| Files             | Description                                           |
+| **File**          | **Description**                                       |
 | ----------------- | ----------------------------------------------------- |
 | zno_opt.cif       | Crystal structure from the VASP optimised calculation |
 | INCAR             | VASP input settings                                   |

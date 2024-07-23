@@ -6,7 +6,7 @@ This example used auto-selection of the internal coordinates
 vibanalysis -autosel phonon.castep
 ```
 
-| Files             | Description                   |
+| **File**          | **Description**               |
 | ----------------- | ----------------------------- |
 | phonon.castep     | CASTEP phonon output          |
 | phonon.cell       | CASTEP phonon cell input      |

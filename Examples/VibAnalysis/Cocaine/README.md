@@ -7,7 +7,7 @@ vibanalysis -autosel --novmard -vmd qe phonon.dynG
 ```
 &nbsp;
   
- | Files             | Description                   |
+ | **File**          | **Description**               |
  | ----------------- | ----------------------------- |
  | phonon.dynG       | QE output file                |
  | phonon.log        | QE output file                |

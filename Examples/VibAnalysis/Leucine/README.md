@@ -7,7 +7,7 @@ vibanalysis --autosel crystal LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out
 ```
 &nbsp;
   
- | Files                                                  | Description                   |
+ | **File**                                               | **Description**               |
  | ------------------------------------------------------ | ----------------------------- |
  | command.pdmake                                         | pdmake commands for testing   |
  | LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.nma.ref | reference vibanlysis output   |

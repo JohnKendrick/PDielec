@@ -3,7 +3,7 @@
 10% volume fraction of fluoro-apatite is supported in a ptfe matrix.  Maxwell-Garnett effective medium theory is used to examine the IR absorption of spheres, plates and needles.
 
 
-| Files                 | Description                                               |
+| **File**              | **Description**                                           |
 | --------------------- | --------------------------------------------------------- |
 | apatite_opt.cif       | Crystal structure from the VASP optimised calculation     |
 | INCAR                 | VASP input settings                                       |

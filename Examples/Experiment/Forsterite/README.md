@@ -4,11 +4,11 @@ The FPSQ model is  taken from Pierre, M. D. La, De La Pierre, M., Carteret, C., 
 
 Single crystal calculations are performed for Forsterite films, which can be compared to the results in the above paper.  The Transfer Matrix method is used and a 'Thick Film' model us used for the Forsterite film.
 
-| File                  | Description                                                |
+| **File**              | **Description**                                            |
 | --------------------- | ---------------------------------------------------------- |
-| 9000534.cif		| Forsterite cif file from the Crystallography Open Database |
-| command.pdmake	| pdmake script for the testing suite |
-| forsterite.exp	| Experimental file format for FPSQ model of Forsterite |
-| POSCAR		| VASP file use to generate the cell information in forsterite.exp |
-| results.ref.xlsx	| Reference results for the test suite |
-| script.py		| Script to generate the reference results |
+| 9000534.cif           | Forsterite cif file from the Crystallography Open Database |
+| command.pdmake        | pdmake script for the testing suite |
+| forsterite.exp        | Experimental file format for FPSQ model of Forsterite |
+| POSCAR                | VASP file use to generate the cell information in forsterite.exp |
+| results.ref.xlsx      | Reference results for the test suite |
+| script.py             | Script to generate the reference results |

@@ -3,7 +3,7 @@
 1% mass fraction of ZnO is supported in a ptfe matrix.  Maxwell-Garnett and Bruggeman effective medium theories are used to examine the IR absorption of spheres, plates and needles.
 
 
-| Files                      | Description                                               |
+| **File**                   | **Description**                                           |
 | -------------------------- | --------------------------------------------------------- |
 | zno_opt.cif                | Crystal structure from the VASP optimised calculation     |
 | INCAR                      | VASP input settings                                       |

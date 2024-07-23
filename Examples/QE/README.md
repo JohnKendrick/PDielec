@@ -1,6 +1,6 @@
 # Quantum Espresso Powder Examples
 
-| Directory      | Description            |
+| **Directory**  | **Description**        |
 | -------------- | ---------------------- |
 | Cocaine/       | Cocaine example        |
 | Na2SO42/       | Na2(SO4)2 example      |

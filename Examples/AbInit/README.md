@@ -1,6 +1,6 @@
 # Abinit test cases
 
-| Directory             | Description                                       |
+| **Directory**         | **Description**                                   |
 | --------------------- | ------------------------------------------------- |
 | AlAs/                 | Abinit version 10, powder test case |
 | BaTiO3/               | Abinit version 8, powder test case |

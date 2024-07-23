@@ -27,7 +27,7 @@ phonopy --dim="1 1 1" --qpoints-"0 0 0" --writedm
 
 The output from this command is stored in qpoints.yaml and phonopy.yaml
 
-| File              | Description                                  |
+| **File**          | **Description**                              |
 | ----------------- | -------------------------------------------- |
 | command.pdmake    | pdmake commands for test suite               |
 | disp.yaml         | phonopy displacement info                    |

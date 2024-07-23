@@ -1,6 +1,6 @@
 # Mie Scattering Example for MgO using Castep
 
-| File                 | Description                                                 |
+| **File**             | **Description**                                             |
 | -------------------- | ----------------------------------------------------------- |
 | application_note.py  | Script used in generating data for the application note     |
 | application_note.xlsx| Spread-sheet used in the application note     |

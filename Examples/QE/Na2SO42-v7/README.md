@@ -1,6 +1,6 @@
 # Quantum Espresso 7.0 Calculation on Na2(SO4)2
 
-| File              | Description                                                               |
+| **File**          | **Description**                                                           |
 | ----------------- | --------------------------------------------------------------------------|
 | Na2SO42.scf.in    | Input to a single point SCF at the optimised geometry                     |
 | Na2SO42.ph.in     | This is a phonon calculation using the wavefunction from the run above    |

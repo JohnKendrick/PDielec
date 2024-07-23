@@ -1,7 +1,7 @@
 # Set of examples for testing CASTEP
 
 
-| Directory        | Description                                                                                         |
+| **Directory**    | **Description**                                                                                     |
 | -----------------| --------------------------------------------------------------------------------------------------- |
 | AsparticAcid/    | Powder example calculation using Castep 8.0.  Includes an example included in the application notes.|
 | Bubbles/         | MgO Powder example using Castep 6.1.  This tests the calculation of air bubbles in the matrix.|

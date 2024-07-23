@@ -15,7 +15,7 @@ The sulphur and sodium atoms where represented by non-polarisable atoms.
 ## Files
 
 
-| Files                      | Description                                  |
+| **File**                   | **Description**                              |
 | ---------------------------| ---------------------------------------------|
 | command.pdmake             | pdmake command for the test suite |
 | na2so42.gin                | Gulp input |

@@ -2,7 +2,7 @@
 
 p2cif is a utility to read DFT output files and generate a cif file.  If the DFT calculation was an optimisation the optimised structure is written.
 
-| Files          | Description                                                   |
+| **File**       | **Description**                                               |
 | -------------- | ------------------------------------------------------------- |
 | all.ref.cif    | The reference cif output used by the test suite               |
 | command.pdmake | The pdmake command used by the test suite                     |

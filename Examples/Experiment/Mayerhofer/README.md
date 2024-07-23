@@ -5,7 +5,7 @@ The calculations reported here are consistent with those reported by Mayerhoefer
 
 These calculations are reported in an application note.
 
-| File                  | Description                                 |
+| **File**              | **Description**                             |
 | --------------------- | ------------------------------------------- |
 | command.pdmake        | pdmake commands for the test suite          |
 | mayerhofer.exp        | The experimental file with the toy model    |

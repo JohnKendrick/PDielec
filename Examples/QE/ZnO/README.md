@@ -1,6 +1,6 @@
 # Quantum Espresso 5.1 Calculation on ZnO
 
-| File              | Description                                                               |
+| **File**          | **Description**                                                           |
 | ----------------- | --------------------------------------------------------------------------|
 | zno.scf.in        | Input to a single point SCF at the optimised geometry                     |
 | zno.scf.out       | This is the log of the output files from the SCF                          |

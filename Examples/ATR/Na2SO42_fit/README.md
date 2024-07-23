@@ -1,6 +1,6 @@
 # ATR calculation on Na2(SO4)2 including a comparison with experiment
 
-| Files                        | Description                      |
+| **File**                     | **Description**                  |
 | ---------------------------- | -------------------------------- |
 | Na2SO42_vasp_optimised.cif   | Optimised VASP crystal structure |
 | INCAR                        | VASP input settings |

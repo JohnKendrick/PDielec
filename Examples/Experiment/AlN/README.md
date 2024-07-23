@@ -7,14 +7,14 @@ The permittivity of AlN is described by Drude-Lorentz model taken from Akasaki &
 The permittivity of Si is given in DataBase.xlsx and is a constant refractive index of 3.42.
 The permittvity of SiC is also given in DataBase.xlsx.  It is a Drude-Lorentz model details are given in the database.
 
-  | File      		| Comment                                               |
+  | **File**            | **Description**                                       |
   | ------------------- | ----------------------------------------------------- |
-  | 6H-SiC.cif		| crystal structure of SiC				|
-  | AlN.cif		| crystal structure of AlN				|
-  | DataBase.xlsx	| Materials database with SiC and Si			|
-  | AlN.exp		| Experimental file with the dielectric for AlN 	|
-  | AlN_on_Si.py	| Script for AlN on Si as in the application notes 	|
-  | SiC-on-AlN-on-Si.py	| Script for SiC/AlN/Si as in the application notes 	|
-  | command.pdmake	| Command for testing 					|
-  | script.py		| Script for testing 					|
-  | results.ref.xlsx	| Reference xlsx file for testing 			|
+  | 6H-SiC.cif          | crystal structure of SiC          |
+  | AlN.cif             | crystal structure of AlN          |
+  | DataBase.xlsx       | Materials database with SiC and Si          |
+  | AlN.exp             | Experimental file with the dielectric for AlN           |
+  | AlN_on_Si.py        | Script for AlN on Si as in the application notes           |
+  | SiC-on-AlN-on-Si.py | Script for SiC/AlN/Si as in the application notes           |
+  | command.pdmake      | Command for testing           |
+  | script.py           | Script for testing           |
+  | results.ref.xlsx    | Reference xlsx file for testing           |

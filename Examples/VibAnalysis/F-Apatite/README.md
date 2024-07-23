@@ -7,7 +7,7 @@ vibanalysis -autosel vasp OUTCAR
 ```
 &nbsp;
   
- | Files             | Description                   |
+ | **File**          | **Description**               |
  | ----------------- | ----------------------------- |
  | INCAR             | VASP input settings           |
  | KPOINTS           | VASP k-point settings         |

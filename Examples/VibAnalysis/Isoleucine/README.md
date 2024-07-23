@@ -7,7 +7,7 @@ vibanalysis -autosel castep phonon.castep
 ```
 &nbsp;
   
- | Files             | Description                   |
+ | **File**          | **Description**               |
  | ----------------- | ----------------------------- |
  | phonon.cell       | CASTEP input cell             |
  | phonon.param      | CASTEP input parameter file   |

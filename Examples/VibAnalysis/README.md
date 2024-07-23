@@ -1,6 +1,6 @@
 # Example of using vibanalysis with various DFT codes
 
-| Directory    | Description                 |
+| **Directory**| **Description**             |
 | ------------ | --------------------------- |
 | AsparticAcid/| l-Aspartic Acid, CASTEP     |
 | BaTiO3/      | BaTiO3, AbInit              |

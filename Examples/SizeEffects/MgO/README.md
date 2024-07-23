@@ -2,7 +2,7 @@
 
 Bruggeman and Maxwell-Garnett calculations are performed for crystallite sizes of 0, 0.1, 1 and 3 microns.   A spherical morphology is used.  Castep was used for the DFT calculations.
 
-| Files              | Description                                                  |
+| **File**           | **Description**                                              |
 | ------------------ | ------------------------------------------------------------ |
 | phonon.cell        | Castep phonon cell input                                     |
 | phonon.param       | Castep phonon parameter input                                |

@@ -3,7 +3,7 @@
 Calculations on the (001) surface of Bi2Se3, with varying azimuthal angle for 0 to 90 in 10 degree steps.
 The 'Coherent' model is used with a film thickness of 100 nm.
 
-| File              | Description                          |
+| **File**          | **Description**                      |
 | ----------------- | ------------------------------------ |
 | POSCAR            | VASP input file                      |
 | KPOINTS           | VASP input file                      |

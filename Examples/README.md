@@ -1,6 +1,6 @@
 # The Examples directory for PDielec and PDGui
 
- | Files          | Description                                             |
+ | **File**       | **Description**                                         |
  | -------------- | ------------------------------------------------------- |
  | AbInit         | AbInit examples                                         |
  | ATR            | ATR examples                                            |

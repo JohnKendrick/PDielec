@@ -2,7 +2,7 @@
 
 An FPSQ model for the permittivity of alpha-Quartz is taken from Winta, Wolf and Paarman, Phys. Rev. B 99(14), 144308.  It is used in the calculation of the reflectance of a 1 micron film.
 
-| File                  | Description                                 |
+| **File**              | **Description**                             |
 | --------------------- | ------------------------------------------- |
 | a-quartz.cif          | Experimental crystal structure              |
 | command.pdmake        | pdmake script used by the test suite        |

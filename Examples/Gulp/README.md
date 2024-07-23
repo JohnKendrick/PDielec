@@ -1,7 +1,7 @@
 # PDielec examples using GULP
 
 
-| Files     | Description                                      |
+| **File**  | **Description**                                  |
 | ----------| ------------------------------------------------ |
 | CaCO3     | Powder example, calculated using GULP 6.2 |
 | Na2SO42   | Powder example, calculated using GULP 4.4 |

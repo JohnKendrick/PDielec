@@ -1,7 +1,7 @@
 # Castep 6.1 Calculation on MgO including air bubble in matrix
 
 
-| Files              | Description                         |
+| **File**           | **Description**                     |
 | -------------------| ----------------------------------- |
 | command.pdmake     | Pdmake test commands                |
 | phonon.castep      |  Output from Castep run             |

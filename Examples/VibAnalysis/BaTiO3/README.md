@@ -6,7 +6,7 @@ Uses default vibanalysis setttings,  Usage;
 vibanalysis BaTiO3.out
 ```
 
-| Files             | Description                     |
+| **File**          | **Description**                 |
 | ----------------- | ------------------------------- |
 | BaTiO3.files      | Pseudopotentials etc for Abinit |
 | BaTiO3.in         | AbInit input                    |
