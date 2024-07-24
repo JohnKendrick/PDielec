@@ -177,7 +177,7 @@ class App(QMainWindow):
                     print("Error in default scenario: must be 'powder' or 'crystal'")
                     self.print_usage()
                     sys.exit()
-            elif token[0:0] in ( "-" , "-h" , "-help" , "--help" ):
+            elif token in ( "-" , "-h" , "-help" , "--help" ):
                 self.print_usage()
                 sys.exit()
             else:

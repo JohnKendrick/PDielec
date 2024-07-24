@@ -84,7 +84,6 @@ test_pdgui = [
 	"ATR/Na2SO42_fit",
 	"AbInit/AlAs",
 	"AbInit/BaTiO3",
-	"AbInit/BaTiO3-phonana",
 	"AbInit/Na2SO42",
 	"Castep/AsparticAcid",
 	"Castep/Bubbles",

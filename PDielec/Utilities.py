@@ -133,6 +133,21 @@ def find_program_from_name( filename ):
             return "phonopy","crystal"
         else:
             return "crystal",""
+    if ext ==  ".log":
+        if os.path.isfile(head+root+".files"):
+            if os.path.isfile(head+"phonopy.yaml"):
+                return "abinit","crystal"
+            else:
+                return "abinit",""
+        elif os.path.isfile(head+root+".dynG"):
+            if os.path.isfile(head+"phonopy.yaml"):
+                return "phonopy","quantum espresso"
+            else:
+                return "quantum espresso",""
+        elif os.path.isfile(head+"phonopy.yaml"):
+            return "phonopy","crystal"
+        else:
+            return "crystal",""
     if ext ==  ".abo":
         if os.path.isfile(head+"phonopy.yaml"):
             return "phonopy","abinit"
@@ -319,7 +334,7 @@ def pdgui_get_reader(program,names,qmprogram):
             reader = VaspOutputReader(names)
         elif names[0].find(".gout") >= 0 and os.path.isfile(names[0]):
             reader = GulpOutputReader(names)
-        elif names[0].find(".out") >= 0 and os.path.isfile(names[0]):
+        elif ( names[0].find(".out") >= 0 or names[0].find(".log") ) and os.path.isfile(names[0]):
             reader = CrystalOutputReader(names)
         elif names[0].find(".castep") >= 0 and os.path.isfile(names[0]):
             reader = CastepOutputReader(names)
