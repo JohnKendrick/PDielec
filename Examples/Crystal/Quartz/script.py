@@ -3,7 +3,7 @@
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'crystal'
-tab.settings['Output file name'] = 'qua_hf_2d_f_ir-int.log'
+tab.settings['Output file name'] = 'quartz.log'
 #
 # SettingsTab
 #

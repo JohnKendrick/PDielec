@@ -9,7 +9,12 @@ version 8.1.2
     Added new code for handling Phonopy DFT programs other than Vasp
     The materials database is now cached to improve performance
     The materials database is now kept open, instead of repeated opening and closing
-    Added support for ABinit v10 files, changed the AlAs abinit example to a version 10 example
+    Added support for AbInit v10 files, changed the AlAs abinit example to a version 10 example
+    Added support for Crystal 23: modified file extension handling to include .log as a crystal output file.
+        - Added a Crystal23 example in Examples/Crystal/Quartz
+        - Added support for Phonopy-Crystal calculations: example in Examples/Phonopy/Crystal
+    Revamped the README.md files in the Examples directories
+    
 version 8.1.1
   The documentation has been revamped.  An API description is now generated from each class and routine.
   The examples of Jupyter notebooks has been added to.
