@@ -2,7 +2,7 @@
 ## Quartz powder IR using CRYSTAL23
 
 The presence of the BORN and HESSFREQ.DAT files allows a full precision calculation by PDielec.
-The frequencies and the dielectric constants calculated by PDielec in in very good agreement with those provided by CRYSTAL23.
+The frequencies and the dielectric constants calculated by PDielec are in very good agreement with those provided by CRYSTAL23.
 This calculation of the frequencies and intensities does not use CRYSTAL's CPHF method, so no ε<sub>∞</sub> is calculated.  
 Instead, an estimate is provided in script.py.
 
