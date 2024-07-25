@@ -1,4 +1,5 @@
-# Quantum Espresso 5.1 Calculation on ZnO
+# Examples/QE/ZnO
+## Quantum Espresso 5.1 Powder IR Calculation on ZnO
 
 | **File**          | **Description**                                                           |
 | ----------------- | --------------------------------------------------------------------------|
@@ -12,3 +13,5 @@
 | script.py         | pdgui script to generate test results                                     |
 
 zno.ph.dynG is used by PDielec to generate the absorption spectrum.
+
+[Back](..)

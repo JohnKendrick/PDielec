@@ -1,4 +1,5 @@
-# Na2(SO4)2 powder IR using CRYSTAL14
+# Examples/Crystal/Na2SO42
+## Na2(SO4)2 powder IR using CRYSTAL14
 
 The CRYSTAL14 run by default projects translation from  the hessian.
 The presence of the BORN and HESSFREQ.DAT files allows a full precision calculation by PDielec.
@@ -16,3 +17,5 @@ This calculation of the frequencies and intensities is a CPHF calculation, so CR
  | command.pdmake      | pdmake command for test suite |
  | results.ref.xlsx    | Reference results for test suite |
  | script.py           | pdgui script to create reference results |
+
+[Back](..)

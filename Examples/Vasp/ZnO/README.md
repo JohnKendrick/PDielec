@@ -1,4 +1,5 @@
-# ZnO VASP calculation of powder IR
+# Examples/Vasp/ZnO
+## ZnO VASP calculation of powder IR
 
 1% mass fraction of ZnO is supported in a ptfe matrix.  Maxwell-Garnett and Bruggeman effective medium theories are used to examine the IR absorption of spheres, plates and needles.
 
@@ -14,3 +15,5 @@
 | results.ref.xlsx           | Reference results for the test suite                      |
 | script.py                  | pdgui script to create the reference results              |
 
+
+[Back](..)

@@ -1,4 +1,5 @@
-# Experimental file format - Drude - Lorentz permittivity
+# Examples/Experiment/drude-lorentz
+## Experimental file format - Drude - Lorentz permittivity
 
 A Drude Lorentz permittivity model for MgO taken from Mayerhoefer's book "Wave Optics in Infrared Spectroscopy"
 
@@ -8,3 +9,5 @@ A Drude Lorentz permittivity model for MgO taken from Mayerhoefer's book "Wave O
 | mgo.exp               |Experimental file format for MgO             |
 | results.ref.xlsx      |Reference results for the test suite         |
 | script.py             |pdgui suite to generate the reference results|
+
+[Back](..)

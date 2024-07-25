@@ -1,4 +1,5 @@
-# Sapphire Single Crystal
+# Examples/Experiment/Sapphire
+## Sapphire Single Crystal
 
 This directory holds the files that were used to write the Sapphire application note for single crystal reflectivity.
 The use of an experimental file for air is simply a trick to allow the rest of the materials to be specified through the database functionality of the code.
@@ -17,3 +18,5 @@ The permittivity of Sapphire is described by an FPSQ model taken from Lutterotti
 | DataBase.xlsx               | Database with the FPSQ model for sapphire                                      |
 | command.pdmake              | pdmake file for the testing suite                                              |
 | script.py                   | pdgui script for the testing suite                                             |
+
+[Back](..)

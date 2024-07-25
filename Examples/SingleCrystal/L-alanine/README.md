@@ -1,4 +1,5 @@
-# L-Analine Single Crystal Calculations (Crystal DFT)
+# Examples/SingleCrystal/L-alanine
+## L-Analine Single Crystal Calculations (Crystal DFT)
 
 In an experimental and computational study of the the vibrational modes of single crystals of l-alanine the experimental transmittance was reported for polarized radiation along each of the principal axes, a-, b- and c-. (See reference below for the published paper)
 
@@ -48,3 +49,5 @@ Physical Review Letters Vol130, 226901 (2023)
 | script.py | Script to create reference results |
 | transfer_matrix.py | Calculations using Transfer Matrix theory |
 | unpol-experimental.xlsx | Unpolarised experimental results |
+
+[Back](..)

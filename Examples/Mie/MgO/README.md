@@ -1,4 +1,5 @@
-# Mie Scattering Example for MgO using Castep
+# Examples/Mie/MgO
+## Mie Scattering Example for MgO using Castep
 
 | **File**             | **Description**                                             |
 | -------------------- | ----------------------------------------------------------- |
@@ -11,3 +12,5 @@
 | phonon.phonon        | Castep output from phonon calculation |
 | results.ref.xlsx     | Reference results for testing suite |
 | script.py            | Script to generate results for testing suite |
+
+[Back](..)

@@ -1,4 +1,5 @@
-# Cocaine using Quantum Espresso
+# Examples/QE/Cocaine
+## Cocaine using Quantum Espresso
 
 | **File**        | **Description**                                                           |
 | --------------- | ------------------------------------------------------------------------- |
@@ -10,3 +11,5 @@
 phonon.dynG is used by PDielec to generate the absorption spectrum.
 
 Warning: the PWSCF output indicates that the mass of Cl is 1.0.  
+
+[Back](..)

@@ -1,4 +1,5 @@
-# Phonopy-VASP calculation of Na2(SO4)2
+# Examples/Phonopy/Na2SO42
+## Phonopy-VASP calculation of Na2(SO4)2
 
 This calculation was performed using the VASP interface.  A supercell of 1x1x1 was used for a Gamma point calculation.
 The input for the VASP calculations can be found in INCAR.supercell KPOINTS.supercell POSCAR and POTCAR-index in the VASP/ directory
@@ -46,3 +47,5 @@ phononwebsite at http://henriquemiranda.github.io/phononwebsite/
 | results.ref.xlsx   | Reference results for test suite                          |
 | script.py          | pdmake commands for test suite                            |
 
+
+[Back](..)

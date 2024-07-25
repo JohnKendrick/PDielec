@@ -1,4 +1,5 @@
-# ZnO powder IR using CRYSTAL14 (Default method, no Eckart conditions applied)
+# Examples/Crystal/ZnO/NoEckart
+## ZnO powder IR using CRYSTAL14 (Default method, no Eckart conditions applied)
 
 The CRYSTAL14 run does not project translation from  the hessian.
 The presence of the BORN and HESSFREQ.DAT files allows a full precision calculation by PDielec.
@@ -16,5 +17,4 @@ This calculation of the frequencies and intensities is not a CPHF calculation, s
  | results.ref.xlsx    | Reference results for test suite |
  | script.py           | pdgui script to create reference results |
 
-
-
+[Back](..)

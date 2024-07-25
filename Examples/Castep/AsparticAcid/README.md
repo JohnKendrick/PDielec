@@ -1,4 +1,5 @@
-# CASTEP 8.0 Aspartic Acid
+# Examples/Castep/AsparticAcid
+## CASTEP 8.0 Aspartic Acid powder IR example
 
 Power calculations on Aspartic acid
 
@@ -14,3 +15,5 @@ Power calculations on Aspartic acid
 | phonon.phonon         |  Phonons |
 | results.ref.xlsx      |  Reference results for the test system |
 | script.py             |  Script used by the test system |
+
+[Back](..)

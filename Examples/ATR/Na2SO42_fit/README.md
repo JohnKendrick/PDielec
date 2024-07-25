@@ -1,4 +1,5 @@
-# ATR calculation on Na2(SO4)2 including a comparison with experiment
+# Examples/ATR/Na2SO42_fit
+## ATR calculation on Na2(SO4)2 including a comparison with experiment
 
 | **File**                     | **Description**                  |
 | ---------------------------- | -------------------------------- |
@@ -12,3 +13,5 @@
 | command.pdmake               | pdmake command for test suite |
 | results.ref.xlsx             | reference results for test suite |
 | script.py                    | PDGui script to generate the reference results |
+
+[Back](..)

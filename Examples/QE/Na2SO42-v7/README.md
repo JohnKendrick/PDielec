@@ -1,4 +1,5 @@
-# Quantum Espresso 7.0 Calculation on Na2(SO4)2
+# Examples/QE/Na2SO42-v7
+## Quantum Espresso 7.0 Powder IR Calculation on Na2(SO4)2
 
 | **File**          | **Description**                                                           |
 | ----------------- | --------------------------------------------------------------------------|
@@ -11,3 +12,5 @@
 | script.py         | pdgui script to generate test results                                     |
 
 Na2SO42.dynG is used by PDielec to generate the absorption spectrum.
+
+[Back](..)

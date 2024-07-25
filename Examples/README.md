@@ -2,18 +2,18 @@
 
  | **File**       | **Description**                                         |
  | -------------- | ------------------------------------------------------- |
- | AbInit         | AbInit examples                                         |
- | ATR            | ATR examples                                            |
- | Castep         | CASTEP examples                                         |
- | Crystal        | CRYSTAL examples                                        |
- | Experiment     | Examples using the Experiment file format               |
- | Gulp           | GULP examples                                           |
- | Helper         | Examples using the API                                  |
- | Mie            | Mie scattering examples                                 |
- | P2Cif          | Generating cif files from the output files              |
- | Phonopy        | PHONOPY examples                                        |
- | QE             | Quantum Espresso examples                               |
- | SingleCrystal  | Examples of single crystal calculations                 |
- | SizeEffects    | Exampples including size effects in powder calculations |
- | Vasp           | VASP examples                                           |
- | VibAnalysis    | VibAnalysis examples                                    |
+ | [AbInit](./AbInit/README.md) | AbInit examples  |
+ | [ATR](./ATR/README.md) | ATR examples |
+ | [Castep](./Castep/README.md) | CASTEP examples  |
+ | [Crystal](./Crystal/README.md) | CRYSTAL examples |
+ | [Experiment](./Experiment/README.md) | Examples using the Experiment file format |
+ | [Gulp](./Gulp/README.md) | GULP examples   |
+ | [Helper](./Helper/README.md) | Examples using the API    |
+ | [Mie](./Mie/README.md) | Mie scattering examples   |
+ | [P2Cif](./P2Cif/README.md) | Generating cif files from the output files    |
+ | [Phonopy](./Phonopy/README.md) | PHONOPY examples|
+ | [QE](./QE/README.md) | Quantum Espresso examples |
+ | [SingleCrystal](./SingleCrystal/README.md) | Examples of single crystal calculations       |
+ | [SizeEffects](./SizeEffects/README.md) | Exampples including size effects in powder calculations |
+ | [Vasp](./Vasp/README.md) | VASP examples   |
+ | [VibAnalysis](./VibAnalysis/README.md) | VibAnalysis examples      |

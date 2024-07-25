@@ -1,4 +1,5 @@
-# Size effects in powder IR of ZnO
+# Examples/SizeEffects/ZnO
+## Size effects in powder IR of ZnO
 
 Maxwell-Garnett calculations including size effects of 0, 1 and 2 microns of the IR absorption of ZnO in a PTFE support.  DFT calculations are performed using VASP.
 
@@ -13,3 +14,5 @@ Maxwell-Garnett calculations including size effects of 0, 1 and 2 microns of the
 | command.pdmake    | pdmake command for the test suite                     |
 | results.ref.xlsx  | Reference results used by the test suite              |
 | script.py         | script to create reference results                    |
+
+[Back](..)

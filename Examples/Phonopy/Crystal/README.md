@@ -1,4 +1,5 @@
-# Phonopy - CRYSTAL calculation on Na2(SO4)2
+# Examples/Phonopy/Crystal
+## Phonopy - CRYSTAL calculation on Na2(SO4)2
 
 Create a crystal.o file as a copy of the output file from an optimised CRYSTAL run followed by a frequency calculation.   
 If the output file has a different name then use the phonopy option ```-c this_is_the_name```
@@ -96,3 +97,5 @@ pdgui phonopy crystal.o --qmprogram crystal
  | qpoints.yaml       | Phonopy output file (required by PDielec)                      |
  | BORN               | Phonopy output file                                            |
  | TEMPLATE           | Template used by Phonopy to generate CRYSTAL input             |
+
+[Back](..)

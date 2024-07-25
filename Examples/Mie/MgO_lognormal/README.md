@@ -1,4 +1,5 @@
-# Mie Scattering Example for MgO using Castep
+# Examples/Mie/MgO_lognormal
+## Mie Scattering Example for MgO using Castep
 
 A log normal distribution of sizes is used in this example.  The particle size is 1 micron.  Three calculations are performed.  One for a single particle size and the other two for lognormal width distributions of 0.1 and 0.5 microns.
 
@@ -13,3 +14,5 @@ A log normal distribution of sizes is used in this example.  The particle size i
 | phonon.phonon        | Castep output from phonon calculation |
 | results.ref.xlsx     | Reference results for testing suite |
 | script.py            | Script to generate results for testing suite |
+
+[Back](..)

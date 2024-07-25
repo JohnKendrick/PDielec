@@ -1,4 +1,5 @@
-# Single Crystal VASP calculation for Bi2Se3
+# Examples/SingleCrystal/Bi2Se3_film
+## Single Crystal VASP calculation for Bi2Se3
 
 Calculations on the (001) surface of Bi2Se3, with varying azimuthal angle for 0 to 90 in 10 degree steps.
 The 'Coherent' model is used with a film thickness of 100 nm.
@@ -15,3 +16,5 @@ The 'Coherent' model is used with a film thickness of 100 nm.
 | command.pdmake    | pdmake command for tests             |
 | results.ref.xlsx  | reference results for tests          |
 | script.py         | script to generate reference results |
+
+[Back](..)

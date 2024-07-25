@@ -1,6 +1,6 @@
-# Multi-layered single crystal
+# Examples/Experiment/AlN
+## Multi-layered single crystal of AlN/SiC/Si
 
-This is an example of a multi layer system for AlN/SiC/Si
 The system is described in the application notes, where comparison is made with experiment.
 
 The permittivity of AlN is described by Drude-Lorentz model taken from Akasaki & Hashimoto, Solid State Comm. 5, 851 (1967) and  MacMillan, Devaty, Choyke, Applied Phys. Lett. 62, 750-752 (1993).
@@ -18,3 +18,5 @@ The permittvity of SiC is also given in DataBase.xlsx.  It is a Drude-Lorentz mo
   | command.pdmake      | Command for testing           |
   | script.py           | Script for testing           |
   | results.ref.xlsx    | Reference xlsx file for testing           |
+
+[Back](..)

@@ -1,10 +1,12 @@
-# l-Aspartic Acid CASTEP vibanalysis
+# Examples/VibAnalysis/AsparticAcid
+## l-Aspartic Acid CASTEP vibanalysis
 
 This example used auto-selection of the internal coordinates
 
 ```
 vibanalysis -autosel phonon.castep
 ```
+&nbsp;
 
 | **File**          | **Description**               |
 | ----------------- | ----------------------------- |
@@ -18,4 +20,4 @@ vibanalysis -autosel phonon.castep
 | command.pdmake    | pdmake commands for testing   |
 | phonon.nma.ref    | reference vibanlysis output   |
 
-
+[Back](..)

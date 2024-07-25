@@ -1,4 +1,5 @@
-# Na2(SO4)2 powder IR using CRYSTAL17
+# Examples/Crystal/Na2SO42_C17
+## Na2(SO4)2 powder IR using CRYSTAL17
 
 The CRYSTAL17 run by default projects translation from  the hessian.
 The presence of the BORN and HESSFREQ.DAT files allows a full precision calculation by PDielec.
@@ -18,3 +19,5 @@ This calculation of the frequencies and intensities is a CPHF calculation, so CR
  | results.ref.xlsx    | Reference results for test suite |
  | script.py           | pdgui script to create reference results |
 
+
+[Back](..)

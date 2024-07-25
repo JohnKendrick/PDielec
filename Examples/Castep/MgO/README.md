@@ -1,4 +1,5 @@
-# MgO Calculations using Catep 6.1
+# Examples/Castep/MgO
+## MgO Calculations using Castep 6.1
 
 | **File**              | **Description**                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
@@ -17,3 +18,5 @@
 | phonon.phonon                          | output phonon information from Castep |
 | results.ref.xlsx                       | reference results for the testing system |
 | script.py                              | script used to create the reference results |
+
+[Back](..)

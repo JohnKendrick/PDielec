@@ -1,4 +1,5 @@
-# Cocaine phonon vibanalysis using Quantum Espresso
+# Examples/VibAnalysis/Cocaine
+## Cocaine phonon vibanalysis using Quantum Espresso
 
 This example used auto-selection of the internal coordinates, along with vibrational mode decomposition analysis (--vmd).  ARD decomposition is switched off (--novmard)
 
@@ -16,3 +17,5 @@ vibanalysis -autosel --novmard -vmd qe phonon.dynG
  | phonon.scf.in     | QE phonon input file          |
  | command.pdmake    | pdmake commands for testing   |
  | phonon.nma.ref    | reference vibanlysis output   |
+
+[Back](..)

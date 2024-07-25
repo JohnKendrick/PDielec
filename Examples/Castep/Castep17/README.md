@@ -1,4 +1,5 @@
-# Beta-Lactose Castep 17 Example
+# Examples/Castep/Castep17
+## Beta-Lactose Castep 17 Example
 
 | **File**              | **Description**                                   |
 | --------------------- | ------------------------------------------------- |
@@ -7,3 +8,5 @@
 | phonon.phonon         | output phonon details |
 | results.ref.xlsx      | reference results for testing |
 | script.py             | a pdgui script used for testing |
+
+[Back](..)

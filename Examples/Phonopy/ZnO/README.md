@@ -1,4 +1,5 @@
-# Phonopy-Vasp calculation on ZnO
+# Examples/Phonopy/ZnO
+## Phonopy-Vasp calculation on ZnO
 
 This calculation was performed using the VASP interface.  A supercell of 1x1x1 was used for a Gamma point calculation
 The input for the VASP calculations can be found in the VASP.Born directory
@@ -41,3 +42,5 @@ The output from this command is stored in qpoints.yaml and phonopy.yaml
 | results.ref.xlsx  | Reference results for test suite             |
 | script.py         | pdgui test script                            |
 | VASP.Born/        | Directory containing born charge calculation |
+
+[Back](..)

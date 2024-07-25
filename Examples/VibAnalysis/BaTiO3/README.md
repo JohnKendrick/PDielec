@@ -1,10 +1,12 @@
-# BaTiO3 AbInit vibanalysis
+# Examples/VibAnalysis/BaTiO3
+## BaTiO3 AbInit vibanalysis
 
 Uses default vibanalysis setttings,  Usage;
 
 ```
 vibanalysis BaTiO3.out
 ```
+&nbsp;
 
 | **File**          | **Description**                 |
 | ----------------- | ------------------------------- |
@@ -14,3 +16,5 @@ vibanalysis BaTiO3.out
 | BaTiO3.out        | AbInit output                   |
 | command.pdmake    | pdmake commands for testing     |
 | BaTiO3.nma.ref    | reference vibanlysis output     |
+
+[Back](..)

@@ -1,4 +1,5 @@
-# F-Apatite phonon vibanalysis using VASP
+# Examples/VibAnalysis/F-Apatite
+## F-Apatite phonon vibanalysis using VASP
 
 This example used auto-selection of the internal coordinates.
 
@@ -16,3 +17,5 @@ vibanalysis -autosel vasp OUTCAR
  | OUTCAR            | VASP output                   |
  | command.pdmake    | pdmake commands for testing   |
  | phonon.nma.ref    | reference vibanlysis output   |
+
+[Back](..)

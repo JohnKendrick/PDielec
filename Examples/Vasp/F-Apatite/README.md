@@ -1,4 +1,5 @@
-# Fluoro-apatite VASP calculation of powder IR
+# Examples/Vasp/F-Apatite
+## Fluoro-apatite VASP calculation of powder IR
 
 10% volume fraction of fluoro-apatite is supported in a ptfe matrix.  Maxwell-Garnett effective medium theory is used to examine the IR absorption of spheres, plates and needles.
 
@@ -16,3 +17,5 @@
 | command.pdmake        | pdmake command for the test suite                         |
 | results.ref.xlsx      | Reference results for the test suite                      |
 | script.py             | pdgui script to create the reference results              |
+
+[Back](..)

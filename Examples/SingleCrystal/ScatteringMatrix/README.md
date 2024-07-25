@@ -1,4 +1,5 @@
-# Scattering Matrix method on l-alanine
+# Examples/SingleCrystal/ScatteringMatrix
+## Scattering Matrix method on l-alanine
 
 Calculations performed using Crystal
 
@@ -13,3 +14,5 @@ Calculations performed using Crystal
  | results.ref.xlsx   | Reference results                                  |
  | script.py          | Script to produce reference results                |
 
+
+[Back](..)

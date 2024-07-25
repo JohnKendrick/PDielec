@@ -1,4 +1,5 @@
-# Quartz powder IR using CRYSTAL23
+# Examples/Crystal/Quartz
+## Quartz powder IR using CRYSTAL23
 
 The presence of the BORN and HESSFREQ.DAT files allows a full precision calculation by PDielec.
 The frequencies and the dielectric constants calculated by PDielec in in very good agreement with those provided by CRYSTAL23.
@@ -14,3 +15,5 @@ Instead, an estimate is provided in script.py.
  | command.pdmake      | pdmake command for test suite |
  | results.ref.xlsx    | Reference results for test suite |
  | script.py           | pdgui script to create reference results |
+
+[Back](..)
