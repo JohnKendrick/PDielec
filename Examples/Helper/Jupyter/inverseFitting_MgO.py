@@ -5,9 +5,10 @@
 # Start by importing some useful routines
 
 import numpy                      as np
-import sys
-import os
-sys.path.insert(0, "../../..")     # This should allow the PDielec modules to be found
+import sys, os
+home_directory = os.path.join("..","..","..")
+examples_directory = os.path.join(home_directory,'Examples')
+sys.path.insert(0, home_directory)
 from PDielec.HelperRoutines   import getMaterial
 from PDielec.HelperRoutines   import calculatePowderSpectrum
 from PDielec.GUI.FitterTab    import read_experimental_file

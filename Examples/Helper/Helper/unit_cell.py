@@ -15,15 +15,17 @@
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
 
-import sys
-sys.path.insert(0, "../../..")
+import sys, os
+home_directory = os.path.join('..','..','..')
+examples_directory = os.path.join(home_directory,'Examples')
+sys.path.insert(0,home_directory)
 import numpy as np
 from PDielec.UnitCell import UnitCell
 from PDielec.HelperRoutines   import getMaterial
 
 def main():
     # Read in asparticAcid calculation by CASTEP
-    asparticAcid = getMaterial('AsparticAcid/phonon.castep')
+    asparticAcid = getMaterial(os.path.join(examples_directory,'Castep','AsparticAcid','phonon.castep'))
     uc = asparticAcid.getCell()
     # bonds etc, are only defined if a new cell is created of whole molecules
     newcell,number_of_molecules,old_atom_order = uc.calculate_molecular_contents()

@@ -14,8 +14,10 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
-import sys
-sys.path.insert(0, "../../..") 
+import sys, os
+home_directory = os.path.join('..','..','..')
+examples_directory = os.path.join(home_directory,'Examples')
+sys.path.insert(0,home_directory)
 import numpy                      as np
 # Helper routines
 from PDielec.HelperRoutines   import getMaterial

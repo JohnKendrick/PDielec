@@ -14,8 +14,10 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
-import sys
-sys.path.insert(0,'../../../')
+import sys, os
+home_directory = os.path.join('..','..','..')
+examples_directory = os.path.join(home_directory,'Examples')
+sys.path.insert(0,home_directory)
 
 import numpy                      as np
 # Helper routines
@@ -57,7 +59,7 @@ def longitudinal_frequencies(file):
         print(' ')
 
 def main():
-    longitudinal_frequencies('MgO/phonon.castep')
+    longitudinal_frequencies(os.path.join(examples_directory,'Castep','MgO','phonon.castep'))
     return
 
 if __name__ == '__main__':
