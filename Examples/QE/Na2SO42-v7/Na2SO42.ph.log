@@ -1,149 +1,11 @@
-SHELL=/usr/bin/zsh
-GULP_LIB=/home/john/Software/Gulp/gulp-5.1/Libraries
-LSCOLORS=Gxfxcxdxbxegedabagacad
-SESSION_MANAGER=local/vivaldi:@/tmp/.ICE-unix/1465,unix/vivaldi:/tmp/.ICE-unix/1465
-WINDOWID=92274695
-COLORTERM=yes
-SLURM_JOB_USER=john
-SLURM_TASKS_PER_NODE=8
-XDG_CONFIG_DIRS=/etc/xdg
-LESS=-R
-SLURM_JOB_UID=1000
-XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session1
-XDG_MENU_PREFIX=xfce-
-SLURM_TASK_PID=41748
-CONDA_EXE=/opt/miniconda3/bin/conda
-_CE_M=
-EXEC=/home/software/bin/ph.x
-SLURM_LOCALID=0
-SLURM_SUBMIT_DIR=/home/john/Software/PDielec/Examples/QE/Na2SO42-v7
-HOSTNAME=vivaldi
-SLURMD_NODENAME=vivaldi
-LESS_TERMCAP_se=[0m
-LESS_TERMCAP_so=[01;44;33m
-LC_ADDRESS=en_GB.UTF-8
-LC_NAME=en_GB.UTF-8
-QT_LOGGING_RULES=*=false
-SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
-GRADLE_HOME=/usr/share/java/gradle
-P9K_TTY=old
-SLURM_NODE_ALIASES=(null)
-SLURM_CLUSTER_NAME=slurm_cluster
-SLURM_CPUS_ON_NODE=8
-DESKTOP_SESSION=xfce
-LC_MONETARY=en_GB.UTF-8
-SLURM_JOB_CPUS_PER_NODE=8
-INPUT=Na2SO42.ph.in
-EDITOR=vim
-GTK_MODULES=canberra-gtk-module:canberra-gtk-module
-XDG_SEAT=seat0
-PWD=/home/john/Software/PDielec/Examples/QE/Na2SO42-v7
-SLURM_GTIDS=0
-GSETTINGS_SCHEMA_DIR=/home/john/data
-LOGNAME=john
-XDG_SESSION_DESKTOP=XFCE
-QT_QPA_PLATFORMTHEME=qt5ct
-XDG_SESSION_TYPE=x11
-DSSI_PATH=/home/john/.dssi:/usr/lib/dssi:/usr/local/lib/dssi
-SLURM_JOB_PARTITION=batchq
-SLURM_JOB_NUM_NODES=1
-XAUTHORITY=/home/john/.Xauthority
-OPENBLAS_NUM_THREADS=1
-SLURM_JOBID=711
-MOTD_SHOWN=pam
-HOME=/home/john
-SSH_ASKPASS=/usr/bin/ksshaskpass
-LANG=en_GB.UTF-8
-LC_PAPER=en_GB.UTF-8
-VST_PATH=/home/john/.vst:/usr/lib/vst:/usr/local/lib/vst
-LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
-XDG_CURRENT_DESKTOP=XFCE
-SLURM_PROCID=0
-VTE_VERSION=6602
-FORT_BUFFERED=true
-NSLOTS=8
-TMPDIR=/tmp
-XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
-SLURM_NTASKS=8
-SLURM_TOPOLOGY_ADDR=vivaldi
-GOTO_NUM_THREADS=1
-SLURM_TOPOLOGY_ADDR_PATTERN=node
-SCRIPTS=/home/john/Scripts
-XDG_SESSION_CLASS=user
-MAKEFLAGS=--jobs=8
-SLURM_WORKING_CLUSTER=slurm_cluster:vivaldi:6817:9472:109
-VF_HOME=/home/john/Software/Viewf/Companies/QMolecular
-PYTHONPATH=/home/john/.local/lib:
-LC_IDENTIFICATION=en_GB.UTF-8
-TERM=xterm-256color
-LESS_TERMCAP_mb=[01;31m
-ZSH=/home/john/.oh-my-zsh
-LESS_TERMCAP_me=[0m
-LESS_TERMCAP_md=[01;31m
-_CE_CONDA=
-LIBVIRT_DEFAULT_URI=qemu:///system
-USER=john
-SLURM_NODELIST=vivaldi
-ENVIRONMENT=BATCH
-LATEX_MK_DIR=/usr/share/latex-mk
-CONDA_SHLVL=0
-PAM_KWALLET5_LOGIN=/run/user/1000/kwallet5.socket
-SLURM_PRIO_PROCESS=0
-SLURM_NPROCS=8
-DISPLAY=:0.0
-SHLVL=3
-LESS_TERMCAP_ue=[0m
-SLURM_NNODES=1
-LESS_TERMCAP_us=[01;32m
-PAGER=less
-LC_TELEPHONE=en_GB.UTF-8
-MKL_SERIAL=yes
-LC_MEASUREMENT=en_GB.UTF-8
-XDG_VTNR=1
-XDG_SESSION_ID=2
-SLURM_SUBMIT_HOST=vivaldi
-CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
-LD_LIBRARY_PATH=:/home/john/.local/lib:/home/software/lib
-MOZ_PLUGIN_PATH=/usr/lib/mozilla/plugins
-XDG_RUNTIME_DIR=/run/user/1000
-SLURM_JOB_ID=711
-SLURM_NODEID=0
-MKLROOT=/opt/intel/mkl
-VASP_PSEUDOLIB=/home/john/Software/Vasp/Potentials_52/PotPaw_PBE
-LC_TIME=en_GB.UTF-8
-OMP_NUM_THREADS=1
-P9K_SSH=0
-GTK3_MODULES=xapp-gtk3-module:xapp-gtk3-module
-XDG_DATA_DIRS=/home/john/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/usr/share
-SLURM_CONF=/etc/slurm-llnl/slurm.conf
-BROWSER=/usr/bin/brave-beta
-PATH=/opt/miniconda3/condabin:.:/home/john/.local/bin:/home/software/bin:/home/john/bin:/home/john/Scripts:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/john/.cargo/bin
-SLURM_JOB_NAME=Na2SO42.ph
-DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-LV2_PATH=/home/john/.lv2:/usr/lib/lv2:/usr/local/lib/lv2
-HG=/usr/bin/hg
-MKL_NUM_THREADS=1
-NUM_RDMA_BUFFER=0
-MAIL=/var/spool/mail/john
-SLURM_JOB_GID=1000
-GULP_DOC=/home/john/Software/Gulp/gulp-5.1/Docs
-GIO_LAUNCHED_DESKTOP_FILE_PID=9173
-GIO_LAUNCHED_DESKTOP_FILE=/usr/share/applications/xfce4-terminal.desktop
-LC_NUMERIC=en_GB.UTF-8
-OLDPWD=/home/john/Software/PDielec/Examples/QE/Na2SO42-v7
-SLURM_JOB_NODELIST=vivaldi
-LADSPA_PATH=/home/john/.ladspa:/usr/lib/ladspa:/usr/local/lib/ladspa
-CADENCE_AUTO_STARTED=true
-_=/usr/bin/printenv
-Start at Tue 28 Dec 13:50:19 GMT 2021
 Running the following command
 mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
-     Program PHONON v.7.0 starts on 28Dec2021 at 13:50:19 
+     Program PHONON v.7.3.1 starts on 11Aug2024 at 17:18:59 
         Git branch: master
-        Last git commit: 28725dfbb9ee577d70cbdc372282dc9039605ca5
-        Last git commit date: Tue Dec 21 15:37:27 2021 +0000
-        Last git commit subject: Merge branch merge-develop-to-master into mas..
+        Last git commit: 7fd60c9bc9fe7a7d1fe6f1049f4afba0eab9aeef-dirty
+        Last git commit date: Thu Feb 29 10:18:05 2024 +0000
+        Last git commit subject: Merge branch 'master_qe_7.3.1' into 'master'
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
@@ -157,14 +19,18 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
      Parallel version (MPI), running on     8 processors
 
      MPI processes distributed on     1 nodes
-     R & G space division:  proc/nbgrp/npool/nimage =       8
-     5838 MiB available memory on the printing compute node when the environment starts
+     7823 MiB available memory on the printing compute node when the environment starts
 
      Reading input from Na2SO42.ph.in
 
      Reading xml data from directory:
 
      ./pwscf.save/
+
+     R & G space division:  proc/nbgrp/npool/nimage =       8
+     Subspace diagonalization in iterative solution of the eigenvalue problem:
+     a serial algorithm will be used
+
 
      IMPORTANT: XC functional enforced from input :
      Exchange-correlation= PBE
@@ -184,7 +50,12 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
 
      Check: negative core charge=   -0.000009
-     Reading collected, re-writing distributed wavefunctions
+     Reading collected, re-writing distributed wavefunctions in ./
+
+     Number and degeneracy of irreps per q-point
+       N         xq(1)         xq(2)         xq(3)   N irreps
+       1   0.000000000   0.000000000   0.000000000      36
+     No degeneracy
 
      Calculation of q =    0.0000000   0.0000000   0.0000000
 
@@ -223,18 +94,18 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
      Cartesian axes
 
      site n.  atom      mass           positions (alat units)
-        1     S   32.0675   tau(    1) = (    0.42334    0.82495    0.29327  )
-        2     S   32.0675   tau(    2) = (    0.13213    0.02899    0.90914  )
-        3     Na  22.9890   tau(    3) = (   -0.07324    0.29981    0.25255  )
-        4     Na  22.9890   tau(    4) = (    0.62871    0.55413    0.94986  )
-        5     O   15.9990   tau(    5) = (    0.45334   -0.08101    0.50163  )
-        6     O   15.9990   tau(    6) = (    0.10213    0.93495    0.70078  )
-        7     O   15.9990   tau(    7) = (    0.60765    1.00431    0.12804  )
-        8     O   15.9990   tau(    8) = (   -0.05218   -0.15036    1.07436  )
-        9     O   15.9990   tau(    9) = (    0.18026    0.71218    0.14619  )
-       10     O   15.9990   tau(   10) = (    0.37522    0.14177    1.05622  )
-       11     O   15.9990   tau(   11) = (    0.56245    0.61853    0.47127  )
-       12     O   15.9990   tau(   12) = (   -0.00698    0.23541    0.73113  )
+        1  S      32.0675   tau(    1) = (    0.42334    0.82495    0.29327  )
+        2  S      32.0675   tau(    2) = (    0.13213    0.02899    0.90914  )
+        3  Na     22.9890   tau(    3) = (   -0.07324    0.29981    0.25255  )
+        4  Na     22.9890   tau(    4) = (    0.62871    0.55413    0.94986  )
+        5  O      15.9990   tau(    5) = (    0.45334   -0.08101    0.50163  )
+        6  O      15.9990   tau(    6) = (    0.10213    0.93495    0.70078  )
+        7  O      15.9990   tau(    7) = (    0.60765    1.00431    0.12804  )
+        8  O      15.9990   tau(    8) = (   -0.05218   -0.15036    1.07436  )
+        9  O      15.9990   tau(    9) = (    0.18026    0.71218    0.14619  )
+       10  O      15.9990   tau(   10) = (    0.37522    0.14177    1.05622  )
+       11  O      15.9990   tau(   11) = (    0.56245    0.61853    0.47127  )
+       12  O      15.9990   tau(   12) = (   -0.00698    0.23541    0.73113  )
 
      Computing dynamical matrix for 
                     q = (   0.0000000   0.0000000   0.0000000 )
@@ -372,102 +243,102 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
 
      Alpha used in Ewald sum =   1.0000
-     PHONON       :     23.50s CPU     23.98s WALL
+     PHONON       :     32.97s CPU     33.54s WALL
 
 
      Electric Fields Calculation
 
-      iter #   1 total cpu time :   158.8 secs   av.it.:  10.9
+      iter #   1 total cpu time :   356.6 secs   av.it.:  10.9
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  8.720E-07
 
-      iter #   2 total cpu time :   216.2 secs   av.it.:  21.3
+      iter #   2 total cpu time :   485.3 secs   av.it.:  21.3
       thresh= 9.338E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.825E-06
 
-      iter #   3 total cpu time :   267.9 secs   av.it.:  19.8
+      iter #   3 total cpu time :   604.4 secs   av.it.:  19.8
       thresh= 1.351E-04 alpha_mix =  0.700 |ddv_scf|^2 =  5.989E-08
 
-      iter #   4 total cpu time :   317.7 secs   av.it.:  19.6
+      iter #   4 total cpu time :   721.4 secs   av.it.:  19.6
       thresh= 2.447E-05 alpha_mix =  0.700 |ddv_scf|^2 =  7.619E-09
 
-      iter #   5 total cpu time :   369.5 secs   av.it.:  20.3
+      iter #   5 total cpu time :   842.9 secs   av.it.:  20.3
       thresh= 8.729E-06 alpha_mix =  0.700 |ddv_scf|^2 =  5.477E-10
 
-      iter #   6 total cpu time :   419.3 secs   av.it.:  19.6
+      iter #   6 total cpu time :   961.1 secs   av.it.:  19.6
       thresh= 2.340E-06 alpha_mix =  0.700 |ddv_scf|^2 =  7.722E-11
 
-      iter #   7 total cpu time :   471.1 secs   av.it.:  20.1
+      iter #   7 total cpu time :  1083.9 secs   av.it.:  20.1
       thresh= 8.787E-07 alpha_mix =  0.700 |ddv_scf|^2 =  6.211E-12
 
-      iter #   8 total cpu time :   523.6 secs   av.it.:  20.9
+      iter #   8 total cpu time :  1209.6 secs   av.it.:  20.9
       thresh= 2.492E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.001E-12
 
-      iter #   9 total cpu time :   574.2 secs   av.it.:  19.7
+      iter #   9 total cpu time :  1329.1 secs   av.it.:  19.7
       thresh= 2.000E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.168E-13
 
-      iter #  10 total cpu time :   623.7 secs   av.it.:  19.6
+      iter #  10 total cpu time :  1447.4 secs   av.it.:  19.6
       thresh= 6.456E-08 alpha_mix =  0.700 |ddv_scf|^2 =  8.714E-14
 
-      iter #  11 total cpu time :   676.2 secs   av.it.:  20.8
+      iter #  11 total cpu time :  1572.7 secs   av.it.:  20.8
       thresh= 2.952E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.492E-14
 
-      iter #  12 total cpu time :   726.6 secs   av.it.:  20.1
+      iter #  12 total cpu time :  1692.5 secs   av.it.:  20.1
       thresh= 2.344E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.275E-15
 
      End of electric fields calculation
 
           Dielectric constant in cartesian axis 
 
-          (       2.466026507      -0.045628940      -0.242638904 )
-          (      -0.045629240       2.313829851       0.087580214 )
-          (      -0.242638839       0.087580067       2.601218936 )
+          (       2.466026498      -0.045628942      -0.242638904 )
+          (      -0.045629242       2.313829840       0.087580211 )
+          (      -0.242638838       0.087580064       2.601218934 )
 
           Effective charges (d Force / dE) in cartesian axis without acoustic sum rule applied (asr)
 
-           atom      1   S  Mean Z*:        3.16059
+           atom    1  S     Mean Z*:        3.16059
       Ex  (        2.94276       -0.49022       -0.07630 )
       Ey  (        0.08373        3.23519        0.07406 )
       Ez  (        0.13383        0.73161        3.30382 )
-           atom      2   S  Mean Z*:        3.16059
+           atom    2  S     Mean Z*:        3.16059
       Ex  (        2.94276       -0.49022       -0.07630 )
       Ey  (        0.08373        3.23519        0.07406 )
       Ez  (        0.13383        0.73161        3.30382 )
-           atom      3   Na Mean Z*:        1.20045
+           atom    3  Na    Mean Z*:        1.20045
       Ex  (        1.22699        0.04319        0.00849 )
       Ey  (        0.03130        1.18477       -0.04041 )
       Ez  (       -0.01650       -0.04940        1.18958 )
-           atom      4   Na Mean Z*:        1.20045
+           atom    4  Na    Mean Z*:        1.20045
       Ex  (        1.22699        0.04319        0.00849 )
       Ey  (        0.03130        1.18477       -0.04041 )
       Ez  (       -0.01650       -0.04940        1.18958 )
-           atom      5   O  Mean Z*:       -0.68474
+           atom    5  O     Mean Z*:       -0.68474
       Ex  (       -0.47357        0.38711        0.22600 )
       Ey  (        0.19113       -0.84548       -0.33696 )
       Ez  (        0.16297       -0.59824       -0.73518 )
-           atom      6   O  Mean Z*:       -0.68474
+           atom    6  O     Mean Z*:       -0.68474
       Ex  (       -0.47357        0.38711        0.22600 )
       Ey  (        0.19113       -0.84548       -0.33696 )
       Ez  (        0.16297       -0.59824       -0.73518 )
-           atom      7   O  Mean Z*:       -1.23273
+           atom    7  O     Mean Z*:       -1.23273
       Ex  (       -1.23505       -0.26413        0.46486 )
       Ey  (       -0.26840       -1.16909        0.17931 )
       Ez  (        0.44051        0.15017       -1.29405 )
-           atom      8   O  Mean Z*:       -1.23273
+           atom    8  O     Mean Z*:       -1.23273
       Ex  (       -1.23505       -0.26413        0.46486 )
       Ey  (       -0.26840       -1.16909        0.17931 )
       Ez  (        0.44051        0.15017       -1.29405 )
-           atom      9   O  Mean Z*:       -1.20446
+           atom    9  O     Mean Z*:       -1.20446
       Ex  (       -1.32396       -0.14705       -0.25790 )
       Ey  (       -0.35245       -1.04103       -0.25627 )
       Ez  (       -0.53371       -0.39301       -1.24838 )
-           atom     10   O  Mean Z*:       -1.20446
+           atom   10  O     Mean Z*:       -1.20446
       Ex  (       -1.32396       -0.14705       -0.25790 )
       Ey  (       -0.35245       -1.04103       -0.25627 )
       Ez  (       -0.53371       -0.39301       -1.24838 )
-           atom     11   O  Mean Z*:       -1.17442
+           atom   11  O     Mean Z*:       -1.17442
       Ex  (       -1.07500        0.46487       -0.36322 )
       Ey  (        0.30872       -1.29868        0.38792 )
       Ez  (       -0.18575        0.16676       -1.14958 )
-           atom     12   O  Mean Z*:       -1.17442
+           atom   12  O     Mean Z*:       -1.17442
       Ex  (       -1.07500        0.46487       -0.36322 )
       Ey  (        0.30872       -1.29868        0.38792 )
       Ez  (       -0.18575        0.16676       -1.14958 )
@@ -478,51 +349,51 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
               0.00385        0.01528        0.13240
 
           Effective charges (d Force / dE) in cartesian axis with asr applied: 
-           atom      1   S  Mean Z*:        3.14981
+           atom    1  S     Mean Z*:        3.14981
       E*x (        2.93239       -0.48918       -0.07662 )
       E*y (        0.08473        3.22424        0.07278 )
       E*z (        0.13361        0.73029        3.29279 )
-           atom      2   S  Mean Z*:        3.14981
+           atom    2  S     Mean Z*:        3.14981
       E*x (        2.93239       -0.48918       -0.07662 )
       E*y (        0.08473        3.22424        0.07278 )
       E*z (        0.13361        0.73029        3.29279 )
-           atom      3   Na Mean Z*:        1.18967
+           atom    3  Na    Mean Z*:        1.18967
       E*x (        1.21663        0.04423        0.00817 )
       E*y (        0.03229        1.17382       -0.04169 )
       E*z (       -0.01673       -0.05072        1.17854 )
-           atom      4   Na Mean Z*:        1.18967
+           atom    4  Na    Mean Z*:        1.18967
       E*x (        1.21663        0.04423        0.00817 )
       E*y (        0.03229        1.17382       -0.04169 )
       E*z (       -0.01673       -0.05072        1.17854 )
-           atom      5   O  Mean Z*:       -0.69552
+           atom    5  O     Mean Z*:       -0.69552
       E*x (       -0.48393        0.38814        0.22567 )
       E*y (        0.19213       -0.85643       -0.33824 )
       E*z (        0.16274       -0.59956       -0.74621 )
-           atom      6   O  Mean Z*:       -0.69552
+           atom    6  O     Mean Z*:       -0.69552
       E*x (       -0.48393        0.38814        0.22567 )
       E*y (        0.19213       -0.85643       -0.33824 )
       E*z (        0.16274       -0.59956       -0.74621 )
-           atom      7   O  Mean Z*:       -1.24351
+           atom    7  O     Mean Z*:       -1.24351
       E*x (       -1.24541       -0.26309        0.46454 )
       E*y (       -0.26741       -1.18004        0.17804 )
       E*z (        0.44028        0.14885       -1.30509 )
-           atom      8   O  Mean Z*:       -1.24351
+           atom    8  O     Mean Z*:       -1.24351
       E*x (       -1.24541       -0.26309        0.46454 )
       E*y (       -0.26741       -1.18004        0.17804 )
       E*z (        0.44028        0.14885       -1.30509 )
-           atom      9   O  Mean Z*:       -1.21524
+           atom    9  O     Mean Z*:       -1.21524
       E*x (       -1.33432       -0.14601       -0.25822 )
       E*y (       -0.35146       -1.05198       -0.25755 )
       E*z (       -0.53393       -0.39432       -1.25941 )
-           atom     10   O  Mean Z*:       -1.21524
+           atom   10  O     Mean Z*:       -1.21524
       E*x (       -1.33432       -0.14601       -0.25822 )
       E*y (       -0.35146       -1.05198       -0.25755 )
       E*z (       -0.53393       -0.39432       -1.25941 )
-           atom     11   O  Mean Z*:       -1.18520
+           atom   11  O     Mean Z*:       -1.18520
       E*x (       -1.08536        0.46591       -0.36354 )
       E*y (        0.30971       -1.30962        0.38665 )
       E*z (       -0.18597        0.16545       -1.16062 )
-           atom     12   O  Mean Z*:       -1.18520
+           atom   12  O     Mean Z*:       -1.18520
       E*x (       -1.08536        0.46591       -0.36354 )
       E*y (        0.30971       -1.30962        0.38665 )
       E*z (       -0.18597        0.16545       -1.16062 )
@@ -532,40 +403,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :   928.4 secs   av.it.:   9.0
+      iter #   1 total cpu time :  2106.1 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.853E-06
 
-      iter #   2 total cpu time :   944.0 secs   av.it.:  18.0
+      iter #   2 total cpu time :  2143.0 secs   av.it.:  18.0
       thresh= 1.963E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.578E-06
 
-      iter #   3 total cpu time :   959.3 secs   av.it.:  18.0
+      iter #   3 total cpu time :  2179.4 secs   av.it.:  18.0
       thresh= 1.256E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.643E-07
 
-      iter #   4 total cpu time :   974.4 secs   av.it.:  17.7
+      iter #   4 total cpu time :  2215.1 secs   av.it.:  17.7
       thresh= 5.141E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.070E-08
 
-      iter #   5 total cpu time :   989.7 secs   av.it.:  18.0
+      iter #   5 total cpu time :  2251.5 secs   av.it.:  18.0
       thresh= 1.035E-05 alpha_mix =  0.700 |ddv_scf|^2 =  8.282E-10
 
-      iter #   6 total cpu time :  1005.2 secs   av.it.:  18.0
+      iter #   6 total cpu time :  2288.3 secs   av.it.:  18.0
       thresh= 2.878E-06 alpha_mix =  0.700 |ddv_scf|^2 =  9.634E-11
 
-      iter #   7 total cpu time :  1020.5 secs   av.it.:  18.0
+      iter #   7 total cpu time :  2324.7 secs   av.it.:  18.0
       thresh= 9.815E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.865E-11
 
-      iter #   8 total cpu time :  1035.4 secs   av.it.:  17.5
+      iter #   8 total cpu time :  2360.1 secs   av.it.:  17.5
       thresh= 5.353E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.052E-12
 
-      iter #   9 total cpu time :  1051.2 secs   av.it.:  18.9
+      iter #   9 total cpu time :  2397.8 secs   av.it.:  18.9
       thresh= 1.026E-07 alpha_mix =  0.700 |ddv_scf|^2 =  3.054E-13
 
-      iter #  10 total cpu time :  1067.1 secs   av.it.:  18.9
+      iter #  10 total cpu time :  2435.3 secs   av.it.:  18.9
       thresh= 5.526E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.288E-13
 
-      iter #  11 total cpu time :  1082.3 secs   av.it.:  18.0
+      iter #  11 total cpu time :  2471.4 secs   av.it.:  18.0
       thresh= 4.783E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.853E-14
 
-      iter #  12 total cpu time :  1097.7 secs   av.it.:  18.0
+      iter #  12 total cpu time :  2514.6 secs   av.it.:  18.0
       thresh= 1.689E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.507E-15
 
      End of self-consistent calculation
@@ -577,37 +448,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  1108.8 secs   av.it.:   9.0
+      iter #   1 total cpu time :  2537.3 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.621E-06
 
-      iter #   2 total cpu time :  1124.4 secs   av.it.:  18.0
+      iter #   2 total cpu time :  2580.5 secs   av.it.:  18.0
       thresh= 1.903E-04 alpha_mix =  0.700 |ddv_scf|^2 =  4.050E-06
 
-      iter #   3 total cpu time :  1139.2 secs   av.it.:  17.0
+      iter #   3 total cpu time :  2615.5 secs   av.it.:  17.0
       thresh= 2.013E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.371E-07
 
-      iter #   4 total cpu time :  1154.4 secs   av.it.:  17.9
+      iter #   4 total cpu time :  2651.5 secs   av.it.:  17.9
       thresh= 4.869E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.453E-08
 
-      iter #   5 total cpu time :  1169.7 secs   av.it.:  18.0
+      iter #   5 total cpu time :  2687.9 secs   av.it.:  18.0
       thresh= 1.206E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.038E-09
 
-      iter #   6 total cpu time :  1185.0 secs   av.it.:  18.0
+      iter #   6 total cpu time :  2723.8 secs   av.it.:  18.0
       thresh= 3.222E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.484E-10
 
-      iter #   7 total cpu time :  1200.4 secs   av.it.:  18.0
+      iter #   7 total cpu time :  2760.4 secs   av.it.:  18.0
       thresh= 1.218E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.997E-11
 
-      iter #   8 total cpu time :  1215.5 secs   av.it.:  17.9
+      iter #   8 total cpu time :  2796.1 secs   av.it.:  17.9
       thresh= 4.469E-07 alpha_mix =  0.700 |ddv_scf|^2 =  5.722E-13
 
-      iter #   9 total cpu time :  1237.3 secs   av.it.:  19.0
+      iter #   9 total cpu time :  2834.6 secs   av.it.:  19.0
       thresh= 7.564E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.833E-13
 
-      iter #  10 total cpu time :  1258.0 secs   av.it.:  18.0
+      iter #  10 total cpu time :  2871.0 secs   av.it.:  18.0
       thresh= 6.952E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.357E-14
 
-      iter #  11 total cpu time :  1279.4 secs   av.it.:  18.0
+      iter #  11 total cpu time :  2907.3 secs   av.it.:  18.0
       thresh= 2.521E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.866E-15
 
      End of self-consistent calculation
@@ -619,37 +490,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  1293.3 secs   av.it.:   9.0
+      iter #   1 total cpu time :  2928.9 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.271E-06
 
-      iter #   2 total cpu time :  1310.0 secs   av.it.:  18.0
+      iter #   2 total cpu time :  2964.9 secs   av.it.:  18.0
       thresh= 1.808E-04 alpha_mix =  0.700 |ddv_scf|^2 =  7.091E-07
 
-      iter #   3 total cpu time :  1326.1 secs   av.it.:  18.0
+      iter #   3 total cpu time :  3001.6 secs   av.it.:  18.0
       thresh= 8.421E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.472E-07
 
-      iter #   4 total cpu time :  1341.0 secs   av.it.:  17.6
+      iter #   4 total cpu time :  3037.0 secs   av.it.:  17.6
       thresh= 4.972E-05 alpha_mix =  0.700 |ddv_scf|^2 =  6.733E-09
 
-      iter #   5 total cpu time :  1356.1 secs   av.it.:  18.0
+      iter #   5 total cpu time :  3073.0 secs   av.it.:  18.0
       thresh= 8.205E-06 alpha_mix =  0.700 |ddv_scf|^2 =  8.734E-10
 
-      iter #   6 total cpu time :  1371.3 secs   av.it.:  18.0
+      iter #   6 total cpu time :  3109.1 secs   av.it.:  18.0
       thresh= 2.955E-06 alpha_mix =  0.700 |ddv_scf|^2 =  6.373E-11
 
-      iter #   7 total cpu time :  1386.7 secs   av.it.:  18.0
+      iter #   7 total cpu time :  3145.8 secs   av.it.:  18.0
       thresh= 7.983E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.789E-11
 
-      iter #   8 total cpu time :  1401.9 secs   av.it.:  18.0
+      iter #   8 total cpu time :  3182.9 secs   av.it.:  18.0
       thresh= 4.230E-07 alpha_mix =  0.700 |ddv_scf|^2 =  6.206E-13
 
-      iter #   9 total cpu time :  1417.9 secs   av.it.:  19.0
+      iter #   9 total cpu time :  3220.9 secs   av.it.:  19.0
       thresh= 7.878E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.867E-13
 
-      iter #  10 total cpu time :  1433.5 secs   av.it.:  18.1
+      iter #  10 total cpu time :  3258.2 secs   av.it.:  18.1
       thresh= 4.321E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.745E-14
 
-      iter #  11 total cpu time :  1448.7 secs   av.it.:  18.0
+      iter #  11 total cpu time :  3294.5 secs   av.it.:  18.0
       thresh= 2.397E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.916E-15
 
      End of self-consistent calculation
@@ -661,40 +532,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  1458.5 secs   av.it.:   8.0
+      iter #   1 total cpu time :  3315.2 secs   av.it.:   8.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  8.952E-06
 
-      iter #   2 total cpu time :  1473.4 secs   av.it.:  17.6
+      iter #   2 total cpu time :  3350.7 secs   av.it.:  17.6
       thresh= 2.992E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.777E-06
 
-      iter #   3 total cpu time :  1488.7 secs   av.it.:  18.0
+      iter #   3 total cpu time :  3387.0 secs   av.it.:  18.0
       thresh= 1.943E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.438E-06
 
-      iter #   4 total cpu time :  1503.5 secs   av.it.:  17.2
+      iter #   4 total cpu time :  3422.4 secs   av.it.:  17.2
       thresh= 1.199E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.253E-08
 
-      iter #   5 total cpu time :  1518.3 secs   av.it.:  17.5
+      iter #   5 total cpu time :  3457.7 secs   av.it.:  17.5
       thresh= 1.501E-05 alpha_mix =  0.700 |ddv_scf|^2 =  5.740E-09
 
-      iter #   6 total cpu time :  1533.2 secs   av.it.:  17.5
+      iter #   6 total cpu time :  3493.2 secs   av.it.:  17.5
       thresh= 7.576E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.435E-11
 
-      iter #   7 total cpu time :  1549.1 secs   av.it.:  19.0
+      iter #   7 total cpu time :  3530.9 secs   av.it.:  19.0
       thresh= 4.935E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.182E-11
 
-      iter #   8 total cpu time :  1564.5 secs   av.it.:  18.0
+      iter #   8 total cpu time :  3567.7 secs   av.it.:  18.0
       thresh= 3.439E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.424E-12
 
-      iter #   9 total cpu time :  1579.7 secs   av.it.:  18.0
+      iter #   9 total cpu time :  3603.9 secs   av.it.:  18.0
       thresh= 1.557E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.995E-13
 
-      iter #  10 total cpu time :  1595.3 secs   av.it.:  18.3
+      iter #  10 total cpu time :  3641.0 secs   av.it.:  18.3
       thresh= 5.473E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.905E-14
 
-      iter #  11 total cpu time :  1610.8 secs   av.it.:  18.0
+      iter #  11 total cpu time :  3678.1 secs   av.it.:  18.0
       thresh= 2.628E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.150E-14
 
-      iter #  12 total cpu time :  1625.6 secs   av.it.:  17.4
+      iter #  12 total cpu time :  3713.4 secs   av.it.:  17.4
       thresh= 1.466E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.319E-15
 
      End of self-consistent calculation
@@ -706,37 +577,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  1635.7 secs   av.it.:   9.0
+      iter #   1 total cpu time :  3735.0 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  2.174E-06
 
-      iter #   2 total cpu time :  1651.3 secs   av.it.:  18.5
+      iter #   2 total cpu time :  3772.1 secs   av.it.:  18.5
       thresh= 1.474E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.734E-06
 
-      iter #   3 total cpu time :  1666.1 secs   av.it.:  17.1
+      iter #   3 total cpu time :  3807.2 secs   av.it.:  17.1
       thresh= 1.932E-04 alpha_mix =  0.700 |ddv_scf|^2 =  8.406E-08
 
-      iter #   4 total cpu time :  1681.0 secs   av.it.:  17.7
+      iter #   4 total cpu time :  3843.0 secs   av.it.:  17.7
       thresh= 2.899E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.089E-09
 
-      iter #   5 total cpu time :  1696.9 secs   av.it.:  19.0
+      iter #   5 total cpu time :  3880.8 secs   av.it.:  19.0
       thresh= 3.299E-06 alpha_mix =  0.700 |ddv_scf|^2 =  7.396E-10
 
-      iter #   6 total cpu time :  1711.9 secs   av.it.:  17.8
+      iter #   6 total cpu time :  3916.4 secs   av.it.:  17.8
       thresh= 2.720E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.605E-11
 
-      iter #   7 total cpu time :  1727.6 secs   av.it.:  18.9
+      iter #   7 total cpu time :  3953.9 secs   av.it.:  18.9
       thresh= 5.104E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.098E-11
 
-      iter #   8 total cpu time :  1742.8 secs   av.it.:  18.0
+      iter #   8 total cpu time :  3990.2 secs   av.it.:  18.0
       thresh= 3.313E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.875E-13
 
-      iter #   9 total cpu time :  1757.9 secs   av.it.:  18.0
+      iter #   9 total cpu time :  4026.5 secs   av.it.:  18.0
       thresh= 6.982E-08 alpha_mix =  0.700 |ddv_scf|^2 =  8.329E-14
 
-      iter #  10 total cpu time :  1773.4 secs   av.it.:  18.0
+      iter #  10 total cpu time :  4063.1 secs   av.it.:  18.0
       thresh= 2.886E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.015E-14
 
-      iter #  11 total cpu time :  1788.5 secs   av.it.:  18.0
+      iter #  11 total cpu time :  4099.1 secs   av.it.:  18.0
       thresh= 1.420E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.352E-15
 
      End of self-consistent calculation
@@ -748,34 +619,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  1798.4 secs   av.it.:   8.8
+      iter #   1 total cpu time :  4120.1 secs   av.it.:   8.8
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.778E-06
 
-      iter #   2 total cpu time :  1813.4 secs   av.it.:  17.9
+      iter #   2 total cpu time :  4155.7 secs   av.it.:  17.9
       thresh= 1.944E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.106E-06
 
-      iter #   3 total cpu time :  1828.3 secs   av.it.:  17.5
+      iter #   3 total cpu time :  4191.2 secs   av.it.:  17.5
       thresh= 1.052E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.327E-07
 
-      iter #   4 total cpu time :  1843.2 secs   av.it.:  17.6
+      iter #   4 total cpu time :  4226.6 secs   av.it.:  17.6
       thresh= 3.643E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.399E-08
 
-      iter #   5 total cpu time :  1858.0 secs   av.it.:  17.8
+      iter #   5 total cpu time :  4262.2 secs   av.it.:  17.8
       thresh= 1.183E-05 alpha_mix =  0.700 |ddv_scf|^2 =  8.878E-10
 
-      iter #   6 total cpu time :  1873.3 secs   av.it.:  18.0
+      iter #   6 total cpu time :  4298.6 secs   av.it.:  18.0
       thresh= 2.980E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.781E-11
 
-      iter #   7 total cpu time :  1888.7 secs   av.it.:  18.0
+      iter #   7 total cpu time :  4335.4 secs   av.it.:  18.0
       thresh= 6.149E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.437E-11
 
-      iter #   8 total cpu time :  1903.8 secs   av.it.:  17.9
+      iter #   8 total cpu time :  4371.2 secs   av.it.:  17.9
       thresh= 4.937E-07 alpha_mix =  0.700 |ddv_scf|^2 =  8.004E-13
 
-      iter #   9 total cpu time :  1919.3 secs   av.it.:  18.0
+      iter #   9 total cpu time :  4407.8 secs   av.it.:  18.0
       thresh= 8.947E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.968E-14
 
-      iter #  10 total cpu time :  1935.3 secs   av.it.:  18.8
+      iter #  10 total cpu time :  4445.2 secs   av.it.:  18.8
       thresh= 1.403E-08 alpha_mix =  0.700 |ddv_scf|^2 =  7.113E-15
 
      End of self-consistent calculation
@@ -787,34 +658,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  1945.4 secs   av.it.:   9.0
+      iter #   1 total cpu time :  4466.5 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.335E-06
 
-      iter #   2 total cpu time :  1960.8 secs   av.it.:  18.0
+      iter #   2 total cpu time :  4503.5 secs   av.it.:  18.0
       thresh= 1.826E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.437E-06
 
-      iter #   3 total cpu time :  1975.9 secs   av.it.:  17.7
+      iter #   3 total cpu time :  4539.0 secs   av.it.:  17.7
       thresh= 1.199E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.673E-07
 
-      iter #   4 total cpu time :  1991.0 secs   av.it.:  17.6
+      iter #   4 total cpu time :  4574.5 secs   av.it.:  17.6
       thresh= 5.170E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.191E-08
 
-      iter #   5 total cpu time :  2006.2 secs   av.it.:  17.8
+      iter #   5 total cpu time :  4610.1 secs   av.it.:  17.8
       thresh= 1.091E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.165E-09
 
-      iter #   6 total cpu time :  2021.3 secs   av.it.:  17.6
+      iter #   6 total cpu time :  4645.7 secs   av.it.:  17.6
       thresh= 3.414E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.091E-11
 
-      iter #   7 total cpu time :  2036.8 secs   av.it.:  18.0
+      iter #   7 total cpu time :  4684.0 secs   av.it.:  18.0
       thresh= 5.560E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.918E-12
 
-      iter #   8 total cpu time :  2052.7 secs   av.it.:  18.7
+      iter #   8 total cpu time :  4721.4 secs   av.it.:  18.7
       thresh= 1.708E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.167E-12
 
-      iter #   9 total cpu time :  2068.0 secs   av.it.:  17.9
+      iter #   9 total cpu time :  4757.2 secs   av.it.:  17.9
       thresh= 1.080E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.976E-14
 
-      iter #  10 total cpu time :  2083.6 secs   av.it.:  18.0
+      iter #  10 total cpu time :  4793.9 secs   av.it.:  18.0
       thresh= 1.725E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.697E-15
 
      End of self-consistent calculation
@@ -826,34 +697,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  2093.9 secs   av.it.:   9.0
+      iter #   1 total cpu time :  4815.6 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  1.880E-06
 
-      iter #   2 total cpu time :  2109.5 secs   av.it.:  18.0
+      iter #   2 total cpu time :  4852.2 secs   av.it.:  18.0
       thresh= 1.371E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.896E-06
 
-      iter #   3 total cpu time :  2124.5 secs   av.it.:  17.5
+      iter #   3 total cpu time :  4887.5 secs   av.it.:  17.5
       thresh= 1.377E-04 alpha_mix =  0.700 |ddv_scf|^2 =  8.082E-08
 
-      iter #   4 total cpu time :  2139.6 secs   av.it.:  17.7
+      iter #   4 total cpu time :  4923.0 secs   av.it.:  17.7
       thresh= 2.843E-05 alpha_mix =  0.700 |ddv_scf|^2 =  5.865E-10
 
-      iter #   5 total cpu time :  2155.5 secs   av.it.:  18.8
+      iter #   5 total cpu time :  4960.4 secs   av.it.:  18.8
       thresh= 2.422E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.310E-10
 
-      iter #   6 total cpu time :  2171.0 secs   av.it.:  18.0
+      iter #   6 total cpu time :  4996.9 secs   av.it.:  18.0
       thresh= 1.819E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.885E-11
 
-      iter #   7 total cpu time :  2186.7 secs   av.it.:  18.0
+      iter #   7 total cpu time :  5033.7 secs   av.it.:  18.0
       thresh= 5.371E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.593E-11
 
-      iter #   8 total cpu time :  2201.9 secs   av.it.:  17.7
+      iter #   8 total cpu time :  5069.2 secs   av.it.:  17.7
       thresh= 3.991E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.417E-13
 
-      iter #   9 total cpu time :  2217.8 secs   av.it.:  18.8
+      iter #   9 total cpu time :  5106.9 secs   av.it.:  18.8
       thresh= 4.916E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.248E-13
 
-      iter #  10 total cpu time :  2232.8 secs   av.it.:  17.4
+      iter #  10 total cpu time :  5142.3 secs   av.it.:  17.4
       thresh= 3.532E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.844E-15
 
      End of self-consistent calculation
@@ -865,34 +736,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  2242.8 secs   av.it.:   8.7
+      iter #   1 total cpu time :  5163.2 secs   av.it.:   8.7
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  2.795E-06
 
-      iter #   2 total cpu time :  2257.9 secs   av.it.:  17.7
+      iter #   2 total cpu time :  5198.8 secs   av.it.:  17.7
       thresh= 1.672E-04 alpha_mix =  0.700 |ddv_scf|^2 =  6.885E-07
 
-      iter #   3 total cpu time :  2273.3 secs   av.it.:  18.0
+      iter #   3 total cpu time :  5234.7 secs   av.it.:  18.0
       thresh= 8.297E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.432E-07
 
-      iter #   4 total cpu time :  2288.3 secs   av.it.:  17.3
+      iter #   4 total cpu time :  5270.8 secs   av.it.:  17.3
       thresh= 4.932E-05 alpha_mix =  0.700 |ddv_scf|^2 =  7.440E-09
 
-      iter #   5 total cpu time :  2303.2 secs   av.it.:  17.1
+      iter #   5 total cpu time :  5306.1 secs   av.it.:  17.1
       thresh= 8.626E-06 alpha_mix =  0.700 |ddv_scf|^2 =  6.634E-10
 
-      iter #   6 total cpu time :  2318.4 secs   av.it.:  17.9
+      iter #   6 total cpu time :  5341.9 secs   av.it.:  17.9
       thresh= 2.576E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.907E-11
 
-      iter #   7 total cpu time :  2333.7 secs   av.it.:  17.9
+      iter #   7 total cpu time :  5377.8 secs   av.it.:  17.9
       thresh= 5.391E-07 alpha_mix =  0.700 |ddv_scf|^2 =  6.038E-12
 
-      iter #   8 total cpu time :  2349.0 secs   av.it.:  18.0
+      iter #   8 total cpu time :  5413.9 secs   av.it.:  18.0
       thresh= 2.457E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.919E-13
 
-      iter #   9 total cpu time :  2364.5 secs   av.it.:  18.0
+      iter #   9 total cpu time :  5450.6 secs   av.it.:  18.0
       thresh= 7.013E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.219E-14
 
-      iter #  10 total cpu time :  2380.0 secs   av.it.:  18.0
+      iter #  10 total cpu time :  5486.7 secs   av.it.:  18.0
       thresh= 1.490E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.914E-16
 
      End of self-consistent calculation
@@ -904,37 +775,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  2389.9 secs   av.it.:   8.1
+      iter #   1 total cpu time :  5507.3 secs   av.it.:   8.1
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  9.311E-06
 
-      iter #   2 total cpu time :  2405.2 secs   av.it.:  18.0
+      iter #   2 total cpu time :  5543.2 secs   av.it.:  18.0
       thresh= 3.051E-04 alpha_mix =  0.700 |ddv_scf|^2 =  4.331E-06
 
-      iter #   3 total cpu time :  2420.6 secs   av.it.:  18.0
+      iter #   3 total cpu time :  5579.5 secs   av.it.:  18.0
       thresh= 2.081E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.162E-06
 
-      iter #   4 total cpu time :  2435.9 secs   av.it.:  17.9
+      iter #   4 total cpu time :  5615.3 secs   av.it.:  17.9
       thresh= 1.078E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.924E-08
 
-      iter #   5 total cpu time :  2451.1 secs   av.it.:  17.9
+      iter #   5 total cpu time :  5651.0 secs   av.it.:  17.9
       thresh= 1.981E-05 alpha_mix =  0.700 |ddv_scf|^2 =  5.241E-09
 
-      iter #   6 total cpu time :  2466.2 secs   av.it.:  17.6
+      iter #   6 total cpu time :  5686.8 secs   av.it.:  17.6
       thresh= 7.239E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.122E-10
 
-      iter #   7 total cpu time :  2481.8 secs   av.it.:  18.0
+      iter #   7 total cpu time :  5723.4 secs   av.it.:  18.0
       thresh= 1.059E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.769E-11
 
-      iter #   8 total cpu time :  2497.4 secs   av.it.:  18.0
+      iter #   8 total cpu time :  5760.0 secs   av.it.:  18.0
       thresh= 4.205E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.994E-12
 
-      iter #   9 total cpu time :  2512.9 secs   av.it.:  18.0
+      iter #   9 total cpu time : 12423.3 secs   av.it.:  18.0
       thresh= 2.827E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.237E-13
 
-      iter #  10 total cpu time :  2528.5 secs   av.it.:  18.0
+      iter #  10 total cpu time : 12471.1 secs   av.it.:  18.0
       thresh= 8.507E-08 alpha_mix =  0.700 |ddv_scf|^2 =  9.802E-14
 
-      iter #  11 total cpu time :  2543.7 secs   av.it.:  17.9
+      iter #  11 total cpu time : 12515.7 secs   av.it.:  17.9
       thresh= 3.131E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.665E-15
 
      End of self-consistent calculation
@@ -946,37 +817,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  2554.3 secs   av.it.:   9.2
+      iter #   1 total cpu time : 12541.8 secs   av.it.:   9.2
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  4.441E-06
 
-      iter #   2 total cpu time :  2570.0 secs   av.it.:  18.2
+      iter #   2 total cpu time : 12579.5 secs   av.it.:  18.2
       thresh= 2.107E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.283E-06
 
-      iter #   3 total cpu time :  2585.4 secs   av.it.:  18.0
+      iter #   3 total cpu time : 12616.3 secs   av.it.:  18.0
       thresh= 1.511E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.426E-07
 
-      iter #   4 total cpu time :  2600.5 secs   av.it.:  17.6
+      iter #   4 total cpu time : 12651.7 secs   av.it.:  17.6
       thresh= 5.853E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.631E-08
 
-      iter #   5 total cpu time :  2616.0 secs   av.it.:  18.0
+      iter #   5 total cpu time : 12688.1 secs   av.it.:  18.0
       thresh= 1.277E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.135E-09
 
-      iter #   6 total cpu time :  2631.7 secs   av.it.:  18.0
+      iter #   6 total cpu time : 12725.0 secs   av.it.:  18.0
       thresh= 3.369E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.127E-10
 
-      iter #   7 total cpu time :  2647.0 secs   av.it.:  17.9
+      iter #   7 total cpu time : 12760.7 secs   av.it.:  17.9
       thresh= 1.062E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.789E-11
 
-      iter #   8 total cpu time :  2662.5 secs   av.it.:  18.0
+      iter #   8 total cpu time : 12797.2 secs   av.it.:  18.0
       thresh= 5.281E-07 alpha_mix =  0.700 |ddv_scf|^2 =  8.381E-13
 
-      iter #   9 total cpu time :  2678.2 secs   av.it.:  18.0
+      iter #   9 total cpu time : 12833.9 secs   av.it.:  18.0
       thresh= 9.155E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.430E-14
 
-      iter #  10 total cpu time :  2694.1 secs   av.it.:  18.8
+      iter #  10 total cpu time : 12871.8 secs   av.it.:  18.8
       thresh= 2.105E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.562E-14
 
-      iter #  11 total cpu time :  2709.4 secs   av.it.:  18.0
+      iter #  11 total cpu time : 12907.8 secs   av.it.:  18.0
       thresh= 1.600E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.819E-15
 
      End of self-consistent calculation
@@ -988,40 +859,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  2720.1 secs   av.it.:   9.2
+      iter #   1 total cpu time : 12930.3 secs   av.it.:   9.2
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  4.704E-06
 
-      iter #   2 total cpu time :  2735.8 secs   av.it.:  18.0
+      iter #   2 total cpu time : 12967.0 secs   av.it.:  18.0
       thresh= 2.169E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.385E-06
 
-      iter #   3 total cpu time :  2751.2 secs   av.it.:  18.0
+      iter #   3 total cpu time : 13003.2 secs   av.it.:  18.0
       thresh= 1.544E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.281E-07
 
-      iter #   4 total cpu time :  2766.4 secs   av.it.:  17.8
+      iter #   4 total cpu time : 13039.0 secs   av.it.:  17.8
       thresh= 5.728E-05 alpha_mix =  0.700 |ddv_scf|^2 =  9.806E-09
 
-      iter #   5 total cpu time :  2781.9 secs   av.it.:  18.0
+      iter #   5 total cpu time : 13075.4 secs   av.it.:  18.0
       thresh= 9.903E-06 alpha_mix =  0.700 |ddv_scf|^2 =  9.091E-10
 
-      iter #   6 total cpu time :  2797.7 secs   av.it.:  18.0
+      iter #   6 total cpu time : 13112.3 secs   av.it.:  18.0
       thresh= 3.015E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.840E-10
 
-      iter #   7 total cpu time :  2813.0 secs   av.it.:  18.0
+      iter #   7 total cpu time : 13148.2 secs   av.it.:  18.0
       thresh= 1.357E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.670E-11
 
-      iter #   8 total cpu time :  2828.2 secs   av.it.:  17.9
+      iter #   8 total cpu time : 13183.7 secs   av.it.:  17.9
       thresh= 5.167E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.531E-12
 
-      iter #   9 total cpu time :  2844.1 secs   av.it.:  18.7
+      iter #   9 total cpu time : 13221.1 secs   av.it.:  18.7
       thresh= 1.237E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.121E-13
 
-      iter #  10 total cpu time :  2860.0 secs   av.it.:  18.9
+      iter #  10 total cpu time : 13258.5 secs   av.it.:  18.9
       thresh= 6.420E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.668E-13
 
-      iter #  11 total cpu time :  2875.8 secs   av.it.:  18.1
+      iter #  11 total cpu time : 13304.3 secs   av.it.:  18.1
       thresh= 4.084E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.133E-14
 
-      iter #  12 total cpu time :  2890.7 secs   av.it.:  17.1
+      iter #  12 total cpu time : 13343.2 secs   av.it.:  17.1
       thresh= 2.033E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.460E-15
 
      End of self-consistent calculation
@@ -1033,34 +904,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  2900.7 secs   av.it.:   9.0
+      iter #   1 total cpu time : 13364.3 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  1.753E-06
 
-      iter #   2 total cpu time :  2916.4 secs   av.it.:  18.1
+      iter #   2 total cpu time : 13401.2 secs   av.it.:  18.1
       thresh= 1.324E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.423E-06
 
-      iter #   3 total cpu time :  2931.4 secs   av.it.:  17.1
+      iter #   3 total cpu time : 13436.3 secs   av.it.:  17.1
       thresh= 1.557E-04 alpha_mix =  0.700 |ddv_scf|^2 =  8.763E-08
 
-      iter #   4 total cpu time :  2946.3 secs   av.it.:  17.0
+      iter #   4 total cpu time : 13471.1 secs   av.it.:  17.0
       thresh= 2.960E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.870E-09
 
-      iter #   5 total cpu time :  2961.9 secs   av.it.:  18.0
+      iter #   5 total cpu time : 13507.8 secs   av.it.:  18.0
       thresh= 4.324E-06 alpha_mix =  0.700 |ddv_scf|^2 =  7.138E-10
 
-      iter #   6 total cpu time :  2977.1 secs   av.it.:  17.6
+      iter #   6 total cpu time : 13543.2 secs   av.it.:  17.6
       thresh= 2.672E-06 alpha_mix =  0.700 |ddv_scf|^2 =  7.843E-12
 
-      iter #   7 total cpu time :  2992.9 secs   av.it.:  18.4
+      iter #   7 total cpu time : 13580.3 secs   av.it.:  18.4
       thresh= 2.801E-07 alpha_mix =  0.700 |ddv_scf|^2 =  5.327E-12
 
-      iter #   8 total cpu time :  3008.2 secs   av.it.:  18.0
+      iter #   8 total cpu time : 13616.3 secs   av.it.:  18.0
       thresh= 2.308E-07 alpha_mix =  0.700 |ddv_scf|^2 =  3.857E-13
 
-      iter #   9 total cpu time :  3024.2 secs   av.it.:  18.9
+      iter #   9 total cpu time : 13653.8 secs   av.it.:  18.9
       thresh= 6.211E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.065E-13
 
-      iter #  10 total cpu time :  3039.2 secs   av.it.:  17.5
+      iter #  10 total cpu time : 13689.2 secs   av.it.:  17.5
       thresh= 5.536E-08 alpha_mix =  0.700 |ddv_scf|^2 =  7.860E-15
 
      End of self-consistent calculation
@@ -1072,37 +943,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  3048.7 secs   av.it.:   8.0
+      iter #   1 total cpu time : 13708.8 secs   av.it.:   8.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  6.409E-06
 
-      iter #   2 total cpu time :  3063.6 secs   av.it.:  17.0
+      iter #   2 total cpu time : 13743.7 secs   av.it.:  17.0
       thresh= 2.532E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.128E-06
 
-      iter #   3 total cpu time :  3079.4 secs   av.it.:  18.1
+      iter #   3 total cpu time : 13780.7 secs   av.it.:  18.1
       thresh= 1.062E-04 alpha_mix =  0.700 |ddv_scf|^2 =  6.497E-07
 
-      iter #   4 total cpu time :  3094.4 secs   av.it.:  17.6
+      iter #   4 total cpu time : 13816.0 secs   av.it.:  17.6
       thresh= 8.061E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.294E-08
 
-      iter #   5 total cpu time :  3109.6 secs   av.it.:  17.8
+      iter #   5 total cpu time : 13851.5 secs   av.it.:  17.8
       thresh= 1.515E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.831E-09
 
-      iter #   6 total cpu time :  3124.8 secs   av.it.:  17.9
+      iter #   6 total cpu time : 13887.2 secs   av.it.:  17.9
       thresh= 5.321E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.259E-10
 
-      iter #   7 total cpu time :  3140.4 secs   av.it.:  18.0
+      iter #   7 total cpu time : 13923.9 secs   av.it.:  18.0
       thresh= 1.122E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.123E-11
 
-      iter #   8 total cpu time :  3156.2 secs   av.it.:  18.2
+      iter #   8 total cpu time : 13960.9 secs   av.it.:  18.2
       thresh= 3.351E-07 alpha_mix =  0.700 |ddv_scf|^2 =  6.507E-12
 
-      iter #   9 total cpu time :  3171.5 secs   av.it.:  18.0
+      iter #   9 total cpu time : 13996.9 secs   av.it.:  18.0
       thresh= 2.551E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.653E-13
 
-      iter #  10 total cpu time :  3187.0 secs   av.it.:  18.0
+      iter #  10 total cpu time : 14033.2 secs   av.it.:  18.0
       thresh= 6.821E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.835E-14
 
-      iter #  11 total cpu time :  3202.3 secs   av.it.:  18.0
+      iter #  11 total cpu time : 14069.0 secs   av.it.:  18.0
       thresh= 1.684E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.532E-15
 
      End of self-consistent calculation
@@ -1114,40 +985,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  3212.4 secs   av.it.:   9.0
+      iter #   1 total cpu time : 14090.2 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  1.570E-06
 
-      iter #   2 total cpu time :  3227.9 secs   av.it.:  18.0
+      iter #   2 total cpu time : 14126.5 secs   av.it.:  18.0
       thresh= 1.253E-04 alpha_mix =  0.700 |ddv_scf|^2 =  5.969E-07
 
-      iter #   3 total cpu time :  3243.3 secs   av.it.:  18.0
+      iter #   3 total cpu time : 14162.6 secs   av.it.:  18.0
       thresh= 7.726E-05 alpha_mix =  0.700 |ddv_scf|^2 =  7.036E-08
 
-      iter #   4 total cpu time :  3258.9 secs   av.it.:  18.0
+      iter #   4 total cpu time : 14199.3 secs   av.it.:  18.0
       thresh= 2.653E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.332E-08
 
-      iter #   5 total cpu time :  3273.9 secs   av.it.:  17.3
+      iter #   5 total cpu time : 14234.9 secs   av.it.:  17.3
       thresh= 1.154E-05 alpha_mix =  0.700 |ddv_scf|^2 =  7.037E-10
 
-      iter #   6 total cpu time :  3289.4 secs   av.it.:  18.0
+      iter #   6 total cpu time : 14271.2 secs   av.it.:  18.0
       thresh= 2.653E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.991E-11
 
-      iter #   7 total cpu time :  3305.1 secs   av.it.:  18.1
+      iter #   7 total cpu time : 14308.0 secs   av.it.:  18.1
       thresh= 6.317E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.758E-11
 
-      iter #   8 total cpu time :  3320.3 secs   av.it.:  17.8
+      iter #   8 total cpu time : 14343.5 secs   av.it.:  17.8
       thresh= 5.251E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.172E-12
 
-      iter #   9 total cpu time :  3336.0 secs   av.it.:  18.1
+      iter #   9 total cpu time : 14380.5 secs   av.it.:  18.1
       thresh= 1.083E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.263E-13
 
-      iter #  10 total cpu time :  3351.8 secs   av.it.:  18.2
+      iter #  10 total cpu time : 14417.5 secs   av.it.:  18.2
       thresh= 3.554E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.578E-14
 
-      iter #  11 total cpu time :  3367.5 secs   av.it.:  18.2
+      iter #  11 total cpu time : 14454.5 secs   av.it.:  18.2
       thresh= 2.362E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.219E-14
 
-      iter #  12 total cpu time :  3383.3 secs   av.it.:  18.0
+      iter #  12 total cpu time : 14491.1 secs   av.it.:  18.0
       thresh= 1.104E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.683E-15
 
      End of self-consistent calculation
@@ -1159,37 +1030,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  3393.6 secs   av.it.:   9.0
+      iter #   1 total cpu time : 14513.0 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.776E-06
 
-      iter #   2 total cpu time :  3409.3 secs   av.it.:  18.1
+      iter #   2 total cpu time : 14550.1 secs   av.it.:  18.1
       thresh= 1.943E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.191E-06
 
-      iter #   3 total cpu time :  3424.7 secs   av.it.:  18.0
+      iter #   3 total cpu time : 14586.1 secs   av.it.:  18.0
       thresh= 1.480E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.795E-07
 
-      iter #   4 total cpu time :  3439.8 secs   av.it.:  17.7
+      iter #   4 total cpu time : 14621.5 secs   av.it.:  17.7
       thresh= 6.161E-05 alpha_mix =  0.700 |ddv_scf|^2 =  9.530E-09
 
-      iter #   5 total cpu time :  3455.2 secs   av.it.:  18.0
+      iter #   5 total cpu time : 14657.6 secs   av.it.:  18.0
       thresh= 9.762E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.086E-09
 
-      iter #   6 total cpu time :  3470.5 secs   av.it.:  18.0
+      iter #   6 total cpu time : 14693.7 secs   av.it.:  18.0
       thresh= 3.295E-06 alpha_mix =  0.700 |ddv_scf|^2 =  9.116E-11
 
-      iter #   7 total cpu time :  3486.0 secs   av.it.:  18.0
+      iter #   7 total cpu time : 14730.2 secs   av.it.:  18.0
       thresh= 9.548E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.372E-11
 
-      iter #   8 total cpu time :  3501.2 secs   av.it.:  17.9
+      iter #   8 total cpu time : 14765.8 secs   av.it.:  17.9
       thresh= 4.870E-07 alpha_mix =  0.700 |ddv_scf|^2 =  8.311E-13
 
-      iter #   9 total cpu time :  3517.2 secs   av.it.:  19.0
+      iter #   9 total cpu time : 14803.4 secs   av.it.:  19.0
       thresh= 9.116E-08 alpha_mix =  0.700 |ddv_scf|^2 =  7.436E-14
 
-      iter #  10 total cpu time :  3533.0 secs   av.it.:  18.6
+      iter #  10 total cpu time : 14840.7 secs   av.it.:  18.6
       thresh= 2.727E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.857E-14
 
-      iter #  11 total cpu time :  3548.6 secs   av.it.:  18.0
+      iter #  11 total cpu time : 14877.4 secs   av.it.:  18.0
       thresh= 1.363E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.586E-15
 
      End of self-consistent calculation
@@ -1201,40 +1072,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  3559.4 secs   av.it.:  10.0
+      iter #   1 total cpu time : 14901.9 secs   av.it.:  10.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  5.491E-06
 
-      iter #   2 total cpu time :  3575.4 secs   av.it.:  18.8
+      iter #   2 total cpu time : 14939.8 secs   av.it.:  18.8
       thresh= 2.343E-04 alpha_mix =  0.700 |ddv_scf|^2 =  4.061E-06
 
-      iter #   3 total cpu time :  3590.8 secs   av.it.:  18.0
+      iter #   3 total cpu time : 14975.8 secs   av.it.:  18.0
       thresh= 2.015E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.979E-07
 
-      iter #   4 total cpu time :  3605.9 secs   av.it.:  17.7
+      iter #   4 total cpu time : 15011.2 secs   av.it.:  17.7
       thresh= 6.308E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.488E-08
 
-      iter #   5 total cpu time :  3621.4 secs   av.it.:  18.0
+      iter #   5 total cpu time : 15047.6 secs   av.it.:  18.0
       thresh= 1.220E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.372E-09
 
-      iter #   6 total cpu time :  3637.0 secs   av.it.:  18.0
+      iter #   6 total cpu time : 15084.3 secs   av.it.:  18.0
       thresh= 3.704E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.562E-10
 
-      iter #   7 total cpu time :  3652.3 secs   av.it.:  18.0
+      iter #   7 total cpu time : 15120.2 secs   av.it.:  18.0
       thresh= 1.601E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.379E-11
 
-      iter #   8 total cpu time :  3668.1 secs   av.it.:  18.2
+      iter #   8 total cpu time : 15157.2 secs   av.it.:  18.2
       thresh= 3.713E-07 alpha_mix =  0.700 |ddv_scf|^2 =  8.267E-13
 
-      iter #   9 total cpu time :  3684.1 secs   av.it.:  18.9
+      iter #   9 total cpu time : 15194.7 secs   av.it.:  18.9
       thresh= 9.092E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.776E-13
 
-      iter #  10 total cpu time :  3700.0 secs   av.it.:  18.7
+      iter #  10 total cpu time : 15232.0 secs   av.it.:  18.7
       thresh= 4.215E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.839E-13
 
-      iter #  11 total cpu time :  3715.1 secs   av.it.:  17.8
+      iter #  11 total cpu time : 15267.4 secs   av.it.:  17.8
       thresh= 4.288E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.739E-14
 
-      iter #  12 total cpu time :  3730.4 secs   av.it.:  18.0
+      iter #  12 total cpu time : 15303.2 secs   av.it.:  18.0
       thresh= 1.319E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.564E-15
 
      End of self-consistent calculation
@@ -1246,40 +1117,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  3740.5 secs   av.it.:   9.0
+      iter #   1 total cpu time : 15324.5 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.324E-06
 
-      iter #   2 total cpu time :  3756.3 secs   av.it.:  18.1
+      iter #   2 total cpu time : 15361.4 secs   av.it.:  18.1
       thresh= 1.823E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.752E-06
 
-      iter #   3 total cpu time :  3771.1 secs   av.it.:  17.0
+      iter #   3 total cpu time : 15396.1 secs   av.it.:  17.0
       thresh= 1.937E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.170E-07
 
-      iter #   4 total cpu time :  3786.4 secs   av.it.:  18.0
+      iter #   4 total cpu time : 15432.1 secs   av.it.:  18.0
       thresh= 4.658E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.262E-08
 
-      iter #   5 total cpu time :  3801.9 secs   av.it.:  18.0
+      iter #   5 total cpu time : 15469.1 secs   av.it.:  18.0
       thresh= 1.124E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.331E-09
 
-      iter #   6 total cpu time :  3817.0 secs   av.it.:  17.7
+      iter #   6 total cpu time : 15504.6 secs   av.it.:  17.7
       thresh= 3.648E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.383E-10
 
-      iter #   7 total cpu time :  3832.6 secs   av.it.:  18.0
+      iter #   7 total cpu time : 15541.1 secs   av.it.:  18.0
       thresh= 1.176E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.098E-11
 
-      iter #   8 total cpu time :  3847.8 secs   av.it.:  17.9
+      iter #   8 total cpu time : 15576.8 secs   av.it.:  17.9
       thresh= 4.580E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.400E-12
 
-      iter #   9 total cpu time :  3864.1 secs   av.it.:  19.0
+      iter #   9 total cpu time : 15614.8 secs   av.it.:  19.0
       thresh= 1.183E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.315E-13
 
-      iter #  10 total cpu time :  3879.8 secs   av.it.:  18.0
+      iter #  10 total cpu time : 15651.5 secs   av.it.:  18.0
       thresh= 8.553E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.338E-13
 
-      iter #  11 total cpu time :  3894.8 secs   av.it.:  17.2
+      iter #  11 total cpu time : 15686.7 secs   av.it.:  17.2
       thresh= 5.777E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.591E-14
 
-      iter #  12 total cpu time :  3910.7 secs   av.it.:  18.8
+      iter #  12 total cpu time : 15724.0 secs   av.it.:  18.8
       thresh= 1.261E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.814E-15
 
      End of self-consistent calculation
@@ -1291,40 +1162,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  3921.3 secs   av.it.:   9.2
+      iter #   1 total cpu time : 15746.7 secs   av.it.:   9.2
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.908E-06
 
-      iter #   2 total cpu time :  3937.1 secs   av.it.:  18.2
+      iter #   2 total cpu time : 15783.7 secs   av.it.:  18.2
       thresh= 1.977E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.018E-06
 
-      iter #   3 total cpu time :  3952.4 secs   av.it.:  18.0
+      iter #   3 total cpu time : 15819.5 secs   av.it.:  18.0
       thresh= 1.421E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.579E-07
 
-      iter #   4 total cpu time :  3967.7 secs   av.it.:  18.0
+      iter #   4 total cpu time : 15855.7 secs   av.it.:  18.0
       thresh= 5.078E-05 alpha_mix =  0.700 |ddv_scf|^2 =  4.211E-08
 
-      iter #   5 total cpu time :  3982.9 secs   av.it.:  17.3
+      iter #   5 total cpu time : 15891.0 secs   av.it.:  17.3
       thresh= 2.052E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.372E-09
 
-      iter #   6 total cpu time :  3998.6 secs   av.it.:  18.2
+      iter #   6 total cpu time : 15928.0 secs   av.it.:  18.2
       thresh= 4.870E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.648E-10
 
-      iter #   7 total cpu time :  4013.8 secs   av.it.:  17.9
+      iter #   7 total cpu time : 15963.9 secs   av.it.:  17.9
       thresh= 1.627E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.013E-11
 
-      iter #   8 total cpu time :  4029.7 secs   av.it.:  18.8
+      iter #   8 total cpu time : 16001.2 secs   av.it.:  18.8
       thresh= 4.486E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.864E-12
 
-      iter #   9 total cpu time :  4044.8 secs   av.it.:  18.0
+      iter #   9 total cpu time : 16038.4 secs   av.it.:  18.0
       thresh= 2.804E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.955E-13
 
-      iter #  10 total cpu time :  4060.8 secs   av.it.:  19.0
+      iter #  10 total cpu time : 16076.4 secs   av.it.:  19.0
       thresh= 7.039E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.350E-13
 
-      iter #  11 total cpu time :  4075.9 secs   av.it.:  18.0
+      iter #  11 total cpu time : 16112.3 secs   av.it.:  18.0
       thresh= 7.969E-08 alpha_mix =  0.700 |ddv_scf|^2 =  9.464E-14
 
-      iter #  12 total cpu time :  4091.1 secs   av.it.:  17.9
+      iter #  12 total cpu time : 16148.1 secs   av.it.:  17.9
       thresh= 3.076E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.868E-15
 
      End of self-consistent calculation
@@ -1336,40 +1207,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  4100.7 secs   av.it.:   8.0
+      iter #   1 total cpu time : 16168.5 secs   av.it.:   8.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  5.826E-06
 
-      iter #   2 total cpu time :  4115.8 secs   av.it.:  17.9
+      iter #   2 total cpu time : 58732.0 secs   av.it.:  17.9
       thresh= 2.414E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.163E-06
 
-      iter #   3 total cpu time :  4131.9 secs   av.it.:  19.0
+      iter #   3 total cpu time : 58798.9 secs   av.it.:  19.0
       thresh= 1.078E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.223E-06
 
-      iter #   4 total cpu time :  4147.0 secs   av.it.:  17.8
+      iter #   4 total cpu time : 58858.1 secs   av.it.:  17.8
       thresh= 1.106E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.881E-08
 
-      iter #   5 total cpu time :  4162.0 secs   av.it.:  17.6
+      iter #   5 total cpu time : 58893.7 secs   av.it.:  17.6
       thresh= 1.970E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.343E-09
 
-      iter #   6 total cpu time :  4177.2 secs   av.it.:  17.7
+      iter #   6 total cpu time : 58929.3 secs   av.it.:  17.7
       thresh= 4.841E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.379E-11
 
-      iter #   7 total cpu time :  4192.6 secs   av.it.:  18.0
+      iter #   7 total cpu time : 58965.3 secs   av.it.:  18.0
       thresh= 5.813E-07 alpha_mix =  0.700 |ddv_scf|^2 =  6.052E-12
 
-      iter #   8 total cpu time :  4207.7 secs   av.it.:  17.9
+      iter #   8 total cpu time : 59001.0 secs   av.it.:  17.9
       thresh= 2.460E-07 alpha_mix =  0.700 |ddv_scf|^2 =  9.241E-13
 
-      iter #   9 total cpu time :  4223.5 secs   av.it.:  19.0
+      iter #   9 total cpu time : 59038.4 secs   av.it.:  19.0
       thresh= 9.613E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.325E-13
 
-      iter #  10 total cpu time :  4239.3 secs   av.it.:  18.2
+      iter #  10 total cpu time : 59075.5 secs   av.it.:  18.2
       thresh= 3.640E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.902E-14
 
-      iter #  11 total cpu time :  4254.8 secs   av.it.:  18.0
+      iter #  11 total cpu time : 59112.3 secs   av.it.:  18.0
       thresh= 2.429E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.639E-14
 
-      iter #  12 total cpu time :  4269.7 secs   av.it.:  17.3
+      iter #  12 total cpu time : 59147.6 secs   av.it.:  17.3
       thresh= 1.624E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.100E-16
 
      End of self-consistent calculation
@@ -1381,40 +1252,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  4280.4 secs   av.it.:   9.6
+      iter #   1 total cpu time : 59172.6 secs   av.it.:   9.6
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.898E-06
 
-      iter #   2 total cpu time :  4296.0 secs   av.it.:  18.4
+      iter #   2 total cpu time : 59216.0 secs   av.it.:  18.4
       thresh= 1.974E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.389E-06
 
-      iter #   3 total cpu time :  4311.1 secs   av.it.:  17.9
+      iter #   3 total cpu time : 59252.0 secs   av.it.:  17.9
       thresh= 1.546E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.224E-07
 
-      iter #   4 total cpu time :  4326.4 secs   av.it.:  18.0
+      iter #   4 total cpu time : 59288.4 secs   av.it.:  18.0
       thresh= 4.716E-05 alpha_mix =  0.700 |ddv_scf|^2 =  4.276E-08
 
-      iter #   5 total cpu time :  4341.3 secs   av.it.:  17.4
+      iter #   5 total cpu time : 59323.8 secs   av.it.:  17.4
       thresh= 2.068E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.905E-09
 
-      iter #   6 total cpu time :  4356.7 secs   av.it.:  18.0
+      iter #   6 total cpu time : 59360.9 secs   av.it.:  18.0
       thresh= 5.390E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.390E-10
 
-      iter #   7 total cpu time :  4371.8 secs   av.it.:  18.0
+      iter #   7 total cpu time : 59396.8 secs   av.it.:  18.0
       thresh= 1.546E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.363E-11
 
-      iter #   8 total cpu time :  4387.4 secs   av.it.:  18.4
+      iter #   8 total cpu time : 59434.1 secs   av.it.:  18.4
       thresh= 4.861E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.923E-12
 
-      iter #   9 total cpu time :  4402.7 secs   av.it.:  18.0
+      iter #   9 total cpu time : 59470.2 secs   av.it.:  18.0
       thresh= 2.219E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.578E-14
 
-      iter #  10 total cpu time :  4418.6 secs   av.it.:  19.0
+      iter #  10 total cpu time : 59508.4 secs   av.it.:  19.0
       thresh= 2.753E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.127E-14
 
-      iter #  11 total cpu time :  4434.6 secs   av.it.:  18.0
+      iter #  11 total cpu time : 59545.3 secs   av.it.:  18.0
       thresh= 1.768E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.530E-14
 
-      iter #  12 total cpu time :  4449.4 secs   av.it.:  17.2
+      iter #  12 total cpu time : 59581.0 secs   av.it.:  17.2
       thresh= 1.237E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.559E-16
 
      End of self-consistent calculation
@@ -1426,40 +1297,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  4459.8 secs   av.it.:   9.1
+      iter #   1 total cpu time : 59603.3 secs   av.it.:   9.1
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  6.876E-06
 
-      iter #   2 total cpu time :  4474.9 secs   av.it.:  17.9
+      iter #   2 total cpu time : 59639.3 secs   av.it.:  17.9
       thresh= 2.622E-04 alpha_mix =  0.700 |ddv_scf|^2 =  4.048E-06
 
-      iter #   3 total cpu time :  4489.5 secs   av.it.:  17.0
+      iter #   3 total cpu time : 59673.9 secs   av.it.:  17.0
       thresh= 2.012E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.299E-07
 
-      iter #   4 total cpu time :  4505.0 secs   av.it.:  18.1
+      iter #   4 total cpu time : 59711.0 secs   av.it.:  18.1
       thresh= 3.605E-05 alpha_mix =  0.700 |ddv_scf|^2 =  4.597E-08
 
-      iter #   5 total cpu time :  4519.6 secs   av.it.:  17.0
+      iter #   5 total cpu time : 59746.6 secs   av.it.:  17.0
       thresh= 2.144E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.896E-09
 
-      iter #   6 total cpu time :  4535.1 secs   av.it.:  18.1
+      iter #   6 total cpu time : 59791.8 secs   av.it.:  18.1
       thresh= 4.355E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.353E-10
 
-      iter #   7 total cpu time :  4550.3 secs   av.it.:  17.9
+      iter #   7 total cpu time : 59830.2 secs   av.it.:  17.9
       thresh= 1.534E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.064E-11
 
-      iter #   8 total cpu time :  4566.1 secs   av.it.:  18.7
+      iter #   8 total cpu time : 59869.3 secs   av.it.:  18.7
       thresh= 4.543E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.088E-12
 
-      iter #   9 total cpu time :  4581.3 secs   av.it.:  18.0
+      iter #   9 total cpu time : 59909.4 secs   av.it.:  18.0
       thresh= 2.662E-07 alpha_mix =  0.700 |ddv_scf|^2 =  3.032E-13
 
-      iter #  10 total cpu time :  4596.7 secs   av.it.:  18.0
+      iter #  10 total cpu time : 59949.8 secs   av.it.:  18.0
       thresh= 5.507E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.825E-13
 
-      iter #  11 total cpu time :  4612.3 secs   av.it.:  18.0
+      iter #  11 total cpu time : 59989.4 secs   av.it.:  18.0
       thresh= 4.272E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.393E-13
 
-      iter #  12 total cpu time :  4626.8 secs   av.it.:  17.0
+      iter #  12 total cpu time : 60026.0 secs   av.it.:  17.0
       thresh= 3.733E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.212E-15
 
      End of self-consistent calculation
@@ -1471,37 +1342,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  4636.0 secs   av.it.:   7.8
+      iter #   1 total cpu time : 60047.6 secs   av.it.:   7.8
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  4.880E-06
 
-      iter #   2 total cpu time :  4650.7 secs   av.it.:  17.1
+      iter #   2 total cpu time : 60084.3 secs   av.it.:  17.1
       thresh= 2.209E-04 alpha_mix =  0.700 |ddv_scf|^2 =  3.927E-07
 
-      iter #   3 total cpu time :  4667.1 secs   av.it.:  19.2
+      iter #   3 total cpu time : 60127.5 secs   av.it.:  19.2
       thresh= 6.267E-05 alpha_mix =  0.700 |ddv_scf|^2 =  7.263E-07
 
-      iter #   4 total cpu time :  4682.0 secs   av.it.:  17.9
+      iter #   4 total cpu time : 60168.0 secs   av.it.:  17.9
       thresh= 8.522E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.097E-08
 
-      iter #   5 total cpu time :  4697.0 secs   av.it.:  17.9
+      iter #   5 total cpu time : 60211.8 secs   av.it.:  17.9
       thresh= 1.448E-05 alpha_mix =  0.700 |ddv_scf|^2 =  3.094E-09
 
-      iter #   6 total cpu time :  4712.0 secs   av.it.:  18.0
+      iter #   6 total cpu time : 60249.4 secs   av.it.:  18.0
       thresh= 5.562E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.344E-10
 
-      iter #   7 total cpu time :  4727.4 secs   av.it.:  18.0
+      iter #   7 total cpu time : 60286.3 secs   av.it.:  18.0
       thresh= 1.159E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.997E-11
 
-      iter #   8 total cpu time :  4742.7 secs   av.it.:  18.0
+      iter #   8 total cpu time : 60324.1 secs   av.it.:  18.0
       thresh= 4.469E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.341E-12
 
-      iter #   9 total cpu time :  4758.5 secs   av.it.:  19.0
+      iter #   9 total cpu time : 60364.5 secs   av.it.:  19.0
       thresh= 1.158E-07 alpha_mix =  0.700 |ddv_scf|^2 =  3.985E-13
 
-      iter #  10 total cpu time :  4774.1 secs   av.it.:  18.5
+      iter #  10 total cpu time : 60409.0 secs   av.it.:  18.5
       thresh= 6.312E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.870E-13
 
-      iter #  11 total cpu time :  4788.9 secs   av.it.:  17.1
+      iter #  11 total cpu time : 60446.2 secs   av.it.:  17.1
       thresh= 4.324E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.996E-15
 
      End of self-consistent calculation
@@ -1513,40 +1384,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  4799.1 secs   av.it.:   9.0
+      iter #   1 total cpu time : 60475.0 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  4.188E-06
 
-      iter #   2 total cpu time :  4814.4 secs   av.it.:  18.0
+      iter #   2 total cpu time : 60514.3 secs   av.it.:  18.0
       thresh= 2.047E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.703E-06
 
-      iter #   3 total cpu time :  4832.9 secs   av.it.:  17.6
+      iter #   3 total cpu time : 60551.7 secs   av.it.:  17.6
       thresh= 1.644E-04 alpha_mix =  0.700 |ddv_scf|^2 =  5.304E-07
 
-      iter #   4 total cpu time :  4847.6 secs   av.it.:  17.3
+      iter #   4 total cpu time : 60587.3 secs   av.it.:  17.3
       thresh= 7.283E-05 alpha_mix =  0.700 |ddv_scf|^2 =  5.254E-08
 
-      iter #   5 total cpu time :  4862.4 secs   av.it.:  17.2
+      iter #   5 total cpu time : 60624.1 secs   av.it.:  17.2
       thresh= 2.292E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.912E-09
 
-      iter #   6 total cpu time :  4877.9 secs   av.it.:  18.2
+      iter #   6 total cpu time : 60664.7 secs   av.it.:  18.2
       thresh= 4.373E-06 alpha_mix =  0.700 |ddv_scf|^2 =  4.215E-10
 
-      iter #   7 total cpu time :  4892.6 secs   av.it.:  17.2
+      iter #   7 total cpu time : 60702.8 secs   av.it.:  17.2
       thresh= 2.053E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.591E-11
 
-      iter #   8 total cpu time :  4908.3 secs   av.it.:  18.9
+      iter #   8 total cpu time : 60742.6 secs   av.it.:  18.9
       thresh= 3.989E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.054E-12
 
-      iter #   9 total cpu time :  4923.7 secs   av.it.:  18.0
+      iter #   9 total cpu time : 60781.2 secs   av.it.:  18.0
       thresh= 2.656E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.643E-13
 
-      iter #  10 total cpu time :  4938.1 secs   av.it.:  17.0
+      iter #  10 total cpu time : 60818.9 secs   av.it.:  17.0
       thresh= 8.742E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.144E-14
 
-      iter #  11 total cpu time :  4954.1 secs   av.it.:  19.0
+      iter #  11 total cpu time : 60860.1 secs   av.it.:  19.0
       thresh= 1.773E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.729E-14
 
-      iter #  12 total cpu time :  4969.1 secs   av.it.:  17.3
+      iter #  12 total cpu time : 60899.3 secs   av.it.:  17.3
       thresh= 2.394E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.359E-15
 
      End of self-consistent calculation
@@ -1558,40 +1429,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  4979.4 secs   av.it.:   9.0
+      iter #   1 total cpu time : 60922.5 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  2.541E-06
 
-      iter #   2 total cpu time :  4994.8 secs   av.it.:  18.0
+      iter #   2 total cpu time : 60963.7 secs   av.it.:  18.0
       thresh= 1.594E-04 alpha_mix =  0.700 |ddv_scf|^2 =  8.750E-07
 
-      iter #   3 total cpu time :  5009.9 secs   av.it.:  18.0
+      iter #   3 total cpu time : 61003.1 secs   av.it.:  18.0
       thresh= 9.354E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.120E-07
 
-      iter #   4 total cpu time :  5025.3 secs   av.it.:  18.0
+      iter #   4 total cpu time : 61044.9 secs   av.it.:  18.0
       thresh= 3.347E-05 alpha_mix =  0.700 |ddv_scf|^2 =  8.873E-09
 
-      iter #   5 total cpu time :  5040.7 secs   av.it.:  18.0
+      iter #   5 total cpu time : 61087.4 secs   av.it.:  18.0
       thresh= 9.420E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.011E-09
 
-      iter #   6 total cpu time :  5056.0 secs   av.it.:  18.0
+      iter #   6 total cpu time : 61127.7 secs   av.it.:  18.0
       thresh= 3.180E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.066E-10
 
-      iter #   7 total cpu time :  5071.1 secs   av.it.:  17.9
+      iter #   7 total cpu time : 61166.0 secs   av.it.:  17.9
       thresh= 1.437E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.424E-11
 
-      iter #   8 total cpu time :  5086.5 secs   av.it.:  18.0
+      iter #   8 total cpu time : 61206.1 secs   av.it.:  18.0
       thresh= 4.924E-07 alpha_mix =  0.700 |ddv_scf|^2 =  9.299E-12
 
-      iter #   9 total cpu time :  5101.5 secs   av.it.:  18.0
+      iter #   9 total cpu time : 61243.4 secs   av.it.:  18.0
       thresh= 3.049E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.722E-13
 
-      iter #  10 total cpu time :  5117.3 secs   av.it.:  19.0
+      iter #  10 total cpu time : 61281.5 secs   av.it.:  19.0
       thresh= 4.150E-08 alpha_mix =  0.700 |ddv_scf|^2 =  9.030E-14
 
-      iter #  11 total cpu time :  5132.5 secs   av.it.:  18.0
+      iter #  11 total cpu time : 61320.1 secs   av.it.:  18.0
       thresh= 3.005E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.270E-14
 
-      iter #  12 total cpu time :  5148.1 secs   av.it.:  18.5
+      iter #  12 total cpu time : 61357.6 secs   av.it.:  18.4
       thresh= 1.127E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.820E-15
 
      End of self-consistent calculation
@@ -1603,37 +1474,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  5158.0 secs   av.it.:   8.8
+      iter #   1 total cpu time : 61378.7 secs   av.it.:   8.8
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  6.785E-07
 
-      iter #   2 total cpu time :  5173.8 secs   av.it.:  19.0
+      iter #   2 total cpu time : 61417.1 secs   av.it.:  19.0
       thresh= 8.237E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.137E-06
 
-      iter #   3 total cpu time :  5188.8 secs   av.it.:  17.9
+      iter #   3 total cpu time : 61452.9 secs   av.it.:  17.9
       thresh= 1.066E-04 alpha_mix =  0.700 |ddv_scf|^2 =  8.143E-08
 
-      iter #   4 total cpu time :  5203.6 secs   av.it.:  17.3
+      iter #   4 total cpu time : 61488.3 secs   av.it.:  17.3
       thresh= 2.854E-05 alpha_mix =  0.700 |ddv_scf|^2 =  8.256E-09
 
-      iter #   5 total cpu time :  5219.0 secs   av.it.:  18.0
+      iter #   5 total cpu time : 61527.6 secs   av.it.:  18.0
       thresh= 9.086E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.893E-10
 
-      iter #   6 total cpu time :  5234.4 secs   av.it.:  18.0
+      iter #   6 total cpu time : 61565.7 secs   av.it.:  18.0
       thresh= 1.973E-06 alpha_mix =  0.700 |ddv_scf|^2 =  4.642E-11
 
-      iter #   7 total cpu time :  5249.8 secs   av.it.:  18.0
+      iter #   7 total cpu time : 61603.4 secs   av.it.:  18.0
       thresh= 6.813E-07 alpha_mix =  0.700 |ddv_scf|^2 =  8.421E-12
 
-      iter #   8 total cpu time :  5265.4 secs   av.it.:  18.0
+      iter #   8 total cpu time : 61646.1 secs   av.it.:  18.0
       thresh= 2.902E-07 alpha_mix =  0.700 |ddv_scf|^2 =  6.778E-13
 
-      iter #   9 total cpu time :  5281.2 secs   av.it.:  18.3
+      iter #   9 total cpu time : 61694.7 secs   av.it.:  18.3
       thresh= 8.233E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.214E-13
 
-      iter #  10 total cpu time :  5296.8 secs   av.it.:  18.0
+      iter #  10 total cpu time : 61737.6 secs   av.it.:  18.0
       thresh= 3.484E-08 alpha_mix =  0.700 |ddv_scf|^2 =  8.259E-14
 
-      iter #  11 total cpu time :  5311.9 secs   av.it.:  17.8
+      iter #  11 total cpu time : 61774.6 secs   av.it.:  17.8
       thresh= 2.874E-08 alpha_mix =  0.700 |ddv_scf|^2 =  7.382E-15
 
      End of self-consistent calculation
@@ -1645,40 +1516,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  5321.4 secs   av.it.:   8.0
+      iter #   1 total cpu time : 61796.0 secs   av.it.:   8.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  4.864E-06
 
-      iter #   2 total cpu time :  5336.4 secs   av.it.:  17.2
+      iter #   2 total cpu time : 61831.4 secs   av.it.:  17.2
       thresh= 2.205E-04 alpha_mix =  0.700 |ddv_scf|^2 =  5.629E-07
 
-      iter #   3 total cpu time :  5352.7 secs   av.it.:  19.0
+      iter #   3 total cpu time : 61870.0 secs   av.it.:  19.0
       thresh= 7.503E-05 alpha_mix =  0.700 |ddv_scf|^2 =  7.623E-07
 
-      iter #   4 total cpu time :  5368.0 secs   av.it.:  17.9
+      iter #   4 total cpu time : 61906.1 secs   av.it.:  17.9
       thresh= 8.731E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.335E-08
 
-      iter #   5 total cpu time :  5383.5 secs   av.it.:  18.0
+      iter #   5 total cpu time : 61942.3 secs   av.it.:  18.0
       thresh= 1.528E-05 alpha_mix =  0.700 |ddv_scf|^2 =  4.280E-09
 
-      iter #   6 total cpu time :  5398.9 secs   av.it.:  18.0
+      iter #   6 total cpu time : 61978.5 secs   av.it.:  18.0
       thresh= 6.542E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.105E-10
 
-      iter #   7 total cpu time :  5414.0 secs   av.it.:  17.7
+      iter #   7 total cpu time : 62014.4 secs   av.it.:  17.7
       thresh= 1.051E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.176E-11
 
-      iter #   8 total cpu time :  5429.2 secs   av.it.:  17.9
+      iter #   8 total cpu time : 62050.3 secs   av.it.:  17.9
       thresh= 3.430E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.279E-12
 
-      iter #   9 total cpu time :  5445.1 secs   av.it.:  18.9
+      iter #   9 total cpu time : 62088.5 secs   av.it.:  18.9
       thresh= 1.131E-07 alpha_mix =  0.700 |ddv_scf|^2 =  5.356E-13
 
-      iter #  10 total cpu time :  5460.8 secs   av.it.:  18.0
+      iter #  10 total cpu time : 62125.4 secs   av.it.:  18.0
       thresh= 7.318E-08 alpha_mix =  0.700 |ddv_scf|^2 =  7.347E-14
 
-      iter #  11 total cpu time :  5476.4 secs   av.it.:  18.0
+      iter #  11 total cpu time : 62162.6 secs   av.it.:  18.0
       thresh= 2.710E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.335E-14
 
-      iter #  12 total cpu time :  5491.8 secs   av.it.:  18.0
+      iter #  12 total cpu time : 62199.3 secs   av.it.:  18.0
       thresh= 1.826E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.011E-15
 
      End of self-consistent calculation
@@ -1690,34 +1561,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  5502.0 secs   av.it.:   8.9
+      iter #   1 total cpu time : 62220.8 secs   av.it.:   8.9
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  4.799E-06
 
-      iter #   2 total cpu time :  5517.6 secs   av.it.:  18.0
+      iter #   2 total cpu time : 62257.6 secs   av.it.:  18.0
       thresh= 2.191E-04 alpha_mix =  0.700 |ddv_scf|^2 =  8.409E-06
 
-      iter #   3 total cpu time :  5532.4 secs   av.it.:  17.0
+      iter #   3 total cpu time : 62292.8 secs   av.it.:  17.0
       thresh= 2.900E-04 alpha_mix =  0.700 |ddv_scf|^2 =  6.006E-07
 
-      iter #   4 total cpu time :  5547.2 secs   av.it.:  17.0
+      iter #   4 total cpu time : 62329.1 secs   av.it.:  17.0
       thresh= 7.750E-05 alpha_mix =  0.700 |ddv_scf|^2 =  8.075E-09
 
-      iter #   5 total cpu time :  5562.3 secs   av.it.:  17.7
+      iter #   5 total cpu time : 62365.1 secs   av.it.:  17.7
       thresh= 8.986E-06 alpha_mix =  0.700 |ddv_scf|^2 =  6.325E-10
 
-      iter #   6 total cpu time :  5578.3 secs   av.it.:  18.9
+      iter #   6 total cpu time : 62403.6 secs   av.it.:  18.9
       thresh= 2.515E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.318E-10
 
-      iter #   7 total cpu time :  5593.4 secs   av.it.:  17.6
+      iter #   7 total cpu time : 62440.0 secs   av.it.:  17.6
       thresh= 1.821E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.106E-11
 
-      iter #   8 total cpu time :  5608.7 secs   av.it.:  17.8
+      iter #   8 total cpu time : 62477.8 secs   av.it.:  17.8
       thresh= 3.325E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.070E-13
 
-      iter #   9 total cpu time :  5625.3 secs   av.it.:  19.4
+      iter #   9 total cpu time : 62518.1 secs   av.it.:  19.4
       thresh= 6.379E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.251E-13
 
-      iter #  10 total cpu time :  5640.8 secs   av.it.:  18.0
+      iter #  10 total cpu time : 62555.2 secs   av.it.:  18.0
       thresh= 7.247E-08 alpha_mix =  0.700 |ddv_scf|^2 =  9.984E-15
 
      End of self-consistent calculation
@@ -1729,40 +1600,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  5650.8 secs   av.it.:   9.0
+      iter #   1 total cpu time : 62576.6 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  1.800E-06
 
-      iter #   2 total cpu time :  5666.3 secs   av.it.:  18.0
+      iter #   2 total cpu time : 62612.7 secs   av.it.:  18.0
       thresh= 1.341E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.473E-07
 
-      iter #   3 total cpu time :  5682.6 secs   av.it.:  19.0
+      iter #   3 total cpu time : 62651.2 secs   av.it.:  19.0
       thresh= 3.838E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.022E-07
 
-      iter #   4 total cpu time :  5698.0 secs   av.it.:  18.0
+      iter #   4 total cpu time : 62689.5 secs   av.it.:  18.0
       thresh= 3.197E-05 alpha_mix =  0.700 |ddv_scf|^2 =  3.279E-09
 
-      iter #   5 total cpu time :  5713.6 secs   av.it.:  18.0
+      iter #   5 total cpu time : 62728.1 secs   av.it.:  18.0
       thresh= 5.726E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.295E-09
 
-      iter #   6 total cpu time :  5728.8 secs   av.it.:  17.9
+      iter #   6 total cpu time : 62770.8 secs   av.it.:  17.9
       thresh= 3.599E-06 alpha_mix =  0.700 |ddv_scf|^2 =  6.077E-11
 
-      iter #   7 total cpu time :  5744.7 secs   av.it.:  18.6
+      iter #   7 total cpu time : 62816.6 secs   av.it.:  18.6
       thresh= 7.796E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.601E-11
 
-      iter #   8 total cpu time :  5760.2 secs   av.it.:  18.0
+      iter #   8 total cpu time : 62859.2 secs   av.it.:  18.0
       thresh= 4.001E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.450E-13
 
-      iter #   9 total cpu time :  5775.9 secs   av.it.:  18.0
+      iter #   9 total cpu time : 62902.6 secs   av.it.:  18.0
       thresh= 6.671E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.253E-13
 
-      iter #  10 total cpu time :  5791.8 secs   av.it.:  18.9
+      iter #  10 total cpu time : 62947.4 secs   av.it.:  18.9
       thresh= 4.746E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.087E-13
 
-      iter #  11 total cpu time :  5807.5 secs   av.it.:  18.0
+      iter #  11 total cpu time : 62990.1 secs   av.it.:  18.0
       thresh= 3.296E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.573E-14
 
-      iter #  12 total cpu time :  5822.8 secs   av.it.:  18.0
+      iter #  12 total cpu time : 63034.6 secs   av.it.:  18.0
       thresh= 1.254E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.585E-15
 
      End of self-consistent calculation
@@ -1774,34 +1645,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  5833.1 secs   av.it.:   9.0
+      iter #   1 total cpu time : 63061.2 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  1.439E-06
 
-      iter #   2 total cpu time :  5849.1 secs   av.it.:  19.0
+      iter #   2 total cpu time : 63106.0 secs   av.it.:  19.0
       thresh= 1.199E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.768E-06
 
-      iter #   3 total cpu time :  5864.3 secs   av.it.:  17.8
+      iter #   3 total cpu time : 63147.9 secs   av.it.:  17.8
       thresh= 1.664E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.133E-07
 
-      iter #   4 total cpu time :  5879.1 secs   av.it.:  17.0
+      iter #   4 total cpu time : 63185.1 secs   av.it.:  17.0
       thresh= 3.366E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.524E-08
 
-      iter #   5 total cpu time :  5894.4 secs   av.it.:  18.0
+      iter #   5 total cpu time : 63221.9 secs   av.it.:  18.0
       thresh= 1.235E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.257E-10
 
-      iter #   6 total cpu time :  5910.1 secs   av.it.:  18.1
+      iter #   6 total cpu time : 63259.8 secs   av.it.:  18.1
       thresh= 1.121E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.681E-11
 
-      iter #   7 total cpu time :  5926.2 secs   av.it.:  19.0
+      iter #   7 total cpu time : 63299.5 secs   av.it.:  19.0
       thresh= 4.100E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.486E-12
 
-      iter #   8 total cpu time :  5941.8 secs   av.it.:  18.0
+      iter #   8 total cpu time : 63336.8 secs   av.it.:  18.0
       thresh= 2.736E-07 alpha_mix =  0.700 |ddv_scf|^2 =  3.601E-13
 
-      iter #   9 total cpu time :  5957.3 secs   av.it.:  18.0
+      iter #   9 total cpu time : 63375.0 secs   av.it.:  18.0
       thresh= 6.001E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.872E-14
 
-      iter #  10 total cpu time :  5973.0 secs   av.it.:  18.1
+      iter #  10 total cpu time : 63414.9 secs   av.it.:  18.1
       thresh= 1.695E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.590E-15
 
      End of self-consistent calculation
@@ -1813,43 +1684,43 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  5983.1 secs   av.it.:   8.8
+      iter #   1 total cpu time : 63437.2 secs   av.it.:   8.8
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  2.125E-06
 
-      iter #   2 total cpu time :  5998.4 secs   av.it.:  18.0
+      iter #   2 total cpu time : 63474.4 secs   av.it.:  18.0
       thresh= 1.458E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.914E-07
 
-      iter #   3 total cpu time :  6014.0 secs   av.it.:  18.0
+      iter #   3 total cpu time : 63513.2 secs   av.it.:  18.0
       thresh= 4.375E-05 alpha_mix =  0.700 |ddv_scf|^2 =  5.599E-08
 
-      iter #   4 total cpu time :  6029.5 secs   av.it.:  18.0
+      iter #   4 total cpu time : 63551.5 secs   av.it.:  18.0
       thresh= 2.366E-05 alpha_mix =  0.700 |ddv_scf|^2 =  7.527E-09
 
-      iter #   5 total cpu time :  6044.8 secs   av.it.:  18.0
+      iter #   5 total cpu time : 63590.1 secs   av.it.:  18.0
       thresh= 8.676E-06 alpha_mix =  0.700 |ddv_scf|^2 =  9.130E-10
 
-      iter #   6 total cpu time :  6060.2 secs   av.it.:  18.0
+      iter #   6 total cpu time : 63629.9 secs   av.it.:  18.0
       thresh= 3.022E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.052E-10
 
-      iter #   7 total cpu time :  6075.7 secs   av.it.:  18.0
+      iter #   7 total cpu time : 63667.6 secs   av.it.:  18.0
       thresh= 1.026E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.164E-11
 
-      iter #   8 total cpu time :  6091.4 secs   av.it.:  18.1
+      iter #   8 total cpu time : 63711.7 secs   av.it.:  18.1
       thresh= 3.411E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.512E-12
 
-      iter #   9 total cpu time :  6107.3 secs   av.it.:  18.7
+      iter #   9 total cpu time : 63752.1 secs   av.it.:  18.7
       thresh= 1.585E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.940E-13
 
-      iter #  10 total cpu time :  6122.9 secs   av.it.:  18.0
+      iter #  10 total cpu time : 63795.5 secs   av.it.:  18.0
       thresh= 7.028E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.730E-13
 
-      iter #  11 total cpu time :  6138.1 secs   av.it.:  17.9
+      iter #  11 total cpu time : 63832.2 secs   av.it.:  17.9
       thresh= 5.225E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.287E-14
 
-      iter #  12 total cpu time :  6153.7 secs   av.it.:  18.0
+      iter #  12 total cpu time : 63868.9 secs   av.it.:  18.0
       thresh= 1.813E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.548E-14
 
-      iter #  13 total cpu time :  6169.2 secs   av.it.:  18.0
+      iter #  13 total cpu time : 63905.4 secs   av.it.:  18.0
       thresh= 1.244E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.215E-15
 
      End of self-consistent calculation
@@ -1861,37 +1732,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  6179.7 secs   av.it.:   9.0
+      iter #   1 total cpu time : 63928.8 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.081E-06
 
-      iter #   2 total cpu time :  6195.3 secs   av.it.:  18.0
+      iter #   2 total cpu time : 63965.8 secs   av.it.:  18.0
       thresh= 1.755E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.164E-06
 
-      iter #   3 total cpu time :  6210.7 secs   av.it.:  17.9
+      iter #   3 total cpu time : 64002.2 secs   av.it.:  17.9
       thresh= 1.079E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.045E-07
 
-      iter #   4 total cpu time :  6226.3 secs   av.it.:  18.0
+      iter #   4 total cpu time : 64044.4 secs   av.it.:  18.0
       thresh= 3.233E-05 alpha_mix =  0.700 |ddv_scf|^2 =  9.854E-09
 
-      iter #   5 total cpu time :  6241.9 secs   av.it.:  18.0
+      iter #   5 total cpu time : 64082.8 secs   av.it.:  18.0
       thresh= 9.927E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.493E-09
 
-      iter #   6 total cpu time :  6257.4 secs   av.it.:  18.0
+      iter #   6 total cpu time : 64122.1 secs   av.it.:  18.0
       thresh= 3.864E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.320E-10
 
-      iter #   7 total cpu time :  6272.8 secs   av.it.:  18.0
+      iter #   7 total cpu time : 64160.4 secs   av.it.:  18.0
       thresh= 1.822E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.838E-11
 
-      iter #   8 total cpu time :  6288.9 secs   av.it.:  19.0
+      iter #   8 total cpu time : 64201.0 secs   av.it.:  19.0
       thresh= 4.288E-07 alpha_mix =  0.700 |ddv_scf|^2 =  8.723E-12
 
-      iter #   9 total cpu time :  6304.2 secs   av.it.:  18.0
+      iter #   9 total cpu time : 64239.4 secs   av.it.:  18.0
       thresh= 2.954E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.518E-13
 
-      iter #  10 total cpu time :  6320.7 secs   av.it.:  19.0
+      iter #  10 total cpu time : 64278.0 secs   av.it.:  19.0
       thresh= 3.897E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.307E-14
 
-      iter #  11 total cpu time :  6336.1 secs   av.it.:  18.0
+      iter #  11 total cpu time : 64315.7 secs   av.it.:  18.0
       thresh= 2.511E-08 alpha_mix =  0.700 |ddv_scf|^2 =  5.354E-15
 
      End of self-consistent calculation
@@ -1903,40 +1774,40 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  6346.5 secs   av.it.:   9.0
+      iter #   1 total cpu time : 64338.2 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.069E-06
 
-      iter #   2 total cpu time :  6362.0 secs   av.it.:  18.0
+      iter #   2 total cpu time : 64376.3 secs   av.it.:  18.0
       thresh= 1.752E-04 alpha_mix =  0.700 |ddv_scf|^2 =  9.925E-07
 
-      iter #   3 total cpu time :  6377.1 secs   av.it.:  17.6
+      iter #   3 total cpu time : 64412.0 secs   av.it.:  17.6
       thresh= 9.962E-05 alpha_mix =  0.700 |ddv_scf|^2 =  8.692E-08
 
-      iter #   4 total cpu time :  6392.6 secs   av.it.:  18.0
+      iter #   4 total cpu time : 64449.9 secs   av.it.:  18.0
       thresh= 2.948E-05 alpha_mix =  0.700 |ddv_scf|^2 =  8.323E-09
 
-      iter #   5 total cpu time :  6408.4 secs   av.it.:  18.0
+      iter #   5 total cpu time : 64488.1 secs   av.it.:  18.0
       thresh= 9.123E-06 alpha_mix =  0.700 |ddv_scf|^2 =  7.821E-10
 
-      iter #   6 total cpu time :  6424.0 secs   av.it.:  18.0
+      iter #   6 total cpu time : 64525.2 secs   av.it.:  18.0
       thresh= 2.797E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.271E-10
 
-      iter #   7 total cpu time :  6439.4 secs   av.it.:  18.0
+      iter #   7 total cpu time : 64562.9 secs   av.it.:  18.0
       thresh= 1.127E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.503E-11
 
-      iter #   8 total cpu time :  6455.2 secs   av.it.:  18.0
+      iter #   8 total cpu time : 64600.0 secs   av.it.:  18.0
       thresh= 3.876E-07 alpha_mix =  0.700 |ddv_scf|^2 =  1.083E-11
 
-      iter #   9 total cpu time :  6470.2 secs   av.it.:  17.6
+      iter #   9 total cpu time : 64637.1 secs   av.it.:  17.6
       thresh= 3.291E-07 alpha_mix =  0.700 |ddv_scf|^2 =  2.268E-13
 
-      iter #  10 total cpu time :  6486.0 secs   av.it.:  18.2
+      iter #  10 total cpu time : 64677.6 secs   av.it.:  18.2
       thresh= 4.762E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.271E-13
 
-      iter #  11 total cpu time :  6501.6 secs   av.it.:  18.0
+      iter #  11 total cpu time : 64714.6 secs   av.it.:  18.0
       thresh= 3.565E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.342E-14
 
-      iter #  12 total cpu time :  6517.3 secs   av.it.:  18.0
+      iter #  12 total cpu time : 64752.8 secs   av.it.:  18.0
       thresh= 1.530E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.084E-15
 
      End of self-consistent calculation
@@ -1948,43 +1819,43 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  6527.7 secs   av.it.:   9.0
+      iter #   1 total cpu time : 64775.1 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.752E-06
 
-      iter #   2 total cpu time :  6543.3 secs   av.it.:  18.0
+      iter #   2 total cpu time : 64812.9 secs   av.it.:  18.0
       thresh= 1.937E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.154E-06
 
-      iter #   3 total cpu time :  6558.8 secs   av.it.:  18.0
+      iter #   3 total cpu time : 64849.4 secs   av.it.:  18.0
       thresh= 1.074E-04 alpha_mix =  0.700 |ddv_scf|^2 =  1.515E-07
 
-      iter #   4 total cpu time :  6574.5 secs   av.it.:  18.0
+      iter #   4 total cpu time : 64887.6 secs   av.it.:  18.0
       thresh= 3.893E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.656E-08
 
-      iter #   5 total cpu time :  6589.9 secs   av.it.:  18.0
+      iter #   5 total cpu time : 64924.1 secs   av.it.:  18.0
       thresh= 1.287E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.766E-09
 
-      iter #   6 total cpu time :  6605.4 secs   av.it.:  18.0
+      iter #   6 total cpu time : 64961.8 secs   av.it.:  18.0
       thresh= 4.202E-06 alpha_mix =  0.700 |ddv_scf|^2 =  3.529E-10
 
-      iter #   7 total cpu time :  6620.6 secs   av.it.:  17.9
+      iter #   7 total cpu time : 64998.9 secs   av.it.:  17.9
       thresh= 1.879E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.690E-11
 
-      iter #   8 total cpu time :  6636.6 secs   av.it.:  18.9
+      iter #   8 total cpu time : 65037.0 secs   av.it.:  18.9
       thresh= 4.111E-07 alpha_mix =  0.700 |ddv_scf|^2 =  6.133E-12
 
-      iter #   9 total cpu time :  6652.2 secs   av.it.:  18.0
+      iter #   9 total cpu time : 65074.8 secs   av.it.:  18.0
       thresh= 2.476E-07 alpha_mix =  0.700 |ddv_scf|^2 =  4.667E-13
 
-      iter #  10 total cpu time :  6668.2 secs   av.it.:  19.0
+      iter #  10 total cpu time : 65112.7 secs   av.it.:  19.0
       thresh= 6.831E-08 alpha_mix =  0.700 |ddv_scf|^2 =  4.312E-13
 
-      iter #  11 total cpu time :  6683.9 secs   av.it.:  18.0
+      iter #  11 total cpu time : 65150.9 secs   av.it.:  18.0
       thresh= 6.566E-08 alpha_mix =  0.700 |ddv_scf|^2 =  7.434E-14
 
-      iter #  12 total cpu time :  6699.2 secs   av.it.:  18.0
+      iter #  12 total cpu time : 65188.3 secs   av.it.:  18.0
       thresh= 2.727E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.643E-14
 
-      iter #  13 total cpu time :  6714.7 secs   av.it.:  18.0
+      iter #  13 total cpu time : 65225.1 secs   av.it.:  18.0
       thresh= 1.282E-08 alpha_mix =  0.700 |ddv_scf|^2 =  2.791E-15
 
      End of self-consistent calculation
@@ -1996,37 +1867,37 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  6724.8 secs   av.it.:   9.0
+      iter #   1 total cpu time : 65246.8 secs   av.it.:   9.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  9.974E-07
 
-      iter #   2 total cpu time :  6740.9 secs   av.it.:  19.0
+      iter #   2 total cpu time : 65286.0 secs   av.it.:  19.0
       thresh= 9.987E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.385E-06
 
-      iter #   3 total cpu time :  6756.3 secs   av.it.:  18.0
+      iter #   3 total cpu time : 65323.5 secs   av.it.:  18.0
       thresh= 1.177E-04 alpha_mix =  0.700 |ddv_scf|^2 =  7.374E-08
 
-      iter #   4 total cpu time :  6771.6 secs   av.it.:  17.7
+      iter #   4 total cpu time : 65359.3 secs   av.it.:  17.7
       thresh= 2.716E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.320E-08
 
-      iter #   5 total cpu time :  6789.6 secs   av.it.:  17.8
+      iter #   5 total cpu time : 65396.2 secs   av.it.:  17.8
       thresh= 1.149E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.964E-10
 
-      iter #   6 total cpu time :  6806.6 secs   av.it.:  18.0
+      iter #   6 total cpu time : 65432.9 secs   av.it.:  18.0
       thresh= 1.401E-06 alpha_mix =  0.700 |ddv_scf|^2 =  2.212E-11
 
-      iter #   7 total cpu time :  6823.8 secs   av.it.:  18.1
+      iter #   7 total cpu time : 65471.2 secs   av.it.:  18.1
       thresh= 4.704E-07 alpha_mix =  0.700 |ddv_scf|^2 =  7.568E-12
 
-      iter #   8 total cpu time :  6839.6 secs   av.it.:  18.0
+      iter #   8 total cpu time : 65508.9 secs   av.it.:  18.0
       thresh= 2.751E-07 alpha_mix =  0.700 |ddv_scf|^2 =  3.174E-13
 
-      iter #   9 total cpu time :  6855.7 secs   av.it.:  18.8
+      iter #   9 total cpu time : 65546.5 secs   av.it.:  18.8
       thresh= 5.634E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.301E-14
 
-      iter #  10 total cpu time :  6871.9 secs   av.it.:  18.2
+      iter #  10 total cpu time : 65584.9 secs   av.it.:  18.2
       thresh= 2.510E-08 alpha_mix =  0.700 |ddv_scf|^2 =  1.940E-14
 
-      iter #  11 total cpu time :  6888.0 secs   av.it.:  18.2
+      iter #  11 total cpu time : 65622.3 secs   av.it.:  18.2
       thresh= 1.393E-08 alpha_mix =  0.700 |ddv_scf|^2 =  7.914E-15
 
      End of self-consistent calculation
@@ -2038,34 +1909,34 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
      Self-consistent Calculation
 
-      iter #   1 total cpu time :  6898.2 secs   av.it.:   8.0
+      iter #   1 total cpu time : 65643.8 secs   av.it.:   8.0
       thresh= 1.000E-02 alpha_mix =  0.700 |ddv_scf|^2 =  3.056E-06
 
-      iter #   2 total cpu time :  6914.0 secs   av.it.:  17.0
+      iter #   2 total cpu time : 65679.5 secs   av.it.:  17.0
       thresh= 1.748E-04 alpha_mix =  0.700 |ddv_scf|^2 =  2.669E-07
 
-      iter #   3 total cpu time :  6930.7 secs   av.it.:  18.8
+      iter #   3 total cpu time : 65718.2 secs   av.it.:  18.8
       thresh= 5.166E-05 alpha_mix =  0.700 |ddv_scf|^2 =  1.860E-07
 
-      iter #   4 total cpu time :  6947.6 secs   av.it.:  17.4
+      iter #   4 total cpu time : 65753.9 secs   av.it.:  17.4
       thresh= 4.313E-05 alpha_mix =  0.700 |ddv_scf|^2 =  2.964E-09
 
-      iter #   5 total cpu time :  6965.3 secs   av.it.:  18.1
+      iter #   5 total cpu time : 65792.3 secs   av.it.:  18.1
       thresh= 5.444E-06 alpha_mix =  0.700 |ddv_scf|^2 =  1.412E-09
 
-      iter #   6 total cpu time :  6982.1 secs   av.it.:  18.0
+      iter #   6 total cpu time : 65829.8 secs   av.it.:  18.0
       thresh= 3.758E-06 alpha_mix =  0.700 |ddv_scf|^2 =  7.329E-11
 
-      iter #   7 total cpu time :  7000.2 secs   av.it.:  18.0
+      iter #   7 total cpu time : 65866.9 secs   av.it.:  18.0
       thresh= 8.561E-07 alpha_mix =  0.700 |ddv_scf|^2 =  8.257E-12
 
-      iter #   8 total cpu time :  7016.6 secs   av.it.:  17.0
+      iter #   8 total cpu time : 65903.2 secs   av.it.:  17.0
       thresh= 2.874E-07 alpha_mix =  0.700 |ddv_scf|^2 =  3.590E-13
 
-      iter #   9 total cpu time :  7034.4 secs   av.it.:  19.0
+      iter #   9 total cpu time : 65942.7 secs   av.it.:  19.0
       thresh= 5.992E-08 alpha_mix =  0.700 |ddv_scf|^2 =  3.075E-13
 
-      iter #  10 total cpu time :  7051.1 secs   av.it.:  18.0
+      iter #  10 total cpu time : 65980.2 secs   av.it.:  18.0
       thresh= 5.546E-08 alpha_mix =  0.700 |ddv_scf|^2 =  6.545E-15
 
      End of self-consistent calculation
@@ -2078,57 +1949,57 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
 
           Dielectric constant in cartesian axis 
 
-          (       2.466026507      -0.045628940      -0.242638904 )
-          (      -0.045629240       2.313829851       0.087580214 )
-          (      -0.242638839       0.087580067       2.601218936 )
+          (       2.466026498      -0.045628942      -0.242638904 )
+          (      -0.045629242       2.313829840       0.087580211 )
+          (      -0.242638838       0.087580064       2.601218934 )
 
           Effective charges (d Force / dE) in cartesian axis without acoustic sum rule applied (asr)
 
-           atom      1   S  Mean Z*:        3.16059
+           atom    1  S     Mean Z*:        3.16059
       Ex  (        2.94276       -0.49022       -0.07630 )
       Ey  (        0.08373        3.23519        0.07406 )
       Ez  (        0.13383        0.73161        3.30382 )
-           atom      2   S  Mean Z*:        3.16059
+           atom    2  S     Mean Z*:        3.16059
       Ex  (        2.94276       -0.49022       -0.07630 )
       Ey  (        0.08373        3.23519        0.07406 )
       Ez  (        0.13383        0.73161        3.30382 )
-           atom      3   Na Mean Z*:        1.20045
+           atom    3  Na    Mean Z*:        1.20045
       Ex  (        1.22699        0.04319        0.00849 )
       Ey  (        0.03130        1.18477       -0.04041 )
       Ez  (       -0.01650       -0.04940        1.18958 )
-           atom      4   Na Mean Z*:        1.20045
+           atom    4  Na    Mean Z*:        1.20045
       Ex  (        1.22699        0.04319        0.00849 )
       Ey  (        0.03130        1.18477       -0.04041 )
       Ez  (       -0.01650       -0.04940        1.18958 )
-           atom      5   O  Mean Z*:       -0.68474
+           atom    5  O     Mean Z*:       -0.68474
       Ex  (       -0.47357        0.38711        0.22600 )
       Ey  (        0.19113       -0.84548       -0.33696 )
       Ez  (        0.16297       -0.59824       -0.73518 )
-           atom      6   O  Mean Z*:       -0.68474
+           atom    6  O     Mean Z*:       -0.68474
       Ex  (       -0.47357        0.38711        0.22600 )
       Ey  (        0.19113       -0.84548       -0.33696 )
       Ez  (        0.16297       -0.59824       -0.73518 )
-           atom      7   O  Mean Z*:       -1.23273
+           atom    7  O     Mean Z*:       -1.23273
       Ex  (       -1.23505       -0.26413        0.46486 )
       Ey  (       -0.26840       -1.16909        0.17931 )
       Ez  (        0.44051        0.15017       -1.29405 )
-           atom      8   O  Mean Z*:       -1.23273
+           atom    8  O     Mean Z*:       -1.23273
       Ex  (       -1.23505       -0.26413        0.46486 )
       Ey  (       -0.26840       -1.16909        0.17931 )
       Ez  (        0.44051        0.15017       -1.29405 )
-           atom      9   O  Mean Z*:       -1.20446
+           atom    9  O     Mean Z*:       -1.20446
       Ex  (       -1.32396       -0.14705       -0.25790 )
       Ey  (       -0.35245       -1.04103       -0.25627 )
       Ez  (       -0.53371       -0.39301       -1.24838 )
-           atom     10   O  Mean Z*:       -1.20446
+           atom   10  O     Mean Z*:       -1.20446
       Ex  (       -1.32396       -0.14705       -0.25790 )
       Ey  (       -0.35245       -1.04103       -0.25627 )
       Ez  (       -0.53371       -0.39301       -1.24838 )
-           atom     11   O  Mean Z*:       -1.17442
+           atom   11  O     Mean Z*:       -1.17442
       Ex  (       -1.07500        0.46487       -0.36322 )
       Ey  (        0.30872       -1.29868        0.38792 )
       Ez  (       -0.18575        0.16676       -1.14958 )
-           atom     12   O  Mean Z*:       -1.17442
+           atom   12  O     Mean Z*:       -1.17442
       Ex  (       -1.07500        0.46487       -0.36322 )
       Ey  (        0.30872       -1.29868        0.38792 )
       Ez  (       -0.18575        0.16676       -1.14958 )
@@ -2139,51 +2010,51 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
               0.00385        0.01528        0.13240
 
           Effective charges (d Force / dE) in cartesian axis with asr applied: 
-           atom      1   S  Mean Z*:        3.14981
+           atom    1  S     Mean Z*:        3.14981
       E*x (        2.93239       -0.48918       -0.07662 )
       E*y (        0.08473        3.22424        0.07278 )
       E*z (        0.13361        0.73029        3.29279 )
-           atom      2   S  Mean Z*:        3.14981
+           atom    2  S     Mean Z*:        3.14981
       E*x (        2.93239       -0.48918       -0.07662 )
       E*y (        0.08473        3.22424        0.07278 )
       E*z (        0.13361        0.73029        3.29279 )
-           atom      3   Na Mean Z*:        1.18967
+           atom    3  Na    Mean Z*:        1.18967
       E*x (        1.21663        0.04423        0.00817 )
       E*y (        0.03229        1.17382       -0.04169 )
       E*z (       -0.01673       -0.05072        1.17854 )
-           atom      4   Na Mean Z*:        1.18967
+           atom    4  Na    Mean Z*:        1.18967
       E*x (        1.21663        0.04423        0.00817 )
       E*y (        0.03229        1.17382       -0.04169 )
       E*z (       -0.01673       -0.05072        1.17854 )
-           atom      5   O  Mean Z*:       -0.69552
+           atom    5  O     Mean Z*:       -0.69552
       E*x (       -0.48393        0.38814        0.22567 )
       E*y (        0.19213       -0.85643       -0.33824 )
       E*z (        0.16274       -0.59956       -0.74621 )
-           atom      6   O  Mean Z*:       -0.69552
+           atom    6  O     Mean Z*:       -0.69552
       E*x (       -0.48393        0.38814        0.22567 )
       E*y (        0.19213       -0.85643       -0.33824 )
       E*z (        0.16274       -0.59956       -0.74621 )
-           atom      7   O  Mean Z*:       -1.24351
+           atom    7  O     Mean Z*:       -1.24351
       E*x (       -1.24541       -0.26309        0.46454 )
       E*y (       -0.26741       -1.18004        0.17804 )
       E*z (        0.44028        0.14885       -1.30509 )
-           atom      8   O  Mean Z*:       -1.24351
+           atom    8  O     Mean Z*:       -1.24351
       E*x (       -1.24541       -0.26309        0.46454 )
       E*y (       -0.26741       -1.18004        0.17804 )
       E*z (        0.44028        0.14885       -1.30509 )
-           atom      9   O  Mean Z*:       -1.21524
+           atom    9  O     Mean Z*:       -1.21524
       E*x (       -1.33432       -0.14601       -0.25822 )
       E*y (       -0.35146       -1.05198       -0.25755 )
       E*z (       -0.53393       -0.39432       -1.25941 )
-           atom     10   O  Mean Z*:       -1.21524
+           atom   10  O     Mean Z*:       -1.21524
       E*x (       -1.33432       -0.14601       -0.25822 )
       E*y (       -0.35146       -1.05198       -0.25755 )
       E*z (       -0.53393       -0.39432       -1.25941 )
-           atom     11   O  Mean Z*:       -1.18520
+           atom   11  O     Mean Z*:       -1.18520
       E*x (       -1.08536        0.46591       -0.36354 )
       E*y (        0.30971       -1.30962        0.38665 )
       E*z (       -0.18597        0.16545       -1.16062 )
-           atom     12   O  Mean Z*:       -1.18520
+           atom   12  O     Mean Z*:       -1.18520
       E*x (       -1.08536        0.46591       -0.36354 )
       E*y (        0.30971       -1.30962        0.38665 )
       E*z (       -0.18597        0.16545       -1.16062 )
@@ -2193,42 +2064,42 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
      q = (    0.000000000   0.000000000   0.000000000 ) 
 
  **************************************************************************
-     freq (    1) =      -0.442840 [THz] =     -14.771540 [cm-1]
-     freq (    2) =      -0.343529 [THz] =     -11.458885 [cm-1]
-     freq (    3) =       0.457405 [THz] =      15.257379 [cm-1]
-     freq (    4) =       2.794119 [THz] =      93.201781 [cm-1]
-     freq (    5) =       3.145531 [THz] =     104.923612 [cm-1]
-     freq (    6) =       3.360551 [THz] =     112.095920 [cm-1]
-     freq (    7) =       3.426782 [THz] =     114.305135 [cm-1]
-     freq (    8) =       3.617933 [THz] =     120.681252 [cm-1]
-     freq (    9) =       4.100121 [THz] =     136.765326 [cm-1]
-     freq (   10) =       4.227574 [THz] =     141.016691 [cm-1]
-     freq (   11) =       5.442686 [THz] =     181.548476 [cm-1]
-     freq (   12) =       5.475871 [THz] =     182.655405 [cm-1]
-     freq (   13) =       6.173889 [THz] =     205.938754 [cm-1]
-     freq (   14) =       6.235187 [THz] =     207.983439 [cm-1]
-     freq (   15) =       6.899837 [THz] =     230.153781 [cm-1]
-     freq (   16) =       7.035588 [THz] =     234.681943 [cm-1]
-     freq (   17) =       7.555397 [THz] =     252.020916 [cm-1]
-     freq (   18) =      10.101211 [THz] =     336.940131 [cm-1]
-     freq (   19) =      11.336753 [THz] =     378.153385 [cm-1]
-     freq (   20) =      12.000031 [THz] =     400.277947 [cm-1]
-     freq (   21) =      13.259920 [THz] =     442.303311 [cm-1]
-     freq (   22) =      15.652519 [THz] =     522.111833 [cm-1]
-     freq (   23) =      15.806544 [THz] =     527.249550 [cm-1]
-     freq (   24) =      15.873913 [THz] =     529.496736 [cm-1]
-     freq (   25) =      16.305954 [THz] =     543.908064 [cm-1]
-     freq (   26) =      16.817283 [THz] =     560.964177 [cm-1]
-     freq (   27) =      18.236721 [THz] =     608.311518 [cm-1]
-     freq (   28) =      19.938217 [THz] =     665.067326 [cm-1]
-     freq (   29) =      21.868247 [THz] =     729.446211 [cm-1]
-     freq (   30) =      24.559470 [THz] =     819.215754 [cm-1]
-     freq (   31) =      29.910026 [THz] =     997.691080 [cm-1]
-     freq (   32) =      30.795757 [THz] =    1027.235866 [cm-1]
-     freq (   33) =      35.328198 [THz] =    1178.421852 [cm-1]
-     freq (   34) =      35.578050 [THz] =    1186.756011 [cm-1]
-     freq (   35) =      35.804830 [THz] =    1194.320576 [cm-1]
-     freq (   36) =      36.434537 [THz] =    1215.325345 [cm-1]
+     freq (    1) =      -0.442848 [THz] =     -14.771826 [cm-1]
+     freq (    2) =      -0.343539 [THz] =     -11.459230 [cm-1]
+     freq (    3) =       0.457398 [THz] =      15.257143 [cm-1]
+     freq (    4) =       2.794119 [THz] =      93.201786 [cm-1]
+     freq (    5) =       3.145529 [THz] =     104.923561 [cm-1]
+     freq (    6) =       3.360548 [THz] =     112.095827 [cm-1]
+     freq (    7) =       3.426780 [THz] =     114.305075 [cm-1]
+     freq (    8) =       3.617932 [THz] =     120.681206 [cm-1]
+     freq (    9) =       4.100120 [THz] =     136.765287 [cm-1]
+     freq (   10) =       4.227573 [THz] =     141.016658 [cm-1]
+     freq (   11) =       5.442686 [THz] =     181.548463 [cm-1]
+     freq (   12) =       5.475870 [THz] =     182.655370 [cm-1]
+     freq (   13) =       6.173888 [THz] =     205.938738 [cm-1]
+     freq (   14) =       6.235186 [THz] =     207.983409 [cm-1]
+     freq (   15) =       6.899836 [THz] =     230.153761 [cm-1]
+     freq (   16) =       7.035587 [THz] =     234.681919 [cm-1]
+     freq (   17) =       7.555396 [THz] =     252.020894 [cm-1]
+     freq (   18) =      10.101209 [THz] =     336.940079 [cm-1]
+     freq (   19) =      11.336753 [THz] =     378.153379 [cm-1]
+     freq (   20) =      12.000031 [THz] =     400.277945 [cm-1]
+     freq (   21) =      13.259919 [THz] =     442.303298 [cm-1]
+     freq (   22) =      15.652519 [THz] =     522.111819 [cm-1]
+     freq (   23) =      15.806543 [THz] =     527.249534 [cm-1]
+     freq (   24) =      15.873912 [THz] =     529.496723 [cm-1]
+     freq (   25) =      16.305953 [THz] =     543.908052 [cm-1]
+     freq (   26) =      16.817283 [THz] =     560.964169 [cm-1]
+     freq (   27) =      18.236720 [THz] =     608.311512 [cm-1]
+     freq (   28) =      19.938217 [THz] =     665.067340 [cm-1]
+     freq (   29) =      21.868248 [THz] =     729.446228 [cm-1]
+     freq (   30) =      24.559471 [THz] =     819.215765 [cm-1]
+     freq (   31) =      29.910026 [THz] =     997.691066 [cm-1]
+     freq (   32) =      30.795756 [THz] =    1027.235853 [cm-1]
+     freq (   33) =      35.328198 [THz] =    1178.421846 [cm-1]
+     freq (   34) =      35.578050 [THz] =    1186.756009 [cm-1]
+     freq (   35) =      35.804830 [THz] =    1194.320570 [cm-1]
+     freq (   36) =      36.434537 [THz] =    1215.325337 [cm-1]
  **************************************************************************
 
      Mode symmetry, C_i (-1)    point group:
@@ -2270,93 +2141,93 @@ mpirun -np 8 /home/software/bin/ph.x -inp Na2SO42.ph.in
      freq (  35-  35) =       1194.3  [cm-1]   --> A_u             I  
      freq (  36-  36) =       1215.3  [cm-1]   --> A_g             R  
 
-     PHONON       :      1h53m CPU      1h57m WALL
+     PHONON       :      4h35m CPU     18h19m WALL
 
      INITIALIZATION: 
-     phq_setup    :      0.02s CPU      0.03s WALL (       1 calls)
-     phq_init     :     22.94s CPU     23.32s WALL (       1 calls)
+     phq_setup    :      0.01s CPU      0.01s WALL (       1 calls)
+     phq_init     :     32.54s CPU     33.07s WALL (       1 calls)
 
-     phq_init     :     22.94s CPU     23.32s WALL (       1 calls)
-     set_drhoc    :      0.06s CPU      0.06s WALL (       3 calls)
-     init_vloc    :      0.04s CPU      0.04s WALL (       1 calls)
-     init_us_1    :      0.06s CPU      0.07s WALL (       1 calls)
-     init_us_2    :     12.55s CPU     13.54s WALL (   53000 calls)
-     newd         :      0.01s CPU      0.01s WALL (       1 calls)
-     dvanqq       :      0.60s CPU      0.61s WALL (       1 calls)
-     drho         :     21.06s CPU     21.39s WALL (       1 calls)
+     phq_init     :     32.54s CPU     33.07s WALL (       1 calls)
+     set_drhoc    :      0.00s CPU      0.00s WALL (       3 calls)
+     init_vloc    :      0.00s CPU      0.00s WALL (       1 calls)
+     init_us_1    :      0.02s CPU      0.02s WALL (       1 calls)
+     init_us_2    :     12.32s CPU     14.04s WALL (   53000 calls)
+     newd         :      0.01s CPU      0.02s WALL (       1 calls)
+     dvanqq       :      0.56s CPU      0.56s WALL (       1 calls)
+     drho         :     29.20s CPU     29.68s WALL (       1 calls)
+     drhous       :     26.76s CPU     27.23s WALL (       1 calls)
+     nldyntot     :      1.80s CPU      1.80s WALL (       1 calls)
      cmpt_qdipol  :      0.00s CPU      0.00s WALL (       1 calls)
 
      DIELECTRIC CONSTANT AND EFFECTIVE CHARGES:
-     solve_e      :    676.31s CPU    702.58s WALL (       1 calls)
-     dielec       :      0.00s CPU      0.07s WALL (       1 calls)
-     zstar_eu     :    183.53s CPU    191.43s WALL (       1 calls)
+     solve_e      :   1630.82s CPU   1659.00s WALL (       1 calls)
+     dielec       :      0.02s CPU      0.07s WALL (       1 calls)
+     zstar_eu     :    385.30s CPU    391.60s WALL (       1 calls)
 
      DYNAMICAL MATRIX:
-     dynmat0      :      1.01s CPU      1.03s WALL (       1 calls)
-     phqscf       :   5927.18s CPU   6133.46s WALL (       1 calls)
-     dynmatrix    :      0.01s CPU      0.01s WALL (       1 calls)
-
-     phqscf       :   5927.18s CPU   6133.46s WALL (       1 calls)
-     solve_linter :   5914.00s CPU   6119.14s WALL (      36 calls)
-     drhodv       :     13.11s CPU     14.17s WALL (      36 calls)
-
-     dynmat0      :      1.01s CPU      1.03s WALL (       1 calls)
-     dynmat_us    :      0.92s CPU      0.94s WALL (       1 calls)
-     d2ionq       :      0.04s CPU      0.04s WALL (       1 calls)
-     dynmatcc     :      0.05s CPU      0.05s WALL (       1 calls)
-
-     dynmat_us    :      0.92s CPU      0.94s WALL (       1 calls)
+     dynmat0      :      1.88s CPU      1.91s WALL (       1 calls)
+     dynmat_us    :      1.86s CPU      1.89s WALL (       1 calls)
      addusdynmat  :      0.00s CPU      0.00s WALL (       1 calls)
+     d2ionq       :      0.01s CPU      0.01s WALL (       1 calls)
+     dynmatcc     :      0.00s CPU      0.00s WALL (       1 calls)
+     phqscf       :  14474.54s CPU  63897.09s WALL (       1 calls)
+     dynmatrix    :      0.00s CPU      0.02s WALL (       1 calls)
 
-     phqscf       :   5927.18s CPU   6133.46s WALL (       1 calls)
-     solve_linter :   5914.00s CPU   6119.14s WALL (      36 calls)
+     phqscf       :  14474.54s CPU  63897.09s WALL (       1 calls)
+     solve_linter :  14436.54s CPU  63857.48s WALL (      36 calls)
+     sth_kernel   :  15739.34s CPU  65182.11s WALL (     419 calls)
+     h_prec       :      3.78s CPU      4.37s WALL (   44732 calls)
+     apply_dpot_b :    191.67s CPU    207.19s WALL (   42824 calls)
+     ortho        :    279.67s CPU    283.53s WALL (   47276 calls)
+     cgsolve      :  15075.66s CPU  64469.24s WALL (   47276 calls)
+     incdrhoscf   :    325.08s CPU    340.37s WALL (   47276 calls)
+                                        0.00s GPU  (   47276 calls)
+     addusddens   :      6.86s CPU      6.90s WALL (     443 calls)
+     dv_of_drho   :      0.82s CPU      0.86s WALL (     446 calls)
+     mix_pot      :      0.25s CPU      0.43s WALL (     419 calls)
+     drhodv       :     37.91s CPU     38.86s WALL (      36 calls)
+     psymdvscf    :      1.83s CPU      1.89s WALL (     407 calls)
+     newdq        :      6.63s CPU      6.76s WALL (     419 calls)
+     adddvscf     :     77.64s CPU     78.81s WALL (   42824 calls)
+     drhodvus     :      0.02s CPU      0.07s WALL (      36 calls)
 
-     solve_linter :   5914.00s CPU   6119.14s WALL (      36 calls)
-     dvqpsi_us    :    127.76s CPU    129.94s WALL (    7632 calls)
-     sth_kernel   :   6399.91s CPU   6624.58s WALL (     419 calls)
-     apply_dpot_b :    159.57s CPU    176.67s WALL (   42824 calls)
-     ortho        :     56.85s CPU     59.20s WALL (   47276 calls)
-     cgsolve      :   5985.59s CPU   6168.87s WALL (   47276 calls)
-     incdrhoscf   :    224.57s CPU    238.43s WALL (   47276 calls)
-     addusddens   :      8.42s CPU      8.51s WALL (     443 calls)
-     dv_of_drho   :      0.84s CPU      0.87s WALL (     446 calls)
-     mix_pot      :      0.33s CPU      0.40s WALL (     419 calls)
-     psymdvscf    :      1.98s CPU      2.08s WALL (     407 calls)
-     newdq        :      8.62s CPU      8.84s WALL (     419 calls)
-     adddvscf     :     34.46s CPU     35.66s WALL (   42824 calls)
-     drhodvus     :      0.07s CPU      1.09s WALL (      36 calls)
+     dvqpsi_us    :    113.78s CPU    116.06s WALL (    7632 calls)
+                                        0.00s GPU  (    7632 calls)
+     dvqpsi_us_on :     79.57s CPU     80.09s WALL (    7632 calls)
 
-     dvqpsi_us    :    127.76s CPU    129.94s WALL (    7632 calls)
-     dvqpsi_us_on :     96.81s CPU     97.39s WALL (    7632 calls)
+     add_vuspsi   :   1810.84s CPU   1821.42s WALL ( 1198180 calls)
+     addusdbec    :    115.57s CPU    118.10s WALL (   51092 calls)
 
-     cgsolve      :   5985.59s CPU   6168.87s WALL (   47276 calls)
-     ch_psi       :   5417.09s CPU   5582.28s WALL ( 1198183 calls)
-
-     ch_psi       :   5417.09s CPU   5582.28s WALL ( 1198183 calls)
-     h_psi        :   3995.16s CPU   4113.15s WALL ( 1198183 calls)
-     last         :   1094.41s CPU   1131.71s WALL ( 1198183 calls)
-
-     h_psi        :   3995.16s CPU   4113.15s WALL ( 1198183 calls)
-     add_vuspsi   :    310.90s CPU    322.13s WALL ( 1198183 calls)
-
-     incdrhoscf   :    224.57s CPU    238.43s WALL (   47276 calls)
-     addusdbec    :     23.57s CPU     24.43s WALL (   51092 calls)
-
-     drhodvus     :      0.07s CPU      1.09s WALL (      36 calls)
+     drhodvus     :      0.02s CPU      0.07s WALL (      36 calls)
 
       General routines
-     calbec       :    883.04s CPU    916.68s WALL ( 2603278 calls)
-     fft          :      1.05s CPU      1.15s WALL (    8855 calls)
-     ffts         :      3.54s CPU      3.68s WALL (    8964 calls)
-     fftw         :   3101.13s CPU   3204.25s WALL (74338002 calls)
-     davcio       :     27.35s CPU     39.48s WALL (  235883 calls)
-     write_rec    :      0.52s CPU      1.24s WALL (     455 calls)
+     calbec       :   4314.01s CPU   4401.16s WALL ( 2603272 calls)
+     fft          :      1.06s CPU      1.12s WALL (    8855 calls)
+     ffts         :      1.93s CPU      2.13s WALL (    8964 calls)
+     fftw         :   3516.88s CPU  52778.40s WALL (74339312 calls)
+     davcio       :     24.74s CPU     40.16s WALL (  235883 calls)
+     write_rec    :      0.48s CPU      1.79s WALL (     455 calls)
+
+      Additional routines
+     ch_psi       :  14537.65s CPU  63923.96s WALL ( 1198180 calls)
+     last         :   5081.65s CPU   5139.33s WALL ( 1198180 calls)
+     Hesh         :     37.77s CPU     38.16s WALL ( 1198180 calls)
+     ch_psi_all_k :   5040.46s CPU   5098.04s WALL ( 1198180 calls)
+                                        0.00s GPU  ( 1198180 calls)
+     ch_psi_calbe :   1843.71s CPU   1871.51s WALL ( 1198180 calls)
+                                        0.00s GPU  ( 1198180 calls)
+     h_psi_bgrp   :   7554.88s CPU  56871.36s WALL ( 1198180 calls)
+     h_psi        :   7553.03s CPU  56869.76s WALL ( 1198180 calls)
+     h_psi:pot    :   7510.96s CPU  56826.86s WALL ( 1198180 calls)
+     h_psi:calbec :   2033.04s CPU   2082.83s WALL ( 1198180 calls)
+     s_psi_bgrp   :   3770.25s CPU   3792.07s WALL ( 2443954 calls)
+     s_psi        :   3738.72s CPU   3760.73s WALL ( 2443954 calls)
 
 
-     PHONON       :      1h53m CPU      1h57m WALL
+     PHONON       :      4h35m CPU     18h19m WALL
 
 
-   This run was terminated on:  15:47:51  28Dec2021            
+   This run was terminated on:  11:38:40  12Aug2024            
 
 =------------------------------------------------------------------------------=
    JOB DONE.

@@ -1,5 +1,5 @@
 # Examples/QE/Na2SO42-v7
-## Quantum Espresso 7.0 Powder IR Calculation on Na2(SO4)2
+## Quantum Espresso 7.3.1 Powder IR Calculation on Na2(SO4)2
 
 | **File**          | **Description**                                                           |
 | ----------------- | --------------------------------------------------------------------------|

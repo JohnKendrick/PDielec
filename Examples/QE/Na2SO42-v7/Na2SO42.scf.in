@@ -2,8 +2,9 @@
       calculation = 'scf' 
       outdir = '.' 
       pseudo_dir = '/home/software/PseudoPotentials/QE' 
-      disk_io = 'minimal' 
       nstep = 1000
+      tprnfor = .true.
+      tstress = .true.
       etot_conv_thr = 1.0d-7
       forc_conv_thr = 1.0d-6
 /
