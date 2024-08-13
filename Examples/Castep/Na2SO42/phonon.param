@@ -27,7 +27,7 @@ geom_energy_tol         = 1.0e-006
 geom_force_tol          = 0.001
 geom_stress_tol         = 0.001
 geom_disp_tol           = 2.0e-004
-elec_energy_tol         = 1.0e-12
+elec_energy_tol         = 1.0e-10
 geom_max_iter           = 100
 geom_method             = BFGS
 !

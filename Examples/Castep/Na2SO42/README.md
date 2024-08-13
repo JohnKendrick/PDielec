@@ -1,5 +1,5 @@
 # Examples/Castep/Na2SO42
-## CASTEP Calculation using CASTEP 24.0
+## CASTEP Calculation using CASTEP 24.1
 
 | **File**           | **Description**                                |
 | -------------------| ---------------------------------------------- |
