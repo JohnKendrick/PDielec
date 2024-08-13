@@ -287,16 +287,12 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Do some pretty printing for the dielectric functions</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Do some pretty printing for the dielectric functions.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="print_ints"><a class="viewcode-back" href="../../autoapi/PDielec/Plotter/index.html#PDielec.Plotter.print_ints">[docs]</a><span class="k">def</span> <span class="nf">print_ints</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">ints</span><span class="p">,</span> <span class="n">no_per_line</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:9d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Print ints data.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print ints data.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -316,6 +312,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#</span>
     <span class="c1"># Print out a list of ints prettily</span>
@@ -326,7 +323,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
     <span class="n">nlines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">len_ints</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">no_per_line</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">no_per_line</span>
         <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">len_ints</span><span class="p">:</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">len_ints</span>
@@ -336,8 +333,7 @@
     <span class="k">return</span></div>
 
 <div class="viewcode-block" id="print_strings"><a class="viewcode-back" href="../../autoapi/PDielec/Plotter/index.html#PDielec.Plotter.print_strings">[docs]</a><span class="k">def</span> <span class="nf">print_strings</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">strings</span><span class="p">,</span> <span class="n">no_per_line</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:9s}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Print strings data.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print strings data.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -357,6 +353,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#</span>
     <span class="c1"># Print out a list of strings prettily</span>
@@ -367,7 +364,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
     <span class="n">nlines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">len_strings</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">no_per_line</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">no_per_line</span>
         <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">len_strings</span><span class="p">:</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">len_strings</span>
@@ -378,8 +375,7 @@
 
 
 <div class="viewcode-block" id="print_reals"><a class="viewcode-back" href="../../autoapi/PDielec/Plotter/index.html#PDielec.Plotter.print_reals">[docs]</a><span class="k">def</span> <span class="nf">print_reals</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">reals</span><span class="p">,</span> <span class="n">no_per_line</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:9.2f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Print reals data</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print reals data.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -399,6 +395,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#</span>
     <span class="c1"># Print out a list of reals prettily</span>
@@ -409,7 +406,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
     <span class="n">nlines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">len_reals</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">no_per_line</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">no_per_line</span>
         <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">len_reals</span><span class="p">:</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">len_reals</span>
@@ -420,11 +417,12 @@
 
 
 <div class="viewcode-block" id="print3x3"><a class="viewcode-back" href="../../autoapi/PDielec/Plotter/index.html#PDielec.Plotter.print3x3">[docs]</a><span class="k">def</span> <span class="nf">print3x3</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:14.6f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Print a 3x3 matrix.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print a 3x3 matrix.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        A title for the print</span>
 <span class="sd">    array : tensor 3x3</span>
 <span class="sd">        The array to be printed</span>
 <span class="sd">    format : str, optional </span>
@@ -437,6 +435,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#</span>
     <span class="c1"># Print out a 3x3 tensor matrix</span>

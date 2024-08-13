@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Read the contents of a directory containing DFT output and create a pickled filed
+   Read the contents of a directory containing DFT output and create a pickled file.
 
 
 
@@ -33,7 +33,7 @@ Attributes
 
 .. py:function:: main()
 
-   Main program entry point.
+   Enter point for main program.
 
     his function reads a serialized object from a pickle file specified as the first command line argument. It deserializes objects from the file until it reaches the end of the file and then iterates through these objects, printing their details and the details of their last unit cell.
 
@@ -58,6 +58,7 @@ Attributes
    Note
    ----
    The function requires the 'sys' and 'pickle' modules to be imported.
+
 
 
 .. py:function:: print_help()

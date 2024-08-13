@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   The checkcsv command read in two csv files and check that the float contents are the same
+   The checkcsv command read in two csv files and check that the float contents are the same.
 
    It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 
@@ -64,6 +64,7 @@ Functions
      of the lines if `swapped` is True, ignoring a discrepancy of exactly 1.
 
 
+
 .. py:function:: isfloat(value)
 
    Check if the given value can be converted to float.
@@ -79,9 +80,10 @@ Functions
        Returns True if value can be converted to float, False otherwise.
 
 
+
 .. py:function:: main()
 
-   Compares two files line by line to check for significant changes based on a provided threshold.
+   Compare two files line by line to check for significant changes based on a provided threshold.
 
    This script takes at least two arguments that are file names along with optional arguments for
    separator (`-sep`) and threshold value (`-thresh`). It compares numbers from corresponding lines
@@ -118,5 +120,6 @@ Functions
    -----
    The command-line arguments need to be parsed using `sys.argv`.
    The comparison formula used is `2*abs(f1-f2)/(f1+f2+2)`.
+
 
 

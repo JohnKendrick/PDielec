@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.Mie">
 <span id="pdielec-mie"></span><h1><a class="reference internal" href="#module-PDielec.Mie" title="PDielec.Mie"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a><a class="headerlink" href="#module-PDielec.Mie" title="Permalink to this heading">#</a></h1>
-<section id="pymiescatt-package">
+<p>PyMieScatt package.</p>
 <p>Routines taken from PyMieScatt
 <a class="reference external" href="http://pymiescatt.readthedocs.io/en/latest">http://pymiescatt.readthedocs.io/en/latest</a>
 Below is a copy of the original licence.</p>
@@ -297,7 +297,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</p>
-</section>
 <section id="publications">
 <h2>Publications<a class="headerlink" href="#publications" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -330,7 +329,7 @@ SOFTWARE.</p>
 <td><p>Calculate the scattering matrix elements for a spherical scatterer.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.MiePiTau" title="PDielec.Mie.MiePiTau"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MiePiTau</span></code></a>(mu, nmax)</p></td>
-<td><p>Calculate the Mie (pi) and (    au) functions for given argument and maximum order.</p></td>
+<td><p>Calculate the Mie (pi) and (        au) functions for given argument and maximum order.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.MieQ" title="PDielec.Mie.MieQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MieQ</span></code></a>(m, wavelength, diameter[, nMedium, asDict, ...])</p></td>
 <td><p>Calculate Mie scattering efficiencies or cross sections for a spherical particle.</p></td>
@@ -608,7 +607,7 @@ the Mie theory for a spherical scatterer.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Mie.MiePiTau">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MiePiTau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MiePiTau"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MiePiTau" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the Mie (pi) and (    au) functions for given argument and maximum order.</p>
+<dd><p>Calculate the Mie (pi) and (        au) functions for given argument and maximum order.</p>
 <section id="id16">
 <h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -621,13 +620,13 @@ the Mie theory for a spherical scatterer.</p>
 <section id="id17">
 <h4>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
-<dt>tuple</dt><dd><p>A tuple containing two numpy arrays. The first array corresponds to the (pi) values and the second to the ( au) values for the orders from 0 to (nmax-1).</p>
+<dt>tuple</dt><dd><p>A tuple containing two numpy arrays. The first array corresponds to the (pi) values and the second to the (   au) values for the orders from 0 to (nmax-1).</p>
 </dd>
 </dl>
 </section>
 <section id="id18">
 <h4>Notes<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
-<p>The Mie (pi) and (      au) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.</p>
+<p>The Mie (pi) and (        au) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.</p>
 </section>
 <section id="id19">
 <h4>Examples<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
@@ -817,7 +816,8 @@ and “(lambda)” is the wavelength of the incident light in the medium.</p>
 </section>
 <section id="id32">
 <h4>Examples<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mf">1.59</span> <span class="o">+</span> <span class="mf">0.005</span><span class="n">j</span>  <span class="c1"># Complex refractive index of the particle</span>
 <span class="n">nMedium</span> <span class="o">=</span> <span class="mf">1.33</span>  <span class="c1"># Refractive index of the medium</span>
 <span class="n">xRange</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># Range of size parameters</span>
@@ -835,6 +835,7 @@ and “(lambda)” is the wavelength of the incident light in the medium.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div></blockquote>
 </section>
 </dd></dl>
 
@@ -928,7 +929,7 @@ and “(lambda)” is the wavelength of the incident light in the medium.</p>
 </section>
 <section id="id40">
 <h4>Notes<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h4>
-<p>This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the <cite>AutoMie_ab</cite> function to calculate the Mie coefficients (a_n) and (b_n), and the <cite>MiePiTau</cite> function to compute the angle-dependent functions (pi_n) and (    au_n). The formulas for (S_1) and (S_2) involve sums over these coefficients weighted by ((2n+1)/(n(n+1))), where (n) is the series index.</p>
+<p>This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the <cite>AutoMie_ab</cite> function to calculate the Mie coefficients (a_n) and (b_n), and the <cite>MiePiTau</cite> function to compute the angle-dependent functions (pi_n) and (      au_n). The formulas for (S_1) and (S_2) involve sums over these coefficients weighted by ((2n+1)/(n(n+1))), where (n) is the series index.</p>
 </section>
 <section id="id41">
 <h4>Examples<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h4>
@@ -1417,9 +1418,6 @@ It supports different normalization options for the scattering intensity as well
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a><ul>
-<li><a class="reference internal" href="#pymiescatt-package">Routines taken from PyMieScatt
-http://pymiescatt.readthedocs.io/en/latest
-Below is a copy of the original licence.</a></li>
 <li><a class="reference internal" href="#publications">Publications</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>

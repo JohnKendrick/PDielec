@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   SingleCrystalLayer module
+   SingleCrystalLayer module.
 
 
 
@@ -75,6 +75,7 @@ Classes
    on_thickness_units_cb_activated(index)
        Respond to thickness unit selection changes.
 
+
    .. py:method:: changeLabFrameInfo()
 
       Update the lab frame information in the labframe widget.
@@ -104,9 +105,10 @@ Classes
       None
 
 
+
    .. py:method:: drawLayerWidgetLine1()
 
-      Add the first line of the layer description
+      Add the first line of the layer description.
 
       Shows the material name and the film thickness and units. 
 
@@ -119,9 +121,10 @@ Classes
       None
 
 
+
    .. py:method:: drawLayerWidgetLine2()
 
-      Add the second line of the layer description
+      Add the second line of the layer description.
 
       Shows the hkl specification and the azimuthal angle
 
@@ -134,9 +137,10 @@ Classes
       None
 
 
+
    .. py:method:: drawLayerWidgetLine3()
 
-      Add the third line of the layer description
+      Add the third line of the layer description.
 
       Shows the relationship between crystal and labframe coordinate systems
 
@@ -149,9 +153,10 @@ Classes
       None
 
 
+
    .. py:method:: getLayer()
 
-      Return the edited layer
+      Return the edited layer.
 
       Parameters
       ----------
@@ -162,6 +167,7 @@ Classes
       self.layer : An instance of a single crystal layer
 
 
+
    .. py:method:: on_azimuthal_angle_sb_changed(value)
 
       Handle azimuthal spin box change.
@@ -169,10 +175,12 @@ Classes
       Parameters
       ----------
       value : float
+          The new azimuthal angle in degrees
 
       Returns
       -------
       None
+
 
 
    .. py:method:: on_film_thickness_sb_changed(value)
@@ -182,10 +190,12 @@ Classes
       Parameters
       ----------
       value : float
+          The new thickness
 
       Returns
       -------
       None
+
 
 
    .. py:method:: on_hkl_sb_changed(value, hkorl)
@@ -221,7 +231,8 @@ Classes
 
 
 
-.. py:class:: SingleCrystalLayer(material, hkl=[0, 0, 1], azimuthal=0.0, thickness=0.0, thicknessUnit='nm', incoherentOption='Coherent', dielectricFlag=False)
+
+.. py:class:: SingleCrystalLayer(material, hkl=None, azimuthal=0.0, thickness=0.0, thicknessUnit='nm', incoherentOption='Coherent', dielectricFlag=False)
 
 
    A class representing a single crystal layer.
@@ -335,6 +346,7 @@ Classes
    -----
    The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.
 
+
    .. py:method:: azimuthalRotationMatrix(angle)
 
       Calculate a rotation matrix for the azimuthal angle (in degrees).
@@ -342,6 +354,7 @@ Classes
       Parameters
       ----------
       angle : float
+          The azimuthal angle in degrees
 
       Returns
       -------
@@ -349,13 +362,10 @@ Classes
           The rotation matrix for the given azimuthal angle.
 
 
+
    .. py:method:: calculateLabFrameEpsilon(v)
 
       Get the permittivity for this material at frequency v and transform it to the laboratory frame.
-
-      Parameters
-      ----------
-      None
 
       Parameters
       ----------
@@ -366,6 +376,7 @@ Classes
       -------
       float
           The permittivity of the material in the laboratory frame.
+
 
 
    .. py:method:: calculate_euler_matrix()
@@ -381,6 +392,7 @@ Classes
       None
 
 
+
    .. py:method:: changeLabFrameInfo()
 
       Change the Lab Frame Info panel.
@@ -390,7 +402,7 @@ Classes
 
    .. py:method:: getAzimuthal()
 
-      Get the azimuthal angle
+      Get the azimuthal angle.
 
       Parameters
       ----------
@@ -400,6 +412,7 @@ Classes
       -------
       float
           The azimuthal angle.
+
 
 
    .. py:method:: getHKL()
@@ -415,9 +428,10 @@ Classes
       list of 3 ints
 
 
+
    .. py:method:: getIncoherentOption()
 
-      Returns the value of the incoherent option attribute.
+      Return the value of the incoherent option attribute.
 
       This will return 'Coherent' for a coherent layer
 
@@ -429,6 +443,7 @@ Classes
       -------
       type
           The value of the `incoherentOption` attribute of the object.
+
 
 
    .. py:method:: getLabFrame()
@@ -450,7 +465,7 @@ Classes
 
    .. py:method:: getMaterial()
 
-      Return the material
+      Return the material.
 
       Parameters
       ----------
@@ -461,9 +476,10 @@ Classes
       an instance of a Materials object
 
 
+
    .. py:method:: getName()
 
-      Return the material name
+      Return the material name.
 
       Parameters
       ----------
@@ -475,9 +491,10 @@ Classes
           The name of the material.
 
 
+
    .. py:method:: getPermittivityFunction()
 
-      Return the permittivity function associated with this material
+      Return the permittivity function associated with this material.
 
       Parameters
       ----------
@@ -488,9 +505,10 @@ Classes
       A permittivity function
 
 
+
    .. py:method:: getPhaseShift()
 
-      Get the phase shift for the layer
+      Get the phase shift for the layer.
 
       Parameters
       ----------
@@ -502,9 +520,10 @@ Classes
           The phase shift used in the averaged phase shift method
 
 
+
    .. py:method:: getThickness()
 
-      Get the thickness
+      Get the thickness.
 
       Parameters
       ----------
@@ -513,11 +532,12 @@ Classes
       Returns
       -------
       float
+
 
 
    .. py:method:: getThicknessInMetres()
 
-      Get the thickness in metres
+      Get the thickness in metres.
 
       Parameters
       ----------
@@ -528,9 +548,10 @@ Classes
       float
 
 
+
    .. py:method:: getThicknessUnit()
 
-      Get the thickness unit
+      Get the thickness unit.
 
       Parameters
       ----------
@@ -541,9 +562,10 @@ Classes
       str
 
 
+
    .. py:method:: invert(m)
 
-      Calculate the inverse of m
+      Calculate the inverse of m.
 
       Parameters
       ----------
@@ -556,9 +578,10 @@ Classes
           The inverse of `m` as a 3x3 complex numpy array.
 
 
+
    .. py:method:: isCoherent()
 
-      Returns True if this is a coherent layer, False otherwise.
+      Return True if this is a coherent layer, False otherwise.
 
       Parameters
       ----------
@@ -568,6 +591,7 @@ Classes
       -------
       bool
           True if this is a coherent layer, False otherwise.
+
 
 
    .. py:method:: isDielectric()
@@ -584,6 +608,7 @@ Classes
           True if the material of the layer is the dielectric material, otherwise False.
 
 
+
    .. py:method:: isScalar()
 
       Return true if the material of the layer is a scalar material.
@@ -596,6 +621,7 @@ Classes
       -------
       bool
           True if the material of the layer is a scalar material, False otherwise.
+
 
 
    .. py:method:: isTensor()
@@ -612,6 +638,7 @@ Classes
           True if the material of the layer is a tensor material, False otherwise.
 
 
+
    .. py:method:: print()
 
       Print the main attributes of the layer.
@@ -619,6 +646,7 @@ Classes
       Parameters
       ----------
       None
+
 
 
    .. py:method:: setAzimuthal(angle)
@@ -635,35 +663,45 @@ Classes
       None
 
 
+
    .. py:method:: setHKL(hkl)
 
-      Set the hkl and recalculate the Euler matrix
+      Set the hkl and recalculate the Euler matrix.
 
       Parameters
       ----------
       hkl : list of 3 ints
+         The hkl parameters of the surface
 
       Returns
       -------
       None
+
 
 
    .. py:method:: setIncoherentOption(option)
 
-      Set the incoherent option
+      Set the incoherent option.
 
       Parameters
       ----------
       option : string
+          Sets the incoherent option.  Can be one of;
+          - "Coherent"
+          - "Incoherent (intensity)"
+          - "Incoherent (phase averaging)"
+          - "Incoherent (phase cancelling)"
+          - "Incoherent (non-reflective)"
 
       Returns
       -------
       None
 
 
+
    .. py:method:: setPhaseShift(phaseShift)
 
-      Set the phase shift for the layer
+      Set the phase shift for the layer.
 
       Parameters
       ----------
@@ -675,6 +713,7 @@ Classes
       None
 
 
+
    .. py:method:: setThickness(thickness)
 
       Set the thickness.
@@ -682,10 +721,12 @@ Classes
       Parameters
       ----------
       thickness : float
+          The value of the layer thickness in the current thickness units
 
       Returns
       -------
       None
+
 
 
    .. py:method:: setThicknessUnit(thicknessUnit)
@@ -694,11 +735,13 @@ Classes
 
       Parameters
       ----------
-      thicknessUnit
+      thicknessUnit : str
+          The unit of thickness. Can be one of "ang", "nm", "um", "mm", or "cm"
 
       Returns
       -------
       None
+
 
 
 

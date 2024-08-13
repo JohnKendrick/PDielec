@@ -286,21 +286,20 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">AbinitOutputReader module</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;AbinitOutputReader module.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">angs2bohr</span><span class="p">,</span> <span class="n">atomic_number_to_element</span><span class="p">,</span> <span class="n">hartree2ev</span>
-<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 
 
 <div class="viewcode-block" id="AbinitOutputReader"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader">[docs]</a><span class="k">class</span> <span class="nc">AbinitOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read the contents of a directory containing Abinit input and output files.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read the contents of a directory containing Abinit input and output files.</span>
 
 <span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
 
@@ -321,11 +320,11 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be defined or processed.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the AbinitOutputReader with given filenames.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the AbinitOutputReader with given filenames.</span>
 
 <span class="sd">        This method initializes an instance of the class, setting up preliminary attributes and conditions for further operations on Abinit output files.</span>
 
@@ -336,14 +335,13 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Abinit output files&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Abinit output files&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_acell</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_charges</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Define the strings to be used for searching and Read the Abinit file names</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the strings to be used for searching and Read the Abinit file names.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -352,37 +350,37 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Define the search keys to be looked for in the files</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># Empty the dictionary matching phrases</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;dynamical&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  Dynamical matrix,&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dynamical</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;bornCharges&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  Effective charges,&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;epsilon&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  Dielectric tensor,&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_epsilon</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;masses&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;              amu &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_masses</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;nions&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;            natom &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_natom</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;lattice&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;            rprim &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;xred&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;             xred &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_xred</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;typat&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;            typat &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_typat</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;ntypat&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;           ntypat &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ntypat</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;acell&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;            acell &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_acell</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;nkpt&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;             nkpt &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoints</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;band&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;            nband &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_band</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;band1&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;            nband1 &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_band</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;occupancy&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;              occ &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_occupancy</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;occupancy1&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;              occ1 &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_occupancy</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;ecut&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^ *ecut &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy_cutoff</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;kptrlatt&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;         kptrlatt &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoint_grid</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;electrons&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  fully or partial&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_electrons</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;-Cartesian.*GPa&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pressure</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;znucl&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^  *znucl &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_znucl</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;totalenergy&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^  *Total energy &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_total_energy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;dynamical&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  Dynamical matrix,&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dynamical</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;bornCharges&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  Effective charges,&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;epsilon&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  Dielectric tensor,&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_epsilon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;masses&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;              amu &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_masses</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nions&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;            natom &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_natom</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;            rprim &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;xred&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;             xred &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_xred</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;typat&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;            typat &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_typat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ntypat&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;           ntypat &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ntypat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;acell&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;            acell &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_acell</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nkpt&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;             nkpt &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;            nband &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_band</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;band1&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;            nband1 &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_band</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;occupancy&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;              occ &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_occupancy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;occupancy1&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;              occ1 &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_occupancy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ecut&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^ *ecut &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy_cutoff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;kptrlatt&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;         kptrlatt &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoint_grid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;electrons&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  fully or partial&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_electrons</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;-Cartesian.*GPa&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pressure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;znucl&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^  *znucl &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_znucl</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;totalenergy&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^  *Total energy &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_total_energy</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_total_energy"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_total_energy">[docs]</a>    <span class="k">def</span> <span class="nf">_read_total_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and store total energy values from a line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and store total energy values from a line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -392,14 +390,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span> <span class="o">*</span> <span class="n">hartree2ev</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span> <span class="o">*</span> <span class="n">hartree2ev</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_znucl"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_znucl">[docs]</a>    <span class="k">def</span> <span class="nf">_read_znucl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse and store atomic species information from a line input.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and store atomic species information from a line input.</span>
 
 <span class="sd">        This method extracts atomic species from a given line, converts them to </span>
 <span class="sd">        their element representation using their atomic numbers, and stores them </span>
@@ -425,6 +423,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        atomic_number_to_element : Dictionary mapping atomic numbers to element symbols.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]:</span>
@@ -434,8 +433,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_band"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_band">[docs]</a>    <span class="k">def</span> <span class="nf">_read_band</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the number of bands from a line and update the band count.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the number of bands from a line and update the band count.</span>
 
 <span class="sd">        This private method parses a given line to extract the number of bands</span>
 <span class="sd">        and updates the `nbands` attribute of the object accordingly.</span>
@@ -449,13 +447,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">nbands</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_occupancy"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_occupancy">[docs]</a>    <span class="k">def</span> <span class="nf">_read_occupancy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and calculate the total occupancy from a line or lines in a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and calculate the total occupancy from a line or lines in a file.</span>
 
 <span class="sd">        This method reads occupancies from a given line, and if necessary, continues reading the next lines from the file until it gathers occupancies equal to the number of bands (`self.nbands`). It then calculates the sum of these occupancies and updates the total number of electrons.</span>
 
@@ -482,6 +480,7 @@
 <span class="sd">        -----</span>
 <span class="sd">        - This method modifies the state of the object by setting `self.electrons` based on the read occupancies.</span>
 <span class="sd">        - It implicitly relies on `self.nbands` to know how many occupancy values need to be read.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">occs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">occupancies</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
@@ -495,8 +494,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_pressure"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_pressure">[docs]</a>    <span class="k">def</span> <span class="nf">_read_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and update the pressure attribute from a line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and update the pressure attribute from a line of text.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -516,8 +514,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_electrons"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_electrons">[docs]</a>    <span class="k">def</span> <span class="nf">_read_electrons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and set the number of electrons from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the number of electrons from a given line.</span>
 
 <span class="sd">        This method sets the number of electrons for the object based on the string input. It expects the string to be formatted in a specific way where the seventh item (index 6, as indexing is zero-based) when split by whitespace, is convertible to float and represents the number of electrons.</span>
 
@@ -533,13 +530,13 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method modifies the object&#39;s state by setting the &#39;electrons&#39; attribute.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_kpoint_grid"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_kpoint_grid">[docs]</a>    <span class="k">def</span> <span class="nf">_read_kpoint_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse and set the k-point grid from a given line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and set the k-point grid from a given line of text.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -556,13 +553,13 @@
 <span class="sd">        This function is intended to be used internally within its class.</span>
 <span class="sd">        It reads a line of text, extracts integers from specific positions,</span>
 <span class="sd">        and sets them as the k-point grid dimensions for the instance.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">9</span><span class="p">])</span> <span class="p">]</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_kpoints"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_kpoints">[docs]</a>    <span class="k">def</span> <span class="nf">_read_kpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and store the k-points from a line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and store the k-points from a line of text.</span>
 
 <span class="sd">        This method processes a line of text to extract the number of k-points</span>
 <span class="sd">        and stores it in the instance variable `kpoints`.</span>
@@ -582,13 +579,13 @@
 <span class="sd">        -----</span>
 <span class="sd">        The method does not return any value but updates the instance variable</span>
 <span class="sd">        `kpoints` with the integer value of the k-points extracted from the input line.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_energy_cutoff"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_energy_cutoff">[docs]</a>    <span class="k">def</span> <span class="nf">_read_energy_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Process and update the energy cutoff value from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process and update the energy cutoff value from a given line.</span>
 
 <span class="sd">        This function reads a line containing energy information, converts the energy value from Hartree to electron volts (eV), and updates the object&#39;s energy_cutoff attribute accordingly.</span>
 
@@ -606,8 +603,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_acell"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_acell">[docs]</a>    <span class="k">def</span> <span class="nf">_read_acell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and convert cell parameters from bohr to Ångström.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and convert cell parameters from bohr to Ångström.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -618,13 +614,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">            This function does not return a value but updates the `_acell` attribute of the object.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">_acell</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">angs2bohr</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]]</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_ntypat"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_ntypat">[docs]</a>    <span class="k">def</span> <span class="nf">_read_ntypat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and set the number of species from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the number of species from a given line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -636,14 +632,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_typat"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_typat">[docs]</a>    <span class="k">def</span> <span class="nf">_read_typat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="c1"># typat occurs last in the list of data items we need from the output file</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Process and read atom type patterns from a line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process and read atom type patterns from a line of text.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -667,6 +663,7 @@
 <span class="sd">        species_list : list of str, optional</span>
 <span class="sd">            A list of species names corresponding to the atom types if the species attribute is set. This</span>
 <span class="sd">            list is used to assign element names to the unit cells.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">masses</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)]</span>
@@ -680,8 +677,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_epsilon"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">_read_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read zero frequency optical permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read zero frequency optical permittivity.</span>
 
 <span class="sd">        Parse epsilon related data, and populates the `zerof_optical_dielectric` array</span>
 <span class="sd">        based on the read data. </span>
@@ -705,11 +701,12 @@
 
 <span class="sd">        zerof_optical_dielectric : An attribute, typically a 2D list or an array, that this</span>
 <span class="sd">                                   method updates based on the data read from the file.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">nlines</span> <span class="o">=</span> <span class="mi">9</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
             <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">linea</span><span class="p">:</span>
                 <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -719,8 +716,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_natom"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_natom">[docs]</a>    <span class="k">def</span> <span class="nf">_read_natom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads and processes the number of atoms from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process the number of atoms from a given line.</span>
 
 <span class="sd">        This method reads the number of atoms from a given line of text, sets the object&#39;s &#39;nions&#39; attribute to this number, and initializes the &#39;_charges&#39; attribute to a zero array with shape `(nions, 3, 3)`. This method does not return any value.</span>
 
@@ -736,6 +732,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        numpy.zeros : Used to initialize the &#39;_charges&#39; attribute.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="c1"># We can only create this once we know the number of ions</span>
@@ -743,8 +740,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_masses"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_masses">[docs]</a>    <span class="k">def</span> <span class="nf">_read_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse and save masses from a given line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and save masses from a given line of text.</span>
 
 <span class="sd">        Extracts and converts to float each mass value from a string,</span>
 <span class="sd">        excluding the first token, and saves them into `masses_per_type`.</span>
@@ -757,14 +753,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]]</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_dynamical"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_dynamical">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dynamical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="c1"># Read the dynamical matrix</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and populate the Hessian matrix from a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and populate the Hessian matrix from a file.</span>
 
 <span class="sd">        This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the Hessian matrix from these data. </span>
 
@@ -789,10 +785,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">nmodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="o">*</span><span class="mi">3</span>
         <span class="n">hessian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nmodes</span><span class="p">,</span> <span class="n">nmodes</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">nlines</span> <span class="o">=</span> <span class="n">nmodes</span><span class="o">*</span><span class="n">nmodes</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
             <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">linea</span><span class="p">:</span>
                 <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -809,8 +805,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_born_charges"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_born_charges">[docs]</a>    <span class="k">def</span> <span class="nf">_read_born_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the born charges from the output file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the born charges from the output file.</span>
 
 <span class="sd">        Each row of the output refers to a given field direction.</span>
 <span class="sd">        Each column in the row refers to the atomic displacement,</span>
@@ -831,12 +826,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            A 2D array where each row represents a field direction and each column represents an atomic displacement in the x, y, and z directions.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="c1">#  The charges are calculated in two ways, we take the mean of the phonon and the field</span>
         <span class="n">nlines</span> <span class="o">=</span> <span class="mi">9</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
             <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">linea</span><span class="p">:</span>
                 <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -860,8 +856,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AbinitOutputReader._read_xred"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_xred">[docs]</a>    <span class="k">def</span> <span class="nf">_read_xred</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the fractional coordinates from a file and update the last unit cell&#39;s fractional coordinates and element names.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the fractional coordinates from a file and update the last unit cell&#39;s fractional coordinates and element names.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -892,7 +887,7 @@
         <span class="n">linea</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">fractional</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">fractional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">linea</span> <span class="p">]</span> <span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="n">fractional</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">linea</span> <span class="p">]</span> <span class="p">)</span>
         <span class="c1"># end for i</span>
@@ -904,8 +899,7 @@
 
 
 <div class="viewcode-block" id="AbinitOutputReader._read_lattice_vectors"><a class="viewcode-back" href="../../autoapi/PDielec/AbinitOutputReader/index.html#PDielec.AbinitOutputReader.AbinitOutputReader._read_lattice_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_lattice_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read lattice vectors from a line of a file and update the object state.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read lattice vectors from a line of a file and update the object state.</span>
 
 <span class="sd">        Reads three lines starting from the given line from the file associated with the object&#39;s file descriptor, interprets them as lattice vectors, scales them according to the object&#39;s _acell attribute, and updates the object by appending a new `UnitCell` to its `unit_cells` list and updating the `ncells` and `volume` attributes.</span>
 
@@ -929,6 +923,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its constructor.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">linea</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">avector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">linea</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">linea</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">linea</span><span class="p">[</span><span class="mi">3</span><span class="p">])]</span>
@@ -939,9 +934,9 @@
         <span class="n">avector</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">avector</span><span class="p">]</span>
         <span class="n">bvector</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acell</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">bvector</span><span class="p">]</span>
         <span class="n">cvector</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acell</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cvector</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="k">return</span></div></div>
 </pre></div>
         </article>

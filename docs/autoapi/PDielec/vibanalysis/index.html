@@ -331,10 +331,10 @@ Full details of the options available can be viewed at <a class="reference exter
 <td><p>Returns amplitude (optnialy in degs) for the valence angle formed by</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.vibanalysis.animateIC" title="PDielec.vibanalysis.animateIC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">animateIC</span></code></a>(tfn, s, m[, nsteps, damp])</p></td>
-<td><p>displaces geo over internal coordinate m and punches a xyz file tfn</p></td>
+<td><p>Displaces geo over internal coordinate m and punches a xyz file tfn</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.vibanalysis.animateMode" title="PDielec.vibanalysis.animateMode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">animateMode</span></code></a>(tfn, s, m[, nsteps, damp])</p></td>
-<td><p>displaces geo over vibrational displacement m and punches a xyz file tfn</p></td>
+<td><p>Displaces geo over vibrational displacement m and punches a xyz file tfn</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.vibanalysis.bondLength" title="PDielec.vibanalysis.bondLength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bondLength</span></code></a>(geo, bl)</p></td>
 <td><p>Returns distance between atoms bl[1] and bl[0]</p></td>
@@ -346,7 +346,7 @@ Full details of the options available can be viewed at <a class="reference exter
 <td><p>Automatically identifies internal coordinates using</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.vibanalysis.modeStr" title="PDielec.vibanalysis.modeStr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modeStr</span></code></a>(mode, symbs)</p></td>
-<td><p>returns a formatted string describing mode</p></td>
+<td><p>Returns a formatted string describing mode</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.vibanalysis.oopAmp" title="PDielec.vibanalysis.oopAmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oopAmp</span></code></a>(geo, al[, deg])</p></td>
 <td><p>Returns amplitude (optnialy in degs) for the out-of-plane angle formed by</p></td>
@@ -570,13 +570,13 @@ the atoms in al, with al[1] being the apex (numbering starts at 0).</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.animateIC">
 <span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">animateIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#animateIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.animateIC" title="Permalink to this definition">#</a></dt>
-<dd><p>displaces geo over internal coordinate m and punches a xyz file tfn</p>
+<dd><p>Displaces geo over internal coordinate m and punches a xyz file tfn</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.animateMode">
 <span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">animateMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#animateMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.animateMode" title="Permalink to this definition">#</a></dt>
-<dd><p>displaces geo over vibrational displacement m and punches a xyz file tfn</p>
+<dd><p>Displaces geo over vibrational displacement m and punches a xyz file tfn</p>
 </dd></dl>
 
 <dl class="py function">
@@ -602,7 +602,7 @@ Wilson’s S matrix for the specified geometry</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.modeStr">
 <span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">modeStr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#modeStr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.modeStr" title="Permalink to this definition">#</a></dt>
-<dd><p>returns a formatted string describing mode</p>
+<dd><p>Returns a formatted string describing mode</p>
 </dd></dl>
 
 <dl class="py function">

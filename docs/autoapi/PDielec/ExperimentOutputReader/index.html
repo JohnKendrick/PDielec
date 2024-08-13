@@ -324,7 +324,10 @@
 <dd><p>Read in a full constant dielectric tensor 3 values on each line.</p>
 <section id="id1">
 <h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>Line to be read (not used)</p>
+</dd>
+</dl>
 </section>
 <section id="returns">
 <h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
@@ -381,11 +384,14 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors">
 <span class="sig-name descname"><span class="pre">_read_cpk_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_cpk_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors" title="Permalink to this definition">#</a></dt>
-<dd><p>Process a cpk input file with cell information</p>
+<dd><p>Process a cpk input file with cell information.</p>
 <p>The lattice vectors are assumed to be in Angstrom</p>
 <section id="id4">
 <h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>Line to be processed (not used)</p>
+</dd>
+</dl>
 </section>
 <section id="id5">
 <h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
@@ -399,7 +405,10 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <dd><p>Read in the drude_lorentz model parameters.</p>
 <section id="id6">
 <h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>line to be read</p>
+</dd>
+</dl>
 </section>
 <section id="id7">
 <h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
@@ -427,7 +436,10 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <p>There is a separator between each diagonal contribution to the permittivity.</p>
 <section id="id9">
 <h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>Line to be processed</p>
+</dd>
+</dl>
 </section>
 <section id="id10">
 <h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
@@ -496,7 +508,7 @@ After that, data lines include mode frequencies and corresponding contributions.
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies">
 <span class="sig-name descname"><span class="pre">_read_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads frequencies and oscillator strengths from a line and appends them to the object’s attributes.</p>
+<dd><p>Read frequencies and oscillator strengths from a line and append them to the object’s attributes.</p>
 <section id="id16">
 <h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -528,7 +540,10 @@ is used to convert the scalar strength values into tensor form, which is not det
 <p>Only a single permittivity is given (real &amp; imaginary) which is taken to be isotropic</p>
 <section id="id19">
 <h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>Line to be read (not used)</p>
+</dd>
+</dl>
 </section>
 <section id="id20">
 <h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
@@ -543,7 +558,10 @@ is used to convert the scalar strength values into tensor form, which is not det
 <p>Three permittivities are given from the diagonal components of the tensor</p>
 <section id="id21">
 <h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>Line to be read (not used)</p>
+</dd>
+</dl>
 </section>
 <section id="id22">
 <h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
@@ -558,7 +576,10 @@ is used to convert the scalar strength values into tensor form, which is not det
 <p>This is a full 6 parameter permittivity matrix</p>
 <section id="id23">
 <h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>Line to be read</p>
+</dd>
+</dl>
 </section>
 <section id="id24">
 <h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
@@ -569,7 +590,7 @@ is used to convert the scalar strength values into tensor form, which is not det
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors">
 <span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.</p>
+<dd><p>Read and process lattice vectors from an input line, then updates internal structures with the new unit cell.</p>
 <p>This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object’s list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
 The lattice vectors are assumed to be in Angstrom</p>
 <section id="id25">
@@ -688,7 +709,7 @@ if applicable, updates the <cite>CrystalPermittivity</cite> object’s epsilon i
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes">
 <span class="sig-name descname"><span class="pre">calculate_mass_weighted_normal_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader.calculate_mass_weighted_normal_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the mass weight normal modes</p>
+<dd><p>Calculate the mass weight normal modes.</p>
 <section id="id40">
 <h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>None</p>

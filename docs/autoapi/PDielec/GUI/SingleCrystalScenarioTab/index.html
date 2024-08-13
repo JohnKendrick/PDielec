@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.SingleCrystalScenarioTab">
 <span id="pdielec-gui-singlecrystalscenariotab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.SingleCrystalScenarioTab" title="PDielec.GUI.SingleCrystalScenarioTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.SingleCrystalScenarioTab" title="Permalink to this heading">#</a></h1>
-<p>SingleCrystalScenarioTab module</p>
+<p>SingleCrystalScenarioTab module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -296,7 +296,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations" title="PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_single_crystal_equations</span></code></a>(layers, mode, theta, ...)</p></td>
-<td><p>This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.</p></td>
+<td><p>Solve single crystal equations, system is a GTM system.</p></td>
 </tr>
 </tbody>
 </table>
@@ -436,10 +436,6 @@
 </dd>
 <dt>on_print_button_clicked</dt><dd><p>Handle a print button click</p>
 </dd>
-<dt>on_slice_thickness_sb_changed</dt><dd><p>Handle a change to the slice thickness</p>
-</dd>
-<dt>on_slice_thickness_unit_cb_activated</dt><dd><p>Handle a change the slice thickess unit</p>
-</dd>
 <dt>on_thickness_units_cb_activated</dt><dd><p>Activate the thickness units combobox</p>
 </dd>
 <dt>openDB_button_clicked</dt><dd><p>Handle a click on the opend database button</p>
@@ -462,8 +458,6 @@
 </dd>
 <dt>settings2Layers</dt><dd><p>Read the settings dictionary and create the necessary layers</p>
 </dd>
-<dt>sliceThicknessWidget</dt><dd><p>A widget to the the slice thickness</p>
-</dd>
 <dt>smoothingWidget</dt><dd><p>A widget to handle the smoothing information</p>
 </dd>
 </dl>
@@ -484,9 +478,8 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator">
-<span class="sig-name descname"><span class="pre">average_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliceThickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.average_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the incoherent component of light reflectance and transmission
-by averaging over the phase shift.</p>
+<span class="sig-name descname"><span class="pre">average_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.average_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the incoherent component of light reflectance and transmission by averaging over the phase shift.</p>
 <section id="id3">
 <h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -501,8 +494,6 @@ by averaging over the phase shift.</p>
 <dt>psi<span class="classifier">float</span></dt><dd><p>The angle psi</p>
 </dd>
 <dt>angleOfIncidence<span class="classifier">float</span></dt><dd><p>The angle incidence</p>
-</dd>
-<dt>sliceThickness<span class="classifier">float</span></dt><dd><p>The slice thickness</p>
 </dd>
 <dt>exponent_threshold: float</dt><dd><p>The exponent threshold</p>
 </dd>
@@ -528,7 +519,7 @@ by averaging over the phase shift.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculate" title="Permalink to this definition">#</a></dt>
-<dd><p>Performs simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.</p>
+<dd><p>Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.</p>
 <section id="id5">
 <h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -542,14 +533,14 @@ by averaging over the phase shift.</p>
 </section>
 <section id="notes">
 <h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
-<p>This method updates the object’s state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence and slice thickness. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a <cite>debugger</cite>.</p>
+<p>This method updates the object’s state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a <cite>debugger</cite>.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator">
-<span class="sig-name descname"><span class="pre">coherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliceThickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.coherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the coherent component of light reflectance and transmission.</p>
+<span class="sig-name descname"><span class="pre">coherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.coherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the coherent component of light reflectance and transmission.</p>
 <section id="id7">
 <h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -564,8 +555,6 @@ by averaging over the phase shift.</p>
 <dt>psi<span class="classifier">float</span></dt><dd><p>The angle psi</p>
 </dd>
 <dt>angleOfIncidence<span class="classifier">float</span></dt><dd><p>The angle incidence</p>
-</dd>
-<dt>sliceThickness<span class="classifier">float</span></dt><dd><p>The slice thickness</p>
 </dd>
 <dt>exponent_threshold: float</dt><dd><p>The exponent threshold</p>
 </dd>
@@ -599,7 +588,7 @@ by averaging over the phase shift.</p>
 </dd>
 <dt>layerIndex<span class="classifier">int</span></dt><dd><p>Its index in the list.</p>
 </dd>
-<dt>nLayers<span class="classifier">type</span></dt><dd><p>The number of layers in the list.</p>
+<dt>nLayers<span class="classifier">int</span></dt><dd><p>The number of layers in the list.</p>
 </dd>
 </dl>
 </section>
@@ -616,11 +605,11 @@ by averaging over the phase shift.</p>
 <section id="id11">
 <h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>x<span class="classifier">any</span></dt><dd><p>A dummy variable</p>
-</dd>
 <dt>layer<span class="classifier">layer object</span></dt><dd><p>the layer to be deleted</p>
 </dd>
 <dt>layerIndex<span class="classifier">int</span></dt><dd><p>index of the layer to be deleted</p>
+</dd>
+<dt>nLayers<span class="classifier">int</span></dt><dd><p>The number of layers</p>
 </dd>
 </dl>
 </section>
@@ -637,11 +626,11 @@ by averaging over the phase shift.</p>
 <section id="id13">
 <h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>x<span class="classifier">any</span></dt><dd><p>A dummy variable</p>
-</dd>
 <dt>layer<span class="classifier">layer object</span></dt><dd><p>the layer to be deleted</p>
 </dd>
 <dt>layerIndex<span class="classifier">int</span></dt><dd><p>index of the layer to be deleted</p>
+</dd>
+<dt>nLayers<span class="classifier">int</span></dt><dd><p>The number of layers</p>
 </dd>
 </dl>
 </section>
@@ -658,11 +647,11 @@ by averaging over the phase shift.</p>
 <section id="id15">
 <h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>x<span class="classifier">any</span></dt><dd><p>A dummy variable</p>
-</dd>
 <dt>layer<span class="classifier">layer object</span></dt><dd><p>the layer to be deleted</p>
 </dd>
 <dt>layerIndex<span class="classifier">int</span></dt><dd><p>index of the layer to be deleted</p>
+</dd>
+<dt>nLayers<span class="classifier">int</span></dt><dd><p>The number of layers</p>
 </dd>
 </dl>
 </section>
@@ -711,7 +700,7 @@ by averaging over the phase shift.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.generateLayerSettings">
 <span class="sig-name descname"><span class="pre">generateLayerSettings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.generateLayerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.generateLayerSettings" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate the settings dictionary for every layer</p>
+<dd><p>Generate the settings dictionary for every layer.</p>
 <section id="id21">
 <h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -773,7 +762,7 @@ by averaging over the phase shift.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_result">
 <span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_result" title="Permalink to this definition">#</a></dt>
-<dd><p>Return a particular result</p>
+<dd><p>Return a particular result.</p>
 <section id="id27">
 <h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -800,7 +789,7 @@ by averaging over the phase shift.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results">
 <span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the results of the single crystal calculation</p>
+<dd><p>Return the results of the single crystal calculation.</p>
 <p>If a refresh has been requested it is performed before the calculate method is called.</p>
 <section id="id29">
 <h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
@@ -819,7 +808,7 @@ by averaging over the phase shift.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.globalAzimuthalWidget">
 <span class="sig-name descname"><span class="pre">globalAzimuthalWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.globalAzimuthalWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.globalAzimuthalWidget" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a global azimuthal angle widget.</p>
-<p>This widget is shown in the main single crystal scenarion tab.
+<p>This widget is shown in the main single crystal scenario tab.
 Any change in this angle affects all layers.</p>
 <section id="id31">
 <h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
@@ -916,7 +905,7 @@ The combo box is initialized with a default item for creating a new layer, follo
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed">
 <span class="sig-name descname"><span class="pre">on_angle_of_incidence_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the ‘Angle of incidence’ setting and marks refresh as required upon a change in the angle of incidence spinbox value.</p>
+<dd><p>Update the ‘Angle of incidence’ setting and mark a refresh as required upon a change in the angle of incidence spinbox value.</p>
 <p>A refresh is requested</p>
 <section id="id42">
 <h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
@@ -983,7 +972,7 @@ The combo box is initialized with a default item for creating a new layer, follo
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed">
 <span class="sig-name descname"><span class="pre">on_global_azimuthal_angle_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the change in global azimuthal angle setting.</p>
+<dd><p>Handle the change in global azimuthal angle setting.</p>
 <p>This method updates the ‘Global azimuthal angle’ in the settings
 based on the given value and marks a refresh as required.</p>
 <section id="id48">
@@ -1002,7 +991,7 @@ based on the given value and marks a refresh as required.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed">
 <span class="sig-name descname"><span class="pre">on_hkl_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hkorl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_hkl_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle a change in h, k, or l</p>
+<dd><p>Handle a change in h, k, or l.</p>
 <p>The h, k and l parameters determine the surface of the film
 - determine the value of h, k or l
 - set the layer’s surface
@@ -1032,7 +1021,10 @@ based on the given value and marks a refresh as required.</p>
 <p>An empty routine as changes are handled by other routines</p>
 <section id="id52">
 <h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
-<p>item : the item changed</p>
+<dl class="simple">
+<dt>item<span class="classifier">the item changed</span></dt><dd><p>The item which has changed</p>
+</dd>
+</dl>
 </section>
 <section id="id53">
 <h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
@@ -1094,7 +1086,7 @@ Index 0 corresponds to the ‘Transfer matrix’ mode, while index 1 corresponds
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_newLayer_cb_activated">
 <span class="sig-name descname"><span class="pre">on_newLayer_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_newLayer_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_newLayer_cb_activated" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle a new layer button click</p>
+<dd><p>Handle a new layer button click.</p>
 <p>Based on the index chosen a new material is created and added to the list of layers.
 The settings dictionary is updated and a refresh is forced.</p>
 <section id="id59">
@@ -1113,7 +1105,7 @@ The settings dictionary is updated and a refresh is forced.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_option_cb_activated">
 <span class="sig-name descname"><span class="pre">on_option_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_option_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_option_cb_activated" title="Permalink to this definition">#</a></dt>
-<dd><p>The incoherence option combo box has been activated.</p>
+<dd><p>Activate the incoherence option combob.</p>
 <ul class="simple">
 <li><p>The layer’s incoherent options are changed</p></li>
 <li><p>The number of calculations requested is updated</p></li>
@@ -1138,7 +1130,7 @@ The settings dictionary is updated and a refresh is forced.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed">
 <span class="sig-name descname"><span class="pre">on_partially_incoherent_kernel_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the change in the partially incoherent kernel spinbox value.</p>
+<dd><p>Handle the change in the partially incoherent kernel spinbox value.</p>
 <section id="id63">
 <h5>Parameters<a class="headerlink" href="#id63" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1155,7 +1147,7 @@ The settings dictionary is updated and a refresh is forced.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed">
 <span class="sig-name descname"><span class="pre">on_partially_incoherent_polynomial_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles changes to the partially incoherent polynomial spinbox value.</p>
+<dd><p>Handle changes to the partially incoherent polynomial spinbox value.</p>
 <p>This method updates the relevant setting based on the new value and marks
 the need for refreshment. It also logs the change using the debugger.</p>
 <section id="id65">
@@ -1174,7 +1166,7 @@ the need for refreshment. It also logs the change using the debugger.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed">
 <span class="sig-name descname"><span class="pre">on_partially_incoherent_samples_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the change in partially incoherent samples setting.</p>
+<dd><p>Handle the change in partially incoherent samples setting.</p>
 <section id="id67">
 <h5>Parameters<a class="headerlink" href="#id67" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1209,7 +1201,7 @@ the need for refreshment. It also logs the change using the debugger.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked">
 <span class="sig-name descname"><span class="pre">on_print_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_print_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked" title="Permalink to this definition">#</a></dt>
-<dd><p>Print the permittivity for the layer</p>
+<dd><p>Print the permittivity for the layer.</p>
 <p>The print button is only visible if in debug mode.
 The permittivity is printed to a csv file with a name containing the material involved.</p>
 <section id="id71">
@@ -1228,13 +1220,20 @@ The permittivity is printed to a csv file with a name containing the material in
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_slice_thickness_sb_changed">
-<span class="sig-name descname"><span class="pre">on_slice_thickness_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_slice_thickness_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_slice_thickness_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the ‘Slice thickness’ setting based on a new value and marks refresh as required.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated">
+<span class="sig-name descname"><span class="pre">on_thickness_units_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_thickness_units_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle the activation of a thickness unit option in a combo box.</p>
+<ul class="simple">
+<li><p>the thickness unit of this layer is changed</p></li>
+<li><p>the settings dictionary is updated</p></li>
+<li><p>a refresh is requested</p></li>
+</ul>
 <section id="id73">
 <h5>Parameters<a class="headerlink" href="#id73" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>value<span class="classifier">int or float</span></dt><dd><p>The new value for the slice thickness setting.</p>
+<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected thickness unit in the combo box.</p>
+</dd>
+<dt>layer<span class="classifier">a layer object</span></dt><dd><p>The layer object whose thickness unit is to be updated.</p>
 </dd>
 </dl>
 </section>
@@ -1245,18 +1244,13 @@ The permittivity is printed to a csv file with a name containing the material in
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_slice_thickness_unit_cb_activated">
-<span class="sig-name descname"><span class="pre">on_slice_thickness_unit_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_slice_thickness_unit_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_slice_thickness_unit_cb_activated" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the activation of a slice thickness unit selection.</p>
-<p>This method updates the settings to reflect the newly selected
-slice thickness unit based on its index in the thickness_units list.
-It also flags that a refresh is necessary.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked">
+<span class="sig-name descname"><span class="pre">openDB_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.openDB_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked" title="Permalink to this definition">#</a></dt>
+<dd><p>Open a new materials’ database.</p>
+<p>After the database is opened a refresh is requested.</p>
 <section id="id75">
 <h5>Parameters<a class="headerlink" href="#id75" title="Permalink to this heading">#</a></h5>
-<dl class="simple">
-<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected unit in the thickness_units list.</p>
-</dd>
-</dl>
+<p>None</p>
 </section>
 <section id="id76">
 <h5>Returns<a class="headerlink" href="#id76" title="Permalink to this heading">#</a></h5>
@@ -1265,22 +1259,12 @@ It also flags that a refresh is necessary.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated">
-<span class="sig-name descname"><span class="pre">on_thickness_units_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_thickness_units_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the activation of a thickness unit option in a combo box.</p>
-<ul class="simple">
-<li><p>the thickness unit of this layer is changed</p></li>
-<li><p>the settings dictionary is updated</p></li>
-<li><p>a refresh is requested</p></li>
-</ul>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget">
+<span class="sig-name descname"><span class="pre">partialIncoherenceWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partialIncoherenceWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a partial incoherence widget.</p>
 <section id="id77">
 <h5>Parameters<a class="headerlink" href="#id77" title="Permalink to this heading">#</a></h5>
-<dl class="simple">
-<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected thickness unit in the combo box.</p>
-</dd>
-<dt>layer<span class="classifier">a layer object</span></dt><dd><p>The layer object whose thickness unit is to be updated.</p>
-</dd>
-</dl>
+<p>None</p>
 </section>
 <section id="id78">
 <h5>Returns<a class="headerlink" href="#id78" title="Permalink to this heading">#</a></h5>
@@ -1289,41 +1273,11 @@ It also flags that a refresh is necessary.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked">
-<span class="sig-name descname"><span class="pre">openDB_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.openDB_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked" title="Permalink to this definition">#</a></dt>
-<dd><p>Open a new materials’ database.</p>
-<p>After the database is opened a refresh is requested.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator">
+<span class="sig-name descname"><span class="pre">partially_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partially_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the incoherent component of light reflectance and transmission by sampling the path length in the incident medium.</p>
 <section id="id79">
 <h5>Parameters<a class="headerlink" href="#id79" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
-<section id="id80">
-<h5>Returns<a class="headerlink" href="#id80" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget">
-<span class="sig-name descname"><span class="pre">partialIncoherenceWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partialIncoherenceWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a partial incoherence widget</p>
-<section id="id81">
-<h5>Parameters<a class="headerlink" href="#id81" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
-<section id="id82">
-<h5>Returns<a class="headerlink" href="#id82" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator">
-<span class="sig-name descname"><span class="pre">partially_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliceThickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partially_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the incoherent component of light reflectance and transmission
-by sampling the path length in the incident medium.</p>
-<section id="id83">
-<h5>Parameters<a class="headerlink" href="#id83" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layers<span class="classifier">a list of layers</span></dt><dd><p>A list of layers</p>
 </dd>
@@ -1337,14 +1291,12 @@ by sampling the path length in the incident medium.</p>
 </dd>
 <dt>angleOfIncidence<span class="classifier">float</span></dt><dd><p>The angle incidence</p>
 </dd>
-<dt>sliceThickness<span class="classifier">float</span></dt><dd><p>The slice thickness</p>
-</dd>
 <dt>exponent_threshold: float</dt><dd><p>The exponent threshold</p>
 </dd>
 </dl>
 </section>
-<section id="id84">
-<h5>Returns<a class="headerlink" href="#id84" title="Permalink to this heading">#</a></h5>
+<section id="id80">
+<h5>Returns<a class="headerlink" href="#id80" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>A tuple of lists or nd.arrays</dt><dd><ul class="simple">
 <li><p>p_reflectance</p></li>
@@ -1364,19 +1316,19 @@ by sampling the path length in the incident medium.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.printLayerSettings">
 <span class="sig-name descname"><span class="pre">printLayerSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.printLayerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.printLayerSettings" title="Permalink to this definition">#</a></dt>
 <dd><p>Print the settings related to the layers.</p>
-<section id="id85">
-<h5>Parameters<a class="headerlink" href="#id85" title="Permalink to this heading">#</a></h5>
+<section id="id81">
+<h5>Parameters<a class="headerlink" href="#id81" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>message<span class="classifier">str</span></dt><dd><p>Message to be printed before the layer settings.</p>
 </dd>
 </dl>
 </section>
-<section id="id86">
-<h5>Returns<a class="headerlink" href="#id86" title="Permalink to this heading">#</a></h5>
+<section id="id82">
+<h5>Returns<a class="headerlink" href="#id82" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id87">
-<h5>Notes<a class="headerlink" href="#id87" title="Permalink to this heading">#</a></h5>
+<section id="id83">
+<h5>Notes<a class="headerlink" href="#id83" title="Permalink to this heading">#</a></h5>
 <p>This function prints the settings associated with layers, including material names, HKL values (Miller indices for the crystallographic planes), azimuthal angles, thicknesses with their units, flags indicating whether the layer is dielectric, and options for incoherent scattering, if applicable.</p>
 <p>This function does not return any value. It is primarily used for debugging or informative purposes to quickly display the current configuration of layer settings within a class that has <cite>settings</cite> as an attribute storing these properties.</p>
 </section>
@@ -1397,23 +1349,23 @@ The row is drawn using redrawLayerTableRow()</p>
 <p>Each row has a material name, a thickness (and unit), an h, k, l option and a toolbar
 to move or delete the layer in the list.
 Needed a separate routine for this as there are problems with the lambda code only keeping the last in a list.</p>
-<section id="id88">
-<h5>Parameters<a class="headerlink" href="#id88" title="Permalink to this heading">#</a></h5>
+<section id="id84">
+<h5>Parameters<a class="headerlink" href="#id84" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>sequenceNumber<span class="classifier">int</span></dt><dd><p>The sequence number of the layer in the list</p>
 </dd>
-<dt>Layer<span class="classifier">layer object</span></dt><dd><p>The layer itself</p>
+<dt>layer<span class="classifier">layer object</span></dt><dd><p>The layer itself</p>
 </dd>
 <dt>rowCount<span class="classifier">int</span></dt><dd><p>The row count</p>
 </dd>
 <dt>firstLayer<span class="classifier">bool</span></dt><dd><p>True if this is the first layer in the list</p>
 </dd>
-<dt>LastLayer<span class="classifier">bool</span></dt><dd><p>True if this is the last layer in the list</p>
+<dt>lastLayer<span class="classifier">bool</span></dt><dd><p>True if this is the last layer in the list</p>
 </dd>
 </dl>
 </section>
-<section id="id89">
-<h5>Returns<a class="headerlink" href="#id89" title="Permalink to this heading">#</a></h5>
+<section id="id85">
+<h5>Returns<a class="headerlink" href="#id85" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1427,15 +1379,15 @@ if a refresh is required or if a forceful refresh is requested. It then updates 
 settings, including material database, layer settings, calculation requirements, UI elements states,
 and more to reflect the current state. It also processes UI events to ensure the UI is responsive
 during the update.</p>
-<section id="id90">
-<h5>Parameters<a class="headerlink" href="#id90" title="Permalink to this heading">#</a></h5>
+<section id="id86">
+<h5>Parameters<a class="headerlink" href="#id86" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>A flag to force the refresh even if it’s not required. Default is False.</p>
 </dd>
 </dl>
 </section>
-<section id="id91">
-<h5>Returns<a class="headerlink" href="#id91" title="Permalink to this heading">#</a></h5>
+<section id="id87">
+<h5>Returns<a class="headerlink" href="#id87" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1446,12 +1398,12 @@ during the update.</p>
 <dd><p>Set and append a material name to the list of material names.</p>
 <p>This function retrieves the current list of material names from the database using
 <cite>self.DataBase.getSheetNames()</cite>, appends ‘Dielectric layer’ to the list, and returns the updated list.</p>
-<section id="id92">
-<h5>Parameters<a class="headerlink" href="#id92" title="Permalink to this heading">#</a></h5>
+<section id="id88">
+<h5>Parameters<a class="headerlink" href="#id88" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id93">
-<h5>Returns<a class="headerlink" href="#id93" title="Permalink to this heading">#</a></h5>
+<section id="id89">
+<h5>Returns<a class="headerlink" href="#id89" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>The list of material names including the appended default ‘Dielectric layer’.</p>
 </dd>
@@ -1465,12 +1417,12 @@ during the update.</p>
 <dd><p>Determine the number of calculations required.</p>
 <p>The routine first works out the number of layers needing phase averaging,
 then it looks at the number of partial incoherent calculations being performed.</p>
-<section id="id94">
-<h5>Parameters<a class="headerlink" href="#id94" title="Permalink to this heading">#</a></h5>
+<section id="id90">
+<h5>Parameters<a class="headerlink" href="#id90" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id95">
-<h5>Returns<a class="headerlink" href="#id95" title="Permalink to this heading">#</a></h5>
+<section id="id91">
+<h5>Returns<a class="headerlink" href="#id91" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1481,12 +1433,12 @@ then it looks at the number of partial incoherent calculations being performed.<
 <dd><p>Read the layer settings and generate a list of layers.</p>
 <p>This method reads all the entries in the settings dictionary
 to create a list of layers</p>
-<section id="id96">
-<h5>Parameters<a class="headerlink" href="#id96" title="Permalink to this heading">#</a></h5>
+<section id="id92">
+<h5>Parameters<a class="headerlink" href="#id92" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id97">
-<h5>Returns<a class="headerlink" href="#id97" title="Permalink to this heading">#</a></h5>
+<section id="id93">
+<h5>Returns<a class="headerlink" href="#id93" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>A list of layers generated from the layer settings.</p>
 </dd>
@@ -1495,33 +1447,15 @@ to create a list of layers</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.sliceThicknessWidget">
-<span class="sig-name descname"><span class="pre">sliceThicknessWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.sliceThicknessWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.sliceThicknessWidget" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a widget for setting slice thickness and its units.</p>
-<p>This method sets up a QSpinBox for specifying slice thickness in a range of 0 to 10000, with steps of 1 unit. It also sets up a QComboBox for selecting the unit of thickness (nm, um, mm, or cm). Both the spinbox and combobox values are initialized based on <cite>self.settings</cite>. The method arranges these widgets along with a descriptive label into a horizontal layout which is then returned.</p>
-<section id="id98">
-<h5>Parameters<a class="headerlink" href="#id98" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
-<section id="id99">
-<h5>Returns<a class="headerlink" href="#id99" title="Permalink to this heading">#</a></h5>
-<dl class="simple">
-<dt>tuple</dt><dd><p>A tuple containing a QLabel and QHBoxLayout. The QLabel describes the purpose of the slice thickness setting, and the QHBoxLayout contains the QSpinBox and QComboBox for adjusting the slice thickness and selecting its unit, respectively.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget">
 <span class="sig-name descname"><span class="pre">smoothingWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.smoothingWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a smoothing widget used by the partial incoherence method</p>
-<section id="id100">
-<h5>Parameters<a class="headerlink" href="#id100" title="Permalink to this heading">#</a></h5>
+<dd><p>Create a smoothing widget used by the partial incoherence method.</p>
+<section id="id94">
+<h5>Parameters<a class="headerlink" href="#id94" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id101">
-<h5>Returns<a class="headerlink" href="#id101" title="Permalink to this heading">#</a></h5>
+<section id="id95">
+<h5>Returns<a class="headerlink" href="#id95" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1531,10 +1465,10 @@ to create a list of layers</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">solve_single_crystal_equations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliceThickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#solve_single_crystal_equations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations" title="Permalink to this definition">#</a></dt>
-<dd><p>This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.</p>
-<section id="id102">
-<h4>Parameters<a class="headerlink" href="#id102" title="Permalink to this heading">#</a></h4>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">solve_single_crystal_equations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#solve_single_crystal_equations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations" title="Permalink to this definition">#</a></dt>
+<dd><p>Solve single crystal equations, system is a GTM system.</p>
+<section id="id96">
+<h4>Parameters<a class="headerlink" href="#id96" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>layers<span class="classifier">list</span></dt><dd><p>A list of material layers (their permittivity functions).</p>
 </dd>
@@ -1548,17 +1482,14 @@ to create a list of layers</p>
 </dd>
 <dt>angleOfIncidence<span class="classifier">float</span></dt><dd><p>The angle of incidence.</p>
 </dd>
-<dt>sliceThickness<span class="classifier">float</span></dt><dd><p>A thickness in meters, used to subdivide thicker films.
-If zero, then the full thickness film is used.</p>
-</dd>
 <dt>exponent_threshold<span class="classifier">float</span></dt><dd><p>The largest exponent allowed in the calculation of the propagation matrix.</p>
 </dd>
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency of the light in cm^-1.</p>
 </dd>
 </dl>
 </section>
-<section id="id103">
-<h4>Returns<a class="headerlink" href="#id103" title="Permalink to this heading">#</a></h4>
+<section id="id97">
+<h4>Returns<a class="headerlink" href="#id97" title="Permalink to this heading">#</a></h4>
 <blockquote>
 <div><dl class="simple">
 <dt>A tuple of :</dt><dd><ul class="simple">
@@ -1697,8 +1628,6 @@ If zero, then the full thickness film is used.</p>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.on_print_button_clicked()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_slice_thickness_sb_changed"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.on_slice_thickness_sb_changed()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_slice_thickness_unit_cb_activated"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.on_slice_thickness_unit_cb_activated()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.on_thickness_units_cb_activated()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.openDB_button_clicked()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.partialIncoherenceWidget()</span></code></a></li>
@@ -1710,7 +1639,6 @@ If zero, then the full thickness film is used.</p>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.setMaterialNames"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.setMaterialNames()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.set_noCalculationsRequired"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.set_noCalculationsRequired()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.settings2Layers"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.settings2Layers()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.sliceThicknessWidget"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.sliceThicknessWidget()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.smoothingWidget()</span></code></a></li>
 </ul>
 </li>

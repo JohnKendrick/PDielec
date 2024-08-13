@@ -275,8 +275,8 @@
         <article role="main">
           <section id="module-PDielec.GTMcore">
 <span id="pdielec-gtmcore"></span><h1><a class="reference internal" href="#module-PDielec.GTMcore" title="PDielec.GTMcore"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a><a class="headerlink" href="#module-PDielec.GTMcore" title="Permalink to this heading">#</a></h1>
-<p>This file is part of the pyGTM module.
-It has been heavily modified by John Kendrick for inclusion in the PDielec library
+<p>The pyGTM module.</p>
+<p>It has been heavily modified by John Kendrick for inclusion in the PDielec library
 Quite a lot has been removed as the fields spatial distribution was not needed
 Thanks to the authors of the original code for all their hard work</p>
 <p>This program is free software: you can redistribute it and/or modify
@@ -387,7 +387,7 @@ procedure (or the lack of thereoff)</p></li>
 <td><p>Define an incoherent layer using the thick slab approximation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GTMcore.Layer" title="PDielec.GTMcore.Layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Layer</span></code></a></p></td>
-<td><p>Layer class. An instance is a single layer:</p></td>
+<td><p>Layer class. An instance is a single layer.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GTMcore.SMatrix" title="PDielec.GTMcore.SMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SMatrix</span></code></a></p></td>
 <td><p>A class for storing and manipulating scattering matrices.</p></td>
@@ -417,13 +417,13 @@ procedure (or the lack of thereoff)</p></li>
 <td><p>Calculate the inverse of 2x2 complex matrix, M.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GTMcore.exact_inv_3x3" title="PDielec.GTMcore.exact_inv_3x3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exact_inv_3x3</span></code></a>(M)</p></td>
-<td><p>Calculate the inverse of a 3x3 complex matrix M</p></td>
+<td><p>Calculate the inverse of a 3x3 complex matrix M.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GTMcore.exact_inv_4x4" title="PDielec.GTMcore.exact_inv_4x4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exact_inv_4x4</span></code></a>(M)</p></td>
 <td><p>Compute the 'exact' inverse of a 4x4 matrix using the analytical result.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GTMcore.vacuum_eps" title="PDielec.GTMcore.vacuum_eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vacuum_eps</span></code></a>(f)</p></td>
-<td><p>Vacuum permittivity function</p></td>
+<td><p>Vacuum permittivity function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -457,7 +457,10 @@ However, it’s important to note that the definition of a scattering matrix use
 differs from that in the paper.</p>
 <section id="parameters">
 <h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
-<p>b : a pyGTM layer class</p>
+<dl class="simple">
+<dt>b<span class="classifier">a pyGTM layer class</span></dt><dd><p>The second layer for which the scattering matrix will be calculated</p>
+</dd>
+</dl>
 </section>
 <section id="returns">
 <h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
@@ -481,7 +484,7 @@ and any differences in definitions or approaches.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.IncoherentAveragePhaseLayer.calculate_propagation_exponents">
 <span class="sig-name descname"><span class="pre">calculate_propagation_exponents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#IncoherentAveragePhaseLayer.calculate_propagation_exponents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.IncoherentAveragePhaseLayer.calculate_propagation_exponents" title="Permalink to this definition">#</a></dt>
-<dd><p>Routine to calculate the matrix Ki (or Pi depending on the paper).</p>
+<dd><p>Calculate the matrix Ki (or Pi depending on the paper).</p>
 <p>A phase shift is included in the calculation.
 The phase shift can vary between 0 and <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
 <section id="id1">
@@ -516,7 +519,7 @@ The phase shift can vary between 0 and <span class="math notranslate nohighlight
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.IncoherentPhaseLayer.calculate_propagation_exponents">
 <span class="sig-name descname"><span class="pre">calculate_propagation_exponents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#IncoherentPhaseLayer.calculate_propagation_exponents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.IncoherentPhaseLayer.calculate_propagation_exponents" title="Permalink to this definition">#</a></dt>
-<dd><p>Routine to calculate the matrix Ki (or Pi) depending on the paper.</p>
+<dd><p>Calculate the matrix Ki (or Pi) depending on the paper.</p>
 <p>This routine is taken from Arteaga et al., Thin Solid Films 2014, 571, 701-705.
 The propagation matrix is suitable for incoherent films. In Passler, the ordering is:
 Arteaga:
@@ -571,7 +574,10 @@ However, it’s important to note that the definition of a scattering matrix use
 differs from that in the paper.</p>
 <section id="id7">
 <h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
-<p>b : pyGTM layer</p>
+<dl class="simple">
+<dt>b<span class="classifier">pyGTM layer</span></dt><dd><p>The second layer</p>
+</dd>
+</dl>
 </section>
 <section id="id8">
 <h4>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
@@ -584,7 +590,7 @@ differs from that in the paper.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">Layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">700</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Layer class. An instance is a single layer:</p>
+<dd><p>Layer class. An instance is a single layer.</p>
 <p>The inherited layer classes wich are used in PDielec are:</p>
 <blockquote>
 <div><ul class="simple">
@@ -633,7 +639,7 @@ Properties can be checked/changed dynamically using the corresponding get/set me
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.calculate_ai">
 <span class="sig-name descname"><span class="pre">calculate_ai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.calculate_ai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.calculate_ai" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate A_i</p>
+<dd><p>Calculate A_i.</p>
 <p>Boundary matrix <span class="math notranslate nohighlight">\(A_i\)</span> of the layer.</p>
 <section id="id11">
 <h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
@@ -647,7 +653,7 @@ Properties can be checked/changed dynamically using the corresponding get/set me
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.calculate_epsilon">
 <span class="sig-name descname"><span class="pre">calculate_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_in</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.calculate_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.calculate_epsilon" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the value of epsilon in the (rotated) lab frame.</p>
+<dd><p>Set the value of epsilon in the (rotated) lab frame.</p>
 <section id="id12">
 <h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -672,7 +678,7 @@ Modification by JK to allow the use of a full dielectric tensor.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.calculate_gamma">
 <span class="sig-name descname"><span class="pre">calculate_gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.calculate_gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.calculate_gamma" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the gamma matrix</p>
+<dd><p>Calculate the gamma matrix.</p>
 <section id="id15">
 <h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -712,7 +718,7 @@ using the angle of incidence and <cite>System.superstrate.epsilon[0,0]</cite> va
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.calculate_propagation_exponents">
 <span class="sig-name descname"><span class="pre">calculate_propagation_exponents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.calculate_propagation_exponents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.calculate_propagation_exponents" title="Permalink to this definition">#</a></dt>
-<dd><p>Routine to calculate the propagation exponents</p>
+<dd><p>Calculate the propagation exponents.</p>
 <section id="id20">
 <h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -725,7 +731,7 @@ using the angle of incidence and <cite>System.superstrate.epsilon[0,0]</cite> va
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.calculate_propagation_matrix">
 <span class="sig-name descname"><span class="pre">calculate_propagation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.calculate_propagation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.calculate_propagation_matrix" title="Permalink to this definition">#</a></dt>
-<dd><p>Routine to calculate the matrix Ki (or Pi depending on the paper)</p>
+<dd><p>Calculate the matrix Ki (or Pi depending on the paper).</p>
 <section id="id21">
 <h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -745,7 +751,7 @@ using the angle of incidence and <cite>System.superstrate.epsilon[0,0]</cite> va
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.calculate_q">
 <span class="sig-name descname"><span class="pre">calculate_q</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.calculate_q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.calculate_q" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the 4 out-of-plane wavevectors for the current layer.</p>
+<dd><p>Calculate the 4 out-of-plane wavevectors for the current layer.</p>
 <section id="id23">
 <h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -765,7 +771,7 @@ to a threshold value <cite>qsd_thr</cite> set at the beginning of the script.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.calculate_transfer_matrix">
 <span class="sig-name descname"><span class="pre">calculate_transfer_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.calculate_transfer_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.calculate_transfer_matrix" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the transfer matrix of the whole layer <span class="math notranslate nohighlight">\(T_i=A_iP_iA_i^{-1}\)</span></p>
+<dd><p>Compute the transfer matrix of the whole layer <span class="math notranslate nohighlight">\(T_i=A_iP_iA_i^{-1}\)</span>.</p>
 <section id="id26">
 <h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -784,7 +790,7 @@ to a threshold value <cite>qsd_thr</cite> set at the beginning of the script.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.isCoherent">
 <span class="sig-name descname"><span class="pre">isCoherent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.isCoherent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.isCoherent" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns True if the layer is a coherent layer</p>
+<dd><p>Return True if the layer is a coherent layer.</p>
 <section id="id28">
 <h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -801,11 +807,11 @@ to a threshold value <cite>qsd_thr</cite> set at the beginning of the script.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.set_epsilon">
 <span class="sig-name descname"><span class="pre">set_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon_function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.set_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.set_epsilon" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the dielectric function.</p>
+<dd><p>Set the dielectric function.</p>
 <section id="id30">
 <h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>epsilon<span class="classifier">complex function</span></dt><dd><p>A complex function representing the dielectric function.</p>
+<dt>epsilon_function<span class="classifier">complex function</span></dt><dd><p>A function representing the complex dielectric function.</p>
 </dd>
 </dl>
 </section>
@@ -818,7 +824,7 @@ to a threshold value <cite>qsd_thr</cite> set at the beginning of the script.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.set_euler">
 <span class="sig-name descname"><span class="pre">set_euler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.set_euler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.set_euler" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the values for the Euler rotations angles.</p>
+<dd><p>Set the values for the Euler rotations angles.</p>
 <section id="id32">
 <h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -839,7 +845,7 @@ to a threshold value <cite>qsd_thr</cite> set at the beginning of the script.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.set_thickness">
 <span class="sig-name descname"><span class="pre">set_thickness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.set_thickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.set_thickness" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the layer thickness.</p>
+<dd><p>Set the layer thickness.</p>
 <section id="id34">
 <h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -886,8 +892,8 @@ This avoids the calculation of the exponential; it just calculates the exponents
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer.update_tm">
 <span class="sig-name descname"><span class="pre">update_tm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer.update_tm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer.update_tm" title="Permalink to this definition">#</a></dt>
-<dd><p>Shortcut to recalculate all layer properties.
-Appropriate for a transfer matrix method</p>
+<dd><p>Shortcut to recalculate all layer properties.</p>
+<p>Appropriate for a transfer matrix method</p>
 <section id="id37">
 <h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -967,7 +973,7 @@ the overall scattering matrix of the combined system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.SMatrix.calculateS">
 <span class="sig-name descname"><span class="pre">calculateS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#SMatrix.calculateS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.SMatrix.calculateS" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate and assign the scattering parameter matrix, S</p>
+<dd><p>Calculate and assign the scattering parameter matrix, S.</p>
 <p>Fills a 4 by 4 matrix, <cite>S</cite>, with the sub-matrices <cite>S11</cite>, <cite>S22</cite>, <cite>S12</cite>, and <cite>S21</cite> representing the scattering parameters of a two-port network. The <cite>S</cite> matrix combines these sub-matrices as follows:</p>
 <ul class="simple">
 <li><p><cite>S11</cite> is placed in the top-left quadrant.</p></li>
@@ -995,7 +1001,7 @@ the overall scattering matrix of the combined system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.SMatrix.redheffer">
 <span class="sig-name descname"><span class="pre">redheffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#SMatrix.redheffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.SMatrix.redheffer" title="Permalink to this definition">#</a></dt>
-<dd><p>Routine to calculate the product of S-matrices.</p>
+<dd><p>Calculate the product of S-matrices.</p>
 <section id="id44">
 <h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1036,7 +1042,7 @@ the overall scattering matrix of the combined system.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GTMcore.ScatteringMatrixSystem">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">ScatteringMatrixSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superstrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#ScatteringMatrixSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.ScatteringMatrixSystem" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">ScatteringMatrixSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superstrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#ScatteringMatrixSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.ScatteringMatrixSystem" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.GTMcore.System" title="PDielec.GTMcore.System"><code class="xref py py-obj docutils literal notranslate"><span class="pre">System</span></code></a></p>
 <p>Define a system of layers which is described by a Scattering Matrix method.</p>
 <p>This implements additional routines needed for the scattering matrix method</p>
@@ -1066,7 +1072,7 @@ the overall scattering matrix of the combined system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.ScatteringMatrixSystem.calculate_r_t">
 <span class="sig-name descname"><span class="pre">calculate_r_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_sys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#ScatteringMatrixSystem.calculate_r_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.ScatteringMatrixSystem.calculate_r_t" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the reflectance and transmittance coefficients using scattering matrix information</p>
+<dd><p>Calculate the reflectance and transmittance coefficients using scattering matrix information.</p>
 <p>Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.</p>
 <section id="id51">
 <h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h4>
@@ -1121,7 +1127,7 @@ If the layer system is changed in anyway all the scattering matrices must be rec
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.SemiInfiniteLayer.calculate_propagation_exponents">
 <span class="sig-name descname"><span class="pre">calculate_propagation_exponents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#SemiInfiniteLayer.calculate_propagation_exponents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.SemiInfiniteLayer.calculate_propagation_exponents" title="Permalink to this definition">#</a></dt>
-<dd><p>Routine to calculate the propagation exponents</p>
+<dd><p>Calculate the propagation exponents.</p>
 <p>For the semi-infinite case the propagation exponents are set to 0</p>
 <section id="id55">
 <h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h4>
@@ -1139,7 +1145,7 @@ If the layer system is changed in anyway all the scattering matrices must be rec
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.SemiInfiniteLayer.calculate_propagation_matrix">
 <span class="sig-name descname"><span class="pre">calculate_propagation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#SemiInfiniteLayer.calculate_propagation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.SemiInfiniteLayer.calculate_propagation_matrix" title="Permalink to this definition">#</a></dt>
-<dd><p>Routine to calculate the matrix Ki (or Pi) depending on the paper.</p>
+<dd><p>Calculate the matrix Ki (or Pi) depending on the paper.</p>
 <p>This routine makes the material transparent. It is therefore suitable for
 a semi-infinite layer.</p>
 <section id="id57">
@@ -1159,7 +1165,7 @@ a semi-infinite layer.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superstrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superstrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System" title="Permalink to this definition">#</a></dt>
 <dd><p>System class. An instance is an optical system with substrate, superstrate, and layers.</p>
 <blockquote>
 <div><p>Derived classes used by PDielec are:</p>
@@ -1215,8 +1221,8 @@ change something for one of them, it changes for all of them.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.calculate_GammaStar">
 <span class="sig-name descname"><span class="pre">calculate_GammaStar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_sys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.calculate_GammaStar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.calculate_GammaStar" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the whole system’s transfer matrix.
-If one layer is incoherent then intensities rather than amplitudes are used</p>
+<dd><p>Calculate the whole system’s transfer matrix.</p>
+<p>If one layer is incoherent then intensities rather than amplitudes are used</p>
 <section id="id64">
 <h5>Parameters<a class="headerlink" href="#id64" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1290,7 +1296,7 @@ If one layer is incoherent then intensities rather than amplitudes are used</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.get_all_layers">
 <span class="sig-name descname"><span class="pre">get_all_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.get_all_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.get_all_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the list of all layers in the system.</p>
+<dd><p>Return the list of all layers in the system.</p>
 <section id="id71">
 <h5>Returns<a class="headerlink" href="#id71" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1327,7 +1333,7 @@ If one layer is incoherent then intensities rather than amplitudes are used</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.get_substrate">
 <span class="sig-name descname"><span class="pre">get_substrate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.get_substrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.get_substrate" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the System’s substrate.</p>
+<dd><p>Return the System’s substrate.</p>
 <section id="id75">
 <h5>Parameters<a class="headerlink" href="#id75" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -1344,7 +1350,7 @@ If one layer is incoherent then intensities rather than amplitudes are used</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.get_superstrate">
 <span class="sig-name descname"><span class="pre">get_superstrate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.get_superstrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.get_superstrate" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the System’s superstrate.</p>
+<dd><p>Return the System’s superstrate.</p>
 <section id="id77">
 <h5>Parameters<a class="headerlink" href="#id77" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -1361,7 +1367,7 @@ If one layer is incoherent then intensities rather than amplitudes are used</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.initialize_sys">
 <span class="sig-name descname"><span class="pre">initialize_sys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.initialize_sys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.initialize_sys" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the values of epsilon at the given frequency in all the layers.</p>
+<dd><p>Set the values of epsilon at the given frequency in all the layers.</p>
 <section id="id79">
 <h5>Parameters<a class="headerlink" href="#id79" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1400,7 +1406,7 @@ outside of the class, and thus to explore also guided modes of the system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.set_substrate">
 <span class="sig-name descname"><span class="pre">set_substrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.set_substrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.set_substrate" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the substrate.</p>
+<dd><p>Set the substrate.</p>
 <section id="id84">
 <h5>Parameters<a class="headerlink" href="#id84" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1417,7 +1423,7 @@ outside of the class, and thus to explore also guided modes of the system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.set_superstrate">
 <span class="sig-name descname"><span class="pre">set_superstrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sup</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.set_superstrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.set_superstrate" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the superstrate</p>
+<dd><p>Set the superstrate.</p>
 <section id="id86">
 <h5>Parameters<a class="headerlink" href="#id86" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -1436,7 +1442,7 @@ outside of the class, and thus to explore also guided modes of the system.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GTMcore.TransferMatrixSystem">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">TransferMatrixSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superstrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#TransferMatrixSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.TransferMatrixSystem" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">TransferMatrixSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superstrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#TransferMatrixSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.TransferMatrixSystem" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.GTMcore.System" title="PDielec.GTMcore.System"><code class="xref py py-obj docutils literal notranslate"><span class="pre">System</span></code></a></p>
 <p>Define a system of layers which is described by a Transfer Matrix method.</p>
 <p>This is basically a place holder for the original pyGTM methods and it is used
@@ -1450,7 +1456,7 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 <section id="id88">
 <h4>Parameters<a class="headerlink" href="#id88" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
-<dt>m<span class="classifier">complex 2x2 array</span></dt><dd><p>The matrix of which to find the inverse.</p>
+<dt>M<span class="classifier">complex 2x2 array</span></dt><dd><p>The matrix of which to find the inverse.</p>
 </dd>
 </dl>
 </section>
@@ -1466,11 +1472,11 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GTMcore.exact_inv_3x3">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">exact_inv_3x3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#exact_inv_3x3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.exact_inv_3x3" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the inverse of a 3x3 complex matrix M</p>
+<dd><p>Calculate the inverse of a 3x3 complex matrix M.</p>
 <section id="id90">
 <h4>Parameters<a class="headerlink" href="#id90" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
-<dt>m<span class="classifier">complex 3x3 array</span></dt><dd><p>The matrix to be inverted.</p>
+<dt>M<span class="classifier">complex 3x3 array</span></dt><dd><p>The matrix to be inverted.</p>
 </dd>
 </dl>
 </section>
@@ -1514,7 +1520,7 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GTMcore.vacuum_eps">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">vacuum_eps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#vacuum_eps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.vacuum_eps" title="Permalink to this definition">#</a></dt>
-<dd><p>Vacuum permittivity function</p>
+<dd><p>Vacuum permittivity function.</p>
 <section id="id95">
 <h4>Parameters<a class="headerlink" href="#id95" title="Permalink to this heading">#</a></h4>
 <dl class="simple">

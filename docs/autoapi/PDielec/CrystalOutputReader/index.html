@@ -311,7 +311,10 @@
 <dd><p>Read the born charges from the output file.</p>
 <section id="id1">
 <h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The current line</p>
+</dd>
+</dl>
 </section>
 <section id="returns">
 <h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
@@ -355,7 +358,10 @@ the result in the <cite>born_charges</cite> instance variable.</p>
 <p>This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the <cite>born_charges</cite> list attribute.</p>
 <section id="id4">
 <h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
-<p>line : str</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The current line (not used)</p>
+</dd>
+</dl>
 </section>
 <section id="id5">
 <h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
@@ -410,7 +416,7 @@ is not available.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_energy">
 <span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads and sets the free energy and energy without entropy from a line.</p>
+<dd><p>Read and set the free energy and energy without entropy from a line.</p>
 <section id="id10">
 <h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -475,7 +481,7 @@ after splitting by whitespace contains the energy value in Hartree units.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon">
 <span class="sig-name descname"><span class="pre">_read_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads epsilon values from a formatted file and updates the optical dielectric matrix.</p>
+<dd><p>Read epsilon values from a formatted file and update the optical dielectric matrix.</p>
 <p>This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object’s <cite>zerof_optical_dielectric</cite> attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their ‘XX’, ‘YY’, ‘ZZ’, ‘XY’, ‘XZ’, and ‘YZ’ labels in the file. The method expects the values in a specific format and parses them accordingly.</p>
 <section id="id17">
 <h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
@@ -542,7 +548,7 @@ and other related atomic information, storing them into the class attributes.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_hessfreq_dat">
 <span class="sig-name descname"><span class="pre">_read_hessfreq_dat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_hessfreq_dat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_hessfreq_dat" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a Hessian frequency data from a given file and updates the dynamical matrix.</p>
+<dd><p>Read a Hessian frequency data from a given file and update the dynamical matrix.</p>
 <section id="id22">
 <h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">

@@ -287,31 +287,33 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Utility Functions</span>
+<span class="sd">&quot;&quot;&quot;Utility Functions.</span>
 
 <span class="sd">A set of utility functions that may be used anywhere in the package.</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">PDielec.VaspOutputReader</span> <span class="kn">import</span> <span class="n">VaspOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.PhonopyOutputReader</span> <span class="kn">import</span> <span class="n">PhonopyOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.CastepOutputReader</span> <span class="kn">import</span> <span class="n">CastepOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.GulpOutputReader</span> <span class="kn">import</span> <span class="n">GulpOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.CrystalOutputReader</span> <span class="kn">import</span> <span class="n">CrystalOutputReader</span>
 <span class="kn">from</span> <span class="nn">PDielec.AbinitOutputReader</span> <span class="kn">import</span> <span class="n">AbinitOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.QEOutputReader</span> <span class="kn">import</span> <span class="n">QEOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.CastepOutputReader</span> <span class="kn">import</span> <span class="n">CastepOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.CrystalOutputReader</span> <span class="kn">import</span> <span class="n">CrystalOutputReader</span>
 <span class="kn">from</span> <span class="nn">PDielec.ExperimentOutputReader</span> <span class="kn">import</span> <span class="n">ExperimentOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.GulpOutputReader</span> <span class="kn">import</span> <span class="n">GulpOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.PhonopyOutputReader</span> <span class="kn">import</span> <span class="n">PhonopyOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.QEOutputReader</span> <span class="kn">import</span> <span class="n">QEOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.VaspOutputReader</span> <span class="kn">import</span> <span class="n">VaspOutputReader</span>
+
 
 <div class="viewcode-block" id="printsp"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.printsp">[docs]</a><span class="k">def</span> <span class="nf">printsp</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">matrix</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Utility routine for printing 4x4 matrices or 4 vectors.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print 4x4 matrices or 4 vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    None</span>
+<span class="sd">    name : string</span>
+<span class="sd">        The name of the matrix</span>
+<span class="sd">    matrix : 4x4 or 4 array</span>
+<span class="sd">        The matrix to be printed</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -320,29 +322,29 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    None</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s1">+.5f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;   &#39;</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">+.5f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
-                <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s1">+.5f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;   &#39;</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">+.5f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
     <span class="k">return</span></div>
 
 <div class="viewcode-block" id="find_program_from_name"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.find_program_from_name">[docs]</a><span class="k">def</span> <span class="nf">find_program_from_name</span><span class="p">(</span> <span class="n">filename</span> <span class="p">):</span>
     <span class="c1"># Determine the program to use from the file name being used</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Determine the simulation program from a given filename.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine the simulation program from a given filename.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -351,8 +353,9 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    str</span>
-<span class="sd">        A string representing the simulation program the file is associated with. Possible returns are &#39;phonopy&#39;, &#39;vasp&#39;, &#39;gulp&#39;, &#39;castep&#39;, &#39;abinit&#39;, &#39;qe&#39;, &#39;crystal&#39;, &#39;experiment&#39;, &#39;pdgui&#39;, or an empty string if the program cannot be determined.</span>
+<span class="sd">    (str1,str2)</span>
+<span class="sd">        A tuple of 2 strings, the first, str1, is the program name that was used to calculate the frequencies.</span>
+<span class="sd">        In the case of phonopy, the second string is the QM program that calculates the forces</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -360,53 +363,83 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-
 <span class="sd">    ::</span>
 
 <span class="sd">        program = find_program_from_name(&#39;./data/structure.castep&#39;)</span>
 <span class="sd">        print(program)</span>
-<span class="sd">        # Output: &#39;castep&#39;</span>
+<span class="sd">        # Output: (&quot;castep&quot;,&quot;&quot;)</span>
 <span class="sd">    </span>
 <span class="sd">        program = find_program_from_name(&#39;path/to/simulation/OUTCAR&#39;)</span>
 <span class="sd">        print(program)</span>
-<span class="sd">        # Depends on the presence of &#39;phonopy.yaml&#39;, could be &#39;phonopy&#39; or &#39;vasp&#39;</span>
+<span class="sd">        # Output: (&quot;phonopy&quot;,&quot;vasp&quot;)</span>
+<span class="sd">        # Depends on the presence of &#39;phonopy.yaml&#39;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="n">head</span><span class="p">,</span><span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">root</span><span class="p">,</span><span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">head</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-        <span class="n">head</span> <span class="o">=</span> <span class="s1">&#39;./&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">+</span><span class="s1">&#39;/&#39;</span>
-    <span class="k">if</span> <span class="n">tail</span> <span class="o">==</span> <span class="s1">&#39;OUTCAR&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s1">&#39;phonopy.yaml&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s1">&#39;phonopy&#39;</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span> <span class="k">if</span> <span class="n">head</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="n">head</span><span class="o">+</span><span class="s2">&quot;/&quot;</span>
+    <span class="k">if</span> <span class="n">tail</span> <span class="o">==</span> <span class="s2">&quot;OUTCAR&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;vasp&#39;</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">&#39;.gout&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;gulp&#39;</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">&#39;.born&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;phonopy&#39;</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">&#39;.castep&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;castep&#39;</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s1">&#39;.out&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="n">root</span><span class="o">+</span><span class="s1">&#39;.files&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s1">&#39;abinit&#39;</span>
-        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="n">root</span><span class="o">+</span><span class="s1">&#39;.dynG&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s1">&#39;qe&#39;</span>
+            <span class="k">return</span> <span class="s2">&quot;vasp&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.gout&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;gulp&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.born&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.castep&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;castep&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;castep&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s2">&quot;.out&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="n">root</span><span class="o">+</span><span class="s2">&quot;.files&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;abinit&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="n">root</span><span class="o">+</span><span class="s2">&quot;.dynG&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;crystal&#39;</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s1">&#39;.dynG&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;qe&#39;</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s1">&#39;.exp&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;experiment&#39;</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s1">&#39;.py&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;pdgui&#39;</span>
-    <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+            <span class="k">return</span> <span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s2">&quot;.log&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="n">root</span><span class="o">+</span><span class="s2">&quot;.files&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="n">root</span><span class="o">+</span><span class="s2">&quot;.dynG&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s2">&quot;.abo&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;abinit&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s2">&quot;.dynG&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">head</span><span class="o">+</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s2">&quot;.exp&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;experiment&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span>  <span class="s2">&quot;.py&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;pdgui&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="get_reader"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.get_reader">[docs]</a><span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">qmprogram</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.</span>
 
 <span class="sd">    This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.</span>
 
@@ -432,7 +465,10 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; reader = get_reader(&quot;output.log&quot;, &quot;castep&quot;, &quot;&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; reader = get_reader(&quot;output&quot;, &quot;phonopy&quot;, &quot;vasp&quot;)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">program</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">qmprogram</span> <span class="o">=</span> <span class="n">qmprogram</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="n">fulldirname</span> <span class="o">=</span> <span class="n">name</span>
     <span class="n">head</span><span class="p">,</span><span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fulldirname</span><span class="p">)</span>
     <span class="n">root</span><span class="p">,</span><span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
@@ -441,7 +477,7 @@
         <span class="n">reader</span> <span class="o">=</span> <span class="n">CastepOutputReader</span><span class="p">(</span> <span class="n">names</span> <span class="p">)</span>
     <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;vasp&quot;</span><span class="p">:</span>
         <span class="n">name1</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">name2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s1">&#39;KPOINTS&#39;</span><span class="p">)</span>
+        <span class="n">name2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s2">&quot;KPOINTS&quot;</span><span class="p">)</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[</span> <span class="n">name1</span><span class="p">,</span> <span class="n">name2</span> <span class="p">]</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">VaspOutputReader</span><span class="p">(</span> <span class="n">names</span> <span class="p">)</span>
     <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;gulp&quot;</span><span class="p">:</span>
@@ -453,10 +489,10 @@
     <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;abinit&quot;</span><span class="p">:</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[</span> <span class="n">name</span> <span class="p">]</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">AbinitOutputReader</span><span class="p">(</span> <span class="n">names</span> <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
-        <span class="n">tail1</span> <span class="o">=</span> <span class="n">root</span><span class="o">+</span><span class="s1">&#39;.dynG&#39;</span>
-        <span class="n">tail2</span> <span class="o">=</span> <span class="n">root</span><span class="o">+</span><span class="s1">&#39;.log&#39;</span>
-        <span class="n">tail3</span> <span class="o">=</span> <span class="n">root</span><span class="o">+</span><span class="s1">&#39;.out&#39;</span>
+    <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;quantum espresso&quot;</span><span class="p">:</span>
+        <span class="n">tail1</span> <span class="o">=</span> <span class="n">root</span><span class="o">+</span><span class="s2">&quot;.dynG&quot;</span>
+        <span class="n">tail2</span> <span class="o">=</span> <span class="n">root</span><span class="o">+</span><span class="s2">&quot;.log&quot;</span>
+        <span class="n">tail3</span> <span class="o">=</span> <span class="n">root</span><span class="o">+</span><span class="s2">&quot;.out&quot;</span>
         <span class="n">name1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="n">tail2</span><span class="p">)</span>
         <span class="n">name2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="n">tail3</span><span class="p">)</span>
         <span class="n">name3</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="n">tail</span><span class="p">)</span>
@@ -464,55 +500,52 @@
         <span class="n">name4</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="n">tail1</span><span class="p">)</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span> <span class="n">name1</span><span class="p">,</span> <span class="n">name2</span><span class="p">,</span> <span class="n">name3</span><span class="p">,</span> <span class="n">name4</span> <span class="p">]:</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-                    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">QEOutputReader</span><span class="p">(</span> <span class="n">names</span> <span class="p">)</span>
     <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
         <span class="c1"># The order is important</span>
-        <span class="n">pname1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s1">&#39;qpoints.yaml&#39;</span><span class="p">)</span>
-        <span class="n">pname2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s1">&#39;phonopy.yaml&#39;</span><span class="p">)</span>
-        <span class="c1"># Only works for VASP at the moment</span>
-        <span class="n">vname1</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">vname2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s1">&#39;KPOINTS&#39;</span><span class="p">)</span>
-        <span class="n">pnames</span> <span class="o">=</span> <span class="p">[</span> <span class="n">pname1</span><span class="p">,</span> <span class="n">pname2</span> <span class="p">]</span>
-        <span class="n">vnames</span> <span class="o">=</span> <span class="p">[</span> <span class="n">vname1</span><span class="p">,</span> <span class="n">vname2</span> <span class="p">]</span>
-        <span class="n">pnames</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">vnames</span><span class="p">)</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="n">pnames</span>
+        <span class="n">pname1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s2">&quot;qpoints.yaml&quot;</span><span class="p">)</span>
+        <span class="n">pname2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">)</span>
         <span class="c1"># Which QM program was used by PHONOPY?</span>
         <span class="k">if</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;castep&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in qmreader&quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
             <span class="n">qmreader</span> <span class="o">=</span> <span class="n">CastepOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;vasp&quot;</span><span class="p">:</span>
+            <span class="n">vname1</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="n">vname2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s2">&quot;KPOINTS&quot;</span><span class="p">)</span>
+            <span class="n">pnames</span> <span class="o">=</span> <span class="p">[</span> <span class="n">pname1</span><span class="p">,</span> <span class="n">pname2</span> <span class="p">]</span>
+            <span class="n">vnames</span> <span class="o">=</span> <span class="p">[</span> <span class="n">vname1</span><span class="p">,</span> <span class="n">vname2</span> <span class="p">]</span>
+            <span class="n">pnames</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">vnames</span><span class="p">)</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="n">pnames</span>
             <span class="n">qmreader</span> <span class="o">=</span> <span class="n">VaspOutputReader</span><span class="p">(</span><span class="n">vnames</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;gulp&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in qmreader&quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
             <span class="n">qmreader</span> <span class="o">=</span> <span class="n">GulpOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;crystal&quot;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in qmreader&quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span> <span class="n">name</span> <span class="p">]</span>
             <span class="n">qmreader</span> <span class="o">=</span> <span class="n">CrystalOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I got here 4&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;abinit&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in qmreader&quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
             <span class="n">qmreader</span> <span class="o">=</span> <span class="n">AbinitOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;quantum espresso&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in qmreader&quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
             <span class="n">qmreader</span> <span class="o">=</span> <span class="n">QEOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="c1"># The QM reader is used to get info about the QM calculation</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">PhonopyOutputReader</span><span class="p">(</span><span class="n">pnames</span><span class="p">,</span><span class="n">qmreader</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program name not recognized&#39;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Program name not recognized&quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">reader</span></div>
 
 
 <div class="viewcode-block" id="pdgui_get_reader"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.pdgui_get_reader">[docs]</a><span class="k">def</span> <span class="nf">pdgui_get_reader</span><span class="p">(</span><span class="n">program</span><span class="p">,</span><span class="n">names</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the appropriate reader based on the provided program and file names.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the appropriate reader based on the provided program and file names.</span>
 
 <span class="sd">    This function determines the correct output reader to use based on the program specified and the presence of certain files</span>
 <span class="sd">    in the provided directory or file names list. It supports various quantum mechanics and molecular dynamics</span>
@@ -553,38 +586,38 @@
 
 <span class="sd">    &gt;&gt;&gt; qm_reader = pdgui_get_reader(&#39;phonopy&#39;, [&#39;path/to/phonopy/files&#39;], &#39;vasp&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; print(qm_reader)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">program</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="n">qmprogram</span> <span class="o">=</span> <span class="n">qmprogram</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="c1">#print(&quot;get_reader&quot;,names,program)</span>
     <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
         <span class="c1">#  This is the old behaviour.  It copes with VASP, CASTEP and Crystal</span>
         <span class="c1">#  If names[0] is a directory then we will use a vaspoutputreader</span>
         <span class="c1">#  Otherwise it is a seedname for castep, or a gulp output file, or a crystal output file</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Analysing VASP directory: </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Analysing VASP directory: </span><span class="si">{</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
             <span class="n">outcarfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;OUTCAR&quot;</span><span class="p">)</span>
             <span class="n">kpointsfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;KPOINTS&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">outcarfile</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: NO OUTCAR FILE IN DIRECTORY&quot;</span><span class="p">)</span>
                 <span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">return</span>
+                <span class="k">return</span> <span class="kc">None</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">VaspOutputReader</span><span class="p">(</span> <span class="p">[</span><span class="n">outcarfile</span><span class="p">,</span> <span class="n">kpointsfile</span><span class="p">]</span> <span class="p">)</span>
         <span class="k">elif</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;OUTCAR&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;OUTCAR&quot;</span><span class="p">):</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">VaspOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.gout&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">GulpOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.out&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">elif</span> <span class="p">(</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.out&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.log&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">CrystalOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.castep&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">CastepOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.castep&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.castep&quot;</span><span class="p">):</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">CastepOutputReader</span><span class="p">([</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.castep&quot;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No valid file name has been found on the command line&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Try using the -program option to specify the&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;files which will be read&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No valid file name has been found on the command line&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Try using the -program option to specify the&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;files which will be read&quot;</span><span class="p">)</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># New Specification of Program used to define the input files</span>
@@ -604,23 +637,19 @@
             <span class="c1"># Creat a list of phonopy files</span>
             <span class="n">pnames</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">head</span><span class="p">,</span><span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">pnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s1">&#39;qpoints.yaml&#39;</span><span class="p">))</span>
-            <span class="n">pnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s1">&#39;phonopy.yaml&#39;</span><span class="p">))</span>
+            <span class="n">pnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s2">&quot;qpoints.yaml&quot;</span><span class="p">))</span>
+            <span class="n">pnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="s2">&quot;phonopy.yaml&quot;</span><span class="p">))</span>
             <span class="c1"># Creat a list of VASP files NB.  They all have to be in the same directory</span>
             <span class="n">vnames</span> <span class="o">=</span> <span class="n">names</span>
             <span class="n">pnames</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">vnames</span><span class="p">)</span>
             <span class="n">checkfiles</span> <span class="o">=</span> <span class="n">pnames</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">checkfiles</span> <span class="o">=</span> <span class="n">names</span>
-        <span class="c1">#jk print(&quot;&quot;)</span>
-        <span class="c1">#jk print(&quot;Program used to perform the phonon calculation was: {}&quot;.format(program))</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">checkfiles</span><span class="p">:</span>
-            <span class="c1">#jk print(&quot;The file containing the output is: {}&quot;.format(f))</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output files created by program: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">program</span><span class="p">))</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: file not available: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-                <span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">return</span> <span class="n">reader</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output files created by program: </span><span class="si">{</span><span class="n">program</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: file not available: </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
         <span class="c1"># The files requested are available so read them</span>
         <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;castep&quot;</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">CastepOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
@@ -632,7 +661,7 @@
             <span class="n">reader</span> <span class="o">=</span> <span class="n">CrystalOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;abinit&quot;</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">AbinitOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;quantum espresso&quot;</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">QEOutputReader</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
             <span class="c1"># Which QM program was used by PHONOPY?</span>
@@ -646,7 +675,7 @@
                 <span class="n">qmreader</span> <span class="o">=</span> <span class="n">CrystalOutputReader</span><span class="p">(</span><span class="n">vnames</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;abinit&quot;</span><span class="p">:</span>
                 <span class="n">qmreader</span> <span class="o">=</span> <span class="n">AbinitOutputReader</span><span class="p">(</span><span class="n">vnames</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;quantum espresso&quot;</span><span class="p">:</span>
                 <span class="n">qmreader</span> <span class="o">=</span> <span class="n">QEOutputReader</span><span class="p">(</span><span class="n">vnames</span><span class="p">)</span>
             <span class="c1"># The QM reader is used to get info about the QM calculation</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">PhonopyOutputReader</span><span class="p">(</span><span class="n">pnames</span><span class="p">,</span><span class="n">qmreader</span><span class="p">)</span>
@@ -656,9 +685,8 @@
     <span class="c1"># end if</span>
     <span class="k">return</span> <span class="n">reader</span></div>
 
-<div class="viewcode-block" id="Debug"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.Debug">[docs]</a><span class="k">class</span> <span class="nc">Debug</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class aimed at providing a structured way to include debug messages in code.</span>
+<div class="viewcode-block" id="Debug"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.Debug">[docs]</a><span class="k">class</span> <span class="nc">Debug</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class aimed at providing a structured way to include debug messages in code.</span>
 
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
@@ -670,10 +698,11 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">debug</span><span class="p">,</span><span class="n">text</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize an instance with debug status, text, and optional level.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance with debug status, text, and optional level.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -683,6 +712,7 @@
 <span class="sd">            The text associated with the instance.</span>
 <span class="sd">        level : int, optional</span>
 <span class="sd">            The level of the instance, by default 0.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text</span>  <span class="o">=</span> <span class="n">text</span>
@@ -690,8 +720,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="Debug.print"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.Debug.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Prints message if debugging level allows.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print message if debugging level allows.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -705,15 +734,14 @@
 <span class="sd">        -----</span>
 <span class="sd">        This method will only print the message if the instance&#39;s `debug` flag is True</span>
 <span class="sd">        and the provided `level` is less than or equal to the instance&#39;s `level`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="ow">and</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="Debug.state"><a class="viewcode-back" href="../../autoapi/PDielec/Utilities/index.html#PDielec.Utilities.Debug.state">[docs]</a>    <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the debug state.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the debug state.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -722,6 +750,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        The current debug state.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span></div></div>
 

@@ -272,8 +272,8 @@
         </div>
         <article role="main">
           <h1>Source code for PDielec.GTMcore</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">This file is part of the pyGTM module.</span>
+<span></span><span class="sd">&quot;&quot;&quot;The pyGTM module.</span>
+
 <span class="sd">It has been heavily modified by John Kendrick for inclusion in the PDielec library</span>
 <span class="sd">Quite a lot has been removed as the fields spatial distribution was not needed</span>
 <span class="sd">Thanks to the authors of the original code for all their hard work</span>
@@ -357,14 +357,16 @@
 <span class="sd">          wavevector of guided modes and dispersion relation for such guided surface modes.</span>
 <span class="sd">          This is *highly prospective* as it depends on the robustness of the minimization</span>
 <span class="sd">          procedure (or the lack of thereoff)</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1">######## general utilities</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">lag</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">speed_light_si</span><span class="p">,</span> <span class="n">epsilon_0_si</span>
+
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">epsilon_0_si</span><span class="p">,</span> <span class="n">speed_light_si</span>
 
 <span class="c1">#jk c_const = 299792458 # m/s</span>
 <span class="c1">#jk eps0 = 8.854e-12 ## vacuum permittivity</span>
@@ -375,8 +377,7 @@
 <span class="n">eps0</span> <span class="o">=</span> <span class="n">epsilon_0_si</span>            <span class="c1"># Doesn&#39;t appear to be used</span>
 
 <div class="viewcode-block" id="vacuum_eps"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.vacuum_eps">[docs]</a><span class="k">def</span> <span class="nf">vacuum_eps</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Vacuum permittivity function</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Vacuum permittivity function.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -387,25 +388,26 @@
 <span class="sd">    -------</span>
 <span class="sd">    eps : complex or 1D-array of complex</span>
 <span class="sd">        Complex value of the vacuum permittivity (1.0 + 0.0j)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span></div>
     
 <div class="viewcode-block" id="exact_inv_2x2"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.exact_inv_2x2">[docs]</a><span class="k">def</span> <span class="nf">exact_inv_2x2</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the inverse of 2x2 complex matrix, M.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the inverse of 2x2 complex matrix, M.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    m : complex 2x2 array</span>
+<span class="sd">    M : complex 2x2 array</span>
 <span class="sd">        The matrix of which to find the inverse.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        The inverse of M as a 2x2 complex numpy array.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">m11</span><span class="p">,</span> <span class="n">m21</span><span class="p">,</span> <span class="n">m12</span><span class="p">,</span> <span class="n">m22</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -415,18 +417,18 @@
 
     
 <div class="viewcode-block" id="exact_inv_3x3"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.exact_inv_3x3">[docs]</a><span class="k">def</span> <span class="nf">exact_inv_3x3</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the inverse of a 3x3 complex matrix M</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the inverse of a 3x3 complex matrix M.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    m : complex 3x3 array</span>
+<span class="sd">    M : complex 3x3 array</span>
 <span class="sd">        The matrix to be inverted.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
 <span class="sd">        The inverse of M as a 3x3 complex numpy array.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">m3</span><span class="p">,</span> <span class="n">m4</span><span class="p">,</span> <span class="n">m5</span><span class="p">,</span> <span class="n">m6</span><span class="p">,</span> <span class="n">m7</span><span class="p">,</span> <span class="n">m8</span><span class="p">,</span> <span class="n">m9</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -437,8 +439,7 @@
 
     
 <div class="viewcode-block" id="exact_inv_4x4"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.exact_inv_4x4">[docs]</a><span class="k">def</span> <span class="nf">exact_inv_4x4</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the &#39;exact&#39; inverse of a 4x4 matrix using the analytical result.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the &#39;exact&#39; inverse of a 4x4 matrix using the analytical result.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -457,6 +458,7 @@
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    http://www.cg.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche23.html : For mathematical background related to this computation.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
@@ -475,10 +477,10 @@
 
     <span class="k">if</span> <span class="n">detA</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning 4x4 inversion problem 1&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning 4x4 inversion problem 1&quot;</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">(</span><span class="n">lag</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">(</span><span class="n">M</span><span class="p">)))</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning 4x4 inversion problem 2&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning 4x4 inversion problem 2&quot;</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">(</span><span class="n">lag</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">(</span><span class="n">M</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">result</span>
 
@@ -503,16 +505,14 @@
     <span class="n">B</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">B</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">out</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">detA</span>
-    <span class="k">return</span> <span class="n">out</span></div>
+    <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">detA</span></div>
 
 
 <span class="c1">###########################</span>
 <span class="c1">#### The Layer Class   ####</span>
 <span class="c1">###########################</span>
 <div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Layer class. An instance is a single layer:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Layer class. An instance is a single layer.</span>
 <span class="sd">    </span>
 <span class="sd">    The inherited layer classes wich are used in PDielec are:</span>
 
@@ -540,6 +540,7 @@
 <span class="sd">    -----</span>
 <span class="sd">    If instantiated with default values, it generates a 1 µm thick layer of air.</span>
 <span class="sd">    Properties can be checked/changed dynamically using the corresponding get/set methods.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Define class variables</span>
@@ -550,8 +551,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="mi">700</span><span class="p">):</span>
 
         <span class="c1">## epsilon is a 3x3 matrix of permittivity at a given frequency</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the class instance with default parameters or specified properties.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the class instance with default parameters or specified properties.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -615,6 +615,7 @@
 <span class="sd">        ------</span>
 <span class="sd">        ValueError</span>
 <span class="sd">            When the input `epsilon` is not compatible in dimensions or data type.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1">### mu=1 for now</span>
@@ -647,8 +648,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_euler</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>        <span class="c1"># set orientation of crystal axis w/ respect to the lab frame</span>
 
 <div class="viewcode-block" id="Layer.isCoherent"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.isCoherent">[docs]</a>    <span class="k">def</span> <span class="nf">isCoherent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns True if the layer is a coherent layer</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the layer is a coherent layer.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -658,13 +658,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">            True if the layer is coherent, False if not.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coherent</span></div>
 
 
 <div class="viewcode-block" id="Layer.set_thickness"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.set_thickness">[docs]</a>    <span class="k">def</span> <span class="nf">set_thickness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thickness</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the layer thickness.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the layer thickness.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -674,27 +674,27 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thick</span> <span class="o">=</span> <span class="n">thickness</span></div>
 
 <div class="viewcode-block" id="Layer.set_epsilon"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.set_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">set_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon_function</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the dielectric function.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the dielectric function.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        epsilon : complex function</span>
-<span class="sd">            A complex function representing the dielectric function.</span>
+<span class="sd">        epsilon_function : complex function</span>
+<span class="sd">            A function representing the complex dielectric function.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_tensor_function</span> <span class="o">=</span> <span class="n">epsilon_function</span></div>
 
 <div class="viewcode-block" id="Layer.calculate_epsilon"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f_in</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the value of epsilon in the (rotated) lab frame.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of epsilon in the (rotated) lab frame.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -713,6 +713,7 @@
 
 <span class="sd">        Use explicitly if you *don&#39;t* use the :py:func:`Layer.update` function!</span>
 <span class="sd">        Modification by JK to allow the use of a full dielectric tensor.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">f_in</span> <span class="o">/</span> <span class="p">(</span><span class="n">c_const</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span>
         <span class="n">epsilon_xstal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_tensor_function</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -726,8 +727,7 @@
 
 
 <div class="viewcode-block" id="Layer.set_euler"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.set_euler">[docs]</a>    <span class="k">def</span> <span class="nf">set_euler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">psi</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the values for the Euler rotations angles.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the values for the Euler rotations angles.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -741,6 +741,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
@@ -760,8 +761,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">euler_inverse</span> <span class="o">=</span> <span class="n">exact_inv_3x3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">euler</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Layer.calculate_matrices"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_matrices">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the principal matrices necessary for the GTM algorithm.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the principal matrices necessary for the GTM algorithm.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -778,6 +778,7 @@
 <span class="sd">        using the angle of incidence and `System.superstrate.epsilon[0,0]` value.</span>
 
 <span class="sd">        Requires prior execution of :py:func:`calculate_epsilon`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">## Constitutive matrix (see e.g. eqn (4))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
@@ -799,22 +800,22 @@
         <span class="c1">## S Matrix (Don&#39;t know where it comes from since Delta is just S re-ordered)</span>
         <span class="c1">## Note that after this only Delta is used</span>
         <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">)</span> <span class="c1">##</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span>
-        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">];</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">zeta</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
 
 
         <span class="c1">## Delta Matrix from eqn (8)</span>
@@ -836,8 +837,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Delta</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Layer.calculate_q"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_q">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the 4 out-of-plane wavevectors for the current layer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the 4 out-of-plane wavevectors for the current layer.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -852,6 +852,7 @@
 <span class="sd">        From this we also get the Poynting vectors. Wavevectors are sorted according</span>
 <span class="sd">        to (trans-p, trans-s, refl-p, refl-s). Birefringence is determined according</span>
 <span class="sd">        to a threshold value `qsd_thr` set at the beginning of the script.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Delta_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
         <span class="n">transmode</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -876,7 +877,7 @@
         <span class="n">Berreman_unsorted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">)</span>
         
         <span class="n">kt</span> <span class="o">=</span> <span class="mi">0</span> 
-        <span class="n">kr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">kr</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="c1">## sort berremann qi&#39;s according to (12)</span>
         <span class="c1">##JK small modification to fix problems when qs are nearly real</span>
         <span class="c1">##JK if any(np.abs(np.imag(qsunsorted))):</span>
@@ -962,8 +963,7 @@
         <span class="k">return</span></div>
         
 <div class="viewcode-block" id="Layer.calculate_gamma"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_gamma">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the gamma matrix</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the gamma matrix.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -973,6 +973,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">### this whole function is eqn (20)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span>
@@ -1080,8 +1081,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="Layer.calculate_transfer_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_transfer_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_transfer_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1093,6 +1093,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ai</span><span class="p">(</span><span class="n">zeta</span><span class="p">)</span>
         <span class="n">Aim1</span> <span class="o">=</span> <span class="n">exact_inv_4x4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ai</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
@@ -1101,8 +1102,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="Layer.calculate_ai"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_ai">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ai</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">zeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate A_i</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate A_i.</span>
 
 <span class="sd">        Boundary matrix :math:`A_i` of the layer.</span>
 
@@ -1110,7 +1110,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        zeta : float</span>
 <span class="sd">            Reduced in-plane wavevector kx/k0.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">## eqn(22)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1120,8 +1121,8 @@
    
 
 <div class="viewcode-block" id="Layer.update_tm"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.update_tm">[docs]</a>    <span class="k">def</span> <span class="nf">update_tm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Shortcut to recalculate all layer properties.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut to recalculate all layer properties.</span>
+
 <span class="sd">        Appropriate for a transfer matrix method</span>
 
 <span class="sd">        Parameters</span>
@@ -1141,8 +1142,8 @@
 <span class="sd">            Inverse of the :math:`A_i` matrix</span>
 <span class="sd">        Ti : 4x4-array</span>
 <span class="sd">            Transfer matrix of the whole layer</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_epsilon</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_matrices</span><span class="p">(</span><span class="n">zeta</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_q</span><span class="p">()</span>
@@ -1152,8 +1153,7 @@
         <span class="k">return</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Ai</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ki</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">Ai_inv</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ti</span><span class="o">.</span><span class="n">copy</span><span class="p">()]</span></div>
 
 <div class="viewcode-block" id="Layer.update_sm"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.update_sm">[docs]</a>    <span class="k">def</span> <span class="nf">update_sm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Shortcut to recalculate all layer properties for scattering method.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut to recalculate all layer properties for scattering method.</span>
 
 <span class="sd">        Appropriate for a scattering matrix method.</span>
 <span class="sd">        This avoids the calculation of the exponential; it just calculates the exponents.</span>
@@ -1175,8 +1175,8 @@
 <span class="sd">            Inverse of the :math:`A_i` matrix.</span>
 <span class="sd">        Ti : array_like, shape (4, 4)</span>
 <span class="sd">            Transfer matrix of the whole layer.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_epsilon</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_matrices</span><span class="p">(</span><span class="n">zeta</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_q</span><span class="p">()</span>
@@ -1186,22 +1186,20 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="Layer.calculate_propagation_exponents"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_propagation_exponents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_propagation_exponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Routine to calculate the propagation exponents</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the propagation exponents.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-
 <span class="sd">        f : float</span>
 <span class="sd">            The frequency</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">propagation_exponents</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">qs</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">thick</span><span class="p">)</span><span class="o">/</span><span class="n">c_const</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="Layer.calculate_propagation_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.calculate_propagation_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_propagation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Routine to calculate the matrix Ki (or Pi depending on the paper)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the matrix Ki (or Pi depending on the paper).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1212,6 +1210,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        Ki : ndarray</span>
 <span class="sd">            A 4x4-array representing the boundary matrix :math:`K_i` of the layer.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Ki</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_propagation_exponents</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -1230,12 +1229,10 @@
 <span class="c1">### The Layer Sub Classes   ###</span>
 <span class="c1">###############################</span>
 <div class="viewcode-block" id="CoherentLayer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.CoherentLayer">[docs]</a><span class="k">class</span> <span class="nc">CoherentLayer</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define a coherent layer inherits from Layer class.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define a coherent layer inherits from Layer class.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="mi">700</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise an instance of a coherent layer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an instance of a coherent layer.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1249,6 +1246,7 @@
 <span class="sd">            Psi value for layer (default is 0)</span>
 <span class="sd">        exponent_threshold : float, optional</span>
 <span class="sd">            Prevent calculation of large exponents (default is 700)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thickness</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getThicknessInMetres</span><span class="p">()</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
@@ -1262,8 +1260,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="CoherentLayer.calculate_scattering_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.CoherentLayer.calculate_scattering_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_scattering_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the scattering matrix of this layer with layer b.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the scattering matrix of this layer with layer b.</span>
 
 <span class="sd">        This method calculates the scattering matrix based on equations 18-21 in the PyLama paper.</span>
 <span class="sd">        However, it&#39;s important to note that the definition of a scattering matrix used here </span>
@@ -1272,6 +1269,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        b : a pyGTM layer class</span>
+<span class="sd">            The second layer for which the scattering matrix will be calculated</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1281,6 +1279,7 @@
 <span class="sd">        -----</span>
 <span class="sd">        Explain any important details about the implementation, external references like the PyLama paper,</span>
 <span class="sd">        and any differences in definitions or approaches.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># This is layer &#39;a&#39;</span>
         <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span>
@@ -1329,12 +1328,10 @@
         <span class="k">return</span></div></div>
 
 <div class="viewcode-block" id="SemiInfiniteLayer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SemiInfiniteLayer">[docs]</a><span class="k">class</span> <span class="nc">SemiInfiniteLayer</span><span class="p">(</span><span class="n">CoherentLayer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define a semi-infinite layer, inherits from CoherentLayer class.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define a semi-infinite layer, inherits from CoherentLayer class.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="mi">700</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise an instance of a semi-infinite layer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an instance of a semi-infinite layer.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1348,6 +1345,7 @@
 <span class="sd">            Psi value for layer (default is 0)</span>
 <span class="sd">        exponent_threshold : float, optional</span>
 <span class="sd">            Prevent calculation of large exponents (default is 700)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thickness</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getThicknessInMetres</span><span class="p">()</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
@@ -1361,8 +1359,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="SemiInfiniteLayer.calculate_propagation_exponents"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SemiInfiniteLayer.calculate_propagation_exponents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_propagation_exponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Routine to calculate the propagation exponents</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the propagation exponents.</span>
 
 <span class="sd">        For the semi-infinite case the propagation exponents are set to 0</span>
 
@@ -1374,13 +1371,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">propagation_exponents</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="SemiInfiniteLayer.calculate_propagation_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SemiInfiniteLayer.calculate_propagation_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_propagation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Routine to calculate the matrix Ki (or Pi) depending on the paper.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the matrix Ki (or Pi) depending on the paper.</span>
 
 <span class="sd">        This routine makes the material transparent. It is therefore suitable for </span>
 <span class="sd">        a semi-infinite layer.</span>
@@ -1393,21 +1390,19 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Ki : tensor (3x3)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_propagation_exponents</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="n">Ki</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">)</span>
-        <span class="k">return</span>  <span class="n">Ki</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">clongdouble</span><span class="p">)</span></div></div>
         
 <div class="viewcode-block" id="IncoherentIntensityLayer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentIntensityLayer">[docs]</a><span class="k">class</span> <span class="nc">IncoherentIntensityLayer</span><span class="p">(</span><span class="n">CoherentLayer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define an incoherent layer using intensity transfer matrices.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define an incoherent layer using intensity transfer matrices.</span>
 
 <span class="sd">    Inherits from the CoherentLayer class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="mi">700</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise an instance of an incoherent layer based on intensities.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an instance of an incoherent layer based on intensities.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1421,6 +1416,7 @@
 <span class="sd">            Psi value for layer (default is 0)</span>
 <span class="sd">        exponent_threshold : float, optional</span>
 <span class="sd">            Prevent calculation of large exponents (default is 700)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thickness</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getThicknessInMetres</span><span class="p">()</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
@@ -1433,15 +1429,13 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="IncoherentAveragePhaseLayer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentAveragePhaseLayer">[docs]</a><span class="k">class</span> <span class="nc">IncoherentAveragePhaseLayer</span><span class="p">(</span><span class="n">CoherentLayer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define an incoherent layer using an average phase in the propagation matrix.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define an incoherent layer using an average phase in the propagation matrix.</span>
 
 <span class="sd">    Inherits from CoherentLayer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">percentage_incoherence</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">number_of_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="mi">700</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise an instance of an incoherent layer, which uses phase averaging.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an instance of an incoherent layer, which uses phase averaging.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1459,6 +1453,7 @@
 <span class="sd">            The percentage of incoherence to be incorporated into the calculation</span>
 <span class="sd">        number_of_samples : int, optional</span>
 <span class="sd">            The number of samples to be used in averages (default is 4)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thickness</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getThicknessInMetres</span><span class="p">()</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
@@ -1472,8 +1467,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="IncoherentAveragePhaseLayer.calculate_propagation_exponents"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentAveragePhaseLayer.calculate_propagation_exponents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_propagation_exponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Routine to calculate the matrix Ki (or Pi depending on the paper).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the matrix Ki (or Pi depending on the paper).</span>
 
 <span class="sd">        A phase shift is included in the calculation.</span>
 <span class="sd">        The phase shift can vary between 0 and :math:`\pi`.</span>
@@ -1486,6 +1480,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">ii</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -1496,15 +1491,13 @@
         <span class="k">return</span></div></div>
 
 <div class="viewcode-block" id="IncoherentPhaseLayer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentPhaseLayer">[docs]</a><span class="k">class</span> <span class="nc">IncoherentPhaseLayer</span><span class="p">(</span><span class="n">CoherentLayer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define an incoherent layer using Arteaga&#39;s modification of the phase in the propagation matrix.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define an incoherent layer using Arteaga&#39;s modification of the phase in the propagation matrix.</span>
 
 <span class="sd">    Inherits from CoherentLayer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="mi">700</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise an instance of an incoherent layer, which uses Arteaga&#39;s method.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an instance of an incoherent layer, which uses Arteaga&#39;s method.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1518,6 +1511,7 @@
 <span class="sd">            Psi value for layer (default is 0)</span>
 <span class="sd">        exponent_threshold : float, optional</span>
 <span class="sd">            Prevent calculation of large exponents (default is 700)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thickness</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getThicknessInMetres</span><span class="p">()</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
@@ -1530,8 +1524,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="IncoherentPhaseLayer.calculate_propagation_exponents"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentPhaseLayer.calculate_propagation_exponents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_propagation_exponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Routine to calculate the matrix Ki (or Pi) depending on the paper.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the matrix Ki (or Pi) depending on the paper.</span>
 
 <span class="sd">        This routine is taken from Arteaga et al., Thin Solid Films 2014, 571, 701-705.</span>
 <span class="sd">        The propagation matrix is suitable for incoherent films. In Passler, the ordering is:</span>
@@ -1566,15 +1559,13 @@
         <span class="k">return</span></div></div>
 
 <div class="viewcode-block" id="IncoherentThickLayer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentThickLayer">[docs]</a><span class="k">class</span> <span class="nc">IncoherentThickLayer</span><span class="p">(</span><span class="n">CoherentLayer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define an incoherent layer using the thick slab approximation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define an incoherent layer using the thick slab approximation.</span>
 
 <span class="sd">    Inherits from CoherentLayer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="mi">700</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise an instance of an incoherent layer, which uses the thick slab approximation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an instance of an incoherent layer, which uses the thick slab approximation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1588,6 +1579,7 @@
 <span class="sd">            Psi value for layer (default is 0)</span>
 <span class="sd">        exponent_threshold : float, optional</span>
 <span class="sd">            Prevent calculation of large exponents (default is 700)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thickness</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getThicknessInMetres</span><span class="p">()</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
@@ -1600,8 +1592,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="IncoherentThickLayer.calculate_propagation_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentThickLayer.calculate_propagation_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_propagation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Routine to calculate the matrix Ki using the thick slab approximation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Routine to calculate the matrix Ki using the thick slab approximation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1611,6 +1602,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Ki</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">calculate_propagation_matrix</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="n">Ki</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -1618,8 +1610,7 @@
         <span class="k">return</span>  <span class="n">Ki</span></div>
 
 <div class="viewcode-block" id="IncoherentThickLayer.calculate_scattering_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentThickLayer.calculate_scattering_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_scattering_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the scattering matrix of this layer with layer b.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the scattering matrix of this layer with layer b.</span>
 
 <span class="sd">        This method calculates the scattering matrix based on equations 18-21 in the PyLama paper.</span>
 <span class="sd">        However, it&#39;s important to note that the definition of a scattering matrix used here </span>
@@ -1628,10 +1619,12 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        b : pyGTM layer</span>
+<span class="sd">            The second layer</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># First calculate the scattering matrix as usual</span>
         <span class="c1"># NB. the propagation matrix has zero&#39;s in the s/p backward scattering</span>
@@ -1648,8 +1641,7 @@
 
 
 <div class="viewcode-block" id="System"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System">[docs]</a><span class="k">class</span> <span class="nc">System</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    System class. An instance is an optical system with substrate, superstrate, and layers.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;System class. An instance is an optical system with substrate, superstrate, and layers.</span>
 <span class="sd">  </span>
 <span class="sd">     Derived classes used by PDielec are:</span>
 
@@ -1672,10 +1664,11 @@
 <span class="sd">    Layers can be added and removed (not inserted).</span>
 
 <span class="sd">    The whole system&#39;s transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">substrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="p">[]):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Initialise the system for a transfer matrix calculation.</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">substrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the system for a transfer matrix calculation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1683,10 +1676,12 @@
 <span class="sd">            The substrate should be semi-infinite, default is None</span>
 <span class="sd">        superstrate : pyGTM layer, optional</span>
 <span class="sd">            The superstrate must be semi-infinite, default is None</span>
-<span class="sd">        layers : list of pyGTM layers, default is an empty list</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        layers : list of pyGTM layers</span>
+<span class="sd">             default is an empty list</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">=</span><span class="p">[]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">layers</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">layers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span>
 
         <span class="c1">## system transfer matrix</span>
@@ -1703,8 +1698,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">=</span><span class="n">Layer</span><span class="p">()</span> <span class="c1">## should default to 1µm of vacuum</span>
 
 <div class="viewcode-block" id="System.set_substrate"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.set_substrate">[docs]</a>    <span class="k">def</span> <span class="nf">set_substrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the substrate.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the substrate.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1719,8 +1713,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">=</span><span class="n">sub</span></div>
 
 <div class="viewcode-block" id="System.set_superstrate"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.set_superstrate">[docs]</a>    <span class="k">def</span> <span class="nf">set_superstrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sup</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the superstrate</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the superstrate.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1735,8 +1728,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">=</span><span class="n">sup</span></div>
 
 <div class="viewcode-block" id="System.get_all_layers"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.get_all_layers">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the list of all layers in the system.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the list of all layers in the system.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1746,12 +1738,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span></div>
 
 <div class="viewcode-block" id="System.get_layer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.get_layer">[docs]</a>    <span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pos</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the layer at a given position.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the layer at a given position.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1762,12 +1754,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        self.layers[pos] : Layer</span>
 <span class="sd">            The layer at the position `pos`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="System.get_superstrate"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.get_superstrate">[docs]</a>    <span class="k">def</span> <span class="nf">get_superstrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the System&#39;s superstrate.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the System&#39;s superstrate.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1777,12 +1769,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        self.superstrate : Layer</span>
 <span class="sd">            The system superstrate.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span></div>
 
 <div class="viewcode-block" id="System.get_substrate"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.get_substrate">[docs]</a>    <span class="k">def</span> <span class="nf">get_substrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the System&#39;s substrate.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the System&#39;s substrate.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1792,12 +1784,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        self.substrate : Layer</span>
 <span class="sd">            The system substrate.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span></div>
 
 <div class="viewcode-block" id="System.add_layer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.add_layer">[docs]</a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a layer instance.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a layer instance.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1816,12 +1808,12 @@
 <span class="sd">        Note that this function adds a reference to `layer` to the list.</span>
 <span class="sd">        If you are adding the same layer several times, be aware that if you</span>
 <span class="sd">        change something for one of them, it changes for all of them.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="System.del_layer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.del_layer">[docs]</a>    <span class="k">def</span> <span class="nf">del_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pos</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove a layer at given position. Does nothing for invalid position.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove a layer at given position. Does nothing for invalid position.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1836,11 +1828,10 @@
         <span class="k">if</span> <span class="n">pos</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrong position given. No layer deleted&#39;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wrong position given. No layer deleted&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="System.initialize_sys"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.initialize_sys">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_sys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the values of epsilon at the given frequency in all the layers.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the values of epsilon at the given frequency in all the layers.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1855,6 +1846,7 @@
 <span class="sd">        -----</span>
 <span class="sd">        This function allows to define the in-plane wavevector (:math:`zeta`)</span>
 <span class="sd">        outside of the class, and thus to explore also guided modes of the system.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">calculate_epsilon</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">calculate_epsilon</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -1862,8 +1854,8 @@
             <span class="n">li</span><span class="o">.</span><span class="n">calculate_epsilon</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="System.calculate_GammaStar"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.calculate_GammaStar">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_GammaStar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the whole system&#39;s transfer matrix.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the whole system&#39;s transfer matrix.</span>
+
 <span class="sd">        If one layer is incoherent then intensities rather than amplitudes are used</span>
 
 <span class="sd">        Parameters</span>
@@ -1877,6 +1869,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        GammaStar : complex ndarray</span>
 <span class="sd">            4x4 complex matrix representing the system transfer matrix :math:`\Gamma^{*}`</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">A_super</span><span class="p">,</span> <span class="n">K_super</span><span class="p">,</span> <span class="n">A_inv_super</span><span class="p">,</span> <span class="n">T_super</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">update_tm</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">)</span>
         <span class="n">A_sub</span><span class="p">,</span> <span class="n">K_sub</span><span class="p">,</span> <span class="n">A_inv_sub</span><span class="p">,</span> <span class="n">T_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">update_tm</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">)</span>
@@ -1921,8 +1914,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GammaStar</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="System.calculate_r_t"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.calculate_r_t">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_r_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1949,6 +1941,7 @@
 <span class="sd">        - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well defined. The intensity reflection coefficient is also correct. However, the intensity transmission coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity coefficients.</span>
 
 <span class="sd">        Note also the different ordering of the coefficients, for consistency with Passler&#39;s matlab code.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">shift</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">min</span>
         <span class="c1">#</span>
@@ -2036,8 +2029,7 @@
         <span class="k">return</span> <span class="n">r_out</span><span class="p">,</span> <span class="n">R_out</span><span class="p">,</span> <span class="n">t_out</span><span class="p">,</span> <span class="n">T_out</span></div>
 
 <div class="viewcode-block" id="System.overflowErrors"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.overflowErrors">[docs]</a>    <span class="k">def</span> <span class="nf">overflowErrors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Return the total number of overflow errors encountered.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the total number of overflow errors encountered.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2047,7 +2039,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">            The total number of overflow errors encountered.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">largest_exponent</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
@@ -2056,15 +2049,14 @@
         <span class="k">return</span> <span class="n">count</span><span class="p">,</span><span class="n">largest_exponent</span></div></div>
 
 <div class="viewcode-block" id="TransferMatrixSystem"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.TransferMatrixSystem">[docs]</a><span class="k">class</span> <span class="nc">TransferMatrixSystem</span><span class="p">(</span><span class="n">System</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define a system of layers which is described by a Transfer Matrix method.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define a system of layers which is described by a Transfer Matrix method.</span>
 <span class="sd">    </span>
 <span class="sd">    This is basically a place holder for the original pyGTM methods and it is used</span>
 <span class="sd">    to distinguish itself from a system which uses the scattering matrix method</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">substrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="p">[]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a new instance of the system with optional substrate, superstrate, and layers.</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">substrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new instance of the system with optional substrate, superstrate, and layers.</span>
 
 <span class="sd">        Use for transfer matrix method calculations using the original pyGTM methods</span>
 
@@ -2082,15 +2074,14 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScatteringMatrixSystem"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.ScatteringMatrixSystem">[docs]</a><span class="k">class</span> <span class="nc">ScatteringMatrixSystem</span><span class="p">(</span><span class="n">System</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Define a system of layers which is described by a Scattering Matrix method.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define a system of layers which is described by a Scattering Matrix method.</span>
 <span class="sd">    </span>
 <span class="sd">    This implements additional routines needed for the scattering matrix method</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">substrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="p">[]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a new instance of the System class suitable for scattering matrix calculations.</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">substrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new instance of the System class suitable for scattering matrix calculations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2100,13 +2091,13 @@
 <span class="sd">            The superstrate component of the system. The default is None.</span>
 <span class="sd">        layers : list, optional</span>
 <span class="sd">            A list representing the layers in the system. Defaults to an empty list.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">System</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">substrate</span><span class="p">,</span> <span class="n">superstrate</span><span class="p">,</span> <span class="n">layers</span><span class="p">)</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="ScatteringMatrixSystem.calculate_scattering_matrices"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.ScatteringMatrixSystem.calculate_scattering_matrices">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_scattering_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the scattering matrices in every layer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the scattering matrices in every layer.</span>
 
 <span class="sd">        Loop through all the layers calculating the scattering matrix of this layer with the next.</span>
 <span class="sd">        Care is taken when dealing with the superstrate and the substrate</span>
@@ -2123,7 +2114,8 @@
 <span class="sd">        ----</span>
 <span class="sd">        The scattering matrix is stored as an attribute </span>
 <span class="sd">        If the layer system is changed in anyway all the scattering matrices must be recomputed</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># First the superstrate with the first layer in the device</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">calculate_scattering_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="p">)</span>
@@ -2142,8 +2134,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScatteringMatrixSystem.calculate_GammaStar"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.ScatteringMatrixSystem.calculate_GammaStar">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_GammaStar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the whole system&#39;s scattering matrix.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the whole system&#39;s scattering matrix.</span>
 
 <span class="sd">        This replaces the equivalent routine used in the transfer matrix method.</span>
 
@@ -2158,6 +2149,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        Stotal : ndarray</span>
 <span class="sd">            System scattering matrix :math:`S`</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Use the super class to calculate GammaStar</span>
         <span class="c1">#super().calculate_GammaStar(f,zeta_sys)</span>
@@ -2176,8 +2168,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Stotal</span></div>
 
 <div class="viewcode-block" id="ScatteringMatrixSystem.calculate_r_t"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.ScatteringMatrixSystem.calculate_r_t">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_r_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the reflectance and transmittance coefficients using scattering matrix information</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the reflectance and transmittance coefficients using scattering matrix information.</span>
 
 <span class="sd">        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.</span>
 
@@ -2196,6 +2187,7 @@
 <span class="sd">            Complex *field* transmission coefficients (t=([tpp, tps, tsp, tss])).</span>
 <span class="sd">        T_out : array_like, shape (4,)</span>
 <span class="sd">            Real *intensity* transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Extract the scattering matrix</span>
         <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Stotal</span><span class="o">.</span><span class="n">S</span>
@@ -2258,9 +2250,8 @@
 
         <span class="k">return</span> <span class="n">r_out</span><span class="p">,</span> <span class="n">R_out</span><span class="p">,</span> <span class="n">t_out</span><span class="p">,</span> <span class="n">T_out</span></div></div>
 
-<div class="viewcode-block" id="SMatrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SMatrix">[docs]</a><span class="k">class</span> <span class="nc">SMatrix</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for storing and manipulating scattering matrices.</span>
+<div class="viewcode-block" id="SMatrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SMatrix">[docs]</a><span class="k">class</span> <span class="nc">SMatrix</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for storing and manipulating scattering matrices.</span>
 
 <span class="sd">    S-matrices are square matrices used in physics and engineering to describe the </span>
 <span class="sd">    scattering and reflection of waves or particles. They are especially useful in the</span>
@@ -2302,16 +2293,18 @@
 <span class="sd">    The Redheffer star product is particularly useful for cascading two-port networks in</span>
 <span class="sd">    microwave engineering and quantum physics. It allows for the efficient calculation of</span>
 <span class="sd">    the overall scattering matrix of the combined system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Class to store a scattering matrix and to allow multiplication of matrices.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a class to store a scattering matrix and to allow multiplication of matrices.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        S : tensor (4x4)</span>
 <span class="sd">            A np.darray 4x4 tensor used to initialise the scattering matrix</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">S</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unitMatrix</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2323,8 +2316,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="SMatrix.unitMatrix"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SMatrix.unitMatrix">[docs]</a>    <span class="k">def</span> <span class="nf">unitMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reset the scattering parameters to form a unit matrix.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the scattering parameters to form a unit matrix.</span>
 
 <span class="sd">        Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11 and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the scattering parameters through `calculateS`.</span>
 
@@ -2339,17 +2331,17 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method is typically used to initialize or reset the scattering parameters in a two-port network representation to a known state before performing further operations or calculations.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">S11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">S22</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">S21</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">S12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S21</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="mi">2</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculateS</span><span class="p">()</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="SMatrix.redheffer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SMatrix.redheffer">[docs]</a>    <span class="k">def</span> <span class="nf">redheffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Routine to calculate the product of S-matrices.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the product of S-matrices.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2360,7 +2352,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        Sab : ScatteringMatrix</span>
 <span class="sd">            The product of Sa and Sb</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="c1"># If b is none then the S-matrix was not initialised (could be the substrate)</span>
         <span class="k">if</span> <span class="n">b</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2378,8 +2371,7 @@
         <span class="k">return</span> <span class="n">Sab</span></div>
 
 <div class="viewcode-block" id="SMatrix.calculateS"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SMatrix.calculateS">[docs]</a>    <span class="k">def</span> <span class="nf">calculateS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate and assign the scattering parameter matrix, S</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate and assign the scattering parameter matrix, S.</span>
 
 <span class="sd">        Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:</span>
 

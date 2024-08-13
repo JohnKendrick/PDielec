@@ -296,8 +296,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.UnitCell.convert_length_units" title="PDielec.UnitCell.convert_length_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_length_units</span></code></a>(value, units_in, units_out)</p></td>
-<td><p><p>&quot;</p>
-</p></td>
+<td><p>&quot;Convert between different length units.</p></td>
 </tr>
 </tbody>
 </table>
@@ -340,11 +339,11 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell._calculate_reciprocal_lattice">
 <span class="sig-name descname"><span class="pre">_calculate_reciprocal_lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell._calculate_reciprocal_lattice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell._calculate_reciprocal_lattice" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the reciprocal lattice</p>
+<dd><p>Calculate the reciprocal lattice.</p>
 <section id="id1">
 <h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>3x3 list of floats</dt><dd><p>Lattice as [a, b, c] where a/b/c are [x,y,z]</p>
+<dt>lattice<span class="classifier">3x3 list of floats</span></dt><dd><p>Lattice as [a, b, c] where a/b/c are [x,y,z]</p>
 </dd>
 </dl>
 </section>
@@ -407,7 +406,7 @@ If not specified, ‘xyz’ is used as default.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.calculate_molecular_contents">
 <span class="sig-name descname"><span class="pre">calculate_molecular_contents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.calculate_molecular_contents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.calculate_molecular_contents" title="Permalink to this definition">#</a></dt>
-<dd><p>Finds whole molecules in the unit cell.</p>
+<dd><p>Find whole molecules in the unit cell.</p>
 <p>Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
 A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
 The routine returns the new unit cell, the number of molecules and the old ordering of the atoms.</p>
@@ -435,22 +434,22 @@ The routine returns the new unit cell, the number of molecules and the old order
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.convert_abc_to_unitcell">
-<span class="sig-name descname"><span class="pre">convert_abc_to_unitcell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_degs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_degs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_degs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.convert_abc_to_unitcell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.convert_abc_to_unitcell" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert a, b, c, alpha, beta, gamma to a unit cell</p>
+<span class="sig-name descname"><span class="pre">convert_abc_to_unitcell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.convert_abc_to_unitcell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.convert_abc_to_unitcell" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a, b, c, alpha, beta, gamma to a unit cell.</p>
 <section id="id9">
 <h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>a<span class="classifier">type</span></dt><dd><p>Description of parameter <cite>a</cite>.</p>
+<dt>a<span class="classifier">type</span></dt><dd><p>Unit cell <cite>a</cite>.</p>
 </dd>
-<dt>b<span class="classifier">type</span></dt><dd><p>Description of parameter <cite>b</cite>.</p>
+<dt>b<span class="classifier">type</span></dt><dd><p>Unit cell <cite>b</cite>.</p>
 </dd>
-<dt>c<span class="classifier">type</span></dt><dd><p>Description of parameter <cite>c</cite>.</p>
+<dt>c<span class="classifier">type</span></dt><dd><p>Unit cell <cite>c</cite>.</p>
 </dd>
-<dt>alpha<span class="classifier">type</span></dt><dd><p>Description of parameter <cite>alpha</cite>.</p>
+<dt>alpha<span class="classifier">type</span></dt><dd><p>Unit cell alpha in degrees.</p>
 </dd>
-<dt>beta<span class="classifier">type</span></dt><dd><p>Description of parameter <cite>beta</cite>.</p>
+<dt>beta<span class="classifier">type</span></dt><dd><p>Unit cell beta` in degrees.</p>
 </dd>
-<dt>gamma<span class="classifier">type</span></dt><dd><p>Description of parameter <cite>gamma</cite>.</p>
+<dt>gamma<span class="classifier">type</span></dt><dd><p>Unit cell gamma` in degrees.</p>
 </dd>
 </dl>
 </section>
@@ -469,7 +468,10 @@ The routine returns the new unit cell, the number of molecules and the old order
 <dd><p>Convert abc coordinates to xyz coordinates.</p>
 <section id="id11">
 <h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
-<p>abc : list of fractional coordinates</p>
+<dl class="simple">
+<dt>abc<span class="classifier">list 3 floats</span></dt><dd><p>List of fractional coordinates</p>
+</dd>
+</dl>
 </section>
 <section id="id12">
 <h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
@@ -483,7 +485,10 @@ The routine returns the new unit cell, the number of molecules and the old order
 <dd><p>Convert hkl miller indices to xyz coordinates.</p>
 <section id="id13">
 <h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
-<p>hkl : list of hkl coordinates</p>
+<dl class="simple">
+<dt>hkl<span class="classifier">list 3 ints</span></dt><dd><p>List if hkls</p>
+</dd>
+</dl>
 </section>
 <section id="id14">
 <h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
@@ -516,11 +521,17 @@ The routine returns the new unit cell, the number of molecules and the old order
 <dd><p>Convert xyz coordinates to abc lattice coordinates.</p>
 <section id="id17">
 <h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
-<p>xyz: list of coordinates</p>
+<dl class="simple">
+<dt>xyz: list of coordinates</dt><dd><p>List of coordinates in xyz space</p>
+</dd>
+</dl>
 </section>
 <section id="id18">
 <h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
-<p>abc : list of fractional coordinates</p>
+<dl class="simple">
+<dt>abc<span class="classifier">list of 3 floats</span></dt><dd><p>List of fractional coordinates</p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
@@ -530,7 +541,12 @@ The routine returns the new unit cell, the number of molecules and the old order
 <dd><p>Find the space group symmetry of the unit cell.</p>
 <section id="id19">
 <h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
-<p>None</p>
+<dl class="simple">
+<dt>symprec<span class="classifier">float</span></dt><dd><p>Determine the accuracy of the coordinates for symmetry determination</p>
+</dd>
+<dt>angle_tolerance<span class="classifier">float</span></dt><dd><p>Determine the accuracy of the angles for symmetry determination</p>
+</dd>
+</dl>
 </section>
 <section id="id20">
 <h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
@@ -595,7 +611,7 @@ The routine returns the new unit cell, the number of molecules and the old order
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.getVolume">
 <span class="sig-name descname"><span class="pre">getVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.getVolume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.getVolume" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the volume</p>
+<dd><p>Calculate the volume.</p>
 <section id="id25">
 <h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -612,7 +628,7 @@ The routine returns the new unit cell, the number of molecules and the old order
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_atom_labels">
 <span class="sig-name descname"><span class="pre">get_atom_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_atom_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_atom_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>get the atom labels for a molecule.</p>
+<dd><p>Get the atom labels for a molecule.</p>
 <p>If the labels have not been set, then a list of labels is created from the element names</p>
 <section id="id27">
 <h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
@@ -664,7 +680,7 @@ The routine returns the new unit cell, the number of molecules and the old order
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_bond_angles">
 <span class="sig-name descname"><span class="pre">get_bond_angles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_bond_angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_bond_angles" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a list of atoms that form bonded angles for the unit cell</p>
+<dd><p>Return a list of atoms that form bonded angles for the unit cell.</p>
 <p>It also returns a list of the angles in degrees</p>
 <section id="id33">
 <h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
@@ -683,7 +699,7 @@ list of angles is a list of floats</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_bonds">
 <span class="sig-name descname"><span class="pre">get_bonds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_bonds" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a list of bonds for the unit cell</p>
+<dd><p>Return a list of bonds for the unit cell.</p>
 <p>It also returns a list of the bond lengths in angstrom</p>
 <section id="id35">
 <h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
@@ -702,7 +718,7 @@ list of bond lengths is a list of floats</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_torsions">
 <span class="sig-name descname"><span class="pre">get_torsions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_torsions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_torsions" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a list of atoms that form torsion angles for the unit cell</p>
+<dd><p>Return a list of atoms that form torsion angles for the unit cell.</p>
 <p>It also returns a list of the angles in degrees</p>
 <section id="id37">
 <h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
@@ -721,7 +737,7 @@ list of angles is a list of floats</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.print" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints the details of the given unit cell.</p>
+<dd><p>Print the details of the given unit cell.</p>
 <p>This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.</p>
 <section id="id39">
 <h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
@@ -740,7 +756,7 @@ list of angles is a list of floats</p>
 <section id="id41">
 <h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>atom_labels<span class="classifier">list</span></dt><dd><p>A list containing the labels of atoms.</p>
+<dt>atom_labels<span class="classifier">list of strings</span></dt><dd><p>A list containing the labels of atoms.</p>
 </dd>
 </dl>
 </section>
@@ -776,7 +792,7 @@ is appended to the <cite>self.atom_labels</cite> attribute.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.set_bonds">
 <span class="sig-name descname"><span class="pre">set_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bonds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.set_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.set_bonds" title="Permalink to this definition">#</a></dt>
-<dd><p>Define a list of bonds for the unit cell</p>
+<dd><p>Define a list of bonds for the unit cell.</p>
 <p>Some checking is performed.  If the bonds has duplicates but in a different order, then they are removed.</p>
 <section id="id46">
 <h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
@@ -820,7 +836,10 @@ is appended to the <cite>self.atom_labels</cite> attribute.</p>
 <dd><p>Set the fractional coordinates and calculate the xyz coordinates.</p>
 <section id="id51">
 <h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
-<p>coords : a list of fractional coordinates</p>
+<dl class="simple">
+<dt>coords<span class="classifier">a list 3 floats</span></dt><dd><p>Fractional coordinates</p>
+</dd>
+</dl>
 </section>
 <section id="id52">
 <h5>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
@@ -834,7 +853,10 @@ is appended to the <cite>self.atom_labels</cite> attribute.</p>
 <dd><p>Define a list of molecules, each molecule is a list of atom coordinates.</p>
 <section id="id53">
 <h5>Parameters<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
-<p>None</p>
+<dl class="simple">
+<dt>molecules<span class="classifier">list of 3 floats</span></dt><dd><p>A list of molecules</p>
+</dd>
+</dl>
 </section>
 <section id="id54">
 <h5>Returns<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
@@ -849,7 +871,7 @@ is appended to the <cite>self.atom_labels</cite> attribute.</p>
 <section id="id55">
 <h5>Parameters<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>coords<span class="classifier">a list of xyz coordinates</span></dt><dd><p>A list of xyz coordinates, the unit of length must agree with the lattice</p>
+<dt>coords<span class="classifier">list of 3 floats</span></dt><dd><p>A list of xyz coordinates, the unit of length must agree with the lattice</p>
 </dd>
 <dt>units<span class="classifier">str</span></dt><dd><p>A unit of length for the input values.  The default is Angstrom.</p>
 </dd>
@@ -863,14 +885,12 @@ is appended to the <cite>self.atom_labels</cite> attribute.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.write_cif">
-<span class="sig-name descname"><span class="pre">write_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.write_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.write_cif" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">write_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.write_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.write_cif" title="Permalink to this definition">#</a></dt>
 <dd><p>Write the crystallographic information file (CIF) representation of a structure.</p>
 <section id="id57">
 <h5>Parameters<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>filename<span class="classifier">str, optional</span></dt><dd><p>The name of the file to be written. If not provided, the CIF data is printed to stdout.</p>
-</dd>
-<dt>file_<span class="classifier">object, optional</span></dt><dd><p>An output stream object. Default is sys.stdout.</p>
 </dd>
 </dl>
 </section>
@@ -905,18 +925,17 @@ it will be printed to standard output.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.UnitCell.convert_length_units">
 <span class="sig-prename descclassname"><span class="pre">PDielec.UnitCell.</span></span><span class="sig-name descname"><span class="pre">convert_length_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#convert_length_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.convert_length_units" title="Permalink to this definition">#</a></dt>
-<dd><p>”
-Convert between different length units</p>
+<dd><p>“Convert between different length units.</p>
 <p>The ‘internal’ unit is taken to be the Angstrom so units are relative to the Angstrom
 The unit strings are made lowercase, so case should be irrelevant</p>
 <section id="id61">
 <h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
+<dt>value<span class="classifier">float or list of floats or a numpy array</span></dt><dd><p>The value(s) for which the conversion is to be made.</p>
+</dd>
 <dt>units_in<span class="classifier">str</span></dt><dd><p>The units of the input value(s). Can be one of ‘</p>
 </dd>
 <dt>units_out<span class="classifier">str</span></dt><dd><p>The units of the output value(s). Must be one of ‘a.u. au bohr ang angs angstrom nm um mm cm m’</p>
-</dd>
-<dt>input_value<span class="classifier">float or list of floats or a numpy array</span></dt><dd><p>The value(s) for which the conversion is to be made.</p>
 </dd>
 </dl>
 </section>

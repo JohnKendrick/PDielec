@@ -5,8 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   PyMieScatt package
-   ------------------
+   PyMieScatt package.
 
    Routines taken from PyMieScatt 
    http://pymiescatt.readthedocs.io/en/latest
@@ -136,6 +135,7 @@ Attributes
      is not detailed here.
 
 
+
 .. py:function:: AutoMie_ab(m, x)
 
    Calculate the Mie scattering coefficients a and b.
@@ -155,6 +155,7 @@ Attributes
    Notes
    -----
    This function decides to use the LowFrequencyMie_ab() function for calculations if the size parameter `x` is below a certain threshold (`crossover`), otherwise it uses the Mie_ab() function for higher values of `x`. The `crossover` value must be predefined or accessible in the function's scope.
+
 
 
 .. py:function:: LowFrequencyMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False)
@@ -198,6 +199,7 @@ Attributes
    (output values vary)
 
 
+
 .. py:function:: LowFrequencyMie_ab(m, x)
 
    Calculate the low-frequency Mie scattering coefficients.
@@ -231,6 +233,7 @@ Attributes
    This function does not explicitly raise any exceptions, but note that it relies on 
    numpy for mathematical operations, so errors could be raised by numpy operations due 
    to invalid inputs.
+
 
 
 .. py:function:: MatrixElements(m, wavelength, diameter, mu, nMedium=1.0)
@@ -269,9 +272,10 @@ Attributes
    >>> S11, S12, S33, S34 = MatrixElements(m, wavelength, diameter, mu)
 
 
+
 .. py:function:: MiePiTau(mu, nmax)
 
-   Calculate the Mie \(\pi\) and \(    au\) functions for given argument and maximum order.
+   Calculate the Mie \(\pi\) and \(        au\) functions for given argument and maximum order.
 
    Parameters
    ----------
@@ -283,11 +287,11 @@ Attributes
    Returns
    -------
    tuple
-       A tuple containing two numpy arrays. The first array corresponds to the \(\pi\) values and the second to the \( au\) values for the orders from 0 to \(nmax-1\).
+       A tuple containing two numpy arrays. The first array corresponds to the \(\pi\) values and the second to the \(   au\) values for the orders from 0 to \(nmax-1\).
 
    Notes
    -----
-   The Mie \(\pi\) and \(      au\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
+   The Mie \(\pi\) and \(        au\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
 
    Examples
    --------
@@ -295,6 +299,7 @@ Attributes
    >>> pi, tau = MiePiTau(mu, nmax)
    >>> print(pi)
    >>> print(tau)
+
 
 
 .. py:function:: MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False)
@@ -348,6 +353,7 @@ Attributes
 
    >>> MieQ(1.33 + 0.001j, 0.55, 1.0, nMedium=1.0, asDict=True, asCrossSection=True)
    {'Cext': 0.8, 'Csca': 0.2, 'Cabs': 0.6, 'g': 0.05, 'Cpr': 0.7, 'Cback': 0.02, 'Cratio': 0.1}
+
 
 
 .. py:function:: MieQ_withDiameterRange(m, wavelength, nMedium=1.0, diameterRange=(10, 1000), nd=1000, logD=False)
@@ -415,6 +421,7 @@ Attributes
    single particle diameter.
 
 
+
 .. py:function:: MieQ_withSizeParameterRange(m, nMedium=1.0, xRange=(1, 10), nx=1000, logX=False)
 
    Calculate optical properties over a range of size parameters using Mie theory.
@@ -455,8 +462,7 @@ Attributes
 
    Examples
    --------
-
-   ::
+     ::
 
        import numpy as np
        m = 1.59 + 0.005j  # Complex refractive index of the particle
@@ -537,6 +543,7 @@ Attributes
    >>> MieQ_withWavelengthRange(m=[1.5 + 0.1j, 1.6 + 0.1j], diameter=200, wavelengthRange=(100, 200), nw=2)
 
 
+
 .. py:function:: MieS1S2(m, x, mu)
 
    Calculate the scattering parameters S1 and S2 for Mie scattering.
@@ -557,7 +564,7 @@ Attributes
 
    Notes
    -----
-   This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \(a_n\) and \(b_n\), and the `MiePiTau` function to compute the angle-dependent functions \(\pi_n\) and \(    au_n\). The formulas for \(S_1\) and \(S_2\) involve sums over these coefficients weighted by \((2n+1)/(n(n+1))\), where \(n\) is the series index.
+   This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \(a_n\) and \(b_n\), and the `MiePiTau` function to compute the angle-dependent functions \(\pi_n\) and \(      au_n\). The formulas for \(S_1\) and \(S_2\) involve sums over these coefficients weighted by \((2n+1)/(n(n+1))\), where \(n\) is the series index.
 
    Examples
    --------
@@ -566,6 +573,7 @@ Attributes
    >>> mu = np.array([1.0, 0.5])  # Cosine of the scattering angles
    >>> S1, S2 = MieS1S2(m, x, mu)
    >>> print(S1, S2)
+
 
 
 .. py:function:: Mie_Lognormal(m, wavelength, geoStdDev, geoMean, numberOfParticles, nMedium=1.0, numberOfBins=10000, lower=1, upper=1000, gamma=[1], returnDistribution=False, decomposeMultimodal=False, asDict=False)
@@ -616,6 +624,7 @@ Attributes
    The function optionally warns the user if the specified particle size distribution may not be compact within the given interval or if there aren't enough parameters to fully specify each mode in the case of a multimodal distribution. This function is particularly useful in the analysis and simulation of light scattering by particles following a lognormal size distribution.
 
 
+
 .. py:function:: Mie_SD(m, wavelength, dp, ndp, nMedium=1.0, SMPS=True, interpolate=False, asDict=False)
 
    Calculate the Mie Scattering parameters based on a supplied size distribution.
@@ -663,6 +672,7 @@ Attributes
    >>> print(results['Bext'], results['Bsca'], results['Babs'])
 
 
+
 .. py:function:: Mie_ab(m, x)
 
    Compute the Mie scattering coefficients a_n and b_n.
@@ -695,6 +705,7 @@ Attributes
    ----------
    - Bohren, C. F., & Huffman, D. R. (1983). Absorption and Scattering of Light by Small Particles. Wiley.
    - Wiscombe, W. J. (1980). Improved Mie scattering algorithms. Applied Optics, 19(9), 1505.
+
 
 
 .. py:function:: Mie_cd(m, x)
@@ -737,6 +748,7 @@ Attributes
    >>> x = 2.5
    >>> cn, dn = Mie_cd(m, x)
    >>> print(cn, dn)
+
 
 
 .. py:function:: RayleighMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False)
@@ -786,6 +798,7 @@ Attributes
    {'Cext': cext, 'Csca': csca, 'Cabs': cabs, 'g': 0, 'Cpr': cpr, 'Cback': cback, 'Cratio': cratio}
 
 
+
 .. py:function:: SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None)
 
    Calculate the scattering function SD for given parameters and return the scattering intensities for left, right, and unpolarized light.
@@ -832,6 +845,7 @@ Attributes
    See Also
    --------
    ScatteringFunction : Another function (not detailed here) that is presumably used in this calculation for obtaining the scattering data based on the input parameters.
+
 
 
 .. py:function:: ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None)
@@ -892,6 +906,7 @@ Attributes
    >>> measure, SL, SR, SU = scattering
 
 
+
 .. py:function:: coerceDType(d)
 
    Convert input data to a NumPy array if not already one.
@@ -913,6 +928,7 @@ Attributes
 
    >>> coerceDType(np.array([1, 2, 3]))
    array([1, 2, 3])
+
 
 
 .. py:data:: crossover

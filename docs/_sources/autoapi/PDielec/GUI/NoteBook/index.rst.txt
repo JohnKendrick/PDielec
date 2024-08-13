@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   NoteBook module
+   NoteBook module.
 
 
 
@@ -22,12 +22,12 @@ Classes
 
 
 
-.. py:class:: NoteBook(parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario='powder', ncpus=0, threading=False)
+.. py:class:: NoteBook(parent, program, qm_program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario='powder', ncpus=0, threading=False)
 
 
    Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
 
-   A Qt widget that holds tabs for managing different aspects of a notebook-like interface. 
+   A Qt widget that holds tabs for managing different aspects of a notebook-like interface.
 
    This class manages a complex interface which includes a range of functionalities 
    such as handling various scenarios (e.g., Powder or SingleCrystal), managing computational 
@@ -41,6 +41,8 @@ Classes
        The parent widget.
    program : str
        Description or identifier of the program associated with the notebook.
+   qm_program : str
+       Description or identifier of the qm program associated with phonopy
    filename : str
        Name of the file, if any, associated with the notebook.
    spreadsheet : type
@@ -99,9 +101,10 @@ Classes
    overwriting : bool
        State indicating if overwriting files without prompt is enabled.
 
+
    .. py:method:: addScenario(scenarioType=None, copyFromIndex=-2)
 
-      Add a new scenario tab
+      Add a new scenario tab.
 
       If a copy is requested then copy the appropriate information into the new tab.
 
@@ -135,6 +138,7 @@ Classes
       None
 
 
+
    .. py:method:: deleteScenario(index)
 
       Delete a scenario from the scenarios list and update tabs accordingly.
@@ -156,6 +160,7 @@ Classes
       moves to the next available scenario. Otherwise, it selects the previous scenario.
 
 
+
    .. py:method:: keyPressEvent(e)
 
       Handle key press events for the application.
@@ -174,6 +179,7 @@ Classes
       This function checks for specific key combinations (Control + S, and Control + C) and performs actions accordingly:
       - Control + S: Calls the `print_settings` method.
       - Control + C: Prints a message and exits the program.
+
 
 
    .. py:method:: on_tabs_currentChanged(tabindex)
@@ -200,6 +206,7 @@ Classes
       - For scenario-specific tabs, which are dynamically added based on the number of scenarios, the function calculates the appropriate scenario index and triggers a refresh for the selected scenario.
 
 
+
    .. py:method:: openSpreadSheet(filename)
 
       Open or create a spreadsheet file.
@@ -220,6 +227,7 @@ Classes
       -----
       - The function relies on the 'SpreadSheetManager' class for handling spreadsheet operations.
       - The function raises no exceptions, but will print a message if the provided filename does not have a '.xlsx' extension.
+
 
 
    .. py:method:: open_excel_spreadsheet()
@@ -244,9 +252,10 @@ Classes
           - If the spreadsheet name is empty.
 
 
+
    .. py:method:: print_settings(filename=None)
 
-      Prints the current program settings to a file.
+      Print the current program settings to a file.
 
       Each tab in the notebook is processed in turn, including all the scenarios.
       This allows a script to be written which can be used to recall a configuration of the program.
@@ -262,9 +271,10 @@ Classes
       None
 
 
+
    .. py:method:: print_tab_settings(tab, title, fd, new_scenario=False)
 
-      Prints the configuration settings of a specified tab to a file descriptor.
+      Print the configuration settings of a specified tab to a file descriptor.
 
       Parameters
       ----------
@@ -290,6 +300,7 @@ Classes
       and formats string values and others appropriately for printing.
 
 
+
    .. py:method:: progressbars_add(bar)
 
       Add a progress bar to the list of progress bars.
@@ -310,6 +321,7 @@ Classes
       maximum value defined in `self.progressbar_maximum`.
 
 
+
    .. py:method:: progressbars_set_maximum(maximum)
 
       Set the maximum value for all progress bars in an object and reset their current status.
@@ -328,6 +340,7 @@ Classes
       This method sets the maximum value of all progress bars stored in the object's `progressbars` attribute. It also resets the progress to 0. 
 
 
+
    .. py:method:: progressbars_update(increment=1)
 
       Update the progress bars status by a specified increment.
@@ -344,9 +357,10 @@ Classes
       This method increments the progress bar status stored in `progressbar_status` by the specified `increment` amount. It then sets this updated value as the new value for all progress bars stored in the `progressbars` list attribute of the instance.
 
 
+
    .. py:method:: refresh(force=False)
 
-      Refreshes the current state, optionally forcing a refresh regardless of scripting constraints.
+      Refresh the current state, optionally forcing a refresh regardless of scripting constraints.
 
       Parameters
       ----------
@@ -360,6 +374,7 @@ Classes
       Notes
       -----
       This method initiates a refresh process on various components such as the main settings, scenarios, and several tabs including plotting, analysis, viewer, and fitter. It adjusts the active tab based on the current number of scenarios. If 'force' is set to True, the refresh process is executed disregarding any active scripting conditions.
+
 
 
    .. py:method:: requestRefresh()
@@ -380,7 +395,7 @@ Classes
 
    .. py:method:: startPool()
 
-      Initializes a pool of worker processes or threads for computation.
+      Initialize a pool of worker processes or threads for computation.
 
       This method initializes a pool based on the instance's specified number of CPUs and the threading model. It accesses a global debugger variable for potential debugging purposes.
 
@@ -398,6 +413,7 @@ Classes
       - The pool is stored in the instance's `pool` attribute.
       - The method uses a global variable `debugger` which should be defined elsewhere in the global scope for debugging purposes.
       - The number of CPUs (`ncpus`) and the threading model (`threading`) are not parameters of this method, but are expected to be attributes of the instance (`self`).
+
 
 
    .. py:method:: switchScenario(index, scenarioType=None)
@@ -450,6 +466,7 @@ Classes
       Notes
       -----
       This function assumes that the Excel spreadsheet is an attribute of the object this method belongs to. It attempts to write data to various tabs within the spreadsheet, namely 'mainTab', 'settingsTab', 'analysisTab', and 'plottingTab'. The method opens the spreadsheet, writes data to these tabs if the spreadsheet is not `None`, and then closes the spreadsheet. 
+
 
 
 

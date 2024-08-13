@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   vibAnalysis is a Python tool written by Filipe Teixeira the original is available on 
+   vibAnalysis is a Python tool written by Filipe Teixeira the original is available on
    github at https://github.com/teixeirafilipe/vibAnalysis.
 
    The package uses the Vibrational Mode Decomoposition method to describe the normal modes of a molecule.
@@ -157,7 +157,7 @@ Functions
 
 .. py:function:: VMARD(of, s)
 
-   Performs a Linear Decomposition of the vibrational modes 
+   Performs a Linear Decomposition of the vibrational modes
    using Bayesian regression with Automatic Relevance Determination
    over the internal coordinates stored in the system s.
    Inputs:
@@ -167,7 +167,7 @@ Functions
 
 .. py:function:: VMBLD(of, s)
 
-   Performs a Linear Decomposition of the vibrational modes 
+   Performs a Linear Decomposition of the vibrational modes
    over the internal coordinates stored in the system s using Bayesian 
    Ridge Regression.
    Inputs:
@@ -177,7 +177,7 @@ Functions
 
 .. py:function:: VMLD(of, s)
 
-   Performs a Linear Decomposition of the vibrational modes 
+   Performs a Linear Decomposition of the vibrational modes
    over the internal coordinates stored in the system s.
    Inputs:
    - of: handle for the output file
@@ -186,7 +186,7 @@ Functions
 
 .. py:function:: VMP(of, s)
 
-   Performs a simple projection of the normal modes 
+   Performs a simple projection of the normal modes
    over the internal coordinates S stored in system s. Other inputs:
    - of: handle for the output file (for logging)
 
@@ -199,12 +199,12 @@ Functions
 
 .. py:function:: animateIC(tfn, s, m, nsteps=50, damp=0.33)
 
-   displaces geo over internal coordinate m and punches a xyz file tfn
+   Displaces geo over internal coordinate m and punches a xyz file tfn
 
 
 .. py:function:: animateMode(tfn, s, m, nsteps=50, damp=0.33)
 
-   displaces geo over vibrational displacement m and punches a xyz file tfn
+   Displaces geo over vibrational displacement m and punches a xyz file tfn
 
 
 .. py:function:: bondLength(geo, bl)
@@ -218,14 +218,14 @@ Functions
 
 .. py:function:: makeIC(o, useric=[])
 
-   Automatically identifies internal coordinates using 
+   Automatically identifies internal coordinates using
    connectivity deduced from covalent radii and generates
    Wilson's S matrix for the specified geometry
 
 
 .. py:function:: modeStr(mode, symbs)
 
-   returns a formatted string describing mode
+   Returns a formatted string describing mode
 
 
 .. py:function:: oopAmp(geo, al, deg=False)

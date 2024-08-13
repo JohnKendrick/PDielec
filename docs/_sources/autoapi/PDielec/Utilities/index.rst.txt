@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Utility Functions
+   Utility Functions.
 
    A set of utility functions that may be used anywhere in the package.
 
@@ -51,9 +51,10 @@ Functions
    -----
    The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
 
+
    .. py:method:: print(*args, level=0)
 
-      Prints message if debugging level allows.
+      Print message if debugging level allows.
 
       Parameters
       ----------
@@ -67,6 +68,7 @@ Functions
       -----
       This method will only print the message if the instance's `debug` flag is True
       and the provided `level` is less than or equal to the instance's `level`.
+
 
 
    .. py:method:: state()
@@ -83,6 +85,7 @@ Functions
 
 
 
+
 .. py:function:: find_program_from_name(filename)
 
    Determine the simulation program from a given filename.
@@ -94,8 +97,9 @@ Functions
 
    Returns
    -------
-   str
-       A string representing the simulation program the file is associated with. Possible returns are 'phonopy', 'vasp', 'gulp', 'castep', 'abinit', 'qe', 'crystal', 'experiment', 'pdgui', or an empty string if the program cannot be determined.
+   (str1,str2)
+       A tuple of 2 strings, the first, str1, is the program name that was used to calculate the frequencies.
+       In the case of phonopy, the second string is the QM program that calculates the forces
 
    Notes
    -----
@@ -103,16 +107,16 @@ Functions
 
    Examples
    --------
-
    ::
 
        program = find_program_from_name('./data/structure.castep')
        print(program)
-       # Output: 'castep'
+       # Output: ("castep","")
 
        program = find_program_from_name('path/to/simulation/OUTCAR')
        print(program)
-       # Depends on the presence of 'phonopy.yaml', could be 'phonopy' or 'vasp'
+       # Output: ("phonopy","vasp")
+       # Depends on the presence of 'phonopy.yaml'
 
 
 
@@ -144,6 +148,7 @@ Functions
    --------
    >>> reader = get_reader("output.log", "castep", "")
    >>> reader = get_reader("output", "phonopy", "vasp")
+
 
 
 .. py:function:: pdgui_get_reader(program, names, qmprogram)
@@ -191,13 +196,17 @@ Functions
    >>> print(qm_reader)
 
 
+
 .. py:function:: printsp(name, matrix)
 
-   Utility routine for printing 4x4 matrices or 4 vectors.
+   Print 4x4 matrices or 4 vectors.
 
    Parameters
    ----------
-   None
+   name : string
+       The name of the matrix
+   matrix : 4x4 or 4 array
+       The matrix to be printed
 
    Returns
    -------
@@ -206,5 +215,6 @@ Functions
    Notes
    -----
    None
+
 
 

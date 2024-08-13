@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   PowderScenarioTab module
+   PowderScenarioTab module.
 
 
 
@@ -27,7 +27,7 @@ Classes
 
    Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
 
-   A class for managing the Powder Scenario Tab
+   A class for managing the Powder Scenario Tab.
 
    It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
    with additional features and settings pertinent to powder scenarios.
@@ -137,6 +137,7 @@ Classes
    refresh(force=False)
        Refresh the GUI interface with up to date values.
 
+
    .. py:method:: calculate(vs_cm1)
 
       Calculate the powder absorption for the range of frequencies in vs_cm1.
@@ -150,6 +151,7 @@ Classes
       -------
       array_like
           The calculated powder absorption for the given range of frequencies.
+
 
 
    .. py:method:: change_greyed_out()
@@ -175,6 +177,7 @@ Classes
       - If the particle shape is set to 'Ellipsoid', 'Plate', or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere', it disables these spinboxes.
 
 
+
    .. py:method:: crystal_density()
 
       Find the crystal density from the current reader and return the density.
@@ -185,7 +188,10 @@ Classes
           The crystal density.
 
 
+
    .. py:method:: get_result(vs_cm1, plot_type)
+
+      Return a result for plotting.
 
       Parameters
       ----------
@@ -199,6 +205,7 @@ Classes
       -------
       list
           A list of the required results.
+
 
 
    .. py:method:: get_results(vs_cm1)
@@ -218,6 +225,7 @@ Classes
       None
 
 
+
    .. py:method:: on_aoverb_sb_changed(value)
 
       Handle a change to the a/b ratio for an ellipsoid.
@@ -228,9 +236,10 @@ Classes
           The a/b ratio of the elllipsoid
 
 
+
    .. py:method:: on_atr_incident_ang_sb_changed(value)
 
-      Handles the update to the ATR incident angle situation.
+      Handle the update to the ATR incident angle situation.
 
       This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.
 
@@ -242,6 +251,7 @@ Classes
       Returns
       -------
       int
+
 
 
    .. py:method:: on_atr_index_sb_changed(value)
@@ -263,9 +273,10 @@ Classes
       - Marks the instance as requiring a refresh, possibly to update some UI elements or calculations.
 
 
+
    .. py:method:: on_atr_spolfrac_sb_changed(value)
 
-      Updates the ATR S polarisation fraction setting and marks refresh as required.
+      Update the ATR S polarisation fraction setting and request a refresh as required.
 
       Parameters
       ----------
@@ -280,6 +291,7 @@ Classes
       -----
       - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S polarisation fraction'.
       - The refresh flag `self.refreshRequired` is set to `True` to indicate that some action is needed to reflect the change in the application.
+
 
 
    .. py:method:: on_bubble_radius_sb_changed(value)
@@ -298,9 +310,10 @@ Classes
       int
 
 
+
    .. py:method:: on_bubble_vf_sb_changed(value)
 
-      Handle a change to the bubble volume fraction
+      Handle a change to the bubble volume fraction.
 
       A change in the bubble volume fraction causes changes in the volume and mass fractions
       These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
@@ -312,9 +325,10 @@ Classes
           The bubble volume fraction
 
 
+
    .. py:method:: on_density_sb_changed(value)
 
-      Handle a change to the matrix density
+      Handle a change to the matrix density.
 
       Changes in density cause changes in the volume and mass fractions.  
       These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
@@ -326,6 +340,7 @@ Classes
           The density
 
 
+
    .. py:method:: on_h_sb_changed(value)
 
       Handle a change to the h parameter of the (hkl) surface.
@@ -333,15 +348,19 @@ Classes
       Parameters
       ----------
       value : int
+          The h, k or l value
+
 
 
    .. py:method:: on_k_sb_changed(value)
 
-      Handle a change to the k parameter of the (hkl) surface
+      Handle a change to the k parameter of the (hkl) surface.
 
       Parameters
       ----------
       value : int
+          The h, k or l value
+
 
 
    .. py:method:: on_l_sb_changed(value)
@@ -351,6 +370,8 @@ Classes
       Parameters
       ----------
       value : int
+          The h, k or l value
+
 
 
    .. py:method:: on_legend_le_changed(text)
@@ -383,14 +404,16 @@ Classes
       None
 
 
+
    .. py:method:: on_methods_cb_activated(index)
 
-      Handle changes in the calculation method for the effective medium theory
+      Handle changes in the calculation method for the effective medium theory.
 
       Parameters
       ----------
       index
           The index in the list of methods
+
 
 
    .. py:method:: on_mf_sb_changed(value)
@@ -403,6 +426,7 @@ Classes
       ----------
       value : float
           The mass fraction
+
 
 
    .. py:method:: on_permittivity_i_sb_changed(value)
@@ -425,6 +449,7 @@ Classes
       - Marks the matrix material as manually defined and triggers a required refresh to update any dependent calculations or displays.
 
 
+
    .. py:method:: on_permittivity_r_sb_changed(value)
 
       Update the real part of the permittivity in the matrix material settings and refresh the material definition.
@@ -442,7 +467,7 @@ Classes
 
    .. py:method:: on_shape_cb_activated(index)
 
-      Handle changes to the shape of the powder particles
+      Handle changes to the shape of the powder particles.
 
       Parameters
       ----------
@@ -453,7 +478,7 @@ Classes
 
    .. py:method:: on_sigma_sb_changed(value)
 
-      Handle a particle size distribution change
+      Handle a particle size distribution change.
 
       Parameters
       ----------
@@ -461,14 +486,16 @@ Classes
           The particle size distribution width in microns
 
 
+
    .. py:method:: on_size_sb_changed(value)
 
-      Handle a particle size change
+      Handle a particle size change.
 
       Parameters
       ----------
       value : float
           The particle size in microns
+
 
 
    .. py:method:: on_vf_sb_changed(value)
@@ -491,6 +518,7 @@ Classes
       None
 
 
+
    .. py:method:: refresh(force=False)
 
       Refresh the GUI interface with up to date values.
@@ -505,6 +533,7 @@ Classes
       None
 
 
+
    .. py:method:: update_mf_sb()
 
       Update the mass fraction and according to the volume fraction.
@@ -514,6 +543,7 @@ Classes
       None
 
 
+
    .. py:method:: update_vf_sb()
 
       Update the volume fraction according to the mass fraction.
@@ -521,6 +551,7 @@ Classes
       Parameters
       ----------
       None
+
 
 
 

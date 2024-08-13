@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   The checkexcel package reads in two excel files and check that the float contents are the same
+   The checkexcel package reads in two excel files and check that the float contents are the same.
 
    It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 
@@ -65,5 +65,6 @@ Functions
    - The script will immediately exit with usage instructions if less than two file paths are provided.
    - Numerical difference is calculated only for numeric data. For text data, a simplified equivalence check is done.
    - The script output includes printing to standard error for usage, errors, or status, with optional ANSI color highlighting.
+
 
 

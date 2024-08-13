@@ -287,24 +287,22 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">The checkexcel package reads in two excel files and check that the float contents are the same</span>
+<span class="sd">&quot;&quot;&quot;The checkexcel package reads in two excel files and check that the float contents are the same.</span>
 
 <span class="sd">It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">termcolor</span> <span class="kn">import</span> <span class="n">colored</span>
+
 <span class="kn">from</span> <span class="nn">openpyxl</span> <span class="kn">import</span> <span class="n">load_workbook</span>
+<span class="kn">from</span> <span class="nn">termcolor</span> <span class="kn">import</span> <span class="n">colored</span>
 
 <span class="k">global</span> <span class="n">threshold</span>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/checkexcel/index.html#PDielec.checkexcel.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 
     <span class="c1"># Start processing the directories</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compare two Excel files for any significant numerical changes and report discrepancies.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare two Excel files for any significant numerical changes and report discrepancies.</span>
 
 <span class="sd">    This script takes in two Excel files as arguments and optionally,</span>
 <span class="sd">    a threshold for numerical comparison and a flag for full sheet comparison.</span>
@@ -343,19 +341,19 @@
 <span class="sd">    - The script will immediately exit with usage instructions if less than two file paths are provided.</span>
 <span class="sd">    - Numerical difference is calculated only for numeric data. For text data, a simplified equivalence check is done.</span>
 <span class="sd">    - The script output includes printing to standard error for usage, errors, or status, with optional ANSI color highlighting.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;checkexcel file file2 [-thresh 1.0E-3] [-f]&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         Compare the two excel files for any significant changes&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         Numbers f1 and f2 in each file are compared&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) &gt; threshold&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         The default value for threshold is 1.0E-3 &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         -f forces a full comparison of the sheets &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;            by default Settings and Scenarios are not included    &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;checkexcel file file2 [-thresh 1.0E-3] [-f]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         Compare the two excel files for any significant changes&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         Numbers f1 and f2 in each file are compared&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) &gt; threshold&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         The default value for threshold is 1.0E-3 &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         -f forces a full comparison of the sheets &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;            by default Settings and Scenarios are not included    &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
     <span class="n">threshold</span> <span class="o">=</span> <span class="mf">1.0E-3</span>
-    <span class="n">separator</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="n">ntokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
     <span class="n">itoken</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -364,10 +362,10 @@
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-thresh&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-thresh&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span><span class="mi">1</span>
             <span class="n">threshold</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-f&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-f&quot;</span><span class="p">:</span>
             <span class="n">full</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
@@ -390,25 +388,25 @@
     <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">sheet</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">file1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> 
+    <span class="n">sheet</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">file1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> 
     <span class="n">value1</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">file2</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> 
+    <span class="n">file2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> 
     <span class="n">value2</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c1">#</span>
     <span class="c1"># Loop over sheets</span>
     <span class="c1">#</span>
-    <span class="n">sheets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Powder Molar Absorption (cells)&#39;</span><span class="p">,</span><span class="s1">&#39;Powder Absorption&#39;</span><span class="p">,</span><span class="s1">&#39;Powder Real Permittivity&#39;</span><span class="p">,</span><span class="s1">&#39;Powder Imaginary Permittivity&#39;</span><span class="p">,</span> <span class="s1">&#39;Powder ATR Reflectance&#39;</span><span class="p">,</span> <span class="s1">&#39;Analysis&#39;</span><span class="p">,</span><span class="s1">&#39;Crystal R_p&#39;</span><span class="p">,</span><span class="s1">&#39;Crystal R_s&#39;</span><span class="p">,</span><span class="s1">&#39;Crystal T_p&#39;</span><span class="p">,</span><span class="s1">&#39;Crystal T_s&#39;</span><span class="p">,</span><span class="s1">&#39;Real Crystal Permittivity&#39;</span><span class="p">,</span><span class="s1">&#39;Imag Crystal Permittivity&#39;</span><span class="p">]</span>
+    <span class="n">sheets</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Powder Molar Absorption (cells)&quot;</span><span class="p">,</span><span class="s2">&quot;Powder Absorption&quot;</span><span class="p">,</span><span class="s2">&quot;Powder Real Permittivity&quot;</span><span class="p">,</span><span class="s2">&quot;Powder Imaginary Permittivity&quot;</span><span class="p">,</span> <span class="s2">&quot;Powder ATR Reflectance&quot;</span><span class="p">,</span> <span class="s2">&quot;Analysis&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal R_p&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal R_s&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal T_p&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal T_s&quot;</span><span class="p">,</span><span class="s2">&quot;Real Crystal Permittivity&quot;</span><span class="p">,</span><span class="s2">&quot;Imag Crystal Permittivity&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
-        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Main&#39;</span><span class="p">)</span>
-        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Settings&#39;</span><span class="p">)</span>
-        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Scenarios&#39;</span><span class="p">)</span>
+        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Settings&quot;</span><span class="p">)</span>
+        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">sheets</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">sheet</span> <span class="ow">in</span>  <span class="n">wb1</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb1</span> <span class="p">:</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">sheet</span> <span class="ow">in</span>  <span class="n">wb2</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb2</span> <span class="p">:</span>
             <span class="k">continue</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Checking sheet &#39;</span><span class="p">,</span><span class="n">sheet</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checking sheet &quot;</span><span class="p">,</span><span class="n">sheet</span><span class="p">)</span>
         <span class="n">ws1</span> <span class="o">=</span> <span class="n">wb1</span><span class="p">[</span><span class="n">sheet</span><span class="p">]</span>
         <span class="n">ws2</span> <span class="o">=</span> <span class="n">wb2</span><span class="p">[</span><span class="n">sheet</span><span class="p">]</span>
         <span class="n">max_rows1</span> <span class="o">=</span> <span class="n">ws1</span><span class="o">.</span><span class="n">max_row</span>
@@ -416,25 +414,21 @@
         <span class="n">max_columns1</span> <span class="o">=</span> <span class="n">ws1</span><span class="o">.</span><span class="n">max_column</span>
         <span class="n">max_columns2</span> <span class="o">=</span> <span class="n">ws2</span><span class="o">.</span><span class="n">max_column</span>
         <span class="k">if</span> <span class="n">max_rows1</span> <span class="o">!=</span> <span class="n">max_rows2</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error - the number rows in the sheet are not the same&#39;</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">max_rows1</span><span class="p">,</span><span class="n">max_rows2</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error - the number rows in the sheet are not the same&quot;</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">max_rows1</span><span class="p">,</span><span class="n">max_rows2</span><span class="p">)</span>
             <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">max_columns1</span> <span class="o">!=</span> <span class="n">max_columns2</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error - the number columns in the sheet are not the same&#39;</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">max_columns1</span><span class="p">,</span><span class="n">max_columns2</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error - the number columns in the sheet are not the same&quot;</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">max_columns1</span><span class="p">,</span><span class="n">max_columns2</span><span class="p">)</span>
             <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">continue</span>
         <span class="c1">#</span>
         <span class="c1"># Loop over rows</span>
         <span class="c1">#</span>
-        <span class="n">row_index</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">row1</span><span class="p">,</span><span class="n">row2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ws1</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span> <span class="n">ws2</span><span class="o">.</span><span class="n">rows</span><span class="p">):</span>
-            <span class="n">row_index</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">col_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">row_index</span><span class="p">,(</span><span class="n">row1</span><span class="p">,</span><span class="n">row2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ws1</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span> <span class="n">ws2</span><span class="o">.</span><span class="n">rows</span><span class="p">)):</span>
             <span class="c1">#</span>
             <span class="c1"># Loop over cells</span>
             <span class="c1">#</span>
-            <span class="k">for</span> <span class="n">cell1</span><span class="p">,</span><span class="n">cell2</span><span class="p">,</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row1</span><span class="p">,</span><span class="n">row2</span><span class="p">):</span>
-                <span class="n">col_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">col_index</span><span class="p">,(</span><span class="n">cell1</span><span class="p">,</span><span class="n">cell2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">row1</span><span class="p">,</span><span class="n">row2</span><span class="p">)):</span>
                 <span class="n">value1</span> <span class="o">=</span> <span class="n">cell1</span><span class="o">.</span><span class="n">value</span>
                 <span class="n">value2</span> <span class="o">=</span> <span class="n">cell2</span><span class="o">.</span><span class="n">value</span>
                 <span class="k">if</span> <span class="n">cell1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cell2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -443,37 +437,35 @@
                     <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">percentage_error</span> <span class="o">=</span> <span class="mf">0.0</span>
                     <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">,</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="n">percentage_error</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">value1</span> <span class="o">!=</span> <span class="n">value2</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">value1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cell1</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span> <span class="ow">and</span> <span class="n">cell2</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>
-                            <span class="c1">#</span>
-                            <span class="c1"># Flag an error which is numeric</span>
-                            <span class="c1">#</span>
-                            <span class="n">percentage_error</span> <span class="o">=</span> <span class="mf">100.0</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="p">(</span><span class="n">value1</span> <span class="o">-</span> <span class="n">value2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">value1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value2</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span>
-                            <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="mf">100.</span><span class="o">*</span><span class="n">threshold</span><span class="p">:</span>
-                                <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
-                                <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
-                                    <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
-                                    <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">,</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="n">percentage_error</span><span class="p">)</span>
-                                <span class="c1"># if percentage error</span>
-                            <span class="k">else</span><span class="p">:</span>
-                                <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
-                                    <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
-                            <span class="c1"># if percentage error &gt; threshold</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="c1">#</span>
-                            <span class="c1"># This is a non-numeric error</span>
-                            <span class="c1"># Remove any back or forward slashes to avoid problems with filenames in linux/windows</span>
-                            <span class="c1">#</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value1</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
-                                <span class="n">value1</span> <span class="o">=</span> <span class="n">value1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-                                <span class="n">value1</span> <span class="o">=</span> <span class="n">value1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value2</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
-                                <span class="n">value2</span> <span class="o">=</span> <span class="n">value2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-                                <span class="n">value2</span> <span class="o">=</span> <span class="n">value2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">value1</span> <span class="o">!=</span> <span class="n">value2</span><span class="p">:</span>
-                                <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
-                                <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">,</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">value1</span> <span class="o">!=</span> <span class="n">value2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">value1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cell1</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span> <span class="ow">and</span> <span class="n">cell2</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+                        <span class="c1">#</span>
+                        <span class="c1"># Flag an error which is numeric</span>
+                        <span class="c1">#</span>
+                        <span class="n">percentage_error</span> <span class="o">=</span> <span class="mf">100.0</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="p">(</span><span class="n">value1</span> <span class="o">-</span> <span class="n">value2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">value1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value2</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="mf">100.</span><span class="o">*</span><span class="n">threshold</span><span class="p">:</span>
+                            <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
+                                <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
+                                <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">,</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="n">percentage_error</span><span class="p">)</span>
+                            <span class="c1"># if percentage error</span>
+                        <span class="k">elif</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
+                            <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
+                        <span class="c1"># if percentage error &gt; threshold</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1">#</span>
+                        <span class="c1"># This is a non-numeric error</span>
+                        <span class="c1"># Remove any back or forward slashes to avoid problems with filenames in linux/windows</span>
+                        <span class="c1">#</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value1</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+                            <span class="n">value1</span> <span class="o">=</span> <span class="n">value1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                            <span class="n">value1</span> <span class="o">=</span> <span class="n">value1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value2</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+                            <span class="n">value2</span> <span class="o">=</span> <span class="n">value2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                            <span class="n">value2</span> <span class="o">=</span> <span class="n">value2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">value1</span> <span class="o">!=</span> <span class="n">value2</span><span class="p">:</span>
+                            <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">,</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
                         <span class="c1"># if cell1.data_type</span>
                     <span class="c1"># if value1 != value2</span>
                 <span class="c1"># if cell1 is none</span>
@@ -482,11 +474,11 @@
     <span class="c1"># for sheet</span>
     <span class="k">if</span> <span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">sheet</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">value1</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">error</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s1">&#39;ERRORS:&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">) LARGEST ON ROW,COL </span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1"> OF SHEET </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">(</span><span class="si">{}</span><span class="s1">) and </span><span class="si">{}</span><span class="s1">(</span><span class="si">{}</span><span class="s1">) -- max </span><span class="si">%e</span><span class="s1">rror=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nerrors</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">file1</span><span class="p">,</span><span class="n">value1</span><span class="p">,</span><span class="n">file2</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="n">max_percentage_error</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;ERRORS:&quot;</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2">) LARGEST ON ROW,COL </span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> OF SHEET </span><span class="si">{</span><span class="n">sheet</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file1</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">value1</span><span class="si">}</span><span class="s2">) and </span><span class="si">{</span><span class="n">file2</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">value2</span><span class="si">}</span><span class="s2">) -- max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s1">&#39;ERRORS:&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">) Dimensions of spreadsheet were wrong                                    &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nerrors</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;ERRORS:&quot;</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2">) Dimensions of spreadsheet were wrong                                    &quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s1">&#39;OK:&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2"> -- max </span><span class="si">%e</span><span class="s2">rror=</span><span class="si">{}</span><span class="s2">&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span><span class="n">file2</span><span class="p">,</span><span class="n">max_percentage_error</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;OK:&quot;</span><span class="p">,</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">file1</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">file2</span><span class="si">}</span><span class="s2"> -- max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">nerrors</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">file1</span><span class="p">,</span><span class="n">value1</span><span class="p">,</span><span class="n">file2</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="n">max_percentage_error</span></div>
 
 <span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

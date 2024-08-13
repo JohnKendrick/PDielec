@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Do some pretty printing for the dielectric functions
+   Do some pretty printing for the dielectric functions.
 
 
 
@@ -31,6 +31,8 @@ Functions
 
    Parameters
    ----------
+   title : str
+       A title for the print
    array : tensor 3x3
        The array to be printed
    format : str, optional 
@@ -43,6 +45,7 @@ Functions
    Returns
    -------
    None
+
 
 
 .. py:function:: print_ints(title, ints, no_per_line=8, format='{:9d}', file=sys.stdout, separator=' ')
@@ -69,9 +72,10 @@ Functions
    None
 
 
+
 .. py:function:: print_reals(title, reals, no_per_line=8, format='{:9.2f}', file=sys.stdout, separator=' ')
 
-   Print reals data
+   Print reals data.
 
    Parameters
    ----------
@@ -91,6 +95,7 @@ Functions
    Returns
    -------
    None
+
 
 
 .. py:function:: print_strings(title, strings, no_per_line=8, format='{:9s}', file=sys.stdout, separator=' ')
@@ -115,5 +120,6 @@ Functions
    Returns
    -------
    None
+
 
 

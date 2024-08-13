@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   PlottingTab module
+   PlottingTab module.
 
 
 
@@ -101,6 +101,7 @@ Attributes
    set_concentrations()
        Sets the concentrations for the plotting based on the molar definition.
 
+
    .. py:method:: get_number_of_calculations_required()
 
       Return the total number of spectra that need to be calculated.
@@ -115,6 +116,7 @@ Attributes
       -------
       int
           The total number of spectra that require calculation.
+
 
 
    .. py:method:: get_total_number_of_frequency_calculations()
@@ -133,6 +135,7 @@ Attributes
           The total number of frequency calculations required, which is the product of the number of calculations required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range computed.
 
 
+
    .. py:method:: greyed_out()
 
       Handle items that should be greyed out if they are not needed.
@@ -144,6 +147,7 @@ Attributes
       Returns
       -------
       int
+
 
 
    .. py:method:: on_funits_cb_activated(index)
@@ -178,6 +182,7 @@ Attributes
       This function does not explicitly raise any exceptions but depends on the proper functioning of the methods it calls and the state of `self` and its attributes.
 
 
+
    .. py:method:: on_molar_cb_activated(index)
 
       Handle the activation of the molar combobox option.
@@ -199,6 +204,7 @@ Attributes
       refresh : A method to refresh the UI elements.
 
 
+
    .. py:method:: on_natoms_changed(value)
 
       Handle the change in the number of atoms.
@@ -214,6 +220,7 @@ Attributes
       -----
       - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of the container and the number of ions, respectively.
       - The method refreshes `self.notebook.fitterTab` object with a `requestRefresh` method to initiate the refresh process.
+
 
 
    .. py:method:: on_plot_type_cb_activated(index)
@@ -232,6 +239,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_vinc_changed(value)
@@ -258,9 +266,10 @@ Attributes
       - Requests a refresh of the fitterTab if needed.
 
 
+
    .. py:method:: on_vmax_changed()
 
-      Handles the event when the maximum frequency setting is changed.
+      Handle the event when the maximum frequency setting is changed.
 
       This method is triggered whenever there is a change in the maximum frequency setting (`vmax`). It blocks signal emission from the `vmax_sb` spinner box (presumably, a GUI element for setting `vmax`), reads the current minimum (`vmin`) and maximum (`vmax`) frequency settings, and updates the corresponding setting based on the specified frequency unit. If the frequency unit denotes a frequency, `vmax` is converted and stored as the 'Maximum frequency' in the settings dictionary in the 'wavenumber' unit. Otherwise, it updates the 'Minimum frequency' with the converted value. This method also triggers any necessary refresh operations in the user interface and finally unblocks signal emissions from the `vmax_sb`.
 
@@ -276,6 +285,7 @@ Attributes
       -----
       - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
       - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and 'Minimum frequency' keys which are updated based on the condition.
+
 
 
    .. py:method:: on_vmin_changed()
@@ -305,9 +315,10 @@ Attributes
       - The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components' states through the requested refresh.
 
 
+
    .. py:method:: plot()
 
-      Plots the results based on specified settings and scenarios.
+      Plot the results based on specified settings and scenarios.
 
       This function generates a plot for the given scenarios under the analysis settings
       defined in the notebook object's tabs. It handles various conditions to properly format
@@ -334,9 +345,10 @@ Attributes
       - self.notebook.scenarios: List of scenarios to be plotted.
 
 
+
    .. py:method:: refresh(force=False)
 
-      Refreshes the current state based on the changes in settings, forces refresh if needed.
+      Refresh the current state based on the changes in settings, forces refresh if needed.
 
       This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment) based on the current settings. It ensures that these settings are within logical limits. The function updates GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization plot based on the refreshed data. If the 'force' flag is set or if a refresh is deemed necessary due to significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to optimize performance.
 
@@ -361,9 +373,10 @@ Attributes
       - The processEvents call is used to ensure the UI remains responsive during long operations.
 
 
+
    .. py:method:: requestRefresh()
 
-      Initiates a refresh request.
+      Initiate a refresh request.
 
       This function flags that a refresh is required
       It doesn't return any value.
@@ -375,6 +388,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: requestScenarioRefresh()
@@ -392,9 +406,10 @@ Attributes
       None
 
 
+
    .. py:method:: set_concentrations()
 
-      Sets the concentration based on the molar definition in settings.
+      Set the concentration based on the molar definition in settings.
 
       This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
 
@@ -414,9 +429,10 @@ Attributes
       None
 
 
+
    .. py:method:: write_crystal_results(sp, name, vs, legends, yss)
 
-      Wrte single crystal results to a spread sheet
+      Write single crystal results to a spread sheet.
 
       Parameters
       ----------
@@ -426,14 +442,15 @@ Attributes
           The worksheet name used for writing.
       vs : np.array
           An array of the frequencies.
+      legends : list
+          The heading names for the yss.
       yss : list of np.arrays
           A list of numpy arrays of the reflections and transmittance.
-      headings : list
-          The heading names for the yss.
 
       Returns
       -------
       None
+
 
 
    .. py:method:: write_eps_results(sp, vs, dielecv)
@@ -463,9 +480,10 @@ Attributes
       The output data starts from the second column (index 1), and for each row written, a 'check' flag is set to 1.
 
 
+
    .. py:method:: write_powder_results(sp, name, vs, legends, yss)
 
-      Writes the powder simulation results to a worksheet.
+      Write the powder simulation results to a worksheet.
 
       Parameters
       ----------
@@ -486,6 +504,7 @@ Attributes
 
 
 
+
 .. py:function:: convert_frequency_units(value, unit_in, unit_out)
 
    Convert between frequency and wavelength units.
@@ -495,12 +514,12 @@ Attributes
 
    Parameters
    ----------
+   value : scalar or numpy array
+       The value(s) for which the conversion is to be made.
    unit_in : str
        The units of the input value(s). Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
    unit_out : str
        The units of the output value(s). Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
-   input_value : scalar or numpy array
-       The value(s) for which the conversion is to be made.
 
    Returns
    -------
@@ -520,6 +539,7 @@ Attributes
    -------
    bool
        True if this is a frequency unit, False if a wavelength.
+
 
 
 .. py:data:: possible_frequency_units

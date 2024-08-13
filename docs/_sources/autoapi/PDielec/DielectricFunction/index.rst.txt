@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   DielectricFunction
+   DielectricFunction.
 
    Provides an interface to different mechanisms for providing dielectric information
 
@@ -52,7 +52,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex constant scalar permittivity
+   A complex constant scalar permittivity.
 
    Inherits from DielectricFunction. Provides a calculate() function to return
    the permittivity.  Epsilon infinity is not used for this function.
@@ -61,6 +61,7 @@ Classes
    -------
    calculate()
        Calculates and returns the permittivity of the dielectric function.
+
 
    .. py:method:: calculate(v)
 
@@ -78,12 +79,13 @@ Classes
 
 
 
+
 .. py:class:: ConstantTensor(value)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex constant tensor permittivity
+   A complex constant tensor permittivity.
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
@@ -94,8 +96,9 @@ Classes
    calculate()
        Calculates and returns the permittivity.
 
-   Example
-   ------- ::
+   Examples
+   --------
+   .. code-block:: python
 
        permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])
        df = ConstantTensor(permittivity)
@@ -118,12 +121,13 @@ Classes
 
 
 
+
 .. py:class:: DFT(mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, drude, drude_plasma, drude_sigma)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex tensor permittivity from a DFT calculation
+   A complex tensor permittivity from a DFT calculation.
 
    Inherits from DielectricFunction.
    Suitable for use in calculating the permittivity from DFT calculations.
@@ -140,6 +144,7 @@ Classes
    -----
    The internal units for all calculations within this class are atomic units.
 
+
    .. py:method:: calculate(v)
 
       Calculate the permittivity at a given frequency.
@@ -155,9 +160,10 @@ Classes
           The permittivity at frequency v as a 3x3 tensor.
 
 
+
    .. py:method:: getFrequencies()
 
-      Returns the frequencies of a DFT permittivity
+      Return the frequencies of a DFT permittivity.
 
       The frequencies are in units of cm-1
 
@@ -174,7 +180,7 @@ Classes
 
    .. py:method:: getOscillatorStrengths()
 
-      Returns the oscillator strengths of a DFT permittivity
+      Return the oscillator strengths of a DFT permittivity.
 
       The returned strengths are in units of cm-1
 
@@ -191,7 +197,7 @@ Classes
 
    .. py:method:: getSigmas()
 
-      Returns the sigma parameters of a DFT permittivity
+      Return the sigma parameters of a DFT permittivity.
 
       The returned sigmas are in units of cm-1
 
@@ -208,13 +214,13 @@ Classes
 
    .. py:method:: setFrequencies(frequencies)
 
-      Sets the frequencies of a DFT permittivity
+      Set the frequencies of a DFT permittivity.
 
       The frequencies are converted to atomic units
 
       Parameters
       ----------
-      strengths : 1d array of floats
+      frequencies : 1d array of floats
           The frequencies in cm-1
 
       Returns
@@ -225,7 +231,7 @@ Classes
 
    .. py:method:: setOscillatorStrengths(strengths)
 
-      Sets the oscillator strengths of a DFT permittivity
+      Set the oscillator strengths of a DFT permittivity.
 
       The oscillator strengths are converted to atomic units
 
@@ -242,7 +248,7 @@ Classes
 
    .. py:method:: setSigmas(sigmas)
 
-      Sets the sigma parameters of a DFT permittivity
+      Set the sigma parameters of a DFT permittivity.
 
       The sigmas parameter is converted to atomic units
 
@@ -309,6 +315,7 @@ Classes
    dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
        Calculates permittivity from a Drude-Lorentz model.
 
+
    .. py:attribute:: possible_epsTypes
       :value: ['dft', 'fpsq', 'drude-lorentz', 'sellmeier']
 
@@ -316,7 +323,7 @@ Classes
 
    .. py:method:: dielectriContributionsFromDrude(f, frequency, sigma, volume)
 
-      Calculate the dielectric function for a set of a Drude oscillator
+      Calculate the dielectric function for a set of a Drude oscillator.
 
       The units of the parameters must be self-consistent.  Atomic units is a good choice.
 
@@ -337,12 +344,15 @@ Classes
           A complex scalar dielectric.
 
 
+
    .. py:method:: dielectriContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
 
       Calculate the dielectric function for a set of modes.
 
       Parameters
       ----------
+      f : float
+          The frequency considered
       modes : list of int
           A list of the modes to be considered.
       frequencies : list of float
@@ -360,6 +370,7 @@ Classes
           A complex scalar representing the dielectric function.
 
 
+
    .. py:method:: function()
 
       Return the function used to calculate the permittivity.
@@ -373,9 +384,10 @@ Classes
       a function
 
 
+
    .. py:method:: getFrequencies()
 
-      Returns the frequencies of a Lorentzian permittivity
+      Return the frequencies of a Lorentzian permittivity.
 
       The default is to return None, only return an array if the permittivity is Lorentzian
 
@@ -403,9 +415,10 @@ Classes
           The highest tabulated frequency in cm-1.
 
 
+
    .. py:method:: getLowestFrequency()
 
-      Returns the lowest tabulated frequency in cm-1.
+      Return the lowest tabulated frequency in cm-1.
 
       Parameters
       ----------
@@ -416,9 +429,10 @@ Classes
       The lowest tabulated frequency in cm-1.
 
 
+
    .. py:method:: getOscillatorStrengths()
 
-      Returns the oscillator strengths of a Lorentzian permittivity
+      Return the oscillator strengths of a Lorentzian permittivity.
 
       The default is to return None, only return an array if the permittivity is Lorentzian
 
@@ -434,7 +448,7 @@ Classes
 
    .. py:method:: getSigmas()
 
-      Returns the sigma parameters of a Lorentzian permittivity
+      Return the sigma parameters of a Lorentzian permittivity.
 
       The default is to return None, only return an array if the permittivity is Lorentzian
 
@@ -450,7 +464,7 @@ Classes
 
    .. py:method:: isScalar()
 
-      Returns true if the dielectric function is a scalar
+      Return true if the dielectric function is a scalar.
 
       Parameters
       ----------
@@ -462,9 +476,10 @@ Classes
           True if the dielectric function returns a scalar value, False otherwise.
 
 
+
    .. py:method:: isTensor()
 
-      Returns true if the dielectric function is a tensor
+      Return true if the dielectric function is a tensor.
 
       Parameters
       ----------
@@ -476,9 +491,10 @@ Classes
           True if the dielectric function returns a tensor, otherwise False.
 
 
+
    .. py:method:: print(v1_cm1, v2_cm1, v_inc=1, diagonal_only=True, file=None)
 
-      Print the permittivity over a range of frequencies to a file
+      Print the permittivity over a range of frequencies to a file.
 
       Parameters
       ----------
@@ -498,6 +514,7 @@ Classes
       None
 
 
+
    .. py:method:: setEpsilonInfinity(eps)
 
       Set epsilon infinity for dielectric calculations.
@@ -512,9 +529,10 @@ Classes
       None
 
 
+
    .. py:method:: setFrequencies(frequencies)
 
-      Sets the frequencies of a Lorentzian permittivity
+      Set the frequencies of a Lorentzian permittivity.
 
       The default is to print an error message unless the DielectricFunction is a Lorentzian
 
@@ -531,7 +549,7 @@ Classes
 
    .. py:method:: setOscillatorStrengths(strengths)
 
-      Sets the oscillator strengths of a Lorentzian permittivity
+      Set the oscillator strengths of a Lorentzian permittivity.
 
       The default is to print an error message unless the DielectricFunction is a Lorentzian
 
@@ -548,13 +566,13 @@ Classes
 
    .. py:method:: setSigmas(sigmas)
 
-      Sets the sigma parameters of a Lorentzian permittivity
+      Set the sigma parameters of a Lorentzian permittivity.
 
       The default is to print an error message unless the DielectricFunction is a Lorentzian
 
       Parameters
       ----------
-      sigma : 1d array of floats
+      sigmas : 1d array of floats
           The sigma parameters in cm-1
 
       Returns
@@ -578,12 +596,13 @@ Classes
 
 
 
+
 .. py:class:: DrudeLorentz(vs_cm1, strengths_cm1, sigmas_cm1)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex tensor Drude-Lorentz permittivity
+   A complex tensor Drude-Lorentz permittivity.
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
@@ -597,6 +616,7 @@ Classes
    Examples
    --------
    None
+
 
    .. py:method:: calculate(v)
 
@@ -613,9 +633,10 @@ Classes
           The permittivity at frequency v as a diagonal 3x3 tensor.
 
 
+
    .. py:method:: getFrequencies()
 
-      Returns the frequencies of a Drude-Lorentz permittivity
+      Return the frequencies of a Drude-Lorentz permittivity.
 
       The frequencies are in units of cm-1
 
@@ -632,7 +653,7 @@ Classes
 
    .. py:method:: getOscillatorStrengths()
 
-      Returns the oscillator strengths of a Drude-Lorentz permittivity
+      Return the oscillator strengths of a Drude-Lorentz permittivity.
 
       The returned strengths are in units of cm-1
 
@@ -649,7 +670,7 @@ Classes
 
    .. py:method:: getSigmas()
 
-      Returns the sigma parameters of a Lorentzian permittivity
+      Return the sigma parameters of a Lorentzian permittivity.
 
       The returned sigmas are in units of cm-1
 
@@ -665,13 +686,13 @@ Classes
 
    .. py:method:: setFrequencies(frequencies)
 
-      Sets the frequencies of a Drude-Lorentz permittivity
+      Set the frequencies of a Drude-Lorentz permittivity.
 
       The frequencies are in cm-1
 
       Parameters
       ----------
-      strengths : 1d array of floats
+      frequencies : 1d array of floats
           The frequencies in cm-1
 
       Returns
@@ -682,7 +703,7 @@ Classes
 
    .. py:method:: setOscillatorStrengths(strengths)
 
-      Sets the oscillator strengths of a Drude-Lorentz permittivity
+      Set the oscillator strengths of a Drude-Lorentz permittivity.
 
       The oscillator strengths are in cm-1
 
@@ -699,7 +720,7 @@ Classes
 
    .. py:method:: setSigmas(sigmas)
 
-      Sets the sigma parameters of a Drude-Lorentz permittivity
+      Set the sigma parameters of a Drude-Lorentz permittivity.
 
       The default is to print an error message unless the DielectricFunction is a Lorentzian
 
@@ -742,12 +763,13 @@ Classes
 
 
 
+
 .. py:class:: Sellmeier(Bs, Cs)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A real tensor Sellmeier permittivity
+   A real tensor Sellmeier permittivity.
 
    Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
    Epsilon infinity is not included in the total permittivity
@@ -773,12 +795,13 @@ Classes
 
 
 
+
 .. py:class:: Tabulate1(vs_cm1, permittivities)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex tabulated isotropic tensor permittivity
+   A complex tabulated isotropic tensor permittivity.
 
    Inherits from DielectricFunction.
    Represents an isotropic dielectric function.
@@ -789,6 +812,7 @@ Classes
    -------
    calculate()
        Returns the permittivity of the dielectric function.
+
 
    .. py:method:: calculate(v)
 
@@ -806,12 +830,13 @@ Classes
 
 
 
+
 .. py:class:: Tabulate3(vs_cm1, epsxx, epsyy, epszz)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex tabulated diagonal tensor permittivity
+   A complex tabulated diagonal tensor permittivity.
 
    Inherits from DielectricFunction.
    Represents an orthorhombic dielectric function.
@@ -822,6 +847,7 @@ Classes
    -------
    calculate()
        Return the permittivity of the dielectric function.
+
 
    .. py:method:: calculate(v)
 
@@ -839,12 +865,13 @@ Classes
 
 
 
+
 .. py:class:: Tabulate6(vs_cm1, epsxx, epsyy, epszz, epsxy, epsxz, epsyz)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex tabulated, anisotropic tensor permittivity
+   A complex tabulated, anisotropic tensor permittivity.
 
    Inherits from DielectricFunction.
    Represents an non-isotropic dielectric function.
@@ -855,6 +882,7 @@ Classes
    -------
    calculate()
        Returns the permittivity of the dielectric.
+
 
    .. py:method:: calculate(v)
 
@@ -872,12 +900,13 @@ Classes
 
 
 
+
 .. py:class:: TabulateScalar(vs_cm1, permittivities)
 
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex tabulated scalar permittivity
+   A complex tabulated scalar permittivity.
 
    Inherits from DielectricFunction. 
    Represents an isotropic material dielectric function. 
@@ -897,6 +926,7 @@ Classes
    --------
    None
 
+
    .. py:method:: calculate(v)
 
       Calculate the permittivity at a given frequency.
@@ -910,6 +940,7 @@ Classes
       -------
       float
           The permittivity at frequency v as a scalar.
+
 
 
 

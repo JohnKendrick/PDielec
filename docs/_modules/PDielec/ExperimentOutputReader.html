@@ -287,20 +287,19 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Read the contents of a directory containing Experiment input and output files.</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;Read the contents of a directory containing Experiment input and output files.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">re</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
+
+<span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">DielectricFunction</span>
+<span class="kn">from</span> <span class="nn">PDielec.Calculator</span> <span class="kn">import</span> <span class="n">initialise_diagonal_tensor</span>
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.Calculator</span>          <span class="kn">import</span> <span class="n">initialise_diagonal_tensor</span>
-<span class="kn">import</span> <span class="nn">PDielec.DielectricFunction</span> <span class="k">as</span> <span class="nn">DielectricFunction</span>
+<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 
 
 <div class="viewcode-block" id="ExperimentOutputReader"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader">[docs]</a><span class="k">class</span> <span class="nc">ExperimentOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read the contents of a directory containing Experiment input and output files.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read the contents of a directory containing Experiment input and output files.</span>
 
 <span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
 
@@ -323,11 +322,11 @@
 <span class="sd">        Initially None, intended for storing oscillator strengths data.</span>
 <span class="sd">    frequencies : NoneType or Various types</span>
 <span class="sd">        Initially None, intended for storing frequencies data.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize an instance of the class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance of the class.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -348,9 +347,10 @@
 <span class="sd">            Initially None, intended for storing oscillator strengths data.</span>
 <span class="sd">        frequencies : NoneType or Various types</span>
 <span class="sd">            Initially None, intended for storing frequencies data.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s1">&#39;Experimental output&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;Experimental output&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ion_type_index</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">CrystalPermittivity</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="kc">None</span>
@@ -358,8 +358,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_line"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_line">[docs]</a>    <span class="k">def</span> <span class="nf">_read_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and return the next non-comment, non-empty line from the file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and return the next non-comment, non-empty line from the file.</span>
 
 <span class="sd">        This method reads lines from a file, skipping over any lines that are</span>
 <span class="sd">        either empty, contain only whitespace, or start with the &#39;#&#39; character</span>
@@ -378,15 +377,15 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        - Lines consisting solely of whitespace characters (spaces, tabs, newlines) are considered empty.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;#&quot;</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">line</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Define the search strings and read the Experiment files in the directory.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the search strings and read the Experiment files in the directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -395,39 +394,41 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># Empty the dictionary matching phrases</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;lattice&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;lattice&#39;</span><span class="p">),</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;CPK_LATTICE&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;&amp;CELL&#39;</span><span class="p">),</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_lattice_vectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;cpk_lattice&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;&amp;cell&#39;</span><span class="p">),</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_lattice_vectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">),</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_read_species</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;fractional&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;unitcell&#39;</span><span class="p">),</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_read_fractional_coordinates</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;CPK_CARTESIANS&#39;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;&amp;COORD&#39;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_coords</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;cpk_cartesians&#39;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;&amp;coord&#39;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_coords</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;static&#39;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;epsinf&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;epsinf&#39;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;fpsq&#39;</span><span class="p">]</span>          <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;fpsq&#39;</span><span class="p">),</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_read_fpsq_model</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;drude-lorentz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;drude-lorentz&#39;</span><span class="p">),</span>    <span class="bp">self</span><span class="o">.</span><span class="n">_read_drude_lorentz_model</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;constant&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;constant&#39;</span><span class="p">),</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_read_constant_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;lattice&quot;</span><span class="p">),</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;CPK_LATTICE&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;&amp;CELL&quot;</span><span class="p">),</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_lattice_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;cpk_lattice&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;&amp;cell&quot;</span><span class="p">),</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_lattice_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">),</span>          <span class="bp">self</span><span class="o">.</span><span class="n">_read_species</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;fractional&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;unitcell&quot;</span><span class="p">),</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_read_fractional_coordinates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;CPK_CARTESIANS&quot;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;&amp;COORD&quot;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_coords</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;cpk_cartesians&quot;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;&amp;coord&quot;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_cpk_coords</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;static&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;epsinf&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;epsinf&quot;</span><span class="p">),</span>           <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;fpsq&quot;</span><span class="p">]</span>          <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;fpsq&quot;</span><span class="p">),</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_read_fpsq_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;drude-lorentz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;drude-lorentz&quot;</span><span class="p">),</span>    <span class="bp">self</span><span class="o">.</span><span class="n">_read_drude_lorentz_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;constant&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;constant&quot;</span><span class="p">),</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_read_constant_model</span><span class="p">)</span>
         <span class="c1"># The order of these interpolates is important !</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;interpolate3&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;interpolate_3&#39;</span><span class="p">),</span>    <span class="bp">self</span><span class="o">.</span><span class="n">_read_interpolate3_model</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;interpolate6&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;interpolate_6&#39;</span><span class="p">),</span>    <span class="bp">self</span><span class="o">.</span><span class="n">_read_interpolate6_model</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;interpolate&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;interpolate&#39;</span><span class="p">),</span>      <span class="bp">self</span><span class="o">.</span><span class="n">_read_interpolate1_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;interpolate3&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;interpolate_3&quot;</span><span class="p">),</span>    <span class="bp">self</span><span class="o">.</span><span class="n">_read_interpolate3_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;interpolate6&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;interpolate_6&quot;</span><span class="p">),</span>    <span class="bp">self</span><span class="o">.</span><span class="n">_read_interpolate6_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;interpolate&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;interpolate&quot;</span><span class="p">),</span>      <span class="bp">self</span><span class="o">.</span><span class="n">_read_interpolate1_model</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_constant_model"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_constant_model">[docs]</a>    <span class="k">def</span> <span class="nf">_read_constant_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read in a full constant dielectric tensor 3 values on each line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read in a full constant dielectric tensor 3 values on each line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            Line to be read (not used)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">od</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
@@ -450,26 +451,27 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_interpolate1_model"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate1_model">[docs]</a>    <span class="k">def</span> <span class="nf">_read_interpolate1_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read in a tabulated permittivity and use it for interpolation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read in a tabulated permittivity and use it for interpolation.</span>
 
 <span class="sd">        Only a single permittivity is given (real &amp; imaginary) which is taken to be isotropic</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            Line to be read (not used)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
         <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">omegas</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">eps</span>    <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&amp;end&#39;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&amp;end&quot;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
             <span class="n">omega</span>  <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">epsr</span>   <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">epsi</span>   <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -477,7 +479,7 @@
             <span class="n">eps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="n">epsr</span><span class="p">,</span><span class="n">epsi</span><span class="p">))</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
             <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="c1"># end for i</span>
         <span class="c1"># Create a dielectric function for use in calculations</span>
@@ -489,29 +491,29 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_interpolate3_model"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate3_model">[docs]</a>    <span class="k">def</span> <span class="nf">_read_interpolate3_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read in a tabulated permittivity and use it for interpolation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read in a tabulated permittivity and use it for interpolation.</span>
 
 <span class="sd">        Three permittivities are given from the diagonal components of the tensor</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            Line to be read (not used)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">full_eps</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
         <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">omegas</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">epsxx</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">epsyy</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">epszz</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&amp;end&#39;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&amp;end&quot;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
             <span class="n">omega</span>  <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">epsrxx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">epsixx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -525,7 +527,7 @@
             <span class="n">epszz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="n">epsrzz</span><span class="p">,</span><span class="n">epsizz</span><span class="p">))</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
             <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="c1"># end for i</span>
         <span class="c1"># Create a dielectric function for use in calculations</span>
@@ -537,23 +539,23 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_interpolate6_model"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate6_model">[docs]</a>    <span class="k">def</span> <span class="nf">_read_interpolate6_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read in a tabulated permittivity and use it for interpolation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read in a tabulated permittivity and use it for interpolation.</span>
 
 <span class="sd">        This is a full 6 parameter permittivity matrix</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            Line to be read</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">full_eps</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
         <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">omegas</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">epsxx</span> <span class="o">=</span> <span class="p">[]</span>
@@ -562,7 +564,7 @@
         <span class="n">epsxy</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">epsxz</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">epsyz</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&amp;end&#39;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&amp;end&quot;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
             <span class="n">omega</span>  <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">epsrxx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">epsixx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -585,7 +587,7 @@
             <span class="n">epsyz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="n">epsryz</span><span class="p">,</span><span class="n">epsiyz</span><span class="p">))</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
             <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="c1"># end for i</span>
         <span class="c1"># Create a dielectric function for use in calculations</span>
@@ -597,12 +599,12 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_drude_lorentz_model"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_drude_lorentz_model">[docs]</a>    <span class="k">def</span> <span class="nf">_read_drude_lorentz_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read in the drude_lorentz model parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read in the drude_lorentz model parameters.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            line to be read</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -621,18 +623,18 @@
 <span class="sd">        zz  1</span>
 <span class="sd">        413.7 1050.0  22.2</span>
 <span class="sd">        ```</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">omegas_all</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">strengths_all</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">gammas_all</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">diag</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_diag</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-            <span class="n">element</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">omegas</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">strengths</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">gammas</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                 <span class="n">omegas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                 <span class="n">strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
@@ -651,14 +653,14 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_fpsq_model"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fpsq_model">[docs]</a>    <span class="k">def</span> <span class="nf">_read_fpsq_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read in the fpsq model parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read in the fpsq model parameters.</span>
 
 <span class="sd">        There is a separator between each diagonal contribution to the permittivity.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            Line to be processed</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -692,20 +694,20 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">omega_tos_all</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">gamma_tos_all</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">omega_los_all</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">gamma_los_all</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">diag</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_diag</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-            <span class="n">element</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">omega_tos</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">gamma_tos</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">omega_los</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">gamma_los</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                 <span class="n">omega_tos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                 <span class="n">gamma_tos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
@@ -726,8 +728,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_frequencies"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">_read_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads frequencies and oscillator strengths from a line and appends them to the object&#39;s attributes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read frequencies and oscillator strengths from a line and append them to the object&#39;s attributes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -749,11 +750,12 @@
 <span class="sd">        and the second entry is the oscillator strength. It also uses &#39;_read_line&#39; method, which is not defined in the snippet,</span>
 <span class="sd">        to read each subsequent line for the frequencies and their oscillator strengths. Furthermore, &#39;initialise_diagonal_tensor&#39;</span>
 <span class="sd">        is used to convert the scalar strength values into tensor form, which is not detailed here.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">nfreq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfreq</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfreq</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
             <span class="n">strength</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
@@ -761,8 +763,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_species"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_species">[docs]</a>    <span class="k">def</span> <span class="nf">_read_species</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read species information from a line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read species information from a line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -776,11 +777,12 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This function updates the object&#39;s `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">nspecies</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nspecies</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nspecies</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
             <span class="n">species</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
@@ -790,30 +792,31 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_cpk_lattice_vectors"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_cpk_lattice_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Process a cpk input file with cell information</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process a cpk input file with cell information.</span>
 
 <span class="sd">        The lattice vectors are assumed to be in Angstrom</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            Line to be processed (not used)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">alpha</span> <span class="o">=</span> <span class="mf">90.0</span>
         <span class="n">beta</span> <span class="o">=</span> <span class="mf">90.0</span>
         <span class="n">gamma</span> <span class="o">=</span> <span class="mf">90.0</span>
-        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&amp;end&#39;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
-            <span class="k">if</span>  <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&amp;end&quot;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
+            <span class="k">if</span>  <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abc&quot;</span><span class="p">:</span>
                 <span class="n">a</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">b</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
                 <span class="n">c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;alpha_beta_gamma&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;alpha_beta_gamma&quot;</span><span class="p">:</span>
                 <span class="n">alpha</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">beta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
                 <span class="n">gamma</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
@@ -822,17 +825,16 @@
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="c1"># end while</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CrystalPermittivity</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">CrystalPermittivity</span><span class="o">.</span><span class="n">setVolume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_lattice_vectors"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_lattice_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process lattice vectors from an input line, then updates internal structures with the new unit cell.</span>
 
 <span class="sd">        This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object&#39;s list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.</span>
 <span class="sd">        The lattice vectors are assumed to be in Angstrom</span>
@@ -849,6 +851,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        UnitCell : A class or function used to represent and manipulate unit cell information.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
         <span class="n">scalar</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
@@ -858,17 +861,16 @@
         <span class="n">bvector</span> <span class="o">=</span> <span class="p">[</span><span class="n">scalar</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">scalar</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">scalar</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
         <span class="n">cvector</span> <span class="o">=</span> <span class="p">[</span><span class="n">scalar</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">scalar</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">scalar</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])]</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CrystalPermittivity</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">CrystalPermittivity</span><span class="o">.</span><span class="n">setVolume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_cpk_coords"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_coords">[docs]</a>    <span class="k">def</span> <span class="nf">_read_cpk_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read CPK coordinates from a given line and update class attributes accordingly.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read CPK coordinates from a given line and update class attributes accordingly.</span>
 
 <span class="sd">        The coordinates are assumed to be in Angstrom</span>
 
@@ -883,7 +885,6 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-
 <span class="sd">        - This method directly modifies several attributes of the class instance it </span>
 <span class="sd">          belongs to, including lists of species, ions, and masses, as well as data </span>
 <span class="sd">          structures related to unit cells.</span>
@@ -901,7 +902,6 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-
 <span class="sd">        - This function implicitly assumes correct formatting and content of the input data. </span>
 <span class="sd">          If the data is not correctly formatted or if `_read_line` fails to read further </span>
 <span class="sd">          lines as expected, unexpected behavior or errors could occur.</span>
@@ -909,15 +909,16 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        _read_line : Method used to read the next line for continued parsing.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
         <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">ions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&amp;end&#39;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&amp;end&quot;</span> <span class="ow">and</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">species</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">species</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">:</span>
@@ -934,19 +935,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
             <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="c1"># end while</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xyz_coordinates</span><span class="p">(</span><span class="n">ions</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xyz_coordinates</span><span class="p">(</span><span class="n">ions</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">species_list</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span> <span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_fractional_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fractional_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_read_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and process fractional coordinates from a string line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process fractional coordinates from a string line.</span>
 
 <span class="sd">        This method reads a string representing a line containing the number of ions followed by the fractional coordinates and species of each ion. It updates the instance variables associated with the ions&#39; type, position, mass, and further initializes oscillator strengths and frequencies arrays if they haven&#39;t been initialized yet.</span>
 
@@ -970,14 +970,14 @@
 <span class="sd">        - Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays if they haven&#39;t been already.</span>
 
 <span class="sd">        Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">ions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
             <span class="n">species</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ion_type_index</span><span class="p">[</span><span class="n">species</span><span class="p">]</span>
@@ -988,15 +988,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">ions</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">species_list</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_static_dielectric"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric">[docs]</a>    <span class="k">def</span> <span class="nf">_read_static_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and process static dielectric data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process static dielectric data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1021,6 +1020,7 @@
 <span class="sd">        ------</span>
 <span class="sd">        ValueError</span>
 <span class="sd">            If the input lines cannot be converted into complex numbers.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># the is epsilon infinity</span>
         <span class="n">od</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1042,8 +1042,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader.calculate_mass_weighted_normal_modes"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_mass_weighted_normal_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the mass weight normal modes</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the mass weight normal modes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1054,6 +1053,7 @@
 <span class="sd">        np.array</span>
 <span class="sd">            Returns an array for the mass weighted normal modes which in this case is zero</span>
 <span class="sd">            The array has a shape 3*nions, nions, 3</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span></div></div>

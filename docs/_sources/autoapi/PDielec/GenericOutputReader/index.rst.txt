@@ -26,6 +26,7 @@ Classes
 
 
    Generic reader of output files. Actual reader should inherit from this class.
+
    Examples of readers with this base class:
 
    - :class:`~PDielec.AbinitOutputReader`
@@ -106,9 +107,10 @@ Classes
    original_born_charges_are_being_used : bool
        Signifies whether original Born charges are in use, defaults to True.
 
+
    .. py:method:: _born_charge_sum_rule()
 
-      Apply a simple charge sum rule to all the elements of the born matrices
+      Apply a simple charge sum rule to all the elements of the born matrices.
 
       Parameters
       ----------
@@ -123,6 +125,7 @@ Classes
       This function applies a straightforward summation rule to the elements of the born matrices,
 
 
+
    .. py:method:: _dynamical_matrix(hessian)
 
       Process the dynamical matrix.
@@ -131,7 +134,8 @@ Classes
 
       Parameters
       ----------
-      None
+      hessian : nxn array of floats
+          The second derivative matrix
 
       Returns
       -------
@@ -144,6 +148,7 @@ Classes
       - Translational modes are projected out.
       - The hessian is diagonalised.
       - Finally, the frequencies and normal modes are stored.
+
 
 
    .. py:method:: _modify_mass_weighting(hessian, new)
@@ -173,6 +178,7 @@ Classes
       Parameters
       ----------
       name : str
+          The file name of the output file
 
       Returns
       -------
@@ -181,6 +187,7 @@ Classes
       Notes
       -----
       The actual implementation for identifying keywords is handled by the `_read_output_files` method.
+
 
 
    .. py:method:: _read_output_files()
@@ -200,9 +207,11 @@ Classes
       This method is over-ridden by the child class
 
 
+
    .. py:method:: _read_till_phrase(phrase)
 
       Read lines from the current file until a match with phrase is found.
+
       Once a match is found, return the matching line.
 
       Parameters
@@ -214,6 +223,7 @@ Classes
       -------
       str
           The line from the file that matches the phrase.
+
 
 
    .. py:method:: _remove_mass_weighting(hessian, old)
@@ -245,6 +255,7 @@ Classes
       is used to compute the square root of the product of mass weights for the 
       appropriate matrix element, thereby removing the mass weighting from the 
       original Hessian matrix.
+
 
 
    .. py:method:: _symmetric_orthogonalisation(A)
@@ -280,6 +291,7 @@ Classes
          the mass weighted normal modes
 
 
+
    .. py:method:: change_masses(new_masses, mass_dictionary)
 
       Change the masses of elements in a output reader.
@@ -306,6 +318,7 @@ Classes
       - Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
 
 
+
    .. py:method:: getSpecies()
 
       Return a list of cleaned species symbols.
@@ -323,9 +336,10 @@ Classes
           A list of cleaned species symbols.
 
 
+
    .. py:method:: get_crystal_density()
 
-      Return the crystal density in g/cc
+      Return the crystal density in g/cc.
 
       The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc
 
@@ -342,7 +356,7 @@ Classes
 
    .. py:method:: get_unit_cell()
 
-      Return the last unit cell in the reader
+      Return the last unit cell in the reader.
 
       The routine adds the current set of masses to the unit cell
 
@@ -379,6 +393,7 @@ Classes
       Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
 
 
+
    .. py:method:: neutralise_born_charges()
 
       Neutralise Born charges within the object.
@@ -404,6 +419,7 @@ Classes
       need to be neutralized or altered from their original state.
 
 
+
    .. py:method:: print()
 
       Print information about the reader.
@@ -421,6 +437,7 @@ Classes
       This function prints out detailed information about the reader it is run on.
 
 
+
    .. py:method:: project(hessian)
 
       Apply projection operators to remove translation.
@@ -436,6 +453,7 @@ Classes
           The matrix with translational modes projected out.
 
 
+
    .. py:method:: read_output()
 
       Interface to the private read output files methods.
@@ -449,9 +467,10 @@ Classes
       None
 
 
+
    .. py:method:: reset_born_charges()
 
-      Resets the born charges to their original values if they are not currently being used.
+      Reset the born charges to their original values if they are not currently being used.
 
       This method restores the `born_charges` attribute of the instance to the value stored in `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
 
@@ -466,6 +485,7 @@ Classes
       Notes
       -----
       This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
+
 
 
    .. py:method:: reset_masses()
@@ -504,9 +524,10 @@ Classes
       method to avoid setting the masses to an unintended state.
 
 
+
    .. py:method:: set_edited_masses(masses)
 
-      Sets the edited masses attribute if the length matches the original masses attribute.
+      Set the edited masses attribute if the length matches the original masses attribute.
 
       Parameters
       ----------
@@ -524,6 +545,7 @@ Classes
       Returns
       -------
       None
+
 
 
 

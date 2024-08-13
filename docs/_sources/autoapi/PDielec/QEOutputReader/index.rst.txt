@@ -41,6 +41,7 @@ Classes
    This constructor initializes a ``GenericOutputReader`` with the given filenames,
    sets the type attribute to 'QE output', and initializes `_alat` attribute to None.
 
+
    .. py:method:: _read_alat(line)
 
       Read and set the lattice parameter from a given line of text.
@@ -67,6 +68,7 @@ Classes
       and is accessible within the scope of this method. Also assumes that `self._alat` has been 
       initialized prior, possibly as `None`, and `self.debug` is a boolean indicating whether debug
       prints should be activated.
+
 
 
    .. py:method:: _read_alat2(line)
@@ -119,6 +121,7 @@ Classes
       If `self.debug` is True, it prints a debug message upon completion.
 
 
+
    .. py:method:: _read_cell_parameters(line)
 
       Read and parse cell parameters from a given line in the input file.
@@ -144,6 +147,7 @@ Classes
       The method directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
 
 
+
    .. py:method:: _read_celldm1(line)
 
       Process and update the class attribute _alat based on a line from a file.
@@ -165,6 +169,7 @@ Classes
       - Assumes `angs2bohr` is a predefined constant available within the scope of this method for conversion or comparison purposes.
       - Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it precisely sets `_alat` to `angs2bohr`.
       - The `debug` attribute of the class controls whether an update operation is printed or not.
+
 
 
    .. py:method:: _read_dynamical(line)
@@ -223,6 +228,7 @@ Classes
       `set_element_names` : Method used to update element names of the last unit cell.
 
 
+
    .. py:method:: _read_electrons(line)
 
       Read and store the number of electrons from a line.
@@ -246,6 +252,7 @@ Classes
       -----
       This method modifies the state of the object by setting the 
       'electrons' attribute based on the input line.
+
 
 
    .. py:method:: _read_energy(line)
@@ -275,9 +282,10 @@ Classes
       - If the 'debug' attribute of the object is True, the final free energy is printed.
 
 
+
    .. py:method:: _read_energy_cutoff(line)
 
-      Internal method to parse and set the energy cutoff from a line of text.
+      Parse and set the energy cutoff from a line of text.
 
       Parameters
       ----------
@@ -301,6 +309,7 @@ Classes
       the instance's `debug` attribute is `True`.
 
 
+
    .. py:method:: _read_epsilon(line)
 
       Read and process zero frequency optical permittivity data from the dynG file.
@@ -322,9 +331,10 @@ Classes
       - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
 
 
+
    .. py:method:: _read_fractional_coordinates(line)
 
-      Reads the log file and sets the fractional coordinates and element names for the last unit cell in the object.
+      Read the log file and sets the fractional coordinates and element names for the last unit cell in the object.
 
       This function iterates over a specified number of lines (defined by `self.nions`) from the object's file descriptor, parsing each line into species names and their fractional coordinates. These species names and coordinates are then used to set the corresponding properties for the last unit cell managed by the object. Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
 
@@ -342,6 +352,7 @@ Classes
       - The function directly modifies the object's state by setting properties of the last unit cell (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`.
       - Only operates if `self.nions` is greater than 0.
       - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
+
 
 
    .. py:method:: _read_header(line)
@@ -366,6 +377,7 @@ Classes
       This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
 
 
+
    .. py:method:: _read_kpoint_grid(line)
 
       Read and set the k-point grid from a line in a file.
@@ -384,6 +396,7 @@ Classes
       Notes
       -----
       This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid values.
+
 
 
    .. py:method:: _read_kpoints(line)
@@ -406,9 +419,10 @@ Classes
       This method modifies the state of the object by setting the `kpoints` attribute.
 
 
+
    .. py:method:: _read_lattice_vectors(line)
 
-      Reads and processes lattice vectors from a synG file, then updates unit cell information.
+      Read and process lattice vectors from a synG file, then updates unit cell information.
 
       This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
 
@@ -431,9 +445,10 @@ Classes
           The volume of the last read unit cell, updated after appending a new `UnitCell`.
 
 
+
    .. py:method:: _read_masses()
 
-      Reads the masses of species from an dynG file and populates mass and species lists.
+      Read the masses of species from an dynG file and populate mass and species lists.
 
       This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
 
@@ -458,6 +473,7 @@ Classes
       - It's assumed that `_read_dyng_coordinates` is a method within the same class that takes a single string argument.
 
 
+
    .. py:method:: _read_nions(line)
 
       Read the number of ions from a line and update the object's nions attribute.
@@ -478,6 +494,7 @@ Classes
       If 'debug' attribute of the object is True, this method will print the number of ions found.
 
 
+
    .. py:method:: _read_output_files()
 
       Process the QE files.
@@ -485,6 +502,7 @@ Classes
       Notes
       -----
       Defines the search patterns for QE output files
+
 
 
    .. py:method:: _read_pressure(line)
@@ -505,6 +523,7 @@ Classes
       Notes
       -----
       This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object's `debug` attribute is set to True.
+
 
 
 

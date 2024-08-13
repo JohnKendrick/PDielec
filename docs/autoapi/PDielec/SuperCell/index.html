@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.SuperCell">
 <span id="pdielec-supercell"></span><h1><a class="reference internal" href="#module-PDielec.SuperCell" title="PDielec.SuperCell"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a><a class="headerlink" href="#module-PDielec.SuperCell" title="Permalink to this heading">#</a></h1>
-<p>The SuperCell module</p>
+<p>The SuperCell module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -320,7 +320,7 @@
 <p>This method automatically invokes the createImages method at the end of initialization.</p>
 </section>
 <section id="see-also">
-<h4>See also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
 <p><a class="reference internal" href="../UnitCell/index.html#PDielec.UnitCell.UnitCell" title="PDielec.UnitCell.UnitCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitCell</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.calculateBonds">
@@ -347,7 +347,8 @@ the bonds are not recalculated, just extended into the super-cell</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.calculateCentreOfBox">
 <span class="sig-name descname"><span class="pre">calculateCentreOfBox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateCentreOfBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateCentreOfBox" title="Permalink to this definition">#</a></dt>
-<dd><p>This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.</p>
+<dd><p>Calculate the centre of the super-cell in cartesian coordinates.</p>
+<p>This is the centre of the box, not the centre of mass</p>
 <section id="id3">
 <h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -457,7 +458,7 @@ kc an integer specifying extension in the c direction.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.getBoundingBox">
-<span class="sig-name descname"><span class="pre">getBoundingBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">originABC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.getBoundingBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.getBoundingBox" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getBoundingBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">originABC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.getBoundingBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.getBoundingBox" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.</p>
 <p>Return a box with 8 corners and 12 edges which represent the supercel in cartesian space
 - Corners in abc space
@@ -509,7 +510,7 @@ A list of tuples, each representing an edge of the bounding box defined by a pai
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.print" title="Permalink to this definition">#</a></dt>
-<dd><p>Print the contents of the SuperCell</p>
+<dd><p>Print the contents of the SuperCell.</p>
 <section id="id18">
 <h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>

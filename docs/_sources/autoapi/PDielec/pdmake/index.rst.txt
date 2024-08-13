@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   A Makefile style system for testing and installing PDGui and PDielec
+   A Makefile style system for testing and installing PDGui and PDielec.
 
    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
 
@@ -107,6 +107,7 @@ Attributes
    it returns the maximum length found.
 
 
+
 .. py:function:: checkLocalExecutables()
 
    Check to see if the rootDirectory has the executables we need.
@@ -120,6 +121,7 @@ Attributes
    -------
    bool
        True if the executables are found, False otherwise.
+
 
 
 .. py:function:: compareFiles(file1, file2)
@@ -157,6 +159,7 @@ Attributes
      floating-point inaccuracies.
 
 
+
 .. py:function:: compareNmaFiles(file1, file2)
 
    Compare two NMA files for differences within a tolerance.
@@ -182,6 +185,7 @@ Attributes
    and the total number of differences in these values are counted and returned.
 
 
+
 .. py:function:: findRootDirectory(start)
 
    Find the root directory starting from start.
@@ -195,6 +199,7 @@ Attributes
    -------
    str
        The root directory path.
+
 
 
 .. py:function:: install(scripts)
@@ -221,9 +226,10 @@ Attributes
    may raise exceptions related to the execution of shell commands.
 
 
+
 .. py:function:: main()
 
-   Main routine to process command line arguments and execute actions.
+   Process command line arguments and execute actions (main routine).
 
    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
 
@@ -261,6 +267,7 @@ Attributes
    - The script changes the current working directory multiple times, which affects relative path usage.
 
 
+
 .. py:function:: mychdir(directory)
 
    Local version of os.chdir with some testing.
@@ -269,6 +276,7 @@ Attributes
    -----
    This is a local implementation of os.chdir which includes
    additional testing or functionality tailored to specific needs.
+
 
 
 .. py:function:: readNmaFile(file)
@@ -300,6 +308,7 @@ Attributes
    ------
    FileNotFoundError
        If the file specified by the 'file' parameter does not exist.
+
 
 
 .. py:function:: readPdMakefile(directory, filename)
@@ -344,6 +353,7 @@ Attributes
      stated in the function definition.
 
 
+
 .. py:function:: redirect(file)
 
    Redirect the standard output to a specified file.
@@ -378,6 +388,7 @@ Attributes
        the Logger class.
 
 
+
 .. py:function:: runClean()
 
    Clean old results from the Examples directory.
@@ -396,6 +407,7 @@ Attributes
    None
 
 
+
 .. py:function:: runP2CifTest(title, instructions, regenerate)
 
    Run a test on p2cif.
@@ -410,6 +422,7 @@ Attributes
        Set to True if the reference file is overwritten.
 
 
+
 .. py:function:: runPDGuiTest(title, instructions, regenerate, benchmarks=False)
 
    Run a pdgui test.
@@ -422,6 +435,9 @@ Attributes
        The command line parameters.
    regenerate : bool
        Set to true if the reference file is overwritten.
+   benchmarks : boolean
+       Set to true if benchmarks are to be run
+
 
 
 .. py:function:: runPdMakefile(directory, pdmakefile, regenerate, benchmarks=False)
@@ -445,6 +461,7 @@ Attributes
    Then the instructions are processed according to the context (preader, pdgui, p2cif or vibanalysis)
 
 
+
 .. py:function:: runPreaderTest(title, instructions, regenerate)
 
    Run a preader test.
@@ -459,16 +476,17 @@ Attributes
        Set to true if the reference file is overwritten. Default is False.
 
 
+
 .. py:function:: runPyInstaller()
 
-   Runs the PyInstaller command with specified options and handles platform specific adjustments.
+   Run the PyInstaller command with specified options and handles platform specific adjustments.
 
    This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.
 
 
 .. py:function:: runPyPi()
 
-   Creates PyPi distribution files, restricted by OS.
+   Create PyPi distribution files, restricted by OS.
 
    This function changes the current working directory to `rootDirectory` 
    and runs a series of shell commands that clean up previous distribution files and 
@@ -489,6 +507,7 @@ Attributes
        If True, the test data will be regenerated.
 
 
+
 .. py:function:: runVibAnalysis(title, instructions, regenerate)
 
    Run a vibanalysis test.
@@ -501,6 +520,7 @@ Attributes
        The command line parameters.
    regenerate : bool
        Set to True if the reference file is overwritten.
+
 
 
 .. py:function:: testForRootDirectory(path)
@@ -520,6 +540,7 @@ Attributes
    bool
        Returns True if the 'Examples' subdirectory exists within the given path,
        otherwise returns False.
+
 
 
 .. py:function:: usage()
@@ -556,7 +577,7 @@ Attributes
    
 
 .. py:data:: test_pdgui
-   :value: ['ATR/AlAs', 'ATR/Na2SO42', 'ATR/Na2SO42_fit', 'AbInit/AlAs', 'AbInit/BaTiO3',...
+   :value: ['ATR/AlAs', 'ATR/Na2SO42', 'ATR/Na2SO42_fit', 'AbInit/AlAs', 'AbInit/BaTiO3', 'AbInit/Na2SO42',...
 
    
 

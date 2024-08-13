@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.FitterTab">
 <span id="pdielec-gui-fittertab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.FitterTab" title="PDielec.GUI.FitterTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.FitterTab" title="Permalink to this heading">#</a></h1>
-<p>FitterTab module</p>
+<p>FitterTab module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -284,7 +284,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.FitterTab.FitterTab" title="PDielec.GUI.FitterTab.FitterTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FitterTab</span></code></a></p></td>
-<td><p>A class for managing and displaying a spectroscopic fitting interface within a QWidget.</p></td>
+<td><p>Initialize the main FitterTab with its components and connect signals to slots.</p></td>
 </tr>
 </tbody>
 </table>
@@ -296,7 +296,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.FitterTab.calculateCrossCorrelation" title="PDielec.GUI.FitterTab.calculateCrossCorrelation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateCrossCorrelation</span></code></a>(xaxis, calculated_spectrum, ...)</p></td>
-<td><p>Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</p></td>
+<td><p>Calculate the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.FitterTab.calculateSpectralDifference" title="PDielec.GUI.FitterTab.calculateSpectralDifference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateSpectralDifference</span></code></a>(xaxis, ...[, ...])</p></td>
 <td><p>Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.</p></td>
@@ -320,9 +320,9 @@
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">FitterTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>Initialize the main FitterTab with its components and connect signals to slots.</p>
 <p>A class for managing and displaying a spectroscopic fitting interface within a QWidget.
-Initialize the main widget with its components and connect signals to slots.</p>
-<p>This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.</p>
+This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.</p>
 <section id="parameters">
 <h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -351,27 +351,27 @@ Initialize the main widget with its components and connect signals to slots.</p>
 <dl class="simple">
 <dt>__init__(self, parent, debug=False)</dt><dd><p>Constructor to initialize the spectroscopic fitting interface with the given parent and debug settings.</p>
 </dd>
-<dt>on_iterations_sb_changed(self)</dt><dd><p>Handles changes to the number of iterations spinbox value.</p>
+<dt>on_iterations_sb_changed(self)</dt><dd><p>Handle changes to the number of iterations spinbox value.</p>
 </dd>
-<dt>on_independent_yaxes_cb_changed(self, value)</dt><dd><p>Handles changes to the independent y-axes checkbox state.</p>
+<dt>on_independent_yaxes_cb_changed(self, value)</dt><dd><p>Handle changes to the independent y-axes checkbox state.</p>
 </dd>
-<dt>on_optimise_frequency_scaling_cb_changed(self, value)</dt><dd><p>Handles changes to the optimise frequency scaling checkbox state.</p>
+<dt>on_optimise_frequency_scaling_cb_changed(self, value)</dt><dd><p>Handle changes to the optimise frequency scaling checkbox state.</p>
 </dd>
-<dt>on_spectrum_scaling_cb_changed(self, value)</dt><dd><p>Handles changes to the spectrum scaling checkbox state.</p>
+<dt>on_spectrum_scaling_cb_changed(self, value)</dt><dd><p>Handle changes to the spectrum scaling checkbox state.</p>
 </dd>
-<dt>on_hpfilter_lambda_sb_changed(self, value)</dt><dd><p>Handles changes to the HP filter lambda spinbox value.</p>
+<dt>on_hpfilter_lambda_sb_changed(self, value)</dt><dd><p>Handle changes to the HP filter lambda spinbox value.</p>
 </dd>
-<dt>on_spectrum_scaling_factor_sb_changed(self, value)</dt><dd><p>Handles changes to the spectrum scaling factor spinbox value.</p>
+<dt>on_spectrum_scaling_factor_sb_changed(self, value)</dt><dd><p>Handle changes to the spectrum scaling factor spinbox value.</p>
 </dd>
-<dt>on_baseline_cb_changed(self, value)</dt><dd><p>Handles changes to the baseline correction checkbox state.</p>
+<dt>on_baseline_cb_changed(self, value)</dt><dd><p>Handle changes to the baseline correction checkbox state.</p>
 </dd>
-<dt>on_spectral_difference_threshold_sb_changed(self, value)</dt><dd><p>Handles changes to the spectral difference threshold spinbox value.</p>
+<dt>on_spectral_difference_threshold_sb_changed(self, value)</dt><dd><p>Handle changes to the spectral difference threshold spinbox value.</p>
 </dd>
-<dt>on_frequency_scaling_factor_sb_changed(self, value)</dt><dd><p>Handles changes to the frequency scaling factor spinbox value.</p>
+<dt>on_frequency_scaling_factor_sb_changed(self, value)</dt><dd><p>Handle changes to the frequency scaling factor spinbox value.</p>
 </dd>
-<dt>replotButton1Clicked(self)</dt><dd><p>Handles the event when the first replot button is clicked.</p>
+<dt>replotButton1Clicked(self)</dt><dd><p>Handle the event when the first replot button is clicked.</p>
 </dd>
-<dt>replotButton2Clicked(self)</dt><dd><p>Handles the event when the second replot button with frequency shift is clicked.</p>
+<dt>replotButton2Clicked(self)</dt><dd><p>Handle the event when the second replot button with frequency shift is clicked.</p>
 </dd>
 <dt>plot(self, experiment, xs, ys, legends, label)</dt><dd><p>Plots the fitting results with optional experiment data overlay.</p>
 </dd>
@@ -383,19 +383,19 @@ Initialize the main widget with its components and connect signals to slots.</p>
 </dd>
 <dt>redraw_sigmas_tw(self)</dt><dd><p>Redraws the table widget for sigma values based on current settings.</p>
 </dd>
-<dt>on_fitting_type_cb_activated(self, index)</dt><dd><p>Handles changes to the fitting type combo box selection.</p>
+<dt>on_fitting_type_cb_activated(self, index)</dt><dd><p>Handle changes to the fitting type combo box selection.</p>
 </dd>
-<dt>on_scenario_cb_activated(self, index)</dt><dd><p>Handles selection changes in the scenario combo box.</p>
+<dt>on_scenario_cb_activated(self, index)</dt><dd><p>Handle selection changes in the scenario combo box.</p>
 </dd>
-<dt>on_spectrafile_le_return(self)</dt><dd><p>Handles actions to take when the spectra file line edit has a return event.</p>
+<dt>on_spectrafile_le_return(self)</dt><dd><p>Handle actions to take when the spectra file line edit has a return event.</p>
 </dd>
-<dt>on_spectrafile_le_changed(self, text)</dt><dd><p>Handles changes to the spectra file line edit text.</p>
+<dt>on_spectrafile_le_changed(self, text)</dt><dd><p>Handle changes to the spectra file line edit text.</p>
 </dd>
 <dt>on_sigmas_tw_itemChanged(self, item)</dt><dd><p>Responds to item changes in the sigmas table widget.</p>
 </dd>
 <dt>print_settings(self)</dt><dd><p>Prints the current settings to the debugger.</p>
 </dd>
-<dt>replot(self)</dt><dd><p>Handles the replotting of spectra.</p>
+<dt>replot(self)</dt><dd><p>Handle the replotting of spectra.</p>
 </dd>
 <dt>refresh(self, force=False)</dt><dd><p>Refreshes the interface based on current settings and data.</p>
 </dd>
@@ -405,7 +405,7 @@ Initialize the main widget with its components and connect signals to slots.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.fittingButtonClicked">
 <span class="sig-name descname"><span class="pre">fittingButtonClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.fittingButtonClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.fittingButtonClicked" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the click event on the fitting button.</p>
+<dd><p>Handle the click event on the fitting button.</p>
 <p>This method toggles the fitting process on and off. When clicked,
 it changes the button’s text accordingly to reflect the current
 state - either “Perform fitting” or “Interrupt fitting”. It also
@@ -502,7 +502,7 @@ to allow a new fitting process.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_independent_yaxes_cb_changed">
 <span class="sig-name descname"><span class="pre">on_independent_yaxes_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_independent_yaxes_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_independent_yaxes_cb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the change of state for the independent Y-axes checkbox.</p>
+<dd><p>Handle the change of state for the independent Y-axes checkbox.</p>
 <section id="id11">
 <h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -538,7 +538,7 @@ to allow a new fitting process.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_optimise_frequency_scaling_cb_changed">
 <span class="sig-name descname"><span class="pre">on_optimise_frequency_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_optimise_frequency_scaling_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_optimise_frequency_scaling_cb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles changes in the frequency scaling optimization option.</p>
+<dd><p>Handle changes in the frequency scaling optimization option.</p>
 <p>This method updates the ‘Optimise frequency scaling’ setting based on the state of a checkbox and marks that a refresh is required based on the new setting.</p>
 <section id="id16">
 <h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
@@ -664,7 +664,7 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_cb_changed">
 <span class="sig-name descname"><span class="pre">on_spectrum_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrum_scaling_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_cb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the change event of the spectrum scaling checkbox.</p>
+<dd><p>Handle the change event of the spectrum scaling checkbox.</p>
 <p>This method is triggered whenever the spectrum scaling checkbox’s state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.</p>
 <section id="id30">
 <h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
@@ -682,7 +682,7 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_factor_sb_changed">
 <span class="sig-name descname"><span class="pre">on_spectrum_scaling_factor_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrum_scaling_factor_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_factor_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the change in spectrum scaling factor.</p>
+<dd><p>Handle the change in spectrum scaling factor.</p>
 <section id="id32">
 <h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -821,7 +821,7 @@ including color mapping, line width, and labels, is customizable.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.print_settings">
 <span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.print_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.print_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints the settings attributes of the instance.</p>
+<dd><p>Print the settings attributes of the instance.</p>
 <section id="id44">
 <h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -863,7 +863,7 @@ whether it is fitted, respectively.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.refresh" title="Permalink to this definition">#</a></dt>
-<dd><p>Refreshes the state of the application based on user-defined conditions and settings.</p>
+<dd><p>Refresh the state of the application based on user-defined conditions and settings.</p>
 <section id="id49">
 <h5>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -953,7 +953,7 @@ and then initiates the refresh process.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.calculateCrossCorrelation">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">calculateCrossCorrelation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculated_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#calculateCrossCorrelation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.calculateCrossCorrelation" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</p>
+<dd><p>Calculate the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</p>
 <p>The calculated and experimental spectra share the same frequencies (xaxis).  If a scaling factor is applied,
 the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 <section id="id61">
@@ -1057,7 +1057,10 @@ the given file by analyzing the first 5000 bytes of the file.</p>
 <dd><p>Test to see if element is a float.</p>
 <section id="id70">
 <h4>Parameters<a class="headerlink" href="#id70" title="Permalink to this heading">#</a></h4>
-<p>element : Any</p>
+<dl class="simple">
+<dt>element<span class="classifier">str</span></dt><dd><p>A string to be analysed to see if it is a float</p>
+</dd>
+</dl>
 </section>
 <section id="id71">
 <h4>Returns<a class="headerlink" href="#id71" title="Permalink to this heading">#</a></h4>

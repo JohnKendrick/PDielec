@@ -286,22 +286,19 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">ScenarioTab module</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;ScenarioTab module.&quot;&quot;&quot;</span>
 <span class="c1"># -*- coding: utf8 -*-</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>   <span class="kn">import</span>  <span class="n">QWidget</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QLineEdit</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>   <span class="kn">import</span>  <span class="n">QFileDialog</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span>      <span class="kn">import</span>  <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span>  <span class="n">Debug</span>
-<span class="kn">from</span> <span class="nn">PDielec</span>           <span class="kn">import</span> <span class="vm">__file__</span>  <span class="k">as</span> <span class="n">PDielec_init_filename</span>
-<span class="kn">from</span> <span class="nn">PDielec.Materials</span> <span class="kn">import</span> <span class="n">MaterialsDataBase</span>
-<span class="kn">from</span> <span class="nn">PDielec.Materials</span> <span class="kn">import</span> <span class="n">Material</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QFileDialog</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QWidget</span>
+
+<span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="vm">__file__</span> <span class="k">as</span> <span class="n">PDielec_init_filename</span>
+<span class="kn">from</span> <span class="nn">PDielec.Materials</span> <span class="kn">import</span> <span class="n">MaterialsDataBase</span>
+<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span>
+
+
 <div class="viewcode-block" id="ScenarioTab"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab">[docs]</a><span class="k">class</span> <span class="nc">ScenarioTab</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class representing a tab for scenario configurations within a user interface.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a tab for scenario configurations within a user interface.</span>
 
 <span class="sd">    This class provides functionalities for managing and interacting with scenarios.</span>
 <span class="sd">    It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.</span>
@@ -375,10 +372,10 @@
 <span class="sd">    switchScenarioButtonClicked()</span>
 <span class="sd">        Handle the scenario when a button has been clicked.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>    
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This the initialiser for ScenarioTabs.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise ScenarioTabs.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -386,26 +383,27 @@
 <span class="sd">            The parent widget.</span>
 <span class="sd">        debug : bool, optional</span>
 <span class="sd">            Flag to turn debugging messages on or off.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="k">global</span> <span class="n">debugger</span>
-        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s1">&#39;ScenarioTab:&#39;</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: initialiser&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s2">&quot;ScenarioTab:&quot;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Start:: initialiser&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">noCalculationsRequired</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span> <span class="o">=</span> <span class="n">parent</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Unset&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unset&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scenarioType</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Scenario type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Unset&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Scenario type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unset&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="c1"># Deal with the Materials Database here as it is used in all Scenarios</span>
         <span class="n">PDielec_Directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">PDielec_init_filename</span><span class="p">)</span>
-        <span class="n">filename</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PDielec_Directory</span><span class="p">,</span> <span class="s1">&#39;MaterialsDataBase.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">filename</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PDielec_Directory</span><span class="p">,</span> <span class="s2">&quot;MaterialsDataBase.xlsx&quot;</span><span class="p">)</span>
         <span class="n">filename</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Materials database&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Materials database&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="c1"># Open the database</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span> <span class="o">=</span> <span class="n">MaterialsDataBase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Materials database&#39;</span><span class="p">],</span><span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span> <span class="o">=</span> <span class="n">MaterialsDataBase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Materials database&quot;</span><span class="p">],</span><span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
         <span class="c1"># Set up the open database button</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">openDB_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Open materials&#39; database&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">openDB_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">openDB_button_clicked</span><span class="p">)</span>
@@ -415,15 +413,14 @@
         <span class="c1"># set up the database information line</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_le</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_le</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Provides information about the name of the materials&#39; database&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">database_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Materials database&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Materials database&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_le</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_le_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Current materials&#39; database&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_le_label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Provides information about the name of the materials&#39; database&quot;</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: initialiser&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Finished:: initialiser&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ScenarioTab.openDataBase"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.openDataBase">[docs]</a>    <span class="k">def</span> <span class="nf">openDataBase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Open the database and set the material names.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Open the database and set the material names.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -433,27 +430,26 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">selfilter</span> <span class="o">=</span> <span class="s1">&#39;Spreadsheet (*.xlsx)&#39;</span>
-        <span class="n">filename</span><span class="p">,</span><span class="n">myfilter</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;Open spreadsheet&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;Spreadsheet (*.xls);;Spreadsheet (*.xlsx);;All files(*)&#39;</span><span class="p">,</span><span class="n">selfilter</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selfilter</span> <span class="o">=</span> <span class="s2">&quot;Spreadsheet (*.xlsx)&quot;</span>
+        <span class="n">filename</span><span class="p">,</span><span class="n">myfilter</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s2">&quot;Open spreadsheet&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;Spreadsheet (*.xls);;Spreadsheet (*.xlsx);;All files(*)&quot;</span><span class="p">,</span><span class="n">selfilter</span><span class="p">)</span>
         <span class="c1"># Process the filename</span>
-        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">oldDataBase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span> <span class="o">=</span> <span class="n">MaterialsDataBase</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">debug</span><span class="o">=</span><span class="n">debugger</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
         <span class="n">sheets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span><span class="o">.</span><span class="n">getSheetNames</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span><span class="o">.</span><span class="n">valid</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span> <span class="o">=</span> <span class="n">oldDataBase</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error chosen file is not a materials database&#39;</span><span class="p">,</span><span class="n">sheets</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error chosen file is not a materials database&quot;</span><span class="p">,</span><span class="n">sheets</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Materials database&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span><span class="o">.</span><span class="n">getFileName</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">database_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Materials database&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Materials database&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span><span class="o">.</span><span class="n">getFileName</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Materials database&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">materialNames</span> <span class="o">=</span> <span class="n">sheets</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.getNoCalculationsRequired"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.getNoCalculationsRequired">[docs]</a>    <span class="k">def</span> <span class="nf">getNoCalculationsRequired</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the number of spectra that need recalculating from this scenario.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of spectra that need recalculating from this scenario.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -463,17 +459,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">            The number of spectra requiring recalculation.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">noCalculationsRequired</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;getNoCalculationsRequired&#39;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">noCalculationsRequired</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;getNoCalculationsRequired&quot;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.requestRefresh"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.requestRefresh">[docs]</a>    <span class="k">def</span> <span class="nf">requestRefresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Request a refresh of the scenario</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Request a refresh of the scenario.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -482,31 +475,32 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;requestRefresh&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;requestRefresh&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.set_reader"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.set_reader">[docs]</a>    <span class="k">def</span> <span class="nf">set_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">reader</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Set the reader associated with this scenario</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the reader associated with this scenario.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        None</span>
+<span class="sd">        reader : a reader object</span>
+<span class="sd">            The reader to be used for this scenario</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;set_reader&#39;</span><span class="p">)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;set_reader&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">reader</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.setScenarioIndex"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.setScenarioIndex">[docs]</a>    <span class="k">def</span> <span class="nf">setScenarioIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Set the index for the current scenario.  Also set a default legend name based on the index</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the index for the current scenario and a default legend name based on the index.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -516,19 +510,19 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;setScenarioIndex&#39;</span><span class="p">,</span><span class="n">index</span><span class="p">)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;setScenarioIndex&quot;</span><span class="p">,</span><span class="n">index</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scenarioIndex</span> <span class="o">=</span> <span class="n">index</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Unset&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Scenario &#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Powder scenario &#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Crystal scenario &#39;</span><span class="p">):</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;setScenarioIndex changing scenario legend&#39;</span><span class="p">,</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">legend_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Unset&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Scenario &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Powder scenario &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Crystal scenario &quot;</span><span class="p">):</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;setScenarioIndex changing scenario legend&quot;</span><span class="p">,</span><span class="s2">&quot;Scenario &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legend_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Scenario &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Scenario &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.print_settings"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.print_settings">[docs]</a>    <span class="k">def</span> <span class="nf">print_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Print all the settings for this scenario.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print all the settings for this scenario.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -537,18 +531,18 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;print_settings&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;# Scenario tab&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;tab = self.notebook.scenarios&#39;</span><span class="p">)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;print_settings&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# Scenario tab&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;tab = self.notebook.scenarios&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.on_legend_le_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.on_legend_le_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_legend_le_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Handle a change in the scenario legend.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in the scenario legend.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -559,15 +553,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;on_legend_le_changed&#39;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;on_legend_le_changed&quot;</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
         <span class="c1"># self.refreshRequired = True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.add_scenario_buttons"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.add_scenario_buttons">[docs]</a>    <span class="k">def</span>  <span class="nf">add_scenario_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a set of scenario buttons in an hbox. Return the hbox.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a set of scenario buttons in an hbox. Return the hbox.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -577,31 +570,31 @@
 <span class="sd">        -------</span>
 <span class="sd">        hbox</span>
 <span class="sd">            The hbox containing the scenario buttons.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;add_scenario_buttons start&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;add_scenario_buttons start&quot;</span><span class="p">)</span>
         <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Add another scenario&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Add another scenario the the notebook tabs, </span><span class="se">\n</span><span class="s1">the new scenario is added to the end of the current tab list&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add another scenario&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Add another scenario the the notebook tabs, </span><span class="se">\n</span><span class="s2">the new scenario is added to the end of the current tab list&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addScenarioButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addScenarioButtonClicked</span><span class="p">)</span>
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addScenarioButton</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">deleteScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Delete this scenario&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">deleteScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Delete the current scenario&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deleteScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Delete this scenario&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deleteScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Delete the current scenario&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deleteScenarioButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deleteScenarioButtonClicked</span><span class="p">)</span>
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deleteScenarioButton</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarioType</span> <span class="o">==</span> <span class="s1">&#39;Powder&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Switch to crystal scenario&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Switch the current scenario to a single crystal scenario&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarioType</span> <span class="o">==</span> <span class="s2">&quot;Powder&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Switch to crystal scenario&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Switch the current scenario to a single crystal scenario&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Switch to powder scenario&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Switch the current scenario to a powder scenario&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Switch to powder scenario&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Switch the current scenario to a powder scenario&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButtonClicked</span><span class="p">)</span>
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">switchScenarioButton</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;add_scenario_buttons finish&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;add_scenario_buttons finish&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">hbox</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.addScenarioButtonClicked"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.addScenarioButtonClicked">[docs]</a>    <span class="k">def</span> <span class="nf">addScenarioButtonClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Handle when the &quot;add another scenario&quot; button has been clicked.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle when the &quot;add another scenario&quot; button has been clicked.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -610,15 +603,15 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Add another scenario</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;addScenarioButtonClicked&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;addScenarioButtonClicked&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">addScenario</span><span class="p">(</span><span class="n">copyFromIndex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarioIndex</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.deleteScenarioButtonClicked"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.deleteScenarioButtonClicked">[docs]</a>    <span class="k">def</span> <span class="nf">deleteScenarioButtonClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Handle when a delete button has been clicked.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle when a delete button has been clicked.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -627,14 +620,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span> <span class="s1">&#39;deleteScenarioButtonClicked&#39;</span><span class="p">)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span> <span class="s2">&quot;deleteScenarioButtonClicked&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">deleteScenario</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarioIndex</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ScenarioTab.switchScenarioButtonClicked"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.switchScenarioButtonClicked">[docs]</a>    <span class="k">def</span> <span class="nf">switchScenarioButtonClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Handle the switch scenario when a button has been clicked.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the switch scenario when a button has been clicked.</span>
 
 <span class="sd">        Asks the notebook to change the scenario type (Powder or Crystal) to the other.</span>
 
@@ -645,9 +638,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">],</span><span class="s1">&#39;switchScenarioButtonClicked&#39;</span><span class="p">)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span><span class="s2">&quot;switchScenarioButtonClicked&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">switchScenario</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarioIndex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">plottingTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span></div></div>
 
 

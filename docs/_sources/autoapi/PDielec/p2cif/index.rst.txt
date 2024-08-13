@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Read the contents of a directory containing DFT output and create a cif file of the structure
+   Read the contents of a directory containing DFT output and create a cif file of the structure.
 
    This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
 
@@ -49,7 +49,7 @@ Functions
 
 .. py:function:: main()
 
-   Main entry point for processing and converting files.
+   Process and convert files.
 
    This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
 
@@ -75,6 +75,7 @@ Functions
        ```
        python script_name.py -debug -program gulp file1 file2 ...
        ```
+
 
 
 .. py:function:: read_a_file(calling_parameters)
@@ -104,6 +105,7 @@ Functions
    with a `read_output` method and a `unit_cells` attribute that is a list.
 
 
+
 .. py:function:: set_affinity_on_worker()
 
    When a new worker process is created, the affinity is set to all CPUs.
@@ -111,5 +113,6 @@ Functions
    Notes
    -----
    None.
+
 
 

@@ -287,54 +287,54 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">The checkcsv command read in two csv files and check that the float contents are the same</span>
+<span class="sd">&quot;&quot;&quot;The checkcsv command read in two csv files and check that the float contents are the same.</span>
 
 <span class="sd">It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">splitext</span>
+
 <span class="kn">from</span> <span class="nn">termcolor</span> <span class="kn">import</span> <span class="n">colored</span>
+
 <span class="k">global</span> <span class="n">separator</span>
 <span class="k">global</span> <span class="n">threshold</span>
 
 <div class="viewcode-block" id="compare_lines"><a class="viewcode-back" href="../../autoapi/PDielec/checkcsv/index.html#PDielec.checkcsv.compare_lines">[docs]</a><span class="k">def</span> <span class="nf">compare_lines</span><span class="p">(</span> <span class="n">line1</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">swapped</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compare two lines of text to find and report differences in numerical values.</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Compare two lines of text to find and report differences in numerical values.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    line1 : str</span>
-<span class="sd">        The first line of text to be compared.</span>
-<span class="sd">    line2 : str</span>
-<span class="sd">        The second line of text to be compared.</span>
-<span class="sd">    swapped : bool</span>
-<span class="sd">        A flag indicating if the comparison allows for the first numerical value to be </span>
-<span class="sd">        considered as swapped, i.e., if an absolute difference of 1 between the first</span>
-<span class="sd">        numerical values in each line should be ignored.</span>
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  line1 : str</span>
+<span class="sd">      The first line of text to be compared.</span>
+<span class="sd">  line2 : str</span>
+<span class="sd">      The second line of text to be compared.</span>
+<span class="sd">  swapped : bool</span>
+<span class="sd">      A flag indicating if the comparison allows for the first numerical value to be </span>
+<span class="sd">      considered as swapped, i.e., if an absolute difference of 1 between the first</span>
+<span class="sd">      numerical values in each line should be ignored.</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    tuple : A tuple containing the following elements:</span>
-<span class="sd">        - store_error : bool (A flag indicating if an error was stored during comparison.)</span>
-<span class="sd">        - nerrors : int (The total number of errors detected in the comparison.)</span>
-<span class="sd">        - max_percentage_error : float (The maximum percentage error found during comparisons.)</span>
-<span class="sd">        - keep_word1 : str (The word from line1 that resulted in the maximum percentage error.)</span>
-<span class="sd">        - keep_word2 : str (The word from line2 that resulted in the maximum percentage error.)</span>
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  tuple : A tuple containing the following elements:</span>
+<span class="sd">      - store_error : bool (A flag indicating if an error was stored during comparison.)</span>
+<span class="sd">      - nerrors : int (The total number of errors detected in the comparison.)</span>
+<span class="sd">      - max_percentage_error : float (The maximum percentage error found during comparisons.)</span>
+<span class="sd">      - keep_word1 : str (The word from line1 that resulted in the maximum percentage error.)</span>
+<span class="sd">      - keep_word2 : str (The word from line2 that resulted in the maximum percentage error.)</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    - The function makes use of two globals: `separator`, a string defining how to split</span>
-<span class="sd">      the lines into words, and `threshold`, a float defining the percentage error</span>
-<span class="sd">      threshold above which a discrepancy is considered an error.</span>
-<span class="sd">    - The function compares corresponding numerical values in `line1` and `line2`. Non-numeric </span>
-<span class="sd">      words are ignored in the error calculation, but they contribute to the discrepancy count</span>
-<span class="sd">      if one word is numeric and the corresponding word is not.</span>
-<span class="sd">    - Special consideration is given to the word &quot;processors&quot; in the fourth position; </span>
-<span class="sd">      if present and matching in both lines, it&#39;s an immediate pass, regardless of subsequent content.</span>
-<span class="sd">    - The function also allows for a tolerance in the comparison of the first numeric values </span>
-<span class="sd">      of the lines if `swapped` is True, ignoring a discrepancy of exactly 1.</span>
+<span class="sd">  Notes</span>
+<span class="sd">  -----</span>
+<span class="sd">  - The function makes use of two globals: `separator`, a string defining how to split</span>
+<span class="sd">    the lines into words, and `threshold`, a float defining the percentage error</span>
+<span class="sd">    threshold above which a discrepancy is considered an error.</span>
+<span class="sd">  - The function compares corresponding numerical values in `line1` and `line2`. Non-numeric </span>
+<span class="sd">    words are ignored in the error calculation, but they contribute to the discrepancy count</span>
+<span class="sd">    if one word is numeric and the corresponding word is not.</span>
+<span class="sd">  - Special consideration is given to the word &quot;processors&quot; in the fourth position; </span>
+<span class="sd">    if present and matching in both lines, it&#39;s an immediate pass, regardless of subsequent content.</span>
+<span class="sd">  - The function also allows for a tolerance in the comparison of the first numeric values </span>
+<span class="sd">    of the lines if `swapped` is True, ignoring a discrepancy of exactly 1.</span>
+
 <span class="sd">  &quot;&quot;&quot;</span>    
   <span class="k">global</span> <span class="n">separator</span>
   <span class="k">global</span> <span class="n">threshold</span>
@@ -342,23 +342,19 @@
   <span class="n">nerrors</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="n">percentage_error</span> <span class="o">=</span> <span class="mf">0.0</span>
   <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="mf">0.0</span>
-  <span class="n">keep_word1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-  <span class="n">keep_word2</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-  <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">keep_word1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+  <span class="n">keep_word2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
   <span class="n">len1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">))</span>
   <span class="n">len2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">))</span>
-  <span class="k">if</span> <span class="n">len1</span> <span class="o">==</span> <span class="n">len2</span><span class="p">:</span>
-      <span class="k">if</span> <span class="n">len1</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
-          <span class="n">word1</span> <span class="o">=</span> <span class="n">line1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
-          <span class="n">word2</span> <span class="o">=</span> <span class="n">line2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
-          <span class="k">if</span> <span class="n">word1</span> <span class="o">==</span> <span class="n">word2</span>  <span class="ow">and</span> <span class="n">word1</span> <span class="o">==</span> <span class="s2">&quot;processors&quot;</span><span class="p">:</span>
-              <span class="c1"># Ignore this line &#39;cos the number of processors used depends on the machine</span>
-              <span class="k">return</span> <span class="p">(</span><span class="n">store_error</span><span class="p">,</span> <span class="n">nerrors</span><span class="p">,</span> <span class="n">max_percentage_error</span><span class="p">,</span> <span class="n">keep_word1</span><span class="p">,</span> <span class="n">keep_word2</span><span class="p">)</span>
-          <span class="c1"># end if word1 == word2</span>
-      <span class="c1"># end if len1 &gt; 4</span>
+  <span class="k">if</span> <span class="n">len1</span> <span class="o">==</span> <span class="n">len2</span> <span class="ow">and</span> <span class="n">len1</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+      <span class="n">word1</span> <span class="o">=</span> <span class="n">line1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+      <span class="n">word2</span> <span class="o">=</span> <span class="n">line2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+      <span class="k">if</span> <span class="n">word1</span> <span class="o">==</span> <span class="n">word2</span>  <span class="ow">and</span> <span class="n">word1</span> <span class="o">==</span> <span class="s2">&quot;processors&quot;</span><span class="p">:</span>
+          <span class="c1"># Ignore this line &#39;cos the number of processors used depends on the machine</span>
+          <span class="k">return</span> <span class="p">(</span><span class="n">store_error</span><span class="p">,</span> <span class="n">nerrors</span><span class="p">,</span> <span class="n">max_percentage_error</span><span class="p">,</span> <span class="n">keep_word1</span><span class="p">,</span> <span class="n">keep_word2</span><span class="p">)</span>
+      <span class="c1"># end if word1 == word2 and len1 &gt; 4</span>
   <span class="c1">#end if len1 == len2</span>
-  <span class="k">for</span> <span class="n">word1</span><span class="p">,</span><span class="n">word2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">),</span><span class="n">line2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)):</span>
-    <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="k">for</span> <span class="n">index</span><span class="p">,(</span><span class="n">word1</span><span class="p">,</span><span class="n">word2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">),</span><span class="n">line2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">))):</span>
     <span class="k">if</span> <span class="n">isfloat</span><span class="p">(</span><span class="n">word1</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">isfloat</span><span class="p">(</span><span class="n">word2</span><span class="p">):</span>
             <span class="n">nerrors</span> <span class="o">+=</span><span class="mi">1</span>
@@ -391,18 +387,18 @@
 
 
 <div class="viewcode-block" id="isfloat"><a class="viewcode-back" href="../../autoapi/PDielec/checkcsv/index.html#PDielec.checkcsv.isfloat">[docs]</a><span class="k">def</span> <span class="nf">isfloat</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if the given value can be converted to float.</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Check if the given value can be converted to float.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    value : any</span>
-<span class="sd">        The value to be checked.</span>
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  value : any</span>
+<span class="sd">      The value to be checked.</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    bool</span>
-<span class="sd">        Returns True if value can be converted to float, False otherwise.</span>
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  bool</span>
+<span class="sd">      Returns True if value can be converted to float, False otherwise.</span>
+
 <span class="sd">  &quot;&quot;&quot;</span>    
   <span class="k">try</span><span class="p">:</span>
     <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -411,8 +407,7 @@
     <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/checkcsv/index.html#PDielec.checkcsv.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compares two files line by line to check for significant changes based on a provided threshold.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare two files line by line to check for significant changes based on a provided threshold.</span>
 
 <span class="sd">    This script takes at least two arguments that are file names along with optional arguments for</span>
 <span class="sd">    separator (`-sep`) and threshold value (`-thresh`). It compares numbers from corresponding lines</span>
@@ -449,19 +444,20 @@
 <span class="sd">    -----</span>
 <span class="sd">    The command-line arguments need to be parsed using `sys.argv`.</span>
 <span class="sd">    The comparison formula used is `2*abs(f1-f2)/(f1+f2+2)`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">global</span> <span class="n">separator</span>
     <span class="k">global</span> <span class="n">threshold</span>
     <span class="c1"># Start processing the directories</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;checkcsv file file2 [-sep blanks] [-thresh 3.0E-2]&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         Compare the two files for any significant changes&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;checkcsv file file2 [-sep blanks] [-thresh 3.0E-2]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         Compare the two files for any significant changes&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         The default separator is &quot;blanks&quot; for txt/out files&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         and &quot;,&quot; for csv files&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         Numbers f1 and f2 in each file are compared&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) &gt; threshold&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         The default value for threshold is 3.0E-2 &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         Numbers f1 and f2 in each file are compared&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) &gt; threshold&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         The default value for threshold is 3.0E-2 &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
     <span class="n">threshold</span> <span class="o">=</span> <span class="mf">3.0E-2</span>
     <span class="n">separator</span> <span class="o">=</span> <span class="kc">None</span>
@@ -472,12 +468,12 @@
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-sep&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-sep&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span><span class="mi">1</span>
             <span class="n">separator</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">separator</span> <span class="o">==</span> <span class="s1">&#39;blanks&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">separator</span> <span class="o">==</span> <span class="s2">&quot;blanks&quot;</span><span class="p">:</span>
                 <span class="n">separator</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-thresh&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-thresh&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span><span class="mi">1</span>
             <span class="n">threshold</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -487,87 +483,78 @@
     <span class="n">file1</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">file2</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">file_name</span><span class="p">,</span><span class="n">extension</span> <span class="o">=</span> <span class="n">splitext</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.csv&#39;</span><span class="p">:</span>
-        <span class="n">separator</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span>
-    <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.txt&#39;</span><span class="p">:</span>
-        <span class="n">separator</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.out&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
+        <span class="n">separator</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
+    <span class="k">elif</span> <span class="n">extension</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;.out&quot;</span><span class="p">):</span>
         <span class="n">separator</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># Read the command line again</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-sep&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-sep&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span><span class="mi">1</span>
             <span class="n">separator</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">separator</span> <span class="o">==</span> <span class="s1">&#39;blanks&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">separator</span> <span class="o">==</span> <span class="s2">&quot;blanks&quot;</span><span class="p">:</span>
                 <span class="n">separator</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-thresh&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-thresh&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span><span class="mi">1</span>
             <span class="n">threshold</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
         <span class="c1"># end if</span>
     <span class="c1"># end while</span>
-    <span class="n">fd1</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
-    <span class="n">fd2</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
-    <span class="c1">#</span>
-    <span class="n">line1_errors</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">line2_errors</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">line_numbers_with_error</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">keep_line_number</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">keep_word1</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">keep_word2</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">nerrors</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">store_error</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">max_percentage_error2</span><span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">line_number</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">compare_next_line</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">line1</span><span class="p">,</span><span class="n">line2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fd1</span><span class="p">,</span><span class="n">fd2</span><span class="p">):</span>
-      <span class="n">line_number</span> <span class="o">+=</span> <span class="mi">1</span>
-      <span class="k">if</span> <span class="ow">not</span> <span class="n">compare_next_line</span><span class="p">:</span>
-          <span class="n">store_error</span><span class="p">,</span> <span class="n">nerror</span><span class="p">,</span> <span class="n">percentage_error</span><span class="p">,</span> <span class="n">keep_word1c</span><span class="p">,</span> <span class="n">keep_word2c</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span><span class="n">line2</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
-          <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_percentage_error</span><span class="p">,</span><span class="n">percentage_error</span><span class="p">)</span>
-          <span class="k">if</span> <span class="n">store_error</span><span class="p">:</span>
-              <span class="c1"># if there was an error let&#39;s see if two lines are swapped</span>
-              <span class="n">line1a</span> <span class="o">=</span> <span class="n">line1</span>
-              <span class="n">line2a</span> <span class="o">=</span> <span class="n">line2</span>
-              <span class="n">compare_next_line</span> <span class="o">=</span> <span class="kc">True</span>
-      <span class="k">else</span><span class="p">:</span>
-          <span class="c1"># There was an error on the previous line, see if lines are swapped</span>
-          <span class="n">store_error1</span><span class="p">,</span> <span class="n">nerror1</span><span class="p">,</span> <span class="n">percentage_error1</span><span class="p">,</span> <span class="n">keep_word1a</span><span class="p">,</span> <span class="n">keep_word2a</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span><span class="n">line2a</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
-          <span class="n">store_error2</span><span class="p">,</span> <span class="n">nerror2</span><span class="p">,</span> <span class="n">percentage_error2</span><span class="p">,</span> <span class="n">keep_word1b</span><span class="p">,</span> <span class="n">keep_word2b</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line2</span><span class="p">,</span><span class="n">line1a</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
-          <span class="n">compare_next_line</span> <span class="o">=</span> <span class="kc">False</span>
-          <span class="n">keep_word1</span> <span class="o">=</span> <span class="n">keep_word1a</span>
-          <span class="n">keep_word2</span> <span class="o">=</span> <span class="n">keep_word2a</span>
-          <span class="n">keep_line_number</span> <span class="o">=</span> <span class="n">line_number</span>
-          <span class="k">if</span> <span class="n">store_error1</span> <span class="ow">or</span> <span class="n">store_error2</span><span class="p">:</span>
-              <span class="c1"># There is still an error on the swapped lines so we have an error on line1 and line1a</span>
-              <span class="n">nerrors</span> <span class="o">+=</span> <span class="n">nerror</span>
-              <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
-                  <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
-                  <span class="n">keep_word1</span> <span class="o">=</span> <span class="n">keep_word1c</span>
-                  <span class="n">keep_word2</span> <span class="o">=</span> <span class="n">keep_word2c</span>
-                  <span class="n">keep_line_number</span> <span class="o">=</span> <span class="n">line_number</span> <span class="o">-</span> <span class="mi">1</span>
-              <span class="n">store_error</span><span class="p">,</span> <span class="n">nerror</span><span class="p">,</span> <span class="n">percentage_error</span><span class="p">,</span> <span class="n">keep_word1c</span><span class="p">,</span> <span class="n">keep_word2c</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span><span class="n">line2</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
-              <span class="n">nerrors</span> <span class="o">+=</span> <span class="n">nerror</span>
-              <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
-                  <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
-                  <span class="n">keep_word1</span> <span class="o">=</span> <span class="n">keep_word1c</span>
-                  <span class="n">keep_word2</span> <span class="o">=</span> <span class="n">keep_word2c</span>
-                  <span class="n">keep_line_number</span> <span class="o">=</span> <span class="n">line_number</span>
-          <span class="k">else</span><span class="p">:</span>
-              <span class="c1"># The swapped lines are the same so there is no error</span>
-              <span class="n">store_error</span> <span class="o">=</span> <span class="kc">False</span>
-          <span class="c1"># endif</span>
-       <span class="c1"># end if not</span>
-    <span class="c1">#end for line1, line2</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd1</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line_number</span><span class="p">,(</span><span class="n">line1</span><span class="p">,</span><span class="n">line2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fd1</span><span class="p">,</span><span class="n">fd2</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">compare_next_line</span><span class="p">:</span>
+                <span class="n">store_error</span><span class="p">,</span> <span class="n">nerror</span><span class="p">,</span> <span class="n">percentage_error</span><span class="p">,</span> <span class="n">keep_word1c</span><span class="p">,</span> <span class="n">keep_word2c</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span><span class="n">line2</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_percentage_error</span><span class="p">,</span><span class="n">percentage_error</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">store_error</span><span class="p">:</span>
+                    <span class="c1"># if there was an error let&#39;s see if two lines are swapped</span>
+                    <span class="n">line1a</span> <span class="o">=</span> <span class="n">line1</span>
+                    <span class="n">line2a</span> <span class="o">=</span> <span class="n">line2</span>
+                    <span class="n">compare_next_line</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># There was an error on the previous line, see if lines are swapped</span>
+                <span class="n">store_error1</span><span class="p">,</span> <span class="n">nerror1</span><span class="p">,</span> <span class="n">percentage_error1</span><span class="p">,</span> <span class="n">keep_word1a</span><span class="p">,</span> <span class="n">keep_word2a</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span><span class="n">line2a</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">store_error2</span><span class="p">,</span> <span class="n">nerror2</span><span class="p">,</span> <span class="n">percentage_error2</span><span class="p">,</span> <span class="n">keep_word1b</span><span class="p">,</span> <span class="n">keep_word2b</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line2</span><span class="p">,</span><span class="n">line1a</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">compare_next_line</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">keep_word1</span> <span class="o">=</span> <span class="n">keep_word1a</span>
+                <span class="n">keep_word2</span> <span class="o">=</span> <span class="n">keep_word2a</span>
+                <span class="n">keep_line_number</span> <span class="o">=</span> <span class="n">line_number</span>
+                <span class="k">if</span> <span class="n">store_error1</span> <span class="ow">or</span> <span class="n">store_error2</span><span class="p">:</span>
+                    <span class="c1"># There is still an error on the swapped lines so we have an error on line1 and line1a</span>
+                    <span class="n">nerrors</span> <span class="o">+=</span> <span class="n">nerror</span>
+                    <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
+                        <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
+                        <span class="n">keep_word1</span> <span class="o">=</span> <span class="n">keep_word1c</span>
+                        <span class="n">keep_word2</span> <span class="o">=</span> <span class="n">keep_word2c</span>
+                        <span class="n">keep_line_number</span> <span class="o">=</span> <span class="n">line_number</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">store_error</span><span class="p">,</span> <span class="n">nerror</span><span class="p">,</span> <span class="n">percentage_error</span><span class="p">,</span> <span class="n">keep_word1c</span><span class="p">,</span> <span class="n">keep_word2c</span> <span class="o">=</span> <span class="n">compare_lines</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span><span class="n">line2</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">nerrors</span> <span class="o">+=</span> <span class="n">nerror</span>
+                    <span class="k">if</span> <span class="n">percentage_error</span> <span class="o">&gt;</span> <span class="n">max_percentage_error</span><span class="p">:</span>
+                        <span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">percentage_error</span>
+                        <span class="n">keep_word1</span> <span class="o">=</span> <span class="n">keep_word1c</span>
+                        <span class="n">keep_word2</span> <span class="o">=</span> <span class="n">keep_word2c</span>
+                        <span class="n">keep_line_number</span> <span class="o">=</span> <span class="n">line_number</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># The swapped lines are the same so there is no error</span>
+                    <span class="n">store_error</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="c1"># endif store_error1...</span>
+            <span class="c1"># end if not</span>
+        <span class="c1">#end for line1, line2</span>
+    <span class="c1"># Close open files</span>
     <span class="k">if</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s1">&#39;ERRORS:&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">) LARGEST ON LINE </span><span class="si">{}</span><span class="s2"> OF </span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">) and </span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">) -- max </span><span class="si">%e</span><span class="s2">rror=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nerrors</span><span class="p">,</span> <span class="n">keep_line_number</span><span class="p">,</span> <span class="n">file1</span><span class="p">,</span><span class="n">keep_word1</span><span class="p">,</span><span class="n">file2</span><span class="p">,</span><span class="n">keep_word2</span><span class="p">,</span><span class="n">max_percentage_error</span><span class="p">))</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;ERRORS:&quot;</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2">) LARGEST ON LINE </span><span class="si">{</span><span class="n">keep_line_number</span><span class="si">}</span><span class="s2"> OF </span><span class="si">{</span><span class="n">file1</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">keep_word1</span><span class="si">}</span><span class="s2">) and </span><span class="si">{</span><span class="n">file2</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">keep_word2</span><span class="si">}</span><span class="s2">) -- max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s1">&#39;OK:&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2"> -- max </span><span class="si">%e</span><span class="s2">rror=</span><span class="si">{}</span><span class="s2">&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span><span class="n">file2</span><span class="p">,</span><span class="n">max_percentage_error</span><span class="p">))</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;OK:&quot;</span><span class="p">,</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">file1</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">file2</span><span class="si">}</span><span class="s2"> -- max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># end</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">nerrors</span><span class="p">,</span><span class="n">keep_line_number</span><span class="p">,</span><span class="n">keep_word1</span><span class="p">,</span><span class="n">keep_word2</span><span class="p">,</span><span class="n">max_percentage_error</span><span class="p">)</span></div>
 

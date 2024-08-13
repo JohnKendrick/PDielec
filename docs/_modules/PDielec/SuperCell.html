@@ -287,17 +287,15 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">The SuperCell module</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;The SuperCell module.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PDielec.Plotter</span>     <span class="kn">import</span> <span class="n">print_reals</span><span class="p">,</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_strings</span>
+
+<span class="kn">from</span> <span class="nn">PDielec.Plotter</span> <span class="kn">import</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_reals</span>
 
 
 <div class="viewcode-block" id="SuperCell"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell">[docs]</a><span class="k">class</span> <span class="nc">SuperCell</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Hold super-cell information; the unit cell and the super-cell size.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hold super-cell information; the unit cell and the super-cell size.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -321,14 +319,14 @@
 <span class="sd">    -----</span>
 <span class="sd">    This method automatically invokes the createImages method at the end of initialization.</span>
 
-<span class="sd">    See also</span>
+<span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-
 <span class="sd">    :class:`~PDielec.UnitCell.UnitCell`</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aUnitCell</span><span class="p">,</span><span class="n">anImageSpecifier</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the supercell with a unit cell and an image specifier.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the supercell with a unit cell and an image specifier.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -351,7 +349,8 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method automatically invokes the createImages method at the end of initialization.</span>
-<span class="sd">        &quot;&quot;&quot;</span>        
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span>       <span class="o">=</span> <span class="n">aUnitCell</span>         <span class="c1"># the unit cell on which everything is based</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span>      <span class="o">=</span> <span class="kc">None</span>              <span class="c1"># a list of the images of the unit cell</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imageSpecifier</span> <span class="o">=</span> <span class="n">anImageSpecifier</span>  <span class="c1"># the specification used to create the imageList</span>
@@ -361,8 +360,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">calculateXYZ</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SuperCell.print"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Print the contents of the SuperCell</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the contents of the SuperCell.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -383,31 +381,31 @@
 <span class="sd">        sc=SC.SuperCell(uc,imageSpecifier)</span>
 <span class="sd">        sc.print()</span>
 <span class="sd">        ```</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SuperCell&#39;</span><span class="p">)</span>
-        <span class="n">print_ints</span><span class="p">(</span><span class="s1">&#39;Image_specifier&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">imageSpecifier</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SuperCell&quot;</span><span class="p">)</span>
+        <span class="n">print_ints</span><span class="p">(</span><span class="s2">&quot;Image_specifier&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">imageSpecifier</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SuperCell Image list&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SuperCell Image list&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">:</span>
-            <span class="n">print_ints</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+            <span class="n">print_ints</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
         <span class="n">corners</span><span class="p">,</span><span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBoundingBox</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SuperCell Corners&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SuperCell Corners&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">:</span>
-            <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">corner</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">print_reals</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">corner</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:12.6f}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">XYZ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SuperCell XYZ (Coordinates)&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SuperCell XYZ (Coordinates)&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">XYZ</span><span class="p">:</span>
-                <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">xyz</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">print_reals</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">xyz</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:12.6f}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SuperCell Bond list&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SuperCell Bond list&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">:</span>
-                <span class="n">print_ints</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">bond</span><span class="p">)</span></div>
+                <span class="n">print_ints</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">bond</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SuperCell.createImages"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.createImages">[docs]</a>    <span class="k">def</span> <span class="nf">createImages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">anImageSpecifier</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -420,6 +418,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            A list of created images.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ia</span><span class="p">,</span><span class="n">jb</span><span class="p">,</span><span class="n">kc</span> <span class="o">=</span> <span class="n">anImageSpecifier</span>
         <span class="k">if</span> <span class="n">ia</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">jb</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">kc</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">:</span>
@@ -433,8 +432,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="p">)</span></div>
 
 <div class="viewcode-block" id="SuperCell.getElementNames"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.getElementNames">[docs]</a>    <span class="k">def</span> <span class="nf">getElementNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate and return the element names of the supercell.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate and return the element names of the supercell.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -444,17 +442,17 @@
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            The element names of the supercell.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">cell_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">element_names</span>
-        <span class="k">for</span>  <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">:</span>
+        <span class="k">for</span>  <span class="n">_i</span><span class="p">,</span><span class="n">_j</span><span class="p">,</span><span class="n">_k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">:</span>
             <span class="n">names</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span> <span class="n">cell_names</span> <span class="p">)</span>
         <span class="c1">#end for i,j,k</span>
         <span class="k">return</span> <span class="n">names</span></div>
 
 <div class="viewcode-block" id="SuperCell.calculateNormalModes"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateNormalModes">[docs]</a>    <span class="k">def</span> <span class="nf">calculateNormalModes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">modes</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate and return the normal modes of the supercell.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate and return the normal modes of the supercell.</span>
 
 <span class="sd">        Normal modes are initially an np array of nmodes, 3*nions.</span>
 <span class="sd">        The number of modes stays the same but the number of ions</span>
@@ -472,13 +470,14 @@
 <span class="sd">            of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the</span>
 <span class="sd">            number of ions per mode. The shape may vary as the number of ions increases with the</span>
 <span class="sd">            number of images.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nmodes</span><span class="p">,</span><span class="n">nions3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span>
         <span class="n">mult</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">)</span>
         <span class="n">normal_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">nmodes</span><span class="p">,</span> <span class="n">mult</span><span class="o">*</span><span class="n">nions3</span><span class="p">)</span> <span class="p">)</span>
         <span class="k">for</span> <span class="n">mode_index</span><span class="p">,</span><span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span>  <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">:</span>
+            <span class="k">for</span>  <span class="n">_i</span><span class="p">,</span><span class="n">_j</span><span class="p">,</span><span class="n">_k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
                   <span class="n">normal_modes</span><span class="p">[</span><span class="n">mode_index</span><span class="p">,</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
                   <span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -488,8 +487,7 @@
         <span class="k">return</span> <span class="n">normal_modes</span></div>
 
 <div class="viewcode-block" id="SuperCell.calculateXYZ"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateXYZ">[docs]</a>    <span class="k">def</span> <span class="nf">calculateXYZ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate and return the cartesian coordinates of the supercell.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate and return the cartesian coordinates of the supercell.</span>
 
 <span class="sd">        The fractional cell coordinates of the unit cell are used to calculate the XYZ coordinates of the super-cell</span>
 
@@ -501,6 +499,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        output : array</span>
 <span class="sd">            The Cartesian coordinates of the supercell.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">XYZ</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="p">[]</span>
@@ -516,8 +515,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">XYZ</span></div>
 
 <div class="viewcode-block" id="SuperCell.calculateBonds"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateBonds">[docs]</a>    <span class="k">def</span> <span class="nf">calculateBonds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the bonding in the supercell.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the bonding in the supercell.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -532,25 +530,23 @@
 <span class="sd">        -----</span>
 <span class="sd">        The bonding in the unit-cell is assumed to be valid whole-molecule bonding</span>
 <span class="sd">        the bonds are not recalculated, just extended into the super-cell</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">natoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">nions</span>
         <span class="n">bonds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">bonds</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">na</span><span class="p">,</span><span class="n">nb</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">:</span>
               <span class="n">na</span> <span class="o">+=</span> <span class="n">cell</span><span class="o">*</span><span class="n">natoms</span>
               <span class="n">nb</span> <span class="o">+=</span> <span class="n">cell</span><span class="o">*</span><span class="n">natoms</span>
               <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">na</span><span class="p">,</span><span class="n">nb</span><span class="p">)</span> <span class="p">)</span>
             <span class="c1"># end for na,nb</span>
-            <span class="n">cell</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="c1">#end for i,j,k</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span></div>
 
 
-<div class="viewcode-block" id="SuperCell.getBoundingBox"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.getBoundingBox">[docs]</a>    <span class="k">def</span> <span class="nf">getBoundingBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">originABC</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.</span>
+<div class="viewcode-block" id="SuperCell.getBoundingBox"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.getBoundingBox">[docs]</a>    <span class="k">def</span> <span class="nf">getBoundingBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">originABC</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.</span>
 
 <span class="sd">        Return a box with 8 corners and 12 edges which represent the supercel in cartesian space</span>
 <span class="sd">        - Corners in abc space</span>
@@ -576,7 +572,10 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.</span>
-<span class="sd">        &quot;&quot;&quot;</span>        
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">originABC</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">originABC</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
         <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageSpecifier</span>
         <span class="n">i</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="n">j</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
@@ -614,8 +613,9 @@
         <span class="k">return</span> <span class="n">corners_xyz</span><span class="p">,</span><span class="n">edges</span></div>
 
 <div class="viewcode-block" id="SuperCell.calculateCentreOfBox"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateCentreOfBox">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCentreOfBox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the centre of the super-cell in cartesian coordinates.</span>
+
+<span class="sd">        This is the centre of the box, not the centre of mass</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -625,19 +625,18 @@
 <span class="sd">        -------</span>
 <span class="sd">        vector</span>
 <span class="sd">            The centre of the images in the box</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageSpecifier</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="n">j</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
         <span class="n">k</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="n">ijk</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="p">]</span>
-        <span class="n">centre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">ijk</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">centre</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">ijk</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SuperCell.calculateCentreOfMass"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateCentreOfMass">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCentreOfMass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the center of mass for a molecular structure.</span>
+<div class="viewcode-block" id="SuperCell.calculateCentreOfMass"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateCentreOfMass">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCentreOfMass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the center of mass for a molecular structure.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -656,7 +655,8 @@
 <span class="sd">            If &#39;abc&#39;, returns tuple with mass and a numpy.ndarray of fractional coordinates of the center of mass.</span>
 <span class="sd">            For any other value of `output`, returns a tuple containing the total mass (float), Cartesian</span>
 <span class="sd">            coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.</span>
-<span class="sd">        &quot;&quot;&quot;</span>        
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Calculate the centre of mass </span>
         <span class="c1"># The centre of mass can be returned as &#39;xyz&#39; space or &#39;abc&#39; space</span>
         <span class="c1"># if output=&#39;all&#39; a tuple of (mass,cm_xyz,cm_abc) is returned</span>
@@ -672,16 +672,12 @@
         <span class="c1">#end for i,j,k</span>
         <span class="n">cm_fractional</span> <span class="o">=</span> <span class="n">cm_fractional</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">)</span>
         <span class="n">cm_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">cm_fractional</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">cm_xyz</span>
-        <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;mass&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">mass</span>
-        <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">cm_fractional</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span></div></div>
-
-
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;xyz&quot;</span>  <span class="p">:</span> <span class="n">cm_xyz</span><span class="p">,</span>
+            <span class="s2">&quot;mass&quot;</span> <span class="p">:</span> <span class="n">mass</span><span class="p">,</span>
+            <span class="s2">&quot;abc&quot;</span>  <span class="p">:</span> <span class="n">cm_fractional</span><span class="p">,</span>
+            <span class="s2">&quot;all&quot;</span>  <span class="p">:</span> <span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span> <span class="p">),</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span><span class="p">))</span></div></div>
 </pre></div>
         </article>
       </div>

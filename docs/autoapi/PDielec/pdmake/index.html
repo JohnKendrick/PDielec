@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.pdmake">
 <span id="pdielec-pdmake"></span><h1><a class="reference internal" href="#module-PDielec.pdmake" title="PDielec.pdmake"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a><a class="headerlink" href="#module-PDielec.pdmake" title="Permalink to this heading">#</a></h1>
-<p>A Makefile style system for testing and installing PDGui and PDielec</p>
+<p>A Makefile style system for testing and installing PDGui and PDielec.</p>
 <p>This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.</p>
 <section id="command-line-options">
 <h2>Command line options<a class="headerlink" href="#command-line-options" title="Permalink to this heading">#</a></h2>
@@ -329,7 +329,7 @@
 <td><p>Install a set of scripts into a specified directory.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.main" title="PDielec.pdmake.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>()</p></td>
-<td><p>Main routine to process command line arguments and execute actions.</p></td>
+<td><p>Process command line arguments and execute actions (main routine).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.mychdir" title="PDielec.pdmake.mychdir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mychdir</span></code></a>(directory)</p></td>
 <td><p>Local version of os.chdir with some testing.</p></td>
@@ -359,10 +359,10 @@
 <td><p>Run a preader test.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.runPyInstaller" title="PDielec.pdmake.runPyInstaller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runPyInstaller</span></code></a>()</p></td>
-<td><p>Runs the PyInstaller command with specified options and handles platform specific adjustments.</p></td>
+<td><p>Run the PyInstaller command with specified options and handles platform specific adjustments.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.runPyPi" title="PDielec.pdmake.runPyPi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runPyPi</span></code></a>()</p></td>
-<td><p>Creates PyPi distribution files, restricted by OS.</p></td>
+<td><p>Create PyPi distribution files, restricted by OS.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.runTests" title="PDielec.pdmake.runTests"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runTests</span></code></a>(testlist, testType, regenerate)</p></td>
 <td><p>Run the tests given in the directories stored in testlist.</p></td>
@@ -589,7 +589,7 @@ may raise exceptions related to the execution of shell commands.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.main">
 <span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.main" title="Permalink to this definition">#</a></dt>
-<dd><p>Main routine to process command line arguments and execute actions.</p>
+<dd><p>Process command line arguments and execute actions (main routine).</p>
 <p>This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.</p>
 <section id="id13">
 <h4>Command line options<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
@@ -823,6 +823,8 @@ the Logger class.</p>
 </dd>
 <dt>regenerate<span class="classifier">bool</span></dt><dd><p>Set to true if the reference file is overwritten.</p>
 </dd>
+<dt>benchmarks<span class="classifier">boolean</span></dt><dd><p>Set to true if benchmarks are to be run</p>
+</dd>
 </dl>
 </section>
 </dd></dl>
@@ -871,14 +873,14 @@ Then the instructions are processed according to the context (preader, pdgui, p2
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runPyInstaller">
 <span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPyInstaller</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPyInstaller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPyInstaller" title="Permalink to this definition">#</a></dt>
-<dd><p>Runs the PyInstaller command with specified options and handles platform specific adjustments.</p>
+<dd><p>Run the PyInstaller command with specified options and handles platform specific adjustments.</p>
 <p>This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runPyPi">
 <span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPyPi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPyPi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPyPi" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates PyPi distribution files, restricted by OS.</p>
+<dd><p>Create PyPi distribution files, restricted by OS.</p>
 <p>This function changes the current working directory to <cite>rootDirectory</cite>
 and runs a series of shell commands that clean up previous distribution files and
 create new PyPi distribution files. The function is not designed to run on Windows OS.</p>
@@ -979,7 +981,7 @@ otherwise returns False.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_pdgui">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_pdgui</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ATR/AlAs',</span> <span class="pre">'ATR/Na2SO42',</span> <span class="pre">'ATR/Na2SO42_fit',</span> <span class="pre">'AbInit/AlAs',</span> <span class="pre">'AbInit/BaTiO3',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_pdgui" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_pdgui</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ATR/AlAs',</span> <span class="pre">'ATR/Na2SO42',</span> <span class="pre">'ATR/Na2SO42_fit',</span> <span class="pre">'AbInit/AlAs',</span> <span class="pre">'AbInit/BaTiO3',</span> <span class="pre">'AbInit/Na2SO42',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_pdgui" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">

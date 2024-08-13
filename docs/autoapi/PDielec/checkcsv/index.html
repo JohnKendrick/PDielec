@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.checkcsv">
 <span id="pdielec-checkcsv"></span><h1><a class="reference internal" href="#module-PDielec.checkcsv" title="PDielec.checkcsv"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a><a class="headerlink" href="#module-PDielec.checkcsv" title="Permalink to this heading">#</a></h1>
-<p>The checkcsv command read in two csv files and check that the float contents are the same</p>
+<p>The checkcsv command read in two csv files and check that the float contents are the same.</p>
 <p>It is used by the <a class="reference internal" href="../pdmake/index.html#module-PDielec.pdmake" title="PDielec.pdmake"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pdmake</span></code></a> command to check the validity of the reference calculations in the test suite.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
@@ -291,7 +291,7 @@
 <td><p>Check if the given value can be converted to float.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.checkcsv.main" title="PDielec.checkcsv.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>()</p></td>
-<td><p>Compares two files line by line to check for significant changes based on a provided threshold.</p></td>
+<td><p>Compare two files line by line to check for significant changes based on a provided threshold.</p></td>
 </tr>
 </tbody>
 </table>
@@ -366,7 +366,7 @@ of the lines if <cite>swapped</cite> is True, ignoring a discrepancy of exactly 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.checkcsv.main">
 <span class="sig-prename descclassname"><span class="pre">PDielec.checkcsv.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/checkcsv.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.checkcsv.main" title="Permalink to this definition">#</a></dt>
-<dd><p>Compares two files line by line to check for significant changes based on a provided threshold.</p>
+<dd><p>Compare two files line by line to check for significant changes based on a provided threshold.</p>
 <p>This script takes at least two arguments that are file names along with optional arguments for
 separator (<cite>-sep</cite>) and threshold value (<cite>-thresh</cite>). It compares numbers from corresponding lines
 in the two files. A significant change is flagged if the specified comparison formula exceeds

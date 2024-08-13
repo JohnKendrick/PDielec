@@ -287,17 +287,15 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Read the contents of a directory containing Phonopy input and output files.</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;Read the contents of a directory containing Phonopy input and output files.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
 
 
 <div class="viewcode-block" id="PhonopyOutputReader"><a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader">[docs]</a><span class="k">class</span> <span class="nc">PhonopyOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read the contents of a directory containing Phonopy input and output files.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read the contents of a directory containing Phonopy input and output files.</span>
 
 <span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
 
@@ -312,11 +310,11 @@
 <span class="sd">    -----</span>
 <span class="sd">    This method sets the type of the output to &#39;Phonopy output&#39; and </span>
 <span class="sd">    associates a quantum mechanics (QM) reader object with the instance.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">qmreader</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for creating a new instance of the class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a Phonopy output reader.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -329,19 +327,19 @@
 <span class="sd">        -----</span>
 <span class="sd">        This method sets the type of the output to &#39;Phonopy output&#39; and </span>
 <span class="sd">        associates a quantum mechanics (QM) reader object with the instance.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
         <span class="c1"># We have to use the qm reader to do the reading of the QM files</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s1">&#39;Phonopy output&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;Phonopy output&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span>                <span class="o">=</span> <span class="n">qmreader</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="PhonopyOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the Phonopy files in the directory.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the Phonopy files in the directory.</span>
 
 <span class="sd">        Uses the qmreader to read in the electronic structure information and copies it to the current object.</span>
-<span class="sd">	Then it reads the dynamical matrix from phonopy</span>
+<span class="sd">        Then it reads the dynamical matrix from phonopy</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Set the qm reader to have all the settings that phonopy reader has</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">eckart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eckart</span>
@@ -382,8 +380,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="PhonopyOutputReader.read_dynamical_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">read_dynamical_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and process the dynamical matrix from output files.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process the dynamical matrix from output files.</span>
 
 <span class="sd">        This method reads the dynamical matrix and other relevant data from the specified</span>
 <span class="sd">        output files, calculates the Hessian matrix, converts its units, and computes the</span>
@@ -420,6 +417,7 @@
 <span class="sd">          to distinguish between real and imaginary modes.</span>
 <span class="sd">        - Mass-weighted normal modes are then computed for each ion based on the eigenvectors, and the </span>
 <span class="sd">          frequencies and normal modes are stored in corresponding instance attributes.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1">#</span>
         <span class="c1"># Yaml imports of large files are really slow....</span>
@@ -428,26 +426,20 @@
         <span class="kn">import</span> <span class="nn">yaml</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">CLoader</span> <span class="k">as</span> <span class="n">Loader</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Yaml CLoader is not avaiable, using fallback&quot;</span><span class="p">)</span>
             <span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">Loader</span> <span class="k">as</span> <span class="n">Loader</span>
         <span class="c1"># the first name has to be the qpoints file</span>
-        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">data_q</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">close</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="n">data_q</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
         <span class="c1"># the second name has to be the phonopy file</span>
-        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">data_p</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">close</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="n">data_p</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s1">&#39;primitive_cell&#39;</span><span class="p">][</span><span class="s1">&#39;points&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
-        <span class="c1">#qpoints = data_q[&#39;phonon&#39;][0][&#39;q-position&#39;]</span>
-        <span class="c1"># print(&#39;q-points&#39;,qpoints)</span>
-        <span class="c1">#natom = data_q[&#39;natom&#39;]</span>
-        <span class="c1"># print(&#39;natom:&#39;,natom)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;primitive_cell&quot;</span><span class="p">][</span><span class="s2">&quot;points&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;mass&quot;</span><span class="p">])</span>
         <span class="n">dynmat</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">dynmat_data</span> <span class="o">=</span> <span class="n">data_q</span><span class="p">[</span><span class="s1">&#39;phonon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;dynamical_matrix&#39;</span><span class="p">]</span>
+        <span class="n">dynmat_data</span> <span class="o">=</span> <span class="n">data_q</span><span class="p">[</span><span class="s2">&quot;phonon&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;dynamical_matrix&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dynmat_data</span><span class="p">:</span>
             <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
             <span class="n">dynmat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">vals</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>
@@ -470,7 +462,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmodes</span><span class="p">):</span>
             <span class="n">mode</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
                 <span class="n">modea</span> <span class="o">=</span> <span class="p">[</span><span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">3</span>
                 <span class="n">mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modea</span><span class="p">)</span>

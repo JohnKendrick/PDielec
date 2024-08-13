@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.HelperRoutines">
 <span id="pdielec-helperroutines"></span><h1><a class="reference internal" href="#module-PDielec.HelperRoutines" title="PDielec.HelperRoutines"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a><a class="headerlink" href="#module-PDielec.HelperRoutines" title="Permalink to this heading">#</a></h1>
-<p>Helper Routines - Useful for scripting and in Jupyter Notebooks</p>
+<p>Helper Routines - Useful for scripting and in Jupyter Notebooks.</p>
 <p>These routines are a useful starting point for investigating the way the code operates</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
@@ -285,7 +285,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculateDFTPermittivityObject" title="PDielec.HelperRoutines.calculateDFTPermittivityObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateDFTPermittivityObject</span></code></a>(reader[, sigma, ...])</p></td>
-<td><p>Define a permittivity object for the DFT calculation from the given reader</p></td>
+<td><p>Define a permittivity object for the DFT calculation from the given reader.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculatePowderSpectrum" title="PDielec.HelperRoutines.calculatePowderSpectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculatePowderSpectrum</span></code></a>(frequencies_cm1, dielectric, ...)</p></td>
 <td><p>Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.</p></td>
@@ -293,7 +293,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum" title="PDielec.HelperRoutines.calculateSingleCrystalSpectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateSingleCrystalSpectrum</span></code></a>(frequencies_cm1, ...[, ...])</p></td>
 <td><p>Calculate a single crystal spectrum.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, qmprogram, eckart, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, eckart, mass_definition])</p></td>
 <td><p>Get a material with the given name.</p></td>
 </tr>
 </tbody>
@@ -302,7 +302,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculateDFTPermittivityObject">
 <span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateDFTPermittivityObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculateDFTPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculateDFTPermittivityObject" title="Permalink to this definition">#</a></dt>
-<dd><p>Define a permittivity object for the DFT calculation from the given reader</p>
+<dd><p>Define a permittivity object for the DFT calculation from the given reader.</p>
 <p>This routine reads in the details of the DFT calculation
 Calculates the hessian and normal modes
 Calculates the oscillator strength
@@ -431,7 +431,7 @@ Information about the layer class can be found here (<a class="reference interna
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.getMaterial">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a material with the given name.</p>
 <p>If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
 If the name is a material name in the material database, this is used instead.
@@ -442,9 +442,6 @@ Information about the material class can be found here (<a class="reference inte
 <dt>name<span class="classifier">str</span></dt><dd><p>The name of the material, which can be a file name or a material name existing in the database.</p>
 </dd>
 <dt>dataBaseName<span class="classifier">str</span></dt><dd><p>The name of the database which will be searched from the material</p>
-</dd>
-<dt>qmprogram<span class="classifier">str, optional</span></dt><dd><p>The name of the QM program used in the case of Phonopy DFT calculations
-Defaults to ‘vasp’</p>
 </dd>
 <dt>eckart<span class="classifier">boolean, optional</span></dt><dd><p>If true apply eckart conditions in the reader. Defaults to true.</p>
 </dd>

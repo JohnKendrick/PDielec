@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.AbinitOutputReader">
 <span id="pdielec-abinitoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.AbinitOutputReader" title="PDielec.AbinitOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.AbinitOutputReader" title="Permalink to this heading">#</a></h1>
-<p>AbinitOutputReader module</p>
+<p>AbinitOutputReader module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -455,7 +455,7 @@ The Hessian matrix is used in molecular dynamics and vibrational analysis to des
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_epsilon">
 <span class="sig-name descname"><span class="pre">_read_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_epsilon" title="Permalink to this definition">#</a></dt>
-<dd><p>Read zero frequency optical permittivity</p>
+<dd><p>Read zero frequency optical permittivity.</p>
 <p>Parse epsilon related data, and populates the <cite>zerof_optical_dielectric</cite> array
 based on the read data.</p>
 <section id="id14">
@@ -582,7 +582,7 @@ excluding the first token, and saves them into <cite>masses_per_type</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_natom">
 <span class="sig-name descname"><span class="pre">_read_natom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_natom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_natom" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads and processes the number of atoms from a given line.</p>
+<dd><p>Read and process the number of atoms from a given line.</p>
 <p>This method reads the number of atoms from a given line of text, sets the object’s ‘nions’ attribute to this number, and initializes the ‘_charges’ attribute to a zero array with shape <cite>(nions, 3, 3)</cite>. This method does not return any value.</p>
 <section id="id29">
 <h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
@@ -662,7 +662,7 @@ when splitting the string by whitespace.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
-<dd><p>Define the strings to be used for searching and Read the Abinit file names</p>
+<dd><p>Define the strings to be used for searching and Read the Abinit file names.</p>
 <section id="id37">
 <h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>

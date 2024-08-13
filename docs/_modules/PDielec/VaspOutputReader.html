@@ -287,39 +287,37 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">VASP output reader</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;VASP output reader.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
+
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">atomic_number_to_element</span>
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span>           <span class="kn">import</span> <span class="n">atomic_number_to_element</span>
+<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 
 
 <div class="viewcode-block" id="myfloat"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.myfloat">[docs]</a><span class="k">def</span> <span class="nf">myfloat</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A replacement for float() which will return a large number if it finds a * in the string.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace float(), return a large number if it finds a * in the string.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    string : str</span>
+<span class="sd">        The string to be analysed as a float</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
 <span class="sd">        A standard float conversion of the input or a large number if &#39;*&#39; is found in the input.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mf">9999.999</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
 
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">9999.999</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader">[docs]</a><span class="k">class</span> <span class="nc">VaspOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read the contents of a directory containing VASP input and output files.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read the contents of a directory containing VASP input and output files.</span>
 
 <span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
 
@@ -342,12 +340,11 @@
 <span class="sd">        The value of ibrion</span>
 <span class="sd">    _potim : float</span>
 <span class="sd">        The value of potim</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a new instance of the class.</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new instance of the class.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -368,9 +365,10 @@
 <span class="sd">            The value of ibrion</span>
 <span class="sd">        _potim : float</span>
 <span class="sd">            The value of potim</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s1">&#39;Vasp output&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;Vasp output&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pspots</span>                  <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ediff</span>                   <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pulay</span>                  <span class="o">=</span> <span class="kc">None</span>
@@ -379,8 +377,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="VaspOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the vasp files in the directory.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the vasp files in the directory.</span>
 
 <span class="sd">        Define the search strings neeeded and the associated routines will read the required values</span>
 <span class="sd">        Process the files accordingly</span>
@@ -392,42 +389,42 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># Empty the dictionary matching phrases</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;ionspertype&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;   ions per type =&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ionspertype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ionspertype&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;   ions per type =&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ionspertype</span><span class="p">)</span>
         <span class="c1"># self.manage[&#39;masses_skip&#39;]  = (re.compile(&#39;  Mass of Ions in am&#39;), self._read_skip4)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;pspots&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; POTCAR:&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pspot</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;arrays&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; Dimension of arrays:&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_array_dimensions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;pspots&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; POTCAR:&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pspot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;arrays&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; Dimension of arrays:&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_array_dimensions</span><span class="p">)</span>
         <span class="c1">#self.manage[&#39;masses&#39;]       = (re.compile(&#39;   POMASS =&#39;), self._read_masses)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;spin&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;   ISPIN  = &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_spin</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;encut&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;   ENCUT  = &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_encut</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;ediff&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;   EDIFF  = &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ediff</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;ibrion&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;   IBRION = &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ibrion</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;potim&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;   POTIM  = &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_potim</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;nelect&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;   NELECT = &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_nelect</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;lattice&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  volume of cell :&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;fractional&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; position of ions in fractional coordinates&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_fractional_coordinates</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;forces&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; POSITION  *TOTAL-FORCE&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_forces</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  FREE ENERGIE OF THE ION&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;magnet&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; number of electron &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_magnet</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  external pressure =&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_external_pressure</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;skip1&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; old parameters found&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_skip4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;staticDielectric&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; MACROSCOPIC STATIC DIELECTRIC TENSOR .including&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;staticIonic&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; MACROSCOPIC STATIC DIELECTRIC TENSOR IONIC CONT&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ionic_dielectric</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;bornCharges&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; BORN EFFECTIVE CHARGES&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;eigenvectors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; Eigenvectors and eige&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_eigenvectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;eigenskip&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; Eigenvectors after division&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_skip4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;elastic&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; TOTAL ELASTIC MODULI&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_elastic_constants</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;kpoint&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^Gamma&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoint_grid</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^ *Atomic configuration&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_species</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;newmasses&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;  Mass of Ions in am&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_newmasses</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;spin&quot;</span><span class="p">]</span>         <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;   ISPIN  = &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_spin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;encut&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;   ENCUT  = &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_encut</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ediff&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;   EDIFF  = &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ediff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ibrion&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;   IBRION = &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ibrion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;potim&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;   POTIM  = &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_potim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nelect&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;   NELECT = &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_nelect</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  volume of cell :&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;fractional&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; position of ions in fractional coordinates&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_fractional_coordinates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;forces&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; POSITION  *TOTAL-FORCE&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_forces</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  FREE ENERGIE OF THE ION&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;magnet&quot;</span><span class="p">]</span>       <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; number of electron &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_magnet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span>     <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  external pressure =&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_external_pressure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;skip1&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; old parameters found&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_skip4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;staticDielectric&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; MACROSCOPIC STATIC DIELECTRIC TENSOR .including&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;staticIonic&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; MACROSCOPIC STATIC DIELECTRIC TENSOR IONIC CONT&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ionic_dielectric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;bornCharges&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; BORN EFFECTIVE CHARGES&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;eigenvectors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; Eigenvectors and eige&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_eigenvectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;eigenskip&quot;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; Eigenvectors after division&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_skip4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;elastic&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; TOTAL ELASTIC MODULI&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_elastic_constants</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;kpoint&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^Gamma&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoint_grid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^ *Atomic configuration&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_species</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;newmasses&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  Mass of Ions in am&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_newmasses</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_forces"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_forces">[docs]</a>    <span class="k">def</span> <span class="nf">_read_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read force data from a file and update the iterations datasets with maximum and RMS forces.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read force data from a file and update the iterations datasets with maximum and RMS forces.</span>
 
 <span class="sd">        After execution, `self.iterations` will be updated with the new `max_force` and `rms_force` values for the current iteration.</span>
 
@@ -444,7 +441,7 @@
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">maxf</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">rmsf</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">forces</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="p">]</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">forces</span><span class="p">:</span>
@@ -454,17 +451,16 @@
                 <span class="c1"># end if</span>
             <span class="c1"># end for f</span>
         <span class="c1">#end for i</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;max_force&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;max_force&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">[</span><span class="s2">&quot;max_force&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">[</span><span class="s2">&quot;max_force&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">maxf</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;rms_force&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;rms_force&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">[</span><span class="s2">&quot;rms_force&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">[</span><span class="s2">&quot;rms_force&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rmsf</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_species"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_species">[docs]</a>    <span class="k">def</span> <span class="nf">_read_species</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads species from a file and updates species information.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read species from a file and updates species information.</span>
 
 <span class="sd">        This method reads the number of lines for a species, computes the total charge from these lines, and appends the corresponding element to the species list. It utilizes the atomic_number_to_element dictionary to map the computed total charge to an element symbol.</span>
 
@@ -480,12 +476,13 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        atomic_number_to_element : A dictionary mapping total charges to element symbols.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">nlines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">zcharge</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlines</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">zcharge</span> <span class="o">=</span> <span class="n">zcharge</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atomic_number_to_element</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">zcharge</span><span class="o">+</span><span class="mf">0.001</span><span class="p">)])</span>
@@ -493,8 +490,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_kpoint_grid"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_kpoint_grid">[docs]</a>    <span class="k">def</span> <span class="nf">_read_kpoint_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and parse the k-point grid dimensions from a file line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and parse the k-point grid dimensions from a file line.</span>
 
 <span class="sd">        This method assumes that the current line from which `line` is read contains three integers that represent the dimensions of the k-point grid. These integers are read, converted to integers, and stored in the instance variable `kpoint_grid`.</span>
 
@@ -511,14 +507,14 @@
 <span class="sd">        -----</span>
 <span class="sd">        - This method modifies the state of the object by setting the `kpoint_grid` attribute.</span>
 <span class="sd">        - The method reads the next line from `self.file_descriptor`, not from the `line` parameter.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="p">]</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_ionspertype"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_ionspertype">[docs]</a>    <span class="k">def</span> <span class="nf">_read_ionspertype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads and stores the number of ions per species from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and store the number of ions per species from a given line.</span>
 
 <span class="sd">        This method processes a string that contains information about the number of ions for each type/species. It updates the attributes `ions_per_type` and `nspecies` of the class.</span>
 
@@ -537,26 +533,27 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_newmasses"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_newmasses">[docs]</a>    <span class="k">def</span> <span class="nf">_read_newmasses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads and processes the &quot;newmasses&quot; from a line in the file descriptor.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process the &quot;newmasses&quot; from a line in the file descriptor.</span>
 
 <span class="sd">        This internal method parses a single line from the file descriptor to read the masses associated with different atom types in a molecular system. Based on the number of species (`nspecies`) and ions per type, it updates `masses_per_type`, `masses`, `atom_type_list`, and `species_list` lists with the parsed and computed information.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            Line is a string (not used)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">            The string line from which the new masses information is to be read. Note that this parameter is initially passed but not used directly, as the function immediately reads a new line from `self.file_descriptor`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">mass_string</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">12</span><span class="p">:]</span>
         <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">increment</span> <span class="o">=</span> <span class="mi">6</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span><span class="p">):</span>
             <span class="n">mass</span> <span class="o">=</span> <span class="n">mass_string</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="n">increment</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">mass</span><span class="p">))</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">increment</span>
@@ -565,7 +562,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">mass</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="p">):</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
@@ -574,8 +571,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_masses"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_masses">[docs]</a>    <span class="k">def</span> <span class="nf">_read_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse and store the mass value from a line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and store the mass value from a line of text.</span>
 
 <span class="sd">        This method extracts the third element from a whitespace-separated list (assumed</span>
 <span class="sd">        to be a mass), removes semicolons, converts it to a float, and appends it to the </span>
@@ -591,6 +587,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">mass_string</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">mass_string</span> <span class="o">=</span> <span class="n">mass_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -598,8 +595,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_eigenvectors"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_eigenvectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_eigenvectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and process eigenvectors from a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process eigenvectors from a file.</span>
 
 <span class="sd">        This method extracts frequencies and mass-weighted normal modes from a read file, storing them in the class&#39;s frequencies and mass_weighted_normal_modes attributes, respectively. It assumes the file follows a specific format where frequencies and their corresponding eigenvectors are listed, considering imaginary frequencies if present.</span>
 
@@ -611,26 +607,23 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">imaginary</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;f/i=&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">imaginary</span><span class="p">:</span>
-                <span class="c1"># represent imaginary by negative real</span>
-                <span class="n">freq</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">freq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">7</span><span class="p">])</span>
+            <span class="n">freq</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">])</span> <span class="k">if</span> <span class="n">imaginary</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">7</span><span class="p">])</span>
             <span class="c1"># end if</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
                 <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">])])</span>
             <span class="c1"># end for j</span>
@@ -639,8 +632,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_born_charges"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_born_charges">[docs]</a>    <span class="k">def</span> <span class="nf">_read_born_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the born charges from the OUTCAR file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the born charges from the OUTCAR file.</span>
 
 <span class="sd">        Each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as: ::</span>
 
@@ -659,11 +651,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            A numpy array containing the born charges with its shape determined by the field directions and atomic displacements as described above.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])])</span>
@@ -676,8 +669,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_elastic_constants"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_elastic_constants">[docs]</a>    <span class="k">def</span> <span class="nf">_read_elastic_constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and process elastic constants from a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process elastic constants from a file.</span>
 
 <span class="sd">        This method reads lines from an opened file pointed by the instance&#39;s file</span>
 <span class="sd">        descriptor, extracts numeric values assumed to be elastic constants, and</span>
@@ -703,6 +695,7 @@
 <span class="sd">        scaled down by a factor of 10 (to convert to GPa), assembled into a 2D array (list of lists),</span>
 <span class="sd">        converted into a NumPy array, scaled, and then stored as a list in the</span>
 <span class="sd">        `self.elastic_constants` attribute.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Read the total elastic constants</span>
         <span class="n">elastic_constants</span> <span class="o">=</span> <span class="p">[]</span>
@@ -727,8 +720,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_ionic_dielectric"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_ionic_dielectric">[docs]</a>    <span class="k">def</span> <span class="nf">_read_ionic_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads ionic dielectric constants from a file and updates the zero-frequency static dielectric constant.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read ionic dielectric constants from a file and update the zero-frequency static dielectric constant.</span>
 
 <span class="sd">        This method assumes the presence of two successive lines in the file corresponding to two dielectric constant values. If any of these lines are marked with an asterisk (*) as missing or do not contain at least three numeric values, default values are used instead. The method calculates the sum of the existing zero-frequency optical dielectric constants and the newly read ionic dielectric constants and updates the corresponding class attribute with this sum.</span>
 
@@ -746,6 +738,7 @@
 <span class="sd">        - Requires that `self.file_descriptor` is an open file object positioned at the correct line where dielectric information starts.</span>
 <span class="sd">        - The method directly modifies `self.zerof_static_dielectric` based on read values and calculated sums.</span>
 <span class="sd">        - This method performs no direct output but modifies the class state.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Read the ionic contribution to the static dielectric and use it to computet</span>
         <span class="c1"># the full static dielectric constant</span>
@@ -753,15 +746,15 @@
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="c1"># the is zero frequency ionic contribution to the static dielectric</span>
         <span class="n">ionic_dielectric</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;99999.999 99999.999 99999.999&quot;</span>
         <span class="n">ionic_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">myfloat</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;99999.999 99999.999 99999.999&quot;</span>
         <span class="n">ionic_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">myfloat</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;99999.999 99999.999 99999.999&quot;</span>
         <span class="n">ionic_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">myfloat</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
         <span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="p">)</span>
@@ -771,8 +764,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_static_dielectric"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_static_dielectric">[docs]</a>    <span class="k">def</span> <span class="nf">_read_static_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and parse static dielectric data from a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and parse static dielectric data from a file.</span>
 
 <span class="sd">        This method is designed to read lines from a file, which the instance&#39;s file_descriptor points to,</span>
 <span class="sd">        and parse the static dielectric data. It expects the data to be in specific line positions within the file.</span>
@@ -789,27 +781,27 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="c1"># the is epsilon infinity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;99999.999 99999.999 99999.999&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">myfloat</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;99999.999 99999.999 99999.999&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">myfloat</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;99999.999 99999.999 99999.999&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">myfloat</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_skip4"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_skip4">[docs]</a>    <span class="k">def</span> <span class="nf">_read_skip4</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and skip the next 4 lines from the current position.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and skip the next 4 lines from the current position.</span>
 
 <span class="sd">        This method reads and discards the next four lines from the file</span>
 <span class="sd">        associated with the `file_descriptor` attribute of the calling object.</span>
@@ -822,6 +814,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -830,8 +823,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_external_pressure"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_external_pressure">[docs]</a>    <span class="k">def</span> <span class="nf">_read_external_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and parse external pressure from a given line of text, updating instance attributes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and parse external pressure from a given line of text, updating instance attributes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -845,6 +837,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method updates the instance&#39;s `pressure` and `_pulay` attributes based on values extracted from the input string. The `pressure` value is obtained from the fourth item in the split string (`line.split()[3]`), and the `_pulay` value is from the ninth item (`line.split()[8]`). Both values are divided by 10.0 to convert from kbar to GPa.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Vasp writes out kbar so convert to GPa</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span><span class="o">/</span><span class="mf">10.0</span>
@@ -853,8 +846,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_pspot"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_pspot">[docs]</a>    <span class="k">def</span> <span class="nf">_read_pspot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and store pseudopotential information from a line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and store pseudopotential information from a line.</span>
 
 <span class="sd">        This method parses a line to extract pseudopotential information and stores it in the `_pspots` dictionary attribute of the object. The pseudopotential label is used as the key, and its corresponding value as the value in the `_pspots` dictionary.</span>
 
@@ -866,13 +858,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">_pspots</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_array_dimensions"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_array_dimensions">[docs]</a>    <span class="k">def</span> <span class="nf">_read_array_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and set the array dimensions from a line in a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the array dimensions from a line in a file.</span>
 
 <span class="sd">        This method reads lines from a file pointed to by `self.file_descriptor`,</span>
 <span class="sd">        extracts dimensions for kpoints, nbands, and nions from these lines, and</span>
@@ -894,6 +886,7 @@
 <span class="sd">        - `kpoints` is the 4th value in the first line read within the function.</span>
 <span class="sd">        - `nbands` is the 15th value in the same line.</span>
 <span class="sd">        - `nions` is the 12th value in the next line read.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
@@ -903,8 +896,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_lattice_vectors"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_lattice_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_lattice_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and process lattice vectors from a line of a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process lattice vectors from a line of a file.</span>
 
 <span class="sd">        This method reads the volume and lattice vectors from specified lines of an input file,</span>
 <span class="sd">        constructs a new `UnitCell` object from the read vectors, and appends it to the unit cells list.</span>
@@ -939,7 +931,7 @@
         <span class="n">bvector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">cvector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])]</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">cell</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">)</span>
             <span class="n">cell</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="p">)</span>
@@ -948,8 +940,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_fractional_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_fractional_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_read_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read fractional coordinates from a file and set them for the current unit cell.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read fractional coordinates from a file and set them for the current unit cell.</span>
 
 <span class="sd">        This function reads `nions` lines from the `file_descriptor` attribute, extracts</span>
 <span class="sd">        the first three space-separated values as fractional coordinates, and appends them</span>
@@ -966,10 +957,10 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">ions</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">ions</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">ions</span><span class="p">)</span>
@@ -977,8 +968,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_spin"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_spin">[docs]</a>    <span class="k">def</span> <span class="nf">_read_spin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse and set the spin from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and set the spin from a given line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -992,13 +982,13 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method expects the spin value to be at the third position in the line. The method doesn&#39;t return any value but sets the object&#39;s `spin` attribute based on the extracted integer value.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_encut"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_encut">[docs]</a>    <span class="k">def</span> <span class="nf">_read_encut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse and set the energy cutoff value from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and set the energy cutoff value from a given line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1012,13 +1002,13 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method does not return any value. It sets the value of `energy_cutoff` attribute of the instance based on the input line.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">energy_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_ediff"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_ediff">[docs]</a>    <span class="k">def</span> <span class="nf">_read_ediff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and set the energy difference value from a given line string.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the energy difference value from a given line string.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1036,26 +1026,26 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_ibrion"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_ibrion">[docs]</a>    <span class="k">def</span> <span class="nf">_read_ibrion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and set the IBRION parameter from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the IBRION parameter from a given line.</span>
 
 <span class="sd">        This method extracts the IBRION value from a formatted line and sets it to the object&#39;s _ibrion attribute.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            String to be processed</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">            The line of text containing the IBRION value, expected to be at the third position (index 2) when split by whitespace.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">_ibrion</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_potim"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_potim">[docs]</a>    <span class="k">def</span> <span class="nf">_read_potim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse and set the POTIM parameter from a line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and set the POTIM parameter from a line of text.</span>
 
 <span class="sd">        This method extracts the POTIM parameter value from a provided string</span>
 <span class="sd">        and sets it as a floating-point number within the object.</span>
@@ -1071,13 +1061,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">_potim</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_nelect"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_nelect">[docs]</a>    <span class="k">def</span> <span class="nf">_read_nelect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads and sets the number of electrons from a given line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the number of electrons from a given line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1096,13 +1086,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]))</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_magnet"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_magnet">[docs]</a>    <span class="k">def</span> <span class="nf">_read_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read magnetization properties from a line and update the object attributes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read magnetization properties from a line and update the object attributes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1122,6 +1112,7 @@
 <span class="sd">        from the line. If magnetization information is present in the line, it also</span>
 <span class="sd">        updates the `magnetization` attribute with that value; otherwise, it sets</span>
 <span class="sd">        `magnetization` to 0.0.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
@@ -1130,8 +1121,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span> <span class="o">=</span> <span class="mf">0.0</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_energy"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_energy">[docs]</a>    <span class="k">def</span> <span class="nf">_read_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads the energy-related values from a file and updates the instance attributes with these values.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the energy-related values from a file and update the instance attributes with these values.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1145,6 +1135,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method directly modifies the instance attributes `final_free_energy`, `final_free_energies`, `final_energy_without_entropy`, and `final_energies_without_entropy` by reading values from the file associated with `file_descriptor`. The relevant energy values can be extracted from the 5th and 4th positions (zero-indexed) of the line text split by spaces, on specific lines read in sequence.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>

@@ -51,6 +51,7 @@ Classes
    frequencies : NoneType or Various types
        Initially None, intended for storing frequencies data.
 
+
    .. py:method:: _read_constant_model(line)
 
       Read in a full constant dielectric tensor 3 values on each line.
@@ -58,10 +59,12 @@ Classes
       Parameters
       ----------
       line : str
+          Line to be read (not used)
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_cpk_coords(line)
@@ -81,7 +84,6 @@ Classes
 
       Notes
       -----
-
       - This method directly modifies several attributes of the class instance it 
         belongs to, including lists of species, ions, and masses, as well as data 
         structures related to unit cells.
@@ -99,7 +101,6 @@ Classes
 
       Raises
       ------
-
       - This function implicitly assumes correct formatting and content of the input data. 
         If the data is not correctly formatted or if `_read_line` fails to read further 
         lines as expected, unexpected behavior or errors could occur.
@@ -109,19 +110,22 @@ Classes
       _read_line : Method used to read the next line for continued parsing.
 
 
+
    .. py:method:: _read_cpk_lattice_vectors(line)
 
-      Process a cpk input file with cell information
+      Process a cpk input file with cell information.
 
       The lattice vectors are assumed to be in Angstrom
 
       Parameters
       ----------
       line : str
+          Line to be processed (not used)
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_drude_lorentz_model(line)
@@ -131,6 +135,7 @@ Classes
       Parameters
       ----------
       line : str
+          line to be read
 
       Returns
       -------
@@ -151,6 +156,7 @@ Classes
       ```
 
 
+
    .. py:method:: _read_fpsq_model(line)
 
       Read in the fpsq model parameters.
@@ -160,6 +166,7 @@ Classes
       Parameters
       ----------
       line : str
+          Line to be processed
 
       Returns
       -------
@@ -195,6 +202,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_fractional_coordinates(line)
 
       Read and process fractional coordinates from a string line.
@@ -223,9 +231,10 @@ Classes
       Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
 
 
+
    .. py:method:: _read_frequencies(line)
 
-      Reads frequencies and oscillator strengths from a line and appends them to the object's attributes.
+      Read frequencies and oscillator strengths from a line and append them to the object's attributes.
 
       Parameters
       ----------
@@ -249,6 +258,7 @@ Classes
       is used to convert the scalar strength values into tensor form, which is not detailed here.
 
 
+
    .. py:method:: _read_interpolate1_model(line)
 
       Read in a tabulated permittivity and use it for interpolation.
@@ -258,10 +268,12 @@ Classes
       Parameters
       ----------
       line : str
+          Line to be read (not used)
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_interpolate3_model(line)
@@ -273,10 +285,12 @@ Classes
       Parameters
       ----------
       line : str
+          Line to be read (not used)
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_interpolate6_model(line)
@@ -288,15 +302,17 @@ Classes
       Parameters
       ----------
       line : str
+          Line to be read
 
       Returns
       -------
       None
 
 
+
    .. py:method:: _read_lattice_vectors(line)
 
-      Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.
+      Read and process lattice vectors from an input line, then updates internal structures with the new unit cell.
 
       This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
       The lattice vectors are assumed to be in Angstrom
@@ -313,6 +329,7 @@ Classes
       See Also
       --------
       UnitCell : A class or function used to represent and manipulate unit cell information.
+
 
 
    .. py:method:: _read_line()
@@ -338,6 +355,7 @@ Classes
       - Lines consisting solely of whitespace characters (spaces, tabs, newlines) are considered empty.
 
 
+
    .. py:method:: _read_output_files()
 
       Define the search strings and read the Experiment files in the directory.
@@ -349,6 +367,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_species(line)
@@ -367,6 +386,7 @@ Classes
       Notes
       -----
       This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.
+
 
 
    .. py:method:: _read_static_dielectric(line)
@@ -398,9 +418,10 @@ Classes
           If the input lines cannot be converted into complex numbers.
 
 
+
    .. py:method:: calculate_mass_weighted_normal_modes()
 
-      Calculate the mass weight normal modes
+      Calculate the mass weight normal modes.
 
       Parameters
       ----------
@@ -411,6 +432,7 @@ Classes
       np.array
           Returns an array for the mass weighted normal modes which in this case is zero
           The array has a shape 3*nions, nions, 3
+
 
 
 

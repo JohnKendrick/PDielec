@@ -287,17 +287,14 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Simple IO interface </span>
+<span class="sd">&quot;&quot;&quot;Simple IO interface.</span>
 
 <span class="sd">This aims to reproduce the python readline() io method, with limited functionality but much faster.</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1">#</span>
 <div class="viewcode-block" id="pdielec_io"><a class="viewcode-back" href="../../autoapi/PDielec/IO/index.html#PDielec.IO.pdielec_io">[docs]</a><span class="k">class</span> <span class="nc">pdielec_io</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for reading lines from a file and providing an interface similar to file objects.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for reading lines from a file and providing an interface similar to file objects.</span>
 
 <span class="sd">    The class opens a file upon initialization, reads its lines into memory,</span>
 <span class="sd">    and allows sequential reading of these lines through the readline method.</span>
@@ -330,10 +327,11 @@
 <span class="sd">    close()</span>
 <span class="sd">        Resets the reading process by resetting the current line index and</span>
 <span class="sd">        deleting all lines read from the file from memory.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the object with a file&#39;s content.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the object with a file&#39;s content.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -350,8 +348,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span>
 
 <div class="viewcode-block" id="pdielec_io.readline"><a class="viewcode-back" href="../../autoapi/PDielec/IO/index.html#PDielec.IO.pdielec_io.readline">[docs]</a>    <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and return the next line from the stored lines.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and return the next line from the stored lines.</span>
 
 <span class="sd">        This method reads a line from the current position within an internal list of lines</span>
 <span class="sd">        and then advances the position so that subsequent calls will return subsequent lines.</span>
@@ -365,17 +362,17 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The next line in the internal list of lines, or an empty string if the end of the list is reached.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">line</span></div>
 
 <div class="viewcode-block" id="pdielec_io.close"><a class="viewcode-back" href="../../autoapi/PDielec/IO/index.html#PDielec.IO.pdielec_io.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Closes the current object session.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the current object session.</span>
 
 <span class="sd">        Resets the index to 0 and deletes the lines attribute from the object.</span>
 
@@ -390,6 +387,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">del</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span></div></div>

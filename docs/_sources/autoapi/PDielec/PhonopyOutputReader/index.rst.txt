@@ -43,6 +43,7 @@ Classes
    This method sets the type of the output to 'Phonopy output' and 
    associates a quantum mechanics (QM) reader object with the instance.
 
+
    .. py:method:: _read_output_files()
 
       Read the Phonopy files in the directory.
@@ -90,6 +91,7 @@ Classes
         to distinguish between real and imaginary modes.
       - Mass-weighted normal modes are then computed for each ion based on the eigenvectors, and the 
         frequencies and normal modes are stored in corresponding instance attributes.
+
 
 
 

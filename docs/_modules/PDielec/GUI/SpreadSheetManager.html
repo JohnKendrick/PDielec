@@ -286,14 +286,13 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">SpreadSheetMamager module</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">import</span> <span class="nn">xlsxwriter</span> <span class="k">as</span> <span class="nn">xlsx</span>
+<span class="sd">&quot;&quot;&quot;SpreadSheetMamager module.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<div class="viewcode-block" id="SpreadSheetManager"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager">[docs]</a><span class="k">class</span> <span class="nc">SpreadSheetManager</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A manager for handling operations on an Excel workbook via xlsxwriter.</span>
+<span class="kn">import</span> <span class="nn">xlsxwriter</span> <span class="k">as</span> <span class="nn">xlsx</span>
+
+
+<div class="viewcode-block" id="SpreadSheetManager"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager">[docs]</a><span class="k">class</span> <span class="nc">SpreadSheetManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A manager for handling operations on an Excel workbook via xlsxwriter.</span>
 
 <span class="sd">    This class provides methods for managing a workbook with various tabs</span>
 <span class="sd">    (named worksheets), writing data to these worksheets, and handling complex</span>
@@ -339,11 +338,12 @@
 <span class="sd">        Deletes all content from the currently selected worksheet.</span>
 <span class="sd">    close()</span>
 <span class="sd">        Closes the workbook, finalizing it for output.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="c1"># Manage a spread sheet for PDielec / PDGui</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the instance with the given filename.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the instance with the given filename.</span>
 
 <span class="sd">        This constructor initializes an Excel workbook with predefined tab names and settings. It prepares the workbook for data entry and analysis across various predefined categories related to powder and crystal property analysis.</span>
 
@@ -381,26 +381,27 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; my_excel_file = ExcelFileHandler(&quot;example.xlsx&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; my_excel_file.add_data_to_sheet(&quot;Main&quot;, data)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">workbook</span> <span class="o">=</span> <span class="n">xlsx</span><span class="o">.</span><span class="n">Workbook</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tab_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Main&#39;</span><span class="p">,</span> <span class="s1">&#39;Settings&#39;</span><span class="p">,</span> <span class="s1">&#39;Scenarios&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Powder Molar Absorption (cells)&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Powder Molar Absorption (atoms)&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Powder Molar Absorption (mols)&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Powder Absorption&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Powder Real Permittivity&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Powder Imaginary Permittivity&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Powder ATR Reflectance&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Analysis&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Crystal R_p&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Crystal R_s&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Crystal T_p&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Crystal T_s&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Crystal A_p&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Crystal A_s&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Real Crystal Permittivity&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Imag Crystal Permittivity&#39;</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Main&quot;</span><span class="p">,</span> <span class="s2">&quot;Settings&quot;</span><span class="p">,</span> <span class="s2">&quot;Scenarios&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Powder Molar Absorption (cells)&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Powder Molar Absorption (atoms)&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Powder Molar Absorption (mols)&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Powder Absorption&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Powder Real Permittivity&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Powder Imaginary Permittivity&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Powder ATR Reflectance&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Analysis&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Crystal R_p&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Crystal R_s&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Crystal T_p&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Crystal T_s&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Crystal A_p&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Crystal A_s&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Real Crystal Permittivity&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Imag Crystal Permittivity&quot;</span> <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">worksheets</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># Positions points to where we write to next</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span>  <span class="o">=</span> <span class="p">{}</span>
@@ -409,12 +410,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">opened</span>     <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">tab</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">opened</span><span class="p">[</span><span class="n">tab</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Main&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Main&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">openWorkSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SpreadSheetManager.openWorkSheet"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.openWorkSheet">[docs]</a>    <span class="k">def</span> <span class="nf">openWorkSheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tab</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Open a new worksheet in a workbook.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Open a new worksheet in a workbook.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -431,6 +431,7 @@
 <span class="sd">        Otherwise, it creates a new worksheet with the name `tab`, initializes its position, </span>
 <span class="sd">        maximum column, maximum row, and marks it as opened within the workbook data structures </span>
 <span class="sd">        handled by the instance. </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opened</span><span class="p">[</span><span class="n">tab</span><span class="p">]:</span>
             <span class="k">return</span>
@@ -441,8 +442,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">opened</span><span class="p">[</span><span class="n">tab</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="SpreadSheetManager.selectWorkSheet"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.selectWorkSheet">[docs]</a>    <span class="k">def</span> <span class="nf">selectWorkSheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Selects or opens a worksheet by name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select or opens a worksheet by name.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -458,14 +458,14 @@
 <span class="sd">        This method selects a worksheet if it is already opened. If the worksheet is not</span>
 <span class="sd">        currently open, it attempts to open the worksheet by calling `openWorkSheet` with</span>
 <span class="sd">        the worksheet name.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">opened</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">openWorkSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SpreadSheetManager.writeNextRow"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.writeNextRow">[docs]</a>    <span class="k">def</span> <span class="nf">writeNextRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">items</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.</span>
+<div class="viewcode-block" id="SpreadSheetManager.writeNextRow"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.writeNextRow">[docs]</a>    <span class="k">def</span> <span class="nf">writeNextRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">items</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -488,6 +488,7 @@
 <span class="sd">        - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.</span>
 <span class="sd">        - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.</span>
 <span class="sd">        - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object&#39;s name.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">oldRow</span><span class="p">,</span><span class="n">oldCol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -495,7 +496,7 @@
         <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">row</span> <span class="o">=</span> <span class="n">oldRow</span>
         <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;We have a problem, col is 0&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We have a problem, col is 0&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">check</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
@@ -513,8 +514,7 @@
         <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
 <div class="viewcode-block" id="SpreadSheetManager.write"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Writes an item to a specific position in the active worksheet, handling complex numbers.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write an item to a specific position in the active worksheet, handling complex numbers.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -552,8 +552,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpreadSheetManager.delete"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Delete all the data in the current worksheet.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all the data in the current worksheet.</span>
 
 <span class="sd">        Clears all entries in the worksheet represented by `self` by setting each cell&#39;s value to an empty string.</span>
 <span class="sd">        After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.</span>
@@ -569,14 +568,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">max_row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]):</span>
             <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">worksheets</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">worksheets</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_col</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="SpreadSheetManager.close"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Close the workbook if it hasn&#39;t been closed already.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the workbook if it hasn&#39;t been closed already.</span>
 
 <span class="sd">        Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.</span>
 
@@ -587,6 +585,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">workbook</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>

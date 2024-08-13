@@ -287,8 +287,7 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Read the contents of a directory containing DFT output and create a cif file of the structure</span>
+<span class="sd">&quot;&quot;&quot;Read the contents of a directory containing DFT output and create a cif file of the structure.</span>
 
 <span class="sd">This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.</span>
 
@@ -312,35 +311,31 @@
 <span class="sd">    ```</span>
 <span class="sd">    python script_name.py -debug -program gulp file1 file2 ...</span>
 <span class="sd">    ```</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">psutil</span>
-<span class="kn">from</span> <span class="nn">PDielec.VaspOutputReader</span> <span class="kn">import</span> <span class="n">VaspOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.CastepOutputReader</span> <span class="kn">import</span> <span class="n">CastepOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.GulpOutputReader</span> <span class="kn">import</span> <span class="n">GulpOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.CrystalOutputReader</span> <span class="kn">import</span> <span class="n">CrystalOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.AbinitOutputReader</span> <span class="kn">import</span> <span class="n">AbinitOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.QEOutputReader</span> <span class="kn">import</span> <span class="n">QEOutputReader</span>
-<span class="kn">from</span> <span class="nn">PDielec.PhonopyOutputReader</span> <span class="kn">import</span> <span class="n">PhonopyOutputReader</span>
-<span class="kn">import</span> <span class="nn">PDielec.Utilities</span> <span class="k">as</span> <span class="nn">Utilities</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
 
+<span class="kn">import</span> <span class="nn">psutil</span>
+
+<span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">Utilities</span>
+
+
 <div class="viewcode-block" id="set_affinity_on_worker"><a class="viewcode-back" href="../../autoapi/PDielec/p2cif/index.html#PDielec.p2cif.set_affinity_on_worker">[docs]</a><span class="k">def</span> <span class="nf">set_affinity_on_worker</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    When a new worker process is created, the affinity is set to all CPUs.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;When a new worker process is created, the affinity is set to all CPUs.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    None.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span></div>
     <span class="c1">#JK print(&quot;I&#39;m the process %d, setting affinity to all CPUs.&quot; % os.getpid())</span>
     <span class="c1">#JK for the time being this is simply commented out, but might be useful at some point</span>
     <span class="c1">#os.system(&quot;taskset -p 0xff %d &gt; /dev/null&quot; % os.getpid())</span>
 
 <div class="viewcode-block" id="read_a_file"><a class="viewcode-back" href="../../autoapi/PDielec/p2cif/index.html#PDielec.p2cif.read_a_file">[docs]</a><span class="k">def</span> <span class="nf">read_a_file</span><span class="p">(</span> <span class="n">calling_parameters</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read data from a file and process it using specified reader utilities.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read data from a file and process it using specified reader utilities.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -363,6 +358,7 @@
 <span class="sd">    This function requires that a `Utilities` class with a `get_reader` method is available </span>
 <span class="sd">    in the scope where this function is used. The `get_reader` method should return an object </span>
 <span class="sd">    with a `read_output` method and a `unit_cells` attribute that is a list.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="n">name</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">qmprogram</span><span class="p">,</span> <span class="n">debug</span> <span class="o">=</span> <span class="n">calling_parameters</span>
     <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
@@ -372,8 +368,7 @@
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/p2cif/index.html#PDielec.p2cif.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="c1"># Start processing the directories</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Main entry point for processing and converting files.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process and convert files.</span>
 
 <span class="sd">    This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.</span>
 
@@ -399,24 +394,25 @@
 <span class="sd">        ```</span>
 <span class="sd">        python script_name.py -debug -program gulp file1 file2 ...</span>
 <span class="sd">        ```</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;p2cif -program program filenames .....&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  </span><span class="se">\&quot;</span><span class="s1">program</span><span class="se">\&quot;</span><span class="s1"> must be one of </span><span class="se">\&quot;</span><span class="s1">abinit</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">castep</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">crystal</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">gulp</span><span class="se">\&quot;</span><span class="s1">       &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           </span><span class="se">\&quot;</span><span class="s1">phonopy</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">qe</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">vasp</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">experiment</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">auto</span><span class="se">\&quot;</span><span class="s1">               &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           The default is auto, so the program tries to guess the package from   &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           the contents of the directory.  However this is not fool-proof!       &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           If phonopy is used it must be followed by the QM package              &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           in auto mode if the file was created by a phonopy VASP is assumed     &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  -debug   to switch on more debug information                                   &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p2cif -program program filenames .....&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &quot;program&quot; must be one of &quot;abinit&quot;, &quot;castep&quot;, &quot;crystal&quot;, &quot;gulp&quot;       &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           &quot;phonopy&quot;, &quot;qe&quot;, &quot;vasp&quot;, &quot;experiment&quot;, &quot;auto&quot;               &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           The default is auto, so the program tries to guess the package from   &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           the contents of the directory.  However this is not fool-proof!       &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           If phonopy is used it must be followed by the QM package              &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           in auto mode if the file was created by a phonopy VASP is assumed     &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  -debug   to switch on more debug information                                   &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
     <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="n">ntokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
     <span class="n">itoken</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="n">program</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span>
-    <span class="n">qmprogram</span> <span class="o">=</span> <span class="s1">&#39;vasp&#39;</span>
+    <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+    <span class="n">qmprogram</span> <span class="o">=</span> <span class="s2">&quot;vasp&quot;</span>
     <span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -426,32 +422,37 @@
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-program&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">program</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s1">&#39;phonopy&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">qmprogram</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
+        <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;quantum espresso&quot;</span>
+    <span class="k">if</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
+        <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;quantum espresso&quot;</span>
+
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">program</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please use -program to define the package used to generate the output files&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please use -program to define the package used to generate the output files&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">program</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;abinit&#39;</span><span class="p">,</span><span class="s1">&#39;castep&#39;</span><span class="p">,</span><span class="s1">&#39;crystal&#39;</span><span class="p">,</span><span class="s1">&#39;gulp&#39;</span><span class="p">,</span><span class="s1">&#39;qe&#39;</span><span class="p">,</span><span class="s1">&#39;vasp&#39;</span><span class="p">,</span><span class="s1">&#39;phonopy&#39;</span><span class="p">,</span><span class="s1">&#39;experiment&#39;</span><span class="p">,</span><span class="s1">&#39;auto&#39;</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program is not recognised: &#39;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">program</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;castep&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;gulp&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span><span class="p">,</span><span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;experiment&quot;</span><span class="p">,</span><span class="s2">&quot;auto&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Program is not recognised: &quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s1">&#39;phonopy&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">qmprogram</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;abinit&#39;</span><span class="p">,</span><span class="s1">&#39;castep&#39;</span><span class="p">,</span><span class="s1">&#39;crystal&#39;</span><span class="p">,</span><span class="s1">&#39;gulp&#39;</span><span class="p">,</span><span class="s1">&#39;qe&#39;</span><span class="p">,</span><span class="s1">&#39;vasp&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Phonopy QM program is not recognised: &#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  QM program used by Phonopy is: &#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">qmprogram</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;castep&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;gulp&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Phonopy QM program is not recognised: &quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  QM program used by Phonopy is: &quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Program is &#39;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Program is &quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error file requested for analysis does not exist&#39;</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error file requested for analysis does not exist&quot;</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
     <span class="c1">#</span>
     <span class="c1"># Create a pool of processors to handle reading the files</span>
@@ -463,14 +464,14 @@
     <span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="n">prog</span> <span class="o">=</span> <span class="n">program</span>
-        <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
-            <span class="n">prog</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="n">prog</span><span class="p">,</span><span class="n">qmprogram</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">calling_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">prog</span><span class="p">,</span> <span class="n">qmprogram</span><span class="p">,</span> <span class="n">debug</span><span class="p">)</span> <span class="p">)</span>
     <span class="c1"># Calculate the results in parallel</span>
     <span class="n">results_map_object</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map_async</span><span class="p">(</span><span class="n">read_a_file</span><span class="p">,</span><span class="n">calling_parameters</span><span class="p">)</span>
     <span class="n">results_map_object</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">results_map_object</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">cell</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">_name</span><span class="p">,</span><span class="n">cell</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="n">cell</span><span class="o">.</span><span class="n">write_cif</span><span class="p">(</span><span class="n">file_</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>

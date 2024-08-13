@@ -418,14 +418,14 @@ class ConstantTensor(DielectricFunction):
     Provides a calculate() function to return the permittivity.
     Epsilon infinity is used to calculate the total permittivity
 
-    Methods:
+    Methods
     -------
     calculate()
         Calculates and returns the permittivity.
 
-    Example:
-    -------
-    ------- ::
+    Examples
+    --------
+    .. code-block:: python
 
         permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])
         df = ConstantTensor(permittivity)

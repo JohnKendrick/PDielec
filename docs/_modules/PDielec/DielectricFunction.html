@@ -287,8 +287,7 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">DielectricFunction</span>
+<span class="sd">&quot;&quot;&quot;DielectricFunction.</span>
 
 <span class="sd">Provides an interface to different mechanisms for providing dielectric information</span>
 
@@ -304,18 +303,19 @@
 <span class="sd">    - Subclass :class:`DrudeLorentz`</span>
 <span class="sd">    - Subclass :class:`FPSQ`</span>
 <span class="sd">    - Subclass :class:`Sellmeier`</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">nullcontext</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">wavenumber</span><span class="p">,</span> <span class="n">angstrom</span><span class="p">,</span> <span class="n">speed_light_si</span>
-<span class="kn">import</span> <span class="nn">PDielec.Calculator</span> <span class="k">as</span> <span class="nn">Calculator</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span>
+
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">angstrom</span><span class="p">,</span> <span class="n">wavenumber</span>
 
 
 <div class="viewcode-block" id="DielectricFunction"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction">[docs]</a><span class="k">class</span> <span class="nc">DielectricFunction</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A base class to different dielectric functions.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class to different dielectric functions.</span>
 
 <span class="sd">    There is a close relationship between the dielectric function and a material.</span>
 <span class="sd">    The Material module allows data to be read in for different dielectric models.</span>
@@ -362,23 +362,19 @@
 <span class="sd">        Calculates permittivity from a Drude Model.</span>
 <span class="sd">    dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)</span>
 <span class="sd">        Calculates permittivity from a Drude-Lorentz model.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">possible_epsTypes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dft&#39;</span><span class="p">,</span><span class="s1">&#39;fpsq&#39;</span><span class="p">,</span><span class="s1">&#39;drude-lorentz&#39;</span><span class="p">,</span><span class="s1">&#39;sellmeier&#39;</span><span class="p">]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">possible_epsTypes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dft&quot;</span><span class="p">,</span><span class="s2">&quot;fpsq&quot;</span><span class="p">,</span><span class="s2">&quot;drude-lorentz&quot;</span><span class="p">,</span><span class="s2">&quot;sellmeier&quot;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span> <span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Initialise and instance of the function</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise and instance of the function.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span>             <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span>               <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume_angs</span>          <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume_angs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">volume_au</span> <span class="o">=</span> <span class="n">volume</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span>
 
 <div class="viewcode-block" id="DielectricFunction.setFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">setFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the frequencies of a Lorentzian permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the frequencies of a Lorentzian permittivity.</span>
 
 <span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
 
@@ -391,14 +387,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function&#39;</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function&quot;</span><span class="p">)</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DielectricFunction.getFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">getFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the frequencies of a Lorentzian permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the frequencies of a Lorentzian permittivity.</span>
 
 <span class="sd">        The default is to return None, only return an array if the permittivity is Lorentzian</span>
 
@@ -410,13 +405,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span></div>
 
 
 <div class="viewcode-block" id="DielectricFunction.setOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">setOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strengths</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the oscillator strengths of a Lorentzian permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the oscillator strengths of a Lorentzian permittivity.</span>
 
 <span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
 
@@ -429,14 +423,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function&#39;</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function&quot;</span><span class="p">)</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DielectricFunction.getOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">getOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the oscillator strengths of a Lorentzian permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the oscillator strengths of a Lorentzian permittivity.</span>
 
 <span class="sd">        The default is to return None, only return an array if the permittivity is Lorentzian</span>
 
@@ -448,32 +441,30 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.setSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">setSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the sigma parameters of a Lorentzian permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the sigma parameters of a Lorentzian permittivity.</span>
 
 <span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        sigma : 1d array of floats</span>
+<span class="sd">        sigmas : 1d array of floats</span>
 <span class="sd">            The sigma parameters in cm-1</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function&#39;</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function&quot;</span><span class="p">)</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DielectricFunction.getSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">getSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the sigma parameters of a Lorentzian permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the sigma parameters of a Lorentzian permittivity.</span>
 
 <span class="sd">        The default is to return None, only return an array if the permittivity is Lorentzian</span>
 
@@ -485,13 +476,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span></div>
 
 
 <div class="viewcode-block" id="DielectricFunction.isTensor"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.isTensor">[docs]</a>    <span class="k">def</span> <span class="nf">isTensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns true if the dielectric function is a tensor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return true if the dielectric function is a tensor.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -501,12 +491,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">            True if the dielectric function returns a tensor, otherwise False.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.isScalar"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.isScalar">[docs]</a>    <span class="k">def</span> <span class="nf">isScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns true if the dielectric function is a scalar</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return true if the dielectric function is a scalar.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -516,12 +506,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">            True if the dielectric function returns a scalar value, False otherwise.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.setVolume"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setVolume">[docs]</a>    <span class="k">def</span> <span class="nf">setVolume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">volume</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Set the volume for dielectric calculations.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the volume for dielectric calculations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -531,14 +521,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">volume_angs</span>     <span class="o">=</span> <span class="n">volume</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">volume_au</span>       <span class="o">=</span> <span class="n">volume</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.setEpsilonInfinity"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setEpsilonInfinity">[docs]</a>    <span class="k">def</span> <span class="nf">setEpsilonInfinity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">eps</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Set epsilon infinity for dielectric calculations.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set epsilon infinity for dielectric calculations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -548,13 +538,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.function"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.function">[docs]</a>    <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Return the function used to calculate the permittivity.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the function used to calculate the permittivity.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -563,12 +553,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        a function</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.getLowestFrequency"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getLowestFrequency">[docs]</a>    <span class="k">def</span> <span class="nf">getLowestFrequency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the lowest tabulated frequency in cm-1.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the lowest tabulated frequency in cm-1.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -577,14 +567,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        The lowest tabulated frequency in cm-1.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">lowestFrequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">lowestFrequency</span></div>
 
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.getHighestFrequency"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getHighestFrequency">[docs]</a>    <span class="k">def</span> <span class="nf">getHighestFrequency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Return the highest tabulated frequency in cm-1.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the highest tabulated frequency in cm-1.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -594,14 +582,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">            The highest tabulated frequency in cm-1.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">highestFrequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">highestFrequency</span></div>
 
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.dielectriContributionsFromDrude"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromDrude">[docs]</a>    <span class="k">def</span> <span class="nf">dielectriContributionsFromDrude</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">volume</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the dielectric function for a set of a Drude oscillator</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the dielectric function for a set of a Drude oscillator.</span>
 
 <span class="sd">        The units of the parameters must be self-consistent.  Atomic units is a good choice.</span>
 
@@ -620,9 +606,10 @@
 <span class="sd">        -------</span>
 <span class="sd">        tensor (3x3)</span>
 <span class="sd">            A complex scalar dielectric.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dielectric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
-        <span class="n">unit</span> <span class="o">=</span> <span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
         <span class="c1"># Avoid a divide by zero if f is small</span>
         <span class="k">if</span> <span class="n">f</span> <span class="o">&lt;=</span> <span class="mf">1.0e-8</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="mf">1.0e-8</span>
@@ -632,11 +619,12 @@
 
 
 <div class="viewcode-block" id="DielectricFunction.dielectriContributionsFromModes"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromModes">[docs]</a>    <span class="k">def</span> <span class="nf">dielectriContributionsFromModes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">strengths</span><span class="p">,</span> <span class="n">volume</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the dielectric function for a set of modes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the dielectric function for a set of modes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        f : float</span>
+<span class="sd">            The frequency considered</span>
 <span class="sd">        modes : list of int</span>
 <span class="sd">            A list of the modes to be considered.</span>
 <span class="sd">        frequencies : list of float</span>
@@ -652,7 +640,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        tensor (3x3)</span>
 <span class="sd">            A complex scalar representing the dielectric function.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dielectric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
@@ -662,8 +651,7 @@
         <span class="k">return</span> <span class="n">dielectric</span> <span class="o">*</span> <span class="p">(</span><span class="mf">4.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">volume</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DielectricFunction.print"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v1_cm1</span><span class="p">,</span> <span class="n">v2_cm1</span><span class="p">,</span> <span class="n">v_inc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">diagonal_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Print the permittivity over a range of frequencies to a file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the permittivity over a range of frequencies to a file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -681,30 +669,24 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
-        <span class="n">closeFlag</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">closeFlag</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span>
-        <span class="k">if</span> <span class="n">diagonal_only</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;f,eps00,epss11,eps22,eps01,eps02,,eps12&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">v1_cm1</span><span class="p">,</span> <span class="n">v2_cm1</span><span class="p">,</span> <span class="n">v_inc</span><span class="p">):</span>
-            <span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">file</span> <span class="k">else</span> <span class="n">nullcontext</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">diagonal_only</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">closeFlag</span><span class="p">:</span>
-            <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f,eps00,epss11,eps22,eps01,eps02,,eps12&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">v1_cm1</span><span class="p">,</span> <span class="n">v2_cm1</span><span class="p">,</span> <span class="n">v_inc</span><span class="p">):</span>
+                <span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">diagonal_only</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">c</span><span class="p">,</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
         <span class="k">return</span></div></div>
 
 <div class="viewcode-block" id="ConstantTensor"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.ConstantTensor">[docs]</a><span class="k">class</span> <span class="nc">ConstantTensor</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex constant tensor permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex constant tensor permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Provides a calculate() function to return the permittivity.</span>
@@ -715,28 +697,31 @@
 <span class="sd">    calculate()</span>
 <span class="sd">        Calculates and returns the permittivity.</span>
 
-<span class="sd">    Example</span>
-<span class="sd">    ------- ::</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])</span>
 <span class="sd">        df = ConstantTensor(permittivity)</span>
 <span class="sd">        newMaterial = Material(&#39;New material name&#39;,permittivityObject=df,cell=UnitCell(2, 2, 2))</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise ConstantTensor.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        value : 3x3 numpy array</span>
 <span class="sd">            Initialise the permittivity with this tensor</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="ConstantTensor.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.ConstantTensor.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the permittivity at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the permittivity at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -747,12 +732,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        ndarray</span>
 <span class="sd">            The permittivity at frequency v as a 3x3 tensor.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div></div>
 
 <div class="viewcode-block" id="ConstantScalar"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.ConstantScalar">[docs]</a><span class="k">class</span> <span class="nc">ConstantScalar</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex constant scalar permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex constant scalar permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction. Provides a calculate() function to return</span>
 <span class="sd">    the permittivity.  Epsilon infinity is not used for this function.</span>
@@ -761,21 +746,24 @@
 <span class="sd">    -------</span>
 <span class="sd">    calculate()</span>
 <span class="sd">        Calculates and returns the permittivity of the dielectric function.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialise ConstantScalar dielectric function.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        value : float</span>
 <span class="sd">            Initialise the permittivity with this tensor</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="ConstantScalar.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.ConstantScalar.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the permittivity at a specified frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the permittivity at a specified frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -786,12 +774,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">            The permittivity at frequency v.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div></div>
 
 <div class="viewcode-block" id="TabulateScalar"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.TabulateScalar">[docs]</a><span class="k">class</span> <span class="nc">TabulateScalar</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex tabulated scalar permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex tabulated scalar permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction. </span>
 <span class="sd">    Represents an isotropic material dielectric function. </span>
@@ -810,16 +798,20 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    None</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">,</span> <span class="n">permittivities</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialise TabulateScalar dielectric function.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        vs_cm1 : list of float</span>
 <span class="sd">            Frequencies in cm-1 of the following permittivities.</span>
 <span class="sd">        permittivities : list of complex</span>
 <span class="sd">            The permittivities at each of the frequencies.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vs_cm1</span><span class="p">)</span>
@@ -830,8 +822,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">CubicSpline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">,</span><span class="n">eps_i</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TabulateScalar.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.TabulateScalar.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the permittivity at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the permittivity at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -842,13 +833,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">            The permittivity at frequency v as a scalar.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">eps</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">eps</span></div></div>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div></div>
 
 <div class="viewcode-block" id="Tabulate1"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate1">[docs]</a><span class="k">class</span> <span class="nc">Tabulate1</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex tabulated isotropic tensor permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex tabulated isotropic tensor permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Represents an isotropic dielectric function.</span>
@@ -859,16 +849,20 @@
 <span class="sd">    -------</span>
 <span class="sd">    calculate()</span>
 <span class="sd">        Returns the permittivity of the dielectric function.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">,</span> <span class="n">permittivities</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialise Tabulate1 dielectric function.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        vs_cm1 : list of float</span>
 <span class="sd">            Frequencies in cm-1 of the following permittivities.</span>
 <span class="sd">        permittivities : list of complex</span>
 <span class="sd">            The permittivities at each of the frequencies.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vs_cm1</span><span class="p">)</span>
@@ -879,8 +873,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">CubicSpline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">,</span><span class="n">eps_i</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Tabulate1.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate1.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the isotropic permittivity at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the isotropic permittivity at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -891,7 +884,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            The isotropic permittivity at frequency v as a 3x3 tensor.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span> <span class="p">)</span>
         <span class="n">eps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
         <span class="n">eps</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
@@ -899,8 +893,7 @@
         <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div></div>
 
 <div class="viewcode-block" id="Tabulate3"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate3">[docs]</a><span class="k">class</span> <span class="nc">Tabulate3</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex tabulated diagonal tensor permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex tabulated diagonal tensor permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Represents an orthorhombic dielectric function.</span>
@@ -911,9 +904,12 @@
 <span class="sd">    -------</span>
 <span class="sd">    calculate()</span>
 <span class="sd">        Return the permittivity of the dielectric function.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">,</span> <span class="n">epsxx</span><span class="p">,</span> <span class="n">epsyy</span><span class="p">,</span> <span class="n">epszz</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialise a Tabulate3 dielectric function object.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        vs_cm1 : list of floats</span>
@@ -924,20 +920,20 @@
 <span class="sd">            The eps(yy) permittivities at each of the frequencies</span>
 <span class="sd">        epszz : list of complex</span>
 <span class="sd">            The eps(zz) permittivities at each of the frequencies</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vs_cm1</span><span class="p">)</span>
         <span class="n">epsd</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epsxx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epsyy</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epszz</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">eps</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">epsd</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">eps</span> <span class="ow">in</span> <span class="n">epsd</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interpolate</span><span class="o">.</span><span class="n">CubicSpline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">eps</span><span class="p">)))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interpolate</span><span class="o">.</span><span class="n">CubicSpline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">eps</span><span class="p">)))</span>
 
 <div class="viewcode-block" id="Tabulate3.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate3.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the permittivity at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the permittivity at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -948,7 +944,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            The permittivity at frequency v as a diagonal 3x3 tensor.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span> <span class="p">)</span>
         <span class="n">eps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">v</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">v</span><span class="p">))</span>
         <span class="n">eps</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">v</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">v</span><span class="p">))</span>
@@ -956,8 +953,7 @@
         <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div></div>
 
 <div class="viewcode-block" id="Tabulate6"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate6">[docs]</a><span class="k">class</span> <span class="nc">Tabulate6</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex tabulated, anisotropic tensor permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex tabulated, anisotropic tensor permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Represents an non-isotropic dielectric function.</span>
@@ -968,9 +964,12 @@
 <span class="sd">    -------</span>
 <span class="sd">    calculate()</span>
 <span class="sd">        Returns the permittivity of the dielectric.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">,</span> <span class="n">epsxx</span><span class="p">,</span> <span class="n">epsyy</span><span class="p">,</span> <span class="n">epszz</span><span class="p">,</span> <span class="n">epsxy</span><span class="p">,</span> <span class="n">epsxz</span><span class="p">,</span> <span class="n">epsyz</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialise a Tabulate6 dielectric function object.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        vs_cm1 : list of float</span>
@@ -987,7 +986,8 @@
 <span class="sd">            The eps(xz) permittivities at each of the frequencies.</span>
 <span class="sd">        epsyz : list of complex</span>
 <span class="sd">            The eps(yz) permittivities at each of the frequencies.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vs_cm1</span><span class="p">)</span>
@@ -1001,8 +1001,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interpolate</span><span class="o">.</span><span class="n">CubicSpline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">,</span><span class="n">epsi</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Tabulate6.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate6.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the symmetric permittivity tensor at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the symmetric permittivity tensor at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1013,7 +1012,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            The full permittivity tensor at frequency v as a 3x3 tensor.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span> <span class="p">)</span>
         <span class="n">eps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">v</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">v</span><span class="p">))</span>
         <span class="n">eps</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolater</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">v</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolatei</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">v</span><span class="p">))</span>
@@ -1027,8 +1027,7 @@
         <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div></div>
 
 <div class="viewcode-block" id="DFT"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT">[docs]</a><span class="k">class</span> <span class="nc">DFT</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex tensor permittivity from a DFT calculation</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex tensor permittivity from a DFT calculation.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Suitable for use in calculating the permittivity from DFT calculations.</span>
@@ -1044,9 +1043,12 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    The internal units for all calculations within this class are atomic units.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mode_list</span><span class="p">,</span> <span class="n">mode_frequencies</span><span class="p">,</span> <span class="n">mode_sigmas</span><span class="p">,</span> <span class="n">mode_oscillator_strengths</span><span class="p">,</span> <span class="n">crystal_volume</span><span class="p">,</span> <span class="n">drude</span><span class="p">,</span> <span class="n">drude_plasma</span><span class="p">,</span> <span class="n">drude_sigma</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialise a DFT dielectric function.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        mode_list : list of int</span>
@@ -1066,7 +1068,8 @@
 <span class="sd">        drude_sigma : float</span>
 <span class="sd">            Drude plasma width.</span>
 <span class="sd">        All parameters are given in atomic units.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_list</span> <span class="o">=</span> <span class="n">mode_list</span>
@@ -1079,8 +1082,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">drude_sigma</span> <span class="o">=</span> <span class="n">drude_sigma</span>
 
 <div class="viewcode-block" id="DFT.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the permittivity at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the permittivity at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1091,7 +1093,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        ndarray</span>
 <span class="sd">            The permittivity at frequency v as a 3x3 tensor.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># For this class we force the use of atomic units and ignore internal units</span>
         <span class="n">v_au</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">wavenumber</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dielectriContributionsFromModes</span><span class="p">(</span><span class="n">v_au</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_frequencies</span><span class="p">,</span> 
@@ -1102,29 +1105,27 @@
         <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div>
 
 <div class="viewcode-block" id="DFT.setFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.setFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">setFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequencies</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the frequencies of a DFT permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the frequencies of a DFT permittivity.</span>
 
 <span class="sd">        The frequencies are converted to atomic units</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        strengths : 1d array of floats</span>
+<span class="sd">        frequencies : 1d array of floats</span>
 <span class="sd">            The frequencies in cm-1</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_frequencies</span> <span class="o">=</span> <span class="n">wavenumber</span> <span class="o">*</span> <span class="n">frequencies</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DFT.getFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.getFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">getFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the frequencies of a DFT permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the frequencies of a DFT permittivity.</span>
 
 <span class="sd">        The frequencies are in units of cm-1</span>
 
@@ -1137,12 +1138,11 @@
 <span class="sd">        1d array of floats</span>
 <span class="sd">            The frequencies in cm-1</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_frequencies</span> <span class="o">/</span> <span class="n">wavenumber</span></div>
 
 <div class="viewcode-block" id="DFT.setOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.setOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">setOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">strengths</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the oscillator strengths of a DFT permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the oscillator strengths of a DFT permittivity.</span>
 
 <span class="sd">        The oscillator strengths are converted to atomic units</span>
 
@@ -1155,15 +1155,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">strengths</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_oscillator_strengths</span> <span class="o">=</span> <span class="n">wavenumber</span> <span class="o">*</span> <span class="n">strengths</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DFT.getOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.getOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">getOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the oscillator strengths of a DFT permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the oscillator strengths of a DFT permittivity.</span>
 
 <span class="sd">        The returned strengths are in units of cm-1</span>
 
@@ -1176,12 +1175,11 @@
 <span class="sd">        3x3 array of floats for each frequency</span>
 <span class="sd">            The oscillator strengths in cm-1</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_oscillator_strengths</span> <span class="o">/</span> <span class="n">wavenumber</span></div>
 
 <div class="viewcode-block" id="DFT.setSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.setSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">setSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sigmas</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the sigma parameters of a DFT permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the sigma parameters of a DFT permittivity.</span>
 
 <span class="sd">        The sigmas parameter is converted to atomic units</span>
 
@@ -1194,15 +1192,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sigmas</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_sigmas</span> <span class="o">=</span> <span class="n">wavenumber</span> <span class="o">*</span> <span class="n">sigmas</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DFT.getSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.getSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">getSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the sigma parameters of a DFT permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the sigma parameters of a DFT permittivity.</span>
 
 <span class="sd">        The returned sigmas are in units of cm-1</span>
 
@@ -1215,13 +1212,12 @@
 <span class="sd">        1d array of floats</span>
 <span class="sd">            The sigma parameters of  Drude-Lorentzian permittivity</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_sigmas</span> <span class="o">/</span> <span class="n">wavenumber</span></div></div>
 
 
 <div class="viewcode-block" id="DrudeLorentz"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz">[docs]</a><span class="k">class</span> <span class="nc">DrudeLorentz</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex tensor Drude-Lorentz permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex tensor Drude-Lorentz permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Provides a calculate() function to return the permittivity.</span>
@@ -1235,9 +1231,12 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    None</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">,</span> <span class="n">strengths_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a DrudeLorenz dielectric function.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        vs_cm1 : list of ints</span>
@@ -1248,7 +1247,8 @@
 <span class="sd">        sigmas_cm1 : list of floats</span>
 <span class="sd">            Sigmas of isotropic contribution ([]).</span>
 <span class="sd">            Sigmas of orthonormal contributions ([[xxs][yys][zzs]]), shape is either [] or [[xxs][yys][zzs]].</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">rhombic</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1265,8 +1265,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="DrudeLorentz.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the permittivity at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the permittivity at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1277,7 +1276,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        tensor</span>
 <span class="sd">            The permittivity at frequency v as a diagonal 3x3 tensor.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f_cm1</span> <span class="o">=</span> <span class="n">v</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span> <span class="p">)</span>
         <span class="k">for</span> <span class="n">xyz</span><span class="p">,</span> <span class="p">(</span><span class="n">vs</span><span class="p">,</span> <span class="n">strengths</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strengths_cm1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_cm1</span><span class="p">)):</span>
@@ -1286,29 +1286,27 @@
         <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div>
 
 <div class="viewcode-block" id="DrudeLorentz.setFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.setFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">setFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequencies</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the frequencies of a Drude-Lorentz permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the frequencies of a Drude-Lorentz permittivity.</span>
 
 <span class="sd">        The frequencies are in cm-1</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        strengths : 1d array of floats</span>
+<span class="sd">        frequencies : 1d array of floats</span>
 <span class="sd">            The frequencies in cm-1</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span> <span class="o">=</span> <span class="n">frequencies</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DrudeLorentz.getFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.getFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">getFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the frequencies of a Drude-Lorentz permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the frequencies of a Drude-Lorentz permittivity.</span>
 
 <span class="sd">        The frequencies are in units of cm-1</span>
 
@@ -1321,12 +1319,11 @@
 <span class="sd">        1d array of floats</span>
 <span class="sd">            The frequencies in cm-1</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span></div>
 
 <div class="viewcode-block" id="DrudeLorentz.setOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.setOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">setOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">strengths</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the oscillator strengths of a Drude-Lorentz permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the oscillator strengths of a Drude-Lorentz permittivity.</span>
 
 <span class="sd">        The oscillator strengths are in cm-1</span>
 
@@ -1339,14 +1336,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">strengths</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">strengths</span> <span class="o">=</span> <span class="n">strengths</span>
         <span class="k">return</span> </div>
 
 <div class="viewcode-block" id="DrudeLorentz.getOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.getOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">getOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the oscillator strengths of a Drude-Lorentz permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the oscillator strengths of a Drude-Lorentz permittivity.</span>
 
 <span class="sd">        The returned strengths are in units of cm-1</span>
 
@@ -1359,12 +1355,11 @@
 <span class="sd">        1d array of floats</span>
 <span class="sd">            The oscillator strengths in cm-1</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">strengths</span></div>
 
 <div class="viewcode-block" id="DrudeLorentz.setSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.setSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">setSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sigmas</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the sigma parameters of a Drude-Lorentz permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the sigma parameters of a Drude-Lorentz permittivity.</span>
 
 <span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
 
@@ -1377,14 +1372,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="n">sigmas</span>
         <span class="k">return</span> </div>
 
 
 <div class="viewcode-block" id="DrudeLorentz.getSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.getSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">getSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the sigma parameters of a Lorentzian permittivity</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the sigma parameters of a Lorentzian permittivity.</span>
 
 <span class="sd">        The returned sigmas are in units of cm-1</span>
 
@@ -1396,20 +1390,21 @@
 <span class="sd">        -------</span>
 <span class="sd">        1d array of floats</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_cm1</span></div></div>
 
 
 <div class="viewcode-block" id="FPSQ"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.FPSQ">[docs]</a><span class="k">class</span> <span class="nc">FPSQ</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex tensor FPSQ dielectric function.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex tensor FPSQ dielectric function.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Provides a calculate() function to return the permittivity.</span>
 <span class="sd">    Epsilon infinity is included in the total permittivity</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega_tos</span><span class="p">,</span> <span class="n">gamma_tos</span><span class="p">,</span> <span class="n">omega_los</span><span class="p">,</span> <span class="n">gamma_los</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an FPS dielectric function object.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        omega_tos : list of floats</span>
@@ -1420,7 +1415,8 @@
 <span class="sd">            Omega (lo) in the FPSQ equation.</span>
 <span class="sd">        gamma_los : list of floats</span>
 <span class="sd">            Gamma (lo) in the FPSQ equation.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">rhombic</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1439,8 +1435,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="FPSQ.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.FPSQ.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the diagonal permittivity 3x3 tensor at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the diagonal permittivity 3x3 tensor at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1451,7 +1446,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            The diagonal permittivity 3x3 tensor at frequency v.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f_cm1</span> <span class="o">=</span> <span class="n">v</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">xyz</span><span class="p">,(</span><span class="n">omega_tos</span><span class="p">,</span><span class="n">gamma_tos</span><span class="p">,</span><span class="n">omega_los</span><span class="p">,</span><span class="n">gamma_los</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">omega_tos</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma_tos</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">omega_los</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma_los</span><span class="p">)):</span>
@@ -1464,22 +1460,24 @@
         <span class="k">return</span> <span class="n">eps</span> </div></div>
 
 <div class="viewcode-block" id="Sellmeier"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Sellmeier">[docs]</a><span class="k">class</span> <span class="nc">Sellmeier</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A real tensor Sellmeier permittivity</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A real tensor Sellmeier permittivity.</span>
 
 <span class="sd">    Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.</span>
 <span class="sd">    Epsilon infinity is not included in the total permittivity</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Bs</span><span class="p">,</span> <span class="n">Cs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an Sellmeier dielectric function object.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        Bs : list of floats</span>
 <span class="sd">            B parameter for Sellmeier equation (microns^2)</span>
 <span class="sd">        Cs : list of floats</span>
 <span class="sd">            C parameter for Sellmeier equation (microns^2)</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">DielectricFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isScalarFunction</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Bs</span> <span class="o">=</span> <span class="n">Bs</span>
@@ -1487,8 +1485,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="Sellmeier.calculate"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Sellmeier.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the diagonal permittivity 3x3 tensor at a given frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the diagonal permittivity 3x3 tensor at a given frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1503,7 +1500,8 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        The Sellmeier parameters are in microns^2.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f_cm1</span> <span class="o">=</span> <span class="n">v</span>
         <span class="c1"># Convert to wavelength in microns</span>
         <span class="n">wavelength_mu</span> <span class="o">=</span> <span class="n">f_cm1</span> <span class="o">*</span> <span class="mf">1.0E+6</span> <span class="o">*</span><span class="mf">1.0E-2</span>            <span class="c1"># convert cm-1 to microns</span>

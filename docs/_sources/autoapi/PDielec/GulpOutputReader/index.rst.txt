@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Module to read the contents of a Gulp output file
+   Module to read the contents of a Gulp output file.
 
 
 
@@ -85,6 +85,7 @@ Classes
    Also includes options for various modifications and optimizations like qeq, molq, optimise, conp, qok, 
    nomodcoord, and prop.
 
+
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the gulp file.
@@ -124,17 +125,20 @@ Classes
       analysis.
 
 
+
    .. py:method:: _read_cellcontents(line)
 
-      Read the cell contents in xyz space
+      Read the cell contents in xyz space.
 
       Parameters
       ----------
       line : str (not used)
+          The initial line
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_cellcontentsf(line)
@@ -144,10 +148,12 @@ Classes
       Parameters
       ----------
       line : str (not used)
+          The initial line
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_elastic_constants(line)
@@ -157,45 +163,53 @@ Classes
       Parameters
       ----------
       line : str (not used)
+          The initial line
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_energies(line)
 
-      Read energies
+      Read energies.
 
       Parameters
       ----------
       line : str
+          The initial line
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_external_pressure(line)
 
-      Read external pressure
+      Read external pressure.
 
       Parameters
       ----------
       line : str
+          The initial line
 
       Returns
       -------
       None
 
 
+
    .. py:method:: _read_frequencies(line)
 
-      Read the frequencies
+      Read the frequencies.
 
       Parameters
       ----------
       line : str (not used)
+          The initial line
+
 
 
    .. py:method:: _read_lattice(line)
@@ -205,32 +219,38 @@ Classes
       Parameters
       ----------
       line : str (not used)
+          The initial line
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_number_of_irreducible_atoms(line)
 
-      Read the number of irreducible atoms
+      Read the number of irreducible atoms.
 
       Parameters
       ----------
       line : str 
+          The initial line
 
       Returns
       -------
       None
 
 
+
    .. py:method:: _read_optical_dielectric(line)
 
-      Read optical dielectric constant
+      Read optical dielectric constant.
 
       Parameters
       ----------
       line : str (not used)
+          The initial line
+
 
 
    .. py:method:: _read_output_files()
@@ -246,13 +266,15 @@ Classes
       None
 
 
+
    .. py:method:: _read_species(line)
 
-      Read species information
+      Read species information.
 
       Parameters
       ----------
       line : str (not used)
+          The initial line
 
       Returns
       -------
@@ -262,28 +284,32 @@ Classes
 
    .. py:method:: _read_static_dielectric(line)
 
-      Read static dielectric constant
+      Read static dielectric constant.
 
       Parameters
       ----------
       line : str (not used)
+          The initial line
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_temperature(line)
 
-      Read temperature
+      Read temperature.
 
       Parameters
       ----------
       line : str
+          The initial line
 
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_total_number_of_atoms(line)
@@ -293,10 +319,12 @@ Classes
       Parameters
       ----------
       line : str 
+          The initial line
 
       Returns
       -------
       None
+
 
 
 

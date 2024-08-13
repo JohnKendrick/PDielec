@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   PDgui driver program to calculate dielectric response at infrared and THz frequencies
+   PDgui driver program to calculate dielectric response at infrared and THz frequencies.
 
    Process command line arguments and start a GUI application with optional splash screen.
 
@@ -13,7 +13,6 @@
 
    Notes
    -----
-
        - The -nosplash flag disables the splash screen.
        - The -v, -version, or --version flags print the program version and exit.
        - The -exit or --exit flag forces the program to exit immediately after processing arguments.
@@ -84,6 +83,7 @@ Attributes
    - To run a script:
 
    >>>    pdgui -script script.py
+
 
 
 .. py:data:: version

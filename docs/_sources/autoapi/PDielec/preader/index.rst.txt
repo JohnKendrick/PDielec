@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Read the contents of a directory containing DFT output and create a csv style file of information
+   Read the contents of a directory containing DFT output and create a csv style file of information.
 
    ::
 
@@ -60,8 +60,7 @@ Attributes
 
 .. py:function:: main()
 
-   Process command line arguments
-
+   Process command line arguments.
 
    ::
 
@@ -107,6 +106,7 @@ Attributes
        >>> print_help()
 
    No output is returned by this function as it directs its message to `sys.stderr` and exits the program.
+
 
 
 .. py:function:: read_a_file(calling_parameters)

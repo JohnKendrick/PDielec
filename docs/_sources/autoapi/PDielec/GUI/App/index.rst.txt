@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   App Module
+   App Module.
 
 
 
@@ -83,6 +83,7 @@ Attributes
    closeEvent(event)
        Handles the close event, ensuring that multiprocessing pools are properly closed.
 
+
    .. py:method:: closeEvent(event)
 
       Handle the close event of the application.
@@ -94,6 +95,7 @@ Attributes
       Parameters
       ----------
       event : QCloseEvent
+          A close event
 
       Returns
       -------
@@ -113,6 +115,7 @@ Attributes
 
       When the application is about to close, this method ensures clean termination
       of multiprocessing resources and performs any additional base class close event handling.
+
 
 
    .. py:method:: print_usage()
@@ -149,6 +152,7 @@ Attributes
       - `-debug`: Switches on debugging information.
 
 
+
    .. py:method:: readScript(scriptname, spreadsheet_name='')
 
       Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
@@ -180,6 +184,7 @@ Attributes
       Parameters
       ----------
       title : str
+          The window title
 
       Returns
       -------
@@ -189,6 +194,7 @@ Attributes
       Notes
       -----
       This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
+
 
 
 

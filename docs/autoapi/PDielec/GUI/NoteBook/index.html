@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.NoteBook">
 <span id="pdielec-gui-notebook"></span><h1><a class="reference internal" href="#module-PDielec.GUI.NoteBook" title="PDielec.GUI.NoteBook"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a><a class="headerlink" href="#module-PDielec.GUI.NoteBook" title="Permalink to this heading">#</a></h1>
-<p>NoteBook module</p>
+<p>NoteBook module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -291,7 +291,7 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.NoteBook.NoteBook">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.NoteBook.</span></span><span class="sig-name descname"><span class="pre">NoteBook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spreadsheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progressbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scripting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'powder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/NoteBook.html#NoteBook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.NoteBook.NoteBook" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.NoteBook.</span></span><span class="sig-name descname"><span class="pre">NoteBook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qm_program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spreadsheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progressbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scripting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'powder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/NoteBook.html#NoteBook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.NoteBook.NoteBook" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
 <p>A Qt widget that holds tabs for managing different aspects of a notebook-like interface.</p>
 <p>This class manages a complex interface which includes a range of functionalities
@@ -305,6 +305,8 @@ for configuring and monitoring the progress of analytical or simulation tasks.</
 <dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget.</p>
 </dd>
 <dt>program<span class="classifier">str</span></dt><dd><p>Description or identifier of the program associated with the notebook.</p>
+</dd>
+<dt>qm_program<span class="classifier">str</span></dt><dd><p>Description or identifier of the qm program associated with phonopy</p>
 </dd>
 <dt>filename<span class="classifier">str</span></dt><dd><p>Name of the file, if any, associated with the notebook.</p>
 </dd>
@@ -369,7 +371,7 @@ for configuring and monitoring the progress of analytical or simulation tasks.</
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.NoteBook.NoteBook.addScenario">
 <span class="sig-name descname"><span class="pre">addScenario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenarioType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copyFromIndex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/NoteBook.html#NoteBook.addScenario"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.NoteBook.NoteBook.addScenario" title="Permalink to this definition">#</a></dt>
-<dd><p>Add a new scenario tab</p>
+<dd><p>Add a new scenario tab.</p>
 <p>If a copy is requested then copy the appropriate information into the new tab.</p>
 <section id="id1">
 <h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
@@ -531,7 +533,7 @@ moves to the next available scenario. Otherwise, it selects the previous scenari
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.NoteBook.NoteBook.print_settings">
 <span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/NoteBook.html#NoteBook.print_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.NoteBook.NoteBook.print_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints the current program settings to a file.</p>
+<dd><p>Print the current program settings to a file.</p>
 <p>Each tab in the notebook is processed in turn, including all the scenarios.
 This allows a script to be written which can be used to recall a configuration of the program.
 Some settings need careful handling, for example the sigmas_cm1 values for the settingsTab</p>
@@ -551,7 +553,7 @@ Some settings need careful handling, for example the sigmas_cm1 values for the s
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.NoteBook.NoteBook.print_tab_settings">
 <span class="sig-name descname"><span class="pre">print_tab_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/NoteBook.html#NoteBook.print_tab_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.NoteBook.NoteBook.print_tab_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints the configuration settings of a specified tab to a file descriptor.</p>
+<dd><p>Print the configuration settings of a specified tab to a file descriptor.</p>
 <section id="id19">
 <h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -644,7 +646,7 @@ maximum value defined in <cite>self.progressbar_maximum</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.NoteBook.NoteBook.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/NoteBook.html#NoteBook.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.NoteBook.NoteBook.refresh" title="Permalink to this definition">#</a></dt>
-<dd><p>Refreshes the current state, optionally forcing a refresh regardless of scripting constraints.</p>
+<dd><p>Refresh the current state, optionally forcing a refresh regardless of scripting constraints.</p>
 <section id="id30">
 <h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -680,7 +682,7 @@ maximum value defined in <cite>self.progressbar_maximum</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.NoteBook.NoteBook.startPool">
 <span class="sig-name descname"><span class="pre">startPool</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/NoteBook.html#NoteBook.startPool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.NoteBook.NoteBook.startPool" title="Permalink to this definition">#</a></dt>
-<dd><p>Initializes a pool of worker processes or threads for computation.</p>
+<dd><p>Initialize a pool of worker processes or threads for computation.</p>
 <p>This method initializes a pool based on the instance’s specified number of CPUs and the threading model. It accesses a global debugger variable for potential debugging purposes.</p>
 <section id="id35">
 <h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>

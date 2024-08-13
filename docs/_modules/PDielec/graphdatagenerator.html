@@ -287,22 +287,20 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">graphdatagenerator command</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;graphdatagenerator command.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">openpyxl</span> <span class="kn">import</span> <span class="n">load_workbook</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/graphdatagenerator/index.html#PDielec.graphdatagenerator.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Main driver routine for graphdatagenerator.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Driver routine for graphdatagenerator.</span>
 
 <span class="sd">    This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates the results.</span>
 <span class="sd">    It is a utility programme and not part of the main PDielec or PDGui packages</span>
 
-<span class="sd">   ::</span>
+<span class="sd">    ::</span>
 
 <span class="sd">       graphdatagenerator file1 file2...</span>
 <span class="sd">       graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec</span>
@@ -316,32 +314,32 @@
 <span class="sd">                -sheet [molar/absorption/real/imaginary/atr]</span>
 <span class="sd">                -excel filename</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">show_usage</span><span class="p">():</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Show graphdatagenerator usage.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Show graphdatagenerator usage.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;graphdatagenerator file1 file2...&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         -column column  Take the data from column in each spreadsheet&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                         C Averaged&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                         D MG      &#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                         E Mie/0.1 &#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                         F Mie/1.0 &#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                         G Mie/2.0 &#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                         H Mie/3.0 &#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         -sheet [molar/absorption/real/imaginary/atr]&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         -excel filename&#39;</span><span class="p">)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;graphdatagenerator file1 file2...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         -column column  Take the data from column in each spreadsheet&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                         C Averaged&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                         D MG      &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                         E Mie/0.1 &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                         F Mie/1.0 &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                         G Mie/2.0 &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                         H Mie/3.0 &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         -sheet [molar/absorption/real/imaginary/atr]&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         -excel filename&quot;</span><span class="p">)</span>
         <span class="k">return</span>
 
     <span class="c1"># check usage</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">show_usage</span><span class="p">()</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
     <span class="n">sheet_dict</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;molar&quot;</span>       <span class="p">:</span> <span class="s2">&quot;Molar Absorption&quot;</span><span class="p">,</span>
@@ -351,25 +349,23 @@
         <span class="s2">&quot;atr&quot;</span>         <span class="p">:</span> <span class="s2">&quot;ATR Reflectance&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="c1"># Begin processing of command line</span>
-    <span class="n">command_line</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="n">ntokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
     <span class="n">itoken</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">rmin</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">rmax</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span>
-    <span class="n">sheet</span> <span class="o">=</span> <span class="s1">&#39;molar&#39;</span>
-    <span class="n">excefile</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">column</span> <span class="o">=</span> <span class="s2">&quot;D&quot;</span>
+    <span class="n">sheet</span> <span class="o">=</span> <span class="s2">&quot;molar&quot;</span>
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-excel&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-excel&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">excelfile</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-column&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-column&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">column</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-sheet&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-sheet&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">sheet</span><span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -378,19 +374,18 @@
         <span class="c1"># end loop over tokens</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No files were specified&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No files were specified&quot;</span><span class="p">)</span>
         <span class="n">show_usage</span><span class="p">()</span>
-        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Comparison based on &#39;</span><span class="p">,</span> <span class="n">sheet</span><span class="p">,</span> <span class="n">sheet_dict</span><span class="p">[</span><span class="n">sheet</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Comparison based on &quot;</span><span class="p">,</span> <span class="n">sheet</span><span class="p">,</span> <span class="n">sheet_dict</span><span class="p">[</span><span class="n">sheet</span><span class="p">])</span>
     <span class="n">sheet</span> <span class="o">=</span> <span class="n">sheet_dict</span><span class="p">[</span><span class="n">sheet</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Comparision of spectra based on column: &#39;</span><span class="p">,</span><span class="n">column</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">excelfile</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Output will be sent to the excel file: &#39;</span><span class="p">,</span><span class="n">excelfile</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Comparision of spectra based on column: &quot;</span><span class="p">,</span><span class="n">column</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">excelfile</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output will be sent to the excel file: &quot;</span><span class="p">,</span><span class="n">excelfile</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">excelfile</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">xlsx</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Output will be sent to the excel file: &#39;</span><span class="p">,</span><span class="n">excelfile</span><span class="p">)</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+        <span class="n">excelfile</span> <span class="o">=</span> <span class="s2">&quot;temp.xlsx&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output will be sent to the excel file: &quot;</span><span class="p">,</span><span class="n">excelfile</span><span class="p">)</span>
     <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># Use the first file name to define the frequency range</span>
     <span class="c1"># and the range of rows to be treated</span>
@@ -398,37 +393,37 @@
     <span class="n">ws1</span> <span class="o">=</span> <span class="n">wb1</span><span class="p">[</span><span class="n">sheet</span><span class="p">]</span>
     <span class="n">max_rows1</span> <span class="o">=</span> <span class="n">ws1</span><span class="o">.</span><span class="n">max_row</span>
     <span class="n">max_cols1</span> <span class="o">=</span> <span class="n">ws1</span><span class="o">.</span><span class="n">max_column</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum number of rows&#39;</span><span class="p">,</span><span class="n">max_rows1</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum number of cols&#39;</span><span class="p">,</span><span class="n">max_cols1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum number of rows&quot;</span><span class="p">,</span><span class="n">max_rows1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum number of cols&quot;</span><span class="p">,</span><span class="n">max_cols1</span><span class="p">)</span>
     <span class="c1"># rmax and rmin are set by the first spread sheet</span>
     <span class="k">if</span> <span class="n">rmin</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">rmin</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="k">if</span> <span class="n">rmax</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">rmax</span> <span class="o">=</span> <span class="n">max_rows1</span>
-    <span class="n">range1</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="n">rmin</span><span class="p">)</span>
-    <span class="n">range2</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="n">rmax</span><span class="p">)</span>
+    <span class="n">range1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="n">rmin</span><span class="p">)</span>
+    <span class="n">range2</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="n">rmax</span><span class="p">)</span>
     <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">i</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">ws1</span><span class="p">[</span><span class="n">range1</span><span class="p">:</span><span class="n">range2</span><span class="p">]])</span>
     <span class="n">frequencies</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">freq_scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">frequencies</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">frequencies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequencies&#39;</span><span class="p">,</span><span class="n">frequencies</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency scale&#39;</span><span class="p">,</span><span class="n">freq_scale</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Frequencies&quot;</span><span class="p">,</span><span class="n">frequencies</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Frequency scale&quot;</span><span class="p">,</span><span class="n">freq_scale</span><span class="p">)</span>
     <span class="c1"># Go through the file names and store the required column of numbers</span>
     <span class="k">for</span> <span class="n">f1_name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loading work book &#39;</span><span class="p">,</span> <span class="n">f1_name</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading work book &quot;</span><span class="p">,</span> <span class="n">f1_name</span><span class="p">)</span>
         <span class="n">wb1</span> <span class="o">=</span> <span class="n">load_workbook</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">f1_name</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="c1"># print(&#39;Work sheet names for &#39;,f1_name)</span>
         <span class="c1"># print(wb1.get_sheet_names())</span>
         <span class="n">ws1</span> <span class="o">=</span> <span class="n">wb1</span><span class="p">[</span><span class="n">sheet</span><span class="p">]</span>
-        <span class="n">range1</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column</span><span class="p">,</span><span class="n">rmin</span><span class="p">)</span>
-        <span class="n">range2</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column</span><span class="p">,</span><span class="n">rmax</span><span class="p">)</span>
+        <span class="n">range1</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}{</span><span class="n">rmin</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">range2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}{</span><span class="n">rmax</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">col1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">i</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">ws1</span><span class="p">[</span><span class="n">range1</span><span class="p">:</span><span class="n">range2</span><span class="p">]])</span>
         <span class="c1"># Convert to a 1D array</span>
         <span class="n">col1</span> <span class="o">=</span> <span class="n">col1</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span>
         <span class="c1"># print(columns[-1])</span>
     <span class="c1"># Print the new row min and max</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final rmin is &#39;</span><span class="p">,</span> <span class="n">rmin</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final rmax is &#39;</span><span class="p">,</span> <span class="n">rmax</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final rmin is &quot;</span><span class="p">,</span> <span class="n">rmin</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final rmax is &quot;</span><span class="p">,</span> <span class="n">rmax</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">excelfile</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">xlsxwriter</span> <span class="k">as</span> <span class="nn">xlsx</span>
         <span class="n">workbook</span> <span class="o">=</span> <span class="n">xlsx</span><span class="o">.</span><span class="n">Workbook</span><span class="p">(</span><span class="n">excelfile</span><span class="p">)</span>
@@ -438,13 +433,13 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">name1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
            <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">name1</span><span class="p">)</span>
            <span class="n">column</span> <span class="o">=</span> <span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-           <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frequencies</span><span class="p">):</span>
+           <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)):</span>
                <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">column</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished write the spread sheet to &#39;</span><span class="p">,</span><span class="n">excelfile</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Finished write the spread sheet to &quot;</span><span class="p">,</span><span class="n">excelfile</span><span class="p">)</span>
         <span class="n">workbook</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
         </article>

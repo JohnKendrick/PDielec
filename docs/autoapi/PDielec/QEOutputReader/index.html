@@ -566,7 +566,7 @@ of electrons read.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_energy_cutoff">
 <span class="sig-name descname"><span class="pre">_read_energy_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_energy_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_energy_cutoff" title="Permalink to this definition">#</a></dt>
-<dd><p>Internal method to parse and set the energy cutoff from a line of text.</p>
+<dd><p>Parse and set the energy cutoff from a line of text.</p>
 <section id="id26">
 <h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -619,7 +619,7 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_fractional_coordinates">
 <span class="sig-name descname"><span class="pre">_read_fractional_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_fractional_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_fractional_coordinates" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads the log file and sets the fractional coordinates and element names for the last unit cell in the object.</p>
+<dd><p>Read the log file and sets the fractional coordinates and element names for the last unit cell in the object.</p>
 <p>This function iterates over a specified number of lines (defined by <cite>self.nions</cite>) from the object’s file descriptor, parsing each line into species names and their fractional coordinates. These species names and coordinates are then used to set the corresponding properties for the last unit cell managed by the object. Additional side-effects include updating the total number of unit cells (<cite>self.ncells</cite>) and the volume of the last unit cell (<cite>self.volume</cite>), with the option to print the volume if debugging is enabled.</p>
 <section id="id32">
 <h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
@@ -712,7 +712,7 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_lattice_vectors">
 <span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_lattice_vectors" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads and processes lattice vectors from a synG file, then updates unit cell information.</p>
+<dd><p>Read and process lattice vectors from a synG file, then updates unit cell information.</p>
 <p>This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute <cite>_alat</cite> and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new <cite>UnitCell</cite> object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.</p>
 <section id="id44">
 <h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
@@ -741,7 +741,7 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_masses">
 <span class="sig-name descname"><span class="pre">_read_masses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_masses" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads the masses of species from an dynG file and populates mass and species lists.</p>
+<dd><p>Read the masses of species from an dynG file and populate mass and species lists.</p>
 <p>This method parses lines from an already opened file object (<cite>file_descriptor</cite>), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls <cite>_read_dyng_coordinates</cite> method before finishing, passing an empty string as an argument.</p>
 <section id="id47">
 <h5>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>

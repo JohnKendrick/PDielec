@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.CastepOutputReader">
 <span id="pdielec-castepoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.CastepOutputReader" title="PDielec.CastepOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.CastepOutputReader" title="Permalink to this heading">#</a></h1>
-<p>CastepOutputReader module</p>
+<p>CastepOutputReader module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -356,7 +356,7 @@ usage context.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_convergence">
 <span class="sig-name descname"><span class="pre">_read_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_convergence" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads convergence data from a file and updates internal lists with values.</p>
+<dd><p>Read convergence data from a file and update internal lists.</p>
 <p>This internal method reads specific lines from a file that is already opened and updates internal lists for de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on the values found in those lines.</p>
 <section id="id4">
 <h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
@@ -402,7 +402,7 @@ usage context.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_ediff">
 <span class="sig-name descname"><span class="pre">_read_ediff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_ediff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_ediff" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads and sets the energy difference from a given line of text.</p>
+<dd><p>Read and set the energy difference from a given line of text.</p>
 <p>This is a private method intended to parse and store the energy difference
 from a standardized formatted line of text.</p>
 <section id="id10">
@@ -637,7 +637,7 @@ to. It does not return any value.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_nbands">
 <span class="sig-name descname"><span class="pre">_read_nbands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_nbands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nbands" title="Permalink to this definition">#</a></dt>
-<dd><p>Extracts the number of bands from a given line and sets it to the ‘nbands’ attribute of the class.</p>
+<dd><p>Extract the number of bands from a given line and set it to the ‘nbands’ attribute of the class.</p>
 <section id="id36">
 <h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -677,7 +677,7 @@ It is expected that the number of branches can be found at the fourth position
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_nelect">
 <span class="sig-name descname"><span class="pre">_read_nelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_nelect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nelect" title="Permalink to this definition">#</a></dt>
-<dd><p>Extracts the number of electrons from a line and assigns it.</p>
+<dd><p>Extract the number of electrons from a line and assign it.</p>
 <p>Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance variable <cite>electrons</cite>.</p>
 <section id="id41">
 <h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
@@ -695,8 +695,7 @@ It is expected that the number of branches can be found at the fourth position
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
-<dd><p>Define the strings needed for searching the files
-process the output files</p>
+<dd><p>Define the strings needed for searching the files process the output files.</p>
 <section id="id43">
 <h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>

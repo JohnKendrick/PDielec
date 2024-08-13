@@ -287,22 +287,21 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">A module to read contents of a directory containing Crystal input and output files.</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">import</span> <span class="nn">re</span>
+<span class="sd">&quot;&quot;&quot;A module to read contents of a directory containing Crystal input and output files.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">hartree2ev</span>
-<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
 <span class="kn">from</span> <span class="nn">PDielec.IO</span> <span class="kn">import</span> <span class="n">pdielec_io</span>
+<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 
 
 <div class="viewcode-block" id="CrystalOutputReader"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader">[docs]</a><span class="k">class</span> <span class="nc">CrystalOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read contents of a directory containing Crystal input and output files.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read contents of a directory containing Crystal input and output files.</span>
 
 <span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
 
@@ -314,11 +313,11 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    This function calls the initializer of the parent class &#39;GenericOutputReader&#39; with the given filenames. It initializes several class attributes including the type of output (set to &#39;Crystal output&#39;), the method for hessian symmetrisation (set to &#39;crystal&#39;), and an empty list for fractional coordinates.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize an instance of the class which handles crystal output.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance of the class which handles crystal output.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -328,43 +327,43 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This function calls the initializer of the parent class &#39;GenericOutputReader&#39; with the given filenames. It initializes several class attributes including the type of output (set to &#39;Crystal output&#39;), the method for hessian symmetrisation (set to &#39;crystal&#39;), and an empty list for fractional coordinates.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s1">&#39;Crystal output&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hessian_symmetrisation</span>  <span class="o">=</span> <span class="s1">&#39;crystal&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;Crystal output&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hessian_symmetrisation</span>  <span class="o">=</span> <span class="s2">&quot;crystal&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fractional_coordinates</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the Crystal files in the directory.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the Crystal files in the directory.</span>
 
 <span class="sd">        Define the strings used to search for the required information and then process the file</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># Empty the dictionary matching phrases</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;masses&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; ATOMS ISOTOPIC MASS&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_masses</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;lattice&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; DIRECT LATTICE VECTORS CARTESIAN COMPONENTS&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;fractional&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; ATOMS IN THE ASYMMETRIC UNIT&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_fractional_coordinates</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;bornCharges&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; ATOMIC BORN CHARGE TENSOR&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;eigenvectors&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; NORMAL MODES NORMALIZ&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_eigenvectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;staticIonic&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ionic_dielectric</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;epsilon&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; SUSCEPTIBILITY &#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_epsilon</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;kpoints&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; SHRINK\. FACT\.\(&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoints</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;electrons&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; N\. OF ELECTRONS&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_electrons</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; TOTAL ENERGY\(DFT\)&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;energy2&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; TOTAL ENERGY + DISP&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;energy3&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *CENTRAL POINT&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;masses&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; ATOMS ISOTOPIC MASS&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_masses</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; DIRECT LATTICE VECTORS CARTESIAN COMPONENTS&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;fractional&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; ATOMS IN THE ASYMMETRIC UNIT&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_fractional_coordinates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;bornCharges&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; ATOMIC BORN CHARGE TENSOR&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;eigenvectors&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; NORMAL MODES NORMALIZ&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_eigenvectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;staticIonic&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_ionic_dielectric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;epsilon&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; SUSCEPTIBILITY &quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_epsilon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; SHRINK\. FACT\.\(&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;electrons&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; N\. OF ELECTRONS&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_electrons</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; TOTAL ENERGY\(DFT\)&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;energy2&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; TOTAL ENERGY + DISP&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;energy3&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *CENTRAL POINT&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy3</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_energy"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy">[docs]</a>    <span class="k">def</span> <span class="nf">_read_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads and sets the free energy and energy without entropy from a line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the free energy and energy without entropy from a line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -384,13 +383,13 @@
 <span class="sd">        electronvolts (eV) using a conversion factor stored in `hartree2ev`.</span>
 
 <span class="sd">        There are no return values. Modifications are made directly to the instance attributes.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span> <span class="o">=</span> <span class="n">hartree2ev</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="n">hartree2ev</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_energy2"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy2">[docs]</a>    <span class="k">def</span> <span class="nf">_read_energy2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and set the final free energy and final energy without entropy from a line of text.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and set the final free energy and final energy without entropy from a line of text.</span>
 
 <span class="sd">        This method reads a line of text that contains energy values and updates the</span>
 <span class="sd">        instance&#39;s final free energy and final energy without entropy attributes.</span>
@@ -411,8 +410,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="n">hartree2ev</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_energy3"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy3">[docs]</a>    <span class="k">def</span> <span class="nf">_read_energy3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse energy information from a given line of text and update object properties.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse energy information from a given line of text and update object properties.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -423,13 +421,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span> <span class="o">=</span> <span class="n">hartree2ev</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="n">hartree2ev</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_electrons"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons">[docs]</a>    <span class="k">def</span> <span class="nf">_read_electrons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse the number of electrons from a string and assign it to the instance variable.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the number of electrons from a string and assign it to the instance variable.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -439,12 +437,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_kpoints"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_kpoints">[docs]</a>    <span class="k">def</span> <span class="nf">_read_kpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse a line of text to extract k-point grid dimensions and the total number of k-points.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a line of text to extract k-point grid dimensions and the total number of k-points.</span>
 
 <span class="sd">        The function sets the object&#39;s kpoint_grid attribute to a list of three integers representing the grid dimensions, and the kpoints attribute to an integer representing the total number of k-points.</span>
 
@@ -456,13 +454,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span> <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">12</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_epsilon"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">_read_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads epsilon values from a formatted file and updates the optical dielectric matrix.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read epsilon values from a formatted file and update the optical dielectric matrix.</span>
 
 <span class="sd">        This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object&#39;s `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their &#39;XX&#39;, &#39;YY&#39;, &#39;ZZ&#39;, &#39;XY&#39;, &#39;XZ&#39;, and &#39;YZ&#39; labels in the file. The method expects the values in a specific format and parses them accordingly.</span>
 
@@ -497,12 +495,18 @@
                 <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">linea</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">linea</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;XX&quot;</span><span class="p">:</span> <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
-            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;YY&quot;</span><span class="p">:</span> <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
-            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;ZZ&quot;</span><span class="p">:</span> <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
-            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;XY&quot;</span><span class="p">:</span> <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
-            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;XZ&quot;</span><span class="p">:</span> <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
-            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;YZ&quot;</span><span class="p">:</span> <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;XX&quot;</span> <span class="p">:</span> 
+                <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
+            <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;YY&quot;</span> <span class="p">:</span> 
+                <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
+            <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;ZZ&quot;</span> <span class="p">:</span> 
+                <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
+            <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;XY&quot;</span> <span class="p">:</span> 
+                <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
+            <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;XZ&quot;</span> <span class="p">:</span> 
+                <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
+            <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;YZ&quot;</span> <span class="p">:</span> 
+                <span class="n">optical_dielectric</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
             <span class="c1"># read the next line</span>
             <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="c1"># symmetrize</span>
@@ -513,8 +517,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_masses"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_masses">[docs]</a>    <span class="k">def</span> <span class="nf">_read_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and parse the masses from a file descriptor line by line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and parse the masses from a file descriptor line by line.</span>
 
 <span class="sd">        This private method reads mass information from consecutive lines of a</span>
 <span class="sd">        file, updating a list of masses and a list of masses per species type.</span>
@@ -543,6 +546,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -559,8 +563,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_eigenvectors"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_eigenvectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_eigenvectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read eigenvectors from appropriate file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read eigenvectors from appropriate file.</span>
 
 <span class="sd">        This function attempts to read eigenvectors for a given molecular system. It first checks for</span>
 <span class="sd">        the file &#39;HESSFREQ.DAT&#39; in the specified `open_directory`. If the file exists, it reads the</span>
@@ -577,6 +580,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_directory</span><span class="o">+</span><span class="s2">&quot;/HESSFREQ.DAT&quot;</span><span class="p">):</span>
             <span class="c1"># print(&quot;Reading Hessian from HESSFREQ.DAT&quot;,file=sys.stderr)</span>
@@ -591,8 +595,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_hessfreq_dat"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_hessfreq_dat">[docs]</a>    <span class="k">def</span> <span class="nf">_read_hessfreq_dat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads a Hessian frequency data from a given file and updates the dynamical matrix.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a Hessian frequency data from a given file and update the dynamical matrix.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -608,13 +611,13 @@
 <span class="sd">        _dynamical_matrix : Updates the dynamical matrix of the system using the processed Hessian matrix.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">fd2</span> <span class="o">=</span> <span class="n">pdielec_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">fd2</span> <span class="o">=</span> <span class="n">pdielec_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
         <span class="n">nmodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="o">*</span><span class="mi">3</span>
         <span class="c1"># Create a mass weighting vector</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">massweight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nmodes</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                 <span class="n">massweight</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">*</span><span class="n">amu</span><span class="p">)</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="c1"># We read the hessian and store the mass weighted matrix</span>
@@ -637,8 +640,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_output_eigenvectors"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_eigenvectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_eigenvectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and process output eigenvectors from a file descriptor.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process output eigenvectors from a file descriptor.</span>
 
 <span class="sd">        This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the square root of the atom&#39;s masses to generate mass-weighted normal modes, and normalizes these modes.</span>
 
@@ -656,6 +658,7 @@
 <span class="sd">        - This method directly modifies the `frequencies` and `mass_weighted_normal_modes` attributes of the class instance.</span>
 <span class="sd">        - Atoms&#39; masses are used to compute mass-weighted normal modes</span>
 <span class="sd">        - Normalization of each mass-weighted mode is performed at the end of the method.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
@@ -664,7 +667,7 @@
         <span class="n">nmodes</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Loop over all the modes</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmodes</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmodes</span><span class="p">):</span>
             <span class="c1"># They come in columns of 6 so after 6 modes we read the frequencies and initialse the 6 new modes</span>
             <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
@@ -702,12 +705,12 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_born_charges"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges">[docs]</a>    <span class="k">def</span> <span class="nf">_read_born_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the born charges from the output file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the born charges from the output file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            The current line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -719,6 +722,7 @@
 <span class="sd">                 [a3x a3y a3z]]</span>
 <span class="sd">    </span>
 <span class="sd">            where 1, 2, 3 represent the field directions and x, y, z are the atomic displacements.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Extract directory containing the output file</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_directory</span><span class="o">+</span><span class="s2">&quot;/BORN.DAT&quot;</span><span class="p">):</span>
@@ -734,8 +738,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_born_charges_from_born_dat"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges_from_born_dat">[docs]</a>    <span class="k">def</span> <span class="nf">_read_born_charges_from_born_dat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read born charges from a .born.dat file and store them in the instance variable.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read born charges from a .born.dat file and store them in the instance variable.</span>
 
 <span class="sd">        This method reads born charges for each ion from a specified file, which contains </span>
 <span class="sd">        data in three lines per ion. It transposes the read charge matrix and stores </span>
@@ -749,10 +752,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">fd2</span> <span class="o">=</span> <span class="n">pdielec_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">fd2</span> <span class="o">=</span> <span class="n">pdielec_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">fd2</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])])</span>
@@ -768,14 +772,14 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_born_charges_from_output"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges_from_output">[docs]</a>    <span class="k">def</span> <span class="nf">_read_born_charges_from_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read Born charges from output file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read Born charges from output file.</span>
 
 <span class="sd">        This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the `born_charges` list attribute.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            The current line (not used)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -784,12 +788,13 @@
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
 <span class="sd">        This method directly modifies the `born_charges` attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it&#39;s formatted in a specific way expected by the logic of this method.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -805,8 +810,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_ionic_dielectric"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_ionic_dielectric">[docs]</a>    <span class="k">def</span> <span class="nf">_read_ionic_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read ionic dielectric data from the file and store in an instance variable.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read ionic dielectric data from the file and store in an instance variable.</span>
 
 <span class="sd">        This method reads the next four lines from the file associated with the</span>
 <span class="sd">        instance&#39;s file descriptor. The second, third, and fourth lines are expected </span>
@@ -830,6 +834,7 @@
 <span class="sd">        It is assumed that the file has been adequately positioned before this method</span>
 <span class="sd">        is called, as it starts reading from the current position of the file</span>
 <span class="sd">        descriptor&#39;s pointer.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Read the ionic contribution to the static dielectric</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -845,8 +850,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_lattice_vectors"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_lattice_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_lattice_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read lattice vectors from a file and update the corresponding properties.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read lattice vectors from a file and update the corresponding properties.</span>
 
 <span class="sd">        This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates a new `UnitCell` object with these vectors, and updates the unit cell collection of the object. It also updates the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the last unit cell based on existing class attributes.</span>
 
@@ -869,17 +873,16 @@
         <span class="n">bvector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">cvector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="c1"># The fractional coordinates are specified before the lattice vectors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fractional_coordinates</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="CrystalOutputReader._read_fractional_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader._read_fractional_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_read_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read and store fractional coordinates from a file line.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and store fractional coordinates from a file line.</span>
 
 <span class="sd">        This method processes a line in the file to extract the number of ions and </span>
 <span class="sd">        then reads the successive lines to acquire the fractional coordinates, species, </span>
@@ -910,6 +913,7 @@
 <span class="sd">            The total number of unique species.</span>
 <span class="sd">        ions_per_type : list of int</span>
 <span class="sd">            A count of ions per species type.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">12</span><span class="p">])</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -918,7 +922,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">species</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>

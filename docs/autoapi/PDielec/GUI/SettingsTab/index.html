@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.SettingsTab">
 <span id="pdielec-gui-settingstab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.SettingsTab" title="PDielec.GUI.SettingsTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.SettingsTab" title="Permalink to this heading">#</a></h1>
-<p>SettingsTab module</p>
+<p>SettingsTab module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -500,7 +500,7 @@ and whether to recalculate selected modes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivity">
 <span class="sig-name descname"><span class="pre">getCrystalPermittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.getCrystalPermittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivity" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the crystal permittivity</p>
+<dd><p>Return the crystal permittivity.</p>
 <section id="id9">
 <h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -520,7 +520,7 @@ and whether to recalculate selected modes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivityObject">
 <span class="sig-name descname"><span class="pre">getCrystalPermittivityObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.getCrystalPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivityObject" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the crystal permittivity object</p>
+<dd><p>Return the crystal permittivity object.</p>
 <section id="id11">
 <h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -552,7 +552,7 @@ and whether to recalculate selected modes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.on_eckart_changed">
 <span class="sig-name descname"><span class="pre">on_eckart_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_eckart_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_eckart_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles changes in the Eckart flag state.</p>
+<dd><p>Handle changes in the Eckart flag state.</p>
 <p>This function is triggered when the state of the Eckart checkbox changes.
 It logs the state change, updates the settings to reflect the new state,
 marks refresh and recalculations as needed, and triggers a UI refresh.</p>
@@ -596,7 +596,7 @@ marks refresh and recalculations as needed, and triggers a UI refresh.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.on_element_masses_tw_itemClicked">
 <span class="sig-name descname"><span class="pre">on_element_masses_tw_itemClicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_element_masses_tw_itemClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_element_masses_tw_itemClicked" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the item clicked event on the element mass table widget.</p>
+<dd><p>Handle the item clicked event on the element mass table widget.</p>
 <p>The only thing this function does is to make sure that signal from the <cite>element_masses_tw</cite> table widget are not blocked,</p>
 <section id="id20">
 <h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
@@ -614,7 +614,7 @@ marks refresh and recalculations as needed, and triggers a UI refresh.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.on_mass_cb_activated">
 <span class="sig-name descname"><span class="pre">on_mass_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_mass_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_mass_cb_activated" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles activation of a combobox option in a mass-related setting.</p>
+<dd><p>Handle activation of a combobox option in a mass-related setting.</p>
 <p>This method updates the current mass definition based on the selected option
 from a combobox, updates related settings, and refreshes the GUI accordingly.
 It disables the 4th option in the combobox if one of the first three options is selected.
@@ -731,7 +731,7 @@ refresh : Refreshes the internal state based on the latest changes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.on_sigma_changed">
 <span class="sig-name descname"><span class="pre">on_sigma_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_sigma_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_sigma_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the sigma value in settings and applies it across the frequency range, then refreshes the output.</p>
+<dd><p>Update the sigma value in settings and apply it across the frequency range, then refreshes the output.</p>
 <p>This method is triggered when the sigma value has been changed. It updates the stored sigma value in the settings,
 applies the new sigma value across the pre-defined frequency range, redraws the output table widget, and then
 initiates a refresh to reflect the newly applied changes.</p>
@@ -776,7 +776,7 @@ based on whether the mode is selected or not. The table’s columns are resized 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.refresh" title="Permalink to this definition">#</a></dt>
-<dd><p>Refreshes the current state based on notebook content changes or user request.</p>
+<dd><p>Refresh the current state based on notebook content changes or user request.</p>
 <p>This method updates the GUI components such as tables for masses, optical permittivity, sigma value, Eckart term checkbox, and Born charges checkbox based on the changes made in the notebook or when forced by the user. It also triggers refreshes for any associated scenarios, plotting, analysis, and fitting tabs. The method blocks all signals from widgets during the update process to prevent unwanted calls to event handlers.</p>
 <section id="id40">
 <h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
@@ -910,7 +910,7 @@ Formatting of the values is to four decimal places and aligned both horizontally
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.writeSpreadsheet">
 <span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.writeSpreadsheet" title="Permalink to this definition">#</a></dt>
-<dd><p>Writes the configuration and calculation results to the associated spreadsheet.</p>
+<dd><p>Write the configuration and calculation results to the associated spreadsheet.</p>
 <p>This function iterates through various settings and results stored within the object, such as optical permittivity, mass definitions, and vibrational mode calculations. For each setting or result, it writes the relevant information to a new row in the spreadsheet. The spreadsheet is expected to have a ‘Settings’ worksheet, which this function selects and updates with the provided values.</p>
 <section id="id55">
 <h5>Parameters<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>

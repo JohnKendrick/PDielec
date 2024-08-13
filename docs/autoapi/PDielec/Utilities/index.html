@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.Utilities">
 <span id="pdielec-utilities"></span><h1><a class="reference internal" href="#module-PDielec.Utilities" title="PDielec.Utilities"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a><a class="headerlink" href="#module-PDielec.Utilities" title="Permalink to this heading">#</a></h1>
-<p>Utility Functions</p>
+<p>Utility Functions.</p>
 <p>A set of utility functions that may be used anywhere in the package.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
@@ -306,7 +306,7 @@
 <td><p>Get the appropriate reader based on the provided program and file names.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Utilities.printsp" title="PDielec.Utilities.printsp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">printsp</span></code></a>(name, matrix)</p></td>
-<td><p>Utility routine for printing 4x4 matrices or 4 vectors.</p></td>
+<td><p>Print 4x4 matrices or 4 vectors.</p></td>
 </tr>
 </tbody>
 </table>
@@ -330,7 +330,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.Utilities.Debug.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#Debug.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.Debug.print" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints message if debugging level allows.</p>
+<dd><p>Print message if debugging level allows.</p>
 <section id="parameters">
 <h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -379,7 +379,8 @@ and the provided <cite>level</cite> is less than or equal to the instance’s <c
 <section id="id4">
 <h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
-<dt>str</dt><dd><p>A string representing the simulation program the file is associated with. Possible returns are ‘phonopy’, ‘vasp’, ‘gulp’, ‘castep’, ‘abinit’, ‘qe’, ‘crystal’, ‘experiment’, ‘pdgui’, or an empty string if the program cannot be determined.</p>
+<dt>(str1,str2)</dt><dd><p>A tuple of 2 strings, the first, str1, is the program name that was used to calculate the frequencies.
+In the case of phonopy, the second string is the QM program that calculates the forces</p>
 </dd>
 </dl>
 </section>
@@ -391,11 +392,12 @@ and the provided <cite>level</cite> is less than or equal to the instance’s <c
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span> <span class="o">=</span> <span class="n">find_program_from_name</span><span class="p">(</span><span class="s1">&#39;./data/structure.castep&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
-<span class="c1"># Output: &#39;castep&#39;</span>
+<span class="c1"># Output: (&quot;castep&quot;,&quot;&quot;)</span>
 
 <span class="n">program</span> <span class="o">=</span> <span class="n">find_program_from_name</span><span class="p">(</span><span class="s1">&#39;path/to/simulation/OUTCAR&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
-<span class="c1"># Depends on the presence of &#39;phonopy.yaml&#39;, could be &#39;phonopy&#39; or &#39;vasp&#39;</span>
+<span class="c1"># Output: (&quot;phonopy&quot;,&quot;vasp&quot;)</span>
+<span class="c1"># Depends on the presence of &#39;phonopy.yaml&#39;</span>
 </pre></div>
 </div>
 </section>
@@ -492,10 +494,15 @@ specified program.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Utilities.printsp">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">printsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#printsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.printsp" title="Permalink to this definition">#</a></dt>
-<dd><p>Utility routine for printing 4x4 matrices or 4 vectors.</p>
+<dd><p>Print 4x4 matrices or 4 vectors.</p>
 <section id="id14">
 <h4>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
-<p>None</p>
+<dl class="simple">
+<dt>name<span class="classifier">string</span></dt><dd><p>The name of the matrix</p>
+</dd>
+<dt>matrix<span class="classifier">4x4 or 4 array</span></dt><dd><p>The matrix to be printed</p>
+</dd>
+</dl>
 </section>
 <section id="id15">
 <h4>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>

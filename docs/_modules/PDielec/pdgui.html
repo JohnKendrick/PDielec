@@ -287,8 +287,7 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">PDgui driver program to calculate dielectric response at infrared and THz frequencies</span>
+<span class="sd">&quot;&quot;&quot;PDgui driver program to calculate dielectric response at infrared and THz frequencies.</span>
 
 <span class="sd">Process command line arguments and start a GUI application with optional splash screen.</span>
 
@@ -296,7 +295,6 @@
 
 <span class="sd">Notes</span>
 <span class="sd">-----</span>
-
 <span class="sd">    - The -nosplash flag disables the splash screen.</span>
 <span class="sd">    - The -v, -version, or --version flags print the program version and exit.</span>
 <span class="sd">    - The -exit or --exit flag forces the program to exit immediately after processing arguments.</span>
@@ -304,21 +302,22 @@
 <span class="sd">    - The function looks for a splash image file in several locations, starting with the executable&#39;s directory, and displays it if found unless the splash screen is disabled.</span>
 <span class="sd">    - If the splash screen is shown, it also includes a progress bar.</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">PDielec.GUI.App</span>  <span class="kn">import</span> <span class="n">App</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span>      <span class="kn">import</span> <span class="n">QPixmap</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>  <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QSplashScreen</span><span class="p">,</span> <span class="n">QProgressBar</span>
-<span class="kn">from</span> <span class="nn">multiprocessing</span>  <span class="kn">import</span> <span class="n">freeze_support</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">freeze_support</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QProgressBar</span><span class="p">,</span> <span class="n">QSplashScreen</span>
+
 <span class="kn">import</span> <span class="nn">PDielec.__init__</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.App</span> <span class="kn">import</span> <span class="n">App</span>
+
 <span class="n">version</span> <span class="o">=</span> <span class="n">PDielec</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="n">__version__</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/pdgui/index.html#PDielec.pdgui.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Process command line arguments and start a GUI application with optional splash screen.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process command line arguments and start a GUI application with optional splash screen.</span>
 
 <span class="sd">    No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.</span>
 
@@ -356,19 +355,20 @@
 <span class="sd">    - To run a script:</span>
 
 <span class="sd">    &gt;&gt;&gt;    pdgui -script script.py</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="n">show_splash</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">force_exit</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-nosplash&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--nosplash&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-nosplash&quot;</span><span class="p">,</span> <span class="s2">&quot;--nosplash&quot;</span> <span class="p">):</span>
             <span class="n">show_splash</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-v&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-version&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--version&#39;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Version &#39;</span><span class="p">,</span><span class="n">version</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-exit&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--exit&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;-version&quot;</span><span class="p">,</span> <span class="s2">&quot;--version&quot;</span> <span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Version &quot;</span><span class="p">,</span><span class="n">version</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-exit&quot;</span><span class="p">,</span> <span class="s2">&quot;--exit&quot;</span> <span class="p">):</span>
             <span class="n">force_exit</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-d&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-debug&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--debug&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;-debug&quot;</span><span class="p">,</span> <span class="s2">&quot;--debug&quot;</span> <span class="p">):</span>
             <span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
 
 
@@ -376,22 +376,22 @@
 
     <span class="k">if</span> <span class="n">show_splash</span><span class="p">:</span>
         <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="n">splashfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s1">&#39;PDielec/GUI/splash.png&#39;</span><span class="p">)</span>
+        <span class="n">splashfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s2">&quot;PDielec/GUI/splash.png&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Looking for &#39;</span><span class="p">,</span><span class="n">splashfile</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Looking for &quot;</span><span class="p">,</span><span class="n">splashfile</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">splashfile</span><span class="p">):</span>
-            <span class="n">splashfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s1">&#39;../../lib/site-packages/PDielec/GUI/splash.png&#39;</span><span class="p">)</span>
+            <span class="n">splashfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s2">&quot;../../lib/site-packages/PDielec/GUI/splash.png&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Looking for &#39;</span><span class="p">,</span><span class="n">splashfile</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Looking for &quot;</span><span class="p">,</span><span class="n">splashfile</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">splashfile</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-                <span class="n">splashfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="s1">&#39;PDielec/GUI/splash.png&#39;</span><span class="p">)</span>
+                <span class="n">splashfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="s2">&quot;PDielec/GUI/splash.png&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Looking for &#39;</span><span class="p">,</span><span class="n">splashfile</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Looking for &quot;</span><span class="p">,</span><span class="n">splashfile</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">splashfile</span><span class="p">):</span>
                     <span class="k">break</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pdgui: splashfile &#39;</span><span class="p">,</span><span class="n">dirname</span><span class="p">,</span> <span class="n">splashfile</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pdgui: splashfile &quot;</span><span class="p">,</span><span class="n">dirname</span><span class="p">,</span> <span class="n">splashfile</span><span class="p">)</span>
         <span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">splashfile</span><span class="p">)</span>
         <span class="n">splash</span> <span class="o">=</span> <span class="n">QSplashScreen</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
         <span class="n">progressbar</span> <span class="o">=</span> <span class="n">QProgressBar</span><span class="p">(</span><span class="n">splash</span><span class="p">)</span>
@@ -407,7 +407,7 @@
         <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
     <span class="k">return</span> </div>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">freeze_support</span><span class="p">()</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>

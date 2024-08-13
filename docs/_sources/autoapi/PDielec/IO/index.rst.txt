@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Simple IO interface 
+   Simple IO interface.
 
    This aims to reproduce the python readline() io method, with limited functionality but much faster.
 
@@ -61,9 +61,10 @@ Classes
        Resets the reading process by resetting the current line index and
        deleting all lines read from the file from memory.
 
+
    .. py:method:: close()
 
-      Closes the current object session.
+      Close the current object session.
 
       Resets the index to 0 and deletes the lines attribute from the object.
 
@@ -78,6 +79,7 @@ Classes
       Notes
       -----
       This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.
+
 
 
    .. py:method:: readline()
@@ -96,6 +98,7 @@ Classes
       -------
       str
           The next line in the internal list of lines, or an empty string if the end of the list is reached.
+
 
 
 

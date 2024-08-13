@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   FitterTab module
+   FitterTab module.
 
 
 
@@ -40,9 +40,9 @@ Functions
 
    Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
 
-   A class for managing and displaying a spectroscopic fitting interface within a QWidget.
-   Initialize the main widget with its components and connect signals to slots.
+   Initialize the main FitterTab with its components and connect signals to slots.
 
+   A class for managing and displaying a spectroscopic fitting interface within a QWidget.
    This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.
 
    Parameters
@@ -70,27 +70,27 @@ Functions
    __init__(self, parent, debug=False)
        Constructor to initialize the spectroscopic fitting interface with the given parent and debug settings.
    on_iterations_sb_changed(self)
-       Handles changes to the number of iterations spinbox value.
+       Handle changes to the number of iterations spinbox value.
    on_independent_yaxes_cb_changed(self, value)
-       Handles changes to the independent y-axes checkbox state.
+       Handle changes to the independent y-axes checkbox state.
    on_optimise_frequency_scaling_cb_changed(self, value)
-       Handles changes to the optimise frequency scaling checkbox state.
+       Handle changes to the optimise frequency scaling checkbox state.
    on_spectrum_scaling_cb_changed(self, value)
-       Handles changes to the spectrum scaling checkbox state.
+       Handle changes to the spectrum scaling checkbox state.
    on_hpfilter_lambda_sb_changed(self, value)
-       Handles changes to the HP filter lambda spinbox value.
+       Handle changes to the HP filter lambda spinbox value.
    on_spectrum_scaling_factor_sb_changed(self, value)
-       Handles changes to the spectrum scaling factor spinbox value.
+       Handle changes to the spectrum scaling factor spinbox value.
    on_baseline_cb_changed(self, value)
-       Handles changes to the baseline correction checkbox state.
+       Handle changes to the baseline correction checkbox state.
    on_spectral_difference_threshold_sb_changed(self, value)
-       Handles changes to the spectral difference threshold spinbox value.
+       Handle changes to the spectral difference threshold spinbox value.
    on_frequency_scaling_factor_sb_changed(self, value)
-       Handles changes to the frequency scaling factor spinbox value.
+       Handle changes to the frequency scaling factor spinbox value.
    replotButton1Clicked(self)
-       Handles the event when the first replot button is clicked.
+       Handle the event when the first replot button is clicked.
    replotButton2Clicked(self)
-       Handles the event when the second replot button with frequency shift is clicked.
+       Handle the event when the second replot button with frequency shift is clicked.
    plot(self, experiment, xs, ys, legends, label)
        Plots the fitting results with optional experiment data overlay.
    fittingButtonClicked(self)
@@ -102,27 +102,28 @@ Functions
    redraw_sigmas_tw(self)
        Redraws the table widget for sigma values based on current settings.
    on_fitting_type_cb_activated(self, index)
-       Handles changes to the fitting type combo box selection.
+       Handle changes to the fitting type combo box selection.
    on_scenario_cb_activated(self, index)
-       Handles selection changes in the scenario combo box.
+       Handle selection changes in the scenario combo box.
    on_spectrafile_le_return(self)
-       Handles actions to take when the spectra file line edit has a return event.
+       Handle actions to take when the spectra file line edit has a return event.
    on_spectrafile_le_changed(self, text)
-       Handles changes to the spectra file line edit text.
+       Handle changes to the spectra file line edit text.
    on_sigmas_tw_itemChanged(self, item)
        Responds to item changes in the sigmas table widget.
    print_settings(self)
        Prints the current settings to the debugger.
    replot(self)
-       Handles the replotting of spectra.
+       Handle the replotting of spectra.
    refresh(self, force=False)
        Refreshes the interface based on current settings and data.
    requestRefresh(self)
        Requests a refresh of the interface.
 
+
    .. py:method:: fittingButtonClicked()
 
-      Handles the click event on the fitting button.
+      Handle the click event on the fitting button.
 
       This method toggles the fitting process on and off. When clicked,
       it changes the button's text accordingly to reflect the current
@@ -155,6 +156,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: on_fitting_type_cb_activated(index)
@@ -194,6 +196,7 @@ Functions
       - The `self.refreshRequired` flag is set to True regardless of whether the conversion succeeds.
 
 
+
    .. py:method:: on_hpfilter_lambda_sb_changed(value)
 
       Handle changes to the high-pass filter lambda scrollbar value.
@@ -211,7 +214,7 @@ Functions
 
    .. py:method:: on_independent_yaxes_cb_changed(value)
 
-      Handles the change of state for the independent Y-axes checkbox.
+      Handle the change of state for the independent Y-axes checkbox.
 
       Parameters
       ----------
@@ -225,6 +228,7 @@ Functions
       Notes
       -----
       This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refreshRequired' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
+
 
 
    .. py:method:: on_iterations_sb_changed()
@@ -242,9 +246,10 @@ Functions
       None
 
 
+
    .. py:method:: on_optimise_frequency_scaling_cb_changed(value)
 
-      Handles changes in the frequency scaling optimization option.
+      Handle changes in the frequency scaling optimization option.
 
       This method updates the 'Optimise frequency scaling' setting based on the state of a checkbox and marks that a refresh is required based on the new setting.
 
@@ -275,6 +280,7 @@ Functions
       None
 
 
+
    .. py:method:: on_sigmas_tw_itemChanged(item)
 
       Handle item changed event in a table widget for sigma values.
@@ -300,6 +306,7 @@ Functions
       - Processes all pending events for the application to ensure UI updates are immediately applied.
 
 
+
    .. py:method:: on_spectrafile_le_changed(text)
 
       Handle changes to the spectra file input field.
@@ -318,6 +325,7 @@ Functions
       Notes
       -----
       The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text` argument.
+
 
 
    .. py:method:: on_spectrafile_le_return()
@@ -341,6 +349,7 @@ Functions
       This method utilizes `os.path.isfile` to check file existence, `QFileDialog` for file selection. 
 
 
+
    .. py:method:: on_spectral_difference_threshold_sb_changed(value)
 
       Handle changes in spectral difference threshold setting.
@@ -358,9 +367,10 @@ Functions
       None
 
 
+
    .. py:method:: on_spectrum_scaling_cb_changed(value)
 
-      Handles the change event of the spectrum scaling checkbox.
+      Handle the change event of the spectrum scaling checkbox.
 
       This method is triggered whenever the spectrum scaling checkbox's state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.
 
@@ -377,7 +387,7 @@ Functions
 
    .. py:method:: on_spectrum_scaling_factor_sb_changed(value)
 
-      Handles the change in spectrum scaling factor.
+      Handle the change in spectrum scaling factor.
 
       Parameters
       ----------
@@ -391,6 +401,7 @@ Functions
       Notes
       -----
       This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.
+
 
 
    .. py:method:: optimiseFit()
@@ -423,6 +434,7 @@ Functions
 
       It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
       `fit_list` to store the indexes of modes that are being fitted.
+
 
 
    .. py:method:: optimiseFunction(variables)
@@ -467,6 +479,7 @@ Functions
           predefined extremely negative value (e.g., -9.9e+99).
 
 
+
    .. py:method:: plot(experiment, xs, ys, legends, label)
 
       Plot experimental and calculated data on the same or separate y-axes.
@@ -498,9 +511,10 @@ Functions
           If `xs`, `ys`, and `legends` lists do not have the same length.
 
 
+
    .. py:method:: print_settings()
 
-      Prints the settings attributes of the instance.
+      Print the settings attributes of the instance.
 
       Parameters
       ----------
@@ -511,6 +525,7 @@ Functions
       None
 
       Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
+
 
 
    .. py:method:: redraw_sigmas_tw()
@@ -538,9 +553,10 @@ Functions
         whether it is fitted, respectively.
 
 
+
    .. py:method:: refresh(force=False)
 
-      Refreshes the state of the application based on user-defined conditions and settings.
+      Refresh the state of the application based on user-defined conditions and settings.
 
       Parameters
       ----------
@@ -556,6 +572,7 @@ Functions
       The refresh process involves several key steps including checking if a refresh is required, updating plotting data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no frequencies, it returns early. Additionally, if `force` is True, it ignores the check for whether a refresh is required and proceeds with the refresh.
 
       After updating relevant class attributes and GUI components, the function recalculates cross-correlation, root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these metrics.
+
 
 
    .. py:method:: replot()
@@ -593,6 +610,7 @@ Functions
       This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and it bookmarks the last button pressed as 'replotButton1Clicked'. It also calls the `self.refresh` method to initiate the replotting process.
 
 
+
    .. py:method:: replotButton2Clicked()
 
       Handle the event when the second replot button is clicked.
@@ -628,7 +646,7 @@ Functions
 
 .. py:function:: calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum, scaling_factor=1.0, debug=False)
 
-   Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
+   Calculate the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
 
    The calculated and experimental spectra share the same frequencies (xaxis).  If a scaling factor is applied, 
    the calculated spectrum x-axis is rescaled according to the scaling factor.
@@ -657,6 +675,7 @@ Functions
    Notes
    -----
    The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum's x-axis is performed using cubic interpolation.
+
 
 
 .. py:function:: calculateSpectralDifference(xaxis, calculated_spectrum, experimental_spectrum, spectral_threshold=0.05, scaling_factor=1.0, debug=False)
@@ -691,6 +710,7 @@ Functions
    - Normalization is performed based on the maximum value in the experimental spectrum.
 
 
+
 .. py:function:: find_delimiter(filename)
 
    Find the delimiter used in a CSV file.
@@ -711,18 +731,21 @@ Functions
    the given file by analyzing the first 5000 bytes of the file.
 
 
+
 .. py:function:: is_float(element)
 
    Test to see if element is a float.
 
    Parameters
    ----------
-   element : Any
+   element : str
+       A string to be analysed to see if it is a float
 
    Returns
    -------
    bool
        True if the element is a float, False otherwise.
+
 
 
 .. py:function:: read_experimental_file(file_name, frequency_column=1, spectrum_column=2, sheet_name=None, debug=False)

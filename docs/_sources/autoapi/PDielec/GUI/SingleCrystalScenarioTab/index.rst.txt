@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   SingleCrystalScenarioTab module
+   SingleCrystalScenarioTab module.
 
 
 
@@ -154,10 +154,6 @@ Attributes
         Handle a change to the maximum percentage incoherence
    on_print_button_clicked
         Handle a print button click
-   on_slice_thickness_sb_changed
-        Handle a change to the slice thickness
-   on_slice_thickness_unit_cb_activated
-        Handle a change the slice thickess unit
    on_thickness_units_cb_activated
         Activate the thickness units combobox
    openDB_button_clicked
@@ -180,10 +176,9 @@ Attributes
         Calculate the number of calculations required
    settings2Layers
         Read the settings dictionary and create the necessary layers
-   sliceThicknessWidget
-        A widget to the the slice thickness
    smoothingWidget
         A widget to handle the smoothing information
+
 
    .. py:method:: angleOfIncidenceWidget()
 
@@ -200,10 +195,10 @@ Attributes
       None
 
 
-   .. py:method:: average_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
 
-      Calculates the incoherent component of light reflectance and transmission
-      by averaging over the phase shift.
+   .. py:method:: average_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold)
+
+      Calculate the incoherent component of light reflectance and transmission by averaging over the phase shift.
 
       Parameters
       ----------
@@ -219,8 +214,6 @@ Attributes
           The angle psi
       angleOfIncidence : float
           The angle incidence
-      sliceThickness : float
-          The slice thickness
       exponent_threshold: float
           The exponent threshold
 
@@ -236,9 +229,10 @@ Attributes
           - epsilon
 
 
+
    .. py:method:: calculate(vs_cm1)
 
-      Performs simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
+      Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
 
       Parameters
       ----------
@@ -251,12 +245,13 @@ Attributes
 
       Notes
       -----
-      This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence and slice thickness. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
+      This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
 
 
-   .. py:method:: coherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
 
-      Calculates the coherent component of light reflectance and transmission.
+   .. py:method:: coherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold)
+
+      Calculate the coherent component of light reflectance and transmission.
 
       Parameters
       ----------
@@ -272,8 +267,6 @@ Attributes
           The angle psi
       angleOfIncidence : float
           The angle incidence
-      sliceThickness : float
-          The slice thickness
       exponent_threshold: float
           The exponent threshold
 
@@ -289,6 +282,7 @@ Attributes
           - epsilon
 
 
+
    .. py:method:: createToolBar(layer, layerIndex, nLayers)
 
       Create the tool bar used for the material layer.
@@ -299,12 +293,13 @@ Attributes
           Layer is the layer concerned.
       layerIndex : int
           Its index in the list.
-      nLayers : type
+      nLayers : int
           The number of layers in the list.
 
       Returns
       -------
       None
+
 
 
    .. py:method:: createToolBarDeleteButton(layer, layerIndex, nLayers)
@@ -313,16 +308,17 @@ Attributes
 
       Parameters
       ----------
-      x : any
-          A dummy variable
       layer : layer object
           the layer to be deleted
       layerIndex : int
           index of the layer to be deleted
+      nLayers : int
+          The number of layers
 
       Returns
       -------
       None
+
 
 
    .. py:method:: createToolBarMoveDownButton(layer, layerIndex, nLayers)
@@ -331,16 +327,17 @@ Attributes
 
       Parameters
       ----------
-      x : any
-          A dummy variable
       layer : layer object
           the layer to be deleted
       layerIndex : int
           index of the layer to be deleted
+      nLayers : int
+          The number of layers
 
       Returns
       -------
       None
+
 
 
    .. py:method:: createToolBarMoveUpButton(layer, layerIndex, nLayers)
@@ -349,16 +346,17 @@ Attributes
 
       Parameters
       ----------
-      x : any
-          A dummy variable
       layer : layer object
           the layer to be deleted
       layerIndex : int
           index of the layer to be deleted
+      nLayers : int
+          The number of layers
 
       Returns
       -------
       None
+
 
 
    .. py:method:: deleteLayer(x, layer, layerIndex)
@@ -379,6 +377,7 @@ Attributes
       None
 
 
+
    .. py:method:: drawLayerTable()
 
       Draw a table with all the layers in it.
@@ -397,7 +396,7 @@ Attributes
 
    .. py:method:: generateLayerSettings()
 
-      Generate the settings dictionary for every layer
+      Generate the settings dictionary for every layer.
 
       Parameters
       ----------
@@ -407,6 +406,7 @@ Attributes
       -------
       list
           A list of dictionary settings for each layer.
+
 
 
    .. py:method:: getDielectricLayerIndex()
@@ -424,6 +424,7 @@ Attributes
       -------
       int or None
           The index of the dielectric layer in the list.
+
 
 
    .. py:method:: getMaterialFromDataBase(name, permittivity=None)
@@ -446,9 +447,10 @@ Attributes
       None
 
 
+
    .. py:method:: get_result(vs_cm1, plot_type)
 
-      Return a particular result
+      Return a particular result.
 
       Parameters
       ----------
@@ -468,9 +470,10 @@ Attributes
           The results to be plotted
 
 
+
    .. py:method:: get_results(vs_cm1)
 
-      Return the results of the single crystal calculation
+      Return the results of the single crystal calculation.
 
       If a refresh has been requested it is performed before the calculate method is called.
 
@@ -484,11 +487,12 @@ Attributes
       None
 
 
+
    .. py:method:: globalAzimuthalWidget()
 
       Create a global azimuthal angle widget.
 
-      This widget is shown in the main single crystal scenarion tab.
+      This widget is shown in the main single crystal scenario tab.
       Any change in this angle affects all layers.
 
       Parameters
@@ -498,6 +502,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: greyed_out()
@@ -511,6 +516,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: moveLayerDown(x, layer, layerIndex)
@@ -531,6 +537,7 @@ Attributes
       None
 
 
+
    .. py:method:: moveLayerUp(x, layer, layerIndex)
 
       Move a layer up (sequence number gets smaller by 1).
@@ -547,6 +554,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: newLayerWidget()
@@ -571,9 +579,10 @@ Attributes
       - The combo box is connected to the `on_newLayer_cb_activated` method, which should handle the action performed upon selecting an item from the combo box.
 
 
+
    .. py:method:: on_angle_of_incidence_sb_changed(value)
 
-      Updates the 'Angle of incidence' setting and marks refresh as required upon a change in the angle of incidence spinbox value.
+      Update the 'Angle of incidence' setting and mark a refresh as required upon a change in the angle of incidence spinbox value.
 
       A refresh is requested
 
@@ -609,6 +618,7 @@ Attributes
       None
 
 
+
    .. py:method:: on_film_thickness_sb_changed(value, layer)
 
       Handle film thickness spin box change.
@@ -629,9 +639,10 @@ Attributes
       None
 
 
+
    .. py:method:: on_global_azimuthal_angle_sb_changed(value)
 
-      Handles the change in global azimuthal angle setting.
+      Handle the change in global azimuthal angle setting.
 
       This method updates the 'Global azimuthal angle' in the settings 
       based on the given value and marks a refresh as required.
@@ -646,9 +657,10 @@ Attributes
       None
 
 
+
    .. py:method:: on_hkl_sb_changed(value, hkorl, layer)
 
-      Handle a change in h, k, or l
+      Handle a change in h, k, or l.
 
       The h, k and l parameters determine the surface of the film
       - determine the value of h, k or l
@@ -670,6 +682,7 @@ Attributes
       None
 
 
+
    .. py:method:: on_layerTable_itemChanged(item)
 
       Handle a change to the layer table.
@@ -679,10 +692,12 @@ Attributes
       Parameters
       ----------
       item : the item changed
+          The item which has changed
 
       Returns
       -------
       None
+
 
 
    .. py:method:: on_layer_button_clicked(x, layer, layerIndex)
@@ -732,9 +747,10 @@ Attributes
       - Sets a flag indicating that a refresh is required.
 
 
+
    .. py:method:: on_newLayer_cb_activated(index)
 
-      Handle a new layer button click
+      Handle a new layer button click.
 
       Based on the index chosen a new material is created and added to the list of layers.
       The settings dictionary is updated and a refresh is forced.
@@ -752,7 +768,7 @@ Attributes
 
    .. py:method:: on_option_cb_activated(index, layer)
 
-      The incoherence option combo box has been activated.
+      Activate the incoherence option combob.
 
       - The layer's incoherent options are changed
       - The number of calculations requested is updated
@@ -771,9 +787,10 @@ Attributes
       None
 
 
+
    .. py:method:: on_partially_incoherent_kernel_sb_changed(value)
 
-      Handles the change in the partially incoherent kernel spinbox value.
+      Handle the change in the partially incoherent kernel spinbox value.
 
       Parameters
       ----------
@@ -785,9 +802,10 @@ Attributes
       None
 
 
+
    .. py:method:: on_partially_incoherent_polynomial_sb_changed(value)
 
-      Handles changes to the partially incoherent polynomial spinbox value.
+      Handle changes to the partially incoherent polynomial spinbox value.
 
       This method updates the relevant setting based on the new value and marks
       the need for refreshment. It also logs the change using the debugger.
@@ -802,9 +820,10 @@ Attributes
       None
 
 
+
    .. py:method:: on_partially_incoherent_samples_sb_changed(value)
 
-      Handles the change in partially incoherent samples setting.
+      Handle the change in partially incoherent samples setting.
 
       Parameters
       ----------
@@ -814,6 +833,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_percentage_partial_incoherence_sb_changed(value)
@@ -832,9 +852,10 @@ Attributes
       None
 
 
+
    .. py:method:: on_print_button_clicked(x, layer)
 
-      Print the permittivity for the layer
+      Print the permittivity for the layer.
 
       The print button is only visible if in debug mode.
       The permittivity is printed to a csv file with a name containing the material involved.
@@ -851,42 +872,10 @@ Attributes
       None
 
 
-   .. py:method:: on_slice_thickness_sb_changed(value)
-
-      Updates the 'Slice thickness' setting based on a new value and marks refresh as required.
-
-      Parameters
-      ----------
-      value : int or float
-          The new value for the slice thickness setting.
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: on_slice_thickness_unit_cb_activated(index)
-
-      Handles the activation of a slice thickness unit selection.
-
-      This method updates the settings to reflect the newly selected
-      slice thickness unit based on its index in the thickness_units list.
-      It also flags that a refresh is necessary.
-
-      Parameters
-      ----------
-      index : int
-          The index of the selected unit in the thickness_units list.
-
-      Returns
-      -------
-      None
-
 
    .. py:method:: on_thickness_units_cb_activated(index, layer)
 
-      Handles the activation of a thickness unit option in a combo box.
+      Handle the activation of a thickness unit option in a combo box.
 
       - the thickness unit of this layer is changed
       - the settings dictionary is updated
@@ -904,6 +893,7 @@ Attributes
       None
 
 
+
    .. py:method:: openDB_button_clicked()
 
       Open a new materials' database.
@@ -919,9 +909,10 @@ Attributes
       None
 
 
+
    .. py:method:: partialIncoherenceWidget()
 
-      Create a partial incoherence widget
+      Create a partial incoherence widget.
 
       Parameters
       ----------
@@ -932,10 +923,10 @@ Attributes
       None
 
 
-   .. py:method:: partially_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
 
-      Calculates the incoherent component of light reflectance and transmission
-      by sampling the path length in the incident medium.
+   .. py:method:: partially_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold)
+
+      Calculate the incoherent component of light reflectance and transmission by sampling the path length in the incident medium.
 
       Parameters
       ----------
@@ -951,8 +942,6 @@ Attributes
           The angle psi
       angleOfIncidence : float
           The angle incidence
-      sliceThickness : float
-          The slice thickness
       exponent_threshold: float
           The exponent threshold
 
@@ -966,6 +955,7 @@ Attributes
           - p_absorbtance
           - s_absorbtance
           - epsilon
+
 
 
    .. py:method:: printLayerSettings(message)
@@ -988,6 +978,7 @@ Attributes
       This function does not return any value. It is primarily used for debugging or informative purposes to quickly display the current configuration of layer settings within a class that has `settings` as an attribute storing these properties.
 
 
+
    .. py:method:: redrawLayerTable()
 
       Redraw the layer table widget.
@@ -1008,13 +999,13 @@ Attributes
       ----------
       sequenceNumber : int
           The sequence number of the layer in the list
-      Layer : layer object
+      layer : layer object
           The layer itself
       rowCount : int
           The row count
       firstLayer : bool
           True if this is the first layer in the list
-      LastLayer : bool
+      lastLayer : bool
           True if this is the last layer in the list
 
       Returns
@@ -1061,6 +1052,7 @@ Attributes
           The list of material names including the appended default 'Dielectric layer'.
 
 
+
    .. py:method:: set_noCalculationsRequired()
 
       Determine the number of calculations required.
@@ -1075,6 +1067,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: settings2Layers()
@@ -1094,25 +1087,10 @@ Attributes
           A list of layers generated from the layer settings.
 
 
-   .. py:method:: sliceThicknessWidget()
-
-      Create a widget for setting slice thickness and its units.
-
-      This method sets up a QSpinBox for specifying slice thickness in a range of 0 to 10000, with steps of 1 unit. It also sets up a QComboBox for selecting the unit of thickness (nm, um, mm, or cm). Both the spinbox and combobox values are initialized based on `self.settings`. The method arranges these widgets along with a descriptive label into a horizontal layout which is then returned. 
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      tuple
-          A tuple containing a QLabel and QHBoxLayout. The QLabel describes the purpose of the slice thickness setting, and the QHBoxLayout contains the QSpinBox and QComboBox for adjusting the slice thickness and selecting its unit, respectively.
-
 
    .. py:method:: smoothingWidget()
 
-      Create a smoothing widget used by the partial incoherence method
+      Create a smoothing widget used by the partial incoherence method.
 
       Parameters
       ----------
@@ -1124,9 +1102,10 @@ Attributes
 
 
 
-.. py:function:: solve_single_crystal_equations(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold, v)
 
-   This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.
+.. py:function:: solve_single_crystal_equations(layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold, v)
+
+   Solve single crystal equations, system is a GTM system.
 
    Parameters
    ----------
@@ -1142,9 +1121,6 @@ Attributes
        The psi angle of the slab.
    angleOfIncidence : float
        The angle of incidence.
-   sliceThickness : float
-       A thickness in meters, used to subdivide thicker films.
-       If zero, then the full thickness film is used.
    exponent_threshold : float
        The largest exponent allowed in the calculation of the propagation matrix.
    v : float

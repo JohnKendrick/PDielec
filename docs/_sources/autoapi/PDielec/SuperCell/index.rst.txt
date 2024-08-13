@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   The SuperCell module
+   The SuperCell module.
 
 
 
@@ -49,10 +49,10 @@ Classes
    -----
    This method automatically invokes the createImages method at the end of initialization.
 
-   See also
+   See Also
    --------
-
    :class:`~PDielec.UnitCell.UnitCell`
+
 
    .. py:method:: calculateBonds()
 
@@ -73,9 +73,12 @@ Classes
       the bonds are not recalculated, just extended into the super-cell
 
 
+
    .. py:method:: calculateCentreOfBox()
 
-      This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.
+      Calculate the centre of the super-cell in cartesian coordinates.
+
+      This is the centre of the box, not the centre of mass
 
       Parameters
       ----------
@@ -85,6 +88,7 @@ Classes
       -------
       vector
           The centre of the images in the box
+
 
 
    .. py:method:: calculateCentreOfMass(output='xyz')
@@ -110,6 +114,7 @@ Classes
           coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.
 
 
+
    .. py:method:: calculateNormalModes(modes)
 
       Calculate and return the normal modes of the supercell.
@@ -132,6 +137,7 @@ Classes
           number of images.
 
 
+
    .. py:method:: calculateXYZ()
 
       Calculate and return the cartesian coordinates of the supercell.
@@ -146,6 +152,7 @@ Classes
       -------
       output : array
           The Cartesian coordinates of the supercell.
+
 
 
    .. py:method:: createImages(anImageSpecifier)
@@ -165,7 +172,8 @@ Classes
           A list of created images.
 
 
-   .. py:method:: getBoundingBox(originABC=[0, 0, 0])
+
+   .. py:method:: getBoundingBox(originABC=None)
 
       Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
 
@@ -195,6 +203,7 @@ Classes
       The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
 
 
+
    .. py:method:: getElementNames()
 
       Calculate and return the element names of the supercell.
@@ -209,9 +218,10 @@ Classes
           The element names of the supercell.
 
 
+
    .. py:method:: print()
 
-      Print the contents of the SuperCell
+      Print the contents of the SuperCell.
 
       Parameters
       ----------
@@ -232,6 +242,7 @@ Classes
       sc=SC.SuperCell(uc,imageSpecifier)
       sc.print()
       ```
+
 
 
 

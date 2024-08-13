@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   AnalysisTab Module
+   AnalysisTab Module.
 
 
 
@@ -125,6 +125,7 @@ Classes
    plot_internal_external(self)
        Generates a plot based on the decomposition of vibrational energy into internal and external movements.
 
+
    .. py:method:: calculate()
 
       Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
@@ -168,6 +169,7 @@ Classes
       None
 
 
+
    .. py:method:: on_element_radii_tw_itemClicked(item)
 
       Handle the item clicked event for a TableWidget related to element radii.
@@ -187,6 +189,7 @@ Classes
       event has occurred, allowing subsequent events to be processed.
 
 
+
    .. py:method:: on_plottype_cb_changed(index)
 
       Handle a change in plot type selection.
@@ -201,9 +204,10 @@ Classes
       None
 
 
+
    .. py:method:: on_scale_changed(value)
 
-      Handles the event when the scale setting is changed.
+      Handle the event when the scale setting is changed.
 
       This function is typically connected to a signal that is emitted when the
       scaling factor for the covalent radius is adjusted in a graphical user interface.
@@ -221,6 +225,7 @@ Classes
       None
 
 
+
    .. py:method:: on_title_changed(text)
 
       Handle title change events.
@@ -233,6 +238,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_tolerance_changed(value)
@@ -269,7 +275,7 @@ Classes
 
    .. py:method:: on_vmin_changed()
 
-      Handles the change in minimum value of frequency.
+      Handle the change in minimum value of frequency.
 
       Parameters
       ----------
@@ -279,6 +285,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_width_changed(value)
@@ -295,6 +302,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: plot()
@@ -322,6 +330,7 @@ Classes
       based on the value of `self.plot_type_index`.
 
 
+
    .. py:method:: plot_internal_external()
 
       Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.
@@ -341,6 +350,7 @@ Classes
       - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.
       - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.
       - The method updates the canvas with the newly plotted data.
+
 
 
    .. py:method:: plot_molecular()
@@ -375,6 +385,7 @@ Classes
         are appropriately imported or accessible within the scope.
 
 
+
    .. py:method:: refresh(force=False)
 
       Refresh the widget state, optionally enforcing refresh.
@@ -391,9 +402,10 @@ Classes
       None
 
 
+
    .. py:method:: requestRefresh()
 
-      Marks the instance as requiring a refresh.
+      Mark the instance as requiring a refresh.
 
       Sets the instance attribute `refreshRequired` to True, indicating that a refresh is necessary.
 
@@ -423,6 +435,7 @@ Classes
       None
 
 
+
    .. py:method:: set_radii_tw()
 
       Set or update the atomic radii in the GUI's table widget based on the current settings and active file.
@@ -442,6 +455,7 @@ Classes
       None
 
 
+
    .. py:method:: writeSpreadsheet()
 
       Write analysis data into a selected worksheet in the notebook's spreadsheet.
@@ -458,6 +472,7 @@ Classes
       Returns
       -------
       None
+
 
 
 

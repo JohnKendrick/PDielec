@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Read the contents of a single file containing DFT output and create a csv style file of information
+   Read the contents of a single file containing DFT output and create a csv style file of information.
 
    Parse command-line arguments to set program configuration and process a specified file.
 
@@ -79,9 +79,10 @@ Attributes
    - The handling of `-debug`, `-help`, `-version`, and program-specific arguments provides an example of a rudimentary command-line interface.
 
 
+
 .. py:function:: print_help()
 
-   Prints the help message for the p1reader program to stderr.
+   Print the help message for the p1reader program to stderr.
 
    This function displays the usage of the `p1reader` command, including accepted programs, flags, and additional
    optional arguments.
@@ -96,6 +97,7 @@ Attributes
    To display the help message, simply call the function without any arguments:
 
    >>> print_help()
+
 
 
 .. py:data:: version

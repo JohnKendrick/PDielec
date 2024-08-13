@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   SettingsTab module
+   SettingsTab module.
 
 
 
@@ -52,6 +52,7 @@ Classes
    --------
    QTableWidget : The base class from which this class is derived.
 
+
    .. py:method:: sizeHint()
 
       Calculate the suggested dimensions for the widget based on its content.
@@ -66,6 +67,7 @@ Classes
       -------
       QSize
           The calculated size that suggests the optimal dimensions for the widget. The width is determined by the total width of all columns, the vertical header width, the vertical scrollbar width, and twice the frame width. The height is determined by the total height of all rows, the horizontal header height, the horizontal scrollbar height, and twice the frame width.
+
 
 
 
@@ -169,6 +171,7 @@ Classes
    getCrystalPermittivityObject()
        Returns the crystal permittivity object used for calculations.
 
+
    .. py:method:: calculate(vs_cm1)
 
       Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.
@@ -218,9 +221,10 @@ Classes
       - `Calculator.ionic_permittivity`: For calculating the ionic permittivity based on mode list, oscillator strengths, and frequencies.
 
 
+
    .. py:method:: getCrystalPermittivity(vs_cm1)
 
-      Return the crystal permittivity
+      Return the crystal permittivity.
 
       Parameters
       ----------
@@ -233,9 +237,10 @@ Classes
           The crystal permittivity (a 3x3 tensor) at each frequency
 
 
+
    .. py:method:: getCrystalPermittivityObject()
 
-      Return the crystal permittivity object
+      Return the crystal permittivity object.
 
       Parameters
       ----------
@@ -245,7 +250,7 @@ Classes
       -------
       self.CrystalPermittivityObject : a permittivity object
           An instance of dielectric function
-       
+
 
 
    .. py:method:: on_born_changed()
@@ -263,9 +268,10 @@ Classes
       None
 
 
+
    .. py:method:: on_eckart_changed()
 
-      Handles changes in the Eckart flag state.
+      Handle changes in the Eckart flag state.
 
       This function is triggered when the state of the Eckart checkbox changes.
       It logs the state change, updates the settings to reflect the new state,
@@ -304,9 +310,10 @@ Classes
       - `self.refresh()` is a method that refreshes or updates the UI components as needed based on the new changes.
 
 
+
    .. py:method:: on_element_masses_tw_itemClicked(item)
 
-      Handles the item clicked event on the element mass table widget.
+      Handle the item clicked event on the element mass table widget.
 
       The only thing this function does is to make sure that signal from the `element_masses_tw` table widget are not blocked,
 
@@ -320,9 +327,10 @@ Classes
       None
 
 
+
    .. py:method:: on_mass_cb_activated(index)
 
-      Handles activation of a combobox option in a mass-related setting.
+      Handle activation of a combobox option in a mass-related setting.
 
       This method updates the current mass definition based on the selected option
       from a combobox, updates related settings, and refreshes the GUI accordingly.
@@ -350,6 +358,7 @@ Classes
       refresh : A method to refresh the UI components.
 
 
+
    .. py:method:: on_optical_tw_itemChanged(item)
 
       Handle item change events for an optical permittivity table.
@@ -375,6 +384,7 @@ Classes
       - Processes any pending events with `QCoreApplication.processEvents()` to ensure the UI remains responsive.
 
 
+
    .. py:method:: on_optical_tw_itemClicked(item)
 
       Handle item clicked event for an optical widget's table item.
@@ -393,6 +403,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_output_tw_itemChanged(item)
@@ -423,9 +434,10 @@ Classes
       refresh : Refreshes the internal state based on the latest changes.
 
 
+
    .. py:method:: on_sigma_changed()
 
-      Updates the sigma value in settings and applies it across the frequency range, then refreshes the output.
+      Update the sigma value in settings and apply it across the frequency range, then refreshes the output.
 
       This method is triggered when the sigma value has been changed. It updates the stored sigma value in the settings,
       applies the new sigma value across the pre-defined frequency range, redraws the output table widget, and then
@@ -438,6 +450,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: redraw_output_tw()
@@ -469,7 +482,7 @@ Classes
 
    .. py:method:: refresh(force=False)
 
-      Refreshes the current state based on notebook content changes or user request.
+      Refresh the current state based on notebook content changes or user request.
 
       This method updates the GUI components such as tables for masses, optical permittivity, sigma value, Eckart term checkbox, and Born charges checkbox based on the changes made in the notebook or when forced by the user. It also triggers refreshes for any associated scenarios, plotting, analysis, and fitting tabs. The method blocks all signals from widgets during the update process to prevent unwanted calls to event handlers.
 
@@ -490,6 +503,7 @@ Classes
       - Unblocks all QWidget signals after updates are applied.
       - Manages internal flags to keep track of the need for refreshes and calculations.
       - Processes all pending Qt events with `QCoreApplication.processEvents()`.
+
 
 
    .. py:method:: refresh_optical_permittivity_tw()
@@ -518,6 +532,7 @@ Classes
           - The `QCoreApplication.processEvents()` call forces the application to process all pending events, ensuring the UI updates in real-time.
 
 
+
    .. py:method:: requestRefresh()
 
       Request to refresh the environment or state.
@@ -531,6 +546,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: setElementMass(element, mass)
@@ -556,6 +572,7 @@ Classes
       - It triggers a refresh of the GUI and potentially recalculates selected modes based on the new mass settings.
 
 
+
    .. py:method:: set_masses_tw()
 
       Set the element masses in the table widget based on the mass_definition setting.
@@ -569,6 +586,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: set_optical_permittivity_tw()
@@ -589,7 +607,7 @@ Classes
 
    .. py:method:: writeSpreadsheet()
 
-      Writes the configuration and calculation results to the associated spreadsheet.
+      Write the configuration and calculation results to the associated spreadsheet.
 
       This function iterates through various settings and results stored within the object, such as optical permittivity, mass definitions, and vibrational mode calculations. For each setting or result, it writes the relevant information to a new row in the spreadsheet. The spreadsheet is expected to have a 'Settings' worksheet, which this function selects and updates with the provided values.
 
@@ -600,6 +618,7 @@ Classes
       Returns
       -------
       None
+
 
 
 

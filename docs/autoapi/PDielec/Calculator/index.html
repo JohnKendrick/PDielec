@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.Calculator">
 <span id="pdielec-calculator"></span><h1><a class="reference internal" href="#module-PDielec.Calculator" title="PDielec.Calculator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a><a class="headerlink" href="#module-PDielec.Calculator" title="Permalink to this heading">#</a></h1>
-<p>Calculator module</p>
+<p>Calculator module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="functions">
@@ -287,10 +287,10 @@
 <td><p>Routine to calculate the error in the Bruggeman method.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator._brug_minimise_scalar" title="PDielec.Calculator._brug_minimise_scalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_brug_minimise_scalar</span></code></a>(variables, eps1, eps2, shape, L, ...)</p></td>
-<td><p>Bruggeman method using scalar quantities (suitable for powell minimisation method)</p></td>
+<td><p>Bruggeman method using scalar quantities (suitable for powell minimisation method).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator._brug_minimise_tensor" title="PDielec.Calculator._brug_minimise_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_brug_minimise_tensor</span></code></a>(variables, eps1, eps2, shape, L, ...)</p></td>
-<td><p>Bruggeman method using tensor quantities</p></td>
+<td><p>Bruggeman method using tensor quantities.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.absorption_from_mode_intensities" title="PDielec.Calculator.absorption_from_mode_intensities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absorption_from_mode_intensities</span></code></a>(f, modes, ...)</p></td>
 <td><p>Calculate the absorption from the frequencies and intensities using a Lorentzian.</p></td>
@@ -308,13 +308,13 @@
 <td><p>Calculate the effective constant permittivity using the method of Balan.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.bruggeman_iter" title="PDielec.Calculator.bruggeman_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bruggeman_iter</span></code></a>(eps1, eps2, shape, L, f2, size, epsbr)</p></td>
-<td><p>Calculate the effective constant permittivity using the method of Bruggeman. (Iteration)</p></td>
+<td><p>Calculate an iteration of the Bruggeman method..</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.bruggeman_minimise" title="PDielec.Calculator.bruggeman_minimise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bruggeman_minimise</span></code></a>(eps1, eps2, shape, L, f2, size, epsbr)</p></td>
 <td><p>Calculate the effective constant permittivity using the method of Bruggeman (minimisation).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.calculate_angle" title="PDielec.Calculator.calculate_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_angle</span></code></a>(a, b, c)</p></td>
-<td><p>Calculate the angle between a, b and c in degrees</p></td>
+<td><p>Calculate the angle between a, b and c in degrees.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.calculate_bubble_refractive_index" title="PDielec.Calculator.calculate_bubble_refractive_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_bubble_refractive_index</span></code></a>(v_cm1, ri_medium, ...)</p></td>
 <td><p>Calculate the scattering from bubbles embedded in a possibly complex dielectric at a given frequency.</p></td>
@@ -341,13 +341,13 @@
 <td><p>Calculate a size effect using Equations 10.38 and 10.39 in Sihvola.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.calculate_torsion" title="PDielec.Calculator.calculate_torsion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_torsion</span></code></a>(a, b, c, d)</p></td>
-<td><p>Calculate the torsion angle between a, b, c and d in degrees</p></td>
+<td><p>Calculate the torsion angle between a, b, c and d in degrees.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.cleanup_symbol" title="PDielec.Calculator.cleanup_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cleanup_symbol</span></code></a>(s)</p></td>
-<td><p>Return a true element from the symbol</p></td>
+<td><p>Return a true element from the symbol.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.coherent" title="PDielec.Calculator.coherent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coherent</span></code></a>(dielectric_medium, crystal_permittivity, ...)</p></td>
-<td><p>Calculate the effective constant permittivity using the Coherent method</p></td>
+<td><p>Calculate the effective constant permittivity using the Coherent method.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.construct_projection_operator" title="PDielec.Calculator.construct_projection_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_projection_operator</span></code></a>(atoms, xyzs, masses, nats)</p></td>
 <td><p>Construct the projection operator for the molecule defined by atoms, xyz, masses.</p></td>
@@ -437,11 +437,13 @@
 <section id="parameters">
 <h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
-<dt>variables<span class="classifier">list of 2 floats</span></dt><dd><p>The real and imaginary components of the scalar permittivity</p>
+<dt>epsbr<span class="classifier">list of 2 floats</span></dt><dd><p>The real and imaginary components of the scalar permittivity</p>
 </dd>
 <dt>eps1<span class="classifier">tensor (3x3)</span></dt><dd><p>Permittivity of phase 1</p>
 </dd>
 <dt>eps2<span class="classifier">tensor (3x3)</span></dt><dd><p>Permittivity of phase 2</p>
+</dd>
+<dt>shape<span class="classifier">string</span></dt><dd><p>The shape descriptor</p>
 </dd>
 <dt>L<span class="classifier">3x3 tensor</span></dt><dd><p>Depolarisation tensor</p>
 </dd>
@@ -460,7 +462,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator._brug_minimise_scalar">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">_brug_minimise_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#_brug_minimise_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator._brug_minimise_scalar" title="Permalink to this definition">#</a></dt>
-<dd><p>Bruggeman method using scalar quantities (suitable for powell minimisation method)</p>
+<dd><p>Bruggeman method using scalar quantities (suitable for powell minimisation method).</p>
 <section id="id1">
 <h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -469,6 +471,8 @@
 <dt>eps1<span class="classifier">tensor (3x3)</span></dt><dd><p>Permittivity of phase 1</p>
 </dd>
 <dt>eps2<span class="classifier">tensor (3x3)</span></dt><dd><p>Permittivity of phase 2</p>
+</dd>
+<dt>shape<span class="classifier">string</span></dt><dd><p>The particle shape</p>
 </dd>
 <dt>L<span class="classifier">3x3 tensor</span></dt><dd><p>Depolarisation tensor</p>
 </dd>
@@ -487,7 +491,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator._brug_minimise_tensor">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">_brug_minimise_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#_brug_minimise_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator._brug_minimise_tensor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bruggeman method using tensor quantities</p>
+<dd><p>Bruggeman method using tensor quantities.</p>
 <section id="id3">
 <h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -496,6 +500,8 @@
 <dt>eps1<span class="classifier">tensor (3x3)</span></dt><dd><p>Permittivity of phase 1</p>
 </dd>
 <dt>eps2<span class="classifier">tensor (3x3)</span></dt><dd><p>Permittivity of phase 2</p>
+</dd>
+<dt>shape<span class="classifier">string</span></dt><dd><p>The particle shape</p>
 </dd>
 <dt>L<span class="classifier">3x3 tensor</span></dt><dd><p>Depolarisation tensor</p>
 </dd>
@@ -560,6 +566,8 @@
 </dd>
 <dt>size<span class="classifier">float</span></dt><dd><p>The dimensionless size parameter for the frequency under consideration.</p>
 </dd>
+<dt>size_mu<span class="classifier">float</span></dt><dd><p>The particle size in microns</p>
+</dd>
 <dt>size_distribution_sigma<span class="classifier">float</span></dt><dd><p>The log normal value of sigma.</p>
 </dd>
 <dt>vf<span class="classifier">float</span></dt><dd><p>The volume fraction of filler.</p>
@@ -585,7 +593,10 @@
 <dd><p>Return the averaged tensor.</p>
 <section id="id10">
 <h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
-<p>t : tensor (3x3)</p>
+<dl class="simple">
+<dt>t<span class="classifier">tensor (3x3)</span></dt><dd><p>The tensor</p>
+</dd>
+</dl>
 </section>
 <section id="id11">
 <h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
@@ -610,6 +621,8 @@
 <dt>shape<span class="classifier">str</span></dt><dd><p>The name of the current shape.</p>
 </dd>
 <dt>L<span class="classifier">array_like (3x3)</span></dt><dd><p>The shape’s depolarisation matrix.</p>
+</dd>
+<dt>vf<span class="classifier">float</span></dt><dd><p>Volume fraction</p>
 </dd>
 <dt>size<span class="classifier">float</span></dt><dd><p>The dimensionless size parameter for the frequency under consideration (not used).</p>
 </dd>
@@ -639,6 +652,8 @@
 </dd>
 <dt>L<span class="classifier">array_like (3x3)</span></dt><dd><p>The shape’s depolarisation matrix.</p>
 </dd>
+<dt>vf<span class="classifier">float</span></dt><dd><p>Volume fraction</p>
+</dd>
 <dt>size<span class="classifier">float</span></dt><dd><p>The dimensionless size parameter for the frequency under consideration (not used).</p>
 </dd>
 </dl>
@@ -655,7 +670,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.bruggeman_iter">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">bruggeman_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsbr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#bruggeman_iter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.bruggeman_iter" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the effective constant permittivity using the method of Bruggeman. (Iteration)</p>
+<dd><p>Calculate an iteration of the Bruggeman method..</p>
 <section id="id16">
 <h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -727,7 +742,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.calculate_angle">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">calculate_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#calculate_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.calculate_angle" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the angle between a, b and c in degrees</p>
+<dd><p>Calculate the angle between a, b and c in degrees.</p>
 <p>The bond is a-b-c, b is the central atom</p>
 <section id="id22">
 <h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
@@ -787,8 +802,12 @@
 <dd><p>Calculate centre of mass.</p>
 <section id="id27">
 <h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
-<p>xyzs : list of xyz coordinates of the atoms
-masses : list of the atomic masses</p>
+<dl class="simple">
+<dt>xyzs<span class="classifier">list of xyz coordinates of the atoms</span></dt><dd><p>The xyz coordinates</p>
+</dd>
+<dt>masses<span class="classifier">list of the atomic masses</span></dt><dd><p>The list of atomic masses in amu</p>
+</dd>
+</dl>
 </section>
 <section id="id28">
 <h4>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
@@ -832,6 +851,8 @@ cm   : vector (3) - the coordinates of the centre of mass</p>
 </dd>
 <dt>normal_modes<span class="classifier">array_like</span></dt><dd><p>The mass weighted normal modes.</p>
 </dd>
+<dt>debug<span class="classifier">boolean</span></dt><dd><p>True for debugging</p>
+</dd>
 </dl>
 </section>
 </dd></dl>
@@ -844,6 +865,8 @@ cm   : vector (3) - the coordinates of the centre of mass</p>
 <h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>refractive_index<span class="classifier">complex</span></dt><dd><p>The refractive index from which the permittivity is calculated.</p>
+</dd>
+<dt>debug<span class="classifier">boolean</span></dt><dd><p>True for debugging information</p>
 </dd>
 </dl>
 </section>
@@ -864,7 +887,12 @@ cm   : vector (3) - the coordinates of the centre of mass</p>
 Then choose the root with the largest imaginary component. This obeys the Kramers-Konig requirements.</p>
 <section id="id34">
 <h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
-<p>dielectric : complex</p>
+<dl class="simple">
+<dt>dielectric<span class="classifier">complex</span></dt><dd><p>The permittivity</p>
+</dd>
+<dt>debug<span class="classifier">boolean</span></dt><dd><p>True for debugging information</p>
+</dd>
+</dl>
 </section>
 <section id="id35">
 <h4>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
@@ -889,7 +917,12 @@ the largest imaginary component.</p>
 Then choose the root with the largest imaginary component. This obeys the Konig-Kramer requirements.</p>
 <section id="id37">
 <h4>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
-<p>dielectric_scalar : complex</p>
+<dl class="simple">
+<dt>dielectric_scalar<span class="classifier">complex</span></dt><dd><p>The permittivity</p>
+</dd>
+<dt>debug<span class="classifier">boolean</span></dt><dd><p>True for debugging information</p>
+</dd>
+</dl>
 </section>
 <section id="id38">
 <h4>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
@@ -930,7 +963,7 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.calculate_torsion">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">calculate_torsion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#calculate_torsion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.calculate_torsion" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the torsion angle between a, b, c and d in degrees</p>
+<dd><p>Calculate the torsion angle between a, b, c and d in degrees.</p>
 <section id="id42">
 <h4>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -956,10 +989,13 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.cleanup_symbol">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">cleanup_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#cleanup_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.cleanup_symbol" title="Permalink to this definition">#</a></dt>
-<dd><p>Return a true element from the symbol</p>
+<dd><p>Return a true element from the symbol.</p>
 <section id="id44">
 <h4>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h4>
-<p>s : str</p>
+<dl class="simple">
+<dt>s<span class="classifier">str</span></dt><dd><p>The element symbol to be cleaned up</p>
+</dd>
+</dl>
 </section>
 <section id="id45">
 <h4>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
@@ -973,7 +1009,7 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.coherent">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">coherent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dielectric_medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_permittivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric_apparent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#coherent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.coherent" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the effective constant permittivity using the Coherent method</p>
+<dd><p>Calculate the effective constant permittivity using the Coherent method.</p>
 <section id="id46">
 <h4>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -988,6 +1024,8 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 <dt>size<span class="classifier">float</span></dt><dd><p>The dimensionless size parameter for the frequency under consideration.</p>
 </dd>
 <dt>vf<span class="classifier">float</span></dt><dd><p>The volume fraction of filler.</p>
+</dd>
+<dt>dielectric_apparent<span class="classifier">3x3 array of floats</span></dt><dd><p>The current estimate of the dielectric</p>
 </dd>
 </dl>
 </section>
@@ -1006,9 +1044,16 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 <dd><p>Construct the projection operator for the molecule defined by atoms, xyz, masses.</p>
 <section id="id48">
 <h4>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h4>
-<p>atoms : list of atom types
-xyz : list of atom coordinates vector (3)
-masses : list of atom masses</p>
+<dl class="simple">
+<dt>atoms<span class="classifier">list strings</span></dt><dd><p>The atom types</p>
+</dd>
+<dt>xyzs<span class="classifier">list of atom coordinates vector (3)</span></dt><dd><p>The list of coordinates</p>
+</dd>
+<dt>masses<span class="classifier">list of atom masses</span></dt><dd><p>The list of atomic masses in amu</p>
+</dd>
+<dt>nats<span class="classifier">int</span></dt><dd><p>The number of atoms</p>
+</dd>
+</dl>
 </section>
 <section id="id49">
 <h4>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h4>
@@ -1049,6 +1094,8 @@ masses : list of atom masses</p>
 <dt>data<span class="classifier">list of strings</span></dt><dd><p>Data may contain a miller indices which defines a surface, e.g., (1,1,-1),
 or a direction as a miller direction vector, e.g., [1,0,-1].</p>
 </dd>
+<dt>reader<span class="classifier">a reader objecy</span></dt><dd><p>The reader is used to get the unit-cell</p>
+</dd>
 </dl>
 </section>
 <section id="id53">
@@ -1066,10 +1113,16 @@ or a direction as a miller direction vector, e.g., [1,0,-1].</p>
 <dd><p>Apply a passive Euler rotation to a vector.</p>
 <section id="id54">
 <h4>Parameters<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h4>
-<p>vector : vector (3)
-theta  : float
-phi    : float
-psi    : float</p>
+<dl class="simple">
+<dt>vector<span class="classifier">vector (3)</span></dt><dd><p>The vector to be rotated</p>
+</dd>
+<dt>theta<span class="classifier">float</span></dt><dd><p>The angle theta</p>
+</dd>
+<dt>phi<span class="classifier">float</span></dt><dd><p>The angle phi</p>
+</dd>
+<dt>psi<span class="classifier">float</span></dt><dd><p>The angle psi</p>
+</dd>
+</dl>
 </section>
 <section id="id55">
 <h4>Returns<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h4>
@@ -1098,6 +1151,8 @@ with respect to a reference coordinate system.</p>
 <dt>initializer<span class="classifier">function</span></dt><dd><p>Function to be called before getting the pool</p>
 </dd>
 <dt>initargs<span class="classifier">function arguments</span></dt><dd><p>Any other parameters</p>
+</dd>
+<dt>debugger<span class="classifier">a debugger object</span></dt><dd><p>A debugger object</p>
 </dd>
 </dl>
 </section>
@@ -1194,6 +1249,8 @@ with respect to a reference coordinate system.</p>
 <section id="id67">
 <h4>Parameters<a class="headerlink" href="#id67" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
+<dt>unique<span class="classifier">list of 3 floats</span></dt><dd><p>Unique direction for ellipsoid</p>
+</dd>
 <dt>aoverb<span class="classifier">float</span></dt><dd><p>The ratio of a / b (the ratio of the principle axis lengths of the ellipsoid)</p>
 </dd>
 </dl>
@@ -1288,6 +1345,8 @@ with respect to a reference coordinate system.</p>
 <section id="id76">
 <h4>Parameters<a class="headerlink" href="#id76" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
+<dt>mode_list<span class="classifier">list</span></dt><dd><p>List of integers giving the active modes</p>
+</dd>
 <dt>oscillator_strengths<span class="classifier">array_like</span></dt><dd><p>Oscillator strengths, in atomic units.</p>
 </dd>
 <dt>frequencies<span class="classifier">array_like</span></dt><dd><p>Frequencies, in atomic units.</p>
@@ -1329,6 +1388,8 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 <dt>masses<span class="classifier">array_like</span></dt><dd><p>The atomic masses in atomic units</p>
 </dd>
 <dt>epsilon_inf<span class="classifier">3x3 array</span></dt><dd><p>Epsilon infinity</p>
+</dd>
+<dt>volume<span class="classifier">float</span></dt><dd><p>volume in atomic units</p>
 </dd>
 <dt>qlist<span class="classifier">list</span></dt><dd><p>A list of direction vectors.</p>
 </dd>
@@ -1426,6 +1487,8 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 </dd>
 <dt>size<span class="classifier">float</span></dt><dd><p>The dimensionless size parameter for the frequency under consideration.</p>
 </dd>
+<dt>size_mu<span class="classifier">float</span></dt><dd><p>The particle size in microns</p>
+</dd>
 <dt>size_distribution_sigma<span class="classifier">float</span></dt><dd><p>The log normal value of sigma.</p>
 </dd>
 <dt>vf<span class="classifier">float</span></dt><dd><p>The volume fraction of filler.</p>
@@ -1455,7 +1518,12 @@ Finally, the Mie scattering of that sphere is calculated. The routine returns th
 The input masses are in atomic units. The output normal modes are in atomic units.</p>
 <section id="id89">
 <h4>Parameters<a class="headerlink" href="#id89" title="Permalink to this heading">#</a></h4>
-<p>None</p>
+<dl class="simple">
+<dt>masses<span class="classifier">array of floats</span></dt><dd><p>The masses in atomic units</p>
+</dd>
+<dt>mass_weighted_normal_modes<span class="classifier">array of floats</span></dt><dd><p>The mass weighted normal modes</p>
+</dd>
+</dl>
 </section>
 <section id="id90">
 <h4>Returns<a class="headerlink" href="#id90" title="Permalink to this heading">#</a></h4>
@@ -1549,8 +1617,8 @@ Both the input masses and the output normal modes are in atomic units.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.rodridgues_rotations">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">rodridgues_rotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">efield</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#rodridgues_rotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.rodridgues_rotations" title="Permalink to this definition">#</a></dt>
-<dd><p>Take the field directions in efield and use each direction to calculate a random rotation about that axis.
-Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix
+<dd><p>Take the field directions in efield and use each direction to calculate a random rotation about that axis.</p>
+<p>Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix
 using the Rodrigues rotation formula A = I3.cos(theta) + (1-cos(theta)) e . eT + ex sin(theta),
 where I3 is a unit matrix, e is the direction, and ex is the cross product matrix:</p>
 <div class="math-wrapper docutils container">
@@ -1605,9 +1673,9 @@ where I3 is a unit matrix, e is the direction, and ex is the cross product matri
 </dd>
 <dt>concentration<span class="classifier">float</span></dt><dd><p>The concentration of particles.</p>
 </dd>
-<dt>AtrPermittivity<span class="classifier">float</span></dt><dd><p>The permittivity of the ATR substrate.</p>
+<dt>atrPermittivity<span class="classifier">float</span></dt><dd><p>The permittivity of the ATR substrate.</p>
 </dd>
-<dt>AtrTheta<span class="classifier">float</span></dt><dd><p>The ATR angle of incidence.</p>
+<dt>atrTheta<span class="classifier">float</span></dt><dd><p>The ATR angle of incidence.</p>
 </dd>
 <dt>atrSPol<span class="classifier">str</span></dt><dd><p>The ATR polarisation.</p>
 </dd>

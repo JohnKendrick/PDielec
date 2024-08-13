@@ -286,32 +286,97 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">OpenGLWidget module</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;OpenGLWidget module.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="c1"># The following lines seem to fix a problem when running on low end machines</span>
 <span class="kn">import</span> <span class="nn">OpenGL</span>
+<span class="kn">from</span> <span class="nn">OpenGL.GL</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">GL_AMBIENT</span><span class="p">,</span>
+    <span class="n">GL_BACK</span><span class="p">,</span>
+    <span class="n">GL_BLEND</span><span class="p">,</span>
+    <span class="n">GL_COLOR_BUFFER_BIT</span><span class="p">,</span>
+    <span class="n">GL_CULL_FACE</span><span class="p">,</span>
+    <span class="n">GL_DEPTH_BUFFER_BIT</span><span class="p">,</span>
+    <span class="n">GL_DEPTH_TEST</span><span class="p">,</span>
+    <span class="n">GL_DIFFUSE</span><span class="p">,</span>
+    <span class="n">GL_FRONT</span><span class="p">,</span>
+    <span class="n">GL_LESS</span><span class="p">,</span>
+    <span class="n">GL_LIGHT0</span><span class="p">,</span>
+    <span class="n">GL_LIGHT1</span><span class="p">,</span>
+    <span class="n">GL_LIGHT2</span><span class="p">,</span>
+    <span class="n">GL_LIGHT3</span><span class="p">,</span>
+    <span class="n">GL_LIGHT4</span><span class="p">,</span>
+    <span class="n">GL_LIGHT5</span><span class="p">,</span>
+    <span class="n">GL_LIGHT6</span><span class="p">,</span>
+    <span class="n">GL_LIGHT7</span><span class="p">,</span>
+    <span class="n">GL_LIGHTING</span><span class="p">,</span>
+    <span class="n">GL_LINE_SMOOTH</span><span class="p">,</span>
+    <span class="n">GL_LINEAR_ATTENUATION</span><span class="p">,</span>
+    <span class="n">GL_MODELVIEW</span><span class="p">,</span>
+    <span class="n">GL_MODELVIEW_MATRIX</span><span class="p">,</span>
+    <span class="n">GL_MULTISAMPLE</span><span class="p">,</span>
+    <span class="n">GL_NO_ERROR</span><span class="p">,</span>
+    <span class="n">GL_NORMALIZE</span><span class="p">,</span>
+    <span class="n">GL_POINT_SMOOTH</span><span class="p">,</span>
+    <span class="n">GL_POLYGON_SMOOTH</span><span class="p">,</span>
+    <span class="n">GL_POSITION</span><span class="p">,</span>
+    <span class="n">GL_PROJECTION</span><span class="p">,</span>
+    <span class="n">GL_SHININESS</span><span class="p">,</span>
+    <span class="n">GL_SMOOTH</span><span class="p">,</span>
+    <span class="n">GL_SPECULAR</span><span class="p">,</span>
+    <span class="n">glClear</span><span class="p">,</span>
+    <span class="n">glClearColor</span><span class="p">,</span>
+    <span class="n">glClearDepth</span><span class="p">,</span>
+    <span class="n">glCullFace</span><span class="p">,</span>
+    <span class="n">glDepthFunc</span><span class="p">,</span>
+    <span class="n">glDisable</span><span class="p">,</span>
+    <span class="n">glEnable</span><span class="p">,</span>
+    <span class="n">glGetError</span><span class="p">,</span>
+    <span class="n">glGetFloatv</span><span class="p">,</span>
+    <span class="n">glLight</span><span class="p">,</span>
+    <span class="n">glLightfv</span><span class="p">,</span>
+    <span class="n">glLoadIdentity</span><span class="p">,</span>
+    <span class="n">glMaterialf</span><span class="p">,</span>
+    <span class="n">glMaterialfv</span><span class="p">,</span>
+    <span class="n">glMatrixMode</span><span class="p">,</span>
+    <span class="n">glMultMatrixf</span><span class="p">,</span>
+    <span class="n">glOrtho</span><span class="p">,</span>
+    <span class="n">glPopMatrix</span><span class="p">,</span>
+    <span class="n">glPushMatrix</span><span class="p">,</span>
+    <span class="n">glRotated</span><span class="p">,</span>
+    <span class="n">glRotatef</span><span class="p">,</span>
+    <span class="n">glScalef</span><span class="p">,</span>
+    <span class="n">glShadeModel</span><span class="p">,</span>
+    <span class="n">glTranslated</span><span class="p">,</span>
+    <span class="n">glTranslatef</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">OpenGL.GLU</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">GLU_FILL</span><span class="p">,</span>
+    <span class="n">GLU_SMOOTH</span><span class="p">,</span>
+    <span class="n">gluCylinder</span><span class="p">,</span>
+    <span class="n">gluNewQuadric</span><span class="p">,</span>
+    <span class="n">gluQuadricDrawStyle</span><span class="p">,</span>
+    <span class="n">gluQuadricNormals</span><span class="p">,</span>
+    <span class="n">gluSphere</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QSurfaceFormat</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QOpenGLWidget</span>
+
+<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span>
+
+<span class="c1"># The following lines seem to fix a problem when running on low end machines</span>
 <span class="n">OpenGL</span><span class="o">.</span><span class="n">USE_ACCELERATE</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">OpenGL</span><span class="o">.</span><span class="n">ERROR_CHECKING</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># end of low-end machine fix</span>
-<span class="kn">from</span> <span class="nn">collections</span>     <span class="kn">import</span> <span class="n">deque</span>
-<span class="kn">from</span> <span class="nn">OpenGL.GL</span>       <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">OpenGL.GLU</span>      <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">OpenGL.GLUT</span>     <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QOpenGLWidget</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span>    <span class="kn">import</span> <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span>    <span class="kn">import</span> <span class="n">QTimer</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span>     <span class="kn">import</span> <span class="n">QSurfaceFormat</span>
-<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span>
+
 
 <div class="viewcode-block" id="OpenGLWidget"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget">[docs]</a><span class="k">class</span> <span class="nc">OpenGLWidget</span><span class="p">(</span><span class="n">QOpenGLWidget</span><span class="p">):</span>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A widget for the Qt framework specialized in OpenGL graphics rendering.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A widget for the Qt framework specialized in OpenGL graphics rendering.</span>
 
 <span class="sd">    This widget is designed to act as a capable 3D rendering environment</span>
 <span class="sd">    for OpenGL within a Qt application. It supports a wide range of 3D</span>
@@ -397,7 +462,9 @@
 <span class="sd">        Adds a cylinder to the scene.</span>
 <span class="sd">    addSphere(colour, radius, pos, phase=0)</span>
 <span class="sd">        Adds a sphere to the scene.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="nb">format</span> <span class="o">=</span> <span class="n">QSurfaceFormat</span><span class="p">()</span>
     <span class="c1">#format.setDepthBufferSize(24)</span>
     <span class="c1">#format.setStencilBufferSize(8)</span>
@@ -406,8 +473,7 @@
     <span class="n">QSurfaceFormat</span><span class="o">.</span><span class="n">setDefaultFormat</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the OpenGLWidget object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the OpenGLWidget object.</span>
 
 <span class="sd">        This method initializes an OpenGL Widget with several default properties such as lighting, material factors, and visualization elements like spheres, cylinders, and arrows. It also sets up the widget&#39;s size and various attributes related to phase animation and visualization settings.</span>
 
@@ -431,10 +497,11 @@
 
 <span class="sd">        &gt;&gt;&gt; parent_widget = SomeQWidget()</span>
 <span class="sd">        &gt;&gt;&gt; opengl_widget = OpenGLWidget(parent=parent_widget, debug=True)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">QOpenGLWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="k">global</span> <span class="n">debugger</span>
-        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s1">&#39;OpenGLWidget&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s2">&quot;OpenGLWidget&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">notebook</span>
@@ -477,8 +544,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lights</span> <span class="o">=</span> <span class="p">[</span> <span class="n">GL_LIGHT0</span><span class="p">,</span> <span class="n">GL_LIGHT1</span><span class="p">,</span> <span class="n">GL_LIGHT2</span><span class="p">,</span> <span class="n">GL_LIGHT3</span><span class="p">,</span> <span class="n">GL_LIGHT4</span><span class="p">,</span> <span class="n">GL_LIGHT5</span><span class="p">,</span> <span class="n">GL_LIGHT6</span><span class="p">,</span> <span class="n">GL_LIGHT7</span> <span class="p">]</span>
 
 <div class="viewcode-block" id="OpenGLWidget.enterEvent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.enterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">enterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the entering of an event.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the entering of an event.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -492,14 +558,14 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This function primarily ensures that the focus is set accordingly when an event occurs, and then it passes the event on to the viewerTab&#39;s own enterEvent handler for further processing.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;enter event&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;enter event&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">enterEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.showArrows"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.showArrows">[docs]</a>    <span class="k">def</span> <span class="nf">showArrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the visibility of arrows</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the visibility of arrows.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -513,13 +579,13 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This function updates the `show_arrows` attribute based on the &quot;show&quot; parameter and prints the current status to the debugger.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;show arrows&#39;</span><span class="p">,</span><span class="n">show</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;show arrows&quot;</span><span class="p">,</span><span class="n">show</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show_arrows</span> <span class="o">=</span> <span class="n">show</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.timeoutHandler"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.timeoutHandler">[docs]</a>    <span class="k">def</span> <span class="nf">timeoutHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handles the timeout event in a cyclic phase system by updating the current phase and direction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the timeout event in a cyclic phase system by updating the current phase and direction.</span>
 
 <span class="sd">        This function updates the `current_phase` by advancing or reversing it based on the `phase_direction`.</span>
 <span class="sd">        When the end or the start of the phases is reached, the direction is reversed, ensuring cyclic behavior</span>
@@ -540,6 +606,7 @@
 <span class="sd">        - `self.number_of_phases` indicates the total number of available phases.</span>
 <span class="sd">        - `self.phase_direction` is either +1 or -1, indicating the direction of phase progression.</span>
 <span class="sd">        - The `update` method is called at the end to apply any changes made to the state as a result of this timeout event.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_direction</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_phases</span><span class="p">:</span>
@@ -548,12 +615,11 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">phase_direction</span> <span class="o">=</span> <span class="o">+</span><span class="mi">1</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Timeout - phase&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Timeout - phase&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.myMakeCurrent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.myMakeCurrent">[docs]</a>    <span class="k">def</span> <span class="nf">myMakeCurrent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Make the current OpenGL context active and clear any errors.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make the current OpenGL context active and clear any errors.</span>
 
 <span class="sd">        This method activates the current OpenGL context by calling `makeCurrent`,</span>
 <span class="sd">        then repeatedly calls `glGetError` to clear any accumulated OpenGL errors.</span>
@@ -567,6 +633,7 @@
 
 <span class="sd">        This method does not return any value or raise exceptions. It is designed to</span>
 <span class="sd">        ensure that the OpenGL context is error-free after making it current.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">makeCurrent</span><span class="p">()</span>
         <span class="n">err</span> <span class="o">=</span> <span class="n">glGetError</span><span class="p">()</span>
@@ -574,8 +641,7 @@
             <span class="n">err</span> <span class="o">=</span> <span class="n">glGetError</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.moleculeRotate"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.moleculeRotate">[docs]</a>    <span class="k">def</span> <span class="nf">moleculeRotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">scale</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotate a molecule object around the specified axes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate a molecule object around the specified axes.</span>
 
 <span class="sd">        This method applies a rotation transformation to a molecule object</span>
 <span class="sd">        around the x, y, and z axes, scaled by a given factor.</span>
@@ -618,10 +684,11 @@
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        This function does not explicitly raise exceptions but relies on the OpenGL context and the `update` method&#39;s implementation.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Rotate molecular frame using glortho</span>
         <span class="c1"># Create a 4x4 matrix for the model view</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;molecule rotation&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;molecule rotation&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">myMakeCurrent</span><span class="p">()</span>
         <span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_MODELVIEW</span><span class="p">)</span>
         <span class="n">glGetFloatv</span><span class="p">(</span><span class="n">GL_MODELVIEW_MATRIX</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
@@ -632,8 +699,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.keyPressEvent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle keyboard events for specific actions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle keyboard events for specific actions.</span>
 
 <span class="sd">        This method is triggered whenever a keyboard event occurs. </span>
 <span class="sd">        It interprets key presses to perform various actions such as rotating the molecule, zooming in or out, </span>
@@ -679,21 +745,19 @@
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        This method does not explicitly raise any exceptions but might propagate exceptions from methods it calls.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">myMakeCurrent</span><span class="p">()</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span>
         <span class="n">modifiers</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;kepressevent&#39;</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">modifiers</span><span class="p">)</span>
         <span class="n">control</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">shift</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span><span class="p">:</span>
             <span class="n">shift</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span><span class="p">:</span>
             <span class="n">control</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span> <span class="ow">or</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span><span class="p">:</span>
-            <span class="n">amount</span> <span class="o">=</span> <span class="mf">45.0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">amount</span> <span class="o">=</span> <span class="mf">5.0</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;kepressevent&quot;</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">modifiers</span><span class="p">,</span><span class="n">control</span><span class="p">,</span><span class="n">shift</span><span class="p">)</span>
+        <span class="n">amount</span> <span class="o">=</span> <span class="mf">45.0</span> <span class="k">if</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span> <span class="ow">or</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span> <span class="k">else</span> <span class="mf">5.0</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Left</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">moleculeRotate</span><span class="p">(</span><span class="o">-</span><span class="n">amount</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Right</span><span class="p">:</span>
@@ -719,12 +783,11 @@
             <span class="n">glLoadIdentity</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_phases</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Home key&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">)</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Home key&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.save_movie"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.save_movie">[docs]</a>    <span class="k">def</span> <span class="nf">save_movie</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Save the current state as a movie file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the current state as a movie file.</span>
 
 <span class="sd">        This method captures snapshots of the current state at different phases,</span>
 <span class="sd">        processes them, and compiles them into a movie file.</span>
@@ -748,14 +811,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="kn">import</span> <span class="nn">imageio</span>
         <span class="c1"># imageio.plugins.ffmpeg.download()</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;save_movie&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;save_movie&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-        <span class="n">writer</span>  <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">get_writer</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+        <span class="n">writer</span>  <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">get_writer</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
         <span class="n">tmpdir</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">tmpfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span><span class="s1">&#39;.snapshot.png&#39;</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;save_movie&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_phases</span><span class="p">):</span>
+        <span class="n">tmpfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span><span class="s2">&quot;.snapshot.png&quot;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;save_movie&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_phases</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timeoutHandler</span><span class="p">()</span>
             <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grabFramebuffer</span><span class="p">()</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
@@ -770,15 +833,14 @@
             <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
             <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span>
             <span class="n">image</span> <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.snapshot"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Capture and save a snapshot of the current framebuffer to a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Capture and save a snapshot of the current framebuffer to a file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -798,14 +860,14 @@
 <span class="sd">        ```</span>
 
 <span class="sd">        This will grab the current framebuffer content and save it as &#39;screenshot.png&#39;.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;snapshot&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;snapshot&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
         <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grabFramebuffer</span><span class="p">()</span>
         <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.translate"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Translate an object by modifying its current position.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate an object by modifying its current position.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -823,14 +885,14 @@
 <span class="sd">        This method updates the current position of the object by adding the specified distances along the x and y axes, respectively. It does not return a value.</span>
 
 <span class="sd">        This function involves a call to `glTranslatef`, which applies a translation transformation to the current matrix. Ensure that the appropriate OpenGL context is made current before calling this function by using `self.myMakeCurrent()`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;translate &#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;translate &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">myMakeCurrent</span><span class="p">()</span>
         <span class="n">glTranslatef</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.wheelEvent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handles a wheel event to zoom in or out.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a wheel event to zoom in or out.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -847,16 +909,16 @@
 <span class="sd">        the current context to this object before determining the direction and</span>
 <span class="sd">        intensity of the zoom based on the vertical angle delta of the wheel event.</span>
 <span class="sd">        Lastly, it refreshes the display to reflect any changes.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Wheel event &#39;</span> <span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Wheel event &quot;</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">myMakeCurrent</span><span class="p">()</span>
         <span class="n">zoom</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">angleDelta</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="n">zoom</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.mousePressEvent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the mouse press event.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the mouse press event.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -866,14 +928,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">xAtPress</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yAtPress</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">()</span></div>
         <span class="c1">#print(&#39;mouse press&#39;,self.xAtPress, self.yAtPress)</span>
 
 <div class="viewcode-block" id="OpenGLWidget.mouseReleaseEvent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseReleaseEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handles the mouse release event.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the mouse release event.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -887,14 +949,14 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method records the x and y coordinates of the mouse at the moment it is released.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">xAtRelease</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yAtRelease</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">()</span></div>
         <span class="c1">#print(&#39;mouse release&#39;,self.xAtRelease, self.yAtRelease)</span>
 
 <div class="viewcode-block" id="OpenGLWidget.zoom"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.zoom">[docs]</a>    <span class="k">def</span> <span class="nf">zoom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoom</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Zoom in or out on an object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Zoom in or out on an object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -911,20 +973,17 @@
 <span class="sd">        - Updates the object&#39;s state after zooming.</span>
 
 <span class="sd">        Uses `glScalef` from OpenGL for scaling transformations and assumes that `debugger` and `glScalef` are accessible in the current context, with `debugger.print` used for debug logging.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;zoom &#39;</span><span class="p">,</span> <span class="n">zoom</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;zoom &quot;</span><span class="p">,</span> <span class="n">zoom</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">myMakeCurrent</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">zoom</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">zoom_factor</span> <span class="o">=</span> <span class="mf">1.06</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">zoom_factor</span> <span class="o">=</span> <span class="mf">0.94</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;zoom factor&#39;</span><span class="p">,</span> <span class="n">zoom_factor</span><span class="p">)</span>
+        <span class="n">zoom_factor</span> <span class="o">=</span> <span class="mf">1.06</span> <span class="k">if</span> <span class="n">zoom</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.94</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;zoom factor&quot;</span><span class="p">,</span> <span class="n">zoom_factor</span><span class="p">)</span>
         <span class="n">glScalef</span><span class="p">(</span><span class="n">zoom_factor</span><span class="p">,</span> <span class="n">zoom_factor</span><span class="p">,</span> <span class="n">zoom_factor</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.mouseMoveEvent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseMoveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the mouse move events to perform various actions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the mouse move events to perform various actions.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -944,13 +1003,14 @@
 <span class="sd">        - If the middle mouse button is pressed: Performs translation.</span>
 
 <span class="sd">        Mouse coordinates are updated at the end of the method to reflect the current position.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">xAtMove</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yAtMove</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
         <span class="n">buttons</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">buttons</span><span class="p">()</span>
         <span class="n">modifiers</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">buttons</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Mouse event - left button&#39;</span><span class="p">)</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Mouse event - left button&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span> <span class="ow">or</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span><span class="p">:</span>
                 <span class="c1"># handle zoom</span>
                 <span class="n">xzoom</span> <span class="o">=</span> <span class="o">+</span><span class="mf">1.0</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xAtMove</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">xAtPress</span><span class="p">)</span>
@@ -962,18 +1022,17 @@
                 <span class="n">yrotate</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yAtMove</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">yAtPress</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">moleculeRotate</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="n">yrotate</span><span class="p">,</span><span class="n">xrotate</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">buttons</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MidButton</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Mouse event - mid button&#39;</span><span class="p">)</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Mouse event - mid button&quot;</span><span class="p">)</span>
             <span class="n">xshift</span> <span class="o">=</span>  <span class="mf">0.02</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xAtMove</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">xAtPress</span><span class="p">)</span>
             <span class="n">yshift</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.02</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yAtMove</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">yAtPress</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">xshift</span><span class="p">,</span> <span class="n">yshift</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Mouse event - xy&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xAtPress</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">yAtPress</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Mouse event - xy&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xAtPress</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">yAtPress</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xAtPress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xAtMove</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yAtPress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">yAtMove</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.stopAnimation"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.stopAnimation">[docs]</a>    <span class="k">def</span> <span class="nf">stopAnimation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Stop the ongoing animation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop the ongoing animation.</span>
 
 <span class="sd">        This method stops the animation by stopping the timer associated with it.</span>
 
@@ -988,14 +1047,14 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This function assumes that `self.timer` is an instance with a `stop` method, which is called to halt any ongoing animation. If `self.timer` is `None`, indicating no animation is currently active, this method does nothing.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;stopAnimation&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;stopAnimation&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.startAnimation"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.startAnimation">[docs]</a>    <span class="k">def</span> <span class="nf">startAnimation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Starts or restarts an animation timer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start or restarts an animation timer.</span>
 
 <span class="sd">        This method checks if an animation timer is already running.</span>
 <span class="sd">        If so, it stops the current timer. If not, it initializes and starts a new timer</span>
@@ -1019,8 +1078,9 @@
 <span class="sd">          or create, set up, and start a new timer.</span>
 <span class="sd">        - This method is designed for use within a class that manages animations or</span>
 <span class="sd">          timed events, utilizing a QTimer from the PyQt or PySide frameworks.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;startAnimation&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;startAnimation&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1030,8 +1090,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.paintGL"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.paintGL">[docs]</a>    <span class="k">def</span> <span class="nf">paintGL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Render OpenGL graphics for the current scene.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render OpenGL graphics for the current scene.</span>
 
 <span class="sd">        This method prepares the graphics context, clears the buffer, sets the background color,</span>
 <span class="sd">        and draws the current scene which may include spheres, cylinders, and arrows based on the object&#39;s state.</span>
@@ -1056,11 +1115,12 @@
 <span class="sd">        - Utilizes several attributes of the instance (`self`), including `background_colour`,</span>
 <span class="sd">          `rotation_centre`, and `show_arrows`, to determine how to render the scene.</span>
 <span class="sd">        - The OpenGL context is modified by setting the clear color and transforming the modelview matrix.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;paintGL&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;paintGL&quot;</span><span class="p">)</span>
         <span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_MODELVIEW</span><span class="p">)</span>
         <span class="n">glClear</span><span class="p">(</span><span class="n">GL_COLOR_BUFFER_BIT</span> <span class="o">|</span> <span class="n">GL_DEPTH_BUFFER_BIT</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">background_colour</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Background colour&#39;</span><span class="p">])</span><span class="o">/</span><span class="mf">255.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">background_colour</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Background colour&quot;</span><span class="p">])</span><span class="o">/</span><span class="mf">255.0</span>
         <span class="n">glClearColor</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">background_colour</span><span class="p">)</span>
         <span class="n">glPushMatrix</span><span class="p">()</span>
         <span class="n">glTranslatef</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_centre</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_centre</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_centre</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
@@ -1071,8 +1131,7 @@
         <span class="n">glPopMatrix</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.drawSpheres"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawSpheres">[docs]</a>    <span class="k">def</span> <span class="nf">drawSpheres</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draw spheres based on the object&#39;s current phase and spheres attributes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw spheres based on the object&#39;s current phase and spheres attributes.</span>
 
 <span class="sd">        This method iterates through the spheres assigned to the current phase of the invoking object. For each sphere, it sets the material properties based on the sphere&#39;s color and predefined material factors. Then, it translates the drawing location to the sphere&#39;s position and draws the sphere using OpenGL functions.</span>
 
@@ -1088,8 +1147,9 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`, `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;drawSpheres&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;drawSpheres&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">for</span> <span class="n">sphere</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">]:</span>
@@ -1109,8 +1169,7 @@
             <span class="n">glPopMatrix</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.drawCylinders"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawCylinders">[docs]</a>    <span class="k">def</span> <span class="nf">drawCylinders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draw the cylinders stored in the object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the cylinders stored in the object.</span>
 
 <span class="sd">        This method iterates through the list of cylinder objects for the current phase, </span>
 <span class="sd">        computes the required material colors based on predefined factors, and renders </span>
@@ -1139,14 +1198,14 @@
 <span class="sd">        It is also assumed that `self.cylinders` is a dictionary where each key corresponds to a </span>
 <span class="sd">        different phase, and the value is a list of cylinder objects for that phase. The current </span>
 <span class="sd">        phase is determined by `self.current_phase`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;drawCylinders&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;drawCylinders&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cylinders</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">for</span> <span class="n">cylinder</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cylinders</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">]:</span>
             <span class="n">col</span>    <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">colour</span>
             <span class="n">rad</span>    <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">radius</span>
-            <span class="n">pos1</span>   <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">position1</span>
             <span class="n">pos2</span>   <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">position2</span>
             <span class="n">length</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">height</span>
             <span class="n">angle</span>  <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">angle</span>
@@ -1165,8 +1224,7 @@
             <span class="n">glPopMatrix</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.drawArrows"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawArrows">[docs]</a>    <span class="k">def</span> <span class="nf">drawArrows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draw the designated arrows with specified properties.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the designated arrows with specified properties.</span>
 
 <span class="sd">        This method draws a series of arrows based on the properties stored within instances of the class. The arrows are displayed on the viewer associated with `self`. Each arrow has an associated sphere from which it originates. These spheres have positional data that dictate where the arrow is drawn. Furthermore, arrows have several visual properties such as color and size that are applied when rendering. Error handling for absent arrows is included, halting the function early if no arrows are to be drawn.</span>
 
@@ -1185,14 +1243,14 @@
 <span class="sd">        - Material properties such as diffuse, ambient, and specular colors are calculated from the arrow&#39;s color and applied to the OpenGL material.</span>
 <span class="sd">        - Arrows consist of a cylindrical shaft and a conical tip, whose dimensions and orientations are based on the properties of each arrow (e.g., direction, length, angle, rotation, colour, and radius).</span>
 <span class="sd">        - This method depends on the `self.arrows` list and the corresponding `self.spheres` for the current phase stored in `self.current_phase`. It leverages OpenGL functions and assumes that `self.viewerTab.settings[&#39;Arrow colour&#39;]`, along with other properties like `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`, and `self.glintMaterialFactor` are predefined and correctly configured.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;drawArrows&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;drawArrows&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">arrow_colour</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Arrow colour&#39;</span><span class="p">])</span><span class="o">/</span><span class="mf">255.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arrow_colour</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Arrow colour&quot;</span><span class="p">])</span><span class="o">/</span><span class="mf">255.0</span>
         <span class="k">for</span> <span class="n">arrow</span><span class="p">,</span><span class="n">sphere</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">]):</span>
             <span class="n">pos</span>       <span class="o">=</span> <span class="n">sphere</span><span class="o">.</span><span class="n">position</span>
-            <span class="n">direction</span> <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">direction</span>
             <span class="n">length</span>    <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">height</span>
             <span class="n">angle</span>     <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">angle</span>
             <span class="n">rot</span>       <span class="o">=</span> <span class="n">arrow</span><span class="o">.</span><span class="n">rotation</span>
@@ -1216,8 +1274,7 @@
 
 
 <div class="viewcode-block" id="OpenGLWidget.resizeGL"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.resizeGL">[docs]</a>    <span class="k">def</span> <span class="nf">resizeGL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resizes the OpenGL widget to a new width and height.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resizes the OpenGL widget to a new width and height.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -1235,15 +1292,14 @@
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;resizeGL&#39;</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;resizeGL&quot;</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">my_width</span> <span class="o">=</span> <span class="n">w</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">my_height</span> <span class="o">=</span><span class="n">h</span>
         <span class="c1"># set projection matrix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setProjectionMatrix</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.initializeGL"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.initializeGL">[docs]</a>    <span class="k">def</span> <span class="nf">initializeGL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes OpenGL rendering context.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise OpenGL rendering context.</span>
 
 <span class="sd">        This function sets up various OpenGL attributes and states including lighting, depth test, smooth shading, and anti-aliasing features to prepare for rendering in a GL context. It configures the viewport settings based on the associated viewer tab&#39;s background color settings.</span>
 
@@ -1254,8 +1310,9 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;initializeGL&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;initializeGL&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quadric</span>  <span class="o">=</span> <span class="n">gluNewQuadric</span><span class="p">()</span>
         <span class="n">gluQuadricDrawStyle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quadric</span><span class="p">,</span> <span class="n">GLU_FILL</span><span class="p">)</span>
         <span class="n">gluQuadricNormals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quadric</span><span class="p">,</span> <span class="n">GLU_SMOOTH</span><span class="p">)</span>
@@ -1275,12 +1332,11 @@
         <span class="n">glEnable</span><span class="p">(</span><span class="n">GL_BLEND</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defineLights</span><span class="p">()</span>
         <span class="n">glClear</span><span class="p">(</span><span class="n">GL_COLOR_BUFFER_BIT</span> <span class="o">|</span> <span class="n">GL_DEPTH_BUFFER_BIT</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">background_colour</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Background colour&#39;</span><span class="p">])</span><span class="o">/</span><span class="mf">255.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">background_colour</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Background colour&quot;</span><span class="p">])</span><span class="o">/</span><span class="mf">255.0</span>
         <span class="n">glClearColor</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">background_colour</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.setImageSize"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.setImageSize">[docs]</a>    <span class="k">def</span> <span class="nf">setImageSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the maximum image size based on the furthest object from the rotation center.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the maximum image size based on the furthest object from the rotation center.</span>
 
 <span class="sd">        This method evaluates the position of spheres and cylinders in the current phase, calculates their distance from a fixed point (rotation center), and updates the `image_size` attribute to the maximum distance found. It ensures the all objects will fit within the rendered image. Finally, it updates the projection matrix and logs the new image size.</span>
 
@@ -1295,6 +1351,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        The `self` parameter represents the instance of the class in which the function is called. This function relies on the `math.sqrt`, `np.dot` for calculations, and expects `self.spheres`, `self.cylinders`, `self.current_phase`, `self.rotation_centre`, and `self.setProjectionMatrix` to be defined.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">maxsize</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">sphere</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">]:</span>
@@ -1303,23 +1360,12 @@
             <span class="n">dist</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">vec</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">dist</span> <span class="o">&gt;</span> <span class="n">maxsize</span><span class="p">:</span>
                 <span class="n">maxsize</span> <span class="o">=</span> <span class="n">dist</span>
-        <span class="k">for</span> <span class="n">cylinder</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cylinders</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">]:</span>
-            <span class="n">pos1</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">position1</span>
-            <span class="n">pos2</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">position2</span>
-            <span class="n">vec1</span> <span class="o">=</span> <span class="n">pos1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_centre</span>
-            <span class="n">dist1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">vec</span><span class="p">))</span>
-            <span class="n">vec2</span> <span class="o">=</span> <span class="n">pos2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_centre</span>
-            <span class="n">dist2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span><span class="n">vec</span><span class="p">))</span>
-            <span class="n">dist</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dist1</span><span class="p">,</span><span class="n">dist2</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dist</span> <span class="o">&gt;</span> <span class="n">maxsize</span><span class="p">:</span>
-                <span class="n">maxsize</span> <span class="o">=</span> <span class="n">dist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">=</span> <span class="n">maxsize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setProjectionMatrix</span><span class="p">()</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;setImageSize&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">image_size</span><span class="p">)</span></div>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;setImageSize&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">image_size</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.setProjectionMatrix"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.setProjectionMatrix">[docs]</a>    <span class="k">def</span> <span class="nf">setProjectionMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the projection matrix for rendering.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the projection matrix for rendering.</span>
 
 <span class="sd">        This method configures the projection matrix based on the current image size, width, and height attributes of the object. It&#39;s intended to set up an orthographic projection suited to the object&#39;s dimensions. If any of the required attributes (`image_size`, `my_width`, or `my_height`) are not set, the method will exit early. The method also sets the view to the middle phase of an unspecified number of total phases and resets the model view matrix.</span>
 
@@ -1334,6 +1380,7 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current. It also updates `self.matrix` with an identity matrix and sets `self.current_phase` based on the total number of phases.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -1343,20 +1390,19 @@
         <span class="n">orthox</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_width</span>  <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_width</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">my_height</span><span class="p">)</span>
         <span class="n">orthoy</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_height</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_width</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">my_height</span><span class="p">)</span>
         <span class="n">orthoz</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_width</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">my_height</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">orthox</span><span class="p">,</span> <span class="n">orthoy</span><span class="p">,</span> <span class="n">orthoz</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="n">orthox</span><span class="p">,</span> <span class="n">orthoy</span><span class="p">,</span> <span class="n">orthoz</span><span class="p">)</span>
         <span class="n">glOrtho</span><span class="p">(</span><span class="o">-</span><span class="n">orthox</span><span class="p">,</span> <span class="n">orthox</span><span class="p">,</span> <span class="o">-</span><span class="n">orthoy</span><span class="p">,</span> <span class="n">orthoy</span><span class="p">,</span> <span class="o">-</span><span class="n">orthoz</span><span class="p">,</span> <span class="n">orthoz</span><span class="p">)</span>
         <span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_MODELVIEW</span><span class="p">)</span>
         <span class="n">glLoadIdentity</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="c1"># reset the current phase to the centre of the phases</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_phases</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set projection matrix ortho&#39;</span><span class="p">,</span> <span class="n">orthox</span><span class="p">,</span> <span class="n">orthoy</span><span class="p">,</span> <span class="n">orthoz</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set projection matrix image_size&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set projection matrix current_phase&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">)</span></div>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set projection matrix ortho&quot;</span><span class="p">,</span> <span class="n">orthox</span><span class="p">,</span> <span class="n">orthoy</span><span class="p">,</span> <span class="n">orthoz</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set projection matrix image_size&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set projection matrix current_phase&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.defineLights"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.defineLights">[docs]</a>    <span class="k">def</span> <span class="nf">defineLights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Define light configurations for the viewer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define light configurations for the viewer.</span>
 
 <span class="sd">        This method sets up the lighting for a 3D viewer by configuring ambient, diffuse, and specular light properties, as well as light positions. It also controls which lights are enabled or disabled based on the object&#39;s `light_switches` attribute.</span>
 
@@ -1379,13 +1425,14 @@
 <span class="sd">          - The position of each light with `glLightfv(light, GL_POSITION, position)`.</span>
 <span class="sd">        - If `self.linearAttenuation` is True, linear attenuation is set for each light with `glLight(light, GL_LINEAR_ATTENUATION, 1.0)`.</span>
 <span class="sd">        - Each light in `self.lights` is either enabled or disabled based on its corresponding status in `self.light_switches`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Define Lights&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Define Lights&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">myMakeCurrent</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">light_switches</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">light_switches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">light_switches</span>
             <span class="n">glEnable</span><span class="p">(</span><span class="n">GL_LIGHTING</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">position</span><span class="p">,</span><span class="n">lightOn</span><span class="p">,</span><span class="n">light</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">light_positions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">light_switches</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lights</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">position</span><span class="p">,</span><span class="n">light</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">light_positions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lights</span><span class="p">):</span>
                 <span class="n">glLightfv</span><span class="p">(</span><span class="n">light</span><span class="p">,</span> <span class="n">GL_AMBIENT</span><span class="p">,</span>  <span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">ambientLightFactor</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ambientLightFactor</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ambientLightFactor</span><span class="p">,</span>  <span class="mf">1.0</span> <span class="p">]</span> <span class="p">)</span>
                 <span class="n">glLightfv</span><span class="p">(</span><span class="n">light</span><span class="p">,</span> <span class="n">GL_DIFFUSE</span><span class="p">,</span>  <span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuseLightFactor</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">diffuseLightFactor</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">diffuseLightFactor</span><span class="p">,</span>  <span class="mf">1.0</span> <span class="p">]</span> <span class="p">)</span>
                 <span class="n">glLightfv</span><span class="p">(</span><span class="n">light</span><span class="p">,</span> <span class="n">GL_SPECULAR</span><span class="p">,</span> <span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">specularLightFactor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">specularLightFactor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">specularLightFactor</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">]</span> <span class="p">)</span>
@@ -1399,8 +1446,7 @@
                 <span class="n">glDisable</span><span class="p">(</span><span class="n">light</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.setRotationCentre"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.setRotationCentre">[docs]</a>    <span class="k">def</span> <span class="nf">setRotationCentre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the rotation centre to a specified position.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the rotation centre to a specified position.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1411,13 +1457,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set rotation centre&#39;</span><span class="p">,</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set rotation centre&quot;</span><span class="p">,</span><span class="n">pos</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rotation_centre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.createArrays"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.createArrays">[docs]</a>    <span class="k">def</span> <span class="nf">createArrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nphases</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create or reinitialize arrays for spheres and cylinders for each phase.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create or reinitialize arrays for spheres and cylinders for each phase.</span>
 
 <span class="sd">        This method creates or clears and then repopulates `self.spheres` and `self.cylinders` with an empty `deque` for each phase. It also sets `self.number_of_phases` to the given `nphases` and initializes `self.current_phase` to the midpoint of the range of phases (rounded down if `nphases` is an odd number).</span>
 
@@ -1434,8 +1480,9 @@
 <span class="sd">        -----</span>
 <span class="sd">        - Assumes `self.spheres` and `self.cylinders` are already defined as lists.</span>
 <span class="sd">        - It uses the `clear` method on both `self.spheres` and `self.cylinders`, which is available for lists in Python 3.3 and later.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;createArrays&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;createArrays&quot;</span><span class="p">)</span>
         <span class="c1">#  Create an empty list for each phase</span>
         <span class="c1"># self.spheres    = [ [] for i in range(nphases) ]</span>
         <span class="c1"># self.cylinders  = [ [] for i in range(nphases) ]</span>
@@ -1443,15 +1490,14 @@
         <span class="c1">#self.cylinders  = deque( deque() for i in range(nphases) )</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cylinders</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nphases</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nphases</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deque</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cylinders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deque</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">number_of_phases</span> <span class="o">=</span> <span class="n">nphases</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_phases</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.deleteSpheres"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteSpheres">[docs]</a>    <span class="k">def</span> <span class="nf">deleteSpheres</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes all spheres from the current context.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all spheres from the current context.</span>
 
 <span class="sd">        This method clears the collection of spheres.</span>
 
@@ -1462,13 +1508,13 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;deleteSpheres&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;deleteSpheres&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.deleteCylinders"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteCylinders">[docs]</a>    <span class="k">def</span> <span class="nf">deleteCylinders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes all cylinder objects from the storage.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all cylinder objects from the storage.</span>
 
 <span class="sd">        This method clears the list that stores cylinder objects, effectively</span>
 <span class="sd">        removing all the cylinders managed by the instance.</span>
@@ -1485,13 +1531,13 @@
 <span class="sd">        -----</span>
 <span class="sd">        This method should be used with caution as it irreversibly deletes all </span>
 <span class="sd">        cylinder data from the instance.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;deleteCylinders&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;deleteCylinders&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cylinders</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.deleteArrows"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteArrows">[docs]</a>    <span class="k">def</span> <span class="nf">deleteArrows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes all arrows from a collection.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all arrows from a collection.</span>
 
 <span class="sd">        This method clears the collection of arrows by removing all elements from it.</span>
 
@@ -1502,15 +1548,15 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;deleteArrows&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;deleteArrows&quot;</span><span class="p">)</span>
         <span class="c1">#self.arrows = []</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.addArrows"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.addArrows">[docs]</a>    <span class="k">def</span> <span class="nf">addArrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="c1"># There is no phase requirement for arrows - they are just displacements</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add an arrow to the list of arrows.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an arrow to the list of arrows.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1528,12 +1574,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Arrow</span><span class="p">(</span><span class="n">colour</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.addCylinder"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.addCylinder">[docs]</a>    <span class="k">def</span> <span class="nf">addCylinder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">pos1</span><span class="p">,</span> <span class="n">pos2</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds a Cylinder object to the specified phase collection of cylinders.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Cylinder object to the specified phase collection of cylinders.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1551,12 +1597,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">cylinders</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Cylinder</span><span class="p">(</span><span class="n">colour</span><span class="p">,</span><span class="n">radius</span><span class="p">,</span><span class="n">pos1</span><span class="p">,</span><span class="n">pos2</span><span class="p">)</span> <span class="p">)</span></div>
 
 <div class="viewcode-block" id="OpenGLWidget.addSphere"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.addSphere">[docs]</a>    <span class="k">def</span> <span class="nf">addSphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a sphere to a collection within an object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a sphere to a collection within an object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1572,12 +1618,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">spheres</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">colour</span><span class="p">,</span><span class="n">radius</span><span class="p">,</span><span class="n">pos</span><span class="p">)</span> <span class="p">)</span></div></div>
 
-<div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class representing a sphere.</span>
+<div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a sphere.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1596,10 +1642,11 @@
 <span class="sd">        The radius of the sphere.</span>
 <span class="sd">    position : ndarray</span>
 <span class="sd">        The position of the sphere in 3D space as a NumPy array with three elements (x, y, z).</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a new object with colour, radius, and position.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new object with colour, radius, and position.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1614,14 +1661,14 @@
 <span class="sd">        -----</span>
 <span class="sd">        - The `colour` parameter will be normalized to a range between 0 and 1 internally.</span>
 <span class="sd">        - The `position` parameter is expected to match the dimensionality of the system (i.e., 2D or 3D).</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">colour</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">colour</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">position</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Cylinder"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.Cylinder">[docs]</a><span class="k">class</span> <span class="nc">Cylinder</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class representing a 3D cylinder.</span>
+<div class="viewcode-block" id="Cylinder"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.Cylinder">[docs]</a><span class="k">class</span> <span class="nc">Cylinder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a 3D cylinder.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1650,10 +1697,11 @@
 <span class="sd">        The height of the cylinder, determined as the distance between `pos1` and `pos2`.</span>
 <span class="sd">    rotation : ndarray</span>
 <span class="sd">        The 3D vector representing the axis of rotation to align the cylinder with the z-axis (used together with `angle` for setting the cylinder&#39;s orientation in 3D space).</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">pos1</span><span class="p">,</span> <span class="n">pos2</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a new instance with specified color, radius, and positions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new instance with specified color, radius, and positions.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1673,6 +1721,7 @@
 <span class="sd">        normalized to be in the range [0, 1]. Positions and rotation are stored as</span>
 <span class="sd">        NumPy arrays, and properties such as `height`, `angle`, and `rotation` direction</span>
 <span class="sd">        are calculated for use in positioning and rendering the instance.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="n">pos1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pos2</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pos1</span><span class="p">)</span>
@@ -1694,9 +1743,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="n">t</span></div>
 
-<div class="viewcode-block" id="Arrow"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.Arrow">[docs]</a><span class="k">class</span> <span class="nc">Arrow</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class to represent a 3D arrow for graphical display.</span>
+<div class="viewcode-block" id="Arrow"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.Arrow">[docs]</a><span class="k">class</span> <span class="nc">Arrow</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to represent a 3D arrow for graphical display.</span>
 
 <span class="sd">    This class encapsulates properties of a 3D arrow including its color,</span>
 <span class="sd">    size (radius), direction, and scaling factor. It uses numpy for</span>
@@ -1728,10 +1776,11 @@
 <span class="sd">        A normalized 3-element array representing the direction of the arrow.</span>
 <span class="sd">    radius : float</span>
 <span class="sd">        The radius of the arrow&#39;s base as provided during instantiation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a custom object with given parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a custom object with given parameters.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1772,6 +1821,7 @@
 <span class="sd">            The scaled height of the object based on the input direction and scale.</span>
 <span class="sd">        rotation : np.array</span>
 <span class="sd">            The rotation vector of the object.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Adds a displacement to each atom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">colour</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">colour</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0</span>

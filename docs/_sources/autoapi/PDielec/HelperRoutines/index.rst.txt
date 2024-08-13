@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Helper Routines - Useful for scripting and in Jupyter Notebooks
+   Helper Routines - Useful for scripting and in Jupyter Notebooks.
 
    These routines are a useful starting point for investigating the way the code operates
 
@@ -29,7 +29,7 @@ Functions
 
 .. py:function:: calculateDFTPermittivityObject(reader, sigma=5.0, eckart=True, mass_definition='Average')
 
-   Define a permittivity object for the DFT calculation from the given reader
+   Define a permittivity object for the DFT calculation from the given reader.
 
    This routine reads in the details of the DFT calculation
    Calculates the hessian and normal modes
@@ -93,6 +93,7 @@ Functions
    ```
 
 
+
 .. py:function:: calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method='Scattering matrix')
 
    Calculate a single crystal spectrum.
@@ -147,7 +148,7 @@ Functions
 
 
 
-.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', qmprogram='vasp', eckart=True, mass_definition='Average')
+.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', eckart=True, mass_definition='Average')
 
    Get a material with the given name.
 
@@ -161,9 +162,6 @@ Functions
        The name of the material, which can be a file name or a material name existing in the database.
    dataBaseName : str
        The name of the database which will be searched from the material
-   qmprogram : str, optional
-       The name of the QM program used in the case of Phonopy DFT calculations
-       Defaults to 'vasp'
    eckart  : boolean, optional
        If true apply eckart conditions in the reader. Defaults to true.
    mass_definition : string or list of floats, optional
@@ -186,5 +184,6 @@ Functions
    material1 = get_material("example.dft")
    material2 = get_material("gold")
    ```
+
 
 

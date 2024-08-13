@@ -286,31 +286,39 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">AnalysisTab Module</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;AnalysisTab Module.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">PDielec.Calculator</span> <span class="k">as</span> <span class="nn">Calculator</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>  <span class="kn">import</span>  <span class="n">QWidget</span><span class="p">,</span> <span class="n">QApplication</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>  <span class="kn">import</span>  <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QLineEdit</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>  <span class="kn">import</span>  <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QFormLayout</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>  <span class="kn">import</span>  <span class="n">QSpinBox</span><span class="p">,</span> <span class="n">QDoubleSpinBox</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>  <span class="kn">import</span>  <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QTableWidgetItem</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span>     <span class="kn">import</span>  <span class="n">Qt</span><span class="p">,</span> <span class="n">QCoreApplication</span>
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span>  <span class="n">covalent_radii</span>
+
 <span class="c1"># Import plotting requirements</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">import</span> <span class="nn">matplotlib.figure</span>
-<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">MaxNLocator</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_qt5agg</span> <span class="kn">import</span> <span class="n">FigureCanvasQTAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
 <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_qt5agg</span> <span class="kn">import</span> <span class="n">NavigationToolbar2QT</span> <span class="k">as</span> <span class="n">NavigationToolbar</span>
-<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">MaxNLocator</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">QCoreApplication</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QApplication</span><span class="p">,</span>
+    <span class="n">QComboBox</span><span class="p">,</span>
+    <span class="n">QDoubleSpinBox</span><span class="p">,</span>
+    <span class="n">QFormLayout</span><span class="p">,</span>
+    <span class="n">QHBoxLayout</span><span class="p">,</span>
+    <span class="n">QLabel</span><span class="p">,</span>
+    <span class="n">QLineEdit</span><span class="p">,</span>
+    <span class="n">QSizePolicy</span><span class="p">,</span>
+    <span class="n">QTableWidgetItem</span><span class="p">,</span>
+    <span class="n">QVBoxLayout</span><span class="p">,</span>
+    <span class="n">QWidget</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">Calculator</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">covalent_radii</span>
 <span class="kn">from</span> <span class="nn">PDielec.GUI.SettingsTab</span> <span class="kn">import</span> <span class="n">FixedQTableWidget</span>
+<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span>
+
 
 <div class="viewcode-block" id="AnalysisTab"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab">[docs]</a><span class="k">class</span> <span class="nc">AnalysisTab</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.</span>
 
 <span class="sd">    This class inherits from QWidget</span>
 <span class="sd">    Key features include plotting vibrational mode decompositions</span>
@@ -407,10 +415,11 @@
 <span class="sd">        Generates a plot based on molecular composition of vibrational energy.</span>
 <span class="sd">    plot_internal_external(self)</span>
 <span class="sd">        Generates a plot based on the decomposition of vibrational energy into internal and external movements.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span> <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes the analysis tab with configurable settings and plotting capabilities.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the analysis tab with configurable settings and plotting capabilities.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -418,22 +427,23 @@
 <span class="sd">            The parent widget or object, typically the main application or main window in which this widget will be embedded.</span>
 <span class="sd">        debug : bool, optional</span>
 <span class="sd">            Indicates if debugging is enabled for this widget. The default is False.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="nb">super</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="k">global</span> <span class="n">debugger</span>
-        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s1">&#39;AnalysisTab&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s2">&quot;AnalysisTab&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Analysis&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Radii&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Analysis&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Covalent radius scaling&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bonding tolerance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bar width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Analysis&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Radii&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Analysis&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Covalent radius scaling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bonding tolerance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bar width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Internal vs External&#39;</span><span class="p">,</span><span class="s1">&#39;Molecular Composition&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Internal vs External&quot;</span><span class="p">,</span><span class="s2">&quot;Molecular Composition&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_type_index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequency_units</span> <span class="o">=</span> <span class="kc">None</span>
@@ -455,22 +465,22 @@
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">9000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Set the minimum frequency to be considered)&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Set the minimum frequency to be considered)&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_vmin_changed</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Minimum frequency:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Set the minimum frequency to be considered)&#39;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Minimum frequency:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Set the minimum frequency to be considered)&quot;</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># The maximum frequency</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">9000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Set the maximum frequency to be considered)&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Set the maximum frequency to be considered)&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_vmax_changed</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Maximum frequency:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Set the maximum frequency to be considered)&#39;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Maximum frequency:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Set the maximum frequency to be considered)&quot;</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># The bonding tolerance and scaling of radii frequency</span>
@@ -480,38 +490,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">10.0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Covalent radius scaling&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Scale the covalent radii to determine bonding&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Covalent radius scaling&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Scale the covalent radii to determine bonding&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_scale_changed</span><span class="p">)</span>
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">2.0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bonding tolerance&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Tolerance for bonding is determined from scale*(radi+radj)+toler&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bonding tolerance&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Tolerance for bonding is determined from scale*(radi+radj)+toler&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_tolerance_changed</span><span class="p">)</span>
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Bonding scale and tolerance&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Bonding is determined from scale*(radi+radj)+toler&#39;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Bonding scale and tolerance&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Bonding is determined from scale*(radi+radj)+toler&quot;</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">hbox</span><span class="p">)</span>
         <span class="c1"># Add a table of covalent radii</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span> <span class="o">=</span> <span class="n">FixedQTableWidget</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Individual covalent radii used to determine bonding can be set here&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Individual covalent radii used to determine bonding can be set here&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_element_radii_tw_itemClicked</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">itemChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_element_radii_tw_itemChanged</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">sizePolicy</span> <span class="o">=</span> <span class="n">QSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">sizePolicy</span><span class="p">)</span>
-        <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Atomic radii&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="p">)</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Atomic radii&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="p">)</span>
         <span class="c1"># Add number of molecules found</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;The bonding tolerances can change the number of molecules found&#39;</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Number of molecules found&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;The bonding tolerances can change the number of molecules found&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;The bonding tolerances can change the number of molecules found&quot;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Number of molecules found&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;The bonding tolerances can change the number of molecules found&quot;</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># The plotting width of bar</span>
@@ -520,32 +530,32 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">2.0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bar width&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Change the width of the bars - should be between 0 and 1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bar width&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Change the width of the bars - should be between 0 and 1&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_width_changed</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Bar width&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Change the width of the bars - should be between 0 and 1&#39;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Bar width&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Change the width of the bars - should be between 0 and 1&quot;</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># Set the plot title</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Set the plot title&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Set the plot title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_title_changed</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Plot title&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Set the plot title&#39;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Plot title&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Set the plot title&quot;</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># Add a comb box to select which type of plot</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_types</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_type_index</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_plottype_cb_changed</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Choose the plot type&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion&#39;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Choose the plot type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion&quot;</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># Add the matplotlib figure to the bottom</span>
@@ -566,8 +576,7 @@
         <span class="c1">#QCoreApplication.processEvents()</span>
 
 <div class="viewcode-block" id="AnalysisTab.on_element_radii_tw_itemClicked"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked">[docs]</a>    <span class="k">def</span> <span class="nf">on_element_radii_tw_itemClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the item clicked event for a TableWidget related to element radii.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the item clicked event for a TableWidget related to element radii.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -582,12 +591,12 @@
 <span class="sd">        -----</span>
 <span class="sd">        This function unblocks signals for the `element_radii_tw` TableWidget after an item click</span>
 <span class="sd">        event has occurred, allowing subsequent events to be processed.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.on_element_radii_tw_itemChanged"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged">[docs]</a>    <span class="k">def</span> <span class="nf">on_element_radii_tw_itemChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Respond to changes in element radii within a widget.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Respond to changes in element radii within a widget.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -597,24 +606,24 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">col</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">column</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Changing the element radius&#39;</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Radii&#39;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Changing the element radius&quot;</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Radii&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">viewerTab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Failed Changing the element radius&#39;</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Failed Changing the element radius&quot;</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
             <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.set_radii_tw"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw">[docs]</a>    <span class="k">def</span> <span class="nf">set_radii_tw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set or update the atomic radii in the GUI&#39;s table widget based on the current settings and active file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set or update the atomic radii in the GUI&#39;s table widget based on the current settings and active file.</span>
 
 <span class="sd">        This method updates the radii configuration within the element radii table widget of the GUI. It first ensures that</span>
 <span class="sd">        a reader object, a program, and a filename are set and available. If any of these are missing, the process is aborted</span>
@@ -629,44 +638,44 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">reader</span>
-        <span class="n">program</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Program&#39;</span><span class="p">]</span>
+        <span class="n">program</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">]</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">getFullFileName</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set_radii_tw aborting - no reader&#39;</span><span class="p">)</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set_radii_tw aborting - no reader&quot;</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set_radii_tw aborting - no program&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set_radii_tw aborting - no program&quot;</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set_radii_tw aborting - no filename&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set_radii_tw aborting - no filename&quot;</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set_radii_tw starting&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set_radii_tw starting&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">getSpecies</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Radii&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Radii&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">radii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Radii&#39;</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">sp</span><span class="p">,</span><span class="n">rad</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Radii&#39;</span><span class="p">]):</span>
+            <span class="n">radii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Radii&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">sp</span><span class="p">,</span><span class="n">rad</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Radii&quot;</span><span class="p">]):</span>
                <span class="bp">self</span><span class="o">.</span><span class="n">element_radii</span><span class="p">[</span><span class="n">sp</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setVerticalHeaderLabels</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">radius</span><span class="p">,</span><span class="n">element</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setVerticalHeaderLabels</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">radius</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">radii</span><span class="p">):</span>
             <span class="n">qw</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">()</span>
-            <span class="n">qw</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0:.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">radius</span><span class="p">))</span>
+            <span class="n">qw</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">radius</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">qw</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignHCenter</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">,</span> <span class="n">qw</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii_tw</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Radii&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radii</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;set_radii_tw finishing&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Radii&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radii</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;set_radii_tw finishing&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.setCovalentRadius"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius">[docs]</a>    <span class="k">def</span> <span class="nf">setCovalentRadius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">element</span><span class="p">,</span><span class="n">radius</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the covalent radius for a given element and update the plot.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the covalent radius for a given element and update the plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -678,6 +687,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">element_radii</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_radii_tw</span><span class="p">()</span>
@@ -685,8 +695,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.writeSpreadsheet"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.writeSpreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">writeSpreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Write analysis data into a selected worksheet in the notebook&#39;s spreadsheet.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write analysis data into a selected worksheet in the notebook&#39;s spreadsheet.</span>
 
 <span class="sd">        This method assumes the existence of a spreadsheet object within the notebook</span>
 <span class="sd">        attribute of the class instance. It selects a worksheet named &#39;Analysis&#39;,</span>
@@ -700,16 +709,17 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">spreadsheet</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">spreadsheet</span>
-        <span class="n">sp</span><span class="o">.</span><span class="n">selectWorkSheet</span><span class="p">(</span><span class="s1">&#39;Analysis&#39;</span><span class="p">)</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">selectWorkSheet</span><span class="p">(</span><span class="s2">&quot;Analysis&quot;</span><span class="p">)</span>
         <span class="n">sp</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-        <span class="n">sp</span><span class="o">.</span><span class="n">writeNextRow</span><span class="p">([</span><span class="s1">&#39;Analysis of the vibrational modes into percentage contributions for molecules and internal/external modes&#39;</span><span class="p">],</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Mode&#39;</span><span class="p">,</span><span class="s1">&#39;Frequency (cm-1)&#39;</span><span class="p">,</span> <span class="s1">&#39;Centre of mass %&#39;</span><span class="p">,</span><span class="s1">&#39;Rotational %&#39;</span><span class="p">,</span> <span class="s1">&#39;Vibrational %&#39;</span><span class="p">]</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">writeNextRow</span><span class="p">([</span><span class="s2">&quot;Analysis of the vibrational modes into percentage contributions for molecules and internal/external modes&quot;</span><span class="p">],</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Mode&quot;</span><span class="p">,</span><span class="s2">&quot;Frequency (cm-1)&quot;</span><span class="p">,</span> <span class="s2">&quot;Centre of mass %&quot;</span><span class="p">,</span><span class="s2">&quot;Rotational %&quot;</span><span class="p">,</span> <span class="s2">&quot;Vibrational %&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="p">):</span>
-            <span class="n">headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Molecule &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; %&#39;</span><span class="p">)</span>
+            <span class="n">headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Molecule &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; %&quot;</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="n">sp</span><span class="o">.</span><span class="n">writeNextRow</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">imode</span><span class="p">,(</span><span class="n">freq</span><span class="p">,</span><span class="n">energies</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies_cm1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_energies</span><span class="p">)):</span>
@@ -722,8 +732,7 @@
 
 
 <div class="viewcode-block" id="AnalysisTab.on_width_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_width_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_width_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle changes to the width property.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle changes to the width property.</span>
 
 <span class="sd">        This method is called when the width property of an object is changed. It updates the stored width value in the object&#39;s settings and then re-plots the object to reflect the new width.</span>
 
@@ -735,14 +744,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on width changed &#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bar width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on width changed &quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bar width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.on_scale_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_scale_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_scale_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handles the event when the scale setting is changed.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the event when the scale setting is changed.</span>
 
 <span class="sd">        This function is typically connected to a signal that is emitted when the</span>
 <span class="sd">        scaling factor for the covalent radius is adjusted in a graphical user interface.</span>
@@ -758,16 +767,16 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on scale_le changed &#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Covalent radius scaling&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on scale_le changed &quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Covalent radius scaling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.on_tolerance_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_tolerance_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the event when the tolerance value changes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the event when the tolerance value changes.</span>
 
 <span class="sd">        This function updates the &#39;Bonding tolerance&#39; setting based on the provided value, marks the system as requiring a refresh, and then recalculates and replots the data.</span>
 
@@ -781,15 +790,14 @@
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_tolerance_le changed &#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bonding tolerance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on_tolerance_le changed &quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bonding tolerance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.on_title_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_title_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle title change events.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle title change events.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -799,16 +807,16 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on title change &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span></div>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on title change &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.on_vmin_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_vmin_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handles the change in minimum value of frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the change in minimum value of frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -818,24 +826,24 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
         <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">vmin</span> <span class="o">&lt;</span> <span class="n">vmax</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmin</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_vmin_changed new value&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmin</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on_vmin_changed new value&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_vmin_changed restricting value to&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on_vmin_changed restricting value to&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.on_vmax_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_vmax_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the change in maximum value for frequency.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the change in maximum value for frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -851,19 +859,18 @@
         <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
         <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">vmax</span> <span class="o">&gt;</span> <span class="n">vmin</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmax</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_vmax_changed new value&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmax</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on_vmax_changed new value&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_vmax_changed restricting value to&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;on_vmax_changed restricting value to&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.requestRefresh"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh">[docs]</a>    <span class="k">def</span> <span class="nf">requestRefresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Marks the instance as requiring a refresh.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark the instance as requiring a refresh.</span>
 
 <span class="sd">        Sets the instance attribute `refreshRequired` to True, indicating that a refresh is necessary.</span>
 
@@ -879,8 +886,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.refresh"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Refresh the widget state, optionally enforcing refresh.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Refresh the widget state, optionally enforcing refresh.</span>
 
 <span class="sd">        This method updates the widgets&#39; states and values according to the current settings. It first checks if a refresh is required or if the `force` parameter is set to `True`. If neither condition is met, it exits early. Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission during state update. It then updates various UI components with new settings values, calculates and plots according to the updated settings, and finally re-enables signals for all child QWidget instances.</span>
 
@@ -892,23 +898,24 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;return with no refresh&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span><span class="p">,</span> <span class="n">force</span><span class="p">)</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;return with no refresh&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span><span class="p">,</span> <span class="n">force</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Refreshing widget&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Refreshing widget&quot;</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># Block signals during refresh</span>
         <span class="c1">#</span>
         <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
             <span class="n">w</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Covalent radius scaling&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bonding tolerance&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bar width&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmin_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmax_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Covalent radius scaling&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bonding tolerance&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width_sp</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bar width&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plottype_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_type_index</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_radii_tw</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
@@ -921,8 +928,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.on_plottype_cb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_plottype_cb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle a change in plot type selection.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in plot type selection.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -932,14 +938,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_type_index</span> <span class="o">=</span> <span class="n">index</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Plot type index changed to &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_type_index</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Plot type index changed to &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_type_index</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.calculate"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.</span>
 
 <span class="sd">        This method orchestrates the calculation process, setting up necessary parameters, processing molecular contents</span>
 <span class="sd">        based on the provided settings, calculating normal modes and their mass weighting, and finally computing the energy</span>
@@ -965,27 +971,27 @@
 <span class="sd">        - to hold molecular content, order of atoms, and the number of molecules, respectively.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;calculate&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;calculate&quot;</span><span class="p">)</span>
         <span class="c1"># Assemble the mainTab settings</span>
         <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span>
-        <span class="n">program</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Program&#39;</span><span class="p">]</span>
+        <span class="n">program</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">]</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">getFullFileName</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">reader</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">for</span> <span class="n">sp</span><span class="p">,</span><span class="n">rad</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Radii&#39;</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">sp</span><span class="p">,</span><span class="n">rad</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Radii&quot;</span><span class="p">]):</span>
            <span class="bp">self</span><span class="o">.</span><span class="n">element_radii</span><span class="p">[</span><span class="n">sp</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span>
         <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
         <span class="c1"># Assemble the settingsTab settings</span>
         <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">settings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">frequencies_cm1</span>
         <span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Covalent radius scaling&#39;</span><span class="p">]</span>
-        <span class="n">tolerance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bonding tolerance&#39;</span><span class="p">]</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Covalent radius scaling&quot;</span><span class="p">]</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bonding tolerance&quot;</span><span class="p">]</span>
         <span class="c1"># Find the last unit cell read by the reader and its masses</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
         <span class="n">atom_masses</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">()</span>
@@ -995,7 +1001,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">viewerTab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span> <span class="o">=</span> <span class="n">nmols</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># get the normal modes from the mass weighted ones</span>
         <span class="n">normal_modes</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">normal_modes</span><span class="p">(</span><span class="n">atom_masses</span><span class="p">,</span> <span class="n">mass_weighted_normal_modes</span><span class="p">)</span>
         <span class="c1"># Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell</span>
@@ -1022,7 +1028,7 @@
                 <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">fi</span><span class="o">-</span><span class="n">fj</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0E-5</span><span class="p">:</span>
                     <span class="n">degenerate_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_energies</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">fi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies_cm1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies_cm1</span><span class="p">)):</span>
             <span class="n">tote</span><span class="p">,</span><span class="n">cme</span><span class="p">,</span><span class="n">rote</span><span class="p">,</span><span class="n">vibe</span><span class="p">,</span><span class="n">mole</span> <span class="o">=</span> <span class="n">mode_energies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">tote</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">tote</span><span class="p">,</span><span class="mf">1.0E-8</span><span class="p">)</span>
             <span class="n">sums</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span>
@@ -1047,8 +1053,7 @@
         <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.plot"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Plot the spectroscopic data based on the selected plot type.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the spectroscopic data based on the selected plot type.</span>
 
 <span class="sd">        This method selects between two plotting strategies: &#39;internal_external&#39;</span>
 <span class="sd">        or &#39;molecular&#39;, depending on the state of `plot_type_index`. If no data</span>
@@ -1069,6 +1074,7 @@
 <span class="sd">        contain frequency data, and `self.plot_type_index` to determine the plotting</span>
 <span class="sd">        strategy. It calls `self.plot_internal_external()` or `self.plot_molecular()`</span>
 <span class="sd">        based on the value of `self.plot_type_index`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -1080,8 +1086,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">plot_molecular</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.plot_molecular"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.plot_molecular">[docs]</a>    <span class="k">def</span> <span class="nf">plot_molecular</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Plot the molecular composition of vibrational energy.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the molecular composition of vibrational energy.</span>
 
 <span class="sd">        This method visualizes the distribution of vibrational energy across different molecules</span>
 <span class="sd">        within specified frequency limits. It creates a bar chart representing the percentage of </span>
@@ -1109,18 +1114,19 @@
 <span class="sd">          tick locations on the x-axis.</span>
 <span class="sd">        - Assumes matplotlib, specifically the `matplotlib.pyplot` and `matplotlib.ticker.MaxNLocator` classes,</span>
 <span class="sd">          are appropriately imported or accessible within the scope.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="n">integer</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Mode Number&#39;</span>
-        <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Percentage energy&#39;</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Mode Number&quot;</span>
+        <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Percentage energy&quot;</span>
         <span class="c1"># Decide which modes to analyse</span>
         <span class="n">mode_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">mode_list_text</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span>
-        <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">]</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">]</span>
         <span class="n">tote</span><span class="p">,</span><span class="n">cme</span><span class="p">,</span><span class="n">rote</span><span class="p">,</span><span class="n">vibe</span><span class="p">,</span><span class="n">mole</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_energies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">tote</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">tote</span><span class="p">,</span><span class="mf">1.0E-8</span><span class="p">)</span>
         <span class="n">mol_energies</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="p">)</span> <span class="p">]</span>
@@ -1139,23 +1145,22 @@
                         <span class="n">mol_bottoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol_bottoms</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">mol_energies</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mode_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bar width&#39;</span><span class="p">]</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bar width&quot;</span><span class="p">]</span>
         <span class="n">plots</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">]</span>
+        <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="s2">&quot;m&quot;</span><span class="p">,</span><span class="s2">&quot;k&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">energies</span><span class="p">,</span><span class="n">bottoms</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">mol_energies</span><span class="p">,</span> <span class="n">mol_bottoms</span> <span class="p">)):</span>
             <span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">mode_list</span><span class="p">,</span><span class="n">energies</span><span class="p">,</span><span class="n">width</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottoms</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">6</span><span class="p">]))</span>
         <span class="n">legends</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_molecules</span><span class="p">):</span>
-            <span class="n">legends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Molecule &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">legends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Molecule &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">plots</span><span class="p">,</span> <span class="n">legends</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Molecular Composition of Vibrational Energy&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Molecular Composition of Vibrational Energy&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisTab.plot_internal_external"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external">[docs]</a>    <span class="k">def</span> <span class="nf">plot_internal_external</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1172,13 +1177,14 @@
 <span class="sd">        - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.</span>
 <span class="sd">        - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.</span>
 <span class="sd">        - The method updates the canvas with the newly plotted data.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="n">integer</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Mode Number&#39;</span>
-        <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Percentage energy&#39;</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Mode Number&quot;</span>
+        <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Percentage energy&quot;</span>
         <span class="c1"># Decide which modes to analyse</span>
         <span class="n">mode_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">mode_list_text</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1187,9 +1193,9 @@
         <span class="n">vib_energy</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">vib_bottom</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">mol_energy</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span>
-        <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span>
-        <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">]</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Minimum frequency&quot;</span><span class="p">]</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Maximum frequency&quot;</span><span class="p">]</span>
+        <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="s2">&quot;m&quot;</span><span class="p">,</span><span class="s2">&quot;k&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">imode</span><span class="p">,</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies_cm1</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">frequency</span> <span class="o">&gt;=</span> <span class="n">vmin</span> <span class="ow">and</span> <span class="n">frequency</span> <span class="o">&lt;=</span> <span class="n">vmax</span><span class="p">:</span>
                 <span class="n">mode_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imode</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
@@ -1204,16 +1210,16 @@
                 <span class="n">mol_energy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molecular_energies</span><span class="o">/</span><span class="n">tote</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mode_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Bar width&#39;</span><span class="p">]</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Bar width&quot;</span><span class="p">]</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">mode_list</span><span class="p">,</span><span class="n">cme_energy</span><span class="p">,</span><span class="n">width</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">mode_list</span><span class="p">,</span><span class="n">rot_energy</span><span class="p">,</span><span class="n">width</span><span class="p">,</span><span class="n">bottom</span><span class="o">=</span><span class="n">cme_energy</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">p3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">mode_list</span><span class="p">,</span><span class="n">vib_energy</span><span class="p">,</span><span class="n">width</span><span class="p">,</span><span class="n">bottom</span><span class="o">=</span><span class="n">vib_bottom</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">plots</span> <span class="o">=</span> <span class="p">(</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
-        <span class="n">legends</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;translation&#39;</span><span class="p">,</span><span class="s1">&#39;rotation&#39;</span><span class="p">,</span><span class="s1">&#39;vibration&#39;</span><span class="p">)</span>
+        <span class="n">legends</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;translation&quot;</span><span class="p">,</span><span class="s2">&quot;rotation&quot;</span><span class="p">,</span><span class="s2">&quot;vibration&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">plots</span><span class="p">,</span> <span class="n">legends</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Internal-External Composition of Vibrational Energy&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Internal-External Composition of Vibrational Energy&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span></div></div>
 
 </pre></div>

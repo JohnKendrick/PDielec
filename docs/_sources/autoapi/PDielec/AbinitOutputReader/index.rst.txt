@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   AbinitOutputReader module
+   AbinitOutputReader module.
 
 
 
@@ -49,6 +49,7 @@ Classes
    -----
    This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be defined or processed.
 
+
    .. py:method:: _read_acell(line)
 
       Read and convert cell parameters from bohr to Ångström.
@@ -62,6 +63,7 @@ Classes
       -------
       None
           This function does not return a value but updates the `_acell` attribute of the object.
+
 
 
    .. py:method:: _read_band(line)
@@ -80,6 +82,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_born_charges(line)
@@ -105,6 +108,7 @@ Classes
       -------
       numpy.ndarray
           A 2D array where each row represents a field direction and each column represents an atomic displacement in the x, y, and z directions.
+
 
 
    .. py:method:: _read_dynamical(line)
@@ -153,6 +157,7 @@ Classes
       This method modifies the object's state by setting the 'electrons' attribute.
 
 
+
    .. py:method:: _read_energy_cutoff(line)
 
       Process and update the energy cutoff value from a given line.
@@ -172,7 +177,7 @@ Classes
 
    .. py:method:: _read_epsilon(line)
 
-      Read zero frequency optical permittivity
+      Read zero frequency optical permittivity.
 
       Parse epsilon related data, and populates the `zerof_optical_dielectric` array
       based on the read data. 
@@ -198,6 +203,7 @@ Classes
                                  method updates based on the data read from the file.
 
 
+
    .. py:method:: _read_kpoint_grid(line)
 
       Parse and set the k-point grid from a given line of text.
@@ -217,6 +223,7 @@ Classes
       This function is intended to be used internally within its class.
       It reads a line of text, extracts integers from specific positions,
       and sets them as the k-point grid dimensions for the instance.
+
 
 
    .. py:method:: _read_kpoints(line)
@@ -241,6 +248,7 @@ Classes
       -----
       The method does not return any value but updates the instance variable
       `kpoints` with the integer value of the k-points extracted from the input line.
+
 
 
    .. py:method:: _read_lattice_vectors(line)
@@ -271,6 +279,7 @@ Classes
       UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its constructor.
 
 
+
    .. py:method:: _read_masses(line)
 
       Parse and save masses from a given line of text.
@@ -288,9 +297,10 @@ Classes
       None
 
 
+
    .. py:method:: _read_natom(line)
 
-      Reads and processes the number of atoms from a given line.
+      Read and process the number of atoms from a given line.
 
       This method reads the number of atoms from a given line of text, sets the object's 'nions' attribute to this number, and initializes the '_charges' attribute to a zero array with shape `(nions, 3, 3)`. This method does not return any value.
 
@@ -308,6 +318,7 @@ Classes
       numpy.zeros : Used to initialize the '_charges' attribute.
 
 
+
    .. py:method:: _read_ntypat(line)
 
       Read and set the number of species from a given line.
@@ -322,6 +333,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_occupancy(line)
@@ -355,9 +367,10 @@ Classes
       - It implicitly relies on `self.nbands` to know how many occupancy values need to be read.
 
 
+
    .. py:method:: _read_output_files()
 
-      Define the strings to be used for searching and Read the Abinit file names
+      Define the strings to be used for searching and Read the Abinit file names.
 
       Parameters
       ----------
@@ -366,6 +379,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_pressure(line)
@@ -401,6 +415,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_typat(line)
 
       Process and read atom type patterns from a line of text.
@@ -427,6 +442,7 @@ Classes
       species_list : list of str, optional
           A list of species names corresponding to the atom types if the species attribute is set. This
           list is used to assign element names to the unit cells.
+
 
 
    .. py:method:: _read_xred(line)
@@ -488,6 +504,7 @@ Classes
       See Also
       --------
       atomic_number_to_element : Dictionary mapping atomic numbers to element symbols.
+
 
 
 

@@ -292,8 +292,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">GenericOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic reader of output files. Actual reader should inherit from this class.
-Examples of readers with this base class:</p>
+<dd><p>Generic reader of output files. Actual reader should inherit from this class.</p>
+<p>Examples of readers with this base class:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../AbinitOutputReader/index.html#module-PDielec.AbinitOutputReader" title="PDielec.AbinitOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbinitOutputReader</span></code></a></p></li>
 <li><p><a class="reference internal" href="../CastepOutputReader/index.html#module-PDielec.CastepOutputReader" title="PDielec.CastepOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">CastepOutputReader</span></code></a></p></li>
@@ -360,7 +360,7 @@ each filename to its absolute path.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._born_charge_sum_rule">
 <span class="sig-name descname"><span class="pre">_born_charge_sum_rule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._born_charge_sum_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._born_charge_sum_rule" title="Permalink to this definition">#</a></dt>
-<dd><p>Apply a simple charge sum rule to all the elements of the born matrices</p>
+<dd><p>Apply a simple charge sum rule to all the elements of the born matrices.</p>
 <section id="id1">
 <h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -382,7 +382,10 @@ each filename to its absolute path.</p>
 <p>Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally storing the frequencies and normal modes.</p>
 <section id="id2">
 <h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
-<p>None</p>
+<dl class="simple">
+<dt>hessian<span class="classifier">nxn array of floats</span></dt><dd><p>The second derivative matrix</p>
+</dd>
+</dl>
 </section>
 <section id="id3">
 <h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
@@ -429,7 +432,10 @@ each filename to its absolute path.</p>
 <dd><p>Read through the file ‘name’ for key words. The keywords are established in _read_output_files.</p>
 <section id="id7">
 <h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
-<p>name : str</p>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>The file name of the output file</p>
+</dd>
+</dl>
 </section>
 <section id="id8">
 <h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
@@ -462,8 +468,8 @@ each filename to its absolute path.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._read_till_phrase">
 <span class="sig-name descname"><span class="pre">_read_till_phrase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phrase</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._read_till_phrase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._read_till_phrase" title="Permalink to this definition">#</a></dt>
-<dd><p>Read lines from the current file until a match with phrase is found.
-Once a match is found, return the matching line.</p>
+<dd><p>Read lines from the current file until a match with phrase is found.</p>
+<p>Once a match is found, return the matching line.</p>
 <section id="id13">
 <h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -604,7 +610,7 @@ the <cite>species</cite> attribute and returns the resulting list.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.get_crystal_density">
 <span class="sig-name descname"><span class="pre">get_crystal_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_crystal_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_crystal_density" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the crystal density in g/cc</p>
+<dd><p>Return the crystal density in g/cc.</p>
 <p>The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc</p>
 <section id="id27">
 <h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
@@ -622,7 +628,7 @@ the <cite>species</cite> attribute and returns the resulting list.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.get_unit_cell">
 <span class="sig-name descname"><span class="pre">get_unit_cell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_unit_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_unit_cell" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the last unit cell in the reader</p>
+<dd><p>Return the last unit cell in the reader.</p>
 <p>The routine adds the current set of masses to the unit cell</p>
 <section id="id29">
 <h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
@@ -742,7 +748,7 @@ need to be neutralized or altered from their original state.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.reset_born_charges">
 <span class="sig-name descname"><span class="pre">reset_born_charges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.reset_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.reset_born_charges" title="Permalink to this definition">#</a></dt>
-<dd><p>Resets the born charges to their original values if they are not currently being used.</p>
+<dd><p>Reset the born charges to their original values if they are not currently being used.</p>
 <p>This method restores the <cite>born_charges</cite> attribute of the instance to the value stored in <cite>original_born_charges</cite>, but only if <cite>original_born_charges_are_being_used</cite> is <cite>False</cite>.</p>
 <section id="id44">
 <h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
@@ -797,7 +803,7 @@ method to avoid setting the masses to an unintended state.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses">
 <span class="sig-name descname"><span class="pre">set_edited_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.set_edited_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the edited masses attribute if the length matches the original masses attribute.</p>
+<dd><p>Set the edited masses attribute if the length matches the original masses attribute.</p>
 <section id="id51">
 <h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <dl class="simple">

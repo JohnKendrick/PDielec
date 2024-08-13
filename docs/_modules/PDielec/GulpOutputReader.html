@@ -287,20 +287,20 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Module to read the contents of a Gulp output file</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;Module to read the contents of a Gulp output file.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
+
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
+<span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 
 
 <div class="viewcode-block" id="GulpOutputReader"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader">[docs]</a><span class="k">class</span> <span class="nc">GulpOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read the contents of a Gulp output file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read the contents of a Gulp output file.</span>
 
 <span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
 
@@ -357,11 +357,11 @@
 <span class="sd">    - nosym: make sure the calculation is done in P1.</span>
 <span class="sd">    Also includes options for various modifications and optimizations like qeq, molq, optimise, conp, qok, </span>
 <span class="sd">    nomodcoord, and prop.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for initializing the Gulp output reader object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the Gulp output reader object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -402,11 +402,12 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This constructor inherits from `GenericOutputReader` and is designed specifically for reading and parsing Gulp output files.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gulpfile</span>               <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span>                    <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gulpfile</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s1">&#39;Gulp output&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;Gulp output&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shells</span>                  <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ncores</span>                  <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cartesian_coordinates</span>  <span class="o">=</span> <span class="p">[]</span>
@@ -421,8 +422,7 @@
         <span class="k">return</span>
 
 <div class="viewcode-block" id="GulpOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -431,40 +431,42 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># Empty the dictionary matching phrases</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;nions&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Total number atoms&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_total_number_of_atoms</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;nions_irreducible&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Number of irreducible atoms&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_number_of_irreducible_atoms</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;cellcontents&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Final Cartesian coor&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_cellcontents</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;cellcontentsf&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Final fractional coor&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_cellcontentsf</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Species output for all configurations&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_species</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;lattice&#39;</span><span class="p">]</span>          <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Final Cartesian lattice&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;finalenergy&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Total lattice energy&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energies</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Pressure of configuration&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_external_pressure</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Temperature of configuration&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_temperature</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;staticDielectric&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Static dielectric c&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;opticalDielectric&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *High frequency diel&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_optical_dielectric</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;bornCharges&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Born effective charge&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;elasticConstants&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Elastic Constant Matrix&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_elastic_constants</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s1">&#39;frequencies&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39; *Frequencies .cm-1.&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_frequencies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nions&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Total number atoms&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_total_number_of_atoms</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nions_irreducible&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Number of irreducible atoms&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_number_of_irreducible_atoms</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;cellcontents&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Final Cartesian coor&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_cellcontents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;cellcontentsf&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Final fractional coor&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_cellcontentsf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Species output for all configurations&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_species</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>          <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Final Cartesian lattice&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;finalenergy&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Total lattice energy&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Pressure of configuration&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_external_pressure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Temperature of configuration&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_temperature</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;staticDielectric&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Static dielectric c&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_static_dielectric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;opticalDielectric&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *High frequency diel&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_optical_dielectric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;bornCharges&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Born effective charge&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;elasticConstants&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Elastic Constant Matrix&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_elastic_constants</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;frequencies&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Frequencies .cm-1.&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_frequencies</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gulpfile</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_elastic_constants"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_elastic_constants">[docs]</a>    <span class="k">def</span> <span class="nf">_read_elastic_constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the elastic constants.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the elastic constants.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">elastic</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
             <span class="n">elastic</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]])</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">elastic_constant_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">elastic</span><span class="p">)</span>
@@ -474,12 +476,13 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_frequencies"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">_read_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the frequencies</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the frequencies.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -502,19 +505,17 @@
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>  <span class="c1"># Raman</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncolumns</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncolumns</span><span class="p">):</span>
                 <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nions</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nions</span><span class="p">):</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
                 <span class="n">modex</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]]</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
                 <span class="n">modey</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]]</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
                 <span class="n">modez</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]]</span>
-                <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">modex</span><span class="p">,</span> <span class="n">modey</span><span class="p">,</span> <span class="n">modez</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">modex</span><span class="p">,</span> <span class="n">modey</span><span class="p">,</span> <span class="n">modez</span><span class="p">)):</span>
                     <span class="n">columns</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span>
-                    <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="c1"># end for x, y, z (columns)</span>
             <span class="c1"># end loop over atoms</span>
             <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
@@ -523,44 +524,47 @@
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_total_number_of_atoms"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_total_number_of_atoms">[docs]</a>    <span class="k">def</span> <span class="nf">_read_total_number_of_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the number of atoms.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the number of atoms.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str </span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_number_of_irreducible_atoms"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_number_of_irreducible_atoms">[docs]</a>    <span class="k">def</span> <span class="nf">_read_number_of_irreducible_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the number of irreducible atoms</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the number of irreducible atoms.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str </span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nions_irreducible</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_lattice"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_lattice">[docs]</a>    <span class="k">def</span> <span class="nf">_read_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the lattice vectors.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the lattice vectors.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -578,12 +582,12 @@
         <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">cvector</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span> <span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">avector</span><span class="p">,</span> <span class="n">bvector</span><span class="p">,</span> <span class="n">cvector</span><span class="p">,</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="c1"># Convert fractional coordinates to cartesians</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cartesian_coordinates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fractional_coordinates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error no coordinates fraction or cartesian found&quot;</span><span class="p">)</span>
-                <span class="n">exit</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">atom_frac</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fractional_coordinates</span><span class="p">:</span>
                 <span class="n">atom_cart</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">atom_frac</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cartesian_coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom_cart</span><span class="p">)</span>
@@ -592,20 +596,21 @@
         <span class="n">cell</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fractional_coordinates</span><span class="p">)</span>
         <span class="n">cell</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_atom_types</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_cellcontents"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_cellcontents">[docs]</a>    <span class="k">def</span> <span class="nf">_read_cellcontents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the cell contents in xyz space</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the cell contents in xyz space.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_atom_types</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
@@ -615,13 +620,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nshells</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span><span class="p">)</span> <span class="p">]</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">ion</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_ion</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">atom_type</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
             <span class="n">coreshell</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">coreshell</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">coreshell</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nshells</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ncores</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -647,16 +652,17 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_cellcontentsf"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_cellcontentsf">[docs]</a>    <span class="k">def</span> <span class="nf">_read_cellcontentsf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the cell contents in fractional space.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the cell contents in fractional space.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_atom_types</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
@@ -665,13 +671,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ncores</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nshells</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">ion</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_ion</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">atom_type</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
             <span class="n">coreshell</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">coreshell</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">coreshell</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nshells</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ncores</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -693,12 +699,12 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_species"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_species">[docs]</a>    <span class="k">def</span> <span class="nf">_read_species</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read species information</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read species information.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -708,7 +714,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mass_per_type</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mass_dictionary</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
         <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -725,8 +731,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_born_charges"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_born_charges">[docs]</a>    <span class="k">def</span> <span class="nf">_read_born_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read the born charges from the gulp file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the born charges from the gulp file.</span>
 
 <span class="sd">        This function reads the born charges as arranged in the gulp file. Each column </span>
 <span class="sd">        in the output fetched refers to a given field direction, and each row refers </span>
@@ -761,11 +766,12 @@
 <span class="sd">        the atomic displacement in each of the field directions. The reformatted output aligns</span>
 <span class="sd">        these displacements into a more conventional tensor format for further processing or</span>
 <span class="sd">        analysis.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
             <span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]])</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -781,14 +787,15 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_optical_dielectric"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_optical_dielectric">[docs]</a>    <span class="k">def</span> <span class="nf">_read_optical_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read optical dielectric constant</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read optical dielectric constant.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="c1"># this is the zero frequency optical dielectric constant</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="p">[]</span>
@@ -800,18 +807,19 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_static_dielectric"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_static_dielectric">[docs]</a>    <span class="k">def</span> <span class="nf">_read_static_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read static dielectric constant</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read static dielectric constant.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str (not used)</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_skip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="c1"># this is the zero frequency static dielectric constant</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_static_dielectric</span> <span class="o">=</span> <span class="p">[]</span>
@@ -823,46 +831,49 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_temperature"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">_read_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read temperature</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read temperature.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_external_pressure"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_external_pressure">[docs]</a>    <span class="k">def</span> <span class="nf">_read_external_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read external pressure</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read external pressure.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="GulpOutputReader._read_energies"><a class="viewcode-back" href="../../autoapi/PDielec/GulpOutputReader/index.html#PDielec.GulpOutputReader.GulpOutputReader._read_energies">[docs]</a>    <span class="k">def</span> <span class="nf">_read_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read energies</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read energies.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
+<span class="sd">            The initial line</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#line = self.file_descriptor.readline()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">])</span>

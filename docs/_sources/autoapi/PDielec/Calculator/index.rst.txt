@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Calculator module
+   Calculator module.
 
 
 
@@ -75,12 +75,14 @@ Functions
 
    Parameters
    ----------
-   variables : list of 2 floats
+   epsbr : list of 2 floats
        The real and imaginary components of the scalar permittivity
    eps1      : tensor (3x3)
        Permittivity of phase 1
    eps2      : tensor (3x3)
        Permittivity of phase 2
+   shape : string
+       The shape descriptor
    L         : 3x3 tensor
        Depolarisation tensor
    f1        : float
@@ -91,11 +93,12 @@ Functions
    Returns
    -------
    float : The error associated with the current values of the permittivities
+
 
 
 .. py:function:: _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1, size)
 
-   Bruggeman method using scalar quantities (suitable for powell minimisation method)
+   Bruggeman method using scalar quantities (suitable for powell minimisation method).
 
    Parameters
    ----------
@@ -105,6 +108,8 @@ Functions
        Permittivity of phase 1
    eps2      : tensor (3x3)
        Permittivity of phase 2
+   shape      : string
+       The particle shape
    L         : 3x3 tensor
        Depolarisation tensor
    f1        : float
@@ -115,11 +120,12 @@ Functions
    Returns
    -------
    float : The error associated with the current values of the permittivities
+
 
 
 .. py:function:: _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1, size)
 
-   Bruggeman method using tensor quantities
+   Bruggeman method using tensor quantities.
 
    Parameters
    ----------
@@ -129,6 +135,8 @@ Functions
        Permittivity of phase 1
    eps2      : tensor (3x3)
        Permittivity of phase 2
+   shape      : string
+       The particle shape
    L         : 3x3 tensor
        Depolarisation tensor
    f1        : float
@@ -139,6 +147,7 @@ Functions
    Returns
    -------
    float : The error associated with the current values of the permittivities
+
 
 
 .. py:function:: absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities)
@@ -168,6 +177,7 @@ Functions
    The number 4225.6 converts the units of D2/A2/amu to L mole-1 cm-1 cm-1.
 
 
+
 .. py:function:: anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
 
    Calculate the effective constant permittivity using a Mie scattering approach.
@@ -184,6 +194,8 @@ Functions
        The shape's depolarisation matrix (NOT USED).
    size : float
        The dimensionless size parameter for the frequency under consideration.
+   size_mu : float
+       The particle size in microns
    size_distribution_sigma : float
        The log normal value of sigma.
    vf : float
@@ -199,6 +211,7 @@ Functions
        The effective dielectric constant.
 
 
+
 .. py:function:: average_tensor(t)
 
    Return the averaged tensor.
@@ -206,11 +219,13 @@ Functions
    Parameters
    ----------
    t : tensor (3x3)
+       The tensor
 
    Returns
    -------
    output : tensor
        The averaged tensor.
+
 
 
 .. py:function:: averaged_permittivity(dielectric_medium, crystal_permittivity, shape, L, vf, size)
@@ -227,6 +242,8 @@ Functions
        The name of the current shape.
    L : array_like (3x3)
        The shape's depolarisation matrix.
+   vf : float
+       Volume fraction
    size : float
        The dimensionless size parameter for the frequency under consideration (not used).
 
@@ -234,6 +251,7 @@ Functions
    -------
    array_like
        The effective dielectric constant.
+
 
 
 .. py:function:: balan(dielectric_medium, crystal_permittivity, shape, L, vf, size)
@@ -250,6 +268,8 @@ Functions
        The name of the current shape.
    L : array_like (3x3)
        The shape's depolarisation matrix.
+   vf : float
+       Volume fraction
    size : float
        The dimensionless size parameter for the frequency under consideration (not used).
 
@@ -259,9 +279,10 @@ Functions
        The effective dielectric constant.
 
 
+
 .. py:function:: bruggeman_iter(eps1, eps2, shape, L, f2, size, epsbr)
 
-   Calculate the effective constant permittivity using the method of Bruggeman. (Iteration)
+   Calculate an iteration of the Bruggeman method..
 
    Parameters
    ----------
@@ -288,6 +309,7 @@ Functions
    Notes
    -----
    This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+
 
 
 .. py:function:: bruggeman_minimise(eps1, eps2, shape, L, f2, size, epsbr)
@@ -321,9 +343,10 @@ Functions
    This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
 
 
+
 .. py:function:: calculate_angle(a, b, c)
 
-   Calculate the angle between a, b and c in degrees
+   Calculate the angle between a, b and c in degrees.
 
    The bond is a-b-c, b is the central atom
 
@@ -370,6 +393,7 @@ Functions
    This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive index.
 
 
+
 .. py:function:: calculate_centre_of_mass(xyzs, masses)
 
    Calculate centre of mass.
@@ -377,12 +401,15 @@ Functions
    Parameters
    ----------
    xyzs : list of xyz coordinates of the atoms
+       The xyz coordinates
    masses : list of the atomic masses
+       The list of atomic masses in amu
 
    Returns
    -------
    mass : float - The total mass
    cm   : vector (3) - the coordinates of the centre of mass
+
 
 
 .. py:function:: calculate_distance(a, b)
@@ -415,6 +442,9 @@ Functions
        The frequencies in cm-1.
    normal_modes : array_like
        The mass weighted normal modes.
+   debug : boolean
+       True for debugging
+
 
 
 .. py:function:: calculate_permittivity(refractive_index, debug=False)
@@ -425,11 +455,14 @@ Functions
    ----------
    refractive_index : complex
        The refractive index from which the permittivity is calculated.
+   debug : boolean
+       True for debugging information
 
    Returns
    -------
    complex
        The calculated permittivity.
+
 
 
 .. py:function:: calculate_refractive_index(dielectric, debug=False)
@@ -442,6 +475,9 @@ Functions
    Parameters
    ----------
    dielectric : complex
+       The permittivity
+   debug : boolean
+       True for debugging information
 
    Returns
    -------
@@ -455,6 +491,7 @@ Functions
    the largest imaginary component.
 
 
+
 .. py:function:: calculate_refractive_index_scalar(dielectric_scalar, debug=False)
 
    Calculate the refractive index from the dielectric constant.
@@ -465,6 +502,9 @@ Functions
    Parameters
    ----------
    dielectric_scalar : complex
+       The permittivity
+   debug : boolean
+       True for debugging information
 
    Returns
    -------
@@ -476,6 +516,7 @@ Functions
    The calculation of the refractive index from the dielectric constant involves
    the trace of the dielectric tensor and the selection of the square root with
    the largest imaginary component to satisfy the Konig-Kramer conditions.
+
 
 
 .. py:function:: calculate_size_factor(x)
@@ -495,9 +536,10 @@ Functions
        Size effect
 
 
+
 .. py:function:: calculate_torsion(a, b, c, d)
 
-   Calculate the torsion angle between a, b, c and d in degrees
+   Calculate the torsion angle between a, b, c and d in degrees.
 
    Parameters
    ----------
@@ -519,11 +561,12 @@ Functions
 
 .. py:function:: cleanup_symbol(s)
 
-   Return a true element from the symbol
+   Return a true element from the symbol.
 
    Parameters
    ----------
    s : str
+       The element symbol to be cleaned up
 
    Returns
    -------
@@ -531,9 +574,10 @@ Functions
        The cleaned symbol
 
 
+
 .. py:function:: coherent(dielectric_medium, crystal_permittivity, shape, L, vf, size, dielectric_apparent)
 
-   Calculate the effective constant permittivity using the Coherent method
+   Calculate the effective constant permittivity using the Coherent method.
 
    Parameters
    ----------
@@ -549,11 +593,14 @@ Functions
        The dimensionless size parameter for the frequency under consideration.
    vf : float
        The volume fraction of filler.
+   dielectric_apparent : 3x3 array of floats
+       The current estimate of the dielectric
 
    Returns
    -------
    tensor
        The effective dielectric constant.
+
 
 
 .. py:function:: construct_projection_operator(atoms, xyzs, masses, nats)
@@ -562,14 +609,20 @@ Functions
 
    Parameters
    ----------
-   atoms : list of atom types
-   xyz : list of atom coordinates vector (3)
+   atoms : list strings
+       The atom types
+   xyzs : list of atom coordinates vector (3)
+       The list of coordinates
    masses : list of atom masses
+       The list of atomic masses in amu
+   nats : int
+       The number of atoms
 
    Returns
    -------
    type
        Description of the returned object.
+
 
 
 .. py:function:: determineEulerAngles(R)
@@ -579,12 +632,13 @@ Functions
    Parameters
    ----------
    R : tensor (3,3)
-       The rotation matrix
+      The rotation matrix
 
    Returns
    -------
    theta, phi, psi : float
-       The Euler angles
+      The Euler angles
+
 
 
 .. py:function:: direction_from_shape(data, reader)
@@ -596,6 +650,8 @@ Functions
    data : list of strings
        Data may contain a miller indices which defines a surface, e.g., (1,1,-1), 
        or a direction as a miller direction vector, e.g., [1,0,-1].
+   reader : a reader objecy
+       The reader is used to get the unit-cell
 
    Returns
    -------
@@ -611,9 +667,13 @@ Functions
    Parameters
    ----------
    vector : vector (3)
+       The vector to be rotated
    theta  : float
+       The angle theta
    phi    : float
+       The angle phi
    psi    : float
+       The angle psi
 
    Returns
    -------
@@ -627,6 +687,7 @@ Functions
    with respect to a reference coordinate system.
 
 
+
 .. py:function:: get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None)
 
    Return a pool of processors given the number of cpus and whether threading is requested.
@@ -634,13 +695,15 @@ Functions
    Parameters
    ----------
    ncpus : int 
-       the number of processors
+      the number of processors
    threading : bool 
-       true if threading is to be used
+      true if threading is to be used
    initializer : function
-       Function to be called before getting the pool
+      Function to be called before getting the pool
    initargs : function arguments
-       Any other parameters
+      Any other parameters
+   debugger : a debugger object
+      A debugger object
 
    Returns
    -------
@@ -672,6 +735,7 @@ Functions
    Based on ideas in the thesis of Mayank Kaushik (University Adelaide).
 
 
+
 .. py:function:: infrared_intensities(oscillator_strengths)
 
    Calculate the IR intensities from the trace of the oscillator strengths.
@@ -680,6 +744,7 @@ Functions
    -------
    np.array
        An array of the calculated IR intensities in units of (D/A)^2/amu.
+
 
 
 .. py:function:: initialise_complex_diagonal_tensor(reals)
@@ -697,6 +762,7 @@ Functions
        The returned tensor is a complex 3x3 array.
 
 
+
 .. py:function:: initialise_diagonal_tensor(reals)
 
    Initialise a real 3x3 tensor with the given diagonal components.
@@ -712,12 +778,15 @@ Functions
        The returned tensor is a real 3x3 array.
 
 
+
 .. py:function:: initialise_ellipsoid_depolarisation_matrix(unique, aoverb)
 
    Initialise a 3x3 tensor with the ellipsoid depolarisation matrix.
 
    Parameters
    ----------
+   unique : list of 3 floats
+       Unique direction for ellipsoid
    aoverb : float
        The ratio of a / b (the ratio of the principle axis lengths of the ellipsoid)
 
@@ -725,6 +794,7 @@ Functions
    -------
    np.array
        The Ellipsoid dpolarisation tensor
+
 
 
 .. py:function:: initialise_needle_depolarisation_matrix(unique)
@@ -742,6 +812,7 @@ Functions
        A 3x3 tensor initialized with the plate depolarisation matrix.
 
 
+
 .. py:function:: initialise_plate_depolarisation_matrix(normal)
 
    Initialise a 3x3 tensor with the plate depolarisation matrix, returns a tensor.
@@ -755,6 +826,7 @@ Functions
    -------
    ndarray
        A 3x3 tensor initialized with the plate depolarisation matrix.
+
 
 
 .. py:function:: initialise_sphere_depolarisation_matrix()
@@ -771,6 +843,7 @@ Functions
        A 3x3 tensor representing the sphere depolarisation matrix.
 
 
+
 .. py:function:: initialise_unit_tensor()
 
    Initialise a 3x3 tensor to a unit tensor.
@@ -785,12 +858,15 @@ Functions
        The returned tensor is a 3x3 array.
 
 
+
 .. py:function:: ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume)
 
    Calculate the low frequency permittivity or zero frequency permittivity.
 
    Parameters
    ----------
+   mode_list : list
+       List of integers giving the active modes
    oscillator_strengths : array_like
        Oscillator strengths, in atomic units.
    frequencies : array_like
@@ -808,6 +884,7 @@ Functions
    The calculation of low frequency permittivity or zero frequency permittivity
    requires oscillator strengths, frequencies, and volume all to be specified
    in atomic units. 
+
 
 
 .. py:function:: longitudinal_modes(frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
@@ -828,6 +905,8 @@ Functions
        The atomic masses in atomic units
    epsilon_inf : 3x3 array
        Epsilon infinity
+   volume : float
+       volume in atomic units
    qlist : list
        A list of direction vectors.
    reader : a reader object
@@ -841,6 +920,7 @@ Functions
    Notes
    -----
    If projection was requested in the reader, the correction is modified to ensure translational invariance.
+
 
 
 .. py:function:: maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
@@ -868,6 +948,7 @@ Functions
        The effective dielectric constant.
 
 
+
 .. py:function:: maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size)
 
    Calculate the effective constant permittivity using the Maxwell Garnett method.
@@ -893,6 +974,7 @@ Functions
        The effective dielectric constant.
 
 
+
 .. py:function:: mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
 
    Calculate the effective constant permittivity using a Mie scattering approach.
@@ -909,6 +991,8 @@ Functions
        The shape's depolarisation matrix (NOT USED).
    size : float
        The dimensionless size parameter for the frequency under consideration.
+   size_mu : float
+       The particle size in microns
    size_distribution_sigma : float
        The log normal value of sigma.
    vf : float
@@ -926,6 +1010,7 @@ Functions
    Finally, the Mie scattering of that sphere is calculated. The routine returns the effective dielectric constant.
 
 
+
 .. py:function:: normal_modes(masses, mass_weighted_normal_modes)
 
    Transform from mass weighted coordinates to xyz.
@@ -935,7 +1020,10 @@ Functions
 
    Parameters
    ----------
-   None
+   masses : array of floats
+       The masses in atomic units
+   mass_weighted_normal_modes : array of floats
+       The mass weighted normal modes
 
    Returns
    -------
@@ -946,6 +1034,7 @@ Functions
    -----
    The transformation to xyz coordinates does not involve renormalization of the normal modes.
    Both the input masses and the output normal modes are in atomic units.
+
 
 
 .. py:function:: orthogonalise_projection_operator(ps)
@@ -987,6 +1076,7 @@ Functions
        Oscillator strengths calculated from the given normal modes and born charges.
 
 
+
 .. py:function:: reflectance_atr(ns, n0, theta, atrSPolFraction)
 
    Calculate the atr s and p reflectance.
@@ -1010,9 +1100,11 @@ Functions
        The p-wave Fresnel amplitude.
 
 
+
 .. py:function:: rodridgues_rotations(efield)
 
    Take the field directions in efield and use each direction to calculate a random rotation about that axis.
+
    Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix
    using the Rodrigues rotation formula A = I3.cos(theta) + (1-cos(theta)) e . eT + ex sin(theta),
    where I3 is a unit matrix, e is the direction, and ex is the cross product matrix:
@@ -1039,6 +1131,7 @@ Functions
    - Output is a list of 3x3 rotation matrices.
 
 
+
 .. py:function:: solve_effective_medium_equations(method, vf, size_mu, size_distribution_sigma, matrixPermittivityFunction, shape, L, concentration, atrPermittivity, atrTheta, atrSPol, bubble_vf, bubble_radius, previous_solution_shared, atuple)
 
    Solve the effective medium equations.
@@ -1061,9 +1154,9 @@ Functions
        The depolarisation matrix.
    concentration : float
        The concentration of particles.
-   AtrPermittivity : float
+   atrPermittivity : float
        The permittivity of the ATR substrate.
-   AtrTheta : float
+   atrTheta : float
        The ATR angle of incidence.
    atrSPol : str
        The ATR polarisation.
@@ -1089,6 +1182,7 @@ Functions
        absorption_coefficient
        molar_absorption_coefficient
        spatr
+
 
 
 .. py:function:: waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
@@ -1124,5 +1218,6 @@ Functions
    amplitudes, which are then used to approximate the effective wavenumber for
    wave propagation in the medium. This model is particularly useful in the study
    of wave scattering in composite materials and biological tissues.
+
 
 

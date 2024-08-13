@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   SpreadSheetMamager module
+   SpreadSheetMamager module.
 
 
 
@@ -72,6 +72,7 @@ Classes
    close()
        Closes the workbook, finalizing it for output.
 
+
    .. py:method:: close()
 
       Close the workbook if it hasn't been closed already.
@@ -85,6 +86,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: delete()
@@ -125,9 +127,10 @@ Classes
       handled by the instance. 
 
 
+
    .. py:method:: selectWorkSheet(name)
 
-      Selects or opens a worksheet by name.
+      Select or opens a worksheet by name.
 
       Parameters
       ----------
@@ -145,9 +148,10 @@ Classes
       the worksheet name.
 
 
+
    .. py:method:: write(row, col, item)
 
-      Writes an item to a specific position in the active worksheet, handling complex numbers.
+      Write an item to a specific position in the active worksheet, handling complex numbers.
 
       Parameters
       ----------
@@ -174,7 +178,7 @@ Classes
 
    .. py:method:: writeNextRow(items, row=None, col=None, check='')
 
-      Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
+      Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
 
       Parameters
       ----------
@@ -197,6 +201,7 @@ Classes
       - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
       - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
       - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
+
 
 
 

@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Materials DataBase
+   Materials DataBase.
 
    An interface to the spreadsheet which holds materials data
 
@@ -46,6 +46,7 @@ Classes
    Methods
    -------
    Inherits methods from the `Material` class.
+
 
 
 .. py:class:: DrudeLorentz(name, epsinf, omegas, strengths, gammas, density=None, cell=None)
@@ -90,6 +91,7 @@ Classes
    a density of 19.3 g/ml.
 
 
+
 .. py:class:: External(name, permittivityObject=None, density=None, cell=None)
 
 
@@ -131,6 +133,7 @@ Classes
    Notes
    -----
    The FPSQ (fitted phonon simple quantum) model is used to describe the permittivity of the material. This model is based on the harmonic oscillator model and describes the permittivity as a function of frequency.
+
 
 
 .. py:class:: Material(name, density=None, permittivityObject=None, cell=None)
@@ -230,9 +233,10 @@ Classes
    setPermittivityObject(permittivityObject)
        Sets the permittivityObject for the material.
 
+
    .. py:method:: getCell()
 
-      Return the cell
+      Return the cell.
 
       Parameters
       ----------
@@ -243,9 +247,10 @@ Classes
       self.cell
 
 
+
    .. py:method:: getDensity()
 
-      Return the density
+      Return the density.
 
       Parameters
       ----------
@@ -256,9 +261,10 @@ Classes
       self.density
 
 
+
    .. py:method:: getFrequencies()
 
-      Gets the frequencies for a Lorentzian permittivity
+      Get the frequencies for a Lorentzian permittivity.
 
       Parameters
       ----------
@@ -270,9 +276,10 @@ Classes
           Returns the frequencies for a Lorentzian function in cm-1
 
 
+
    .. py:method:: getInformation()
 
-      Returns information about the material.
+      Return information about the material.
 
       Parameters
       ----------
@@ -282,6 +289,7 @@ Classes
       -------
       str
           A description of the material.
+
 
 
    .. py:method:: getName()
@@ -298,9 +306,10 @@ Classes
           The name attribute of the object.
 
 
+
    .. py:method:: getOscillatorStrengths()
 
-      Gets the oscillator strengths for a Lorentzian permittivity
+      Get the oscillator strengths for a Lorentzian permittivity.
 
       The oscillator strength of each transition is a 3x3 matrix
 
@@ -314,9 +323,10 @@ Classes
           Returns the oscillator strengths for a Lorentzian permittivity function in cm-1
 
 
+
    .. py:method:: getPermittivityFunction()
 
-      Returns the permittivity function.
+      Return the permittivity function.
 
       Parameters
       ----------
@@ -328,9 +338,10 @@ Classes
           Return the permittivity object function
 
 
+
    .. py:method:: getPermittivityObject()
 
-      Returns the permittivity object.
+      Return the permittivity object.
 
       Parameters
       ----------
@@ -342,9 +353,10 @@ Classes
           Return the permittivity object (dielectric function object)
 
 
+
    .. py:method:: getSigmas()
 
-      Gets the sigma parameters for a Lorentzian permittivity
+      Get the sigma parameters for a Lorentzian permittivity.
 
       Parameters
       ----------
@@ -356,9 +368,10 @@ Classes
           Returns the sigma parameters for a Lorentz permittivity function in cm-1
 
 
+
    .. py:method:: isScalar()
 
-      Returns true if the material returns a scalar permittivity.
+      Return true if the material returns a scalar permittivity.
 
       Parameters
       ----------
@@ -370,9 +383,10 @@ Classes
           True if the material returns a scalar permittivity, False otherwise.
 
 
+
    .. py:method:: isTensor()
 
-      Returns true if the material returns a tensor permittivity.
+      Return true if the material returns a tensor permittivity.
 
       Parameters
       ----------
@@ -382,6 +396,7 @@ Classes
       -------
       bool
           True if the material returns a tensor permittivity, False otherwise.
+
 
 
    .. py:method:: print()
@@ -397,35 +412,40 @@ Classes
       None
 
 
+
    .. py:method:: setCell(cell)
 
-      Set the unit cell
+      Set the unit cell.
 
       Parameters
       ----------
       cell : a unit cell
+          Set the unit cell of the material
 
       Returns
       -------
       None
+
 
 
    .. py:method:: setDensity(value)
 
-      Set the density
+      Set the density.
 
       Parameters
       ----------
       value : float
+          The value of the density
 
       Returns
       -------
       None
 
 
+
    .. py:method:: setFrequencies(frequencies)
 
-      Sets the frequencies for a Lorentzian permittivity
+      Set the frequencies for a Lorentzian permittivity.
 
       Parameters
       ----------
@@ -440,7 +460,7 @@ Classes
 
    .. py:method:: setOscillatorStrengths(strengths)
 
-      Sets the oscillator strengths for a Lorentzian permittivity
+      Set the oscillator strengths for a Lorentzian permittivity.
 
       Parameters
       ----------
@@ -460,15 +480,17 @@ Classes
       Parameters
       ----------
       permittivityObject : a permittivity object (dielectric function object)
+          The permittivity object is used to calculate the permittivity of the material
 
       Returns
       -------
       None
 
 
+
    .. py:method:: setSigmas(sigmas)
 
-      Sets the sigma parameters for a Lorentzian permittivity
+      Set the sigma parameters for a Lorentzian permittivity.
 
       Parameters
       ----------
@@ -518,6 +540,8 @@ Classes
        The path to the Excel spreadsheet containing materials data.
    sheetNames : list
        A list of strings representing the names of the sheets within the Excel spreadsheet.
+   cache : dictionary
+       A dictionary of materials that have been read from the database
    debug : bool, optional
        A flag indicating whether debugging information should be printed. Default is False.
 
@@ -548,9 +572,10 @@ Classes
    readSellmeier(sheet, worksheet, density, unitCell)
        Reads Sellmeier model parameters for a given material from the spreadsheet.
 
+
    .. py:method:: getFileName()
 
-      Return the filename
+      Return the filename.
 
       Parameters
       ----------
@@ -560,6 +585,7 @@ Classes
       -------
       str
           The filename.
+
 
 
    .. py:method:: getMaterial(sheet)
@@ -580,9 +606,10 @@ Classes
           The material object created from the excel sheet data.
 
 
+
    .. py:method:: getSheetNames()
 
-      Returns a list of the sheetnames in the database.
+      Return a list of the sheetnames in the database.
 
       As well as the sheets in the database, there are some default materials which will be added
       to the list of materials and which are provided internally by this module.
@@ -595,6 +622,7 @@ Classes
       -------
       list
           A list of the sheet names present in the database.
+
 
 
    .. py:method:: readConstantPermittivity(sheet, worksheet, density)
@@ -615,6 +643,7 @@ Classes
       None
 
 
+
    .. py:method:: readConstantRefractiveIndex(sheet, worksheet, density)
 
       Read constant refractive index from the spreadsheet.
@@ -631,6 +660,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: readFPSQ(sheet, worksheet, density, unitCell)
@@ -653,6 +683,7 @@ Classes
       None
 
 
+
    .. py:method:: readLorentzDrude(sheet, worksheet, density, unitCell)
 
       Read Drude-Lorentz data from the spreadsheet.
@@ -671,6 +702,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: readSellmeier(sheet, worksheet, density, unitCell)
@@ -693,6 +725,7 @@ Classes
       None
 
 
+
    .. py:method:: readTabulatedPermittivity(sheet, worksheet, density)
 
       Read tabulated permittivity data from the spreadsheet.
@@ -709,6 +742,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: readTabulatedRefractiveIndex(sheet, worksheet, density)
@@ -729,6 +763,7 @@ Classes
       None
 
 
+
    .. py:method:: valid()
 
       Test to see if the spreadsheet is a valid materials database.
@@ -745,6 +780,7 @@ Classes
       Notes
       -----
       None
+
 
 
 
@@ -777,6 +813,7 @@ Classes
    -------
    __init__(self, name, Bs, Cs, density=None, cell=None)
        Initializes a Sellmeier material with specified parameters.
+
 
 
 .. py:class:: Tabulated(name, vs_cm1=None, permittivities=None, density=None, cell=None)
@@ -814,9 +851,10 @@ Classes
    >>> material1 = Tabulated("Quartz", vs_cm1=[500, 1000, 1500], permittivities=[2.1, 2.3, 2.5], density=2.65)
    >>> material2 = Tabulated("Synthetic", vs_cm1=[200, 400, 600], permittivities=[[2.1, 2.3, 2.5], [2.4, 2.6, 2.8], [3.0, 3.2, 3.4]], density=1.5)
 
+
    .. py:method:: setEpsilonInfinity(eps)
 
-      Sets the value of epsilon infinity for the material
+      Set the value of epsilon infinity for the material.
 
       Parameters
       ----------
@@ -826,6 +864,7 @@ Classes
       Returns
       -------
       None
+
 
 
 

@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.ViewerTab">
 <span id="pdielec-gui-viewertab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.ViewerTab" title="PDielec.GUI.ViewerTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.ViewerTab" title="Permalink to this heading">#</a></h1>
-<p>ViewerTab module</p>
+<p>ViewerTab module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -284,7 +284,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab" title="PDielec.GUI.ViewerTab.ViewerTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ViewerTab</span></code></a></p></td>
-<td><p>A class representing a viewer tab in a graphical user interface, specifically for visualizing</p></td>
+<td><p>A class representing a viewer tab in a graphical user interface, specifically for visualizing molecular structures and vibrational modes.</p></td>
 </tr>
 </tbody>
 </table>
@@ -293,8 +293,7 @@
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ViewerTab.</span></span><span class="sig-name descname"><span class="pre">ViewerTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
-<p>A class representing a viewer tab in a graphical user interface, specifically for visualizing
-molecular structures and vibrational modes.</p>
+<p>A class representing a viewer tab in a graphical user interface, specifically for visualizing molecular structures and vibrational modes.</p>
 <p>This class integrates several widgets to enable the selection and visualization of various
 parameters relevant to molecular structures and their vibrational modes. It allows for
 interactive change of settings like atom scaling, super cell configuration, and visualization
@@ -550,7 +549,7 @@ The settings dictionary is updated with the new colours and a refresh requested<
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_filename_button_clicked">
 <span class="sig-name descname"><span class="pre">on_filename_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_filename_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_button_clicked" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the action triggered by clicking the filename button.</p>
+<dd><p>Handle the action triggered by clicking the filename button.</p>
 <p>This method checks if the selected filename has a valid extension and exists. If any
 checks fail, it alerts the user and aborts the operation. Otherwise, it proceeds to
 save the current state or image of the OpenGL widget in the specified file format.</p>
@@ -601,7 +600,7 @@ the application’s cursor is restored to its default state after the operation 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_return">
 <span class="sig-name descname"><span class="pre">on_filename_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_filename_le_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_return" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the event triggered by the return key press within the filename input field.</p>
+<dd><p>Handle the event triggered by the return key press within the filename input field.</p>
 <p>This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It primarily invokes the filename button click event handler, simulating a click operation on the associated button.</p>
 <section id="id20">
 <h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
@@ -766,7 +765,7 @@ to plot. It logs the method’s progress using a debugger’s print function.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_animation">
 <span class="sig-name descname"><span class="pre">plot_animation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot_animation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_animation" title="Permalink to this definition">#</a></dt>
-<dd><p>Initiates and displays an animation of a vibrational mode in an OpenGL widget.</p>
+<dd><p>Initiate and display an animation of a vibrational mode in an OpenGL widget.</p>
 <p>This method controls the display of a predefined animation within
 an OpenGL widget. It hides any arrows, triggers a visual update,
 and starts the animation process. Debug messages are logged at the
@@ -784,7 +783,7 @@ start and completion of the animation process.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_arrows">
 <span class="sig-name descname"><span class="pre">plot_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot_arrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_arrows" title="Permalink to this definition">#</a></dt>
-<dd><p>Plot arrows showing the vibrational mode of a molecule</p>
+<dd><p>Plot arrows showing the vibrational mode of a molecule.</p>
 <p>This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.</p>
 <section id="id40">
 <h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
@@ -843,7 +842,7 @@ start and completion of the animation process.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.requestRefresh">
 <span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.requestRefresh" title="Permalink to this definition">#</a></dt>
-<dd><p>Initiates a refresh request.</p>
+<dd><p>Initiate a refresh request.</p>
 <p>This method sets an internal flag to indicate that a refresh is required.</p>
 <section id="id47">
 <h5>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>

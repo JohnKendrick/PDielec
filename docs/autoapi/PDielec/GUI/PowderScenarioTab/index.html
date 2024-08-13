@@ -275,7 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.PowderScenarioTab">
 <span id="pdielec-gui-powderscenariotab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.PowderScenarioTab" title="PDielec.GUI.PowderScenarioTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.PowderScenarioTab" title="Permalink to this heading">#</a></h1>
-<p>PowderScenarioTab module</p>
+<p>PowderScenarioTab module.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -284,7 +284,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab" title="PDielec.GUI.PowderScenarioTab.PowderScenarioTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PowderScenarioTab</span></code></a></p></td>
-<td><p>A class for managing the Powder Scenario Tab</p></td>
+<td><p>A class for managing the Powder Scenario Tab.</p></td>
 </tr>
 </tbody>
 </table>
@@ -293,7 +293,7 @@
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PowderScenarioTab.</span></span><span class="sig-name descname"><span class="pre">PowderScenarioTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab" title="PDielec.GUI.ScenarioTab.ScenarioTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab.ScenarioTab</span></code></a></p>
-<p>A class for managing the Powder Scenario Tab</p>
+<p>A class for managing the Powder Scenario Tab.</p>
 <p>It inherits from <a class="reference internal" href="../ScenarioTab/index.html#module-PDielec.GUI.ScenarioTab" title="PDielec.GUI.ScenarioTab"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScenarioTab</span></code></a>, thus utilizing its layout and properties,
 with additional features and settings pertinent to powder scenarios.</p>
 <section id="parameters">
@@ -467,7 +467,8 @@ with additional features and settings pertinent to powder scenarios.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_result">
 <span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_result" title="Permalink to this definition">#</a></dt>
-<dd><section id="id5">
+<dd><p>Return a result for plotting.</p>
+<section id="id5">
 <h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>vs_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1</p>
@@ -521,7 +522,7 @@ See get_result() for accessing the results themselves</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_incident_ang_sb_changed">
 <span class="sig-name descname"><span class="pre">on_atr_incident_ang_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_atr_incident_ang_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_incident_ang_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handles the update to the ATR incident angle situation.</p>
+<dd><p>Handle the update to the ATR incident angle situation.</p>
 <p>This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.</p>
 <section id="id10">
 <h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
@@ -563,7 +564,7 @@ See get_result() for accessing the results themselves</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_spolfrac_sb_changed">
 <span class="sig-name descname"><span class="pre">on_atr_spolfrac_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_atr_spolfrac_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_spolfrac_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the ATR S polarisation fraction setting and marks refresh as required.</p>
+<dd><p>Update the ATR S polarisation fraction setting and request a refresh as required.</p>
 <section id="id15">
 <h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -605,7 +606,7 @@ See get_result() for accessing the results themselves</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_vf_sb_changed">
 <span class="sig-name descname"><span class="pre">on_bubble_vf_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_bubble_vf_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_vf_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle a change to the bubble volume fraction</p>
+<dd><p>Handle a change to the bubble volume fraction.</p>
 <p>A change in the bubble volume fraction causes changes in the volume and mass fractions
 These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
 A refresh is forced</p>
@@ -621,7 +622,7 @@ A refresh is forced</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_density_sb_changed">
 <span class="sig-name descname"><span class="pre">on_density_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_density_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_density_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle a change to the matrix density</p>
+<dd><p>Handle a change to the matrix density.</p>
 <p>Changes in density cause changes in the volume and mass fractions.
 These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
 A refresh is forced</p>
@@ -640,17 +641,23 @@ A refresh is forced</p>
 <dd><p>Handle a change to the h parameter of the (hkl) surface.</p>
 <section id="id22">
 <h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
-<p>value : int</p>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>The h, k or l value</p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_k_sb_changed">
 <span class="sig-name descname"><span class="pre">on_k_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_k_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_k_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle a change to the k parameter of the (hkl) surface</p>
+<dd><p>Handle a change to the k parameter of the (hkl) surface.</p>
 <section id="id23">
 <h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
-<p>value : int</p>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>The h, k or l value</p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
@@ -660,7 +667,10 @@ A refresh is forced</p>
 <dd><p>Handle a change to the l parameter of the (hkl) surface.</p>
 <section id="id24">
 <h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
-<p>value : int</p>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>The h, k or l value</p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
@@ -701,7 +711,7 @@ A refresh is performed</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_methods_cb_activated">
 <span class="sig-name descname"><span class="pre">on_methods_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_methods_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_methods_cb_activated" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle changes in the calculation method for the effective medium theory</p>
+<dd><p>Handle changes in the calculation method for the effective medium theory.</p>
 <section id="id28">
 <h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -770,7 +780,7 @@ A refresh is performed</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_shape_cb_activated">
 <span class="sig-name descname"><span class="pre">on_shape_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_shape_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_shape_cb_activated" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle changes to the shape of the powder particles</p>
+<dd><p>Handle changes to the shape of the powder particles.</p>
 <section id="id35">
 <h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -783,7 +793,7 @@ A refresh is performed</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_sigma_sb_changed">
 <span class="sig-name descname"><span class="pre">on_sigma_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_sigma_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_sigma_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle a particle size distribution change</p>
+<dd><p>Handle a particle size distribution change.</p>
 <section id="id36">
 <h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -796,7 +806,7 @@ A refresh is performed</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_size_sb_changed">
 <span class="sig-name descname"><span class="pre">on_size_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_size_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_size_sb_changed" title="Permalink to this definition">#</a></dt>
-<dd><p>Handle a particle size change</p>
+<dd><p>Handle a particle size change.</p>
 <section id="id37">
 <h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <dl class="simple">

@@ -287,17 +287,17 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Read the contents of a directory containing DFT output and create a pickled filed</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Read the contents of a directory containing DFT output and create a pickled file.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+
 <span class="kn">import</span> <span class="nn">dill</span> <span class="k">as</span> <span class="nn">pickle</span>
+
 <span class="kn">import</span> <span class="nn">PDielec.__init__</span>
+
 <span class="n">version</span> <span class="o">=</span> <span class="n">PDielec</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="n">__version__</span>
 
 <div class="viewcode-block" id="print_help"><a class="viewcode-back" href="../../autoapi/PDielec/pickled_reader/index.html#PDielec.pickled_reader.print_help">[docs]</a><span class="k">def</span> <span class="nf">print_help</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Print help information to standard error and exit the program.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print help information to standard error and exit the program.</span>
 
 <span class="sd">    This function prints out instructions for using a command-line tool that reads in a pickled file. The file should have been created with a specific flag (&#39;-pickle&#39;) using the &#39;preader&#39; command. It also outputs the version of the program.</span>
 
@@ -307,15 +307,14 @@
 
 <span class="sd">    The function explicitly calls `exit()`, which terminates the program execution. This is used here to halt further execution after displaying the help information.</span>
 <span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickled_reader filenames&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Read in a pickled (actually using dill to pickle the object) reader            &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  The pickled file should have been created using preader -pickle                &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Version &#39;</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="n">exit</span><span class="p">()</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pickled_reader filenames&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Read in a pickled (actually using dill to pickle the object) reader            &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  The pickled file should have been created using preader -pickle                &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Version &quot;</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/pickled_reader/index.html#PDielec.pickled_reader.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Main program entry point.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter point for main program.</span>
 
 <span class="sd">     his function reads a serialized object from a pickle file specified as the first command line argument. It deserializes objects from the file until it reaches the end of the file and then iterates through these objects, printing their details and the details of their last unit cell.</span>
 
@@ -340,6 +339,7 @@
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
 <span class="sd">    The function requires the &#39;sys&#39; and &#39;pickle&#39; modules to be imported.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="c1">#</span>
     <span class="c1"># Print out the help file if there is nothing else on the command line</span>
@@ -358,21 +358,21 @@
     <span class="c1"># Open the pickled file as binary and for reading only</span>
     <span class="c1"># keep reading until we reach an end of file</span>
     <span class="c1">#</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">picklefile</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">picklefile</span><span class="p">,</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">readers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
             <span class="k">pass</span>
     <span class="c1">#</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Read in </span><span class="si">{}</span><span class="s1"> readers&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">readers</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Read in </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">readers</span><span class="p">)</span><span class="si">}</span><span class="s2"> readers&quot;</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="c1"># Loop over the readers and print out some information - assign a variable</span>
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">reader</span> <span class="ow">in</span> <span class="n">readers</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NEW READER type=</span><span class="si">{}</span><span class="s1">, file=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">type</span><span class="p">,</span><span class="n">reader</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NEW READER type=</span><span class="si">{</span><span class="n">reader</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">, file=</span><span class="si">{</span><span class="n">reader</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;LAST CELL&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LAST CELL&quot;</span><span class="p">)</span>
         <span class="n">lastcell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
         <span class="n">lastcell</span><span class="o">.</span><span class="n">print</span><span class="p">()</span></div>
     <span class="c1"># End of for loop over readers</span>

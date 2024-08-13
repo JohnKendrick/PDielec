@@ -287,8 +287,7 @@
 <span class="c1">#</span>
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Read the contents of a single file containing DFT output and create a csv style file of information</span>
+<span class="sd">&quot;&quot;&quot;Read the contents of a single file containing DFT output and create a csv style file of information.</span>
 
 <span class="sd">Parse command-line arguments to set program configuration and process a specified file.</span>
 
@@ -303,18 +302,19 @@
 <span class="sd">- `-version` : Print software version and exit.</span>
 <span class="sd">- `-program` : Specify the program to use for analysis. When set to &#39;phonopy&#39;, an additional quantum mechanics program argument is required.</span>
 <span class="sd">- Any other argument is considered as the filename for analysis.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">PDielec.Utilities</span> <span class="k">as</span> <span class="nn">Utilities</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
 <span class="kn">import</span> <span class="nn">PDielec.__init__</span>
+<span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">Utilities</span>
+
 <span class="n">version</span> <span class="o">=</span> <span class="n">PDielec</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="n">__version__</span>
 
 <div class="viewcode-block" id="print_help"><a class="viewcode-back" href="../../autoapi/PDielec/p1reader/index.html#PDielec.p1reader.print_help">[docs]</a><span class="k">def</span> <span class="nf">print_help</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Prints the help message for the p1reader program to stderr.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print the help message for the p1reader program to stderr.</span>
 
 <span class="sd">    This function displays the usage of the `p1reader` command, including accepted programs, flags, and additional</span>
 <span class="sd">    optional arguments.</span>
@@ -329,24 +329,24 @@
 <span class="sd">    To display the help message, simply call the function without any arguments:</span>
 
 <span class="sd">    &gt;&gt;&gt; print_help()</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;p1reader -program program [-version] filename&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  </span><span class="se">\&quot;</span><span class="s1">program</span><span class="se">\&quot;</span><span class="s1"> must be one of </span><span class="se">\&quot;</span><span class="s1">abinit</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">castep</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">crystal</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">gulp</span><span class="se">\&quot;</span><span class="s1">       &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           </span><span class="se">\&quot;</span><span class="s1">phonopy</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">qe</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">vasp</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">experiment</span><span class="se">\&quot;</span><span class="s1">, </span><span class="se">\&quot;</span><span class="s1">auto</span><span class="se">\&quot;</span><span class="s1">               &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           The default is auto, so the program tries to guess the package from   &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           the contents of the directory.  However this is not fool-proof!       &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           If phonopy is used it must be followed by the QM package              &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           in auto mode if the file was created by a phonopy VASP is assumed     &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  -debug   to switch on more debug information                                   &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  -version print the version of PDielec library being used                       &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Version &#39;</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="n">exit</span><span class="p">()</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p1reader -program program [-version] filename&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &quot;program&quot; must be one of &quot;abinit&quot;, &quot;castep&quot;, &quot;crystal&quot;, &quot;gulp&quot;       &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           &quot;phonopy&quot;, &quot;qe&quot;, &quot;vasp&quot;, &quot;experiment&quot;, &quot;auto&quot;               &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           The default is auto, so the program tries to guess the package from   &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           the contents of the directory.  However this is not fool-proof!       &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           If phonopy is used it must be followed by the QM package              &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           in auto mode if the file was created by a phonopy VASP is assumed     &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  -debug   to switch on more debug information                                   &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  -version print the version of PDielec library being used                       &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Version &quot;</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/p1reader/index.html#PDielec.p1reader.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="c1"># Start processing the directories</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse command-line arguments to set program configuration and process a specified file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments to set program configuration and process a specified file.</span>
 
 <span class="sd">    This function does not have a formal return but exits with different messages and statuses based on the command-line inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line requests for help and version information.</span>
 
@@ -376,64 +376,70 @@
 <span class="sd">    - The function makes extensive use of `sys.argv` for argument parsing and `sys.stderr` for error and status messaging.</span>
 <span class="sd">    - The function supports a flexible addition of program types and respective validation.</span>
 <span class="sd">    - The handling of `-debug`, `-help`, `-version`, and program-specific arguments provides an example of a rudimentary command-line interface.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">:</span>
         <span class="n">print_help</span><span class="p">()</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="n">ntokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
     <span class="n">itoken</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="n">program</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span>
-    <span class="n">qmprogram</span> <span class="o">=</span> <span class="s1">&#39;vasp&#39;</span>
+    <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+    <span class="n">qmprogram</span> <span class="o">=</span> <span class="s2">&quot;vasp&quot;</span>
     <span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-debug&quot;</span><span class="p">:</span>
             <span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-help&quot;</span><span class="p">:</span>
             <span class="n">print_help</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-version&quot;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Version &#39;</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Version &quot;</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-program&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">program</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s1">&#39;phonopy&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">qmprogram</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">program</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please give a filename to be read in&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please give a filename to be read in&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">program</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span><span class="s1">&#39;abinit&#39;</span><span class="p">,</span><span class="s1">&#39;castep&#39;</span><span class="p">,</span><span class="s1">&#39;crystal&#39;</span><span class="p">,</span><span class="s1">&#39;gulp&#39;</span><span class="p">,</span><span class="s1">&#39;qe&#39;</span><span class="p">,</span><span class="s1">&#39;vasp&#39;</span><span class="p">,</span><span class="s1">&#39;phonopy&#39;</span><span class="p">,</span><span class="s1">&#39;experiment&#39;</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program is not recognised: &#39;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
+        <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;quantum espresso&quot;</span>
+    <span class="k">if</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
+        <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;quantum espresso&quot;</span>
 
-    <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s1">&#39;phonopy&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">qmprogram</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;abinit&#39;</span><span class="p">,</span><span class="s1">&#39;castep&#39;</span><span class="p">,</span><span class="s1">&#39;crystal&#39;</span><span class="p">,</span><span class="s1">&#39;gulp&#39;</span><span class="p">,</span><span class="s1">&#39;qe&#39;</span><span class="p">,</span><span class="s1">&#39;vasp&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Phonopy QM program is not recognised: &#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  QM program used by Phonopy is: &#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">program</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span><span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;castep&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;gulp&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span><span class="p">,</span><span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;experiment&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Program is not recognised: &quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Program is &#39;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">qmprogram</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;castep&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;gulp&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Phonopy QM program is not recognised: &quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  QM program used by Phonopy is: &quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Program is &quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error file requested for analysis does not exist&#39;</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error file requested for analysis does not exist&quot;</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="c1">#</span>
     <span class="c1"># If no program information was given try and work out what package created the outputfile</span>
     <span class="c1">#</span>
     <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
-        <span class="n">program</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="c1"># Print out what we are doing</span>
     <span class="c1">#</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Analysing </span><span class="si">{}</span><span class="s1"> generated by </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">program</span><span class="p">),</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Analysing </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> generated by </span><span class="si">{</span><span class="n">program</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">qmprogram</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="c1"># Get the reader from the filename and package used to create it</span>
     <span class="c1">#</span>

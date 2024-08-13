@@ -40,6 +40,7 @@ Classes
    -----
    This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
 
+
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the output file.
@@ -47,6 +48,7 @@ Classes
       Parameters
       ----------
       line : str
+          The current line
 
       Returns
       -------
@@ -58,6 +60,7 @@ Classes
                [a3x a3y a3z]]
 
           where 1, 2, 3 represent the field directions and x, y, z are the atomic displacements.
+
 
 
    .. py:method:: _read_born_charges_from_born_dat(filename)
@@ -78,6 +81,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_born_charges_from_output(line)
 
       Read Born charges from output file.
@@ -87,6 +91,7 @@ Classes
       Parameters
       ----------
       line : str
+          The current line (not used)
 
       Returns
       -------
@@ -95,6 +100,7 @@ Classes
       Note
       ----
       This method directly modifies the `born_charges` attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's formatted in a specific way expected by the logic of this method.
+
 
 
    .. py:method:: _read_eigenvectors(line)
@@ -118,6 +124,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_electrons(line)
 
       Parse the number of electrons from a string and assign it to the instance variable.
@@ -132,9 +139,10 @@ Classes
       None
 
 
+
    .. py:method:: _read_energy(line)
 
-      Reads and sets the free energy and energy without entropy from a line.
+      Read and set the free energy and energy without entropy from a line.
 
       Parameters
       ----------
@@ -154,6 +162,7 @@ Classes
       electronvolts (eV) using a conversion factor stored in `hartree2ev`.
 
       There are no return values. Modifications are made directly to the instance attributes.
+
 
 
    .. py:method:: _read_energy2(line)
@@ -191,9 +200,10 @@ Classes
       None
 
 
+
    .. py:method:: _read_epsilon(line)
 
-      Reads epsilon values from a formatted file and updates the optical dielectric matrix.
+      Read epsilon values from a formatted file and update the optical dielectric matrix.
 
       This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object's `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their 'XX', 'YY', 'ZZ', 'XY', 'XZ', and 'YZ' labels in the file. The method expects the values in a specific format and parses them accordingly.
 
@@ -252,9 +262,10 @@ Classes
           A count of ions per species type.
 
 
+
    .. py:method:: _read_hessfreq_dat(filename)
 
-      Reads a Hessian frequency data from a given file and updates the dynamical matrix.
+      Read a Hessian frequency data from a given file and update the dynamical matrix.
 
       Parameters
       ----------
@@ -299,6 +310,7 @@ Classes
       descriptor's pointer.
 
 
+
    .. py:method:: _read_kpoints(line)
 
       Parse a line of text to extract k-point grid dimensions and the total number of k-points.
@@ -313,6 +325,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_lattice_vectors(line)
@@ -367,6 +380,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_output_eigenvectors(line)
 
       Read and process output eigenvectors from a file descriptor.
@@ -389,6 +403,7 @@ Classes
       - Normalization of each mass-weighted mode is performed at the end of the method.
 
 
+
    .. py:method:: _read_output_files()
 
       Read the Crystal files in the directory.
@@ -398,6 +413,7 @@ Classes
       Returns
       -------
       None
+
 
 
 

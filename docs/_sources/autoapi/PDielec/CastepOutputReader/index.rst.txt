@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   CastepOutputReader module
+   CastepOutputReader module.
 
 
 
@@ -41,6 +41,7 @@ Classes
    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
    - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
 
+
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the castep file.
@@ -56,6 +57,7 @@ Classes
       -------
       ndarray
           An array where each row represents the born charges for a particular atomic displacement arranged in the format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.
+
 
 
    .. py:method:: _read_cellcontents(line)
@@ -80,9 +82,10 @@ Classes
       None
 
 
+
    .. py:method:: _read_convergence(line)
 
-      Reads convergence data from a file and updates internal lists with values.
+      Read convergence data from a file and update internal lists.
 
       This internal method reads specific lines from a file that is already opened and updates internal lists for de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on the values found in those lines.
 
@@ -100,6 +103,7 @@ Classes
       This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line). 
 
       The function does not return any value, but it updates the internal state of the object it is a part of.
+
 
 
    .. py:method:: _read_dielectric(line)
@@ -124,9 +128,10 @@ Classes
       This method modifies the state of the object by updating the 'zerof_optical_dielectric' and 'zerof_static_dielectric' lists with new data read from the file. 
 
 
+
    .. py:method:: _read_ediff(line)
 
-      Reads and sets the energy difference from a given line of text.
+      Read and set the energy difference from a given line of text.
 
       This is a private method intended to parse and store the energy difference
       from a standardized formatted line of text.
@@ -141,6 +146,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_energies(line)
@@ -194,6 +200,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_energies3(line)
 
       Read energy values from a line of text and append to class attributes.
@@ -220,6 +227,7 @@ Classes
       to. It does not return any value.
 
 
+
    .. py:method:: _read_energy_cutoff(line)
 
       Extract the energy cutoff value from a given line and store it in the object.
@@ -234,6 +242,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_external_pressure(line)
@@ -252,6 +261,7 @@ Classes
       Notes
       -----
       This function updates the `pressure` attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.
+
 
 
    .. py:method:: _read_frequencies(line)
@@ -285,6 +295,7 @@ Classes
       - The method relies on the internal variable `self._nbranches` to determine the number of modes to read, and `self.nions` for the number of ions per mode.
 
 
+
    .. py:method:: _read_kpoint_grid(line)
 
       Parse and set the k-point grid dimensions from the given line.
@@ -299,6 +310,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_kpoints(line)
@@ -317,6 +329,7 @@ Classes
       Notes
       -----
       This function assumes the number of k-points is always located at the 6th position (index 5) when the line is split by whitespace. It directly updates the `kpoints` attribute of the class instance.
+
 
 
    .. py:method:: _read_masses(line)
@@ -338,7 +351,7 @@ Classes
 
    .. py:method:: _read_nbands(line)
 
-      Extracts the number of bands from a given line and sets it to the 'nbands' attribute of the class.
+      Extract the number of bands from a given line and set it to the 'nbands' attribute of the class.
 
       Parameters
       ----------
@@ -348,6 +361,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_nbranches(line)
@@ -370,9 +384,10 @@ Classes
       This function does not return anything as it sets the parsed number directly to an instance variable named `_nbranches`.
 
 
+
    .. py:method:: _read_nelect(line)
 
-      Extracts the number of electrons from a line and assigns it.
+      Extract the number of electrons from a line and assign it.
 
       Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance variable `electrons`.
 
@@ -389,8 +404,7 @@ Classes
 
    .. py:method:: _read_output_files()
 
-      Define the strings needed for searching the files
-      process the output files
+      Define the strings needed for searching the files process the output files.
 
       Parameters
       ----------
@@ -399,6 +413,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: _read_pseudoatom(line)
@@ -417,6 +432,7 @@ Classes
       Notes
       -----
       This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.
+
 
 
    .. py:method:: _read_pspot(line)
@@ -438,6 +454,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_skip4(line)
 
       Read and skip the next four lines from the current file position.
@@ -456,6 +473,7 @@ Classes
       None
 
 
+
    .. py:method:: _read_spin(line)
 
       Read and set the spin value from a given line of text.
@@ -470,6 +488,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
