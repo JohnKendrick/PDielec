@@ -1,0 +1,28 @@
+conda create -n QT6
+conda activate QT6
+conda install -c conda-forge qtpy
+pip install pyqt6
+export QT_API=pyqt6
+qtpy
+qtpy mypy-args
+
+conda install -c conda-forge numpy
+conda install -c conda-forge scipy
+# Saw error on loading from scipy.integrate import trapz
+# Downgraded python from 12 to 11
+conda install -c conda-forge python=11
+# Reinstalled pyqt6
+pip install pyqt6
+# Turned out that it looks like trapz has been replaced by trapzoid
+# Edited Calculator.py and replaced trapz by np.trapz
+# Also removed from scipy.integrate import trapz
+# Repeated this in the Mie package
+conda install -c conda-forge psutil
+conda install -c conda-forge matplotlib
+conda install -c conda-forge openpyxl
+conda install -c conda-forge xlsxwriter
+conda install -c conda-forge pyopengl
+conda install -c conda-forge spglib
+conda install -c conda-forge termcolor
+conda install -c conda-forge pyyaml
+
