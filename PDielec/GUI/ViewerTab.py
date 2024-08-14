@@ -17,8 +17,8 @@ import os
 from collections import deque
 
 import numpy as np
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import (
     QApplication,
     QColorDialog,
     QComboBox,

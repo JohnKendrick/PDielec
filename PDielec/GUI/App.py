@@ -16,8 +16,8 @@
 import os.path
 import sys
 
-from PyQt5.QtCore import QCoreApplication
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from qtpy.QtCore import QCoreApplication
+from qtpy.QtWidgets import QApplication, QMainWindow
 
 import PDielec.__init__
 from PDielec import Utilities

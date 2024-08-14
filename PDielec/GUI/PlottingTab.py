@@ -20,8 +20,8 @@ import matplotlib.figure
 import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import (
+from qtpy.QtCore import QCoreApplication, Qt
+from qtpy.QtWidgets import (
     QApplication,
     QComboBox,
     QDoubleSpinBox,

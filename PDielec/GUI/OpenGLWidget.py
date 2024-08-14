@@ -89,9 +89,9 @@ from OpenGL.GLU import (
     gluQuadricNormals,
     gluSphere,
 )
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QSurfaceFormat
-from PyQt5.QtWidgets import QOpenGLWidget
+from qtpy.QtCore import Qt, QTimer
+from qtpy.QtGui import QSurfaceFormat
+from qtpy.QtWidgets import QOpenGLWidget
 
 from PDielec.Utilities import Debug
 

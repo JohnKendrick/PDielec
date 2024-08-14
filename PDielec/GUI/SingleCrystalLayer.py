@@ -17,8 +17,8 @@
 import sys
 
 import numpy as np
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import (
     QComboBox,
     QDialog,
     QDialogButtonBox,

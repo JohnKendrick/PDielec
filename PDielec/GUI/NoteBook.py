@@ -18,8 +18,8 @@ import os
 import sys
 
 import psutil
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox, QTabWidget, QVBoxLayout, QWidget
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QApplication, QFileDialog, QMessageBox, QTabWidget, QVBoxLayout, QWidget
 
 from PDielec import Calculator
 from PDielec.GUI.AnalysisTab import AnalysisTab

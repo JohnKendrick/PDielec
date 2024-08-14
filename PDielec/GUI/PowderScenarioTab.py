@@ -19,8 +19,8 @@ from functools import partial
 from multiprocessing import Array
 
 import numpy as np
-from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import (
+from qtpy.QtCore import QCoreApplication, Qt
+from qtpy.QtWidgets import (
     QComboBox,
     QDoubleSpinBox,
     QFormLayout,

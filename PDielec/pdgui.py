@@ -33,8 +33,8 @@ import os
 import sys
 from multiprocessing import freeze_support
 
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QProgressBar, QSplashScreen
+from qtpy.QtGui import QPixmap
+from qtpy.QtWidgets import QApplication, QProgressBar, QSplashScreen
 
 import PDielec.__init__
 from PDielec.GUI.App import App

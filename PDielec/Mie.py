@@ -42,7 +42,7 @@ http://pymiescatt.readthedocs.io/en/latest/forward.html
 import warnings
 
 import numpy as np
-from scipy.integrate import trapz
+#jk from scipy.integrate import trapz
 from scipy.special import jv, yv
 
 # Parameter to determine wavelength crossover between methods for treating
@@ -692,12 +692,12 @@ def Mie_SD(m, wavelength, dp, ndp, nMedium=1.0, SMPS=True, interpolate=False, as
     bigG = np.sum(g*Q_sca*aSDn)/np.sum(Q_sca*aSDn)
     Bpr = Bext - bigG*Bsca
   else:
-    Bext = trapz(Q_ext*aSDn,dp)
-    Bsca = trapz(Q_sca*aSDn,dp)
+    Bext = np.trapz(Q_ext*aSDn,dp)
+    Bsca = np.trapz(Q_sca*aSDn,dp)
     Babs = Bext-Bsca
-    Bback = trapz(Q_back*aSDn,dp)
-    Bratio = trapz(Q_ratio*aSDn,dp)
-    bigG = trapz(g*Q_sca*aSDn,dp)/trapz(Q_sca*aSDn,dp)
+    Bback = np.trapz(Q_back*aSDn,dp)
+    Bratio = np.trapz(Q_ratio*aSDn,dp)
+    bigG = np.trapz(g*Q_sca*aSDn,dp)/np.trapz(Q_sca*aSDn,dp)
     Bpr = Bext - bigG*Bsca
 
   if asDict:
@@ -805,9 +805,9 @@ def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngl
     SR /= np.max(SR)
     SU /= np.max(SU)
   elif normalization in ["t","T","total","TOTAL"]:
-    SL /= trapz(SL,measure)
-    SR /= trapz(SR,measure)
-    SU /= trapz(SU,measure)
+    SL /= np.trapz(SL,measure)
+    SR /= np.trapz(SR,measure)
+    SU /= np.trapz(SU,measure)
   if _q:
     measure = (4*np.pi/wavelength)*np.sin(measure/2)*(diameter/2)
   return measure,SL,SR,SU
@@ -881,7 +881,7 @@ def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angular
     SR += r*n
     SU += u*n
   if normalization in ["n","N","number","particles"]:
-    _n = trapz(ndp,dp)
+    _n = np.trapz(ndp,dp)
     SL /= _n
     SR /= _n
     SU /= _n
@@ -890,9 +890,9 @@ def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angular
     SR /= np.max(SR)
     SU /= np.max(SU)
   elif normalization in ["t","T","total","TOTAL"]:
-    SL /= trapz(SL,measure)
-    SR /= trapz(SR,measure)
-    SU /= trapz(SU,measure)
+    SL /= np.trapz(SL,measure)
+    SR /= np.trapz(SR,measure)
+    SU /= np.trapz(SU,measure)
   return measure,SL,SR,SU
 
 def MieS1S2(m,x,mu):

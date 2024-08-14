@@ -17,8 +17,8 @@ import os.path
 import platform
 
 import numpy as np
-from PyQt5.QtCore import QCoreApplication, QSize, Qt
-from PyQt5.QtWidgets import (
+from qtpy.QtCore import QCoreApplication, QSize, Qt
+from qtpy.QtWidgets import (
     QComboBox,
     QFileDialog,
     QFormLayout,

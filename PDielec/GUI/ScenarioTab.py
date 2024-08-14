@@ -16,7 +16,7 @@
 # -*- coding: utf8 -*-
 import os
 
-from PyQt5.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
+from qtpy.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
 
 from PDielec import __file__ as PDielec_init_filename
 from PDielec.Materials import MaterialsDataBase
