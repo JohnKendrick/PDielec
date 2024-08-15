@@ -78,5 +78,4 @@ include =  ["PDielec","PDielec.GUI"]
 exclude =  ["PDielec.Tests*"]
 
 [tool.setuptools.package-data]
-mypkg = ["*.png","*.xlsx"]
-
+PDielec     = ["*.xlsx", "GUI/*.png"]
