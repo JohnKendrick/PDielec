@@ -1,0 +1,85 @@
+[build-system]
+requires = [ "setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdielec"
+version = "8.1.3"
+dependencies = [
+        "numpy",
+        "scipy",
+        "PyQt5",
+        "PyOpengl",
+        "matplotlib",
+        "xlsxwriter",
+        "openpyxl",
+        "scikit-learn",
+        "imageio",
+        "imageio-ffmpeg",
+        "PyYAML",
+        "termcolor",
+        "bleach",
+        "docutils",
+        "Pygments",
+        "beautifulsoup4",
+        "psutil",
+        "dill",
+        "requests",
+        "spglib",
+]
+requires-python = ">=3.7"
+authors = [
+  {name = "John Kendrick", email = "john@kendrick.me.uk"},
+  {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
+]
+maintainers = [
+  {name = "John Kendrick", email = "john@kendrick.me.uk"},
+  {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
+]
+
+description = "PDielec package for the calculation of THz and infrared spectra"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon"]
+
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage      = "https://johnkendrick.github.io/PDielec"
+Documentation = "https://johnkendrick.github.io/PDielec"
+Repository    = "https://github.com/JohnKendrick/PDielec.git"
+"Bug Tracker" = "https://github.com/JohnKendrick/PDielec/issues"
+Changelog     = "https://github.com/JohnKendrick/PDielec/blob/master/CHANGES.txt"
+
+[project.scripts]
+preader        = "PDielec.preader:main"
+p2cif          = "PDielec.p2cif:main"
+pdcompare      = "PDielec.pdcompare:main"
+pickled_reader = "PDielec.pickled_reader:main"
+vibanalysis    = "PDielec.vibanalysis:main"
+pdmake         = "PDielec.pdmake:main"
+
+[project.gui-scripts]
+pdgui = "PDielec.pdgui:main"
+
+[project.entry-points."spam.magical"]
+tomatoes = "spam:main_tomatoes"
+
+[tool.setuptools.packages.find]
+include =  ["PDielec","PDielec.GUI"]
+exclude =  ["PDielec.Tests*"]
+
+[tool.setuptools.package-data]
+mypkg = ["*.png","*.xlsx"]
+
