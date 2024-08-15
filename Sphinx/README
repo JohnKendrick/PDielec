@@ -7,4 +7,21 @@ https://foss.heptapod.net/doc-utils/cloud_sptheme/-/issues/48
 See jinja_PatchFile
 cloud_sptheme-ext-index_styling.py needs to be copied to /home/john/.conda/envs/develop/lib/python3.11/site-packages/cloud_sptheme/ext/index_styling.py for instance.
 
+The following pip install's are reqired:
+
+pip install sphinx-autoapi
+pip install sphinxcontrib.bibtex
+pip install cloud_sptheme
+pip install furo
+
+To fix the cloud_sptheme.
+# Store the current sphinx directory in a variable
+t=`pwd`
+# cd to the cloud_sptheme library
+cd /home/john/.conda/envs/QT6/lib/python3.11/site-packages/cloud_sptheme/ext
+# cp the index_styling file and patch it
+cp index_styling.py index_stylin.py.old
+patch < $t/jinja_PatchFile
+
+
 
