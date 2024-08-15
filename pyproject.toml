@@ -9,7 +9,6 @@ dependencies = [
     "dill",
     "imageio",
     "matplotlib",
-    "mkl",
     "numpy",
     "openpyxl",
     "psutil",

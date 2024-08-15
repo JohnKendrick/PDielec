@@ -2372,12 +2372,6 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          debugger.print("get_pool ncpus = ",ncpus)
          debugger.print("get_pool threading = ",threading)
          debugger.print("get_pool initializer = ",initializer)
-     # Switch off mkl threading
-     try:
-         import mkl
-         mkl.set_num_threads(1)
-     except Exception:
-         pass
      # see if threading has been requested
      if threading:
          from multiprocessing.dummy import Pool

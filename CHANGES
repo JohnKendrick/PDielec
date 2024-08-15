@@ -6,6 +6,16 @@ version 8.1.3
    Removed setup.cfg file.  setup.py no longer sets the version number.
    Updated the requirements.txt file using pipreq
    Updated the conda_installs.txt file
+   Removed the need for the mkl package.  But this means the number of processors used for threading
+        is set by the environment variables.  It is best to NOT use threading and have the number of
+        processors set to the number of cores.  The number of threads used by each core should be 1.
+        To force the BLAS routines in use it is best to use environment variables to control the 
+        number of threads.  For example....
+        export OMP_NUM_THREADS=1
+        export OPENBLAS_NUM_THREADS=1
+        export MKL_NUM_THREADS=1
+        export VECLIB_MAXIMUM_THREADS=1
+        export NUMEXPR_NUM_THREADS=1
 
 version 8.1.2
    Added a .nojekyll file into the docs/ directory to stop git hub pages over processing things
