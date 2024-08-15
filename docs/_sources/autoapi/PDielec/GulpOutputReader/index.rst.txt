@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GulpOutputReader`
-==================================
+PDielec.GulpOutputReader
+========================
 
 .. py:module:: PDielec.GulpOutputReader
 
@@ -9,23 +9,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.GulpOutputReader.GulpOutputReader
 
 
-
+Module Contents
+---------------
 
 .. py:class:: GulpOutputReader(names)
 
-
    Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
 
    Read the contents of a Gulp output file.
 
@@ -86,6 +84,7 @@ Classes
    nomodcoord, and prop.
 
 
+
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the gulp file.
@@ -126,6 +125,7 @@ Classes
 
 
 
+
    .. py:method:: _read_cellcontents(line)
 
       Read the cell contents in xyz space.
@@ -138,6 +138,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -156,6 +157,7 @@ Classes
 
 
 
+
    .. py:method:: _read_elastic_constants(line)
 
       Read the elastic constants.
@@ -168,6 +170,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -186,6 +189,7 @@ Classes
 
 
 
+
    .. py:method:: _read_external_pressure(line)
 
       Read external pressure.
@@ -201,6 +205,7 @@ Classes
 
 
 
+
    .. py:method:: _read_frequencies(line)
 
       Read the frequencies.
@@ -209,6 +214,7 @@ Classes
       ----------
       line : str (not used)
           The initial line
+
 
 
 
@@ -227,6 +233,7 @@ Classes
 
 
 
+
    .. py:method:: _read_number_of_irreducible_atoms(line)
 
       Read the number of irreducible atoms.
@@ -242,6 +249,7 @@ Classes
 
 
 
+
    .. py:method:: _read_optical_dielectric(line)
 
       Read optical dielectric constant.
@@ -250,6 +258,7 @@ Classes
       ----------
       line : str (not used)
           The initial line
+
 
 
 
@@ -264,6 +273,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -282,6 +292,7 @@ Classes
 
 
 
+
    .. py:method:: _read_static_dielectric(line)
 
       Read static dielectric constant.
@@ -294,6 +305,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -312,6 +324,7 @@ Classes
 
 
 
+
    .. py:method:: _read_total_number_of_atoms(line)
 
       Read the number of atoms.
@@ -325,6 +338,70 @@ Classes
       -------
       None
 
+
+
+
+   .. py:attribute:: _atom_types
+      :value: None
+
+
+
+   .. py:attribute:: _cartesian_coordinates
+      :value: []
+
+
+
+   .. py:attribute:: _fractional_coordinates
+      :value: []
+
+
+
+   .. py:attribute:: _gulpfile
+
+
+   .. py:attribute:: _mass_dictionary
+
+
+   .. py:attribute:: atomic_charges
+      :value: []
+
+
+
+   .. py:attribute:: elastic_constant_tensor
+      :value: None
+
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: ncores
+      :value: 0
+
+
+
+   .. py:attribute:: nions_irreducible
+      :value: None
+
+
+
+   .. py:attribute:: nshells
+      :value: None
+
+
+
+   .. py:attribute:: shells
+      :value: 0
+
+
+
+   .. py:attribute:: temperature
+      :value: None
+
+
+
+   .. py:attribute:: type
+      :value: 'Gulp output'
 
 
 

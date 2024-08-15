@@ -1,5 +1,5 @@
-:py:mod:`PDielec.pdmake`
-========================
+PDielec.pdmake
+==============
 
 .. py:module:: PDielec.pdmake
 
@@ -33,12 +33,26 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.pdmake.benchmarks
+   PDielec.pdmake.debug
+   PDielec.pdmake.print
+   PDielec.pdmake.settings
+   PDielec.pdmake.test_p2cif
+   PDielec.pdmake.test_pdgui
+   PDielec.pdmake.test_preader
+   PDielec.pdmake.test_singlecrystal
+   PDielec.pdmake.test_vibanalysis
+   PDielec.pdmake.useLocal
+   PDielec.pdmake.viewing
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -58,7 +72,6 @@ Functions
    PDielec.pdmake.runPDGuiTest
    PDielec.pdmake.runPdMakefile
    PDielec.pdmake.runPreaderTest
-   PDielec.pdmake.runPyInstaller
    PDielec.pdmake.runPyPi
    PDielec.pdmake.runTests
    PDielec.pdmake.runVibAnalysis
@@ -66,24 +79,8 @@ Functions
    PDielec.pdmake.usage
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.pdmake.benchmarks
-   PDielec.pdmake.debug
-   PDielec.pdmake.print
-   PDielec.pdmake.settings
-   PDielec.pdmake.test_p2cif
-   PDielec.pdmake.test_pdgui
-   PDielec.pdmake.test_preader
-   PDielec.pdmake.test_singlecrystal
-   PDielec.pdmake.test_vibanalysis
-   PDielec.pdmake.useLocal
-   PDielec.pdmake.viewing
-
+Module Contents
+---------------
 
 .. py:function:: changePadding(all)
 
@@ -477,13 +474,6 @@ Attributes
 
 
 
-.. py:function:: runPyInstaller()
-
-   Run the PyInstaller command with specified options and handles platform specific adjustments.
-
-   This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.
-
-
 .. py:function:: runPyPi()
 
    Create PyPi distribution files, restricted by OS.
@@ -556,53 +546,40 @@ Attributes
 .. py:data:: benchmarks
    :value: ['Castep/AsparticAcid', 'Castep/Isoleucine', 'Castep/MgO', 'Castep/Bubbles', 'Castep/Na2SO42',...
 
-   
 
 .. py:data:: debug
    :value: False
 
-   
 
 .. py:data:: print
 
-   
-
 .. py:data:: settings
-
-   
 
 .. py:data:: test_p2cif
    :value: ['P2Cif/']
 
-   
 
 .. py:data:: test_pdgui
    :value: ['ATR/AlAs', 'ATR/Na2SO42', 'ATR/Na2SO42_fit', 'AbInit/AlAs', 'AbInit/BaTiO3', 'AbInit/Na2SO42',...
 
-   
 
 .. py:data:: test_preader
    :value: ['Castep/preader', 'Vasp/preader', 'Phonopy/preader', 'Gulp/preader', 'Crystal/preader',...
 
-   
 
 .. py:data:: test_singlecrystal
    :value: ['Experiment/fpsq', 'Experiment/Mayerhofer', 'SingleCrystal/Bi2Se3',...
 
-   
 
 .. py:data:: test_vibanalysis
    :value: ['VibAnalysis/AsparticAcid', 'VibAnalysis/BaTiO3', 'VibAnalysis/Cocaine',...
 
-   
 
 .. py:data:: useLocal
    :value: True
 
-   
 
 .. py:data:: viewing
    :value: False
 
-   
 

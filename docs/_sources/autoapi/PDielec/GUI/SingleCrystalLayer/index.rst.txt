@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.SingleCrystalLayer`
-========================================
+PDielec.GUI.SingleCrystalLayer
+==============================
 
 .. py:module:: PDielec.GUI.SingleCrystalLayer
 
@@ -9,11 +9,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -21,12 +18,13 @@ Classes
    PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer
 
 
-
+Module Contents
+---------------
 
 .. py:class:: ShowLayerWindow(layer, message='', parent=None, debug=False)
 
+   Bases: :py:obj:`qtpy.QtWidgets.QDialog`
 
-   Bases: :py:obj:`PyQt5.QtWidgets.QDialog`
 
    A GUI window for displaying and editing the properties of a layer in a project.
 
@@ -76,6 +74,7 @@ Classes
        Respond to thickness unit selection changes.
 
 
+
    .. py:method:: changeLabFrameInfo()
 
       Update the lab frame information in the labframe widget.
@@ -92,6 +91,7 @@ Classes
 
 
 
+
    .. py:method:: drawLayerWidget()
 
       Create a layer widget showing all the information about the layer.
@@ -103,6 +103,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -122,6 +123,7 @@ Classes
 
 
 
+
    .. py:method:: drawLayerWidgetLine2()
 
       Add the second line of the layer description.
@@ -135,6 +137,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -154,6 +157,7 @@ Classes
 
 
 
+
    .. py:method:: getLayer()
 
       Return the edited layer.
@@ -165,6 +169,7 @@ Classes
       Returns
       -------
       self.layer : An instance of a single crystal layer
+
 
 
 
@@ -183,6 +188,7 @@ Classes
 
 
 
+
    .. py:method:: on_film_thickness_sb_changed(value)
 
       Handle film thickness spin box change.
@@ -195,6 +201,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -215,6 +222,7 @@ Classes
 
 
 
+
    .. py:method:: on_thickness_units_cb_activated(index)
 
       Handle activation of thickness units combobox.
@@ -232,8 +240,28 @@ Classes
 
 
 
-.. py:class:: SingleCrystalLayer(material, hkl=None, azimuthal=0.0, thickness=0.0, thicknessUnit='nm', incoherentOption='Coherent', dielectricFlag=False)
+   .. py:attribute:: QBtn
 
+
+   .. py:attribute:: buttonBox
+
+
+   .. py:attribute:: debugger
+
+
+   .. py:attribute:: layer
+
+
+   .. py:attribute:: layerWidget
+
+
+   .. py:attribute:: layout
+
+
+   .. py:attribute:: message
+
+
+.. py:class:: SingleCrystalLayer(material, hkl=None, azimuthal=0.0, thickness=0.0, thicknessUnit='nm', incoherentOption='Coherent', dielectricFlag=False)
 
    A class representing a single crystal layer.
 
@@ -347,6 +375,7 @@ Classes
    The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.
 
 
+
    .. py:method:: azimuthalRotationMatrix(angle)
 
       Calculate a rotation matrix for the azimuthal angle (in degrees).
@@ -360,6 +389,7 @@ Classes
       -------
       ndarray 3x3
           The rotation matrix for the given azimuthal angle.
+
 
 
 
@@ -379,6 +409,7 @@ Classes
 
 
 
+
    .. py:method:: calculate_euler_matrix()
 
       Calculate the Euler angles for the crystal to lab transformation.
@@ -393,11 +424,13 @@ Classes
 
 
 
+
    .. py:method:: changeLabFrameInfo()
 
       Change the Lab Frame Info panel.
 
       Information about the relationship between the crystal and labframe coordinate systems is presented.
+
 
 
    .. py:method:: getAzimuthal()
@@ -415,6 +448,7 @@ Classes
 
 
 
+
    .. py:method:: getHKL()
 
       Get the hkl.
@@ -426,6 +460,7 @@ Classes
       Returns
       -------
       list of 3 ints
+
 
 
 
@@ -446,6 +481,7 @@ Classes
 
 
 
+
    .. py:method:: getLabFrame()
 
       Return the a, b, and c cell axes in the laboratory frame coordinates.
@@ -463,6 +499,7 @@ Classes
 
 
 
+
    .. py:method:: getMaterial()
 
       Return the material.
@@ -474,6 +511,7 @@ Classes
       Returns
       -------
       an instance of a Materials object
+
 
 
 
@@ -492,6 +530,7 @@ Classes
 
 
 
+
    .. py:method:: getPermittivityFunction()
 
       Return the permittivity function associated with this material.
@@ -503,6 +542,7 @@ Classes
       Returns
       -------
       A permittivity function
+
 
 
 
@@ -521,6 +561,7 @@ Classes
 
 
 
+
    .. py:method:: getThickness()
 
       Get the thickness.
@@ -532,6 +573,7 @@ Classes
       Returns
       -------
       float
+
 
 
 
@@ -549,6 +591,7 @@ Classes
 
 
 
+
    .. py:method:: getThicknessUnit()
 
       Get the thickness unit.
@@ -560,6 +603,7 @@ Classes
       Returns
       -------
       str
+
 
 
 
@@ -579,6 +623,7 @@ Classes
 
 
 
+
    .. py:method:: isCoherent()
 
       Return True if this is a coherent layer, False otherwise.
@@ -591,6 +636,7 @@ Classes
       -------
       bool
           True if this is a coherent layer, False otherwise.
+
 
 
 
@@ -609,6 +655,7 @@ Classes
 
 
 
+
    .. py:method:: isScalar()
 
       Return true if the material of the layer is a scalar material.
@@ -621,6 +668,7 @@ Classes
       -------
       bool
           True if the material of the layer is a scalar material, False otherwise.
+
 
 
 
@@ -639,6 +687,7 @@ Classes
 
 
 
+
    .. py:method:: print()
 
       Print the main attributes of the layer.
@@ -646,6 +695,7 @@ Classes
       Parameters
       ----------
       None
+
 
 
 
@@ -664,6 +714,7 @@ Classes
 
 
 
+
    .. py:method:: setHKL(hkl)
 
       Set the hkl and recalculate the Euler matrix.
@@ -676,6 +727,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -699,6 +751,7 @@ Classes
 
 
 
+
    .. py:method:: setPhaseShift(phaseShift)
 
       Set the phase shift for the layer.
@@ -711,6 +764,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -729,6 +783,7 @@ Classes
 
 
 
+
    .. py:method:: setThicknessUnit(thicknessUnit)
 
       Set the thickness unit.
@@ -743,5 +798,47 @@ Classes
       None
 
 
+
+
+   .. py:attribute:: azimuthal
+
+
+   .. py:attribute:: dielectricFlag
+
+
+   .. py:attribute:: euler
+
+
+   .. py:attribute:: euler_inverse
+
+
+   .. py:attribute:: hkl
+
+
+   .. py:attribute:: incoherentOption
+
+
+   .. py:attribute:: labframe
+      :value: None
+
+
+
+   .. py:attribute:: labframe_w
+      :value: None
+
+
+
+   .. py:attribute:: material
+
+
+   .. py:attribute:: phaseShift
+      :value: 0.0
+
+
+
+   .. py:attribute:: thickness
+
+
+   .. py:attribute:: thicknessUnit
 
 

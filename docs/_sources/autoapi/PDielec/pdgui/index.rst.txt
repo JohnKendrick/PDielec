@@ -1,5 +1,5 @@
-:py:mod:`PDielec.pdgui`
-=======================
+PDielec.pdgui
+=============
 
 .. py:module:: PDielec.pdgui
 
@@ -22,26 +22,24 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.pdgui.version
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    PDielec.pdgui.main
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.pdgui.version
-
+Module Contents
+---------------
 
 .. py:function:: main()
 
@@ -87,6 +85,4 @@ Attributes
 
 
 .. py:data:: version
-
-   
 

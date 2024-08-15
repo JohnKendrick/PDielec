@@ -1,5 +1,5 @@
-:py:mod:`PDielec.pdcompare`
-===========================
+PDielec.pdcompare
+=================
 
 .. py:module:: PDielec.pdcompare
 
@@ -23,18 +23,16 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    PDielec.pdcompare.main
 
 
+Module Contents
+---------------
 
 .. py:function:: main()
 

@@ -1,5 +1,5 @@
-:py:mod:`PDielec.QEOutputReader`
-================================
+PDielec.QEOutputReader
+======================
 
 .. py:module:: PDielec.QEOutputReader
 
@@ -9,23 +9,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.QEOutputReader.QEOutputReader
 
 
-
+Module Contents
+---------------
 
 .. py:class:: QEOutputReader(filenames)
 
-
    Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
 
    Read the contents of a QE output file containing QE dynamical matrix.
 
@@ -40,6 +38,7 @@ Classes
    -----
    This constructor initializes a ``GenericOutputReader`` with the given filenames,
    sets the type attribute to 'QE output', and initializes `_alat` attribute to None.
+
 
 
    .. py:method:: _read_alat(line)
@@ -71,6 +70,7 @@ Classes
 
 
 
+
    .. py:method:: _read_alat2(line)
 
       Read and set the lattice parameter from a given line.
@@ -92,6 +92,7 @@ Classes
       Notes
       -----
       This method does not return any value. It updates the `_alat` attribute of the class instance with the value read from the input line, after applying necessary conversions and checks.
+
 
 
 
@@ -122,6 +123,7 @@ Classes
 
 
 
+
    .. py:method:: _read_cell_parameters(line)
 
       Read and parse cell parameters from a given line in the input file.
@@ -145,6 +147,7 @@ Classes
       Each subsequent line read from the input file (after the parameter line) is expected to represent the lattice vectors,
       scaled by the lattice parameter and converted from Angstroms to Bohr radii.
       The method directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+
 
 
 
@@ -172,6 +175,7 @@ Classes
 
 
 
+
    .. py:method:: _read_dynamical(line)
 
       Read and process the dynamical matrix from the dynG file.
@@ -189,6 +193,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -229,6 +234,7 @@ Classes
 
 
 
+
    .. py:method:: _read_electrons(line)
 
       Read and store the number of electrons from a line.
@@ -252,6 +258,7 @@ Classes
       -----
       This method modifies the state of the object by setting the 
       'electrons' attribute based on the input line.
+
 
 
 
@@ -283,6 +290,7 @@ Classes
 
 
 
+
    .. py:method:: _read_energy_cutoff(line)
 
       Parse and set the energy cutoff from a line of text.
@@ -310,6 +318,7 @@ Classes
 
 
 
+
    .. py:method:: _read_epsilon(line)
 
       Read and process zero frequency optical permittivity data from the dynG file.
@@ -329,6 +338,7 @@ Classes
       -----
       - This method modifies the instance attribute `zerof_optical_dielectric` directly.
       - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
+
 
 
 
@@ -355,6 +365,7 @@ Classes
 
 
 
+
    .. py:method:: _read_header(line)
 
       Read and process the header line from the dynG file.
@@ -375,6 +386,7 @@ Classes
       The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
 
       This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
+
 
 
 
@@ -399,6 +411,7 @@ Classes
 
 
 
+
    .. py:method:: _read_kpoints(line)
 
       Read and store the number of k-points from a given line.
@@ -417,6 +430,7 @@ Classes
       Notes
       -----
       This method modifies the state of the object by setting the `kpoints` attribute.
+
 
 
 
@@ -443,6 +457,7 @@ Classes
           The total number of unit cells, updated after reading new lattice vectors.
       volume : float
           The volume of the last read unit cell, updated after appending a new `UnitCell`.
+
 
 
 
@@ -474,6 +489,7 @@ Classes
 
 
 
+
    .. py:method:: _read_nions(line)
 
       Read the number of ions from a line and update the object's nions attribute.
@@ -495,6 +511,7 @@ Classes
 
 
 
+
    .. py:method:: _read_output_files()
 
       Process the QE files.
@@ -502,6 +519,7 @@ Classes
       Notes
       -----
       Defines the search patterns for QE output files
+
 
 
 
@@ -524,6 +542,16 @@ Classes
       -----
       This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object's `debug` attribute is set to True.
 
+
+
+
+   .. py:attribute:: _alat
+      :value: None
+
+
+
+   .. py:attribute:: type
+      :value: 'QE output'
 
 
 

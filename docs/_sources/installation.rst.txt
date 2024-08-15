@@ -69,7 +69,8 @@ This copies the commands and modules to the \~/bin directory which should be inc
 
 As part of the installation, you will have to install several Python packages into your environment.  The full list of packages is as follows; ::
 
-   pyqt5
+   qtpy
+   pyqt6
    psutil
    numpy
    scipy
@@ -124,7 +125,8 @@ Install Python
 Open a git bash console and type; ::
 
 
-   pip install pyqt5
+   pip install pyqt
+   pip install pyqt6
    pip install psutil
    pip install numpy
    pip install scipy

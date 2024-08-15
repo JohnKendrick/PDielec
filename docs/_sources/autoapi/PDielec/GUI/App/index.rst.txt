@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.App`
-=========================
+PDielec.GUI.App
+===============
 
 .. py:module:: PDielec.GUI.App
 
@@ -9,21 +9,8 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.GUI.App.App
-
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
@@ -31,10 +18,21 @@ Attributes
    PDielec.GUI.App.version
 
 
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.App.App
+
+
+Module Contents
+---------------
+
 .. py:class:: App(args, progressbar)
 
+   Bases: :py:obj:`qtpy.QtWidgets.QMainWindow`
 
-   Bases: :py:obj:`PyQt5.QtWidgets.QMainWindow`
 
    A class representing the main application window.
 
@@ -84,6 +82,7 @@ Attributes
        Handles the close event, ensuring that multiprocessing pools are properly closed.
 
 
+
    .. py:method:: closeEvent(event)
 
       Handle the close event of the application.
@@ -115,6 +114,7 @@ Attributes
 
       When the application is about to close, this method ensures clean termination
       of multiprocessing resources and performs any additional base class close event handling.
+
 
 
 
@@ -153,6 +153,7 @@ Attributes
 
 
 
+
    .. py:method:: readScript(scriptname, spreadsheet_name='')
 
       Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
@@ -177,6 +178,7 @@ Attributes
 
 
 
+
    .. py:method:: setMyWindowTitle(title)
 
       Set the window title with the provided title appended to the PDGui version.
@@ -198,11 +200,118 @@ Attributes
 
 
 
+   .. py:attribute:: debug
+      :value: False
+
+
+
+   .. py:attribute:: debugger
+
+
+   .. py:attribute:: default_scenario
+      :value: 'powder'
+
+
+
+   .. py:attribute:: filename
+      :value: ''
+
+
+
+   .. py:attribute:: height
+      :value: 800
+
+
+
+   .. py:attribute:: itoken
+      :value: 0
+
+
+
+   .. py:attribute:: left
+      :value: 10
+
+
+
+   .. py:attribute:: ncpus
+      :value: 0
+
+
+
+   .. py:attribute:: notebook
+
+
+   .. py:attribute:: ntokens
+
+
+   .. py:attribute:: parameters
+      :value: []
+
+
+
+   .. py:attribute:: program
+      :value: ''
+
+
+
+   .. py:attribute:: program_exit
+      :value: False
+
+
+
+   .. py:attribute:: program_has_been_specified
+      :value: False
+
+
+
+   .. py:attribute:: qm_program
+      :value: ''
+
+
+
+   .. py:attribute:: scripting
+      :value: False
+
+
+
+   .. py:attribute:: scriptname
+      :value: ''
+
+
+
+   .. py:attribute:: spreadsheet_name
+      :value: ''
+
+
+
+   .. py:attribute:: threading
+      :value: False
+
+
+
+   .. py:attribute:: title
+
+
+   .. py:attribute:: token
+
+
+   .. py:attribute:: tokens
+
+
+   .. py:attribute:: top
+      :value: 30
+
+
+
+   .. py:attribute:: version
+
+
+   .. py:attribute:: width
+      :value: 900
+
+
+
 .. py:data:: app
 
-   
-
 .. py:data:: version
-
-   
 

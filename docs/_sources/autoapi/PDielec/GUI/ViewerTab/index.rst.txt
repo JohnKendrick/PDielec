@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.ViewerTab`
-===============================
+PDielec.GUI.ViewerTab
+=====================
 
 .. py:module:: PDielec.GUI.ViewerTab
 
@@ -9,23 +9,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.GUI.ViewerTab.ViewerTab
 
 
-
+Module Contents
+---------------
 
 .. py:class:: ViewerTab(parent, debug=False)
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
-   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
 
    A class representing a viewer tab in a graphical user interface, specifically for visualizing molecular structures and vibrational modes.
 
@@ -138,6 +136,7 @@ Classes
        Set the colour of the specified element
 
 
+
    .. py:method:: calculate()
 
       Perform calculations related to the notebook object, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
@@ -149,6 +148,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -168,6 +168,7 @@ Classes
 
 
 
+
    .. py:method:: on_arrow_radius_changed(value)
 
       Handle the event where the arrow's radius value is changed.
@@ -182,6 +183,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -203,6 +205,7 @@ Classes
 
 
 
+
    .. py:method:: on_bond_radius_changed(value)
 
       Handle bond radius change events.
@@ -218,6 +221,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -239,6 +243,7 @@ Classes
 
 
 
+
    .. py:method:: on_coloured_button_clicked(boolean)
 
       Handle the event when a coloured button is clicked.
@@ -253,6 +258,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -271,6 +277,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -304,6 +311,7 @@ Classes
 
 
 
+
    .. py:method:: on_filename_le_changed(text)
 
       Handle changes to the filename line edit.
@@ -318,6 +326,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -337,6 +346,7 @@ Classes
 
 
 
+
    .. py:method:: on_light_switches_cb_activated(index)
 
       Activate or deactivate the light switch based on the current state and updates the GUI accordingly.
@@ -349,6 +359,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -366,6 +377,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -388,6 +400,7 @@ Classes
 
 
 
+
    .. py:method:: on_selected_mode_changed()
 
       Handle the changes when a new vibrational mode is selected in the UI.
@@ -404,6 +417,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -426,6 +440,7 @@ Classes
 
 
 
+
    .. py:method:: on_super_cell_changed_b(newb)
 
       Update the 'b' component of the 'Super Cell' setting and trigger a refresh.
@@ -442,6 +457,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -464,6 +480,7 @@ Classes
 
 
 
+
    .. py:method:: plot()
 
       Plot data based on the instance's current plot type.
@@ -479,6 +496,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -501,6 +519,7 @@ Classes
 
 
 
+
    .. py:method:: plot_arrows()
 
       Plot arrows showing the vibrational mode of a molecule.
@@ -517,6 +536,7 @@ Classes
 
 
 
+
    .. py:method:: plot_none()
 
       Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
@@ -530,6 +550,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -559,6 +580,7 @@ Classes
 
 
 
+
    .. py:method:: requestRefresh()
 
       Initiate a refresh request.
@@ -572,6 +594,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -593,6 +616,7 @@ Classes
       Notes
       -----
       This method relies on the `self.unit_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
+
 
 
 
@@ -620,5 +644,193 @@ Classes
       ```
 
 
+
+
+   .. py:attribute:: UVW
+
+
+   .. py:attribute:: arrow_radius_sb
+
+
+   .. py:attribute:: atom_scaling_sb
+
+
+   .. py:attribute:: bond_cell_background_arrow_buttons
+      :value: []
+
+
+
+   .. py:attribute:: bond_cell_background_arrow_names
+      :value: ['Background', 'Cell', 'Bonds', 'Arrows']
+
+
+
+   .. py:attribute:: bond_radius_sb
+
+
+   .. py:attribute:: button_colours
+
+
+   .. py:attribute:: cell_corners
+      :value: None
+
+
+
+   .. py:attribute:: cell_edges
+      :value: None
+
+
+
+   .. py:attribute:: cell_radius_sb
+
+
+   .. py:attribute:: cif_filename_button
+
+
+   .. py:attribute:: coloured_buttons_widget
+
+
+   .. py:attribute:: coloured_elements_widget
+
+
+   .. py:attribute:: debug
+
+
+   .. py:attribute:: debugger
+
+
+   .. py:attribute:: element_coloured_buttons
+      :value: []
+
+
+
+   .. py:attribute:: element_coloured_hbox
+
+
+   .. py:attribute:: element_colours
+
+
+   .. py:attribute:: element_names
+      :value: []
+
+
+
+   .. py:attribute:: filename_le
+
+
+   .. py:attribute:: form
+
+
+   .. py:attribute:: frequencies_cm1
+
+
+   .. py:attribute:: frequency_le
+
+
+   .. py:attribute:: gif_filename_button
+
+
+   .. py:attribute:: hbox
+
+
+   .. py:attribute:: image_filename
+      :value: ''
+
+
+
+   .. py:attribute:: label
+
+
+   .. py:attribute:: light_switches
+
+
+   .. py:attribute:: light_switches_cb
+
+
+   .. py:attribute:: maximum_displacement_sb
+
+
+   .. py:attribute:: mp4_filename_button
+
+
+   .. py:attribute:: notebook
+
+
+   .. py:attribute:: number_of_molecules
+      :value: 0
+
+
+
+   .. py:attribute:: opengl_widget
+
+
+   .. py:attribute:: plot_type_index
+      :value: 1
+
+
+
+   .. py:attribute:: plot_types
+      :value: ['Animation', 'Arrows', 'No arrows or animation']
+
+
+
+   .. py:attribute:: plottype_cb
+
+
+   .. py:attribute:: png_filename_button
+
+
+   .. py:attribute:: reader
+
+
+   .. py:attribute:: refreshRequired
+      :value: True
+
+
+
+   .. py:attribute:: selected_mode_sb
+
+
+   .. py:attribute:: settings
+
+
+   .. py:attribute:: settingsTab
+
+
+   .. py:attribute:: species
+      :value: []
+
+
+
+   .. py:attribute:: super_cell
+      :value: None
+
+
+
+   .. py:attribute:: super_cell_changed
+
+
+   .. py:attribute:: super_cell_hbox
+
+
+   .. py:attribute:: super_cell_spinBoxes
+      :value: []
+
+
+
+   .. py:attribute:: super_cell_tooltip
+      :value: ['Size in a', 'Size in b', 'Size in c']
+
+
+
+   .. py:attribute:: super_cell_widget
+
+
+   .. py:attribute:: unit_cell
+      :value: None
+
+
+
+   .. py:attribute:: vbox
 
 

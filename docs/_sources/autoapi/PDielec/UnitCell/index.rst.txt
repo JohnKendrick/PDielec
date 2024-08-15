@@ -1,5 +1,5 @@
-:py:mod:`PDielec.UnitCell`
-==========================
+PDielec.UnitCell
+================
 
 .. py:module:: PDielec.UnitCell
 
@@ -9,29 +9,26 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.UnitCell.UnitCell
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    PDielec.UnitCell.convert_length_units
 
 
+Module Contents
+---------------
 
 .. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom')
-
 
    Hold unit cell information and its associated calculated properties.
 
@@ -67,6 +64,7 @@ Functions
        cell.print()
 
 
+
    .. py:method:: _calculate_reciprocal_lattice(lattice)
 
       Calculate the reciprocal lattice.
@@ -83,6 +81,7 @@ Functions
       Returns
       -------
       sets the reciprocal lattice vectors
+
 
 
 
@@ -126,6 +125,7 @@ Functions
 
 
 
+
    .. py:method:: calculate_molecular_contents(scale=1.1, tolerance=0.1, radii=None)
 
       Find whole molecules in the unit cell.
@@ -151,6 +151,7 @@ Functions
       -----
       The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
       `scale * (radi + radj) + tolerance`
+
 
 
 
@@ -180,6 +181,7 @@ Functions
 
 
 
+
    .. py:method:: convert_abc_to_xyz(abc)
 
       Convert abc coordinates to xyz coordinates.
@@ -195,6 +197,7 @@ Functions
 
 
 
+
    .. py:method:: convert_hkl_to_xyz(hkl)
 
       Convert hkl miller indices to xyz coordinates.
@@ -207,6 +210,7 @@ Functions
       Returns
       -------
       xyz : list of xyz coordinates
+
 
 
 
@@ -227,6 +231,7 @@ Functions
 
 
 
+
    .. py:method:: convert_xyz_to_abc(xyz)
 
       Convert xyz coordinates to abc lattice coordinates.
@@ -240,6 +245,7 @@ Functions
       -------
       abc : list of 3 floats
           List of fractional coordinates
+
 
 
 
@@ -258,6 +264,7 @@ Functions
       -------
       a tuple
           (international table symbol, number])
+
 
 
 
@@ -287,6 +294,7 @@ Functions
 
 
 
+
    .. py:method:: getDensity(units='cm')
 
       Calculate the density of the crystal.
@@ -305,6 +313,7 @@ Functions
 
 
 
+
    .. py:method:: getVolume(units='cm')
 
       Calculate the volume.
@@ -317,6 +326,7 @@ Functions
       Returns
       -------
       volume : float
+
 
 
 
@@ -337,6 +347,7 @@ Functions
 
 
 
+
    .. py:method:: get_atomic_masses()
 
       Get the atomic masses for the elements.
@@ -352,6 +363,7 @@ Functions
 
 
 
+
    .. py:method:: get_atomic_numbers()
 
       Get the atomic numbers for the elements.
@@ -364,6 +376,7 @@ Functions
       -------
       list of ints
           The atomic numbers
+
 
 
 
@@ -385,6 +398,7 @@ Functions
 
 
 
+
    .. py:method:: get_bonds()
 
       Return a list of bonds for the unit cell.
@@ -400,6 +414,7 @@ Functions
       (list of bonds, list of bondlengths)
           list of bonds is a list of pairs of integers denoting a bond
           list of bond lengths is a list of floats
+
 
 
 
@@ -421,6 +436,7 @@ Functions
 
 
 
+
    .. py:method:: print()
 
       Print the details of the given unit cell.
@@ -434,6 +450,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -458,6 +475,7 @@ Functions
 
 
 
+
    .. py:method:: set_atomic_masses(masses)
 
       Set the atomic masses for the elements.
@@ -470,6 +488,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -487,6 +506,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -511,6 +531,7 @@ Functions
 
 
 
+
    .. py:method:: set_fractional_coordinates(coords)
 
       Set the fractional coordinates and calculate the xyz coordinates.
@@ -523,6 +544,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -541,6 +563,7 @@ Functions
 
 
 
+
    .. py:method:: set_xyz_coordinates(coords, units='Angstrom')
 
       Set the xyz coordinates and calculate the fractional coordinates.
@@ -555,6 +578,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -589,6 +613,64 @@ Functions
 
       >>> cell.write_cif('example.cif')
 
+
+
+
+   .. py:attribute:: atom_labels
+      :value: []
+
+
+
+   .. py:attribute:: atomic_masses
+      :value: []
+
+
+
+   .. py:attribute:: bonds
+      :value: []
+
+
+
+   .. py:attribute:: centres_of_mass
+      :value: []
+
+
+
+   .. py:attribute:: element_names
+      :value: []
+
+
+
+   .. py:attribute:: fractional_coordinates
+      :value: []
+
+
+
+   .. py:attribute:: lattice
+      :value: [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+
+
+
+   .. py:attribute:: molecules
+      :value: []
+
+
+
+   .. py:attribute:: nions
+      :value: 0
+
+
+
+   .. py:attribute:: total_mass
+      :value: 0.0
+
+
+
+   .. py:attribute:: units
+
+
+   .. py:attribute:: xyz_coordinates
+      :value: []
 
 
 
