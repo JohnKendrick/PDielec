@@ -13,9 +13,9 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
-from PyQt5.QtWidgets import QFormLayout, QLabel, QPushButton
-from PyQt5.QtGui import QPalette, QColor
+from qtpy.QtWidgets import QApplication, QMainWindow, QWidget
+from qtpy.QtWidgets import QFormLayout, QLabel, QPushButton
+from qtpy.QtGui import QPalette, QColor
 
 class MainWindow(QMainWindow):
 
@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
 
     Examples
     --------
-    No direct usage examples provided since instantiation and execution depend on a complete PyQt5 application setup.
+    No direct usage examples provided since instantiation and execution depend on a complete qtpy application setup.
     """    
     def __init__(self):
         """
@@ -87,15 +87,15 @@ class Color(QWidget):
     Notes
     -----
     This class inherits from QWidget, and it sets the background color of the widget
-    to the specified color during initialization. It requires the PyQt5 (or PySide2)
+    to the specified color during initialization. It requires the qtpy (or PySide2)
     library for its QWidget, QColor, and QPalette classes.
 
     Examples
     --------
     To create a red widget:
 
-    >>> from PyQt5.QtWidgets import QApplication, QWidget
-    >>> from PyQt5.QtGui import QColor, QPalette
+    >>> from qtpy.QtWidgets import QApplication, QWidget
+    >>> from qtpy.QtGui import QColor, QPalette
     >>> app = QApplication([])
     >>> widget = Color('red')
     >>> widget.show()

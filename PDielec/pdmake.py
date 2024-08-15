@@ -996,19 +996,6 @@ def runClean():
     subprocess.run("find . -name \*.nma -exec rm -f {} \;",shell=True)
     print("Cleaning complete")
 
-def runPyInstaller():
-    """Run the PyInstaller command with specified options and handles platform specific adjustments.
-
-    This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.
-    """    
-    if os.name == "nt":
-        print("Unable to create pyInstaller installation in Windows")
-        return
-    print("Creating pyinstaller files in dis/pdgui         ")
-    os.chdir(rootDirectory)
-    subprocess.run("pyinstaller pdgui.spec -y",shell=True)
-    subprocess.run("cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui",shell=True)
-
 def runPyPi():
     """Create PyPi distribution files, restricted by OS.
 
@@ -1235,8 +1222,6 @@ def main():
             runTests(benchmarks,"benchmarks",regenerate)
         elif action == "run pypi":
             runPyPi()
-        elif action == "run pyinstaller":
-            runPyInstaller()
         elif action == "run clean":
             runClean()
         elif action == "install":

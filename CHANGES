@@ -1,3 +1,12 @@
+version 8.1.3
+   Added QT6 support by including the qtpy module
+   Changed the use of scipy.interpolate.trapz to np.trapz
+   Introduced a pyproject.toml file
+   Added version number to the pyproject.toml file and modified the setup.py file accordingly
+   Removed setup.cfg file.  setup.py no longer sets the version number.
+   Updated the requirements.txt file using pipreq
+   Updated the conda_installs.txt file
+
 version 8.1.2
    Added a .nojekyll file into the docs/ directory to stop git hub pages over processing things
    Changed the name PDielec to pdielec in setup.py to help with Windows install on conda-forge

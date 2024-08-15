@@ -18,8 +18,8 @@
 import matplotlib
 import matplotlib.figure
 import numpy as np
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 from qtpy.QtCore import QCoreApplication, Qt
 from qtpy.QtWidgets import (
     QApplication,
@@ -1104,7 +1104,7 @@ class PlottingTab(QWidget):
 
     def plot(self):
         # import matplotlib.pyplot as pl
-        # mp.use('Qt5Agg')
+        # mp.use('qtagg')
         """Plot the results based on specified settings and scenarios.
 
         This function generates a plot for the given scenarios under the analysis settings
