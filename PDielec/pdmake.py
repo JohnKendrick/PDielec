@@ -989,11 +989,12 @@ def runClean():
         return
     print("Cleaning old results from the Examples directory")
     os.chdir(rootDirectory)
-    subprocess.run("find . -name results.xlsx -exec rm -f {} \;",shell=True)
-    subprocess.run("find . -name results.csv -exec rm -f {} \;",shell=True)
-    subprocess.run("find . -name command.csv -exec rm -f {} \;",shell=True)
-    subprocess.run("find . -name all.cif -exec rm -f {} \;",shell=True)
-    subprocess.run("find . -name \*.nma -exec rm -f {} \;",shell=True)
+    subprocess.run("find . -name results.xlsx -exec rm -f {} \\;",shell=True)
+    subprocess.run("find . -name results.csv -exec rm -f {} \\;",shell=True)
+    subprocess.run("find . -name command.csv -exec rm -f {} \\;",shell=True)
+    subprocess.run("find . -name all.cif -exec rm -f {} \\;",shell=True)
+    subprocess.run("find . -name \\*.nma -exec rm -f {} \\;",shell=True)
+    subprocess.run("find . -name \\*.pyc -exec rm -f {} \\;",shell=True)
     print("Cleaning complete")
 
 def runPyPi():

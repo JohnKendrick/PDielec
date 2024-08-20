@@ -190,7 +190,7 @@ def Mie_ab(m,x):
 
   Notes
   -----
-  This function calculates the Mie scattering coefficients, `a_n` and `b_n`, for a spherical particle based on the complex refractive index (`m`) and the size parameter (`x`). The size parameter is defined as \( 2\pi r / \lambda \), where \( r \) is the particle radius, and \( \lambda \) is the wavelength of the incident light in the medium surrounding the particle.
+  This function calculates the Mie scattering coefficients, `a_n` and `b_n`, for a spherical particle based on the complex refractive index (`m`) and the size parameter (`x`). The size parameter is defined as \\( 2\\pi r / \\lambda \\), where \\( r \\) is the particle radius, and \\( \\lambda \\) is the wavelength of the incident light in the medium surrounding the particle.
 
   Examples
   --------
@@ -903,7 +903,7 @@ def MieS1S2(m,x,mu):
   m : complex
       The complex refractive index of the scattering particles.
   x : float
-      The size parameter of the particle, defined as \(2 \pi r / \lambda\), where \(r\) is the particle radius and \(\lambda\) is the wavelength of the incident light.
+      The size parameter of the particle, defined as \\(2 \\pi r / \\lambda\\), where \\(r\\) is the particle radius and \\(\\lambda\\) is the wavelength of the incident light.
   mu : array_like
       An array of cosine values of the scattering angles.
 
@@ -914,7 +914,7 @@ def MieS1S2(m,x,mu):
 
   Notes
   -----
-  This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \(a_n\) and \(b_n\), and the `MiePiTau` function to compute the angle-dependent functions \(\pi_n\) and \(\tau_n\). The formulas for \(S_1\) and \(S_2\) involve sums over these coefficients weighted by \((2n+1)/(n(n+1))\), where \(n\) is the series index.
+  This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \\(a_n\\) and \\(b_n\\), and the `MiePiTau` function to compute the angle-dependent functions \\(\\pi_n\\) and \\(\\tau_n\\). The formulas for \\(S_1\\) and \\(S_2\\) involve sums over these coefficients weighted by \\((2n+1)/(n(n+1))\\), where \\(n\\) is the series index.
 
   Examples
   --------
@@ -936,7 +936,7 @@ def MieS1S2(m,x,mu):
   return S1, S2
 
 def MiePiTau(mu,nmax):
-  """Calculate the Mie \(\pi\) and \(\tau\) functions for given argument and maximum order.
+  """Calculate the Mie \\(\\pi\\) and \\(\\tau\\) functions for given argument and maximum order.
 
   Parameters
   ----------
@@ -948,11 +948,11 @@ def MiePiTau(mu,nmax):
   Returns
   -------
   tuple
-      A tuple containing two numpy arrays. The first array corresponds to the \(\pi\) values and the second to the \(\tau\) values for the orders from 0 to \(nmax-1\).
+      A tuple containing two numpy arrays. The first array corresponds to the \\(\\pi\\) values and the second to the \\(\\tau\\) values for the orders from 0 to \\(nmax-1\\).
 
   Notes
   -----
-  The Mie \(\pi\) and \(\tau\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
+  The Mie \\(\\pi\\) and \\(\\tau\\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
 
   Examples
   --------
@@ -1223,8 +1223,8 @@ def MieQ_withSizeParameterRange(m, nMedium=1.0, xRange=(1,10), nx=1000, logX=Fal
   -----
   Given a range of size parameters (x) and the complex refractive index (m) of the scattering particle 
   relative to the medium, this function computes various optical properties using Mie theory.
-  The size parameter "x" is defined as \(x = 2 \pi r / \lambda\), where "r" is the particle radius, 
-  and "\(\lambda\)" is the wavelength of the incident light in the medium.
+  The size parameter "x" is defined as \\(x = 2 \\pi r / \\lambda\\), where "r" is the particle radius, 
+  and "\\(\\lambda\\)" is the wavelength of the incident light in the medium.
 
   Examples
   --------

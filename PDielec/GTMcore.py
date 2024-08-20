@@ -1196,7 +1196,7 @@ class IncoherentAveragePhaseLayer(CoherentLayer):
         """Calculate the matrix Ki (or Pi depending on the paper).
 
         A phase shift is included in the calculation.
-        The phase shift can vary between 0 and :math:`\pi`.
+        The phase shift can vary between 0 and :math:`\\pi`.
 
         Parameters
         ----------
@@ -1594,7 +1594,7 @@ class System:
         Returns
         -------
         GammaStar : complex ndarray
-            4x4 complex matrix representing the system transfer matrix :math:`\Gamma^{*}`
+            4x4 complex matrix representing the system transfer matrix :math:`\\Gamma^{*}`
 
         """
         A_super, K_super, A_inv_super, T_super = self.superstrate.update_tm(f, zeta_sys)

@@ -79,9 +79,9 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage["eigenvectors"]  = (re.compile(" NORMAL MODES NORMALIZ"), self._read_eigenvectors)
         self.manage["staticIonic"]  = (re.compile(" SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO "), self._read_ionic_dielectric)
         self.manage["epsilon"]  = (re.compile(" SUSCEPTIBILITY "), self._read_epsilon)
-        self.manage["kpoints"]  = (re.compile(" SHRINK\. FACT\.\("), self._read_kpoints)
-        self.manage["electrons"]  = (re.compile(" N\. OF ELECTRONS"), self._read_electrons)
-        self.manage["energy"]  = (re.compile(" TOTAL ENERGY\(DFT\)"), self._read_energy)
+        self.manage["kpoints"]  = (re.compile(" SHRINK\\. FACT\\.\\("), self._read_kpoints)
+        self.manage["electrons"]  = (re.compile(" N\\. OF ELECTRONS"), self._read_electrons)
+        self.manage["energy"]  = (re.compile(" TOTAL ENERGY\\(DFT\\)"), self._read_energy)
         self.manage["energy2"]  = (re.compile(" TOTAL ENERGY + DISP"), self._read_energy2)
         self.manage["energy3"]  = (re.compile(" *CENTRAL POINT"), self._read_energy3)
         for f in self._outputfiles:

@@ -111,7 +111,7 @@ class CastepOutputReader(GenericOutputReader):
         self.manage["energy_cutoff"] = (re.compile(" *plane wave basis set cut"), self._read_energy_cutoff)
         self.manage["convergence"] = (re.compile(".*finished iteration"), self._read_convergence)
         self.manage["nbands"]        = (re.compile(" *number of bands"), self._read_nbands)
-        self.manage["pressure"]      = (re.compile(" *\* *Pressure: "), self._read_external_pressure)
+        self.manage["pressure"]      = (re.compile(" *\\* *Pressure: "), self._read_external_pressure)
         self.manage["opticalDielectric"]  = (re.compile(" *Optical Permittivity"), self._read_dielectric)
         self.manage["bornCharges"]    = (re.compile(" *Born Effective Charges"), self._read_born_charges)
         #  For the .phonon file
