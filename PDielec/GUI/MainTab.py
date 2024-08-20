@@ -18,6 +18,7 @@ import platform
 
 import numpy as np
 from qtpy.QtCore import QCoreApplication, QSize, Qt
+from qtpy import compat
 from qtpy.QtWidgets import (
     QComboBox,
     QFileDialog,
@@ -590,7 +591,7 @@ class MainTab(QWidget):
         if self.settings["Program"] == "Castep":
             selfilter = "Castep (*.castep)"
         elif self.settings["Program"] == "Abinit":
-            selfilter = "Abinit (*.out, *.abo)"
+            selfilter = "Abinit (*.out *.abo)"
         elif self.settings["Program"] == "Gulp":
             selfilter = "Gulp (*.gout)"
         elif self.settings["Program"] == "Vasp":
@@ -598,7 +599,7 @@ class MainTab(QWidget):
         elif self.settings["Program"] == "Quantum Espresso":
             selfilter = "Quantum Espresso (*.dynG)"
         elif self.settings["Program"] == "Crystal":
-            selfilter = "Crystal (*.out, *.log)"
+            selfilter = "Crystal (*.out  *.log)"
         elif self.settings["Program"] == "Phonopy":
             selfilter = "Phonopy (*)"
         elif self.settings["Program"] == "Experiment":
@@ -607,7 +608,7 @@ class MainTab(QWidget):
             selfilter = "PDGui (*.py)"
         else:
             selfilter = "All files (*)"
-        filename,myfilter = QFileDialog.getOpenFileName(self,"Open MM/QM Output file","","Abinit (*.out, *.abo);;Castep (*.castep);;Crystal (*.out, *.log);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;Quantum Espresso (*.dynG);;Vasp (OUTCAR*);;PDGui (*.py);;All files(*)",selfilter)
+        filename,myfilter = compat.getopenfilename(self,"Open MM/QM Output file","","Abinit (*.out *.abo);;Castep (*.castep);;Crystal (*.out  *.log);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;Quantum Espresso (*.dynG);;Vasp (OUTCAR*);;PDGui (*.py);;All files(*)",selfilter)
         # Process the filename
         if filename != "":
             program,qmprogram = find_program_from_name(filename)
