@@ -21,6 +21,7 @@ version 8.1.3
    Added additional escape characters to CastepOutputReader.py - to remove SyntaxWarning errors
    Added additional escape characters to CrystalOutputReader.py - to remove SyntaxWarning errors
    Added a -style default in the creation of the App.  Default style is "fusion"
+   Fixed a bug in the save cif file (ViewerTab)
 
 version 8.1.2
    Added a .nojekyll file into the docs/ directory to stop git hub pages over processing things
