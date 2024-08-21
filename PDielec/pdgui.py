@@ -86,6 +86,7 @@ def main():
     show_splash = True
     force_exit = False
     debug = False
+    apply_default_style = True
     for token in sys.argv:
         if token in ( "-nosplash", "--nosplash" ):
             show_splash = False
@@ -96,7 +97,12 @@ def main():
             force_exit = True
         elif token in ( "-d", "-debug", "--debug" ):
             debug = True
+        elif token in ( "-style" ):
+            apply_default_style = False
 
+    if apply_default_style:
+        sys.argv.append("-style")
+        sys.argv.append("fusion")
 
     app = QApplication(sys.argv)
 
