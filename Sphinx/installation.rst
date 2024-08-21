@@ -71,6 +71,7 @@ As part of the installation, you will have to install several Python packages in
 
     dill
     imageio
+    imageio-ffmpeg
     matplotlib
     mkl
     numpy
@@ -129,6 +130,7 @@ Open a git bash console and type; ::
 
     pip install dill
     pip install imageio
+    pip install imageio-ffmpeg
     pip install matplotlib
     pip install mkl
     pip install numpy

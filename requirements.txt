@@ -1,5 +1,6 @@
 dill
 imageio
+imageio-ffmpeg
 matplotlib
 numpy
 openpyxl
