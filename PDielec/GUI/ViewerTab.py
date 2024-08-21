@@ -1046,7 +1046,7 @@ class ViewerTab(QWidget):
             for phase_index,phase in enumerate(phases):
                 description = "mode_"+str(self.settings["Selected mode"]-1)+"_phase_"+str(phase)
                 unitcell.set_xyz_coordinates(self.newXYZ[phase_index])
-                unitcell.write_cif(description,file_=fd)
+                unitcell.write_cif(description=description,filedescriptor=fd)
 
     def plot(self):
         """Plot data based on the instance's current plot type.

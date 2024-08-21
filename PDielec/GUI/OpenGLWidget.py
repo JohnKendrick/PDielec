@@ -497,7 +497,7 @@ class OpenGLWidget(QOpenGLWidget):
         elif key == Qt.Key_Minus:
             self.zoom(-1.0)
         elif key == Qt.Key_P:
-            self.save_movie()
+            self.save_movie("movie.mp4")
         elif key == Qt.Key_F:
             self.show_full_screen = not self.show_full_screen
             if self.show_full_screen:

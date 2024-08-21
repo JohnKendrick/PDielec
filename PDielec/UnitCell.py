@@ -172,13 +172,17 @@ class UnitCell:
             self.lattice[2] = c
         self._calculate_reciprocal_lattice(self.lattice)
 
-    def write_cif(self, filename=None):
+    def write_cif(self, filename=None, filedescriptor=sys.stdout, description=None):
         """Write the crystallographic information file (CIF) representation of a structure.
 
         Parameters
         ----------
         filename : str, optional
             The name of the file to be written. If not provided, the CIF data is printed to stdout.
+        filedescriptor : filedescriptor, optional
+            The file descriptor of the file to be written. If not provided, the CIF data is printed to stdout.
+        description : str, optional
+            A description of the cif file
 
         Returns
         -------
@@ -191,6 +195,7 @@ class UnitCell:
         Any lengths are converted to Angstrom, the volumes is give as Angstrom^3
         If a filename is provided, the CIF data will be written to that file. Otherwise,
         it will be printed to standard output.
+        Only one of filename or filedescriptor can be specified
 
         Examples
         --------
@@ -207,9 +212,9 @@ class UnitCell:
         volume = self.getVolume("Angstrom")
         spg_symbol, spg_number = self.find_symmetry()
         # Open the filename if it is given
-        with open(filename,"w") if filename else nullcontext(sys.stdout) as file_:
-            if filename is not None:
-                print("data_"+filename,file=file_)
+        with open(filename,"w") if filename else nullcontext(filedescriptor) as file_:
+            if description is not None:
+                print("data_"+description,file=file_)
             else:
                 print("data_",         file=file_)
             print(f"_symmetry_space_group_name_H-M '{spg_symbol}'",file=file_)
