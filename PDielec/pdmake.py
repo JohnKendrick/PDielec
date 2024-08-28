@@ -707,6 +707,7 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     global debug
     global rootDirectory
     global useLocal
+    global settings
     print(title,end="",flush=True)
     if useLocal:
         sys.argv = ["python"]
@@ -717,6 +718,8 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
         os.remove("results.xlsx")
     if os.path.exists("results.csv"):
         os.remove("results.csv")
+    # Append any threading or cpu information
+    sys.argv.extend(settings["PDGui tokens"])
     sys.argv.extend(instructions)
     if debug:
         result = subprocess.run(sys.argv)
@@ -1118,6 +1121,7 @@ def main():
     rootDirectory = findRootDirectory(rootDirectory)
     actions = []
     pdmakefiles = []
+    pdgui_tokens = []
     # Loop over the tokens on the command line
     while itoken < ntokens:
         itoken += 1
@@ -1164,11 +1168,18 @@ def main():
             scriptsDirectory = tokens[itoken]
         elif token.endswith(".pdmake"):
             pdmakefiles.append(token)
+        elif token in ( "-cpus", "--cpus" ):
+            itoken += 1
+            pdgui_tokens.append("-cpus")
+            pdgui_tokens.append(tokens[itoken])
+        elif token in ( "-threading", "--threading" ):
+            pdgui_tokens.append("-threading")
         else:
             usage()
             sys.exit()
         # endif
     # end while
+    settings["PDGui tokens"] = pdgui_tokens
     #
     # Change to the rootDirectory
     if not os.path.isdir(rootDirectory):

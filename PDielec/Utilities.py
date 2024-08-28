@@ -463,7 +463,8 @@ class Debug:
 
         """        
         if self.debug and level <= self.level:
-            print(self.text,*args)
+            print('HELP DEBUGGER')
+            print(self.text,*args,flush=True)
         return
 
     def state(self,):
