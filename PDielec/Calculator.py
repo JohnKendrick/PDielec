@@ -2377,6 +2377,7 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          from multiprocessing.dummy import Pool
          pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      else:
-         from multiprocessing import Pool
+         from multiprocessing import Pool, set_start_method
+         set_start_method("fork")
          pool = Pool(ncpus, initializer=initializer, initargs=initargs )
      return pool
