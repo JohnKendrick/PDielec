@@ -3,17 +3,13 @@
 # This code was taken from the following url and ackownledged with thanks
 # https://gist.github.com/alimuldal/eb0f4eea8af331b2a890
 import numpy
-from numpy.distutils.system_info import get_info
 import sys
 import timeit
 
 print("version: %s" % numpy.__version__)
 print("maxint:  %i\n" % sys.maxsize)
 
-info = get_info('blas_opt')
-print('BLAS info:')
-for kk, vv in info.items():
-    print(' * ' + kk + ' ' + str(vv))
+numpy.show_config()
 
 setup = "import numpy; x = numpy.random.random((20000, 2000))"
 count = 5
