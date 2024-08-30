@@ -1,13 +1,19 @@
 #!/usr/bin/python
 # The script was taken from the intel web-site and modified
 # https://software.intel.com/sites/default/files/0f/a7/mkl_benchmark.py
+
 import os
 import sys
+home_directory = os.path.join('..','..')
+sys.path.insert(0,home_directory)
+
 import timeit
 import numpy as np
 import PDielec.GTMcore as GTM
 import PDielec.DielectricFunction as DielectricFunction
 from PDielec.Constants import wavenumber, speed_light_si
+from PDielec.HelperRoutines import getMaterial
+from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer
 from functools import partial
 import time
 import psutil
@@ -15,6 +21,13 @@ import psutil
 # Setting the following environment variable in the shell executing the script allows
 # you limit the maximal number threads used for computation
 THREADS_LIMIT_ENV = 'MKL_NUM_THREADS'
+ 
+incoherentOptions = ["Coherent","Incoherent (intensity)","Incoherent (phase averaging)","Incoherent (non-reflective)"] 
+gtmMethods ={"Coherent":GTM.CoherentLayer,
+             "Incoherent (intensity)":GTM.IncoherentIntensityLayer,
+             "Incoherent (phase cancelling)":GTM.IncoherentPhaseLayer,
+             "Incoherent (phase averaging)":GTM.IncoherentAveragePhaseLayer,
+             "Incoherent (non-reflective)":GTM.IncoherentThickLayer} 
 
 def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
     global variable_type
@@ -101,20 +114,15 @@ def get_multiprocess_pool(ncpus, threading, initializer=None, initargs=None, deb
 
 
 
-def init_local(function, superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, mode, theta, phi, psi, angleOfIncidence):
-    # Initialiser the workers in the pool
-    print('init_local, function id',id(function))
-    function.superstrateDielectricFunction = superstrateDielectricFunction
-    function.substrateDielectricFunction = substrateDielectricFunction
-    function.crystalPermittivityFunction = crystalPermittivityFunction
-    function.superstrateDepth = superstrateDepth
-    function.substrateDepth = substrateDepth
-    function.crystalDepth = crystalDepth
+def init_local(function, layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold):
+    # Initialise the function with variables
+    function.layers = layers
     function.mode = mode
     function.theta = theta
     function.phi = phi
     function.psi = psi
     function.angleOfIncidence = angleOfIncidence
+    function.exponent_threshold = exponent_threshold
     return
 
 def set_no_of_threads_on_worker(nthreads):
@@ -131,31 +139,34 @@ def set_affinity_on_worker():
 
 def solve_single_crystal_equations_local(v):
     """ This is a parallel call to the single crystal equation solver,
+    The variables are stored in the function itself
+    The variables have been placed there by init_local()
     system is a GTM system"""
     # print('solve_single_crystal_equations_local ',id(solve_single_crystal_equations_local))
-    superstrateDielectricFunction = solve_single_crystal_equations_local.superstrateDielectricFunction
-    substrateDielectricFunction   = solve_single_crystal_equations_local.substrateDielectricFunction
-    crystalPermittivityFunction   = solve_single_crystal_equations_local.crystalPermittivityFunction
-    superstrateDepth              = solve_single_crystal_equations_local.superstrateDepth
-    substrateDepth                = solve_single_crystal_equations_local.substrateDepth
-    crystalDepth                  = solve_single_crystal_equations_local.crystalDepth
-    mode                          = solve_single_crystal_equations_local.mode
-    theta                         = solve_single_crystal_equations_local.theta
-    phi                           = solve_single_crystal_equations_local.phi
-    psi                           = solve_single_crystal_equations_local.psi
-    angleOfIncidence              = solve_single_crystal_equations_local.angleOfIncidence
-    # Create 3 layers, thickness is converted from microns to metres
-    superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
-    substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
-    crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
-    # Creat the system with the layers 
-    if mode == 'Thick slab':
-        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
-    elif mode == 'Coherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    layers                  = solve_single_crystal_equations_local.layers
+    mode                    = solve_single_crystal_equations_local.mode
+    theta                   = solve_single_crystal_equations_local.theta
+    phi                     = solve_single_crystal_equations_local.phi
+    psi                     = solve_single_crystal_equations_local.psi
+    angleOfIncidence        = solve_single_crystal_equations_local.angleOfIncidence
+    exponent_threshold      = solve_single_crystal_equations_local.exponent_threshold
+    # Create superstrate from the first layer
+    superstrate      = GTM.SemiInfiniteLayer(layers[0],exponent_threshold=exponent_threshold)
+    # Create substrate from the last layer
+    substrate        = GTM.SemiInfiniteLayer(layers[-1],exponent_threshold=exponent_threshold)
+    selectedLayers = layers[1:-1]
+    gtmLayers = []
+    # Create layers from all the layers between first and last
+    for layer in selectedLayers:
+        incoherentOption = layer.getIncoherentOption()
+        gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
+    # Create the GTM system with the layers 
+    if mode == "Scattering matrix":
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     else:
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
+    # This is a global rotation of all the layers.
     system.substrate.set_euler(theta, phi, psi)
     system.superstrate.set_euler(theta, phi, psi)
     for layer in system.layers:
@@ -166,85 +177,83 @@ def solve_single_crystal_equations_local(v):
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
     zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
-    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
-    if len(system.layers) > 0:
-        epsilon = system.layers[0].epsilon
-    else:
-        epsilon = system.substrate.epsilon
+    epsilon = system.layers[0].epsilon if len(system.layers) > 0 else system.substrate.epsilon
     return v,r,R,t,T,epsilon
 
 def solve_single_crystal_equations_global(v):
     """ This is a parallel call to the single crystal equation solver,
+    Using global variables 
     system is a GTM system"""
-    global superstrateDielectricFunction
-    global substrateDielectricFunction
-    global crystalPermittivityFunction
-    global superstrateDepth
-    global substrateDepth
-    global crystalDepth
-    global mode
-    global theta
-    global phi
-    global psi
-    global angleOfIncidence
-    # Create 3 layers, thickness is converted from microns to metres
-    superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
-    substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
-    crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
+    global Mode
+    global Theta
+    global Phi
+    global Psi
+    global AngleOfIncidence
+    global Layers
+    global Exponent_threshold
+    # Create superstrate from the first layer
+    superstrate      = GTM.SemiInfiniteLayer(Layers[0],exponent_threshold=Exponent_threshold)
+    # Create substrate from the last layer
+    substrate        = GTM.SemiInfiniteLayer(Layers[-1],exponent_threshold=Exponent_threshold)
+    selectedLayers = Layers[1:-1]
+    gtmLayers = []
+    # Create layers from all the layers between first and last
+    for layer in selectedLayers:
+        incoherentOption = layer.getIncoherentOption()
+        gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=Exponent_threshold))
     # Creat the system with the layers 
-    if mode == 'Thick slab':
-        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
-    elif mode == 'Coherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    if Mode == "Scattering matrix":
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     else:
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
-    system.substrate.set_euler(theta, phi, psi)
-    system.superstrate.set_euler(theta, phi, psi)
+    # This is a global rotation of all the layers.
+    system.substrate.set_euler(Theta, Phi, Psi)
+    system.superstrate.set_euler(Theta, Phi, Psi)
     for layer in system.layers:
-        layer.set_euler(theta, phi, psi)
+        layer.set_euler(Theta, Phi, Psi)
     # 
     # convert cm-1 to frequency
     #
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
-    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
-    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    zeta_sys = np.sin(AngleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
-    if len(system.layers) > 0:
-        epsilon = system.layers[0].epsilon
-    else:
-        epsilon = system.substrate.epsilon
+    epsilon = system.layers[0].epsilon if len(system.layers) > 0 else system.substrate.epsilon
     return v,r,R,t,T,epsilon
 
 def solve_single_crystal_equations_partial( 
-    superstrateDielectricFunction,
-    substrateDielectricFunction,
-    crystalPermittivityFunction,
-    superstrateDepth,
-    substrateDepth,
-    crystalDepth,
+    layers,
     mode,
     theta,
     phi,
     psi,
     angleOfIncidence,
+    exponent_threshold,
     v):
     """ This is a parallel call to the single crystal equation solver,
+    The call uses the partial method where all parameters are passed through the function call
     system is a GTM system"""
-    # Create 3 layers, thickness is converted from microns to metres
-    superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
-    substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
-    crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
+    # Create superstrate from the first layer
+    superstrate      = GTM.SemiInfiniteLayer(layers[0],exponent_threshold=exponent_threshold)
+    # Create substrate from the last layer
+    substrate        = GTM.SemiInfiniteLayer(layers[-1],exponent_threshold=exponent_threshold)
+    selectedLayers = layers[1:-1]
+    gtmLayers = []
+    # Create layers from all the layers between first and last
+    for layer in selectedLayers:
+        incoherentOption = layer.getIncoherentOption()
+        gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
     # Creat the system with the layers 
-    if mode == 'Thick slab':
-        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
-    elif mode == 'Coherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    if mode == "Scattering matrix":
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     else:
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
+    # This is a global rotation of all the layers.
     system.substrate.set_euler(theta, phi, psi)
     system.superstrate.set_euler(theta, phi, psi)
     for layer in system.layers:
@@ -255,105 +264,101 @@ def solve_single_crystal_equations_partial(
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
     zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
-    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
-    if len(system.layers) > 0:
-        epsilon = system.layers[0].epsilon
-    else:
-        epsilon = system.substrate.epsilon
+    epsilon = system.layers[0].epsilon if len(system.layers) > 0 else system.substrate.epsilon
     return v,r,R,t,T,epsilon
 
 
 
 def init_global():
-    global superstrateDielectricFunction
-    global substrateDielectricFunction
-    global crystalPermittivityFunction
-    global superstrateDepth
-    global substrateDepth
-    global crystalDepth
-    global mode
-    global theta
-    global phi
-    global psi
-    global angleOfIncidence
-    superstrateDielectric = 2.0
-    substrateDielectric   = 2.0
-    crystalDielectric     = 2.0 + 0.01j
-    superstrateDielectricFunction = DielectricFunction.ConstantScalar(superstrateDielectric,units='hz').function()
-    substrateDielectricFunction   = DielectricFunction.ConstantScalar(substrateDielectric,units='hz').function()
-    crystalPermittivityFunction   = DielectricFunction.ConstantTensor(crystalDielectric,units='hz').function()
-    superstrateDepth = 80
-    substrateDepth   = 80
-    crystalDepth     = 80
-    theta,phi,psi = 20, 20, 70
-    angle = 85
-    angleOfIncidence      = np.pi / 180.0 * angle
-    mode = 'Thin Film'
+    """Prepare global variables for sending parameters to a parallel function"""
+    global Mode
+    global Theta
+    global Phi
+    global Psi
+    global AngleOfIncidence
+    global Layers
+    global Exponent_threshold
+    Theta,Phi,Psi = 20, 20, 70
+    AngleOfIncidence      = 85.0 * np.pi / 180.0
+    Mode = 'Scattering matrix'
+    # Prepare layers ................................................................
+    air = getMaterial("air")
+    ptfe = getMaterial("ptfe")
+    sapphire = getMaterial("Sapphire")
+    Layers = []
+    # Add a substrate
+    Layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+    # Add the dielectric layer
+    Layers.append(SingleCrystalLayer(sapphire,hkl=[0,0,1],
+                                     azimuthal=0.0,
+                                     thickness=1.0,
+                                     thicknessUnit='um',
+                                     incoherentOption='Coherent'))
+    # Add the superstrate
+    Layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+    Exponent_threshold = 20.0
     return 
 
 def setup_partial_func():
-    superstrateDielectric = 2.0
-    substrateDielectric   = 2.0
-    crystalDielectric     = 2.0 + 0.01j
-    superstrateDielectricFunction = DielectricFunction.ConstantScalar(superstrateDielectric,units='hz').function()
-    substrateDielectricFunction   = DielectricFunction.ConstantScalar(substrateDielectric,units='hz').function()
-    # Actually use the permittivity function in what follows
-    crystalPermittivityFunction     = DielectricFunction.ConstantTensor(crystalDielectric,units='hz').function()
-    # Create 3 layers, thickness is converted from microns to metres
-    superstrateDepth = 80
-    substrateDepth   = 80
-    crystalDepth     = 80
+    """Prepare a partial set of variables for sending parameters to a parallel function"""
     # Determine the euler angles
     theta,phi,psi = 20, 20, 70
     # Set the angle of incidence in radians
-    angle = 85
-    angleOfIncidence      = np.pi / 180.0 * angle
-    mode = 'Thin Film'
+    angleOfIncidence      = 85.0 * np.pi / 180.0
+    mode = 'Scattering matrix'
+    # Prepare layers ................................................................
+    air = getMaterial("air")
+    ptfe = getMaterial("ptfe")
+    sapphire = getMaterial("Sapphire")
+    layers = []
+    # Add a substrate
+    layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+    # Add the dielectric layer
+    layers.append(SingleCrystalLayer(sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+                                     incoherentOption='Coherent'))
+    # Add the superstrate
+    layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+    exponent_threshold = 20.0
     partial_func = partial(solve_single_crystal_equations_partial,
-         superstrateDielectricFunction,
-         substrateDielectricFunction,
-         crystalPermittivityFunction,
-         superstrateDepth,
-         substrateDepth,
-         crystalDepth,
+         layers,
          mode,
          theta,
          phi,
          psi,
-         angleOfIncidence)
+         angleOfIncidence,
+         exponent_threshold)
     return partial_func
 
 def setup_local_args():
-    superstrateDielectric = 2.0
-    substrateDielectric   = 2.0
-    crystalDielectric     = 2.0 + 0.01j
-    superstrateDielectricFunction = DielectricFunction.ConstantScalar(superstrateDielectric,units='hz').function()
-    substrateDielectricFunction   = DielectricFunction.ConstantScalar(substrateDielectric,units='hz').function()
-    # Actually use the permittivity function in what follows
-    crystalPermittivityFunction     = DielectricFunction.ConstantTensor(crystalDielectric,units='hz').function()
-    # Create 3 layers, thickness is converted from microns to metres
-    superstrateDepth = 80
-    substrateDepth   = 80
-    crystalDepth     = 80
+    """Prepare a all local variables for sending parameters to a parallel function"""
     # Determine the euler angles
     theta,phi,psi = 20, 20, 70
     # Set the angle of incidence in radians
-    angle = 85
-    angleOfIncidence      = np.pi / 180.0 * angle
-    mode = 'Thin Film'
+    angleOfIncidence      = 85 * np.pi / 180.0
+    mode = 'Scattering matrix'
+    # Prepare layers ................................................................
+    air = getMaterial("air")
+    ptfe = getMaterial("ptfe")
+    sapphire = getMaterial("Sapphire")
+    layers = []
+    # Add a substrate
+    layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+    # Add the dielectric layer
+    layers.append(SingleCrystalLayer(sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+                                     incoherentOption='Coherent'))
+    # Add the superstrate
+    layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+    exponent_threshold = 20.0
     local_args = (solve_single_crystal_equations_local,
-         superstrateDielectricFunction,
-         substrateDielectricFunction,
-         crystalPermittivityFunction,
-         superstrateDepth,
-         substrateDepth,
-         crystalDepth,
+         layers,
          mode,
          theta,
          phi,
          psi,
-         angleOfIncidence)
+         angleOfIncidence,
+         exponent_threshold)
     return local_args
 
 
@@ -466,6 +471,7 @@ def main():
     if parallel_type == 'ray':
         import ray
         ray.init()
+    # Start the benchmarks
     start_benchmark()
 
 if __name__ == '__main__':
