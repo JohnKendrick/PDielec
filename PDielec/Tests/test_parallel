@@ -9,6 +9,7 @@ sys.path.insert(0,home_directory)
 
 import timeit
 import numpy as np
+import PDielec
 import PDielec.GTMcore as GTM
 import PDielec.DielectricFunction as DielectricFunction
 from PDielec.Constants import wavenumber, speed_light_si
@@ -392,13 +393,13 @@ def start_benchmark():
     for nthreads in thread_range:
         set_no_of_threads(nthreads)
         for ncpus in cpu_range:
-            if variable_type == 'partial':
-                pool = get_pool(ncpus, initializer=None,initargs=None)
-            elif variable_type == 'global':
-                pool = get_pool(ncpus, initializer=init_global)
-            elif variable_type == 'local':
-                pool = get_pool(ncpus, initializer=init_local,initargs=init_local_args)
             for chunksize in chunk_range:
+                if variable_type == 'partial':
+                    pool = get_pool(ncpus, initializer=None,initargs=None)
+                elif variable_type == 'global':
+                    pool = get_pool(ncpus, initializer=init_global)
+                elif variable_type == 'local':
+                    pool = get_pool(ncpus, initializer=init_local,initargs=init_local_args)
                 t = time.time()
                 results = []
                 if chunksize >0:
@@ -485,7 +486,7 @@ def main():
         exit()
     if parallel_type == 'ray':
         import ray
-        ray.init()
+        ray.init(runtime_env={"py_modules" : [PDielec]})
     # Start the benchmarks
     start_benchmark()
 
