@@ -401,8 +401,12 @@ def start_benchmark():
             for chunksize in chunk_range:
                 t = time.time()
                 results = []
-                for result in pool.map(func, vs, chunksize=chunksize):
-                    results.append(result)
+                if chunksize >0:
+                    for result in pool.map(func, vs, chunksize=chunksize):
+                        results.append(result)
+                else:
+                    for result in pool.map(func, vs):
+                        results.append(result)
                 td = time.time() - t
                 print(f'{parallel_type}, {variable_type}, {ncpus}, {nthreads}, {chunksize}, {td}')
         pool.close()
@@ -419,8 +423,8 @@ def usage():
     print('                  multiprocess    - for the pathos multiprocessing api                     ')
     print('                  multiprocessing - for the standard python parallelism                    ')
     print('                  pathos          - for the pathos fork of multiprocess                    ')
-    print('        -chunks   start end                       ')
-    print('                  Defines the range of chunkSizes to be tested, the increment is 10 ')
+    print('        -chunks   start end step                  ')
+    print('                  Defines the range of chunkSizes to be tested, the increment is step ')
     print('        -threads  start end                       ')
     print('                  Defines the range of threads to be tested, the increment is 1 ')
     print('        -cpus    start end                       ')
@@ -459,11 +463,11 @@ def main():
         elif token == '-chunks' or token == '--chunks':
             itoken += 1; start = int(tokens[itoken])
             itoken += 1; end   = int(tokens[itoken])+1
-            step = 10
+            itoken += 1; step   = int(tokens[itoken])
             chunk_range = range(start,end,step)
         elif token == '-cpus' or token == '--cpus':
             itoken += 1; start = int(tokens[itoken])
-            itoken += 1; end   = int(tokens[itoken])
+            itoken += 1; end   = int(tokens[itoken])+1
             cpu_range = range(start,end)
         elif token == '-h' or token == '--help':
             usage()
