@@ -1244,7 +1244,7 @@ class PowderScenarioTab(ScenarioTab):
             self.notebook.startPool()
         debugger.print("About to use the pool to calculate effective medium equations")
         results = []
-        for result in self.notebook.pool.map(partial_function, zip(vs_cm1,crystalPermittivity), chunksize=20):
+        for result in self.notebook.pool.imap(partial_function, zip(vs_cm1,crystalPermittivity), chunksize=20):
             results.append(result)
             self.notebook.progressbars_update()
         QCoreApplication.processEvents()
