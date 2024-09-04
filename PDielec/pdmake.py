@@ -1172,6 +1172,10 @@ def main():
             itoken += 1
             pdgui_tokens.append("-cpus")
             pdgui_tokens.append(tokens[itoken])
+        elif token in ( "-threads", "--threads" ):
+            itoken += 1
+            pdgui_tokens.append("-threads")
+            pdgui_tokens.append(tokens[itoken])
         elif token in ( "-threading", "--threading" ):
             pdgui_tokens.append("-threading")
         else:
