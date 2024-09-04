@@ -2375,37 +2375,14 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          debugger.print("get_pool initializer = ",initializer)
      # see if threading has been requested
      if threading:
-         from pathos.threading import ThreadPool
-         if initargs is None:
-             pool = ThreadPool(ncpus, initializer=initializer)
-         else:
-             pool = ThreadPool(ncpus, initializer=initializer, initargs=initargs)
+         from multiprocessing.dummy import Pool
+         if debugger is not None:
+             debugger.print("get_pool using the multiprocessing package and threading")
      else:
-         from pathos.pools import ProcessPool
-         if initargs is None:
-             pool = ProcessPool(ncpus, initializer=initializer)
-     if threading:
-         try:
-             from pathos.threading import ThreadPool as Pool
-             if debugger is not None:
-                 debugger.print("get_pool using the multiprocess package and threading")
-         except Exception:
-             from multiprocessing.dummy import Pool
-             if debugger is not None:
-                 debugger.print("get_pool using the multiprocessing package and threading")
-         pool = Pool(ncpus, initializer=initializer, initargs=initargs)
-     else:
-         try:
-             from pathos.pools import Pool
-             if debugger is not None:
-                 debugger.print("get_pool using the multiprocess package")
-         except Exception:
-             from multiprocessing import Pool
-             if debugger is not None:
-                 debugger.print("get_pool using the multiprocessing package")
-         # The start method can be "spawn", "fork" or ?
-         pool = Pool(ncpus, initializer=initializer, initargs=initargs )
-     return pool
+         from multiprocessing import Pool
+         if debugger is not None:
+             debugger.print("get_pool using the multiprocessing package")
+     return Pool(ncpus, initializer=initializer, initargs=initargs)
 
 def set_no_of_threads(nthreads):
     """Set default number of threads
