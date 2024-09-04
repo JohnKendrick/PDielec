@@ -23,6 +23,7 @@ import PDielec.__init__
 from PDielec import Utilities
 from PDielec.GUI.NoteBook import NoteBook
 from PDielec.Utilities import Debug
+from PDielec.Calculator import set_no_of_threads
 
 version = PDielec.__init__.__version__
 
@@ -130,6 +131,9 @@ class App(QMainWindow):
         # Look at the environment to see if the number of cpus is specified
         token = os.getenv("PDIELEC_NUM_PROCESSORS")
         ncpus = 0 if token is None else int(token)
+        # Look at the environment to see if the number of threads is specified
+        token = os.getenv("PDIELEC_NUM_THREADS")
+        nthreads = 1 if token is None else int(token)
         # Look at the environment to see if the number of threading is specified
         token = os.getenv("PDIELEC_THREADING")
         if token is None:
@@ -167,6 +171,9 @@ class App(QMainWindow):
                 qm_program = tokens[itoken]
             elif token in ( "-threading" , "--threading" , "-threads" , "--threads" ):
                 threading = True
+            elif token in ( "-threads" , "--threads" ):
+                itoken += 1
+                nthreads = int(tokens[itoken])
             elif token in ( "-cpus" , "--cpus" ):
                 itoken += 1
                 ncpus = int(tokens[itoken])
@@ -230,6 +237,14 @@ class App(QMainWindow):
         debugger.print("The default scenario is", default_scenario)
         debugger.print("No. of cpus is", ncpus)
         debugger.print("Threading is", threading)
+        # Set the number of threads before NUMPY is loaded
+        if threading:
+            # Threading is used instead of cpu multiprocessing
+            # If threading is true the number of threads is the same as the number of processors
+            set_no_of_threads(ncpus)
+        else:
+            # Threading is False, so spawning separate processes, but each one will still have nthreads threads
+            set_no_of_threads(nthreads)
         self.notebook = NoteBook(self, program, qm_program, filename, spreadsheet_name, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading, default_scenario=default_scenario)
         debugger.print("About to call setCentralWidget")
         self.setCentralWidget(self.notebook)
@@ -275,6 +290,7 @@ class App(QMainWindow):
         - `-script file`: Specifies that initial commands are read from a script file.
         - `-nosplash`: No splash screen is presented, which is useful for batch running.
         - `-threading`: Use threads instead of multiprocessing.
+        - `-threads 1`: Specify the number of threads to use for each cpu
         - `-cpus 0`: Specify the number of processors or tasks; 0 uses all available.
         - `-version`: Prints the version of the code.
         - `-exit`: Exit the program after executing any script.
@@ -298,6 +314,7 @@ class App(QMainWindow):
         print("     -script file The initial commands are read from a script file")
         print("   -nosplash      No splash screen is presented (useful for batch running)")
         print("  -threading      Uses threads rather than multiprocessing")
+        print("  -threads   1    Uses 1 thread in the BLAS ")
         print("       -cpus 0    Specify the number of processors or tasks (0 means all available")
         print("    -version      Print the version of the code")
         print("       -exit      Exit the program after executing any script")

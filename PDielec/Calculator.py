@@ -19,6 +19,7 @@ import math
 import random
 import string
 import sys
+import os
 
 import numpy as np
 import scipy.optimize as sc
@@ -2374,11 +2375,50 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          debugger.print("get_pool initializer = ",initializer)
      # see if threading has been requested
      if threading:
-         from multiprocessing.dummy import Pool
+         try:
+             from multiprocess.dummy import Pool
+             if debugger is not None:
+                 debugger.print("get_pool using the multiprocess package and threading")
+         except Exception:
+             from multiprocessing.dummy import Pool
+             if debugger is not None:
+                 debugger.print("get_pool using the multiprocessing package and threading")
          pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      else:
-         from multiprocessing import Pool, set_start_method
+         try:
+             from multiprocess import Pool, set_start_method
+             if debugger is not None:
+                 debugger.print("get_pool using the multiprocess package")
+         except Exception:
+             from multiprocessing import Pool, set_start_method
+             if debugger is not None:
+                 debugger.print("get_pool using the multiprocessing package")
          # The start method can be "spawn", "fork" or ?
          set_start_method("spawn")
          pool = Pool(ncpus, initializer=initializer, initargs=initargs )
      return pool
+
+def set_no_of_threads(nthreads):
+    """Set default number of threads
+
+    Parameters
+    ----------
+    ncpus : int the number of threads to be used
+
+    The environment is modified to set the most common environment variables for the number of threads
+    a BLAS implementation will use.
+    BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB
+
+    """
+    os.environ['MKL_NUM_THREADS']        = str(nthreads)
+    os.environ['OPENBLAS_NUM_THREADS']   = str(nthreads)
+    os.environ['OMP_NUM_THREADS']        = str(nthreads)
+    os.environ['NUMEXPR_NUM_THREADS']    = str(nthreads)
+    os.environ['BLIS_NUM_THREADS']       = str(nthreads)
+    os.environ['VECLIB_MAXIMUM_THREADS'] = str(nthreads)
+
+def set_affinity_on_worker():
+    '''When a new worker process is created, the affinity is set to all CPUs'''
+    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
+    #JK Commented out for the time being
+    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
