@@ -2375,8 +2375,18 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          debugger.print("get_pool initializer = ",initializer)
      # see if threading has been requested
      if threading:
+         from pathos.threading import ThreadPool
+         if initargs is None:
+             pool = ThreadPool(ncpus, initializer=initializer)
+         else:
+             pool = ThreadPool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from pathos.pools import ProcessPool
+         if initargs is None:
+             pool = ProcessPool(ncpus, initializer=initializer)
+     if threading:
          try:
-             from multiprocess.dummy import Pool
+             from pathos.threading import ThreadPool as Pool
              if debugger is not None:
                  debugger.print("get_pool using the multiprocess package and threading")
          except Exception:
@@ -2386,15 +2396,14 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      else:
          try:
-             from multiprocess import Pool, set_start_method
+             from pathos.pools import Pool
              if debugger is not None:
                  debugger.print("get_pool using the multiprocess package")
          except Exception:
-             from multiprocessing import Pool, set_start_method
+             from multiprocessing import Pool
              if debugger is not None:
                  debugger.print("get_pool using the multiprocessing package")
          # The start method can be "spawn", "fork" or ?
-         set_start_method("spawn")
          pool = Pool(ncpus, initializer=initializer, initargs=initargs )
      return pool
 
