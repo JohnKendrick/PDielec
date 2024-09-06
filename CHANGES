@@ -1,4 +1,5 @@
 version 8.1.3
+   A -threads or --threads option has been added to pdgui.
    Added QT6 support by including the qtpy module
    Changed the use of scipy.interpolate.trapz to np.trapz
    Introduced a pyproject.toml file
@@ -16,6 +17,8 @@ version 8.1.3
         export MKL_NUM_THREADS=1
         export VECLIB_MAXIMUM_THREADS=1
         export NUMEXPR_NUM_THREADS=1
+   The exporting of these variables is now performed automatically at runtime from App.py, before numpy is loaded
+   pdmake.py has been modified to allow -cpus and -threads to be passed to pdgui during benchmarking
    Added additional escape characters to pdmake.py - to remove SyntaxWarning errors
    Added additional escape characters to Mie.py - to remove SyntaxWarning errors
    Added additional escape characters to CastepOutputReader.py - to remove SyntaxWarning errors

@@ -1,19 +1,20 @@
-conda install -c conda-forge dill
-conda install -c conda-forge imageio
-conda install -c conda-forge imageio-ffmpeg
-conda install -c conda-forge matplotlib
-conda install -c conda-forge numpy
-conda install -c conda-forge openpyxl
-conda install -c conda-forge psutil
-conda install -c conda-forge pyopengl
-conda install -c conda-forge pyyaml
-conda install -c conda-forge qtpy
-conda install -c conda-forge scikit-learn
-conda install -c conda-forge scipy
-conda install -c conda-forge setuptools
-conda install -c conda-forge spglib
-conda install -c conda-forge termcolor
-conda install -c conda-forge xlsxwriter
+conda install pip
+conda install numpy
+conda install scipy
+conda install imageio
+conda install imageio-ffmpeg
+conda install matplotlib
+conda install numpy
+conda install openpyxl
+conda install psutil
+conda install pyopengl
+conda install pyyaml
+conda install qtpy
+conda install scikit-learn
+conda install setuptools
+conda install spglib
+conda install termcolor
+conda install xlsxwriter
 # QtPy needs either PyQt5 or PyQt6 installed
 # conda install pyqt (for PyQt5)
 # pip install PyQt6 (for PyQt6)

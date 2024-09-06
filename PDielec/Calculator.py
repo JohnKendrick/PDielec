@@ -16,10 +16,10 @@
 """Calculator module."""
 import cmath
 import math
+import os
 import random
 import string
 import sys
-import os
 
 import numpy as np
 import scipy.optimize as sc
@@ -2385,26 +2385,27 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
      return Pool(ncpus, initializer=initializer, initargs=initargs)
 
 def set_no_of_threads(nthreads):
-    """Set default number of threads
+    """Set default number of threads.
 
     Parameters
     ----------
-    ncpus : int the number of threads to be used
+    nthreads : int the number of threads to be used
+        The number of threads to be applied
 
     The environment is modified to set the most common environment variables for the number of threads
     a BLAS implementation will use.
     BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB
 
     """
-    os.environ['MKL_NUM_THREADS']        = str(nthreads)
-    os.environ['OPENBLAS_NUM_THREADS']   = str(nthreads)
-    os.environ['OMP_NUM_THREADS']        = str(nthreads)
-    os.environ['NUMEXPR_NUM_THREADS']    = str(nthreads)
-    os.environ['BLIS_NUM_THREADS']       = str(nthreads)
-    os.environ['VECLIB_MAXIMUM_THREADS'] = str(nthreads)
+    os.environ["MKL_NUM_THREADS"]        = str(nthreads)
+    os.environ["OPENBLAS_NUM_THREADS"]   = str(nthreads)
+    os.environ["OMP_NUM_THREADS"]        = str(nthreads)
+    os.environ["NUMEXPR_NUM_THREADS"]    = str(nthreads)
+    os.environ["BLIS_NUM_THREADS"]       = str(nthreads)
+    os.environ["VECLIB_MAXIMUM_THREADS"] = str(nthreads)
 
 def set_affinity_on_worker():
-    '''When a new worker process is created, the affinity is set to all CPUs'''
-    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
+    """When a new worker process is created, the affinity is set to all CPUs."""
+    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
     #JK Commented out for the time being
-    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
+    #JK os.system("taskset -p 0xff %d > /dev/null" % os.getpid())

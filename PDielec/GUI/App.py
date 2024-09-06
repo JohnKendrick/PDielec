@@ -13,6 +13,7 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """App Module."""
+
 import os.path
 import sys
 
@@ -21,11 +22,12 @@ from qtpy.QtWidgets import QApplication, QMainWindow
 
 import PDielec.__init__
 from PDielec import Utilities
+from PDielec.Calculator import set_no_of_threads
 from PDielec.GUI.NoteBook import NoteBook
 from PDielec.Utilities import Debug
-from PDielec.Calculator import set_no_of_threads
 
 version = PDielec.__init__.__version__
+
 
 class App(QMainWindow):
     """A class representing the main application window.
@@ -111,7 +113,7 @@ class App(QMainWindow):
         - To set the number of CPUs used: `--cpus 4`
         - For help: `--help`
 
-        """        
+        """
         super().__init__()
         program = ""
         qm_program = ""
@@ -138,10 +140,10 @@ class App(QMainWindow):
         token = os.getenv("PDIELEC_THREADING")
         if token is None:
             threading = False
-        elif token in ( "True", "true", "TRUE" ):
-                threading = True
-        elif token in ( "False", "false", "FALSE" ):
-                threading = False
+        elif token in ("True", "true", "TRUE"):
+            threading = True
+        elif token in ("False", "false", "FALSE"):
+            threading = False
         else:
             threading = False
         parameters = []
@@ -149,38 +151,38 @@ class App(QMainWindow):
         # Process any instructions on the input line
         while itoken < ntokens:
             token = tokens[itoken]
-            if token in ( "-d" , "-debug" , "--debug" ):
+            if token in ("-d", "-debug", "--debug"):
                 self.debug = True
-            elif token in ( "-nosplash" , "--nosplash" ):
+            elif token in ("-nosplash", "--nosplash"):
                 pass
-            elif token in ( "-exit" , "--exit" , "-quit" , "--quit" ):
+            elif token in ("-exit", "--exit", "-quit", "--quit"):
                 self.program_exit = True
-            elif token in ( "-script" , "--script" ):
+            elif token in ("-script", "--script"):
                 itoken += 1
                 self.scripting = True
                 self.scriptname = tokens[itoken]
-            elif token in ( "-spreadsheet" , "--spreadsheet" , "-xls" , "--xls" ):
+            elif token in ("-spreadsheet", "--spreadsheet", "-xls", "--xls"):
                 itoken += 1
                 spreadsheet_name = tokens[itoken]
-            elif token in ( "-program" , "--program" ):
+            elif token in ("-program", "--program"):
                 itoken += 1
                 program = tokens[itoken]
                 program_has_been_specified = True
-            elif token in ( "-qmprogram" , "--qmprogram" ):
+            elif token in ("-qmprogram", "--qmprogram"):
                 itoken += 1
                 qm_program = tokens[itoken]
-            elif token in ( "-threading" , "--threading" , "-threads" , "--threads" ):
+            elif token in ("-threading", "--threading", "-threads", "--threads"):
                 threading = True
-            elif token in ( "-threads" , "--threads" ):
+            elif token in ("-threads", "--threads"):
                 itoken += 1
                 nthreads = int(tokens[itoken])
-            elif token in ( "-cpus" , "--cpus" ):
+            elif token in ("-cpus", "--cpus"):
                 itoken += 1
                 ncpus = int(tokens[itoken])
-            elif token in ( "-scenario" , "--scenario" ):
+            elif token in ("-scenario", "--scenario"):
                 itoken += 1
                 default_scenario = tokens[itoken]
-                if default_scenario not in ( "powder" , "crystal" ) :
+                if default_scenario not in ("powder", "crystal"):
                     print("Error in default scenario: must be 'powder' or 'crystal'")
                     self.print_usage()
                     sys.exit()
@@ -198,7 +200,7 @@ class App(QMainWindow):
         elif len(parameters) == 1:
             filename = parameters[0]
             if not program_has_been_specified:
-                program,qm_program = Utilities.find_program_from_name(filename)
+                program, qm_program = Utilities.find_program_from_name(filename)
         elif len(parameters) == 2:
             if program_has_been_specified:
                 print("Warning: program has been specified twice")
@@ -226,7 +228,7 @@ class App(QMainWindow):
         self.setGeometry(self.left, self.top, self.width, self.height)
         QCoreApplication.processEvents()
         global debugger
-        debugger = Debug(self.debug,"App:")
+        debugger = Debug(self.debug, "App:")
         debugger.print("Start:: Initialising")
         debugger.print("About to open the notebook")
         debugger.print("Program is", program)
@@ -245,16 +247,28 @@ class App(QMainWindow):
         else:
             # Threading is False, so spawning separate processes, but each one will still have nthreads threads
             set_no_of_threads(nthreads)
-        self.notebook = NoteBook(self, program, qm_program, filename, spreadsheet_name, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading, default_scenario=default_scenario)
+        self.notebook = NoteBook(
+            self,
+            program,
+            qm_program,
+            filename,
+            spreadsheet_name,
+            scripting=self.scripting,
+            progressbar=progressbar,
+            debug=self.debug,
+            ncpus=ncpus,
+            threading=threading,
+            default_scenario=default_scenario,
+        )
         debugger.print("About to call setCentralWidget")
         self.setCentralWidget(self.notebook)
         debugger.print("Finished call setCentralWidget")
         if self.scripting:
-            debugger.print("Processing script",self.scriptname)
-            self.readScript(self.scriptname,spreadsheet_name=spreadsheet_name)
+            debugger.print("Processing script", self.scriptname)
+            self.readScript(self.scriptname, spreadsheet_name=spreadsheet_name)
         if self.program_exit:
             if spreadsheet_name != "":
-                debugger.print("Writing spreadsheeet on exit",spreadsheet_name)
+                debugger.print("Writing spreadsheeet on exit", spreadsheet_name)
                 self.notebook.writeSpreadsheet()
                 self.notebook.spreadsheet.close()
             debugger.print("Exiting with sys.exit call")
@@ -297,7 +311,7 @@ class App(QMainWindow):
         - `-help`: Prints out help information.
         - `-debug`: Switches on debugging information.
 
-        """        
+        """
         print("pdgui - graphical user interface to the PDielec package")
         print("pdgui [program] filename [spreadsheet] [options]")
         print("     program      The name of the program which created the outputfile")
@@ -322,7 +336,7 @@ class App(QMainWindow):
         print("      -debug      Switches on debugging information")
         return
 
-    def setMyWindowTitle(self,title):
+    def setMyWindowTitle(self, title):
         """Set the window title with the provided title appended to the PDGui version.
 
         Parameters
@@ -339,12 +353,12 @@ class App(QMainWindow):
         -----
         This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
 
-        """        
+        """
         self.title = f"PDGui {self.version}  - " + title
         self.setWindowTitle(self.title)
         return
 
-    def readScript(self,scriptname,spreadsheet_name=""):
+    def readScript(self, scriptname, spreadsheet_name=""):
         """Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
 
         Parameters
@@ -365,7 +379,7 @@ class App(QMainWindow):
 
         After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with `QCoreApplication.processEvents()`.
 
-        """        
+        """
         debugger.print("Start:: readScript")
         self.notebook.scripting = True
         directory = os.path.dirname(scriptname)
@@ -376,11 +390,11 @@ class App(QMainWindow):
         # If a script is used there are no prompts for overwriting files etc.
         self.notebook.overwriting = True
         with open(scriptname) as fd:
-            #lines = fd.readlines()
+            # lines = fd.readlines()
             script = fd.read()
             exec(script)
-            #line_no = 0
-            #for line in lines:
+            # line_no = 0
+            # for line in lines:
             #    line_no += 1
             #    debugger.print('line: ',line_no,line)
             #    exec(line)
@@ -392,7 +406,7 @@ class App(QMainWindow):
             debugger.print("readScript notebook overwriting set to False")
         # The command line excel file overrides that in the script
         if spreadsheet_name != "":
-            debugger.print("readScript overwriting spread sheet name:",spreadsheet_name)
+            debugger.print("readScript overwriting spread sheet name:", spreadsheet_name)
             self.notebook.mainTab.settings["Excel file name"] = spreadsheet_name
         debugger.print("readScript notebook refresh")
         self.notebook.refresh(force=True)
@@ -419,23 +433,24 @@ class App(QMainWindow):
 
         Notes
         -----
-        This function must be a method of a class that inherits from a PyQt or PySide 
+        This function must be a method of a class that inherits from a PyQt or PySide
         widget which has a closeEvent method to override, such as QMainWindow, QDialog, etc.
 
         The `self.notebook.pool` is an instance of a multiprocessing pool, which needs
         to be closed and joined properly to ensure all processes are terminated cleanly before the application exits.
 
-        The `super(App, self).closeEvent(event)` call makes sure that any close event operations defined in the 
+        The `super(App, self).closeEvent(event)` call makes sure that any close event operations defined in the
         base class (from which the current class is derived) are also executed.
 
         When the application is about to close, this method ensures clean termination
         of multiprocessing resources and performs any additional base class close event handling.
 
-        """        
+        """
         debugger.print("Close event has been captured")
         self.notebook.pool.close()
         self.notebook.pool.join()
         super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

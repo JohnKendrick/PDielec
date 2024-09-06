@@ -17,11 +17,10 @@ import os.path
 import platform
 
 import numpy as np
-from qtpy.QtCore import QCoreApplication, QSize, Qt
 from qtpy import compat
+from qtpy.QtCore import QCoreApplication, QSize, Qt
 from qtpy.QtWidgets import (
     QComboBox,
-    QFileDialog,
     QFormLayout,
     QHBoxLayout,
     QLabel,
