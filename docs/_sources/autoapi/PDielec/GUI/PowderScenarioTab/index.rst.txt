@@ -1,5 +1,5 @@
-PDielec.GUI.PowderScenarioTab
-=============================
+:py:mod:`PDielec.GUI.PowderScenarioTab`
+=======================================
 
 .. py:module:: PDielec.GUI.PowderScenarioTab
 
@@ -9,21 +9,23 @@ PDielec.GUI.PowderScenarioTab
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.PowderScenarioTab.PowderScenarioTab
 
 
-Module Contents
----------------
+
 
 .. py:class:: PowderScenarioTab(parent, debug=False)
 
-   Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
 
+   Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
 
    A class for managing the Powder Scenario Tab.
 
@@ -136,7 +138,6 @@ Module Contents
        Refresh the GUI interface with up to date values.
 
 
-
    .. py:method:: calculate(vs_cm1)
 
       Calculate the powder absorption for the range of frequencies in vs_cm1.
@@ -150,7 +151,6 @@ Module Contents
       -------
       array_like
           The calculated powder absorption for the given range of frequencies.
-
 
 
 
@@ -178,7 +178,6 @@ Module Contents
 
 
 
-
    .. py:method:: crystal_density()
 
       Find the crystal density from the current reader and return the density.
@@ -187,7 +186,6 @@ Module Contents
       -------
       float
           The crystal density.
-
 
 
 
@@ -210,7 +208,6 @@ Module Contents
 
 
 
-
    .. py:method:: get_results(vs_cm1)
 
       Return the results of the effective medium theory calculation.
@@ -229,7 +226,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_aoverb_sb_changed(value)
 
       Handle a change to the a/b ratio for an ellipsoid.
@@ -238,7 +234,6 @@ Module Contents
       ----------
       value : float
           The a/b ratio of the elllipsoid
-
 
 
 
@@ -256,7 +251,6 @@ Module Contents
       Returns
       -------
       int
-
 
 
 
@@ -280,7 +274,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_atr_spolfrac_sb_changed(value)
 
       Update the ATR S polarisation fraction setting and request a refresh as required.
@@ -301,7 +294,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_bubble_radius_sb_changed(value)
 
       Update the bubble radius setting and mark refresh as required.
@@ -316,7 +308,6 @@ Module Contents
       Returns
       -------
       int
-
 
 
 
@@ -335,7 +326,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_density_sb_changed(value)
 
       Handle a change to the matrix density.
@@ -351,7 +341,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_h_sb_changed(value)
 
       Handle a change to the h parameter of the (hkl) surface.
@@ -360,7 +349,6 @@ Module Contents
       ----------
       value : int
           The h, k or l value
-
 
 
 
@@ -375,7 +363,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_l_sb_changed(value)
 
       Handle a change to the l parameter of the (hkl) surface.
@@ -387,7 +374,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_legend_le_changed(text)
 
       Handle a legend change.
@@ -396,7 +382,6 @@ Module Contents
       ----------
       text : str
           The legend
-
 
 
 
@@ -420,7 +405,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_methods_cb_activated(index)
 
       Handle changes in the calculation method for the effective medium theory.
@@ -429,7 +413,6 @@ Module Contents
       ----------
       index
           The index in the list of methods
-
 
 
 
@@ -443,7 +426,6 @@ Module Contents
       ----------
       value : float
           The mass fraction
-
 
 
 
@@ -468,7 +450,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_permittivity_r_sb_changed(value)
 
       Update the real part of the permittivity in the matrix material settings and refresh the material definition.
@@ -484,7 +465,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_shape_cb_activated(index)
 
       Handle changes to the shape of the powder particles.
@@ -493,7 +473,6 @@ Module Contents
       ----------
       index
           The index in the list of shapes
-
 
 
 
@@ -508,7 +487,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_size_sb_changed(value)
 
       Handle a particle size change.
@@ -517,7 +495,6 @@ Module Contents
       ----------
       value : float
           The particle size in microns
-
 
 
 
@@ -532,7 +509,6 @@ Module Contents
 
 
 
-
    .. py:method:: openDB_button_clicked()
 
       Open a new materials' database.
@@ -540,7 +516,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -559,7 +534,6 @@ Module Contents
 
 
 
-
    .. py:method:: update_mf_sb()
 
       Update the mass fraction and according to the volume fraction.
@@ -567,7 +541,6 @@ Module Contents
       Parameters
       ----------
       None
-
 
 
 
@@ -580,176 +553,5 @@ Module Contents
       None
 
 
-
-
-   .. py:attribute:: absorptionCoefficient
-      :value: []
-
-
-
-   .. py:attribute:: aoverb_sb
-
-
-   .. py:attribute:: atr_incident_ang_sb
-
-
-   .. py:attribute:: atr_index_sb
-
-
-   .. py:attribute:: atr_spolfrac_sb
-
-
-   .. py:attribute:: bubble_radius_sb
-
-
-   .. py:attribute:: bubble_vf_sb
-
-
-   .. py:attribute:: calculationRequired
-      :value: False
-
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: density_sb
-
-
-   .. py:attribute:: depolarisation
-
-
-   .. py:attribute:: direction
-
-
-   .. py:attribute:: form
-
-
-   .. py:attribute:: h_sb
-
-
-   .. py:attribute:: hbox
-
-
-   .. py:attribute:: hkl_label
-
-
-   .. py:attribute:: imagPermittivity
-      :value: []
-
-
-
-   .. py:attribute:: index
-
-
-   .. py:attribute:: k_sb
-
-
-   .. py:attribute:: l_sb
-
-
-   .. py:attribute:: label
-
-
-   .. py:attribute:: legend_le
-
-
-   .. py:attribute:: materialDefinedManually
-      :value: False
-
-
-
-   .. py:attribute:: materialNames
-      :value: []
-
-
-
-   .. py:attribute:: matrixPermittivityFunction
-
-
-   .. py:attribute:: matrix_cb
-
-
-   .. py:attribute:: matrix_info_le
-
-
-   .. py:attribute:: methods
-      :value: ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
-
-
-
-   .. py:attribute:: methods_cb
-
-
-   .. py:attribute:: mf_sb
-
-
-   .. py:attribute:: molarAbsorptionCoefficient
-      :value: []
-
-
-
-   .. py:attribute:: noCalculationsRequired
-      :value: 1
-
-
-
-   .. py:attribute:: permittivity_i_sb
-
-
-   .. py:attribute:: permittivity_r_sb
-
-
-   .. py:attribute:: reader
-      :value: None
-
-
-
-   .. py:attribute:: realPermittivity
-      :value: []
-
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: scenarioIndex
-      :value: None
-
-
-
-   .. py:attribute:: scenarioType
-      :value: 'Powder'
-
-
-
-   .. py:attribute:: shape_cb
-
-
-   .. py:attribute:: shapes
-      :value: ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
-
-
-
-   .. py:attribute:: sigma_sb
-
-
-   .. py:attribute:: size_sb
-
-
-   .. py:attribute:: sp_atr
-      :value: []
-
-
-
-   .. py:attribute:: text
-
-
-   .. py:attribute:: vbox
-
-
-   .. py:attribute:: vf_sb
 
 

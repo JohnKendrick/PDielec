@@ -1,5 +1,5 @@
-PDielec.HelperRoutines
-======================
+:py:mod:`PDielec.HelperRoutines`
+================================
 
 .. py:module:: PDielec.HelperRoutines
 
@@ -11,8 +11,12 @@ PDielec.HelperRoutines
 
 
 
+Module Contents
+---------------
+
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -22,8 +26,6 @@ Functions
    PDielec.HelperRoutines.getMaterial
 
 
-Module Contents
----------------
 
 .. py:function:: calculateDFTPermittivityObject(reader, sigma=5.0, eckart=True, mass_definition='Average')
 

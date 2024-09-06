@@ -1,5 +1,5 @@
-PDielec.GUI.NoteBook
-====================
+:py:mod:`PDielec.GUI.NoteBook`
+==============================
 
 .. py:module:: PDielec.GUI.NoteBook
 
@@ -9,21 +9,23 @@ PDielec.GUI.NoteBook
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.NoteBook.NoteBook
 
 
-Module Contents
----------------
+
 
 .. py:class:: NoteBook(parent, program, qm_program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario='powder', ncpus=0, threading=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
    A Qt widget that holds tabs for managing different aspects of a notebook-like interface.
 
@@ -100,7 +102,6 @@ Module Contents
        State indicating if overwriting files without prompt is enabled.
 
 
-
    .. py:method:: addScenario(scenarioType=None, copyFromIndex=-2)
 
       Add a new scenario tab.
@@ -122,7 +123,6 @@ Module Contents
 
 
 
-
    .. py:method:: deleteAllScenarios()
 
       Delete all scenarios except the first one.
@@ -136,7 +136,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -162,7 +161,6 @@ Module Contents
 
 
 
-
    .. py:method:: keyPressEvent(e)
 
       Handle key press events for the application.
@@ -181,7 +179,6 @@ Module Contents
       This function checks for specific key combinations (Control + S, and Control + C) and performs actions accordingly:
       - Control + S: Calls the `print_settings` method.
       - Control + C: Prints a message and exits the program.
-
 
 
 
@@ -210,7 +207,6 @@ Module Contents
 
 
 
-
    .. py:method:: openSpreadSheet(filename)
 
       Open or create a spreadsheet file.
@@ -231,7 +227,6 @@ Module Contents
       -----
       - The function relies on the 'SpreadSheetManager' class for handling spreadsheet operations.
       - The function raises no exceptions, but will print a message if the provided filename does not have a '.xlsx' extension.
-
 
 
 
@@ -258,7 +253,6 @@ Module Contents
 
 
 
-
    .. py:method:: print_settings(filename=None)
 
       Print the current program settings to a file.
@@ -275,7 +269,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -308,7 +301,6 @@ Module Contents
 
 
 
-
    .. py:method:: progressbars_add(bar)
 
       Add a progress bar to the list of progress bars.
@@ -327,7 +319,6 @@ Module Contents
       After adding the new progress bar to the list, this method updates the maximum value 
       of all progress bars by calling `self.progressbars_set_maximum` with the current 
       maximum value defined in `self.progressbar_maximum`.
-
 
 
 
@@ -350,7 +341,6 @@ Module Contents
 
 
 
-
    .. py:method:: progressbars_update(increment=1)
 
       Update the progress bars status by a specified increment.
@@ -365,7 +355,6 @@ Module Contents
       None
 
       This method increments the progress bar status stored in `progressbar_status` by the specified `increment` amount. It then sets this updated value as the new value for all progress bars stored in the `progressbars` list attribute of the instance.
-
 
 
 
@@ -388,7 +377,6 @@ Module Contents
 
 
 
-
    .. py:method:: requestRefresh()
 
       Request a refresh operation.
@@ -402,7 +390,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -426,7 +413,6 @@ Module Contents
       - The pool is stored in the instance's `pool` attribute.
       - The method uses a global variable `debugger` which should be defined elsewhere in the global scope for debugging purposes.
       - The number of CPUs (`ncpus`) and the threading model (`threading`) are not parameters of this method, but are expected to be attributes of the instance (`self`).
-
 
 
 
@@ -465,7 +451,6 @@ Module Contents
 
 
 
-
    .. py:method:: writeSpreadsheet()
 
       Write data to an Excel spreadsheet.
@@ -482,93 +467,6 @@ Module Contents
       -----
       This function assumes that the Excel spreadsheet is an attribute of the object this method belongs to. It attempts to write data to various tabs within the spreadsheet, namely 'mainTab', 'settingsTab', 'analysisTab', and 'plottingTab'. The method opens the spreadsheet, writes data to these tabs if the spreadsheet is not `None`, and then closes the spreadsheet. 
 
-
-
-
-   .. py:attribute:: analysisTab
-      :value: None
-
-
-
-   .. py:attribute:: app
-
-
-   .. py:attribute:: debug
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: fitterTab
-      :value: None
-
-
-
-   .. py:attribute:: layout
-
-
-   .. py:attribute:: mainTab
-
-
-   .. py:attribute:: overwriting
-      :value: False
-
-
-
-   .. py:attribute:: plottingTab
-      :value: None
-
-
-
-   .. py:attribute:: progressbar_maximum
-      :value: 0
-
-
-
-   .. py:attribute:: progressbar_status
-      :value: 0
-
-
-
-   .. py:attribute:: progressbars
-
-
-   .. py:attribute:: reader
-      :value: None
-
-
-
-   .. py:attribute:: scenarios
-      :value: None
-
-
-
-   .. py:attribute:: scripting
-
-
-   .. py:attribute:: settingsTab
-      :value: None
-
-
-
-   .. py:attribute:: spreadsheet
-      :value: None
-
-
-
-   .. py:attribute:: tabOffSet
-      :value: 2
-
-
-
-   .. py:attribute:: tabs
-
-
-   .. py:attribute:: threading
-
-
-   .. py:attribute:: viewerTab
-      :value: None
 
 
 

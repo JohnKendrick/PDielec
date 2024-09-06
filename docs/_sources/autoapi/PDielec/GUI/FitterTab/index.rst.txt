@@ -1,5 +1,5 @@
-PDielec.GUI.FitterTab
-=====================
+:py:mod:`PDielec.GUI.FitterTab`
+===============================
 
 .. py:module:: PDielec.GUI.FitterTab
 
@@ -9,16 +9,20 @@ PDielec.GUI.FitterTab
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.FitterTab.FitterTab
 
 
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -30,13 +34,11 @@ Functions
    PDielec.GUI.FitterTab.resample_experimental_spectrum
 
 
-Module Contents
----------------
 
 .. py:class:: FitterTab(parent, debug=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
    Initialize the main FitterTab with its components and connect signals to slots.
 
@@ -119,7 +121,6 @@ Module Contents
        Requests a refresh of the interface.
 
 
-
    .. py:method:: fittingButtonClicked()
 
       Handle the click event on the fitting button.
@@ -141,7 +142,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_baseline_cb_changed(value)
 
       Handle the change event of the baseline checkbox.
@@ -159,7 +159,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_fitting_type_cb_activated(index)
 
       Handle the activation of a fitting type option.
@@ -174,7 +173,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -199,7 +197,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_hpfilter_lambda_sb_changed(value)
 
       Handle changes to the high-pass filter lambda scrollbar value.
@@ -212,7 +209,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -235,7 +231,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_iterations_sb_changed()
 
       Handle changes in the iterations spin box value.
@@ -249,7 +244,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -270,7 +264,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_scenario_cb_activated(index)
 
       Handle scenario combobox activation.
@@ -285,7 +278,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -315,7 +307,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_spectrafile_le_changed(text)
 
       Handle changes to the spectra file input field.
@@ -334,7 +325,6 @@ Module Contents
       Notes
       -----
       The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text` argument.
-
 
 
 
@@ -360,7 +350,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_spectral_difference_threshold_sb_changed(value)
 
       Handle changes in spectral difference threshold setting.
@@ -376,7 +365,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -397,7 +385,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_spectrum_scaling_factor_sb_changed(value)
 
       Handle the change in spectrum scaling factor.
@@ -414,7 +401,6 @@ Module Contents
       Notes
       -----
       This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.
-
 
 
 
@@ -448,7 +434,6 @@ Module Contents
 
       It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
       `fit_list` to store the indexes of modes that are being fitted.
-
 
 
 
@@ -495,7 +480,6 @@ Module Contents
 
 
 
-
    .. py:method:: plot(experiment, xs, ys, legends, label)
 
       Plot experimental and calculated data on the same or separate y-axes.
@@ -528,7 +512,6 @@ Module Contents
 
 
 
-
    .. py:method:: print_settings()
 
       Print the settings attributes of the instance.
@@ -542,7 +525,6 @@ Module Contents
       None
 
       Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
-
 
 
 
@@ -572,7 +554,6 @@ Module Contents
 
 
 
-
    .. py:method:: refresh(force=False)
 
       Refresh the state of the application based on user-defined conditions and settings.
@@ -594,7 +575,6 @@ Module Contents
 
 
 
-
    .. py:method:: replot()
 
       Replots the experimental spectrum along with calculated frequencies and spectra.
@@ -608,7 +588,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -632,7 +611,6 @@ Module Contents
 
 
 
-
    .. py:method:: replotButton2Clicked()
 
       Handle the event when the second replot button is clicked.
@@ -651,7 +629,6 @@ Module Contents
 
 
 
-
    .. py:method:: requestRefresh()
 
       Request a refresh of the interface.
@@ -664,183 +641,6 @@ Module Contents
       -------
       None
 
-
-
-
-   .. py:attribute:: baseline_cb
-
-
-   .. py:attribute:: calculationInProgress
-      :value: False
-
-
-
-   .. py:attribute:: canvas
-
-
-   .. py:attribute:: cross_correlation_le
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: experimental_file_has_been_read
-      :value: False
-
-
-
-   .. py:attribute:: experimental_frequencies
-      :value: []
-
-
-
-   .. py:attribute:: experimental_spectrum
-      :value: []
-
-
-
-   .. py:attribute:: figure
-
-
-   .. py:attribute:: fittingButton
-
-
-   .. py:attribute:: fitting_type_cb
-
-
-   .. py:attribute:: fitting_type_definitions
-      :value: ['Minimise x-correlation', 'Minimise spectral difference']
-
-
-
-   .. py:attribute:: form
-
-
-   .. py:attribute:: frequencies_cm1
-
-
-   .. py:attribute:: frequency_scaling_factor_sb
-
-
-   .. py:attribute:: frequency_scaling_le
-
-
-   .. py:attribute:: frequency_units
-      :value: 'wavenumber'
-
-
-
-   .. py:attribute:: hbox
-
-
-   .. py:attribute:: hpfilter_lambda_sb
-
-
-   .. py:attribute:: independent_yaxes_cb
-
-
-   .. py:attribute:: intensities
-
-
-   .. py:attribute:: iterations_sb
-
-
-   .. py:attribute:: label
-
-
-   .. py:attribute:: lag
-      :value: 0.0
-
-
-
-   .. py:attribute:: lag_frequency_le
-
-
-   .. py:attribute:: lastButtonPressed
-
-
-   .. py:attribute:: modes_fitted
-      :value: []
-
-
-
-   .. py:attribute:: modes_selected
-      :value: []
-
-
-
-   .. py:attribute:: notebook
-
-
-   .. py:attribute:: optimise_frequency_scaling_cb
-
-
-   .. py:attribute:: plot_frequency_shift
-      :value: False
-
-
-
-   .. py:attribute:: progressbar
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: replotButton1
-
-
-   .. py:attribute:: replotButton2
-
-
-   .. py:attribute:: resampled_experimental_spectrum
-      :value: []
-
-
-
-   .. py:attribute:: rmse_le
-
-
-   .. py:attribute:: scenario_cb
-
-
-   .. py:attribute:: scenario_legends
-
-
-   .. py:attribute:: settings
-
-
-   .. py:attribute:: settingsTab
-
-
-   .. py:attribute:: sigmas_cm1
-      :value: []
-
-
-
-   .. py:attribute:: sigmas_tw
-
-
-   .. py:attribute:: spectrafile_le
-
-
-   .. py:attribute:: spectral_difference_threshold_sb
-
-
-   .. py:attribute:: toolbar
-
-
-   .. py:attribute:: vbox
-
-
-   .. py:attribute:: xcorr0
-      :value: 0.0
-
-
-
-   .. py:attribute:: xcorr1
-      :value: 0.0
 
 
 

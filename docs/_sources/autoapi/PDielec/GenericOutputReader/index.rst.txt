@@ -1,5 +1,5 @@
-PDielec.GenericOutputReader
-===========================
+:py:mod:`PDielec.GenericOutputReader`
+=====================================
 
 .. py:module:: PDielec.GenericOutputReader
 
@@ -9,18 +9,21 @@ PDielec.GenericOutputReader
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GenericOutputReader.GenericOutputReader
 
 
-Module Contents
----------------
+
 
 .. py:class:: GenericOutputReader(filenames)
+
 
    Generic reader of output files. Actual reader should inherit from this class.
 
@@ -105,7 +108,6 @@ Module Contents
        Signifies whether original Born charges are in use, defaults to True.
 
 
-
    .. py:method:: _born_charge_sum_rule()
 
       Apply a simple charge sum rule to all the elements of the born matrices.
@@ -121,7 +123,6 @@ Module Contents
       Notes
       -----
       This function applies a straightforward summation rule to the elements of the born matrices,
-
 
 
 
@@ -150,7 +151,6 @@ Module Contents
 
 
 
-
    .. py:method:: _modify_mass_weighting(hessian, new)
 
       Modify the Hessian matrix based on new mass weighting.
@@ -168,7 +168,6 @@ Module Contents
       -------
       numpy.ndarray
           The modified Hessian matrix with the same dimensions as the input matrix.
-
 
 
 
@@ -191,7 +190,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_output_files()
 
       Read the through the output files.
@@ -210,7 +208,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_till_phrase(phrase)
 
       Read lines from the current file until a match with phrase is found.
@@ -226,7 +223,6 @@ Module Contents
       -------
       str
           The line from the file that matches the phrase.
-
 
 
 
@@ -262,7 +258,6 @@ Module Contents
 
 
 
-
    .. py:method:: _symmetric_orthogonalisation(A)
 
       Private routine to perform symmetric orthogonalization.
@@ -275,7 +270,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -295,7 +289,6 @@ Module Contents
       -------
       mass_weighted_normal_modes : np.array
          the mass weighted normal modes
-
 
 
 
@@ -326,7 +319,6 @@ Module Contents
 
 
 
-
    .. py:method:: getSpecies()
 
       Return a list of cleaned species symbols.
@@ -342,7 +334,6 @@ Module Contents
       -------
       list
           A list of cleaned species symbols.
-
 
 
 
@@ -363,7 +354,6 @@ Module Contents
 
 
 
-
    .. py:method:: get_unit_cell()
 
       Return the last unit cell in the reader.
@@ -378,7 +368,6 @@ Module Contents
       -------
       unitCell object
           The last unit cell read by the reader
-
 
 
 
@@ -402,7 +391,6 @@ Module Contents
       Examples
       --------
       Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
-
 
 
 
@@ -432,7 +420,6 @@ Module Contents
 
 
 
-
    .. py:method:: print()
 
       Print information about the reader.
@@ -448,7 +435,6 @@ Module Contents
       Notes
       -----
       This function prints out detailed information about the reader it is run on.
-
 
 
 
@@ -468,7 +454,6 @@ Module Contents
 
 
 
-
    .. py:method:: read_output()
 
       Interface to the private read output files methods.
@@ -480,7 +465,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -501,7 +485,6 @@ Module Contents
       Notes
       -----
       This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
-
 
 
 
@@ -542,7 +525,6 @@ Module Contents
 
 
 
-
    .. py:method:: set_edited_masses(masses)
 
       Set the edited masses attribute if the length matches the original masses attribute.
@@ -564,266 +546,6 @@ Module Contents
       -------
       None
 
-
-
-
-   .. py:attribute:: CrystalPermittivity
-      :value: None
-
-
-
-   .. py:attribute:: _old_masses
-      :value: []
-
-
-
-   .. py:attribute:: _outputfiles
-
-
-   .. py:attribute:: atom_type_list
-      :value: []
-
-
-
-   .. py:attribute:: born_charges
-      :value: []
-
-
-
-   .. py:attribute:: debug
-      :value: False
-
-
-
-   .. py:attribute:: eckart
-      :value: False
-
-
-
-   .. py:attribute:: edited_masses
-      :value: None
-
-
-
-   .. py:attribute:: elastic_constants
-      :value: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0,...
-
-
-
-   .. py:attribute:: electrons
-      :value: 0
-
-
-
-   .. py:attribute:: energiesDFT
-      :value: []
-
-
-
-   .. py:attribute:: energiesDFT_disp
-      :value: []
-
-
-
-   .. py:attribute:: energy_cutoff
-      :value: 0.0
-
-
-
-   .. py:attribute:: file_descriptor
-      :value: ''
-
-
-
-   .. py:attribute:: final_energies_without_entropy
-      :value: []
-
-
-
-   .. py:attribute:: final_energy_without_entropy
-      :value: 0.0
-
-
-
-   .. py:attribute:: final_free_energies
-      :value: []
-
-
-
-   .. py:attribute:: final_free_energy
-      :value: 0.0
-
-
-
-   .. py:attribute:: frequencies
-      :value: []
-
-
-
-   .. py:attribute:: geomsteps
-      :value: 0
-
-
-
-   .. py:attribute:: hessian_symmetrisation
-      :value: 'symm'
-
-
-
-   .. py:attribute:: ions_per_type
-      :value: []
-
-
-
-   .. py:attribute:: iterations
-
-
-   .. py:attribute:: kpoint_grid
-      :value: [1, 1, 1]
-
-
-
-   .. py:attribute:: kpoints
-      :value: 1
-
-
-
-   .. py:attribute:: magnetization
-      :value: 0.0
-
-
-
-   .. py:attribute:: manage
-
-
-   .. py:attribute:: mass_weighted_normal_modes
-      :value: []
-
-
-
-   .. py:attribute:: masses
-      :value: []
-
-
-
-   .. py:attribute:: masses_per_type
-      :value: []
-
-
-
-   .. py:attribute:: names
-
-
-   .. py:attribute:: nbands
-      :value: 0
-
-
-
-   .. py:attribute:: ncells
-      :value: 0
-
-
-
-   .. py:attribute:: nions
-      :value: 0
-
-
-
-   .. py:attribute:: nomass_hessian
-      :value: None
-
-
-
-   .. py:attribute:: nomass_hessian_has_been_set
-      :value: False
-
-
-
-   .. py:attribute:: nspecies
-      :value: 0
-
-
-
-   .. py:attribute:: nsteps
-      :value: 0
-
-
-
-   .. py:attribute:: open_directory
-      :value: ''
-
-
-
-   .. py:attribute:: open_filename
-      :value: ''
-
-
-
-   .. py:attribute:: original_born_charges
-      :value: None
-
-
-
-   .. py:attribute:: original_born_charges_are_being_used
-      :value: True
-
-
-
-   .. py:attribute:: oscillator_strengths
-      :value: None
-
-
-
-   .. py:attribute:: pressure
-      :value: 0
-
-
-
-   .. py:attribute:: pressures
-      :value: []
-
-
-
-   .. py:attribute:: program_mass_dictionary
-
-
-   .. py:attribute:: species
-      :value: []
-
-
-
-   .. py:attribute:: spin
-      :value: 0
-
-
-
-   .. py:attribute:: type
-      :value: 'Unkown'
-
-
-
-   .. py:attribute:: unit_cells
-      :value: []
-
-
-
-   .. py:attribute:: volume
-      :value: 0
-
-
-
-   .. py:attribute:: volumes
-      :value: []
-
-
-
-   .. py:attribute:: zerof_optical_dielectric
-      :value: [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-
-
-
-   .. py:attribute:: zerof_static_dielectric
-      :value: [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
 
 

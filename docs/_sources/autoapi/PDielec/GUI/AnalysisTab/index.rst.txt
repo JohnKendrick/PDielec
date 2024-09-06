@@ -1,5 +1,5 @@
-PDielec.GUI.AnalysisTab
-=======================
+:py:mod:`PDielec.GUI.AnalysisTab`
+=================================
 
 .. py:module:: PDielec.GUI.AnalysisTab
 
@@ -9,21 +9,23 @@ PDielec.GUI.AnalysisTab
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.AnalysisTab.AnalysisTab
 
 
-Module Contents
----------------
+
 
 .. py:class:: AnalysisTab(parent, debug=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
    A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.
 
@@ -124,7 +126,6 @@ Module Contents
        Generates a plot based on the decomposition of vibrational energy into internal and external movements.
 
 
-
    .. py:method:: calculate()
 
       Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
@@ -154,7 +155,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_element_radii_tw_itemChanged(item)
 
       Respond to changes in element radii within a widget.
@@ -167,7 +167,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -191,7 +190,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_plottype_cb_changed(index)
 
       Handle a change in plot type selection.
@@ -204,7 +202,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -229,7 +226,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_title_changed(text)
 
       Handle title change events.
@@ -242,7 +238,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -263,7 +258,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_vmax_changed()
 
       Handle the change in maximum value for frequency.
@@ -276,7 +270,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -295,7 +288,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_width_changed(value)
 
       Handle changes to the width property.
@@ -310,7 +302,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -340,7 +331,6 @@ Module Contents
 
 
 
-
    .. py:method:: plot_internal_external()
 
       Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.
@@ -360,7 +350,6 @@ Module Contents
       - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.
       - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.
       - The method updates the canvas with the newly plotted data.
-
 
 
 
@@ -397,7 +386,6 @@ Module Contents
 
 
 
-
    .. py:method:: refresh(force=False)
 
       Refresh the widget state, optionally enforcing refresh.
@@ -412,7 +400,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -432,7 +419,6 @@ Module Contents
 
 
 
-
    .. py:method:: setCovalentRadius(element, radius)
 
       Set the covalent radius for a given element and update the plot.
@@ -447,7 +433,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -471,7 +456,6 @@ Module Contents
 
 
 
-
    .. py:method:: writeSpreadsheet()
 
       Write analysis data into a selected worksheet in the notebook's spreadsheet.
@@ -490,126 +474,5 @@ Module Contents
       None
 
 
-
-
-   .. py:attribute:: canvas
-
-
-   .. py:attribute:: cell_of_molecules
-      :value: None
-
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: element_radii
-
-
-   .. py:attribute:: element_radii_tw
-
-
-   .. py:attribute:: figure
-
-
-   .. py:attribute:: form
-
-
-   .. py:attribute:: frequencies_cm1
-      :value: []
-
-
-
-   .. py:attribute:: frequency_units
-      :value: None
-
-
-
-   .. py:attribute:: hbox
-
-
-   .. py:attribute:: label
-
-
-   .. py:attribute:: mode_energies
-      :value: []
-
-
-
-   .. py:attribute:: molecules_le
-
-
-   .. py:attribute:: notebook
-
-
-   .. py:attribute:: number_of_molecules
-      :value: 0
-
-
-
-   .. py:attribute:: original_atomic_order
-      :value: None
-
-
-
-   .. py:attribute:: plot_type_index
-      :value: 0
-
-
-
-   .. py:attribute:: plot_types
-      :value: ['Internal vs External', 'Molecular Composition']
-
-
-
-   .. py:attribute:: plottype_cb
-
-
-   .. py:attribute:: reader
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: scale_sp
-
-
-   .. py:attribute:: settings
-
-
-   .. py:attribute:: sizePolicy
-
-
-   .. py:attribute:: species
-      :value: []
-
-
-
-   .. py:attribute:: subplot
-      :value: None
-
-
-
-   .. py:attribute:: title_le
-
-
-   .. py:attribute:: tolerance_sp
-
-
-   .. py:attribute:: toolbar
-
-
-   .. py:attribute:: vbox
-
-
-   .. py:attribute:: vmax_sb
-
-
-   .. py:attribute:: vmin_sb
-
-
-   .. py:attribute:: width_sp
 
 

@@ -1,5 +1,5 @@
-PDielec.Utilities
-=================
+:py:mod:`PDielec.Utilities`
+===========================
 
 .. py:module:: PDielec.Utilities
 
@@ -11,16 +11,20 @@ PDielec.Utilities
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.Utilities.Debug
 
 
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -30,10 +34,9 @@ Functions
    PDielec.Utilities.printsp
 
 
-Module Contents
----------------
 
 .. py:class:: Debug(debug, text, level=0)
+
 
    A class aimed at providing a structured way to include debug messages in code.
 
@@ -47,7 +50,6 @@ Module Contents
    Notes
    -----
    The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
-
 
 
    .. py:method:: print(*args, level=0)
@@ -69,7 +71,6 @@ Module Contents
 
 
 
-
    .. py:method:: state()
 
       Get the debug state.
@@ -83,15 +84,6 @@ Module Contents
       The current debug state.
 
 
-
-
-   .. py:attribute:: debug
-
-
-   .. py:attribute:: level
-
-
-   .. py:attribute:: text
 
 
 .. py:function:: find_program_from_name(filename)

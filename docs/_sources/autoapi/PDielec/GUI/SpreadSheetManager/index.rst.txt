@@ -1,5 +1,5 @@
-PDielec.GUI.SpreadSheetManager
-==============================
+:py:mod:`PDielec.GUI.SpreadSheetManager`
+========================================
 
 .. py:module:: PDielec.GUI.SpreadSheetManager
 
@@ -9,18 +9,21 @@ PDielec.GUI.SpreadSheetManager
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.SpreadSheetManager.SpreadSheetManager
 
 
-Module Contents
----------------
+
 
 .. py:class:: SpreadSheetManager(filename)
+
 
    A manager for handling operations on an Excel workbook via xlsxwriter.
 
@@ -70,7 +73,6 @@ Module Contents
        Closes the workbook, finalizing it for output.
 
 
-
    .. py:method:: close()
 
       Close the workbook if it hasn't been closed already.
@@ -84,7 +86,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -102,7 +103,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -128,7 +128,6 @@ Module Contents
 
 
 
-
    .. py:method:: selectWorkSheet(name)
 
       Select or opens a worksheet by name.
@@ -147,7 +146,6 @@ Module Contents
       This method selects a worksheet if it is already opened. If the worksheet is not
       currently open, it attempts to open the worksheet by calling `openWorkSheet` with
       the worksheet name.
-
 
 
 
@@ -178,7 +176,6 @@ Module Contents
 
 
 
-
    .. py:method:: writeNextRow(items, row=None, col=None, check='')
 
       Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
@@ -206,38 +203,5 @@ Module Contents
       - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
 
 
-
-
-   .. py:attribute:: closed
-      :value: False
-
-
-
-   .. py:attribute:: max_col
-
-
-   .. py:attribute:: max_row
-
-
-   .. py:attribute:: name
-      :value: 'Main'
-
-
-
-   .. py:attribute:: opened
-
-
-   .. py:attribute:: positions
-
-
-   .. py:attribute:: tab_names
-      :value: ['Main', 'Settings', 'Scenarios', 'Powder Molar Absorption (cells)', 'Powder Molar Absorption...
-
-
-
-   .. py:attribute:: workbook
-
-
-   .. py:attribute:: worksheets
 
 

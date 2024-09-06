@@ -1,5 +1,5 @@
-PDielec.pickled_reader
-======================
+:py:mod:`PDielec.pickled_reader`
+================================
 
 .. py:module:: PDielec.pickled_reader
 
@@ -9,16 +9,12 @@ PDielec.pickled_reader
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.pickled_reader.version
+Module Contents
+---------------
 
 
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -26,8 +22,14 @@ Functions
    PDielec.pickled_reader.print_help
 
 
-Module Contents
----------------
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.pickled_reader.version
+
 
 .. py:function:: main()
 
@@ -73,4 +75,6 @@ Module Contents
 
 
 .. py:data:: version
+
+   
 

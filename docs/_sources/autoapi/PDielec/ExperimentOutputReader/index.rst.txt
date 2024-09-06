@@ -1,5 +1,5 @@
-PDielec.ExperimentOutputReader
-==============================
+:py:mod:`PDielec.ExperimentOutputReader`
+========================================
 
 .. py:module:: PDielec.ExperimentOutputReader
 
@@ -9,21 +9,23 @@ PDielec.ExperimentOutputReader
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.ExperimentOutputReader.ExperimentOutputReader
 
 
-Module Contents
----------------
+
 
 .. py:class:: ExperimentOutputReader(names)
 
-   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
    Read the contents of a directory containing Experiment input and output files.
 
@@ -50,7 +52,6 @@ Module Contents
        Initially None, intended for storing frequencies data.
 
 
-
    .. py:method:: _read_constant_model(line)
 
       Read in a full constant dielectric tensor 3 values on each line.
@@ -63,7 +64,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -111,7 +111,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_cpk_lattice_vectors(line)
 
       Process a cpk input file with cell information.
@@ -126,7 +125,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -156,7 +154,6 @@ Module Contents
       zz  1
       413.7 1050.0  22.2
       ```
-
 
 
 
@@ -206,7 +203,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_fractional_coordinates(line)
 
       Read and process fractional coordinates from a string line.
@@ -233,7 +229,6 @@ Module Contents
       - Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays if they haven't been already.
 
       Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
-
 
 
 
@@ -264,7 +259,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_interpolate1_model(line)
 
       Read in a tabulated permittivity and use it for interpolation.
@@ -279,7 +273,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -300,7 +293,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_interpolate6_model(line)
 
       Read in a tabulated permittivity and use it for interpolation.
@@ -315,7 +307,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -338,7 +329,6 @@ Module Contents
       See Also
       --------
       UnitCell : A class or function used to represent and manipulate unit cell information.
-
 
 
 
@@ -366,7 +356,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_output_files()
 
       Define the search strings and read the Experiment files in the directory.
@@ -378,7 +367,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -398,7 +386,6 @@ Module Contents
       Notes
       -----
       This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.
-
 
 
 
@@ -432,7 +419,6 @@ Module Contents
 
 
 
-
    .. py:method:: calculate_mass_weighted_normal_modes()
 
       Calculate the mass weight normal modes.
@@ -447,34 +433,6 @@ Module Contents
           Returns an array for the mass weighted normal modes which in this case is zero
           The array has a shape 3*nions, nions, 3
 
-
-
-
-   .. py:attribute:: CrystalPermittivity
-      :value: None
-
-
-
-   .. py:attribute:: _ion_type_index
-
-
-   .. py:attribute:: frequencies
-      :value: None
-
-
-
-   .. py:attribute:: oscillator_strengths
-      :value: None
-
-
-
-   .. py:attribute:: type
-      :value: 'Experimental output'
-
-
-
-   .. py:attribute:: zerof_optical_dielectric
-      :value: None
 
 
 

@@ -1,5 +1,5 @@
-PDielec.GUI.SettingsTab
-=======================
+:py:mod:`PDielec.GUI.SettingsTab`
+=================================
 
 .. py:module:: PDielec.GUI.SettingsTab
 
@@ -9,8 +9,11 @@ PDielec.GUI.SettingsTab
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
@@ -18,13 +21,12 @@ Classes
    PDielec.GUI.SettingsTab.SettingsTab
 
 
-Module Contents
----------------
+
 
 .. py:class:: FixedQTableWidget(*args, parent=None, rows=None, columns=None)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QTableWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QTableWidget`
 
    A custom QTableWidget with fixed number of rows and columns.
 
@@ -51,7 +53,6 @@ Module Contents
    QTableWidget : The base class from which this class is derived.
 
 
-
    .. py:method:: sizeHint()
 
       Calculate the suggested dimensions for the widget based on its content.
@@ -70,16 +71,10 @@ Module Contents
 
 
 
-   .. py:attribute:: columns
-
-
-   .. py:attribute:: rows
-
-
 .. py:class:: SettingsTab(parent, debug=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
    A class for managing and displaying settings related to optical permittivity, mass calculation, and vibrational calculations for crystal structures within a GUI application.
 
@@ -177,7 +172,6 @@ Module Contents
        Returns the crystal permittivity object used for calculations.
 
 
-
    .. py:method:: calculate(vs_cm1)
 
       Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.
@@ -190,7 +184,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -229,7 +222,6 @@ Module Contents
 
 
 
-
    .. py:method:: getCrystalPermittivity(vs_cm1)
 
       Return the crystal permittivity.
@@ -246,7 +238,6 @@ Module Contents
 
 
 
-
    .. py:method:: getCrystalPermittivityObject()
 
       Return the crystal permittivity object.
@@ -259,7 +250,6 @@ Module Contents
       -------
       self.CrystalPermittivityObject : a permittivity object
           An instance of dielectric function
-
 
 
 
@@ -279,7 +269,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_eckart_changed()
 
       Handle changes in the Eckart flag state.
@@ -295,7 +284,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -323,7 +311,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_element_masses_tw_itemClicked(item)
 
       Handle the item clicked event on the element mass table widget.
@@ -338,7 +325,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -373,7 +359,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_optical_tw_itemChanged(item)
 
       Handle item change events for an optical permittivity table.
@@ -400,7 +385,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_optical_tw_itemClicked(item)
 
       Handle item clicked event for an optical widget's table item.
@@ -419,7 +403,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -452,7 +435,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_sigma_changed()
 
       Update the sigma value in settings and apply it across the frequency range, then refreshes the output.
@@ -468,7 +450,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -499,7 +480,6 @@ Module Contents
 
 
 
-
    .. py:method:: refresh(force=False)
 
       Refresh the current state based on notebook content changes or user request.
@@ -523,7 +503,6 @@ Module Contents
       - Unblocks all QWidget signals after updates are applied.
       - Manages internal flags to keep track of the need for refreshes and calculations.
       - Processes all pending Qt events with `QCoreApplication.processEvents()`.
-
 
 
 
@@ -554,7 +533,6 @@ Module Contents
 
 
 
-
    .. py:method:: requestRefresh()
 
       Request to refresh the environment or state.
@@ -568,7 +546,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -596,7 +573,6 @@ Module Contents
 
 
 
-
    .. py:method:: set_masses_tw()
 
       Set the element masses in the table widget based on the mass_definition setting.
@@ -610,7 +586,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -630,7 +605,6 @@ Module Contents
 
 
 
-
    .. py:method:: writeSpreadsheet()
 
       Write the configuration and calculation results to the associated spreadsheet.
@@ -645,127 +619,6 @@ Module Contents
       -------
       None
 
-
-
-
-   .. py:attribute:: CrystalPermittivityObject
-      :value: None
-
-
-
-   .. py:attribute:: born_cb
-
-
-   .. py:attribute:: calculationRequired
-      :value: False
-
-
-
-   .. py:attribute:: crystal_permittivity
-      :value: []
-
-
-
-   .. py:attribute:: current_mass_definition_index
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: eckart_cb
-
-
-   .. py:attribute:: element_masses_tw
-
-
-   .. py:attribute:: form
-
-
-   .. py:attribute:: frequencies_cm1
-      :value: []
-
-
-
-   .. py:attribute:: frequencies_have_been_edited
-      :value: False
-
-
-
-   .. py:attribute:: intensities
-      :value: []
-
-
-
-   .. py:attribute:: label
-
-
-   .. py:attribute:: mass_cb
-
-
-   .. py:attribute:: mass_definition_options
-      :value: ['average', 'program', 'isotope', 'gui']
-
-
-
-   .. py:attribute:: mass_weighted_normal_modes
-      :value: None
-
-
-
-   .. py:attribute:: masses_dictionary
-
-
-   .. py:attribute:: modes_selected
-      :value: []
-
-
-
-   .. py:attribute:: notebook
-
-
-   .. py:attribute:: optical_tw
-
-
-   .. py:attribute:: oscillator_strengths
-      :value: []
-
-
-
-   .. py:attribute:: output_tw
-
-
-   .. py:attribute:: reader
-
-
-   .. py:attribute:: recalculate_selected_modes
-      :value: True
-
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: settings
-
-
-   .. py:attribute:: sigma_sb
-
-
-   .. py:attribute:: sigmas_cm1
-      :value: []
-
-
-
-   .. py:attribute:: sizePolicy
-
-
-   .. py:attribute:: vbox
-
-
-   .. py:attribute:: vs_cm1
-      :value: []
 
 
 

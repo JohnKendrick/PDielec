@@ -1,5 +1,5 @@
-PDielec.SuperCell
-=================
+:py:mod:`PDielec.SuperCell`
+===========================
 
 .. py:module:: PDielec.SuperCell
 
@@ -9,18 +9,21 @@ PDielec.SuperCell
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.SuperCell.SuperCell
 
 
-Module Contents
----------------
+
 
 .. py:class:: SuperCell(aUnitCell, anImageSpecifier)
+
 
    Hold super-cell information; the unit cell and the super-cell size.
 
@@ -51,7 +54,6 @@ Module Contents
    :class:`~PDielec.UnitCell.UnitCell`
 
 
-
    .. py:method:: calculateBonds()
 
       Calculate the bonding in the supercell.
@@ -72,7 +74,6 @@ Module Contents
 
 
 
-
    .. py:method:: calculateCentreOfBox()
 
       Calculate the centre of the super-cell in cartesian coordinates.
@@ -87,7 +88,6 @@ Module Contents
       -------
       vector
           The centre of the images in the box
-
 
 
 
@@ -115,7 +115,6 @@ Module Contents
 
 
 
-
    .. py:method:: calculateNormalModes(modes)
 
       Calculate and return the normal modes of the supercell.
@@ -139,7 +138,6 @@ Module Contents
 
 
 
-
    .. py:method:: calculateXYZ()
 
       Calculate and return the cartesian coordinates of the supercell.
@@ -154,7 +152,6 @@ Module Contents
       -------
       output : array
           The Cartesian coordinates of the supercell.
-
 
 
 
@@ -173,7 +170,6 @@ Module Contents
       -------
       list
           A list of created images.
-
 
 
 
@@ -208,7 +204,6 @@ Module Contents
 
 
 
-
    .. py:method:: getElementNames()
 
       Calculate and return the element names of the supercell.
@@ -221,7 +216,6 @@ Module Contents
       -------
       list
           The element names of the supercell.
-
 
 
 
@@ -250,26 +244,5 @@ Module Contents
       ```
 
 
-
-
-   .. py:attribute:: XYZ
-      :value: None
-
-
-
-   .. py:attribute:: bonds
-      :value: []
-
-
-
-   .. py:attribute:: imageList
-      :value: None
-
-
-
-   .. py:attribute:: imageSpecifier
-
-
-   .. py:attribute:: unitCell
 
 

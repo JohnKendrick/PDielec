@@ -1,5 +1,5 @@
-PDielec.preader
-===============
+:py:mod:`PDielec.preader`
+=========================
 
 .. py:module:: PDielec.preader
 
@@ -34,16 +34,12 @@ PDielec.preader
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.preader.version
+Module Contents
+---------------
 
 
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -53,8 +49,14 @@ Functions
    PDielec.preader.set_affinity_on_worker
 
 
-Module Contents
----------------
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.preader.version
+
 
 .. py:function:: main()
 
@@ -141,4 +143,6 @@ Module Contents
 
 
 .. py:data:: version
+
+   
 

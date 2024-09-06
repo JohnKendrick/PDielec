@@ -1,5 +1,5 @@
-PDielec.p2cif
-=============
+:py:mod:`PDielec.p2cif`
+=======================
 
 .. py:module:: PDielec.p2cif
 
@@ -32,8 +32,12 @@ PDielec.p2cif
 
 
 
+Module Contents
+---------------
+
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -42,8 +46,6 @@ Functions
    PDielec.p2cif.set_affinity_on_worker
 
 
-Module Contents
----------------
 
 .. py:function:: main()
 

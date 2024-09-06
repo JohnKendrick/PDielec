@@ -1,5 +1,5 @@
-PDielec.Mie
-===========
+:py:mod:`PDielec.Mie`
+=====================
 
 .. py:module:: PDielec.Mie
 
@@ -47,16 +47,12 @@ PDielec.Mie
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.Mie.crossover
+Module Contents
+---------------
 
 
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -81,8 +77,14 @@ Functions
    PDielec.Mie.coerceDType
 
 
-Module Contents
----------------
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.Mie.crossover
+
 
 .. py:function:: AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False)
 
@@ -273,7 +275,7 @@ Module Contents
 
 .. py:function:: MiePiTau(mu, nmax)
 
-   Calculate the Mie \(\pi\) and \(        au\) functions for given argument and maximum order.
+   Calculate the Mie \(\pi\) and \(\tau\) functions for given argument and maximum order.
 
    Parameters
    ----------
@@ -285,11 +287,11 @@ Module Contents
    Returns
    -------
    tuple
-       A tuple containing two numpy arrays. The first array corresponds to the \(\pi\) values and the second to the \(   au\) values for the orders from 0 to \(nmax-1\).
+       A tuple containing two numpy arrays. The first array corresponds to the \(\pi\) values and the second to the \(\tau\) values for the orders from 0 to \(nmax-1\).
 
    Notes
    -----
-   The Mie \(\pi\) and \(        au\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
+   The Mie \(\pi\) and \(\tau\) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.
 
    Examples
    --------
@@ -562,7 +564,7 @@ Module Contents
 
    Notes
    -----
-   This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \(a_n\) and \(b_n\), and the `MiePiTau` function to compute the angle-dependent functions \(\pi_n\) and \(      au_n\). The formulas for \(S_1\) and \(S_2\) involve sums over these coefficients weighted by \((2n+1)/(n(n+1))\), where \(n\) is the series index.
+   This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the `AutoMie_ab` function to calculate the Mie coefficients \(a_n\) and \(b_n\), and the `MiePiTau` function to compute the angle-dependent functions \(\pi_n\) and \(\tau_n\). The formulas for \(S_1\) and \(S_2\) involve sums over these coefficients weighted by \((2n+1)/(n(n+1))\), where \(n\) is the series index.
 
    Examples
    --------
@@ -932,4 +934,5 @@ Module Contents
 .. py:data:: crossover
    :value: 0.01
 
+   
 

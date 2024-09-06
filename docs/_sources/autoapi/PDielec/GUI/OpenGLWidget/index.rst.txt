@@ -1,5 +1,5 @@
-PDielec.GUI.OpenGLWidget
-========================
+:py:mod:`PDielec.GUI.OpenGLWidget`
+==================================
 
 .. py:module:: PDielec.GUI.OpenGLWidget
 
@@ -9,8 +9,11 @@ PDielec.GUI.OpenGLWidget
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
@@ -20,10 +23,10 @@ Classes
    PDielec.GUI.OpenGLWidget.Sphere
 
 
-Module Contents
----------------
+
 
 .. py:class:: Arrow(colour, radius, direction, scale)
+
 
    A class to represent a 3D arrow for graphical display.
 
@@ -60,34 +63,8 @@ Module Contents
 
 
 
-   .. py:attribute:: angle
-
-
-   .. py:attribute:: colour
-
-
-   .. py:attribute:: direction
-
-
-   .. py:attribute:: height
-
-
-   .. py:attribute:: p
-
-
-   .. py:attribute:: radius
-
-
-   .. py:attribute:: rotation
-
-
-   .. py:attribute:: t
-
-
-   .. py:attribute:: z
-
-
 .. py:class:: Cylinder(colour, radius, pos1, pos2)
+
 
    A class representing a 3D cylinder.
 
@@ -121,40 +98,10 @@ Module Contents
 
 
 
-   .. py:attribute:: angle
-
-
-   .. py:attribute:: colour
-
-
-   .. py:attribute:: height
-
-
-   .. py:attribute:: p
-
-
-   .. py:attribute:: position1
-
-
-   .. py:attribute:: position2
-
-
-   .. py:attribute:: radius
-
-
-   .. py:attribute:: rotation
-
-
-   .. py:attribute:: t
-
-
-   .. py:attribute:: z
-
-
 .. py:class:: OpenGLWidget(parent, debug=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QOpenGLWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QOpenGLWidget`
 
    A widget for the Qt framework specialized in OpenGL graphics rendering.
 
@@ -244,6 +191,9 @@ Module Contents
        Adds a sphere to the scene.
 
 
+   .. py:attribute:: format
+
+      
 
    .. py:method:: addArrows(colour, radius, direction, length, phase=0)
 
@@ -265,7 +215,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -292,7 +241,6 @@ Module Contents
 
 
 
-
    .. py:method:: addSphere(colour, radius, pos, phase=0)
 
       Add a sphere to a collection within an object.
@@ -311,7 +259,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -334,7 +281,6 @@ Module Contents
       -----
       - Assumes `self.spheres` and `self.cylinders` are already defined as lists.
       - It uses the `clear` method on both `self.spheres` and `self.cylinders`, which is available for lists in Python 3.3 and later.
-
 
 
 
@@ -366,7 +312,6 @@ Module Contents
 
 
 
-
    .. py:method:: deleteArrows()
 
       Delete all arrows from a collection.
@@ -380,7 +325,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -406,7 +350,6 @@ Module Contents
 
 
 
-
    .. py:method:: deleteSpheres()
 
       Delete all spheres from the current context.
@@ -420,7 +363,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -445,7 +387,6 @@ Module Contents
       - Material properties such as diffuse, ambient, and specular colors are calculated from the arrow's color and applied to the OpenGL material.
       - Arrows consist of a cylindrical shaft and a conical tip, whose dimensions and orientations are based on the properties of each arrow (e.g., direction, length, angle, rotation, colour, and radius).
       - This method depends on the `self.arrows` list and the corresponding `self.spheres` for the current phase stored in `self.current_phase`. It leverages OpenGL functions and assumes that `self.viewerTab.settings['Arrow colour']`, along with other properties like `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`, and `self.glintMaterialFactor` are predefined and correctly configured.
-
 
 
 
@@ -483,7 +424,6 @@ Module Contents
 
 
 
-
    .. py:method:: drawSpheres()
 
       Draw spheres based on the object's current phase and spheres attributes.
@@ -502,7 +442,6 @@ Module Contents
       Notes
       -----
       Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`, `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.
-
 
 
 
@@ -525,7 +464,6 @@ Module Contents
 
 
 
-
    .. py:method:: initializeGL()
 
       Initialise OpenGL rendering context.
@@ -539,7 +477,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -594,7 +531,6 @@ Module Contents
 
 
 
-
    .. py:method:: moleculeRotate(scale, x, y, z)
 
       Rotate a molecule object around the specified axes.
@@ -643,7 +579,6 @@ Module Contents
 
 
 
-
    .. py:method:: mouseMoveEvent(event)
 
       Handle the mouse move events to perform various actions.
@@ -669,7 +604,6 @@ Module Contents
 
 
 
-
    .. py:method:: mousePressEvent(event)
 
       Handle the mouse press event.
@@ -682,7 +616,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -705,7 +638,6 @@ Module Contents
 
 
 
-
    .. py:method:: myMakeCurrent()
 
       Make the current OpenGL context active and clear any errors.
@@ -722,7 +654,6 @@ Module Contents
 
       This method does not return any value or raise exceptions. It is designed to
       ensure that the OpenGL context is error-free after making it current.
-
 
 
 
@@ -756,7 +687,6 @@ Module Contents
 
 
 
-
    .. py:method:: resizeGL(w, h)
 
       Resizes the OpenGL widget to a new width and height.
@@ -775,7 +705,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -804,7 +733,6 @@ Module Contents
 
 
 
-
    .. py:method:: setImageSize()
 
       Set the maximum image size based on the furthest object from the rotation center.
@@ -822,7 +750,6 @@ Module Contents
       Notes
       -----
       The `self` parameter represents the instance of the class in which the function is called. This function relies on the `math.sqrt`, `np.dot` for calculations, and expects `self.spheres`, `self.cylinders`, `self.current_phase`, `self.rotation_centre`, and `self.setProjectionMatrix` to be defined.
-
 
 
 
@@ -846,7 +773,6 @@ Module Contents
 
 
 
-
    .. py:method:: setRotationCentre(pos)
 
       Set the rotation centre to a specified position.
@@ -860,7 +786,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -880,7 +805,6 @@ Module Contents
       Notes
       -----
       This function updates the `show_arrows` attribute based on the "show" parameter and prints the current status to the debugger.
-
 
 
 
@@ -906,7 +830,6 @@ Module Contents
       ```
 
       This will grab the current framebuffer content and save it as 'screenshot.png'.
-
 
 
 
@@ -939,7 +862,6 @@ Module Contents
 
 
 
-
    .. py:method:: stopAnimation()
 
       Stop the ongoing animation.
@@ -957,7 +879,6 @@ Module Contents
       Notes
       -----
       This function assumes that `self.timer` is an instance with a `stop` method, which is called to halt any ongoing animation. If `self.timer` is `None`, indicating no animation is currently active, this method does nothing.
-
 
 
 
@@ -987,7 +908,6 @@ Module Contents
 
 
 
-
    .. py:method:: translate(x, y)
 
       Translate an object by modifying its current position.
@@ -1011,7 +931,6 @@ Module Contents
 
 
 
-
    .. py:method:: wheelEvent(event)
 
       Handle a wheel event to zoom in or out.
@@ -1031,7 +950,6 @@ Module Contents
       the current context to this object before determining the direction and
       intensity of the zoom based on the vertical angle delta of the wheel event.
       Lastly, it refreshes the display to reflect any changes.
-
 
 
 
@@ -1058,181 +976,8 @@ Module Contents
 
 
 
-   .. py:attribute:: ambientLightFactor
-      :value: 0.6
-
-
-
-   .. py:attribute:: ambientMaterialFactor
-      :value: 0.4
-
-
-
-   .. py:attribute:: arrows
-
-
-   .. py:attribute:: background_colour
-      :value: None
-
-
-
-   .. py:attribute:: current_phase
-      :value: 0
-
-
-
-   .. py:attribute:: cylinder_slices
-      :value: 8
-
-
-
-   .. py:attribute:: cylinder_stacks
-      :value: 2
-
-
-
-   .. py:attribute:: cylinders
-
-
-   .. py:attribute:: d
-      :value: 200.0
-
-
-
-   .. py:attribute:: debug
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: diffuseLightFactor
-      :value: 0.8
-
-
-
-   .. py:attribute:: diffuseMaterialFactor
-      :value: 0.9
-
-
-
-   .. py:attribute:: format
-
-
-   .. py:attribute:: glintMaterialFactor
-      :value: 100.0
-
-
-
-   .. py:attribute:: image_size
-      :value: 15.0
-
-
-
-   .. py:attribute:: light_positions
-
-
-   .. py:attribute:: light_switches
-      :value: None
-
-
-
-   .. py:attribute:: lightingOn
-      :value: True
-
-
-
-   .. py:attribute:: lights
-
-
-   .. py:attribute:: linearAttenuation
-      :value: True
-
-
-
-   .. py:attribute:: matrix
-
-
-   .. py:attribute:: my_height
-      :value: None
-
-
-
-   .. py:attribute:: my_width
-      :value: None
-
-
-
-   .. py:attribute:: notebook
-
-
-   .. py:attribute:: number_of_phases
-      :value: 1
-
-
-
-   .. py:attribute:: phase_direction
-      :value: 1
-
-
-
-   .. py:attribute:: rotation_centre
-
-
-   .. py:attribute:: show_arrows
-      :value: True
-
-
-
-   .. py:attribute:: show_full_screen
-      :value: False
-
-
-
-   .. py:attribute:: specularLightFactor
-      :value: 1.0
-
-
-
-   .. py:attribute:: specularMaterialFactor
-      :value: 0.7
-
-
-
-   .. py:attribute:: sphere_slices
-      :value: 20
-
-
-
-   .. py:attribute:: sphere_stacks
-      :value: 20
-
-
-
-   .. py:attribute:: spheres
-
-
-   .. py:attribute:: timer
-      :value: None
-
-
-
-   .. py:attribute:: timer_interval
-      :value: 60
-
-
-
-   .. py:attribute:: viewerTab
-
-
-   .. py:attribute:: white
-
-
-   .. py:attribute:: writer
-      :value: None
-
-
-
 .. py:class:: Sphere(colour, radius, position)
+
 
    A class representing a sphere.
 
@@ -1254,14 +999,5 @@ Module Contents
    position : ndarray
        The position of the sphere in 3D space as a NumPy array with three elements (x, y, z).
 
-
-
-   .. py:attribute:: colour
-
-
-   .. py:attribute:: position
-
-
-   .. py:attribute:: radius
 
 

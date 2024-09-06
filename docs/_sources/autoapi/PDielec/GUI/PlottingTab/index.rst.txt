@@ -1,5 +1,5 @@
-PDielec.GUI.PlottingTab
-=======================
+:py:mod:`PDielec.GUI.PlottingTab`
+=================================
 
 .. py:module:: PDielec.GUI.PlottingTab
 
@@ -9,24 +9,20 @@ PDielec.GUI.PlottingTab
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.GUI.PlottingTab.possible_frequency_units
-
+Module Contents
+---------------
 
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.PlottingTab.PlottingTab
 
 
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -34,13 +30,19 @@ Functions
    PDielec.GUI.PlottingTab.isThisAFrequencyUnit
 
 
-Module Contents
----------------
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.GUI.PlottingTab.possible_frequency_units
+
 
 .. py:class:: PlottingTab(parent, debug=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
    A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.
 
@@ -100,7 +102,6 @@ Module Contents
        Sets the concentrations for the plotting based on the molar definition.
 
 
-
    .. py:method:: get_number_of_calculations_required()
 
       Return the total number of spectra that need to be calculated.
@@ -115,7 +116,6 @@ Module Contents
       -------
       int
           The total number of spectra that require calculation.
-
 
 
 
@@ -136,7 +136,6 @@ Module Contents
 
 
 
-
    .. py:method:: greyed_out()
 
       Handle items that should be greyed out if they are not needed.
@@ -148,7 +147,6 @@ Module Contents
       Returns
       -------
       int
-
 
 
 
@@ -185,7 +183,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_molar_cb_activated(index)
 
       Handle the activation of the molar combobox option.
@@ -208,7 +205,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_natoms_changed(value)
 
       Handle the change in the number of atoms.
@@ -224,7 +220,6 @@ Module Contents
       -----
       - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of the container and the number of ions, respectively.
       - The method refreshes `self.notebook.fitterTab` object with a `requestRefresh` method to initiate the refresh process.
-
 
 
 
@@ -244,7 +239,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -273,7 +267,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_vmax_changed()
 
       Handle the event when the maximum frequency setting is changed.
@@ -292,7 +285,6 @@ Module Contents
       -----
       - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
       - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and 'Minimum frequency' keys which are updated based on the condition.
-
 
 
 
@@ -321,7 +313,6 @@ Module Contents
       - Uses the `blockSignals` method on `self.vmin_sb` to prevent signal-slot recursion.
       - Adjusts settings based on a unit conversion utility function, `convert_frequency_units`.
       - The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components' states through the requested refresh.
-
 
 
 
@@ -355,7 +346,6 @@ Module Contents
 
 
 
-
    .. py:method:: refresh(force=False)
 
       Refresh the current state based on the changes in settings, forces refresh if needed.
@@ -384,7 +374,6 @@ Module Contents
 
 
 
-
    .. py:method:: requestRefresh()
 
       Initiate a refresh request.
@@ -399,7 +388,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -419,13 +407,11 @@ Module Contents
 
 
 
-
    .. py:method:: set_concentrations()
 
       Set the concentration based on the molar definition in settings.
 
       This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
-
 
 
    .. py:method:: writeSpreadsheet()
@@ -441,7 +427,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -465,7 +450,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -497,7 +481,6 @@ Module Contents
 
 
 
-
    .. py:method:: write_powder_results(sp, name, vs, legends, yss)
 
       Write the powder simulation results to a worksheet.
@@ -519,128 +502,6 @@ Module Contents
       -------
       None
 
-
-
-
-   .. py:attribute:: canvas
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: figure
-
-
-   .. py:attribute:: form
-
-
-   .. py:attribute:: frequency_length
-
-
-   .. py:attribute:: funits_cb
-
-
-   .. py:attribute:: hbox
-
-
-   .. py:attribute:: index
-
-
-   .. py:attribute:: label
-
-
-   .. py:attribute:: legends
-      :value: []
-
-
-
-   .. py:attribute:: molar_cb
-
-
-   .. py:attribute:: molar_cb_current_index
-      :value: 0
-
-
-
-   .. py:attribute:: molar_definitions
-      :value: ['Unit cells', 'Atoms', 'Molecules']
-
-
-
-   .. py:attribute:: n
-
-
-   .. py:attribute:: natoms_sb
-
-
-   .. py:attribute:: notebook
-
-
-   .. py:attribute:: plot_button
-
-
-   .. py:attribute:: plot_type_cb
-
-
-   .. py:attribute:: plot_types
-      :value: ['Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary...
-
-
-
-   .. py:attribute:: plot_ylabels
-
-
-   .. py:attribute:: progressbar
-
-
-   .. py:attribute:: reader
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: settings
-
-
-   .. py:attribute:: subplot
-      :value: None
-
-
-
-   .. py:attribute:: toolbar
-
-
-   .. py:attribute:: vbox
-
-
-   .. py:attribute:: vinc
-      :value: 0.0
-
-
-
-   .. py:attribute:: vinc_sb
-
-
-   .. py:attribute:: vmax
-      :value: 0.0
-
-
-
-   .. py:attribute:: vmax_sb
-
-
-   .. py:attribute:: vmin
-      :value: 0.0
-
-
-
-   .. py:attribute:: vmin_sb
-
-
-   .. py:attribute:: vs_cm1
-      :value: []
 
 
 
@@ -684,4 +545,5 @@ Module Contents
 .. py:data:: possible_frequency_units
    :value: ['wavenumber', 'THz', 'GHz', 'ang', 'nm', 'um', 'mm', 'cm', 'm']
 
+   
 

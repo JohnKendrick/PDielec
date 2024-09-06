@@ -1,5 +1,5 @@
-PDielec.GUI.ScenarioTab
-=======================
+:py:mod:`PDielec.GUI.ScenarioTab`
+=================================
 
 .. py:module:: PDielec.GUI.ScenarioTab
 
@@ -9,21 +9,23 @@ PDielec.GUI.ScenarioTab
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.ScenarioTab.ScenarioTab
 
 
-Module Contents
----------------
+
 
 .. py:class:: ScenarioTab(parent, debug=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
    A class representing a tab for scenario configurations within a user interface.
 
@@ -100,7 +102,6 @@ Module Contents
        Handle the scenario when a button has been clicked.
 
 
-
    .. py:method:: addScenarioButtonClicked()
 
       Handle when the "add another scenario" button has been clicked.
@@ -112,7 +113,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -131,7 +131,6 @@ Module Contents
 
 
 
-
    .. py:method:: deleteScenarioButtonClicked()
 
       Handle when a delete button has been clicked.
@@ -143,7 +142,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -162,7 +160,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_legend_le_changed(text)
 
       Handle a change in the scenario legend.
@@ -175,7 +172,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -193,7 +189,6 @@ Module Contents
 
 
 
-
    .. py:method:: print_settings()
 
       Print all the settings for this scenario.
@@ -208,7 +203,6 @@ Module Contents
 
 
 
-
    .. py:method:: requestRefresh()
 
       Request a refresh of the scenario.
@@ -220,7 +214,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -239,7 +232,6 @@ Module Contents
 
 
 
-
    .. py:method:: set_reader(reader)
 
       Set the reader associated with this scenario.
@@ -252,7 +244,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -270,56 +261,6 @@ Module Contents
       -------
       None
 
-
-
-
-   .. py:attribute:: DataBase
-
-
-   .. py:attribute:: PDielec_Directory
-
-
-   .. py:attribute:: database_le
-
-
-   .. py:attribute:: database_le_label
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: filename
-
-
-   .. py:attribute:: noCalculationsRequired
-      :value: 0
-
-
-
-   .. py:attribute:: notebook
-
-
-   .. py:attribute:: openDB_button
-
-
-   .. py:attribute:: openDB_label
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: scenarioType
-      :value: None
-
-
-
-   .. py:attribute:: settings
-
-
-   .. py:attribute:: vs_cm1
-      :value: [0, 0]
 
 
 

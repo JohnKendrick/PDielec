@@ -69,20 +69,23 @@ This copies the commands and modules to the \~/bin directory which should be inc
 
 As part of the installation, you will have to install several Python packages into your environment.  The full list of packages is as follows; ::
 
-   qtpy
-   pyqt6
-   psutil
-   numpy
-   scipy
-   dill
-   matplotlib
-   pyopengl
-   openpyxl
-   pyyaml
-   xlsxwriter
-   termcolor
-   imageio
-   imageio-ffmpeg
+    dill
+    imageio
+    imageio-ffmpeg
+    matplotlib
+    mkl
+    numpy
+    openpyxl
+    psutil
+    PyOpenGL
+    PyYAML
+    QtPy
+    scikit_learn
+    scipy
+    setuptools
+    spglib
+    termcolor
+    XlsxWriter
    scikit-learn
 
 GitHub - Windows
@@ -125,21 +128,24 @@ Install Python
 Open a git bash console and type; ::
 
 
-   pip install pyqt
-   pip install pyqt6
-   pip install psutil
-   pip install numpy
-   pip install scipy
-   pip install dill
-   pip install matplotlib
-   pip install pyopengl
-   pip install openpyxl
-   pip install pyyaml
-   pip install xlsxwriter
-   pip install termcolor
-   pip install imageio
-   pip install imageio-ffmpeg
-   pip install sklearn
+    pip install dill
+    pip install imageio
+    pip install imageio-ffmpeg
+    pip install matplotlib
+    pip install mkl
+    pip install numpy
+    pip install openpyxl
+    pip install psutil
+    pip install PyOpenGL
+    pip install PyYAML
+    pip install QtPy
+    pip install scikit_learn
+    pip install scipy
+    pip install setuptools
+    pip install spglib
+    pip install termcolor
+    pip install XlsxWriter
+    pip install scikit-learn
 
 Install PDielec
 ...............

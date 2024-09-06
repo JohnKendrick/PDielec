@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,13 +7,13 @@
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Phonon Analysis" href="analysis.html" /><link rel="prev" title="Theory for Light Scattering from Powders" href="theory_powder.html" />
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>Theory for Single Crystal Optics - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=2e0a580d" />
     
     
@@ -73,7 +73,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -88,63 +88,22 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
@@ -157,8 +116,6 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -177,8 +134,7 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -224,63 +180,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -304,17 +260,11 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="_sources/theory_single_crystal.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
+          
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -324,9 +274,9 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main" id="furo-main-content">
+        <article role="main">
           <section id="theory-for-single-crystal-optics">
-<span id="single-crystal-theory"></span><h1>Theory for Single Crystal Optics<a class="headerlink" href="#theory-for-single-crystal-optics" title="Link to this heading">¶</a></h1>
+<span id="single-crystal-theory"></span><h1>Theory for Single Crystal Optics<a class="headerlink" href="#theory-for-single-crystal-optics" title="Permalink to this heading">#</a></h1>
 <p>The <em>SingleCrystal tab</em> enables the calculation of the optical behaviour of a layer of crystalline films.
 The methods used are based on the pyGTM code available on GitHub <span id="id1">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.
 This code implements a general transfer matrix method described by Passler et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id73" title="Nikolai Christian Passler, Mathieu Jeannin, and Alexander Paarmann. Layer-resolved absorption of light in arbitrarily anisotropic heterostructures. Physical Review B, 101(16):1–12, 2020. arXiv:2002.03832, doi:10.1103/PhysRevB.101.165425.">11</a>]</span> and that builds on previous publications <span id="id3">[<a class="reference internal" href="zreferences.html#id74" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: Study of surface phonon polaritons in polar dielectric heterostructures. arXiv, 36(11):3246–3248, 2017. arXiv:1707.00462, doi:10.1364/josab.36.003246.">12</a>, <a class="reference internal" href="zreferences.html#id75" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: study of surface phonon polaritons in polar dielectric heterostructures: erratum. Journal of the Optical Society of America B, 36(11):3246, nov 2019. URL: https://www.osapublishing.org/abstract.cfm?URI=josab-36-11-3246, arXiv:1707.00462, doi:10.1364/JOSAB.36.003246.">13</a>]</span>.
@@ -341,36 +291,35 @@ To aid understanding of the input and output and the limitations of the methods 
 This will be followed by a description of the scattering matrix approach as implemented in the package.
 The treatment of light transmission and reflection in incoherent media will also be outlined.</p>
 <figure class="align-default" id="id15">
-<span id="fig-definition-of-rta"></span><a class="reference internal image-reference" href="_images/Definition_of_Transmittance.png"><img alt="_images/Definition_of_Transmittance.png" src="_images/Definition_of_Transmittance.png" style="width: 1152.0px; height: 648.0px;" />
-</a>
+<span id="fig-definition-of-rta"></span><a class="reference internal image-reference" href="_images/Definition_of_Transmittance.png"><img alt="_images/Definition_of_Transmittance.png" src="_images/Definition_of_Transmittance.png" style="width: 1152.0px; height: 648.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Layers used to calculate Transmittance, Reflectance and Absorptance</span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Layers used to calculate Transmittance, Reflectance and Absorptance</span><a class="headerlink" href="#id15" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <section id="the-transfer-matrix">
-<h2>The Transfer Matrix<a class="headerlink" href="#the-transfer-matrix" title="Link to this heading">¶</a></h2>
+<h2>The Transfer Matrix<a class="headerlink" href="#the-transfer-matrix" title="Permalink to this heading">#</a></h2>
 <p>At an interface, the tangential (in-plane) electric and magnetic fields (given by a vector <span class="math notranslate nohighlight">\(\fieldbf{F_i}\)</span>) match in both media.
 This requires that the 4 amplitudes (vector <span class="math notranslate nohighlight">\(\fieldbf{A_i}\)</span>) of the electric and magnetic fields, forward and backward, s- and p- polarised, in medium <span class="math notranslate nohighlight">\(i\)</span> are related through a 4x4 dynamical matrix <span class="math notranslate nohighlight">\(\tensorbf{D_i}\)</span>.</p>
 <div class="math-wrapper docutils container" id="equation-eq-dynamical-matrix">
 <div class="math notranslate nohighlight" id="equation-eq-dynamical-matrix">
-<span class="eqno">(63)<a class="headerlink" href="#equation-eq-dynamical-matrix" title="Link to this equation">¶</a></span>\[\fieldbf{F}_i  = \tensorbf{D}_i \fieldbf{A}_i\]</div>
+<span class="eqno">(63)<a class="headerlink" href="#equation-eq-dynamical-matrix" title="Permalink to this equation">#</a></span>\[\fieldbf{F}_i  = \tensorbf{D}_i \fieldbf{A}_i\]</div>
 </div>
 <p>Requiring that the in-plane fields match in both media at an interface gives;</p>
 <div class="math-wrapper docutils container" id="equation-eq-field-matching">
 <div class="math notranslate nohighlight" id="equation-eq-field-matching">
-<span class="eqno">(64)<a class="headerlink" href="#equation-eq-field-matching" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{F}_{i-1}                    &amp;= \fieldbf{F}_i                \\
+<span class="eqno">(64)<a class="headerlink" href="#equation-eq-field-matching" title="Permalink to this equation">#</a></span>\[\begin{split}\fieldbf{F}_{i-1}                    &amp;= \fieldbf{F}_i                \\
 \tensorbf{D}_{i-1} \fieldbf{A}_{i-1} &amp;= \tensorbf{D}_i \fieldbf{A}_i \\
 \fieldbf{A}_{i-1}                    &amp;= \tensorbf{D}_{i-1}^{-1} \tensorbf{D}_i \fieldbf{A}_i\end{split}\]</div>
 </div>
 <p>Within a given, homogeneous, layer the mode amplitudes will change according to the propagation through the medium described by an diagonal exponential matrix <span class="math notranslate nohighlight">\(\tensorbf{P}_i\)</span>.  Thus the amplitudes on the left side of a layer are related to those on the right side by;</p>
 <div class="math-wrapper docutils container" id="equation-eq-propagation">
 <div class="math notranslate nohighlight" id="equation-eq-propagation">
-<span class="eqno">(65)<a class="headerlink" href="#equation-eq-propagation" title="Link to this equation">¶</a></span>\[\fieldbf{A}_{i,left}  = \tensorbf{P}_i \fieldbf{A}_{i,right}\]</div>
+<span class="eqno">(65)<a class="headerlink" href="#equation-eq-propagation" title="Permalink to this equation">#</a></span>\[\fieldbf{A}_{i,left}  = \tensorbf{P}_i \fieldbf{A}_{i,right}\]</div>
 </div>
 <p>The total transfer matrix for the 3 media considered (superstrate, dielectric and substrate; 0, 1 and 2 respectively) is therefore;</p>
 <div class="math-wrapper docutils container" id="equation-eq-transfer-matrix">
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix">
-<span class="eqno">(66)<a class="headerlink" href="#equation-eq-transfer-matrix" title="Link to this equation">¶</a></span>\[\tensorbf{T}  =
+<span class="eqno">(66)<a class="headerlink" href="#equation-eq-transfer-matrix" title="Permalink to this equation">#</a></span>\[\tensorbf{T}  =
               \tensorbf{D}_0^{-1}
               (\tensorbf{D}_1
               \tensorbf{P}_1
@@ -381,7 +330,7 @@ This requires that the 4 amplitudes (vector <span class="math notranslate nohigh
 <p>For the multi-layer case it is straightforward to generalise this expression by writing the transfer matrix, <span class="math notranslate nohighlight">\(\tensorbf{T}_i\)</span>, for the <span class="math notranslate nohighlight">\(i'th\)</span> layer as:</p>
 <div class="math-wrapper docutils container" id="equation-eq-transfer-matrix2">
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix2">
-<span class="eqno">(67)<a class="headerlink" href="#equation-eq-transfer-matrix2" title="Link to this equation">¶</a></span>\[\tensorbf{T}_i  =
+<span class="eqno">(67)<a class="headerlink" href="#equation-eq-transfer-matrix2" title="Permalink to this equation">#</a></span>\[\tensorbf{T}_i  =
               \tensorbf{D}_i
               \tensorbf{P}_i
               \tensorbf{D}_i^{-1}\]</div>
@@ -389,7 +338,7 @@ This requires that the 4 amplitudes (vector <span class="math notranslate nohigh
 <p>The total transfer matrix for the whole system consisting of a superstrate, <span class="math notranslate nohighlight">\(N\)</span> layers and a substrate can then be written:</p>
 <div class="math-wrapper docutils container" id="equation-eq-transfer-matrix3">
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix3">
-<span class="eqno">(68)<a class="headerlink" href="#equation-eq-transfer-matrix3" title="Link to this equation">¶</a></span>\[\tensorbf{T}  =
+<span class="eqno">(68)<a class="headerlink" href="#equation-eq-transfer-matrix3" title="Permalink to this equation">#</a></span>\[\tensorbf{T}  =
               \tensorbf{D}_0^{-1}
               \left( \prod_{i=1}^N \tensorbf{T}_i \right)
               \tensorbf{D}_{N+1}\]</div>
@@ -397,7 +346,7 @@ This requires that the 4 amplitudes (vector <span class="math notranslate nohigh
 <p>The role of the total transfer matrix is to convert the field amplitudes on the left-hand side (the incident amplitudes) to those on the right-hand side (the transmitted amplitudes).</p>
 </section>
 <section id="the-scattering-matrix">
-<h2>The Scattering Matrix<a class="headerlink" href="#the-scattering-matrix" title="Link to this heading">¶</a></h2>
+<h2>The Scattering Matrix<a class="headerlink" href="#the-scattering-matrix" title="Permalink to this heading">#</a></h2>
 <p>Unfortunately, transfer matrix theory is known to exhibit serious numerical instabilities when the layers become thick.
 This is mainly due to the fact that the forward waves (which move from left to right) are defined as the layers in the transfer matrix are being added from right to left.
 The forward moving wave is growing in amplitude as the layers are being added and this leads to all kinds of instabilities.
@@ -406,7 +355,7 @@ In this way it is possible to describe waves which are always decreasing in ampl
 To demonstrate the difference between the approaches the transfer matrix connects fields in one layer to those in the next layer:</p>
 <div class="math-wrapper docutils container" id="equation-eq-transfer-matrix4">
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix4">
-<span class="eqno">(69)<a class="headerlink" href="#equation-eq-transfer-matrix4" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+<span class="eqno">(69)<a class="headerlink" href="#equation-eq-transfer-matrix4" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{bmatrix}
   \fieldbf{F}_{i+1}^+  \\
   \fieldbf{F}_{i+1}^-
 \end{bmatrix}
@@ -419,7 +368,7 @@ To demonstrate the difference between the approaches the transfer matrix connect
 <p>The scattering matrix for this is written;</p>
 <div class="math-wrapper docutils container" id="equation-eq-scattering-matrix">
 <div class="math notranslate nohighlight" id="equation-eq-scattering-matrix">
-<span class="eqno">(70)<a class="headerlink" href="#equation-eq-scattering-matrix" title="Link to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+<span class="eqno">(70)<a class="headerlink" href="#equation-eq-scattering-matrix" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{bmatrix}
   \fieldbf{F}_{i}^- \\
   \fieldbf{F}_{i+1}^+
 \end{bmatrix}
@@ -434,7 +383,7 @@ It should be noted that this definition is slightly different to the definition 
 <p>The scattering matrix is more complicated to handle than the transfer matrix.  Scattering matrices between different layers can be combined using the Redheffer product <span id="id5">[<a class="reference internal" href="zreferences.html#id86" title="R. C. Rumpf. IMPROVED FORMULATION OF SCATTERING MATRICES FOR SEMI-ANALYTICAL METHODS THAT IS CONSISTENT WITH CONVENTION. Progress In Electromagnetics Research B, 35(August):241–261, 2011.">47</a>]</span></p>
 <div class="math-wrapper docutils container" id="equation-eq-redheffer">
 <div class="math notranslate nohighlight" id="equation-eq-redheffer">
-<span class="eqno">(71)<a class="headerlink" href="#equation-eq-redheffer" title="Link to this equation">¶</a></span>\[\tensorbf{S}  =
+<span class="eqno">(71)<a class="headerlink" href="#equation-eq-redheffer" title="Permalink to this equation">#</a></span>\[\tensorbf{S}  =
               \tensorbf{S}_0 \otimes ... \tensorbf{S}_i \otimes \tensorbf{S}_{i+1} \otimes ... \tensorbf{S}_N\]</div>
 </div>
 <p>The transfer matrix method in PDGui is provided by a modified version of the pyGTM <span id="id6">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.
@@ -442,7 +391,7 @@ A full description of the method is provided by Passler et al. <span id="id7">[<
 The scattering matrix method was implemented within the pyGTM framework using the algorithms suggested in PyLama <span id="id8">[<a class="reference internal" href="zreferences.html#id85" title="Mélanie M. Bay, Silvia Vignolini, and Kevin Vynck. Pyllama: a stable and versatile python toolkit for the electromagnetic modelling of multilayered anisotropic media. Computer Physics Communications, 273:108256, 2022. URL: https://doi.org/10.1016/j.cpc.2021.108256, doi:10.1016/j.cpc.2021.108256.">14</a>]</span>, with some modifications.</p>
 </section>
 <section id="incoherence">
-<h2>Incoherence<a class="headerlink" href="#incoherence" title="Link to this heading">¶</a></h2>
+<h2>Incoherence<a class="headerlink" href="#incoherence" title="Permalink to this heading">#</a></h2>
 <p>Because the above approaches use amplitudes there is always the possibility that a mismatch in phase for a reflected or transmitted wave will result in interference and therefore oscillations (etalons) in intensity as the frequency is changed.
 Experimentally, for thick crystals, it is known that the presence of defects in the crystal and at the interfaces, and differences in thickness cause this coherence to be lost and instead incoherent light transmission is observed and the etalons are lost.
 PDielec implements several schemes treating incoherence.</p>
@@ -452,14 +401,14 @@ The theory is described by Beck <span id="id11">[<a class="reference internal" h
 This approach has been incorporated in PDGui by modifying the total transfer matrix as follows;</p>
 <div class="math-wrapper docutils container" id="equation-eq-transfer-matrix-int">
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix-int">
-<span class="eqno">(72)<a class="headerlink" href="#equation-eq-transfer-matrix-int" title="Link to this equation">¶</a></span>\[\tensorbf{T}_{int} =  \mid \tensorbf{D}_0^{-1} \tensorbf{D}_1 \mid^2 \mid \tensorbf{P}_1 \mid ^2 \mid \tensorbf{D}_1^{-1} \tensorbf{D}_2 \mid ^2\]</div>
+<span class="eqno">(72)<a class="headerlink" href="#equation-eq-transfer-matrix-int" title="Permalink to this equation">#</a></span>\[\tensorbf{T}_{int} =  \mid \tensorbf{D}_0^{-1} \tensorbf{D}_1 \mid^2 \mid \tensorbf{P}_1 \mid ^2 \mid \tensorbf{D}_1^{-1} \tensorbf{D}_2 \mid ^2\]</div>
 </div>
 <p>The use of intensities instead of amplitudes ensures that the phase information is lost.
 The actual implementation is appropriate for a multi-layer system where all dielectric layers are treated as being incoherent films, whatever their thickness.</p>
 <p>The “Incoherent (phase averaging)” method, which is implemented for both transfer and scattering matrix formalisms, instead averages over the phase of the propagating matrix (<span class="math notranslate nohighlight">\(\tensorbf{P}_i\)</span>) for the backward travelling waves in the incoherent material.</p>
 <div class="math-wrapper docutils container" id="equation-eq-incoherent-averaging">
 <div class="math notranslate nohighlight" id="equation-eq-incoherent-averaging">
-<span class="eqno">(73)<a class="headerlink" href="#equation-eq-incoherent-averaging" title="Link to this equation">¶</a></span>\[\begin{split} \tensor{P}_i = \begin{bmatrix}
+<span class="eqno">(73)<a class="headerlink" href="#equation-eq-incoherent-averaging" title="Permalink to this equation">#</a></span>\[\begin{split} \tensor{P}_i = \begin{bmatrix}
      e^{-ik_0 d_i q_i^1} &amp; 0 &amp; 0 &amp; 0 \\
      0 &amp; e^{-ik_0 d_i q_i^2} &amp; 0 &amp; 0 \\
      0 &amp; 0 &amp; e^{-ik_0 d_i q_i^3} &amp; 0 \\
@@ -476,36 +425,34 @@ This has the effect of artificially increasing the absorptance in the layer.</p>
 <p>For all methods, the absorptance (<span class="math notranslate nohighlight">\(A\)</span>) is defined from the reflectance (<span class="math notranslate nohighlight">\(R\)</span>) and transmittance (<span class="math notranslate nohighlight">\(T\)</span>) as below;</p>
 <div class="math-wrapper docutils container" id="equation-full-absorptance">
 <div class="math notranslate nohighlight" id="equation-full-absorptance">
-<span class="eqno">(74)<a class="headerlink" href="#equation-full-absorptance" title="Link to this equation">¶</a></span>\[A = 1 - R - T\]</div>
+<span class="eqno">(74)<a class="headerlink" href="#equation-full-absorptance" title="Permalink to this equation">#</a></span>\[A = 1 - R - T\]</div>
 </div>
 </section>
 <section id="comparison-of-computational-approaches">
-<h2>Comparison of computational approaches<a class="headerlink" href="#comparison-of-computational-approaches" title="Link to this heading">¶</a></h2>
+<h2>Comparison of computational approaches<a class="headerlink" href="#comparison-of-computational-approaches" title="Permalink to this heading">#</a></h2>
 <p><a class="reference internal" href="#fig-mode-comparison"><span class="std std-numref">Fig. 14</span></a> shows a comparison of the approaches discussed above applied to MgO.
 The DFT calculations were performed by Castep.  The incident angle is 45<sup>o</sup> and the film thickness is 10μm.
 The calculations were performed using the transfer matrix method.
 The ‘Coherent’ curve shows large amplitude oscillations before and after the Reststrahlen region of absorption.
 The ‘Incoherent (phase averaging)’ and ‘Incoherent (intensity)’ are similar at high frequencies, but at low frequencies the intensity calculation shows higher reflectance.</p>
 <figure class="align-default" id="id16">
-<span id="fig-mode-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_mode_comparison.png"><img alt="_images/single_crystal_mode_comparison.png" src="_images/single_crystal_mode_comparison.png" style="width: 678.6px; height: 557.1px;" />
-</a>
+<span id="fig-mode-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_mode_comparison.png"><img alt="_images/single_crystal_mode_comparison.png" src="_images/single_crystal_mode_comparison.png" style="width: 678.6px; height: 557.1px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Comparison of Incoherent Methods</span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Comparison of Incoherent Methods</span><a class="headerlink" href="#id16" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With the transfer matrix method, it is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numerical problems manifest themselves with either with sudden spikes in reflectance or with a ‘Warning exponential overflow occured’ message.</p>
 <p>These problems manifest themselves acutely in calculations on l-alanine.  The DFT calculations were performed by Crystal.  <a class="reference internal" href="#fig-tm-sm-comparison"><span class="std std-numref">Fig. 15</span></a> shows the predicted p-polarised reflection for a 1mm film of the (001) surface with an azimuthal angle of 90<sup>o</sup>.</p>
 <figure class="align-default" id="id17">
-<span id="fig-tm-sm-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_TM_SM_comparison.png"><img alt="_images/single_crystal_TM_SM_comparison.png" src="_images/single_crystal_TM_SM_comparison.png" style="width: 682.2px; height: 568.8000000000001px;" />
-</a>
+<span id="fig-tm-sm-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_TM_SM_comparison.png"><img alt="_images/single_crystal_TM_SM_comparison.png" src="_images/single_crystal_TM_SM_comparison.png" style="width: 682.2px; height: 568.8000000000001px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Comparison of Transfer and Scattering Matrix and Methods</span><a class="headerlink" href="#id17" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Comparison of Transfer and Scattering Matrix and Methods</span><a class="headerlink" href="#id17" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The transfer and scattering matrix methods agree well with each other upto about 114 cm<sup>-1</sup>.  Above 180 cm<sup>-1</sup> the transfer matrix method is completely unstable, while the scattering matrix method works well.</p>
 </section>
 <section id="crystal-laboratory-coordinate-frames">
-<span id="crystal-and-laboratory-coordinates"></span><h2>Crystal &amp; Laboratory Coordinate Frames<a class="headerlink" href="#crystal-laboratory-coordinate-frames" title="Link to this heading">¶</a></h2>
+<span id="crystal-and-laboratory-coordinates"></span><h2>Crystal &amp; Laboratory Coordinate Frames<a class="headerlink" href="#crystal-laboratory-coordinate-frames" title="Permalink to this heading">#</a></h2>
 <p>There are two coordinate systems to consider.  The first is the laboratory coordinate system (X,Y,Z).
 It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  p-polarised light is polarised parallel to this plane and s-polarised perpendicular (senkrecht) to this plane.
 The laboratory frame is illustrated in <a class="reference internal" href="#fig-lab-coords2"><span class="std std-numref">Fig. 16</span></a>.</p>
@@ -514,10 +461,9 @@ The precise definition of the azimuthal angle is somewhat arbitrary as it depend
 The arrangement described is illustrated in the Figure below where <span class="math notranslate nohighlight">\(E_s\)</span> and <span class="math notranslate nohighlight">\(E_p\)</span> are the field directions of the s- and p- polarised incident light respectively.
 Information about the crystal coordinates relative to the laboratory frame is given in the GUI.</p>
 <figure class="align-default" id="id18">
-<span id="fig-lab-coords2"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" src="_images/SingleCrystalGeometry.png" style="width: 1152.0px; height: 648.0px;" />
-</a>
+<span id="fig-lab-coords2"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" src="_images/SingleCrystalGeometry.png" style="width: 1152.0px; height: 648.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id18" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id18" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -595,10 +541,10 @@ Information about the crystal coordinates relative to the laboratory frame is gi
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=b04e2b79"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=9234fd31"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </body>

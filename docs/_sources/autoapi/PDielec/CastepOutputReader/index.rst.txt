@@ -1,5 +1,5 @@
-PDielec.CastepOutputReader
-==========================
+:py:mod:`PDielec.CastepOutputReader`
+====================================
 
 .. py:module:: PDielec.CastepOutputReader
 
@@ -9,21 +9,23 @@ PDielec.CastepOutputReader
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.CastepOutputReader.CastepOutputReader
 
 
-Module Contents
----------------
+
 
 .. py:class:: CastepOutputReader(filenames)
 
-   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
    Read the contents of a Castep output file.
 
@@ -38,7 +40,6 @@ Module Contents
    -----
    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
    - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
-
 
 
    .. py:method:: _read_born_charges(line)
@@ -56,7 +57,6 @@ Module Contents
       -------
       ndarray
           An array where each row represents the born charges for a particular atomic displacement arranged in the format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.
-
 
 
 
@@ -83,7 +83,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_convergence(line)
 
       Read convergence data from a file and update internal lists.
@@ -104,7 +103,6 @@ Module Contents
       This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line). 
 
       The function does not return any value, but it updates the internal state of the object it is a part of.
-
 
 
 
@@ -131,7 +129,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_ediff(line)
 
       Read and set the energy difference from a given line of text.
@@ -149,7 +146,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -180,7 +176,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_energies2(line)
 
       Parse a line of text to read energies and update properties.
@@ -203,7 +198,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -234,7 +228,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_energy_cutoff(line)
 
       Extract the energy cutoff value from a given line and store it in the object.
@@ -249,7 +242,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -269,7 +261,6 @@ Module Contents
       Notes
       -----
       This function updates the `pressure` attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.
-
 
 
 
@@ -305,7 +296,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_kpoint_grid(line)
 
       Parse and set the k-point grid dimensions from the given line.
@@ -320,7 +310,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -343,7 +332,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_masses(line)
 
       Read and parse masses from a file, categorizing them by species.
@@ -361,7 +349,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_nbands(line)
 
       Extract the number of bands from a given line and set it to the 'nbands' attribute of the class.
@@ -374,7 +361,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -399,7 +385,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_nelect(line)
 
       Extract the number of electrons from a line and assign it.
@@ -417,7 +402,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_output_files()
 
       Define the strings needed for searching the files process the output files.
@@ -429,7 +413,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -449,7 +432,6 @@ Module Contents
       Notes
       -----
       This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.
-
 
 
 
@@ -473,7 +455,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_skip4(line)
 
       Read and skip the next four lines from the current file position.
@@ -493,7 +474,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_spin(line)
 
       Read and set the spin value from a given line of text.
@@ -509,77 +489,6 @@ Module Contents
       -------
       None
 
-
-
-
-   .. py:attribute:: _castepfile
-
-
-   .. py:attribute:: _ediff
-      :value: 0.0
-
-
-
-   .. py:attribute:: _epsilon
-      :value: None
-
-
-
-   .. py:attribute:: _intensities
-      :value: None
-
-
-
-   .. py:attribute:: _ion_index_type
-
-
-   .. py:attribute:: _ion_type_index
-
-
-   .. py:attribute:: _nbranches
-      :value: 0
-
-
-
-   .. py:attribute:: _outputfiles
-
-
-   .. py:attribute:: _phononfile
-
-
-   .. py:attribute:: _pspots
-
-
-   .. py:attribute:: _pulay
-      :value: None
-
-
-
-   .. py:attribute:: de_ion
-      :value: []
-
-
-
-   .. py:attribute:: dr_max
-      :value: []
-
-
-
-   .. py:attribute:: fmax
-      :value: []
-
-
-
-   .. py:attribute:: names
-
-
-   .. py:attribute:: smax
-      :value: []
-
-
-
-   .. py:attribute:: type
-      :value: 'Castep output'
 
 
 

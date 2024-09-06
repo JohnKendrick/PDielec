@@ -1,5 +1,5 @@
-PDielec.AbinitOutputReader
-==========================
+:py:mod:`PDielec.AbinitOutputReader`
+====================================
 
 .. py:module:: PDielec.AbinitOutputReader
 
@@ -9,21 +9,23 @@ PDielec.AbinitOutputReader
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.AbinitOutputReader.AbinitOutputReader
 
 
-Module Contents
----------------
+
 
 .. py:class:: AbinitOutputReader(filenames)
 
-   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
    Read the contents of a directory containing Abinit input and output files.
 
@@ -48,7 +50,6 @@ Module Contents
    This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be defined or processed.
 
 
-
    .. py:method:: _read_acell(line)
 
       Read and convert cell parameters from bohr to Ångström.
@@ -62,7 +63,6 @@ Module Contents
       -------
       None
           This function does not return a value but updates the `_acell` attribute of the object.
-
 
 
 
@@ -82,7 +82,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -112,7 +111,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_dynamical(line)
 
       Read and populate the Hessian matrix from a file.
@@ -139,7 +137,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_electrons(line)
 
       Read and set the number of electrons from a given line.
@@ -161,7 +158,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_energy_cutoff(line)
 
       Process and update the energy cutoff value from a given line.
@@ -176,7 +172,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -209,7 +204,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_kpoint_grid(line)
 
       Parse and set the k-point grid from a given line of text.
@@ -229,7 +223,6 @@ Module Contents
       This function is intended to be used internally within its class.
       It reads a line of text, extracts integers from specific positions,
       and sets them as the k-point grid dimensions for the instance.
-
 
 
 
@@ -255,7 +248,6 @@ Module Contents
       -----
       The method does not return any value but updates the instance variable
       `kpoints` with the integer value of the k-points extracted from the input line.
-
 
 
 
@@ -288,7 +280,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_masses(line)
 
       Parse and save masses from a given line of text.
@@ -304,7 +295,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -329,7 +319,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_ntypat(line)
 
       Read and set the number of species from a given line.
@@ -344,7 +333,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -380,7 +368,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_output_files()
 
       Define the strings to be used for searching and Read the Abinit file names.
@@ -392,7 +379,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -415,7 +401,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_total_energy(line)
 
       Read and store total energy values from a line.
@@ -428,7 +413,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -458,7 +442,6 @@ Module Contents
       species_list : list of str, optional
           A list of species names corresponding to the atom types if the species attribute is set. This
           list is used to assign element names to the unit cells.
-
 
 
 
@@ -493,7 +476,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_znucl(line)
 
       Parse and store atomic species information from a line input.
@@ -523,21 +505,6 @@ Module Contents
       --------
       atomic_number_to_element : Dictionary mapping atomic numbers to element symbols.
 
-
-
-
-   .. py:attribute:: _acell
-      :value: None
-
-
-
-   .. py:attribute:: _charges
-      :value: None
-
-
-
-   .. py:attribute:: type
-      :value: 'Abinit output files'
 
 
 

@@ -1,5 +1,5 @@
-PDielec.Calculator
-==================
+:py:mod:`PDielec.Calculator`
+============================
 
 .. py:module:: PDielec.Calculator
 
@@ -9,8 +9,12 @@ PDielec.Calculator
 
 
 
+Module Contents
+---------------
+
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -60,12 +64,12 @@ Functions
    PDielec.Calculator.oscillator_strengths
    PDielec.Calculator.reflectance_atr
    PDielec.Calculator.rodridgues_rotations
+   PDielec.Calculator.set_affinity_on_worker
+   PDielec.Calculator.set_no_of_threads
    PDielec.Calculator.solve_effective_medium_equations
    PDielec.Calculator.waterman_truell_scattering
 
 
-Module Contents
----------------
 
 .. py:function:: _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size)
 
@@ -1127,6 +1131,25 @@ Module Contents
    -----
    - The input field is assumed to be real.
    - Output is a list of 3x3 rotation matrices.
+
+
+
+.. py:function:: set_affinity_on_worker()
+
+   When a new worker process is created, the affinity is set to all CPUs
+
+
+.. py:function:: set_no_of_threads(nthreads)
+
+   Set default number of threads
+
+   Parameters
+   ----------
+   ncpus : int the number of threads to be used
+
+   The environment is modified to set the most common environment variables for the number of threads
+   a BLAS implementation will use.
+   BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB
 
 
 

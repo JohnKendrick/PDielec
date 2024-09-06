@@ -1,17 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../../">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.checkcsv" href="../checkcsv/index.html" /><link rel="prev" title="PDielec.Utilities" href="../Utilities/index.html" />
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>PDielec.VaspOutputReader - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
     
     
@@ -71,7 +71,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -86,63 +86,22 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
@@ -155,8 +114,6 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -175,8 +132,7 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -222,63 +178,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.VaspOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html">PDielec.checkcsv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html">PDielec.checkexcel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html">PDielec.p1reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html">PDielec.p2cif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -302,17 +258,11 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="../../../_sources/autoapi/PDielec/VaspOutputReader/index.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
+          
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -322,12 +272,14 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main" id="furo-main-content">
+        <article role="main">
           <section id="module-PDielec.VaspOutputReader">
-<span id="pdielec-vaspoutputreader"></span><h1>PDielec.VaspOutputReader<a class="headerlink" href="#module-PDielec.VaspOutputReader" title="Link to this heading">¶</a></h1>
+<span id="pdielec-vaspoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.VaspOutputReader" title="PDielec.VaspOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.VaspOutputReader" title="Permalink to this heading">#</a></h1>
 <p>VASP output reader.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -339,7 +291,7 @@
 </div>
 </section>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -349,24 +301,21 @@
 </tbody>
 </table>
 </div>
-</section>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.VaspOutputReader.</span></span><span class="sig-name descname"><span class="pre">VaspOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.VaspOutputReader.</span></span><span class="sig-name descname"><span class="pre">VaspOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a directory containing VASP input and output files.</p>
 <p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
 <section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>names<span class="classifier">list of str</span></dt><dd><p>A list of file names to be used in processing the DFT output files</p>
 </dd>
 </dl>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>type<span class="classifier">str</span></dt><dd><p>A string attribute that specifies the type of output, set to ‘Vasp output’.</p>
 </dd>
@@ -383,24 +332,24 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_array_dimensions">
-<span class="sig-name descname"><span class="pre">_read_array_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_array_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_array_dimensions" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_array_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_array_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_array_dimensions" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the array dimensions from a line in a file.</p>
 <p>This method reads lines from a file pointed to by <cite>self.file_descriptor</cite>,
 extracts dimensions for kpoints, nbands, and nions from these lines, and
 sets the corresponding attributes of the class instance.</p>
 <section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line read from the file, not used after modification.</p>
 </dd>
 </dl>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
 <p>Assumes specific formatting of the lines being read, where the required
 numbers are located at fixed positions in the lines:
 - <cite>kpoints</cite> is the 4th value in the first line read within the function.
@@ -411,7 +360,7 @@ numbers are located at fixed positions in the lines:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_born_charges">
-<span class="sig-name descname"><span class="pre">_read_born_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_born_charges" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_born_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_born_charges" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the born charges from the OUTCAR file.</p>
 <p>Each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">a1x</span> <span class="n">a1y</span> <span class="n">a1z</span><span class="p">]</span>
@@ -421,14 +370,14 @@ numbers are located at fixed positions in the lines:
 </div>
 <p>where 1, 2, 3 are the field directions and x, y, z are the atomic displacements.</p>
 <section id="id2">
-<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Not used and overridden</p>
 </dd>
 </dl>
 </section>
 <section id="id3">
-<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>A numpy array containing the born charges with its shape determined by the field directions and atomic displacements as described above.</p>
 </dd>
@@ -438,10 +387,10 @@ numbers are located at fixed positions in the lines:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_ediff">
-<span class="sig-name descname"><span class="pre">_read_ediff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ediff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ediff" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_ediff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ediff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ediff" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the energy difference value from a given line string.</p>
 <section id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy difference information, where the
 energy difference value is expected to be at the third position
@@ -450,39 +399,39 @@ energy difference value is expected to be at the third position
 </dl>
 </section>
 <section id="id5">
-<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_eigenvectors">
-<span class="sig-name descname"><span class="pre">_read_eigenvectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_eigenvectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_eigenvectors" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_eigenvectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_eigenvectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_eigenvectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process eigenvectors from a file.</p>
 <p>This method extracts frequencies and mass-weighted normal modes from a read file, storing them in the class’s frequencies and mass_weighted_normal_modes attributes, respectively. It assumes the file follows a specific format where frequencies and their corresponding eigenvectors are listed, considering imaginary frequencies if present.</p>
 <section id="id6">
-<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>This method operates on the instance’s file_descriptor and nions attributes, assuming they are correctly initialized.</p>
 </dd>
 </dl>
 </section>
 <section id="id7">
-<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_elastic_constants">
-<span class="sig-name descname"><span class="pre">_read_elastic_constants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_elastic_constants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_elastic_constants" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_elastic_constants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_elastic_constants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_elastic_constants" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process elastic constants from a file.</p>
 <p>This method reads lines from an opened file pointed by the instance’s file
 descriptor, extracts numeric values assumed to be elastic constants, and
 stores a processed version of these constants in the instance attribute
 <cite>elastic_constants</cite>.</p>
 <section id="id8">
-<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from where to start reading the elastic constants in
 the file. This parameter is somewhat misleading in this context, as the
@@ -492,11 +441,11 @@ overrides it with <cite>self.file_descriptor.readline()</cite>.</p>
 </dl>
 </section>
 <section id="id9">
-<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id10">
-<h4>Notes<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>Each line of interest contains numeric values, starting from the second
 value up to the seventh one, inclusive. These values are converted to floats,
 scaled down by a factor of 10 (to convert to GPa), assembled into a 2D array (list of lists),
@@ -507,95 +456,95 @@ converted into a NumPy array, scaled, and then stored as a list in the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_encut">
-<span class="sig-name descname"><span class="pre">_read_encut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_encut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_encut" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_encut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_encut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_encut" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and set the energy cutoff value from a given line.</p>
 <section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy cutoff value. The energy cutoff value is the third element in the string when split by whitespace.</p>
 </dd>
 </dl>
 </section>
 <section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id13">
-<h4>Notes<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>This method does not return any value. It sets the value of <cite>energy_cutoff</cite> attribute of the instance based on the input line.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_energy">
-<span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_energy" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_energy" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the energy-related values from a file and update the instance attributes with these values.</p>
 <section id="id14">
-<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line in the file from which to start reading. This parameter is not used in the function as the function reads new lines itself.</p>
 </dd>
 </dl>
 </section>
 <section id="id15">
-<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id16">
-<h4>Notes<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>This method directly modifies the instance attributes <cite>final_free_energy</cite>, <cite>final_free_energies</cite>, <cite>final_energy_without_entropy</cite>, and <cite>final_energies_without_entropy</cite> by reading values from the file associated with <cite>file_descriptor</cite>. The relevant energy values can be extracted from the 5th and 4th positions (zero-indexed) of the line text split by spaces, on specific lines read in sequence.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_external_pressure">
-<span class="sig-name descname"><span class="pre">_read_external_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_external_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_external_pressure" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_external_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_external_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_external_pressure" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse external pressure from a given line of text, updating instance attributes.</p>
 <section id="id17">
-<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text expected to contain pressure data at specific positions.</p>
 </dd>
 </dl>
 </section>
 <section id="id18">
-<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id19">
-<h4>Notes<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>This method updates the instance’s <cite>pressure</cite> and <cite>_pulay</cite> attributes based on values extracted from the input string. The <cite>pressure</cite> value is obtained from the fourth item in the split string (<cite>line.split()[3]</cite>), and the <cite>_pulay</cite> value is from the ninth item (<cite>line.split()[8]</cite>). Both values are divided by 10.0 to convert from kbar to GPa.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_forces">
-<span class="sig-name descname"><span class="pre">_read_forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_forces" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_forces" title="Permalink to this definition">#</a></dt>
 <dd><p>Read force data from a file and update the iterations datasets with maximum and RMS forces.</p>
 <p>After execution, <cite>self.iterations</cite> will be updated with the new <cite>max_force</cite> and <cite>rms_force</cite> values for the current iteration.</p>
 <section id="id20">
-<h4>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line of the file to start reading from.</p>
 </dd>
 </dl>
 </section>
 <section id="id21">
-<h4>Returns<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_fractional_coordinates">
-<span class="sig-name descname"><span class="pre">_read_fractional_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_fractional_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_fractional_coordinates" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_fractional_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_fractional_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_fractional_coordinates" title="Permalink to this definition">#</a></dt>
 <dd><p>Read fractional coordinates from a file and set them for the current unit cell.</p>
 <p>This function reads <cite>nions</cite> lines from the <cite>file_descriptor</cite> attribute, extracts
 the first three space-separated values as fractional coordinates, and appends them
 to the <cite>ions</cite> list. It then sets the fractional coordinates and element names for
 the last unit cell in the <cite>unit_cells</cite> list.</p>
 <section id="id22">
-<h4>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which to start reading the fractional coordinates. This parameter
 is passed but not used directly in the function; instead, subsequent lines are
@@ -604,25 +553,25 @@ read from the file.</p>
 </dl>
 </section>
 <section id="id23">
-<h4>Returns<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_ibrion">
-<span class="sig-name descname"><span class="pre">_read_ibrion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ibrion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ibrion" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_ibrion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ibrion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ibrion" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the IBRION parameter from a given line.</p>
 <p>This method extracts the IBRION value from a formatted line and sets it to the object’s _ibrion attribute.</p>
 <section id="id24">
-<h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>String to be processed</p>
 </dd>
 </dl>
 </section>
 <section id="id25">
-<h4>Returns<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>None</dt><dd><p>The line of text containing the IBRION value, expected to be at the third position (index 2) when split by whitespace.</p>
 </dd>
@@ -632,22 +581,22 @@ read from the file.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_ionic_dielectric">
-<span class="sig-name descname"><span class="pre">_read_ionic_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ionic_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ionic_dielectric" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_ionic_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ionic_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ionic_dielectric" title="Permalink to this definition">#</a></dt>
 <dd><p>Read ionic dielectric constants from a file and update the zero-frequency static dielectric constant.</p>
 <p>This method assumes the presence of two successive lines in the file corresponding to two dielectric constant values. If any of these lines are marked with an asterisk (*) as missing or do not contain at least three numeric values, default values are used instead. The method calculates the sum of the existing zero-frequency optical dielectric constants and the newly read ionic dielectric constants and updates the corresponding class attribute with this sum.</p>
 <section id="id26">
-<h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading the ionic dielectric constants. This parameter is not directly used as the method starts by reading a new line from the file, but it’s implicitly assumed to represent the current position in the file.</p>
 </dd>
 </dl>
 </section>
 <section id="id27">
-<h4>Returns<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id28">
-<h4>Notes<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Requires that <cite>self.file_descriptor</cite> is an open file object positioned at the correct line where dielectric information starts.</p></li>
 <li><p>The method directly modifies <cite>self.zerof_static_dielectric</cite> based on read values and calculated sums.</p></li>
@@ -658,40 +607,40 @@ read from the file.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_ionspertype">
-<span class="sig-name descname"><span class="pre">_read_ionspertype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ionspertype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ionspertype" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_ionspertype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ionspertype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ionspertype" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and store the number of ions per species from a given line.</p>
 <p>This method processes a string that contains information about the number of ions for each type/species. It updates the attributes <cite>ions_per_type</cite> and <cite>nspecies</cite> of the class.</p>
 <section id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the ions per type information will be extracted. The relevant data is expected to start from the fifth element when splitting the line by spaces.</p>
 </dd>
 </dl>
 </section>
 <section id="id30">
-<h4>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_kpoint_grid">
-<span class="sig-name descname"><span class="pre">_read_kpoint_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_kpoint_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_kpoint_grid" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_kpoint_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_kpoint_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_kpoint_grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse the k-point grid dimensions from a file line.</p>
 <p>This method assumes that the current line from which <cite>line</cite> is read contains three integers that represent the dimensions of the k-point grid. These integers are read, converted to integers, and stored in the instance variable <cite>kpoint_grid</cite>.</p>
 <section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line of the file to read from. This parameter is not used, and the actual line reading happens from <cite>self.file_descriptor</cite>.</p>
 </dd>
 </dl>
 </section>
 <section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id33">
-<h4>Notes<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method modifies the state of the object by setting the <cite>kpoint_grid</cite> attribute.</p></li>
 <li><p>The method reads the next line from <cite>self.file_descriptor</cite>, not from the <cite>line</cite> parameter.</p></li>
@@ -701,25 +650,25 @@ read from the file.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_lattice_vectors">
-<span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_lattice_vectors" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_lattice_vectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process lattice vectors from a line of a file.</p>
 <p>This method reads the volume and lattice vectors from specified lines of an input file,
 constructs a new <cite>UnitCell</cite> object from the read vectors, and appends it to the unit cells list.
 If there is at least one <cite>UnitCell</cite> already present, it copies fractional coordinates and element
 names from the last <cite>UnitCell</cite> in the list to the new one.</p>
 <section id="id34">
-<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from the input file containing the volume of the UnitCell.</p>
 </dd>
 </dl>
 </section>
 <section id="id35">
-<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-modified">
-<h4>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Link to this heading">¶</a></h4>
+<h5>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>volume<span class="classifier">float</span></dt><dd><p>The volume of the UnitCell, updated by parsing the input line.</p>
 </dd>
@@ -733,10 +682,10 @@ names from the last <cite>UnitCell</cite> in the list to the new one.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_magnet">
-<span class="sig-name descname"><span class="pre">_read_magnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_magnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_magnet" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_magnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_magnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_magnet" title="Permalink to this definition">#</a></dt>
 <dd><p>Read magnetization properties from a line and update the object attributes.</p>
 <section id="id36">
-<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string expected to contain information about electrons and,
 optionally, magnetization. The expected format is whitespace-separated
@@ -745,14 +694,14 @@ values where the fourth value is the number of electrons and the sixth</p>
 </dl>
 </section>
 <section id="id37">
-<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>None</dt><dd><p>value, if present, represents the magnetization.</p>
 </dd>
 </dl>
 </section>
 <section id="id38">
-<h4>Notes<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>Modifies the object’s <cite>electrons</cite> attribute by setting it to the value parsed
 from the line. If magnetization information is present in the line, it also
 updates the <cite>magnetization</cite> attribute with that value; otherwise, it sets
@@ -762,13 +711,13 @@ updates the <cite>magnetization</cite> attribute with that value; otherwise, it 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_masses">
-<span class="sig-name descname"><span class="pre">_read_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_masses" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_masses" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and store the mass value from a line of text.</p>
 <p>This method extracts the third element from a whitespace-separated list (assumed
 to be a mass), removes semicolons, converts it to a float, and appends it to the
 instance’s list of masses.</p>
 <section id="id39">
-<h4>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string from which the mass value is to be extracted. It is expected to
 be whitespace-separated with the mass as the third element, potentially
@@ -777,17 +726,17 @@ followed by a semicolon.</p>
 </dl>
 </section>
 <section id="id40">
-<h4>Returns<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_nelect">
-<span class="sig-name descname"><span class="pre">_read_nelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_nelect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_nelect" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_nelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_nelect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_nelect" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the number of electrons from a given line.</p>
 <section id="id41">
-<h4>Parameters<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string representation possibly containing information about
 the number of electrons.</p>
@@ -795,7 +744,7 @@ the number of electrons.</p>
 </dl>
 </section>
 <section id="id42">
-<h4>Notes<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>This method updates the object’s ‘electrons’ attribute with the number of electrons
 extracted from the given line. It assumes that the number of electrons is indicated
 at the third position (index 2) in the list produced by splitting <cite>line</cite> on whitespace.
@@ -803,25 +752,25 @@ It also assumes that this number can be represented as a float, but converts it 
 an integer before setting the ‘electrons’ attribute.</p>
 </section>
 <section id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_newmasses">
-<span class="sig-name descname"><span class="pre">_read_newmasses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_newmasses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_newmasses" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_newmasses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_newmasses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_newmasses" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process the “newmasses” from a line in the file descriptor.</p>
 <p>This internal method parses a single line from the file descriptor to read the masses associated with different atom types in a molecular system. Based on the number of species (<cite>nspecies</cite>) and ions per type, it updates <cite>masses_per_type</cite>, <cite>masses</cite>, <cite>atom_type_list</cite>, and <cite>species_list</cite> lists with the parsed and computed information.</p>
 <section id="id44">
-<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Line is a string (not used)</p>
 </dd>
 </dl>
 </section>
 <section id="id45">
-<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>None</dt><dd><p>The string line from which the new masses information is to be read. Note that this parameter is initially passed but not used directly, as the function immediately reads a new line from <cite>self.file_descriptor</cite>.</p>
 </dd>
@@ -831,28 +780,28 @@ an integer before setting the ‘electrons’ attribute.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_output_files">
-<span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_output_files" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the vasp files in the directory.</p>
 <p>Define the search strings neeeded and the associated routines will read the required values
 Process the files accordingly</p>
 <section id="id46">
-<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id47">
-<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_potim">
-<span class="sig-name descname"><span class="pre">_read_potim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_potim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_potim" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_potim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_potim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_potim" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and set the POTIM parameter from a line of text.</p>
 <p>This method extracts the POTIM parameter value from a provided string
 and sets it as a floating-point number within the object.</p>
 <section id="id48">
-<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string typically representing a line from a file containing
 the POTIM parameter. The expected format is: key-value pairs
@@ -862,94 +811,94 @@ in the sequence (index 2 when zero-indexed).</p>
 </dl>
 </section>
 <section id="id49">
-<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_pspot">
-<span class="sig-name descname"><span class="pre">_read_pspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_pspot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_pspot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_pspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_pspot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_pspot" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and store pseudopotential information from a line.</p>
 <p>This method parses a line to extract pseudopotential information and stores it in the <cite>_pspots</cite> dictionary attribute of the object. The pseudopotential label is used as the key, and its corresponding value as the value in the <cite>_pspots</cite> dictionary.</p>
 <section id="id50">
-<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the pseudopotential information to be parsed and stored. Expected format: “any_text value label any_other_text”, where “value” and “label” are the parts of interest for storage.</p>
 </dd>
 </dl>
 </section>
 <section id="id51">
-<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_skip4">
-<span class="sig-name descname"><span class="pre">_read_skip4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_skip4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_skip4" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_skip4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_skip4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_skip4" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and skip the next 4 lines from the current position.</p>
 <p>This method reads and discards the next four lines from the file
 associated with the <cite>file_descriptor</cite> attribute of the calling object.</p>
 <section id="id52">
-<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">not used</span></dt><dd><p>This parameter is not used but kept for function signature purposes.</p>
 </dd>
 </dl>
 </section>
 <section id="id53">
-<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_species">
-<span class="sig-name descname"><span class="pre">_read_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_species" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_species" title="Permalink to this definition">#</a></dt>
 <dd><p>Read species from a file and updates species information.</p>
 <p>This method reads the number of lines for a species, computes the total charge from these lines, and appends the corresponding element to the species list. It utilizes the atomic_number_to_element dictionary to map the computed total charge to an element symbol.</p>
 <section id="id54">
-<h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line to start processing from, typically provides the number of lines for a species.</p>
 </dd>
 </dl>
 </section>
 <section id="id55">
-<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="see-also">
-<h4>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h4>
+<h5>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h5>
 <p>atomic_number_to_element : A dictionary mapping total charges to element symbols.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_spin">
-<span class="sig-name descname"><span class="pre">_read_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_spin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_spin" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_spin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_spin" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and set the spin from a given line.</p>
 <section id="id56">
-<h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line of text from which the spin value will be extracted.</p>
 </dd>
 </dl>
 </section>
 <section id="id57">
-<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id58">
-<h4>Notes<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h5>
 <p>This method expects the spin value to be at the third position in the line. The method doesn’t return any value but sets the object’s <cite>spin</cite> attribute based on the extracted integer value.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_static_dielectric">
-<span class="sig-name descname"><span class="pre">_read_static_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_static_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_static_dielectric" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_read_static_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_static_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_static_dielectric" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse static dielectric data from a file.</p>
 <p>This method is designed to read lines from a file, which the instance’s file_descriptor points to,
 and parse the static dielectric data. It expects the data to be in specific line positions within the file.
@@ -957,7 +906,7 @@ If a line does not contain data in the expected format or contains an asterisk (
 or invalid data, a default value is used instead. The parsed data is stored in the instance’s
 zerof_optical_dielectric attribute as a list of lists, where each sublist contains three floating-point numbers.</p>
 <section id="id59">
-<h4>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from where to begin parsing. (This parameter is currently not used in the implementation
 and the method reads lines directly using the object’s file_descriptor.)</p>
@@ -965,57 +914,27 @@ and the method reads lines directly using the object’s file_descriptor.)</p>
 </dl>
 </section>
 <section id="id60">
-<h4>Returns<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._ediff">
-<span class="sig-name descname"><span class="pre">_ediff</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._ediff" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._ibrion">
-<span class="sig-name descname"><span class="pre">_ibrion</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._ibrion" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._potim">
-<span class="sig-name descname"><span class="pre">_potim</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._potim" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._pspots">
-<span class="sig-name descname"><span class="pre">_pspots</span></span><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._pspots" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._pulay">
-<span class="sig-name descname"><span class="pre">_pulay</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._pulay" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader.type">
-<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Vasp</span> <span class="pre">output'</span></em><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader.type" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.myfloat">
-<span class="sig-prename descclassname"><span class="pre">PDielec.VaspOutputReader.</span></span><span class="sig-name descname"><span class="pre">myfloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#myfloat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.myfloat" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.VaspOutputReader.</span></span><span class="sig-name descname"><span class="pre">myfloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#myfloat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.myfloat" title="Permalink to this definition">#</a></dt>
 <dd><p>Replace float(), return a large number if it finds a * in the string.</p>
 <section id="id61">
-<h3>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h3>
+<h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>string<span class="classifier">str</span></dt><dd><p>The string to be analysed as a float</p>
 </dd>
 </dl>
 </section>
 <section id="id62">
-<h3>Returns<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h3>
+<h4>Returns<a class="headerlink" href="#id62" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>float</dt><dd><p>A standard float conversion of the input or a large number if ‘*’ is found in the input.</p>
 </dd>
@@ -1023,6 +942,7 @@ and the method reads lines directly using the object’s file_descriptor.)</p>
 </section>
 </dd></dl>
 
+</section>
 </section>
 </section>
 
@@ -1036,7 +956,7 @@ and the method reads lines directly using the object’s file_descriptor.)</p>
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.checkcsv</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1047,7 +967,7 @@ and the method reads lines directly using the object’s file_descriptor.)</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PDielec.Utilities</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></div>
                 
               </div>
             </a>
@@ -1081,10 +1001,10 @@ and the method reads lines directly using the object’s file_descriptor.)</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">PDielec.VaspOutputReader</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a></li>
-<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
 <li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._read_array_dimensions"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._read_array_dimensions()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._read_born_charges"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._read_born_charges()</span></code></a></li>
@@ -1112,15 +1032,11 @@ and the method reads lines directly using the object’s file_descriptor.)</p>
 <li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._read_species"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._read_species()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._read_spin"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._read_spin()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._read_static_dielectric"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._read_static_dielectric()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._ediff"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._ediff</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._ibrion"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._ibrion</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._potim"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._potim</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._pspots"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._pspots</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader._pulay"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader._pulay</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.VaspOutputReader.VaspOutputReader.type"><code class="docutils literal notranslate"><span class="pre">VaspOutputReader.type</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.VaspOutputReader.myfloat"><code class="docutils literal notranslate"><span class="pre">myfloat()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1134,9 +1050,9 @@ and the method reads lines directly using the object’s file_descriptor.)</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=b04e2b79"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=9234fd31"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

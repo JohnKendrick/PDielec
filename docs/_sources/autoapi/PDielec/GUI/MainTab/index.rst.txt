@@ -1,5 +1,5 @@
-PDielec.GUI.MainTab
-===================
+:py:mod:`PDielec.GUI.MainTab`
+=============================
 
 .. py:module:: PDielec.GUI.MainTab
 
@@ -9,21 +9,23 @@ PDielec.GUI.MainTab
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.MainTab.MainTab
 
 
-Module Contents
----------------
+
 
 .. py:class:: MainTab(parent, program, qm_program, filename, excelfile, debug=False)
 
-   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
 
    MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application. It is tailored for analyzing quantum chemistry or molecular dynamics simulation output files, offering functionalities such as file processing, data analysis, and settings management for quantum mechanics / molecular mechanics (QM/MM) programs.
 
@@ -91,7 +93,6 @@ Module Contents
        Refreshes the UI and data based on current settings and file contents, with an optional force parameter to enforce refreshing even if it's not marked as required.
 
 
-
    .. py:method:: getFullFileName()
 
       Return the full file name based on the directory and output file name settings.
@@ -104,7 +105,6 @@ Module Contents
       -------
       str
           The full path of the file, combining the directory and the output file name setting.
-
 
 
 
@@ -123,7 +123,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_calculation_button_clicked()
 
       Handle the event triggered by the calculation button click.
@@ -137,7 +136,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -161,7 +159,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_file_button_clicked()
 
       Handle the "Open file" button click event in the GUI.
@@ -175,7 +172,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -193,7 +189,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -224,7 +219,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_phonopy_program_cb_activated(index)
 
       Handle phonopy program selection change in a combobox and update settings accordingly.
@@ -245,7 +239,6 @@ Module Contents
       - Updates the `settings` dictionary with the selected program and, if applicable,
         the corresponding QM program.
       - Sets `calculationRequired` attribute to `True`.
-
 
 
 
@@ -273,7 +266,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_resultsfile_le_changed(text)
 
       Handle changes to the results file text input field.
@@ -286,7 +278,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -303,7 +294,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -324,7 +314,6 @@ Module Contents
 
 
 
-
    .. py:method:: read_output_file()
 
       Read the output file specified in the settings, process it, and updates the UI elements accordingly.
@@ -341,7 +330,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -369,7 +357,6 @@ Module Contents
 
 
 
-
    .. py:method:: requestRefresh()
 
       Request to refresh.
@@ -383,7 +370,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -406,115 +392,5 @@ Module Contents
       None
 
 
-
-
-   .. py:attribute:: calculationRequired
-      :value: True
-
-
-
-   .. py:attribute:: cell_window_l
-
-
-   .. py:attribute:: cell_window_w
-
-
-   .. py:attribute:: debug
-
-
-   .. py:attribute:: debugger
-
-
-   .. py:attribute:: directory
-
-
-   .. py:attribute:: excel_button
-
-
-   .. py:attribute:: excel_button_size
-
-
-   .. py:attribute:: file_button
-
-
-   .. py:attribute:: file_button_size
-
-
-   .. py:attribute:: file_le
-
-
-   .. py:attribute:: fm
-
-
-   .. py:attribute:: form
-
-
-   .. py:attribute:: frequencies_cm1
-      :value: None
-
-
-
-   .. py:attribute:: frequencies_window
-
-
-   .. py:attribute:: frequencies_window_l
-
-
-   .. py:attribute:: h
-
-
-   .. py:attribute:: hbox
-
-
-   .. py:attribute:: index
-
-
-   .. py:attribute:: label
-
-
-   .. py:attribute:: maximum_button_height
-
-
-   .. py:attribute:: maximum_button_width
-
-
-   .. py:attribute:: new_button_size
-
-
-   .. py:attribute:: notebook
-
-
-   .. py:attribute:: phonopy_program_cb
-
-
-   .. py:attribute:: program_cb
-
-
-   .. py:attribute:: reader
-      :value: None
-
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: resultsfile_le
-
-
-   .. py:attribute:: script_button
-
-
-   .. py:attribute:: script_button_size
-
-
-   .. py:attribute:: scriptsfile_le
-
-
-   .. py:attribute:: settings
-
-
-   .. py:attribute:: vbox
 
 

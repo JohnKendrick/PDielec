@@ -1,5 +1,5 @@
-PDielec.IO
-==========
+:py:mod:`PDielec.IO`
+====================
 
 .. py:module:: PDielec.IO
 
@@ -11,18 +11,21 @@ PDielec.IO
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.IO.pdielec_io
 
 
-Module Contents
----------------
+
 
 .. py:class:: pdielec_io(filename, mode)
+
 
    A class for reading lines from a file and providing an interface similar to file objects.
 
@@ -59,7 +62,6 @@ Module Contents
        deleting all lines read from the file from memory.
 
 
-
    .. py:method:: close()
 
       Close the current object session.
@@ -80,7 +82,6 @@ Module Contents
 
 
 
-
    .. py:method:: readline()
 
       Read and return the next line from the stored lines.
@@ -98,17 +99,6 @@ Module Contents
       str
           The next line in the internal list of lines, or an empty string if the end of the list is reached.
 
-
-
-
-   .. py:attribute:: end
-
-
-   .. py:attribute:: filename
-
-
-   .. py:attribute:: index
-      :value: 0
 
 
 

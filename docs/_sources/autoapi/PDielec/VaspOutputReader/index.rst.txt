@@ -1,5 +1,5 @@
-PDielec.VaspOutputReader
-========================
+:py:mod:`PDielec.VaspOutputReader`
+==================================
 
 .. py:module:: PDielec.VaspOutputReader
 
@@ -9,29 +9,31 @@ PDielec.VaspOutputReader
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.VaspOutputReader.VaspOutputReader
 
 
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
    PDielec.VaspOutputReader.myfloat
 
 
-Module Contents
----------------
 
 .. py:class:: VaspOutputReader(names)
 
-   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
 
    Read the contents of a directory containing VASP input and output files.
 
@@ -56,7 +58,6 @@ Module Contents
        The value of ibrion
    _potim : float
        The value of potim
-
 
 
    .. py:method:: _read_array_dimensions(line)
@@ -86,7 +87,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the OUTCAR file.
@@ -111,7 +111,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_ediff(line)
 
       Read and set the energy difference value from a given line string.
@@ -129,7 +128,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_eigenvectors(line)
 
       Read and process eigenvectors from a file.
@@ -144,7 +142,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -179,7 +176,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_encut(line)
 
       Parse and set the energy cutoff value from a given line.
@@ -196,7 +192,6 @@ Module Contents
       Notes
       -----
       This method does not return any value. It sets the value of `energy_cutoff` attribute of the instance based on the input line.
-
 
 
 
@@ -219,7 +214,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_external_pressure(line)
 
       Read and parse external pressure from a given line of text, updating instance attributes.
@@ -239,7 +233,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_forces(line)
 
       Read force data from a file and update the iterations datasets with maximum and RMS forces.
@@ -254,7 +247,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -280,7 +272,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_ibrion(line)
 
       Read and set the IBRION parameter from a given line.
@@ -296,7 +287,6 @@ Module Contents
       -------
       None
           The line of text containing the IBRION value, expected to be at the third position (index 2) when split by whitespace.
-
 
 
 
@@ -323,7 +313,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_ionspertype(line)
 
       Read and store the number of ions per species from a given line.
@@ -338,7 +327,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -361,7 +349,6 @@ Module Contents
       -----
       - This method modifies the state of the object by setting the `kpoint_grid` attribute.
       - The method reads the next line from `self.file_descriptor`, not from the `line` parameter.
-
 
 
 
@@ -394,7 +381,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_magnet(line)
 
       Read magnetization properties from a line and update the object attributes.
@@ -420,7 +406,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_masses(line)
 
       Parse and store the mass value from a line of text.
@@ -439,7 +424,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -467,7 +451,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_newmasses(line)
 
       Read and process the "newmasses" from a line in the file descriptor.
@@ -486,7 +469,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_output_files()
 
       Read the vasp files in the directory.
@@ -501,7 +483,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -526,7 +507,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_pspot(line)
 
       Read and store pseudopotential information from a line.
@@ -541,7 +521,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -560,7 +539,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -585,7 +563,6 @@ Module Contents
 
 
 
-
    .. py:method:: _read_spin(line)
 
       Parse and set the spin from a given line.
@@ -602,7 +579,6 @@ Module Contents
       Notes
       -----
       This method expects the spin value to be at the third position in the line. The method doesn't return any value but sets the object's `spin` attribute based on the extracted integer value.
-
 
 
 
@@ -626,34 +602,6 @@ Module Contents
       -------
       None
 
-
-
-
-   .. py:attribute:: _ediff
-      :value: 0.0
-
-
-
-   .. py:attribute:: _ibrion
-      :value: 0
-
-
-
-   .. py:attribute:: _potim
-      :value: 0.0
-
-
-
-   .. py:attribute:: _pspots
-
-
-   .. py:attribute:: _pulay
-      :value: None
-
-
-
-   .. py:attribute:: type
-      :value: 'Vasp output'
 
 
 

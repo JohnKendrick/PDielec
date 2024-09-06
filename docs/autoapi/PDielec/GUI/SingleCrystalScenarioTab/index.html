@@ -1,17 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../../../">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="PDielec.GUI.SpreadSheetManager" href="../SpreadSheetManager/index.html" /><link rel="prev" title="PDielec.GUI.SingleCrystalLayer" href="../SingleCrystalLayer/index.html" />
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>PDielec.GUI.SingleCrystalScenarioTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=2e0a580d" />
     
     
@@ -71,7 +71,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -86,63 +86,22 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
@@ -155,8 +114,6 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -175,8 +132,7 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -222,63 +178,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../App/index.html">PDielec.GUI.App</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html">PDielec.GUI.MainTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.SingleCrystalScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html">PDielec.Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Constants/index.html">PDielec.Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html">PDielec.Plotter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html">PDielec.UnitCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html">PDielec.Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../checkcsv/index.html">PDielec.checkcsv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../checkexcel/index.html">PDielec.checkexcel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../p1reader/index.html">PDielec.p1reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../p2cif/index.html">PDielec.p2cif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -302,17 +258,11 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="../../../../_sources/autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
+          
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -322,12 +272,38 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main" id="furo-main-content">
+        <article role="main">
           <section id="module-PDielec.GUI.SingleCrystalScenarioTab">
-<span id="pdielec-gui-singlecrystalscenariotab"></span><h1>PDielec.GUI.SingleCrystalScenarioTab<a class="headerlink" href="#module-PDielec.GUI.SingleCrystalScenarioTab" title="Link to this heading">¶</a></h1>
+<span id="pdielec-gui-singlecrystalscenariotab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.SingleCrystalScenarioTab" title="PDielec.GUI.SingleCrystalScenarioTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.SingleCrystalScenarioTab" title="Permalink to this heading">#</a></h1>
 <p>SingleCrystalScenarioTab module.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab" title="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab</span></code></a></p></td>
+<td><p>A tab class for handling a single crystal scenario.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations" title="PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_single_crystal_equations</span></code></a>(layers, mode, theta, ...)</p></td>
+<td><p>Solve single crystal equations, system is a GTM system.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="attributes">
-<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h3>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -346,41 +322,14 @@
 </tbody>
 </table>
 </div>
-</section>
-<section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
-<div class="table-wrapper autosummary longtable docutils container">
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab" title="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab</span></code></a></p></td>
-<td><p>A tab class for handling a single crystal scenario.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
-<div class="table-wrapper autosummary longtable docutils container">
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations" title="PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_single_crystal_equations</span></code></a>(layers, mode, theta, ...)</p></td>
-<td><p>Solve single crystal equations, system is a GTM system.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">SingleCrystalScenarioTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">SingleCrystalScenarioTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab" title="PDielec.GUI.ScenarioTab.ScenarioTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab.ScenarioTab</span></code></a></p>
 <p>A tab class for handling a single crystal scenario.</p>
 <p>This class extends a generic scenario tab (<a class="reference internal" href="../ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab" title="PDielec.GUI.ScenarioTab.ScenarioTab"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScenarioTab</span></code></a>) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.</p>
 <section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget (typically a main window or a larger container) to which this tab will belong.</p>
 </dd>
@@ -389,7 +338,7 @@
 </dl>
 </section>
 <section id="id1">
-<h3>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h4>Attributes<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>refreshRequired<span class="classifier">bool</span></dt><dd><p>Flag indicating whether the widget’s data needs to be refreshed.</p>
 </dd>
@@ -414,7 +363,7 @@
 </dl>
 </section>
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
+<h4>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h4>
 <p>There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the single crystal scenario.</p>
 <dl class="simple">
 <dt>angleOfIncidenceWidget</dt><dd><p>Create a widget to set the angle of incidence</p>
@@ -514,25 +463,25 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.angleOfIncidenceWidget">
-<span class="sig-name descname"><span class="pre">angleOfIncidenceWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.angleOfIncidenceWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.angleOfIncidenceWidget" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">angleOfIncidenceWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.angleOfIncidenceWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.angleOfIncidenceWidget" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an angle of incidence widget.</p>
 <p>This widget is used in the layer table widget to control the azimuthal angle of a single layer.</p>
 <section id="id2">
-<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator">
-<span class="sig-name descname"><span class="pre">average_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.average_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">average_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.average_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the incoherent component of light reflectance and transmission by averaging over the phase shift.</p>
 <section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layers<span class="classifier">a list of layers</span></dt><dd><p>A list of layers</p>
 </dd>
@@ -551,7 +500,7 @@
 </dl>
 </section>
 <section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>A tuple of lists or nd.arrays</dt><dd><ul class="simple">
 <li><p>p_reflectance</p></li>
@@ -569,31 +518,31 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.</p>
 <section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>vs_cm1<span class="classifier">list or ndarray</span></dt><dd><p>List or array of wavenumbers (in cm^-1) for which the simulation is to be run.</p>
 </dd>
 </dl>
 </section>
 <section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
 <p>This method updates the object’s state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a <cite>debugger</cite>.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator">
-<span class="sig-name descname"><span class="pre">coherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.coherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">coherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.coherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the coherent component of light reflectance and transmission.</p>
 <section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layers<span class="classifier">a list of layers</span></dt><dd><p>A list of layers</p>
 </dd>
@@ -612,7 +561,7 @@
 </dl>
 </section>
 <section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>A tuple of lists or nd.arrays</dt><dd><ul class="simple">
 <li><p>p_reflectance</p></li>
@@ -630,10 +579,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBar">
-<span class="sig-name descname"><span class="pre">createToolBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBar" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createToolBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBar" title="Permalink to this definition">#</a></dt>
 <dd><p>Create the tool bar used for the material layer.</p>
 <section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layer<span class="classifier">a layer object</span></dt><dd><p>Layer is the layer concerned.</p>
 </dd>
@@ -644,17 +593,17 @@
 </dl>
 </section>
 <section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarDeleteButton">
-<span class="sig-name descname"><span class="pre">createToolBarDeleteButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBarDeleteButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarDeleteButton" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createToolBarDeleteButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBarDeleteButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarDeleteButton" title="Permalink to this definition">#</a></dt>
 <dd><p>Create the delete button as part of the layer toolbar.</p>
 <section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layer<span class="classifier">layer object</span></dt><dd><p>the layer to be deleted</p>
 </dd>
@@ -665,17 +614,17 @@
 </dl>
 </section>
 <section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveDownButton">
-<span class="sig-name descname"><span class="pre">createToolBarMoveDownButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBarMoveDownButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveDownButton" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createToolBarMoveDownButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBarMoveDownButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveDownButton" title="Permalink to this definition">#</a></dt>
 <dd><p>Create the move down button as part of the layer toolbar.</p>
 <section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layer<span class="classifier">layer object</span></dt><dd><p>the layer to be deleted</p>
 </dd>
@@ -686,17 +635,17 @@
 </dl>
 </section>
 <section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveUpButton">
-<span class="sig-name descname"><span class="pre">createToolBarMoveUpButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBarMoveUpButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveUpButton" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createToolBarMoveUpButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nLayers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.createToolBarMoveUpButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveUpButton" title="Permalink to this definition">#</a></dt>
 <dd><p>Create the move up button as part of the layer toolbar.</p>
 <section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layer<span class="classifier">layer object</span></dt><dd><p>the layer to be deleted</p>
 </dd>
@@ -707,17 +656,17 @@
 </dl>
 </section>
 <section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.deleteLayer">
-<span class="sig-name descname"><span class="pre">deleteLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.deleteLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.deleteLayer" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">deleteLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.deleteLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.deleteLayer" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle a delete layer button press.</p>
 <section id="id17">
-<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>x<span class="classifier">any</span></dt><dd><p>A dummy variable</p>
 </dd>
@@ -728,36 +677,36 @@
 </dl>
 </section>
 <section id="id18">
-<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.drawLayerTable">
-<span class="sig-name descname"><span class="pre">drawLayerTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.drawLayerTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.drawLayerTable" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">drawLayerTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.drawLayerTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.drawLayerTable" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw a table with all the layers in it.</p>
 <p>Each layer has a row in the table showing, name, thickness, h,k,l, azimuthal angle, options and a toolbar</p>
 <section id="id19">
-<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id20">
-<h4>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.generateLayerSettings">
-<span class="sig-name descname"><span class="pre">generateLayerSettings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.generateLayerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.generateLayerSettings" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generateLayerSettings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.generateLayerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.generateLayerSettings" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate the settings dictionary for every layer.</p>
 <section id="id21">
-<h4>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id22">
-<h4>Returns<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>A list of dictionary settings for each layer.</p>
 </dd>
@@ -767,18 +716,18 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getDielectricLayerIndex">
-<span class="sig-name descname"><span class="pre">getDielectricLayerIndex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.getDielectricLayerIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getDielectricLayerIndex" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getDielectricLayerIndex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.getDielectricLayerIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getDielectricLayerIndex" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the index of the dielectric layer in the list of layers.</p>
 <ul class="simple">
 <li><p>Sorts through the list of layers and reports the index of the first layer that came from the provided DFT calculation</p></li>
 <li><p>If there is no such layer then the value None is returned</p></li>
 </ul>
 <section id="id23">
-<h4>Parameters<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id24">
-<h4>Returns<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>int or None</dt><dd><p>The index of the dielectric layer in the list.</p>
 </dd>
@@ -788,7 +737,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getMaterialFromDataBase">
-<span class="sig-name descname"><span class="pre">getMaterialFromDataBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.getMaterialFromDataBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getMaterialFromDataBase" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getMaterialFromDataBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.getMaterialFromDataBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getMaterialFromDataBase" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the given material from the database.</p>
 <ul class="simple">
 <li><p>If name is ‘DielectricLayer’ then a material is defined from the crystal permittivity of the DFT information</p></li>
@@ -796,7 +745,7 @@
 <li><p>Otherwise the name is used to get the material from the database</p></li>
 </ul>
 <section id="id25">
-<h4>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>name<span class="classifier">str</span></dt><dd><p>The name of the material. It can also be ‘Dielectric layer’ or ‘Material defined manually’.</p>
 </dd>
@@ -805,17 +754,17 @@
 </dl>
 </section>
 <section id="id26">
-<h4>Returns<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_result">
-<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_result" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_result" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a particular result.</p>
 <section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>vs_cm1<span class="classifier">a list of floats</span></dt><dd><p>The frequencies</p>
 </dd>
@@ -829,7 +778,7 @@
 </dl>
 </section>
 <section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list of floats</dt><dd><p>The results to be plotted</p>
 </dd>
@@ -839,58 +788,58 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results">
-<span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the results of the single crystal calculation.</p>
 <p>If a refresh has been requested it is performed before the calculate method is called.</p>
 <section id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>vs_cm1<span class="classifier">a list of floats</span></dt><dd><p>The frequencies in cm-1</p>
 </dd>
 </dl>
 </section>
 <section id="id30">
-<h4>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.globalAzimuthalWidget">
-<span class="sig-name descname"><span class="pre">globalAzimuthalWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.globalAzimuthalWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.globalAzimuthalWidget" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">globalAzimuthalWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.globalAzimuthalWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.globalAzimuthalWidget" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a global azimuthal angle widget.</p>
 <p>This widget is shown in the main single crystal scenario tab.
 Any change in this angle affects all layers.</p>
 <section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.greyed_out">
-<span class="sig-name descname"><span class="pre">greyed_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.greyed_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.greyed_out" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">greyed_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.greyed_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.greyed_out" title="Permalink to this definition">#</a></dt>
 <dd><p>Have a look through the settings and see if we need to grey anything out.</p>
 <section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerDown">
-<span class="sig-name descname"><span class="pre">moveLayerDown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.moveLayerDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerDown" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">moveLayerDown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.moveLayerDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerDown" title="Permalink to this definition">#</a></dt>
 <dd><p>Move a layer down (sequence number gets larger by 1).</p>
 <section id="id35">
-<h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>x<span class="classifier">any</span></dt><dd><p>A dummy variable</p>
 </dd>
@@ -901,17 +850,17 @@ Any change in this angle affects all layers.</p>
 </dl>
 </section>
 <section id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerUp">
-<span class="sig-name descname"><span class="pre">moveLayerUp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.moveLayerUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerUp" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">moveLayerUp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.moveLayerUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerUp" title="Permalink to this definition">#</a></dt>
 <dd><p>Move a layer up (sequence number gets smaller by 1).</p>
 <section id="id37">
-<h4>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>x<span class="classifier">any</span></dt><dd><p>A dummy variable</p>
 </dd>
@@ -922,30 +871,30 @@ Any change in this angle affects all layers.</p>
 </dl>
 </section>
 <section id="id38">
-<h4>Returns<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.newLayerWidget">
-<span class="sig-name descname"><span class="pre">newLayerWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.newLayerWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.newLayerWidget" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">newLayerWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.newLayerWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.newLayerWidget" title="Permalink to this definition">#</a></dt>
 <dd><p>Create and return a new layer widget as a QComboBox.</p>
 <p>Returns a QComboBox widget configured for creating a new layer in a graphical user interface.
 The combo box is initialized with a default item for creating a new layer, followed by any existing layer names.</p>
 <section id="id39">
-<h4>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id40">
-<h4>Returns<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>QComboBox</dt><dd><p>A QComboBox widget configured with an initial item for creating a new layer and any additional existing material layer names.</p>
 </dd>
 </dl>
 </section>
 <section id="id41">
-<h4>Notes<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>The first item in the combo box is a placeholder for creating a new layer, indicated by “New layer…”.</p></li>
 <li><p>The combo box is connected to the <cite>on_newLayer_cb_activated</cite> method, which should handle the action performed upon selecting an item from the combo box.</p></li>
@@ -955,25 +904,25 @@ The combo box is initialized with a default item for creating a new layer, follo
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed">
-<span class="sig-name descname"><span class="pre">on_angle_of_incidence_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_angle_of_incidence_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Update the ‘Angle of incidence’ setting and mark a refresh as required upon a change in the angle of incidence spinbox value.</p>
 <p>A refresh is requested</p>
 <section id="id42">
-<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">int or float</span></dt><dd><p>The new value of the angle of incidence from the spinbox.</p>
 </dd>
 </dl>
 </section>
 <section id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed">
-<span class="sig-name descname"><span class="pre">on_azimuthal_angle_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_azimuthal_angle_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle azimuthal spin box change.</p>
 <ul class="simple">
 <li><p>The azimuthal angle of a layer is changed to the value given.</p></li>
@@ -982,7 +931,7 @@ The combo box is initialized with a default item for creating a new layer, follo
 <li><p>A refresh of the GUI is requested</p></li>
 </ul>
 <section id="id44">
-<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The azimuthal angle in degress</p>
 </dd>
@@ -991,14 +940,14 @@ The combo box is initialized with a default item for creating a new layer, follo
 </dl>
 </section>
 <section id="id45">
-<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_film_thickness_sb_changed">
-<span class="sig-name descname"><span class="pre">on_film_thickness_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_film_thickness_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_film_thickness_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_film_thickness_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_film_thickness_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_film_thickness_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle film thickness spin box change.</p>
 <ul class="simple">
 <li><p>The thickness of the film in this layer is changed</p></li>
@@ -1006,7 +955,7 @@ The combo box is initialized with a default item for creating a new layer, follo
 <li><p>A refresh is requested</p></li>
 </ul>
 <section id="id46">
-<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The thickness of the film in the current thickness units</p>
 </dd>
@@ -1015,33 +964,33 @@ The combo box is initialized with a default item for creating a new layer, follo
 </dl>
 </section>
 <section id="id47">
-<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed">
-<span class="sig-name descname"><span class="pre">on_global_azimuthal_angle_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_global_azimuthal_angle_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the change in global azimuthal angle setting.</p>
 <p>This method updates the ‘Global azimuthal angle’ in the settings
 based on the given value and marks a refresh as required.</p>
 <section id="id48">
-<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new value for the global azimuthal angle to be set.</p>
 </dd>
 </dl>
 </section>
 <section id="id49">
-<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed">
-<span class="sig-name descname"><span class="pre">on_hkl_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hkorl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_hkl_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_hkl_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hkorl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_hkl_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle a change in h, k, or l.</p>
 <p>The h, k and l parameters determine the surface of the film
 - determine the value of h, k or l
@@ -1049,7 +998,7 @@ based on the given value and marks a refresh as required.</p>
 - generate the settings dictionary
 - flag that a refresh is necessary</p>
 <section id="id50">
-<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">int</span></dt><dd><p>The value of h, k or l</p>
 </dd>
@@ -1060,37 +1009,37 @@ based on the given value and marks a refresh as required.</p>
 </dl>
 </section>
 <section id="id51">
-<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layerTable_itemChanged">
-<span class="sig-name descname"><span class="pre">on_layerTable_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_layerTable_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layerTable_itemChanged" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_layerTable_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_layerTable_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layerTable_itemChanged" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle a change to the layer table.</p>
 <p>An empty routine as changes are handled by other routines</p>
 <section id="id52">
-<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">the item changed</span></dt><dd><p>The item which has changed</p>
 </dd>
 </dl>
 </section>
 <section id="id53">
-<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layer_button_clicked">
-<span class="sig-name descname"><span class="pre">on_layer_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_layer_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layer_button_clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_layer_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_layer_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layer_button_clicked" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle a click on the show layer widget.</p>
 <p>A new window is shown with additional information about material in the layer.
 For materials with a 3x3 tensor permittivity the window shows the relationship between the laboratory and crystal coordinates.</p>
 <section id="id54">
-<h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>x<span class="classifier">any</span></dt><dd><p>A dummy variable</p>
 </dd>
@@ -1101,17 +1050,17 @@ For materials with a 3x3 tensor permittivity the window shows the relationship b
 </dl>
 </section>
 <section id="id55">
-<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_mode_cb_activated">
-<span class="sig-name descname"><span class="pre">on_mode_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_mode_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_mode_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_mode_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_mode_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_mode_cb_activated" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the activation of the mode combo box in the GUI.</p>
 <section id="id56">
-<h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected mode in the combo box. This controls what mode the system will use.
 Index 0 corresponds to the ‘Transfer matrix’ mode, while index 1 corresponds to the ‘Scattering matrix’ mode.</p>
@@ -1119,11 +1068,11 @@ Index 0 corresponds to the ‘Transfer matrix’ mode, while index 1 corresponds
 </dl>
 </section>
 <section id="id57">
-<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id58">
-<h4>Notes<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h5>
 <p>This function performs several operations based on the selected mode:
 - Sets the mode in the settings to either ‘Transfer matrix’ or ‘Scattering matrix’.
 - If ‘Scattering matrix’ mode is selected (index 1), it goes through all layers and changes any layer with the incoherent option set to ‘Incoherent (intensity)’ to be ‘Coherent’.
@@ -1136,26 +1085,26 @@ Index 0 corresponds to the ‘Transfer matrix’ mode, while index 1 corresponds
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_newLayer_cb_activated">
-<span class="sig-name descname"><span class="pre">on_newLayer_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_newLayer_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_newLayer_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_newLayer_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_newLayer_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_newLayer_cb_activated" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle a new layer button click.</p>
 <p>Based on the index chosen a new material is created and added to the list of layers.
 The settings dictionary is updated and a refresh is forced.</p>
 <section id="id59">
-<h4>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the entry in the combobox</p>
 </dd>
 </dl>
 </section>
 <section id="id60">
-<h4>Returns<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_option_cb_activated">
-<span class="sig-name descname"><span class="pre">on_option_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_option_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_option_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_option_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_option_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_option_cb_activated" title="Permalink to this definition">#</a></dt>
 <dd><p>Activate the incoherence option combob.</p>
 <ul class="simple">
 <li><p>The layer’s incoherent options are changed</p></li>
@@ -1164,7 +1113,7 @@ The settings dictionary is updated and a refresh is forced.</p>
 <li><p>A refresh is requested</p></li>
 </ul>
 <section id="id61">
-<h4>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the incoherent option combobox</p>
 </dd>
@@ -1173,90 +1122,90 @@ The settings dictionary is updated and a refresh is forced.</p>
 </dl>
 </section>
 <section id="id62">
-<h4>Returns<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id62" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed">
-<span class="sig-name descname"><span class="pre">on_partially_incoherent_kernel_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_partially_incoherent_kernel_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the change in the partially incoherent kernel spinbox value.</p>
 <section id="id63">
-<h4>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id63" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">int or float</span></dt><dd><p>The new value of the partially incoherent kernel spinbox.</p>
 </dd>
 </dl>
 </section>
 <section id="id64">
-<h4>Returns<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id64" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed">
-<span class="sig-name descname"><span class="pre">on_partially_incoherent_polynomial_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_partially_incoherent_polynomial_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes to the partially incoherent polynomial spinbox value.</p>
 <p>This method updates the relevant setting based on the new value and marks
 the need for refreshment. It also logs the change using the debugger.</p>
 <section id="id65">
-<h4>Parameters<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id65" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">int</span></dt><dd><p>The new value for the partially incoherent polynomial spinbox.</p>
 </dd>
 </dl>
 </section>
 <section id="id66">
-<h4>Returns<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id66" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed">
-<span class="sig-name descname"><span class="pre">on_partially_incoherent_samples_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_partially_incoherent_samples_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the change in partially incoherent samples setting.</p>
 <section id="id67">
-<h4>Parameters<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id67" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">int or float</span></dt><dd><p>The new value for the partially incoherent samples setting.</p>
 </dd>
 </dl>
 </section>
 <section id="id68">
-<h4>Returns<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id68" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed">
-<span class="sig-name descname"><span class="pre">on_percentage_partial_incoherence_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_percentage_partial_incoherence_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes in percentage partial incoherence spinner box value.</p>
 <p>This method updates the ‘Percentage partial incoherence’ setting based on the new value provided by the relevant spinner box. It marks that a refresh is required and logs the change using the configured debugger.</p>
 <section id="id69">
-<h4>Parameters<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id69" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">int or float</span></dt><dd><p>The new value from the percentage partial incoherence spinner box.</p>
 </dd>
 </dl>
 </section>
 <section id="id70">
-<h4>Returns<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id70" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked">
-<span class="sig-name descname"><span class="pre">on_print_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_print_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_print_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_print_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked" title="Permalink to this definition">#</a></dt>
 <dd><p>Print the permittivity for the layer.</p>
 <p>The print button is only visible if in debug mode.
 The permittivity is printed to a csv file with a name containing the material involved.</p>
 <section id="id71">
-<h4>Parameters<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id71" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>x<span class="classifier">any</span></dt><dd><p>A dummy parameter</p>
 </dd>
@@ -1265,14 +1214,14 @@ The permittivity is printed to a csv file with a name containing the material in
 </dl>
 </section>
 <section id="id72">
-<h4>Returns<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id72" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated">
-<span class="sig-name descname"><span class="pre">on_thickness_units_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_thickness_units_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_thickness_units_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.on_thickness_units_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the activation of a thickness unit option in a combo box.</p>
 <ul class="simple">
 <li><p>the thickness unit of this layer is changed</p></li>
@@ -1280,7 +1229,7 @@ The permittivity is printed to a csv file with a name containing the material in
 <li><p>a refresh is requested</p></li>
 </ul>
 <section id="id73">
-<h4>Parameters<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id73" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected thickness unit in the combo box.</p>
 </dd>
@@ -1289,46 +1238,46 @@ The permittivity is printed to a csv file with a name containing the material in
 </dl>
 </section>
 <section id="id74">
-<h4>Returns<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id74" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked">
-<span class="sig-name descname"><span class="pre">openDB_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.openDB_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">openDB_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.openDB_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked" title="Permalink to this definition">#</a></dt>
 <dd><p>Open a new materials’ database.</p>
 <p>After the database is opened a refresh is requested.</p>
 <section id="id75">
-<h4>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id75" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id76">
-<h4>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id76" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget">
-<span class="sig-name descname"><span class="pre">partialIncoherenceWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partialIncoherenceWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">partialIncoherenceWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partialIncoherenceWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a partial incoherence widget.</p>
 <section id="id77">
-<h4>Parameters<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id77" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id78">
-<h4>Returns<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id78" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator">
-<span class="sig-name descname"><span class="pre">partially_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partially_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">partially_incoherent_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.partially_incoherent_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the incoherent component of light reflectance and transmission by sampling the path length in the incident medium.</p>
 <section id="id79">
-<h4>Parameters<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id79" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>layers<span class="classifier">a list of layers</span></dt><dd><p>A list of layers</p>
 </dd>
@@ -1347,7 +1296,7 @@ The permittivity is printed to a csv file with a name containing the material in
 </dl>
 </section>
 <section id="id80">
-<h4>Returns<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id80" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>A tuple of lists or nd.arrays</dt><dd><ul class="simple">
 <li><p>p_reflectance</p></li>
@@ -1365,21 +1314,21 @@ The permittivity is printed to a csv file with a name containing the material in
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.printLayerSettings">
-<span class="sig-name descname"><span class="pre">printLayerSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.printLayerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.printLayerSettings" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">printLayerSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.printLayerSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.printLayerSettings" title="Permalink to this definition">#</a></dt>
 <dd><p>Print the settings related to the layers.</p>
 <section id="id81">
-<h4>Parameters<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id81" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>message<span class="classifier">str</span></dt><dd><p>Message to be printed before the layer settings.</p>
 </dd>
 </dl>
 </section>
 <section id="id82">
-<h4>Returns<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id82" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id83">
-<h4>Notes<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h4>
+<h5>Notes<a class="headerlink" href="#id83" title="Permalink to this heading">#</a></h5>
 <p>This function prints the settings associated with layers, including material names, HKL values (Miller indices for the crystallographic planes), azimuthal angles, thicknesses with their units, flags indicating whether the layer is dielectric, and options for incoherent scattering, if applicable.</p>
 <p>This function does not return any value. It is primarily used for debugging or informative purposes to quickly display the current configuration of layer settings within a class that has <cite>settings</cite> as an attribute storing these properties.</p>
 </section>
@@ -1387,7 +1336,7 @@ The permittivity is printed to a csv file with a name containing the material in
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTable">
-<span class="sig-name descname"><span class="pre">redrawLayerTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.redrawLayerTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTable" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">redrawLayerTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.redrawLayerTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTable" title="Permalink to this definition">#</a></dt>
 <dd><p>Redraw the layer table widget.</p>
 <p>Adds a row for each layer in the gadget.
 The row is drawn using redrawLayerTableRow()</p>
@@ -1395,13 +1344,13 @@ The row is drawn using redrawLayerTableRow()</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTableRow">
-<span class="sig-name descname"><span class="pre">redrawLayerTableRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequenceNumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowCount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">firstLayer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lastLayer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.redrawLayerTableRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTableRow" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">redrawLayerTableRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequenceNumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowCount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">firstLayer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lastLayer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.redrawLayerTableRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTableRow" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw a row of the layer table.</p>
 <p>Each row has a material name, a thickness (and unit), an h, k, l option and a toolbar
 to move or delete the layer in the list.
 Needed a separate routine for this as there are problems with the lambda code only keeping the last in a list.</p>
 <section id="id84">
-<h4>Parameters<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id84" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>sequenceNumber<span class="classifier">int</span></dt><dd><p>The sequence number of the layer in the list</p>
 </dd>
@@ -1416,14 +1365,14 @@ Needed a separate routine for this as there are problems with the lambda code on
 </dl>
 </section>
 <section id="id85">
-<h4>Returns<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id85" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Refresh the current state, optionally forcing a refresh.</p>
 <p>This method updates the current state based on various settings and conditions. It checks
 if a refresh is required or if a forceful refresh is requested. It then updates several
@@ -1431,30 +1380,30 @@ settings, including material database, layer settings, calculation requirements,
 and more to reflect the current state. It also processes UI events to ensure the UI is responsive
 during the update.</p>
 <section id="id86">
-<h4>Parameters<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id86" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>A flag to force the refresh even if it’s not required. Default is False.</p>
 </dd>
 </dl>
 </section>
 <section id="id87">
-<h4>Returns<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id87" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.setMaterialNames">
-<span class="sig-name descname"><span class="pre">setMaterialNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.setMaterialNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.setMaterialNames" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setMaterialNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.setMaterialNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.setMaterialNames" title="Permalink to this definition">#</a></dt>
 <dd><p>Set and append a material name to the list of material names.</p>
 <p>This function retrieves the current list of material names from the database using
 <cite>self.DataBase.getSheetNames()</cite>, appends ‘Dielectric layer’ to the list, and returns the updated list.</p>
 <section id="id88">
-<h4>Parameters<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id88" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id89">
-<h4>Returns<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id89" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>The list of material names including the appended default ‘Dielectric layer’.</p>
 </dd>
@@ -1464,32 +1413,32 @@ during the update.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.set_noCalculationsRequired">
-<span class="sig-name descname"><span class="pre">set_noCalculationsRequired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.set_noCalculationsRequired"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.set_noCalculationsRequired" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_noCalculationsRequired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.set_noCalculationsRequired"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.set_noCalculationsRequired" title="Permalink to this definition">#</a></dt>
 <dd><p>Determine the number of calculations required.</p>
 <p>The routine first works out the number of layers needing phase averaging,
 then it looks at the number of partial incoherent calculations being performed.</p>
 <section id="id90">
-<h4>Parameters<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id90" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id91">
-<h4>Returns<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id91" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.settings2Layers">
-<span class="sig-name descname"><span class="pre">settings2Layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.settings2Layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.settings2Layers" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">settings2Layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.settings2Layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.settings2Layers" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the layer settings and generate a list of layers.</p>
 <p>This method reads all the entries in the settings dictionary
 to create a list of layers</p>
 <section id="id92">
-<h4>Parameters<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id92" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id93">
-<h4>Returns<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id93" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>A list of layers generated from the layer settings.</p>
 </dd>
@@ -1499,172 +1448,27 @@ to create a list of layers</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget">
-<span class="sig-name descname"><span class="pre">smoothingWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.smoothingWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">smoothingWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#SingleCrystalScenarioTab.smoothingWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a smoothing widget used by the partial incoherence method.</p>
 <section id="id94">
-<h4>Parameters<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h4>
+<h5>Parameters<a class="headerlink" href="#id94" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id95">
-<h4>Returns<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h4>
+<h5>Returns<a class="headerlink" href="#id95" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.DataBase">
-<span class="sig-name descname"><span class="pre">DataBase</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.DataBase" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculationRequired">
-<span class="sig-name descname"><span class="pre">calculationRequired</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculationRequired" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.cell">
-<span class="sig-name descname"><span class="pre">cell</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.cell" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.debugger">
-<span class="sig-name descname"><span class="pre">debugger</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.debugger" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.epsilon">
-<span class="sig-name descname"><span class="pre">epsilon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.epsilon" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.exponent_threshold">
-<span class="sig-name descname"><span class="pre">exponent_threshold</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11000</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.exponent_threshold" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.form">
-<span class="sig-name descname"><span class="pre">form</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.form" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.hbox">
-<span class="sig-name descname"><span class="pre">hbox</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.hbox" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.index">
-<span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.index" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.label">
-<span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.label" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.layers">
-<span class="sig-name descname"><span class="pre">layers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.layers" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.legend_le">
-<span class="sig-name descname"><span class="pre">legend_le</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.legend_le" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.line">
-<span class="sig-name descname"><span class="pre">line</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.line" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.materialNames">
-<span class="sig-name descname"><span class="pre">materialNames</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.materialNames" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.mode_cb">
-<span class="sig-name descname"><span class="pre">mode_cb</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.mode_cb" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.noCalculationsRequired">
-<span class="sig-name descname"><span class="pre">noCalculationsRequired</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.noCalculationsRequired" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.notebook">
-<span class="sig-name descname"><span class="pre">notebook</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.notebook" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.number_of_average_incoherent_layers">
-<span class="sig-name descname"><span class="pre">number_of_average_incoherent_layers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.number_of_average_incoherent_layers" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_absorbtance">
-<span class="sig-name descname"><span class="pre">p_absorbtance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_absorbtance" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_reflectance">
-<span class="sig-name descname"><span class="pre">p_reflectance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_reflectance" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_transmittance">
-<span class="sig-name descname"><span class="pre">p_transmittance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_transmittance" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.reader">
-<span class="sig-name descname"><span class="pre">reader</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.reader" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refreshRequired">
-<span class="sig-name descname"><span class="pre">refreshRequired</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refreshRequired" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_absorbtance">
-<span class="sig-name descname"><span class="pre">s_absorbtance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_absorbtance" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_reflectance">
-<span class="sig-name descname"><span class="pre">s_reflectance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_reflectance" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_transmittance">
-<span class="sig-name descname"><span class="pre">s_transmittance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_transmittance" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.scenarioType">
-<span class="sig-name descname"><span class="pre">scenarioType</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Single</span> <span class="pre">crystal'</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.scenarioType" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.vbox">
-<span class="sig-name descname"><span class="pre">vbox</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.vbox" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.verticalSpacer">
-<span class="sig-name descname"><span class="pre">verticalSpacer</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.verticalSpacer" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">solve_single_crystal_equations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#solve_single_crystal_equations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">solve_single_crystal_equations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleOfIncidence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalScenarioTab.html#solve_single_crystal_equations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations" title="Permalink to this definition">#</a></dt>
 <dd><p>Solve single crystal equations, system is a GTM system.</p>
 <section id="id96">
-<h3>Parameters<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h3>
+<h4>Parameters<a class="headerlink" href="#id96" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>layers<span class="classifier">list</span></dt><dd><p>A list of material layers (their permittivity functions).</p>
 </dd>
@@ -1685,7 +1489,7 @@ to create a list of layers</p>
 </dl>
 </section>
 <section id="id97">
-<h3>Returns<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h3>
+<h4>Returns<a class="headerlink" href="#id97" title="Permalink to this heading">#</a></h4>
 <blockquote>
 <div><dl class="simple">
 <dt>A tuple of :</dt><dd><ul class="simple">
@@ -1706,24 +1510,25 @@ to create a list of layers</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.gtmMethods">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">gtmMethods</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.gtmMethods" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">gtmMethods</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.gtmMethods" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.incoherentOptions">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">incoherentOptions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Coherent',</span> <span class="pre">'Incoherent</span> <span class="pre">(intensity)',</span> <span class="pre">'Incoherent</span> <span class="pre">(phase</span> <span class="pre">averaging)',</span> <span class="pre">'Incoherent</span> <span class="pre">(non-reflective)']</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.incoherentOptions" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">incoherentOptions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Coherent',</span> <span class="pre">'Incoherent</span> <span class="pre">(intensity)',</span> <span class="pre">'Incoherent</span> <span class="pre">(phase</span> <span class="pre">averaging)',</span> <span class="pre">'Incoherent</span> <span class="pre">(non-reflective)']</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.incoherentOptions" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.thickness_conversion_factors">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">thickness_conversion_factors</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.thickness_conversion_factors" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">thickness_conversion_factors</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.thickness_conversion_factors" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalScenarioTab.thickness_units">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">thickness_units</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.thickness_units" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab.</span></span><span class="sig-name descname"><span class="pre">thickness_units</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalScenarioTab.thickness_units" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
+</section>
 </section>
 </section>
 
@@ -1737,7 +1542,7 @@ to create a list of layers</p>
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.GUI.SpreadSheetManager</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1748,7 +1553,7 @@ to create a list of layers</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PDielec.GUI.SingleCrystalLayer</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></div>
                 
               </div>
             </a>
@@ -1782,11 +1587,11 @@ to create a list of layers</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">PDielec.GUI.SingleCrystalScenarioTab</a><ul>
-<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.angleOfIncidenceWidget"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.angleOfIncidenceWidget()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.average_incoherent_calculator()</span></code></a></li>
@@ -1835,35 +1640,6 @@ to create a list of layers</p>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.set_noCalculationsRequired"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.set_noCalculationsRequired()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.settings2Layers"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.settings2Layers()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.smoothingWidget()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.DataBase"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.DataBase</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculationRequired"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.calculationRequired</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.cell"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.cell</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.debugger"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.debugger</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.epsilon"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.epsilon</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.exponent_threshold"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.exponent_threshold</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.form"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.form</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.hbox"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.hbox</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.index"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.index</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.label"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.label</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.layers"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.layers</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.legend_le"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.legend_le</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.line"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.line</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.materialNames"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.materialNames</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.mode_cb"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.mode_cb</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.noCalculationsRequired"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.noCalculationsRequired</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.notebook"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.notebook</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.number_of_average_incoherent_layers"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.number_of_average_incoherent_layers</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_absorbtance"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.p_absorbtance</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_reflectance"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.p_reflectance</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.p_transmittance"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.p_transmittance</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.reader"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.reader</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refreshRequired"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.refreshRequired</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_absorbtance"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.s_absorbtance</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_reflectance"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.s_reflectance</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.s_transmittance"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.s_transmittance</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.scenarioType"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.scenarioType</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.vbox"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.vbox</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.verticalSpacer"><code class="docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab.verticalSpacer</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations"><code class="docutils literal notranslate"><span class="pre">solve_single_crystal_equations()</span></code></a></li>
@@ -1871,6 +1647,8 @@ to create a list of layers</p>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.incoherentOptions"><code class="docutils literal notranslate"><span class="pre">incoherentOptions</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.thickness_conversion_factors"><code class="docutils literal notranslate"><span class="pre">thickness_conversion_factors</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalScenarioTab.thickness_units"><code class="docutils literal notranslate"><span class="pre">thickness_units</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1884,9 +1662,9 @@ to create a list of layers</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=b04e2b79"></script>
-    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../../_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=9234fd31"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
