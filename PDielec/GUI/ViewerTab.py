@@ -152,8 +152,10 @@ class ViewerTab(QWidget):
         Refresh the GUI with the latest information
     requestRefresh
         Something has changed in the GUI that will need a refresh
-    save_cif
+    save_as_cif
         Write out a cif file
+    save_mode_as_cif
+        Write out a cif file with the mode displacememnt information
     setColour
         Set the colour of the specified element
 
@@ -399,9 +401,9 @@ class ViewerTab(QWidget):
         self.gif_filename_button = QPushButton("Save as gif")
         self.gif_filename_button.clicked.connect(self.on_filename_button_clicked)
         self.gif_filename_button.setToolTip("Save the animation as a gif file")
-        self.cif_filename_button = QPushButton("Save as cif")
+        self.cif_filename_button = QPushButton("Save as cif or mcif")
         self.cif_filename_button.clicked.connect(self.on_filename_button_clicked)
-        self.cif_filename_button.setToolTip("Save the animation as a cif file")
+        self.cif_filename_button.setToolTip("Save the structure as cif. Save the mode animation as mcif")
         label = QLabel("Image file name", self)
         label.setToolTip("Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.")
         hbox.addWidget(self.filename_le)
@@ -495,7 +497,7 @@ class ViewerTab(QWidget):
         #
         filename = self.image_filename
         root,extension = os.path.splitext(filename)
-        if filename == "" or extension not in (".mp4", ".avi", ".png", ".gif", ".cif" ):
+        if filename == "" or extension not in (".mp4", ".avi", ".png", ".gif", ".cif", ".mcif" ):
             debugger.print("Aborting on filename button clicked", filename)
             QMessageBox.about(self,"Image file name", "The file name for the image is not valid "+filename)
             return
@@ -513,7 +515,9 @@ class ViewerTab(QWidget):
         elif extension in ( ".avi", ".mp4", ".gif" ):
             self.opengl_widget.save_movie(filename)
         elif extension == ".cif":
-            self.save_cif(filename)
+            self.save_as_cif(filename)
+        elif extension == ".mcif":
+            self.save_mode_as_cif(filename)
         self.plot_type_index = old_plot_type
         QApplication.restoreOverrideCursor()
         return
@@ -1014,9 +1018,26 @@ class ViewerTab(QWidget):
         debugger.print("calculatePhasePositions - exiting")
         return
 
-    def save_cif(self,filename):
+    def save_as_cif(self,filename):
+        """Save the crystallographic information file (CIF) for the structure phases.
+
+        The cell is wrtten out
+
+        Parameters
+        ----------
+        filename : str
+            The name of the file where the CIF data will be saved.
+
+        Returns
+        -------
+        None
+
+        """        
+        self.unit_cell.write_cif(filename=filename)
+
+    def save_mode_as_cif(self,filename):
         #
-        # Write a single cif file containing all the phase information for discplacement along a mode
+        # Write a single cif file containing all the phase information for displacement along a mode
         # First transform to abc coordinates from xyz
         #
         """Save the crystallographic information file (CIF) for different phases.
