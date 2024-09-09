@@ -2,11 +2,11 @@ pip
 numpy
 scipy
 pyqt6
-qtpy
+QtPy
 matplotlib
 psutil
-pyopengl
-pyyaml
+PyOpenGL
+PyYaml
 scikit_learn
 setuptools
 spglib
@@ -15,3 +15,4 @@ openpyxl
 xlsxwriter
 imageio
 imageio-ffmpeg
+dill

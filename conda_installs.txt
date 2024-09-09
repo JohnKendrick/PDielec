@@ -15,6 +15,7 @@ conda install setuptools
 conda install spglib
 conda install termcolor
 conda install xlsxwriter
+conda install dill
 # QtPy needs either PyQt5 or PyQt6 installed
 # conda install pyqt (for PyQt5)
 # pip install PyQt6 (for PyQt6)

@@ -16,6 +16,7 @@ dependencies = [
     "PyQt6",
     "QtPy",
     "PyYAML",
+    "dill",
     "scikit_learn",
     "spglib",
     "termcolor",
