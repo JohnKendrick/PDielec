@@ -85,7 +85,7 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage["epsilon"]  = (re.compile("  Dielectric tensor,"), self._read_epsilon)
         self.manage["masses"]   = (re.compile("              amu "), self._read_masses)
         self.manage["nions"]    = (re.compile("            natom "), self._read_natom)
-        self.manage["lattice"]  = (re.compile("            rprim "), self._read_lattice_vectors)
+        self.manage["rprim"]  = (re.compile("            rprim "), self._read_lattice_vectors)
         self.manage["xred"]  = (re.compile("             xred "), self._read_xred)
         self.manage["typat"]    = (re.compile("            typat "), self._read_typat)
         self.manage["ntypat"]   = (re.compile("           ntypat "), self._read_ntypat)
@@ -343,6 +343,14 @@ class AbinitOutputReader(GenericOutputReader):
 
         """        
         self._acell = [float(f)/angs2bohr for f in line.split()[1:4]]
+        # Create a unit cell with diagonal elements of acell
+        a = [ self._acell[0], 0.0, 0.0]
+        b = [ 0.0, self._acell[0], 0.0]
+        c = [ 0.0, 0.0, self._acell[0]]
+        # Append the cell to the list of cells
+        self.unit_cells.append(UnitCell(a,b,c,units="Angstrom"))
+        self.ncells = len(self.unit_cells)
+        self.volume = self.unit_cells[-1].getVolume("Angstrom")
         return
 
     def _read_ntypat(self, line):
@@ -482,6 +490,15 @@ class AbinitOutputReader(GenericOutputReader):
 
         """        
         self.masses_per_type = [float(f) for f in line.split()[1:]]
+        finished = False
+        while not finished:
+            linea = self.file_descriptor.readline().split()
+            for f in linea:
+                try:
+                    self.masses_per_type.append(float(f))
+                except ValueError:
+                    finished = True
+                    break
         return
 
     def _read_dynamical(self, line):
@@ -660,7 +677,8 @@ class AbinitOutputReader(GenericOutputReader):
         avector = [f * self._acell[0] for f in avector]
         bvector = [f * self._acell[1] for f in bvector]
         cvector = [f * self._acell[2] for f in cvector]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
+        # Overwrite the unit cell created by the acell directive
+        self.unit_cells[-1] = UnitCell(avector, bvector, cvector,units="Angstrom")
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].getVolume("Angstrom")
         return
