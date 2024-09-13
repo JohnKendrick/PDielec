@@ -345,8 +345,8 @@ class AbinitOutputReader(GenericOutputReader):
         self._acell = [float(f)/angs2bohr for f in line.split()[1:4]]
         # Create a unit cell with diagonal elements of acell
         a = [ self._acell[0], 0.0, 0.0]
-        b = [ 0.0, self._acell[0], 0.0]
-        c = [ 0.0, 0.0, self._acell[0]]
+        b = [ 0.0, self._acell[1], 0.0]
+        c = [ 0.0, 0.0, self._acell[2]]
         # Append the cell to the list of cells
         self.unit_cells.append(UnitCell(a,b,c,units="Angstrom"))
         self.ncells = len(self.unit_cells)
