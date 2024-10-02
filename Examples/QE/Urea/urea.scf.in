@@ -1,0 +1,65 @@
+&CONTROL
+  calculation = 'scf' 
+  restart_mode = 'from_scratch'
+  outdir = '.' 
+  pseudo_dir = '/home/john/Data/PseudoPotentials/SSSP_1.3.0_Efficiency'
+  nstep = 1000
+  tprnfor = .true.
+  tstress = .true.
+  etot_conv_thr = 1.0d-7
+  forc_conv_thr = 1.0d-6
+/
+&SYSTEM
+  ibrav       = 0
+  celldm(1)   = 10.5295542
+  nat         = 16
+  ntyp        = 4
+  occupations = 'fixed'
+  ecutwfc     = 90.0
+  ecutrho     = 760.0
+  input_dft   = 'pbe'
+  vdw_corr    = 'grimme-d3'
+  dftd3_version = 6
+  dftd3_threebody = .false.
+/
+&ELECTRONS
+  conv_thr = 1.0D-10
+  mixing_beta = 0.3
+  diagonalization = 'rmm-paro'
+/
+&IONS
+  ion_dynamics = 'bfgs'
+  pot_extrapolation = 'second_order'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+  cell_dofree   = 'all'
+/
+CELL_PARAMETERS (alat= 10.52955420)
+   0.995513125   0.000000000   0.000000000
+   0.000000000   0.995513125   0.000000000
+   0.000000000   0.000000000   0.837681486
+ATOMIC_SPECIES
+   N   14.00650   N.pbe-n-radius_5.UPF
+   H    1.00750   H.pbe-rrkjus_psl.1.0.0.UPF
+   C   12.01060   C.pbe-n-kjpaw_psl.1.0.0.UPF
+   O   15.99900   O.pbe-n-kjpaw_psl.0.1.UPF
+ATOMIC_POSITIONS (crystal)
+O                0.0000000000        0.5000000000        0.6009377124
+O                0.5000000000        0.0000000000        0.3990622876
+N                0.1468505725        0.6468505725        0.1778885342
+N                0.6468505725        0.8531494275        0.8221114658
+N                0.8531494275        0.3531494275        0.1778885342
+N                0.3531494275        0.1468505725        0.8221114658
+C                0.0000000000        0.5000000000        0.3277728383
+C                0.5000000000        0.0000000000        0.6722271617
+H                0.2610111302        0.7610111302        0.2826531083
+H                0.7610111302        0.7389888698        0.7173468917
+H                0.7389888698        0.2389888698        0.2826531083
+H                0.2389888698        0.2610111302        0.7173468917
+H                0.1447902734        0.6447902734        0.9596354694
+H                0.6447902734        0.8552097266        0.0403645306
+H                0.8552097266        0.3552097266        0.9596354694
+H                0.3552097266        0.1447902734        0.0403645306
+K_POINTS automatic
+5 5 6 0 0 0
