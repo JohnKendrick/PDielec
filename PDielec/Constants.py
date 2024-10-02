@@ -74,6 +74,12 @@ The following are some derived constants:
 +---------------------+-------------------------------------------------+
 | angs2bohr           | Convert angstrom to Bohr                        |
 +---------------------+-------------------------------------------------+
+| hartree             | 1 hartree in SI units (J)                       |
++---------------------+-------------------------------------------------+
+| au2GPA              | Convert pressure from au to GPa                 |
++---------------------+-------------------------------------------------+
+| thz2cm1             | Convert thz frequency to cm^-1                  |
++---------------------+-------------------------------------------------+
 
 The masses of the elements are taken from:
 J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. Rosman and P. D. P. Taylor (2003).
@@ -119,6 +125,9 @@ wavenumber       = hertz*speed_light_si*100.0
 d2byamuang2      = debye*debye / (angstrom *angstrom * amu )
 strength_conv    = 1.0 / d2byamuang2
 angs2bohr        = 1.0E-10 / bohr_si
+hartree          = 1.0/joule                       # Convert hartree to joule
+au2GPa           = hartree / bohr_si**3 * 1.0E-9   # Convert pressure in atomic units to GPa
+thz2cm1          = 1.0E10/speed_light_si           # Convert THz to cm-1
 
 # J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. Rosman and P. D. P. Taylor (2003).
 # "Atomic weights of the elements. Review 2000 (IUPAC Technical Report)"
