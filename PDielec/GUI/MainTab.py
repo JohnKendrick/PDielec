@@ -32,7 +32,7 @@ from qtpy.QtWidgets import (
     QWidget,
 )
 
-from PDielec.Utilities import Debug, find_program_from_name, pdgui_get_reader
+from PDielec.Utilities import Debug, find_program_from_name, get_reader
 
 
 class MainTab(QWidget):
@@ -159,6 +159,7 @@ class MainTab(QWidget):
             self.settings["Compatibility mode"] = "Linux"
         self.notebook = parent
         self.reader = None
+        self.qmreader = None
         self.frequencies_cm1 = None
         self.refreshRequired = True
         self.calculationRequired = True
@@ -445,8 +446,10 @@ class MainTab(QWidget):
         self.cell_window_l.setText("Unit-cell (Angstrom) from "+self.settings["Output file name"])
         self.frequencies_window.clear()
         self.frequencies_window_l.setText("Frequencies from "+self.settings["Output file name"])
-        self.reader = pdgui_get_reader(self.settings["Program"],[ filename ], self.settings["Phonopy QM program"] )
-        
+        self.reader = get_reader(filename,
+                                 self.settings["Program"],
+                                 self.settings["Phonopy QM program"],
+                                 debug=self.debug)
         if self.reader is None:
             print("Error in reading files - program  is ",self.settings["Program"])
             print("Error in reading files - filename is ",filename)
@@ -615,9 +618,12 @@ class MainTab(QWidget):
                 debugger.print("Program not found from filename",filename)
                 debugger.print("Proceeding with defaults",self.settings["Program"])
             else:
-                debugger.print("Program found from filename",program,filename)
-                self.settings["Program"] = program.capitalize()
-                self.settings["Phonopy QM program"] = qmprogram.capitalize()
+                if self.settings["Program"] != "Phonopy":
+                    debugger.print("Program found from filename",program,filename)
+                    self.settings["Program"] = program.capitalize()
+                    self.settings["Phonopy QM program"] = qmprogram.capitalize()
+                else:
+                    debugger.print("Ignoring automatic program determination: dealing with Phonopy ")
             self.directory = os.path.dirname(filename)
             self.notebook.app.setMyWindowTitle(self.directory)
             self.settings["Output file name"] = os.path.basename(filename)

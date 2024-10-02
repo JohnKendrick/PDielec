@@ -188,7 +188,10 @@ def read_a_file( calling_parameters):
     # Continue reading any data from the output file
     frequencies_cm1.sort()
     unitCell = reader.get_unit_cell()
-    a,b,c,alpha,beta,gamma = unitCell.convert_unitcell_to_abc()
+    if unitCell is None:
+        a,b,c,alpha,beta,gamma = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    else:
+        a,b,c,alpha,beta,gamma = unitCell.convert_unitcell_to_abc()
     eps0   = np.array(reader.zerof_static_dielectric) if no_calculation else np.real(ionicv)
     eps0_xx = str(eps0[0,0])
     eps0_yy = str(eps0[1,1])

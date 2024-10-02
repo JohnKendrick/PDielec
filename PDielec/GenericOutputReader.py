@@ -121,6 +121,12 @@ class GenericOutputReader:
             are converted into the absolute paths and stored.
 
         """        
+        # Test to see if all the files needed are there
+        if not all( [ os.path.isfile(f) for f in filenames ] ):
+            print("Error in calling the generic output reader some files are not present")
+            print(filenames)
+            return
+        # 
         self._outputfiles               = filenames
         self.names                      = [os.path.abspath(f) for f in filenames]
         self.debug                      = False
@@ -433,7 +439,8 @@ class GenericOutputReader:
     def get_unit_cell(self):
         """Return the last unit cell in the reader.
 
-        The routine adds the current set of masses to the unit cell
+        The routine adds the current set of masses to the unit cell.
+        It returns None if no unit cells have been read.
 
         Parameters
         ----------
@@ -445,6 +452,8 @@ class GenericOutputReader:
             The last unit cell read by the reader
 
         """
+        if len(self.unit_cells) == 0:
+            return None
         # Access the last unit cell in the reader
         cell = self.unit_cells[-1]
         # Add the current masses in the reader to the unit cell

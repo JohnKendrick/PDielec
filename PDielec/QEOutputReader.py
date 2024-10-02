@@ -18,8 +18,9 @@ import math
 import re
 
 import numpy as np
+import xml.etree.ElementTree as ET
 
-from PDielec.Constants import amu, angs2bohr, hartree2ev
+from PDielec.Constants import amu, angs2bohr, hartree2ev, au2GPa
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
 
@@ -57,7 +58,8 @@ class QEOutputReader(GenericOutputReader):
         """
         GenericOutputReader.__init__(self, filenames)
         self.type                    = "QE output"
-        self._alat                    = None
+        self._alat                   = None
+        self._alat_from_xml          = False
         return
 
     def _read_output_files(self):
@@ -70,13 +72,13 @@ class QEOutputReader(GenericOutputReader):
         """
         # Define the search keys to be looked for in the files
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage["header"]   = (re.compile("Dynamical matrix file"), self._read_header)
-        self.manage["lattice"]  = (re.compile("Basis vectors"), self._read_lattice_vectors)
-        self.manage["lattice2"]  = (re.compile("cubic"), self._read_lattice_vectors)
+        self.manage["header"]   = (re.compile("Dynamical matrix file"), self._read_dyng_file)
+        self.manage["lattice"]  = (re.compile("Basis vectors"), self._read_dyng_basis_vectors)
+        self.manage["lattice2"]  = (re.compile("cubic"), self._read_dyng_basis_vectors)
         self.manage["lattice3"]  = (re.compile("CELL_PARAMETERS"), self._read_cell_parameters)
         self.manage["positions"]  = (re.compile("ATOMIC_POSITIONS"), self._read_fractional_coordinates)
-        self.manage["dynamical"]  = (re.compile(" *Dynamical  Matrix in c"), self._read_dynamical)
-        self.manage["epsilon"]  = (re.compile(" *Dielectric Tensor:"), self._read_epsilon)
+        self.manage["dynamical"]  = (re.compile(" *Dynamical  Matrix in c"), self._read_dyng_dynamical)
+        self.manage["epsilon"]  = (re.compile(" *Dielectric Tensor:"), self._read_dyng_epsilon)
         self.manage["charges"]  = (re.compile(" *Effective Charges E-U:"), self._read_born_charges)
         self.manage["energy_cutoff"]  = (re.compile(" *kinetic-energy cutoff"), self._read_energy_cutoff)
         self.manage["kpoints"]  = (re.compile(" *number of k points"), self._read_kpoints)
@@ -89,7 +91,10 @@ class QEOutputReader(GenericOutputReader):
         self.manage["pressure"]  = (re.compile("^ *total *stress *.Ry"), self._read_pressure)
         self.manage["nions"]  = (re.compile("^ *number of atoms/cell"), self._read_nions)
         for f in self._outputfiles:
-            self._read_output_file(f)
+            if f.lower().endswith(".xml"):
+                self._read_xml(f)
+            else:
+                self._read_output_file(f)
         return
 
     def _read_nions(self, line):
@@ -175,7 +180,7 @@ class QEOutputReader(GenericOutputReader):
             t = angs2bohr
         # There are rounding errors when reading from the log file
         # So only read if there is no alternative
-        if self._alat is None:
+        if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
             print(f"_read_celldm1: _alat={self._alat}" )
@@ -216,7 +221,7 @@ class QEOutputReader(GenericOutputReader):
             t = angs2bohr
         # There are rounding errors when reading from the log file
         # So only read if there is no alternative
-        if self._alat is None:
+        if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
             print(f"_read_alat: _alat={self._alat}" )
@@ -252,7 +257,7 @@ class QEOutputReader(GenericOutputReader):
             t = angs2bohr
         # There are rounding errors when reading from the log file
         # So only read if there is no alternative
-        if self._alat is None:
+        if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
             print(f"_read_alat2: _alat={self._alat}" )
@@ -408,20 +413,19 @@ class QEOutputReader(GenericOutputReader):
 
         """
         line = self.file_descriptor.readline()
-        self.kpoint_grid = [ float(f) for f in line.split()[0:3] ]
+        self.kpoint_grid = [ int(f) for f in line.split()[0:3] ]
         if self.debug:
-            print(f"_read_kpoints_grid kpoint_grid={self.kpoint_grid}" )
+            print(f"_read_kpoint_grid kpoint_grid={self.kpoint_grid}" )
         return
 
-    def _read_header(self, line):
+    def _read_dyng_header(self):
         """Read and process the header line from the dynG file.
 
         This method updates the object's state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.
 
         Parameters
         ----------
-        line : str
-            The initial line to read from. Note: This parameter is not used in the current implementation and the function reads directly from the object's file_descriptor attribute.
+        None
 
         Returns
         -------
@@ -434,27 +438,30 @@ class QEOutputReader(GenericOutputReader):
         This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
 
         """
+        # Skip a couple of lines
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         self.nspecies = int(line.split()[0])
         self.nions    = int(line.split()[1])
-        t              = float(line.split()[3])
+        t             = float(line.split()[3])
         if abs(t - angs2bohr) < 1.0e-4:
             t = angs2bohr
-        self._alat = t
+        # Only overwrite alat if it hasn't come from the xml file
+        if not self._alat_from_xml:
+             self._alat = t
         if self.debug:
-            print(f"_read_header alat={self._alat}" )
+            print(f"_read_dyng_header alat={self._alat}" )
         return
 
-    def _read_epsilon(self, line):
+    def _read_dyng_epsilon(self, line):
         """Read and process zero frequency optical permittivity data from the dynG file.
 
         This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
 
         Parameters
         ----------
-        line : not used
-            This parameter is present but not used in the function.
+        line : str
+            The last line read
 
         Returns
         -------
@@ -478,7 +485,7 @@ class QEOutputReader(GenericOutputReader):
             print(f"_read_espilon zerof_optical_dielectric={self.zerof_optical_dielectric}" )
         return
 
-    def _read_masses(self):
+    def _read_dyng_masses(self):
         """Read the masses of species from an dynG file and populate mass and species lists.
 
         This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
@@ -512,12 +519,11 @@ class QEOutputReader(GenericOutputReader):
             # The factor of two is because au in pwscf are half mass of electron
             self.masses_per_type.append(float(linea[2])*2/amu)
         if self.debug:
-            print(f"_read_masses masses={self.masses_per_type}" )
-        line = ""
-        self._read_dyng_coordinates(line)
+            print(f"_read_dyng_masses masses={self.masses_per_type}" )
+            print(f"_read_dyng_masses species={self.species}" )
         return
 
-    def _read_dynamical(self, line):
+    def _read_dyng_dynamical(self,line):
         """Read and process the dynamical matrix from the dynG file.
 
         This method reads a specific format from the current position of the file descriptor,
@@ -527,8 +533,7 @@ class QEOutputReader(GenericOutputReader):
         Parameters
         ----------
         line : str
-            The line from which to start reading. This parameter is not used in the function
-            and likely represents a legacy or placeholder parameter.
+            The last line read
 
         Returns
         -------
@@ -562,7 +567,7 @@ class QEOutputReader(GenericOutputReader):
         # end for a
         self._dynamical_matrix(hessian)
         if self.debug:
-            print("_read_dynamical")
+            print("_read_dyng_dynamical")
         return
 
     def _read_born_charges(self, line):
@@ -634,7 +639,7 @@ class QEOutputReader(GenericOutputReader):
         line = line.replace( ")", " ")
         linea = line.split()
         # Overwrite alat here as it is more accurate than anywhere else in the log file
-        if len(linea) > 2:
+        if not self._alat_from_xml and len(linea) > 2:
             self._alat = float(linea[2])
         linea = self.file_descriptor.readline().split()
         avector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
@@ -649,15 +654,14 @@ class QEOutputReader(GenericOutputReader):
             print(f"_read_cell_parameters: volume={self.volume}")
         return
 
-    def _read_lattice_vectors(self, line):
-        """Read and process lattice vectors from a synG file, then updates unit cell information.
+    def _read_dyng_basis_vectors(self):
+        """Read and process lattice vectors from a dynG file, then updates unit cell information.
 
         This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
 
         Parameters
         ----------
-        line : str
-            The initial line from which to start reading the lattice vectors. Note: This parameter is mentioned for consistency with the function signature, but its utility within the function body as described is not clear and appears to be a placeholder.
+        None
 
         Returns
         -------
@@ -674,6 +678,8 @@ class QEOutputReader(GenericOutputReader):
 
         """
         linea = self.file_descriptor.readline().split()
+        if linea[0] == "Basis" or linea[0] == "cubic":
+            linea = self.file_descriptor.readline().split()
         avector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         linea = self.file_descriptor.readline().split()
         bvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
@@ -683,8 +689,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].getVolume("Angstrom")
         if self.debug:
-            print(f"_read_lattices_vectors: volume={self.volume}")
-        self._read_masses()
+            print(f"_read_lattic_vectors: volume={self.volume}")
         return
 
     def _read_fractional_coordinates(self,line):
@@ -719,20 +724,19 @@ class QEOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
         self.unit_cells[-1].set_element_names(species_list)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].volume
+        self.volume = self.unit_cells[-1].getVolume("Angstrom")
         if self.debug:
             print(f"_read_fractional_coordinates: volume={self.volume}")
         return
 
-    def _read_dyng_coordinates(self,line):
+    def _read_dyng_coordinates(self):
         """Read dynamic coordinates from a dynG file and update related properties.
 
         This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the corresponding `unit_cells` properties.
 
         Parameters
         ----------
-        line : str
-            The line from which coordinates are read. This parameter is mentioned for clarity but technically does not exist in the function's arguments. The actual reading is from the object's file_descriptor attribute, thus assuming this function is part of a class handling file input.
+        None
 
         Returns
         -------
@@ -781,3 +785,354 @@ class QEOutputReader(GenericOutputReader):
         if self.debug:
             print(f"_read_dyng_coordinates: volume={self.volume}")
         return
+
+    def _read_xml(self, filename):
+        """Process the QE xml files.
+
+        Parameters
+        ----------
+        filename : str
+            The file name of the xml file to be processed
+
+        Notes
+        -----
+        The routine only handles the pwscf output file pwscf.xml
+        This file is created when a single point calculation is performed prior to the born calculation
+        The routine should also be able to parse an optimisation run.
+        In this case there is a 'steps' entry in the xml
+        """
+        # For each file generate an xml tree to process.
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        print('jk1 filename = ',filename)
+        print('jk2 tree = ',tree)
+        print('jk3 root = ',root)
+        inputxml = root.find('input')
+        outputxml = root.find('output')
+        stepsxml = None
+        if outputxml is not None:
+            stepsxml = outputxml.find('steps')
+        # Handle the case of an optimisation or a single point calculation
+        if stepsxml is not None:
+            # Handle the case of an optimisaton
+            use_this_xml = stepsxml
+        else:
+            # Handle the case of a single point calculation
+            use_this_xml = outputxml
+        print('jk4 inputxml = ',inputxml)
+        print('jk5 outputxml = ',outputxml)
+        print('jk6 stepsxml = ',stepsxml)
+        print('jk7 use_this_xml = ',use_this_xml)
+        tensorsxml = root.find('EF_TENSORS')
+        print('jk9 tensorsxml = ',tensorsxml)
+        # Handle input
+        if inputxml is not None:
+            self._basis(inputxml.findall('basis')[-1])
+            self._atomic_species(inputxml.findall('atomic_species')[-1])
+            self._kpoints(inputxml.findall('k_points_IBZ')[-1])
+        # Handle output 
+        if outputxml is not None:
+            self._pressure(outputxml.findall('stress')[-1])
+            self._band_structure(outputxml.findall('band_structure')[-1])
+        # Handle the case of optimisation
+        if use_this_xml is not None:
+            self._atomic_structure(use_this_xml.findall('atomic_structure'))
+            self._total_energy(use_this_xml.findall('total_energy'))
+        # Handle ef tensors
+        if tensorsxml is not None:
+            self._dielectric_constant(tensorsxml.find('DIELECTRIC_CONSTANT'))
+            self._effective_charges(tensorsxml.find('EFFECTIVE_CHARGES_EU'))
+        return
+
+    def _effective_charges(self,effective_charges_xml):
+        """Process the effective_charges element(s).
+
+        For a given atom the ordering of the elements in the tensors.xml file appears to be:
+        d2E/dFxdX d2E/dFydX d2E/dFzdX        0 1 2
+        d2E/dFxdY d2E/dFydY d2E/dFzdY        3 4 5
+        d2E/dFxdZ d2E/dFydZ d2E/dFzdZ        6 7 8
+
+        The order used with PDielec is:
+        d2E/dFxdX d2E/dFxdY d2E/dFxdZ        0 3 6
+        d2E/dFydX d2E/dFydY d2E/dFydZ        1 4 7
+        d2E/dFzdX d2E/dFzdY d2E/dFzdZ        2 5 8
+
+        Parameters
+        ----------
+        effective_charges_xml : an xml element
+            An effective_charges xml element
+
+        Set
+        ---
+        self.born_charges
+            The born_charges 
+        """
+        self.born_charges = []
+        charges_string = effective_charges_xml.text.strip()
+        charges = [ float(f) for f in charges_string.split() ]
+        index = 0
+        for _i in range(self.nions):
+            b = []
+            b.append([ charges[index+0], charges[index+3], charges[index+6] ])
+            b.append([ charges[index+1], charges[index+4], charges[index+7] ])
+            b.append([ charges[index+2], charges[index+5], charges[index+8] ])
+            index = index + 9
+            self.born_charges.append(b)
+        if self.debug:
+            print(f"_basis: born_charges={self.born_charges}")
+        return
+
+    def _dielectric_constant(self,dielectric_constant_xml):
+        """Process the dielectric_constant element(s).
+
+        Parameters
+        ----------
+        dielectric_constant_xml : an xml element
+            A dielectric_constant xml element
+
+        Set
+        ---
+        self.zerof_optical_dielectric
+            The zero frequency optical dielectric
+        """
+        eps_string = dielectric_constant_xml.text.strip()
+        eps = [ float(f) for f in eps_string.split() ]
+        eps = np.array(eps).reshape(3,3)
+        self.zerof_optical_dielectric = eps.tolist()
+        if self.debug:
+            print(f"_basis: zerof_optical_dielectric={self.zerof_optical_dielectric}")
+        return
+
+    def _basis(self,basis_xml):
+        """Process the basis element(s).
+        Store the energy in eV
+
+        Parameters
+        ----------
+        basis_xml : a basis xml element
+            A basis xml element
+
+        Set
+        ---
+        self.final_energy_without_entropy
+            The final energy in eV
+        self.final_free_energy
+            The final energy in eV
+        """
+        ecutwfc_xml = basis_xml.find('ecutwfc')
+        ecutrho_xml = basis_xml.find('ecutrho')
+        self.energy_cutoff = float( ecutwfc_xml.text )
+        self.rho_cutoff    = float( ecutrho_xml.text )
+        if self.debug:
+            print(f"_basis: energy_cutoff={self.energy_cutoff}")
+            print(f"_basis: rho_cutoff={self.rho_cutoff}")
+        return
+
+    def _total_energy(self,total_energy_xml):
+        """Process the total_energy element(s).
+        Store the energy in eV
+
+        Parameters
+        ----------
+        total_energy_xml : a list of xml element
+            A list of total_energy elements
+
+        Set
+        ---
+        self.energies :  a list of floats
+            The final energies in eV of each step in an optimisation
+        self.final_energy_without_entropy : float
+            The final energy in eV
+        self.final_free_energy : float
+            The final energy in eV
+        """
+        self.energies = []
+        for step_xml in total_energy_xml:
+            etot_xml = total_energy_xml[-1].find('etot')
+            self.final_energy_without_entropy = hartree2ev * float( etot_xml.text )
+            self.final_free_energy = self.final_energy_without_entropy
+            self.energies.append(self.final_free_energy)
+        if self.debug:
+            print(f"_total_energy: final_energy_without_entropy={self.final_energy_without_entropy}")
+            print(f"_total_energy: final_free_energy={self.final_free_energy}")
+            print(f"_total_energy: energies={self.energies}")
+        return
+
+    def _band_structure(self,band_structure_xml):
+        """Process the band_structure element.
+
+        Parameters
+        ----------
+        band_structure_xml : an xml element
+            A band structure element
+
+        Set
+        ---
+        self.electrons : int
+            The number of electrons
+        """
+        nelec_xml = band_structure_xml.find('nelec')
+        self.electrons = int(float(nelec_xml.text)+0.00000001)
+        if self.debug:
+            print(f"_band_structure: electrons={self.electrons}")
+        return
+
+    def _atomic_structure(self,atomic_structure_xml):
+        """Process the atomic_structure element(s).
+
+        Parameters
+        ----------
+        atomic_structure_xml : a list of xml elements
+            A list of atomic structure elements
+
+        Set
+        ---
+        self.nions : int
+            The number of ions
+        self.unit_cells : unitCell
+            A list of the unit cells
+        self.volume :  float
+            A volume of the last unit cell
+        self.ncell :  int
+            A number of unit cells
+        """
+        for structure_xml in atomic_structure_xml:
+            self.nions = int(structure_xml.attrib['nat'])
+            self._alat  = float(structure_xml.attrib['alat'])
+            self._alat_from_xml = True
+            species_list = []
+            fractional_coordinates = []
+            # First find the cell dimensions and volume
+            cell_xml = structure_xml.find("cell")
+            cell_string = cell_xml.text
+            a1 = [ float(f)/angs2bohr for f in cell_xml[0].text.split() ]
+            a2 = [ float(f)/angs2bohr for f in cell_xml[1].text.split() ]
+            a3 = [ float(f)/angs2bohr for f in cell_xml[2].text.split() ]
+            self.unit_cells.append(UnitCell(a1, a2, a3, units="Angstrom"))
+            # Now find the fractional coordinates
+            positions_xml = structure_xml.find("atomic_positions")
+            self.atom_type_list = []
+            self.ions_per_type = [ 0 for i in range(self.nspecies) ]
+            for atom_xml in positions_xml.findall('atom'):
+                species = atom_xml.attrib['name']
+                species_index = self.species.index(species)
+                species_list.append( species )
+                coords = [ float(f)/self._alat for f in atom_xml.text.split() ]
+                fractional_coordinates.append(coords)
+                self.atom_type_list.append(species_index)
+                self.ions_per_type[species_index] += 1
+            self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
+            self.unit_cells[-1].set_element_names(species_list)
+            # Book keeping
+            self.ncells = len(self.unit_cells)
+            self.volume = self.unit_cells[-1].getVolume("Angstrom")
+            if self.debug:
+                print(f"_atomic_structure: volume={self.volume}")
+        return
+            
+    def _atomic_species(self,atomic_species_xml):
+        """Process the atomic_species element.
+
+        Parameters
+        ----------
+        atomic_species_xml : an xml element
+            The atomic species element
+
+        Set
+        ---
+        self.nspecies
+            The number of species
+        self.species
+            A list of the names of the species
+        self.masses_per_type
+            A list of the masses of the species
+        """
+        self.nspecies = int(atomic_species_xml.attrib['ntyp'])
+        self.masses_per_type = []
+        self.species      = []
+        for child in atomic_species_xml.findall('species'):
+            self.species.append( child.attrib['name'] )
+            self.masses_per_type.append ( float(child.find('mass').text) )
+        if self.debug:
+            print(f"_atomic_species: nspecies={self.nspecies}")
+            print(f"_atomic_species: species={self.species}")
+            print(f"_atomic_species: masses_per_type={self.masses_per_type}")
+        return
+            
+
+    def _kpoints(self,kpoints_xml):
+        """Process the k_points element.
+
+        Parameters
+        ----------
+        kpoints_xml : an xml element
+            The k-point definition using Monkhorst-Pack
+
+        Set
+        ---
+        self.kpoints
+            A list of the number of kpoints to be used in a Monkhorst-Pack grid
+        """
+        kpt_dict = kpoints_xml[0].attrib
+        self.kpoint_grid[0] = int(kpt_dict['nk1'])
+        self.kpoint_grid[1] = int(kpt_dict['nk2'])
+        self.kpoint_grid[2] = int(kpt_dict['nk3'])
+        if self.debug:
+            print(f"_read_kpoints: kpoint_grid={self.kpoint_grid}" )
+        return
+
+    def _pressure(self,pressure_xml):
+        """Process the pressure xml element.
+
+        Parameters
+        ----------
+        pressure_xml : an xml element
+            The pressure is calculated for the average of the trace of the stress tensor
+
+        Set
+        ---
+        self.pressure
+            The pressure in GPa
+            The xml file holds the pressure in Hartree/Bohr3
+            Conversion to SI units is done by autoGPa from Constants.py
+
+        """
+        stress = [ float(f) for f in pressure_xml.text.split()]
+        # Take the trace of the (flat) matrix and convert from atomic units to GPa
+        self.pressure = au2GPa * (stress[0] + stress[4] + stress[8]) / 3.0 
+        if self.debug:
+            print(f"_pressure: pressure={self.pressure}" )
+        return
+
+    def _read_dyng_file(self,line):
+        """Read a dynG file.
+
+        This method the dynG output file from a qe ph.x calculation of IR intensities
+
+        Parameters
+        ----------
+        line : str
+            The first line of input in the dyng file
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        Calls
+        - `_read_dyng_header`
+        - `_read_dyng_basis_vectors`
+        - `_read_dyng_masses`
+        - `_read_dyng_coordinates`
+        """
+        if self.debug:
+            print(f"_read_dyng:" )
+        # Read the header
+        self._read_dyng_header()
+        # Read the basis vectors
+        self._read_dyng_basis_vectors()
+        # Read the species masses
+        self._read_dyng_masses()
+        # Read the fractional coordinates
+        self._read_dyng_coordinates()
