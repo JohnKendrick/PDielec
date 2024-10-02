@@ -1,0 +1,36 @@
+&CONTROL
+  calculation = 'scf' 
+  restart_mode = 'from_scratch'
+  outdir = '.' 
+  pseudo_dir = '/home/john/Data/PseudoPotentials/SSSP_1.3.0_Efficiency'
+  nstep = 1000
+  tprnfor = .true.
+  tstress = .true.
+  etot_conv_thr = 1.0d-7
+  forc_conv_thr = 1.0d-6
+/
+&SYSTEM
+  ibrav       = 0
+  nat         = 16
+  ntyp        = 4
+  occupations = 'fixed'
+  ecutwfc     = 90.0
+  ecutrho     = 760.0
+  input_dft   = 'pbe'
+  vdw_corr    = 'grimme-d3'
+  dftd3_version = 6
+  dftd3_threebody = .false.
+/
+&ELECTRONS
+  conv_thr = 1.0D-10
+  mixing_beta = 0.3
+  diagonalization = 'rmm-paro'
+/
+&IONS
+  ion_dynamics = 'bfgs'
+  pot_extrapolation = 'second_order'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+  cell_dofree   = 'all'
+/

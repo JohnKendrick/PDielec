@@ -1,0 +1,28 @@
+Born charges
+ &inputph
+! Calculate dynamic polarisabilities
+  fpol=.false.
+! Calculate the dielectric constant
+  epsil=.true.
+! Calculate the Born charges using the forces as a derivative of the field
+  zeu = .true.
+! Do not calculate Raman spectra
+  lraman=.false.
+! Do not calculate electron phonon coupling
+  elop=.false.
+! Do not calculate dyanmical matrix
+  trans=.false.
+! A very stringent criteria for self consistency
+  tr2_ph=1.0d-14
+! Increase the number of iterations used for the potential mixing
+  nmix_ph=8
+! Set the output directory
+  outdir='.'
+! Calculate the Grimme D3 hessian
+  dftd3_hess='automatic.hess'
+! Acoustic sum rule
+  asr=.false.
+! Give the name of the dyanmic matrix file
+  fildyn='urea.dynG'
+/
+0.0 0.0 0.0
