@@ -16,11 +16,11 @@
 """QEOutputReader: Read the contents of a QE output file containing QE dynamical matrix."""
 import math
 import re
-
-import numpy as np
 import xml.etree.ElementTree as ET
 
-from PDielec.Constants import amu, angs2bohr, hartree2ev, au2GPa
+import numpy as np
+
+from PDielec.Constants import amu, angs2bohr, au2GPa, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
 
@@ -800,48 +800,46 @@ class QEOutputReader(GenericOutputReader):
         This file is created when a single point calculation is performed prior to the born calculation
         The routine should also be able to parse an optimisation run.
         In this case there is a 'steps' entry in the xml
+
         """
         # For each file generate an xml tree to process.
         tree = ET.parse(filename)
         root = tree.getroot()
-        print('jk1 filename = ',filename)
-        print('jk2 tree = ',tree)
-        print('jk3 root = ',root)
-        inputxml = root.find('input')
-        outputxml = root.find('output')
+        if self.debug:
+            print("QEOutputReader _read_xml: filename = ",filename)
+            print("QEOutputReader _read_xml: tree = ",tree)
+            print("QEOutputReader _read_xml: root = ",root)
+        inputxml = root.find("input")
+        outputxml = root.find("output")
         stepsxml = None
         if outputxml is not None:
-            stepsxml = outputxml.find('steps')
+            stepsxml = outputxml.find("steps")
         # Handle the case of an optimisation or a single point calculation
-        if stepsxml is not None:
-            # Handle the case of an optimisaton
-            use_this_xml = stepsxml
-        else:
-            # Handle the case of a single point calculation
-            use_this_xml = outputxml
-        print('jk4 inputxml = ',inputxml)
-        print('jk5 outputxml = ',outputxml)
-        print('jk6 stepsxml = ',stepsxml)
-        print('jk7 use_this_xml = ',use_this_xml)
-        tensorsxml = root.find('EF_TENSORS')
-        print('jk9 tensorsxml = ',tensorsxml)
+        use_this_xml = stepsxml if stepsxml is not None else outputxml
+        tensorsxml = root.find("EF_TENSORS")
+        if self.debug:
+            print("QEOutputReader _read_xml: inputxml = ",inputxml)
+            print("QEOutputReader _read_xml: outputxml = ",outputxml)
+            print("QEOutputReader _read_xml: stepsxml = ",stepsxml)
+            print("QEOutputReader _read_xml: use_this_xml = ",use_this_xml)
+            print("QEOutputReader _read_xml: tensorsxml = ",tensorsxml)
         # Handle input
         if inputxml is not None:
-            self._basis(inputxml.findall('basis')[-1])
-            self._atomic_species(inputxml.findall('atomic_species')[-1])
-            self._kpoints(inputxml.findall('k_points_IBZ')[-1])
+            self._basis(inputxml.findall("basis")[-1])
+            self._atomic_species(inputxml.findall("atomic_species")[-1])
+            self._kpoints(inputxml.findall("k_points_IBZ")[-1])
         # Handle output 
         if outputxml is not None:
-            self._pressure(outputxml.findall('stress')[-1])
-            self._band_structure(outputxml.findall('band_structure')[-1])
+            self._pressure(outputxml.findall("stress")[-1])
+            self._band_structure(outputxml.findall("band_structure")[-1])
         # Handle the case of optimisation
         if use_this_xml is not None:
-            self._atomic_structure(use_this_xml.findall('atomic_structure'))
-            self._total_energy(use_this_xml.findall('total_energy'))
+            self._atomic_structure(use_this_xml.findall("atomic_structure"))
+            self._total_energy(use_this_xml.findall("total_energy"))
         # Handle ef tensors
         if tensorsxml is not None:
-            self._dielectric_constant(tensorsxml.find('DIELECTRIC_CONSTANT'))
-            self._effective_charges(tensorsxml.find('EFFECTIVE_CHARGES_EU'))
+            self._dielectric_constant(tensorsxml.find("DIELECTRIC_CONSTANT"))
+            self._effective_charges(tensorsxml.find("EFFECTIVE_CHARGES_EU"))
         return
 
     def _effective_charges(self,effective_charges_xml):
@@ -866,6 +864,7 @@ class QEOutputReader(GenericOutputReader):
         ---
         self.born_charges
             The born_charges 
+
         """
         self.born_charges = []
         charges_string = effective_charges_xml.text.strip()
@@ -894,6 +893,7 @@ class QEOutputReader(GenericOutputReader):
         ---
         self.zerof_optical_dielectric
             The zero frequency optical dielectric
+
         """
         eps_string = dielectric_constant_xml.text.strip()
         eps = [ float(f) for f in eps_string.split() ]
@@ -905,6 +905,7 @@ class QEOutputReader(GenericOutputReader):
 
     def _basis(self,basis_xml):
         """Process the basis element(s).
+
         Store the energy in eV
 
         Parameters
@@ -914,13 +915,14 @@ class QEOutputReader(GenericOutputReader):
 
         Set
         ---
-        self.final_energy_without_entropy
-            The final energy in eV
-        self.final_free_energy
-            The final energy in eV
+        self.energy_cutoff
+            The energy cutoff in hartree
+        self.rho_cutoff
+            The charge density cutoff in hartree
+
         """
-        ecutwfc_xml = basis_xml.find('ecutwfc')
-        ecutrho_xml = basis_xml.find('ecutrho')
+        ecutwfc_xml = basis_xml.find("ecutwfc")
+        ecutrho_xml = basis_xml.find("ecutrho")
         self.energy_cutoff = float( ecutwfc_xml.text )
         self.rho_cutoff    = float( ecutrho_xml.text )
         if self.debug:
@@ -930,6 +932,7 @@ class QEOutputReader(GenericOutputReader):
 
     def _total_energy(self,total_energy_xml):
         """Process the total_energy element(s).
+
         Store the energy in eV
 
         Parameters
@@ -945,13 +948,15 @@ class QEOutputReader(GenericOutputReader):
             The final energy in eV
         self.final_free_energy : float
             The final energy in eV
+
         """
         self.energies = []
         for step_xml in total_energy_xml:
-            etot_xml = total_energy_xml[-1].find('etot')
+            etot_xml = step_xml.find("etot")
             self.final_energy_without_entropy = hartree2ev * float( etot_xml.text )
             self.final_free_energy = self.final_energy_without_entropy
-            self.energies.append(self.final_free_energy)
+            self.final_free_energies.append(self.final_free_energy)
+            self.final_energies_without_entropy.append(self.final_free_energy)
         if self.debug:
             print(f"_total_energy: final_energy_without_entropy={self.final_energy_without_entropy}")
             print(f"_total_energy: final_free_energy={self.final_free_energy}")
@@ -970,8 +975,9 @@ class QEOutputReader(GenericOutputReader):
         ---
         self.electrons : int
             The number of electrons
+
         """
-        nelec_xml = band_structure_xml.find('nelec')
+        nelec_xml = band_structure_xml.find("nelec")
         self.electrons = int(float(nelec_xml.text)+0.00000001)
         if self.debug:
             print(f"_band_structure: electrons={self.electrons}")
@@ -995,16 +1001,16 @@ class QEOutputReader(GenericOutputReader):
             A volume of the last unit cell
         self.ncell :  int
             A number of unit cells
+
         """
         for structure_xml in atomic_structure_xml:
-            self.nions = int(structure_xml.attrib['nat'])
-            self._alat  = float(structure_xml.attrib['alat'])
+            self.nions = int(structure_xml.attrib["nat"])
+            self._alat  = float(structure_xml.attrib["alat"])
             self._alat_from_xml = True
             species_list = []
             fractional_coordinates = []
             # First find the cell dimensions and volume
             cell_xml = structure_xml.find("cell")
-            cell_string = cell_xml.text
             a1 = [ float(f)/angs2bohr for f in cell_xml[0].text.split() ]
             a2 = [ float(f)/angs2bohr for f in cell_xml[1].text.split() ]
             a3 = [ float(f)/angs2bohr for f in cell_xml[2].text.split() ]
@@ -1013,8 +1019,8 @@ class QEOutputReader(GenericOutputReader):
             positions_xml = structure_xml.find("atomic_positions")
             self.atom_type_list = []
             self.ions_per_type = [ 0 for i in range(self.nspecies) ]
-            for atom_xml in positions_xml.findall('atom'):
-                species = atom_xml.attrib['name']
+            for atom_xml in positions_xml.findall("atom"):
+                species = atom_xml.attrib["name"]
                 species_index = self.species.index(species)
                 species_list.append( species )
                 coords = [ float(f)/self._alat for f in atom_xml.text.split() ]
@@ -1046,13 +1052,14 @@ class QEOutputReader(GenericOutputReader):
             A list of the names of the species
         self.masses_per_type
             A list of the masses of the species
+
         """
-        self.nspecies = int(atomic_species_xml.attrib['ntyp'])
+        self.nspecies = int(atomic_species_xml.attrib["ntyp"])
         self.masses_per_type = []
         self.species      = []
-        for child in atomic_species_xml.findall('species'):
-            self.species.append( child.attrib['name'] )
-            self.masses_per_type.append ( float(child.find('mass').text) )
+        for child in atomic_species_xml.findall("species"):
+            self.species.append( child.attrib["name"] )
+            self.masses_per_type.append ( float(child.find("mass").text) )
         if self.debug:
             print(f"_atomic_species: nspecies={self.nspecies}")
             print(f"_atomic_species: species={self.species}")
@@ -1072,11 +1079,12 @@ class QEOutputReader(GenericOutputReader):
         ---
         self.kpoints
             A list of the number of kpoints to be used in a Monkhorst-Pack grid
+
         """
         kpt_dict = kpoints_xml[0].attrib
-        self.kpoint_grid[0] = int(kpt_dict['nk1'])
-        self.kpoint_grid[1] = int(kpt_dict['nk2'])
-        self.kpoint_grid[2] = int(kpt_dict['nk3'])
+        self.kpoint_grid[0] = int(kpt_dict["nk1"])
+        self.kpoint_grid[1] = int(kpt_dict["nk2"])
+        self.kpoint_grid[2] = int(kpt_dict["nk3"])
         if self.debug:
             print(f"_read_kpoints: kpoint_grid={self.kpoint_grid}" )
         return
@@ -1125,9 +1133,10 @@ class QEOutputReader(GenericOutputReader):
         - `_read_dyng_basis_vectors`
         - `_read_dyng_masses`
         - `_read_dyng_coordinates`
+
         """
         if self.debug:
-            print(f"_read_dyng:" )
+            print("_read_dyng:" )
         # Read the header
         self._read_dyng_header()
         # Read the basis vectors
