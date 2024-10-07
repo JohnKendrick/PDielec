@@ -16,12 +16,48 @@
 """VASP output reader."""
 
 import re
+import xml.etree.ElementTree as ET
 
 import numpy as np
 
-from PDielec.Constants import atomic_number_to_element
+from PDielec.Constants import atomic_number_to_element, hertz
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+
+
+def read_xml_element(ele):
+    """Read an xml element and return a value.
+
+    Parameters
+    ----------
+    ele : an xml element
+        An xml element
+
+    Returns
+    -------
+    name : str
+        The name of the values returned
+    values : float, int or bool (or a list of them)
+        The return type depends on the contents of the element
+
+    """
+    if ele.tag == "separator":
+        return None, None
+    if ele.tag == "parameters":
+        return None, None
+    name = ele.attrib["name"]
+    values = []
+    if "type" in ele.attrib and ele.attrib["type"] == "int":
+        values = [ int(f) for f in ele.text.strip().split() ]
+    elif "type" in ele.attrib and ele.attrib["type"] == "logical":
+        values = [ f == "T" for f in ele.text.strip().split() ]
+    elif "type" in ele.attrib and ele.attrib["type"] == "string":
+        values = [ None ] if ele.text is None else [ ele.text.strip() ]
+    else:
+        values = [ float(f) for f in ele.text.strip().split() ]
+    if ele.tag == "i":
+        values = values[0]
+    return name,values
 
 
 def myfloat(string):
@@ -146,7 +182,10 @@ class VaspOutputReader(GenericOutputReader):
         self.manage["species"]      = (re.compile("^ *Atomic configuration"), self._read_species)
         self.manage["newmasses"]  = (re.compile("  Mass of Ions in am"), self._read_newmasses)
         for f in self._outputfiles:
-            self._read_output_file(f)
+            if f.lower().endswith(".xml"):
+                self._read_xml(f)
+            else:
+                self._read_output_file(f)
         return
 
     def _read_forces(self, line):
@@ -871,4 +910,349 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         self.final_energy_without_entropy = float(line.split()[3])
         self.final_energies_without_entropy.append(float(line.split()[3]))
+        return
+
+    def _read_xml(self, filename):
+        """Process the VASP xml files.
+
+        Parameters
+        ----------
+        filename : str
+            The file name of the xml file to be processed
+
+        Notes
+        -----
+        The routine only handles the Vasp output file vasprun.xml
+
+        """
+        # For each file generate an xml tree to process.
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        if self.debug:
+            print(f"_read_xml filename = {filename}",flush=True)
+            print(f"_read_xml tree = {tree}",flush=True)
+            print(f"_read_xml root = {root}",flush=True)
+        self._handle_kpoints_xml(root.findall("kpoints"))
+        self._handle_parameters_xml(root.findall("parameters"))
+        self._handle_atominfo_xml(root.findall("atominfo"))
+        self._handle_structures_xml(root.findall("structure"))
+        self._handle_calculations_xml(root.findall("calculation"))
+
+    def _handle_calculations_xml(self,calculations_xml):
+        """Process the calculations xml child.
+
+        Parameters
+        ----------
+        calculations_xml : a list of xml element
+            A list of calculations_xml elements
+
+        Set
+        ---
+        self.nions : int
+            The number of atoms
+        self.nspecies : int
+            The number of atoms
+        self.atom_type_list : list of ints
+            A list of the atom types in the order they will be given in the coordinate list
+        self.zerof_static_dielectric : 3x3 list of floats
+            The ionic contribution to the static dielectric 
+        self.zerof_optical_dielectric : 3x3 list of floats
+            The zero frequency optical dielectric dielectric 
+        self.final_free_energies : a list of floats
+            A list of the free energies at each geometry optimisation
+        self.final_energies_without_entropy : a list of floats
+            A list of the energies without entropy at each geometry optimisation
+        self.borncharges : a list of floats nionsx3x3
+            A list of the energies without entropy at each geometry optimisation
+        self.mass_weighted_normal_modes : ndarray floats (3*nions x n*nions)
+            The mass weighted normal modes
+        self.frequencies : ndarray floats (3*nions)
+            The frequencies in cm-1
+
+        """
+        dipole = None
+        hessian = None
+        dielectric_tensor = None
+        forces_list = []
+        stress_list = []
+        unit_cell_list = []
+        dipole_list = []
+        # Loop around the calculations
+        for calcxml in calculations_xml:
+            lastscf = calcxml.findall("scstep/energy")[-1]
+            dipoles = calcxml.findall("scstep/dipoles")
+            lastdipole = dipoles[-1] if dipoles else None
+            # Energies from the last step in this calculation
+            # Correction because Vasp does not include the DFT energy
+            # properly in the calculate/energy entry
+            de = (float(lastscf.find('i[@name="e_0_energy"]').text) -
+                  float(lastscf.find('i[@name="e_fr_energy"]').text))
+            free_energy = float(calcxml.find('energy/i[@name="e_fr_energy"]').text)
+            energy = free_energy + de
+            self.final_free_energies.append(energy)
+            energy = float(calcxml.find('energy/i[@name="e_wo_entrp"]').text)
+            self.final_energies_without_entropy.append(energy)
+            # Unit cell
+            unit_cell = self._get_unit_cell_from_xml(calcxml.find("structure"))
+            unit_cell_list.append(unit_cell)
+            # Forces
+            forces = None
+            xml = calcxml.find('varray[@name="forces"]')
+            if xml is not None:
+                forces = []
+                for vxml in xml:
+                    forces.append( [float(f) for f in vxml.text.split()] )
+            forces_list.append(forces)
+            # stresses 
+            stress = None
+            xml = calcxml.find('varray[@name="stress"]')
+            if xml is not None:
+                stress = []
+                for vxml in xml:
+                    stress.append( [float(f)*0.1 for f in vxml.text.split()])
+            stress_list.append(stress)
+            # dipoles
+            if lastdipole is not None:
+                xml = lastdipole.find('v[@name="dipole"]')
+                if xml is not None:
+                    dipole = [ float(f) for f in xml.text.split() ] 
+            xml = calcxml.find('dipole/v[@name="dipole"]')
+            if xml is not None:
+                dipole = [float(f) for f in xml.text.split()]
+            dipole_list.append(dipole)
+            # DFPT properties (There should only be one of these in a collection of calculations)
+            # epsilon ion
+            xml = calcxml.find('varray[@name="epsilon_ion"]')
+            if xml is not None:
+                zerof_static_dielectric = []
+                for vxml in xml:
+                    zerof_static_dielectric.append( [ float(f) for f in vxml.text.split()] )
+                # print('zerof_static_dielectric',zerof_static_dielectric,flush=True)
+
+            # epsilon optical
+            xml = calcxml.find('varray[@name="epsilon"]')
+            if xml is not None:
+                self.zerof_optical_dielectric = []
+                for vxml in xml:
+                    self.zerof_optical_dielectric.append( [ float(f) for f in vxml.text.split()] )
+                # print('self.zerof_optical_dielectric',self.zerof_optical_dielectric,flush=True)
+
+            # hessian tensor
+            xml = calcxml.find('dynmat/varray[@name="hessian"]')
+            if xml is not None:
+                hessian = []
+                for v in xml.iter():
+                    if v.tag == "v":
+                        hessian.append( [ float(f) for f in v.text.split() ] )
+            # print('hessian', flush=True)
+            # print(hessian,flush=True)
+            # dielectric tensor
+            xml = calcxml.find('varray[@name="dielectric_dft"]')
+            if xml is not None:
+                for vxml in enumerate(xml):
+                    dielectric_tensor.append( [ float(f) for f in vxml.text.split()] )
+                # print('dielectric_tensor',dielectric_tensor,flush=True)
+            #
+            xml = calcxml.find('array[@name="born_charges"]')
+            if xml is not None:
+                # Born effective charges
+                #        The order used with PDielec is:
+                #        d2E/dFxdX d2E/dFxdY d2E/dFxdZ        0 3 6
+                #        d2E/dFydX d2E/dFydY d2E/dFydZ        1 4 7
+                #        d2E/dFzdX d2E/dFzdY d2E/dFzdZ        2 5 8
+                self.born_charges = []
+                for element_xml in xml[1:]:  # 1. element = dimension
+                    charges = []
+                    for vxml in element_xml:
+                        charges.append( [ float(f) for f in vxml.text.split() ] )
+                    self.born_charges.append(charges)
+               #  print('born_charges',self.born_charges,flush=True)
+        #
+        # Convert Hessian units, first to hertz, then to atomic units
+        # NB. this won't work with VASP 6
+        #
+        evtoj = 1.60217733E-19    # Taken from VASP5.4
+        amtokg = 1.6605402E-27    # Taken from VASP5.4
+        # convert to hertz        # Taken from VASP5.4
+        conversion = -evtoj /amtokg / (4*np.pi *np.pi) / 1.0E-10**2 
+        # convert to hertz to au
+        conversion *= hertz**2
+        hessian = conversion * np.array(hessian)
+        self.mass_weighted_normal_modes, self.frequencies = self._calculate_normal_modes_and_frequencies(hessian,self.nions)
+        return
+
+    def _handle_structures_xml(self,structures_xml):
+        """Process the structures xml child.
+
+        Parameters
+        ----------
+        structures_xml : a list of xml element
+            A list of structurexml elements
+
+        Set
+        ---
+        self.ncells : int
+            The number of unit cells read so far
+        self.volume : float
+            The volume of the last unit cell read
+        self.unit_cells : list of unit_cells
+            A list of the unit cells
+
+        """
+        # Create a dictionary of structures
+        structures = dict()
+        for elem in structures_xml:
+            name = elem.attrib.get("name")
+            structures[name] = elem
+        # Process the initial position
+        self.unit_cells.append(self._get_unit_cell_from_xml(structures["initialpos"]))
+        # Book keeping
+        self.ncells = len(self.unit_cells)
+        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        if self.debug:
+            print(f"_handle_structure_xml: volume={self.volume}",flush=True)
+        return
+
+    def _get_unit_cell_from_xml(self,structure_xml):
+        """Read the xml and return a unit cell with the dimensions and positions.
+
+        Parameters
+        ----------
+        structure_xml : a structure xml element
+            A structure xml element
+
+        Returns
+        -------
+        cell : a unit_cell
+
+        """
+        cell = []
+        for v in structure_xml.find("crystal/varray[@name='basis']"):
+            cell.append([ float(f) for f in v.text.split()])
+        positions = []
+        for v in structure_xml.find("varray[@name='positions']"):
+            positions.append([ float(f) for f in v.text.split()])
+        unit_cell = (UnitCell(cell[0], cell[1], cell[2], units="Angstrom"))
+        unit_cell.set_fractional_coordinates(positions)
+        unit_cell.set_element_names(self.species_list)
+        return unit_cell
+
+    def _handle_atominfo_xml(self,atominfos_xml):
+        """Process the atminfos xml child.
+
+        Parameters
+        ----------
+        atominfos_xml : a list of xml element
+            A list of atminfo xml elements
+
+        Set
+        ---
+        self.nions : int
+            The number of atoms
+        self.nspecies : int
+            The number of atoms
+        self.atom_type_list : list of ints
+            A list of the atom types in the order they will be given in the coordinate list
+        self.species : a list strings
+            The list of unique species in the calculation. ie the list of atom types
+        self.species_list : a list strings
+            The list of species for all atoms
+        self.ions_per_tpye : a list ints
+            The list of atom types, could be used to lookup self.species
+        self.masses_per_type : a list floats
+            The list of masses for each atom type
+        self.masses : a list floats
+            The list of masses for each atom in the unit cell
+
+        """
+        self.nions = int( atominfos_xml[-1].find("atoms").text )
+        self.nspecies = int( atominfos_xml[-1].find("types").text )
+        self.atom_type_list = []
+        self.ions_per_type = [ 0 for i in range(self.nspecies) ]
+        self.species_list = []
+        self.species = []
+        for entry in atominfos_xml[-1].find("array/[@name='atoms']/set"):
+            species = entry[0].text.strip()
+            index = int(entry[1].text.strip())
+            self.species_list.append(species)
+            if species not in self.species:
+                self.species.append(species)
+            self.atom_type_list.append(index-1)
+            self.ions_per_type[index-1] += 1
+        self.masses_per_type = []
+        for entry in atominfos_xml[-1].findall("array/[@name='atomtypes']/set/rc"):
+            self.masses_per_type.append(float( entry.findall("c")[2].text.strip()))
+        self.masses = []
+        for atom_type in self.atom_type_list:
+            self.masses.append(self.masses_per_type[atom_type])
+        if self.debug:
+            print("_handle_atomicinfo_xml: nspecies", self.nspecies,flush=True)
+            print("_handle_atomicinfo_xml: nions", self.nions,flush=True)
+            print("_handle_atomicinfo_xml: ions_per_type", self.ions_per_type,flush=True)
+            print("_handle_atomicinfo_xml: atom_type_list", self.atom_type_list,flush=True)
+            print("_handle_atomicinfo_xml: species", self.species,flush=True)
+            print("_handle_atomicinfo_xml: species_list", self.species_list,flush=True)
+            print("_handle_atomicinfo_xml: masses", self.masses,flush=True)
+            print("_handle_atomicinfo_xml: masses_per_type", self.masses_per_type,flush=True)
+        return
+
+    def _handle_parameters_xml(self,parameters_xml):
+        """Process the parameters xml child.
+
+        Parameters
+        ----------
+        parameters_xml : a list of xml element
+            A list of parameters xml elements
+
+        Set
+        ---
+        self.electrons : int
+            The number of electrons
+        self.spin : int
+            The spin of the system
+
+        """
+        self.electrons = 0
+        parameters_xml=parameters_xml[-1]
+        parameters = dict()
+        for ele in parameters_xml.iter():
+            name,value = read_xml_element(ele)
+            if name is not None:
+                parameters[name] = value
+        self.electrons = int(parameters["NELECT"]+0.0001)
+        self.spin = parameters["ISPIN"]
+        # self.masses_per_type = parameters["POMASS"] 
+        if self.debug:
+            print("_handle_parameters_xml: nelect", self.electrons,flush=True)
+            print("_handle_parameters_xml: spin", self.spin,flush=True)
+        return
+
+    def _handle_kpoints_xml(self,kpoints_xml):
+        """Process the kpoints xml child.
+
+        Parameters
+        ----------
+        kpoints_xml : a list of xml element
+            A list of kpoint xml elements
+
+        Set
+        ---
+        self.kpoint_grid : a list of 3 integers
+            The Monkorst Pack grid
+        self.kpoints : int
+            The number of kpoints
+
+        """
+        kpoints_xml=kpoints_xml[-1]
+        self.kpoint_grid = [1, 1, 1]
+        xml = kpoints_xml.find("generation").find("v/[@name='divisions']")
+        self.kpoint_grid = [ int(f) for f in xml.text.split() ]
+        if self.debug:
+            print("_handle_kpoints_xml: kpoint_grid", self.kpoint_grid ,flush=True)
+        # Number of kpoints
+        xml = kpoints_xml.find("varray/[@name='kpointlist']")
+        vs = xml.findall("v")
+        self.kpoints = len(vs)
+        if self.debug:
+            print("_handle_kpoints_xml: kpoints", self.kpoints,flush=True)
         return
