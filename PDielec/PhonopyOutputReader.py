@@ -17,7 +17,7 @@
 
 import numpy as np
 
-from PDielec.Constants           import thz2cm1
+from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
 
 
@@ -174,8 +174,10 @@ class PhonopyOutputReader(GenericOutputReader):
         # Make sure the hessian is real
         hessian = np.real(dynmat)
         # We need to convert to cm-1
-        conversion_factor_to_THz = 15.633302
-        conversion_factor_to_THz = data_p["phonopy"]["frequency_unit_conversion_factor"]
+        try:
+            conversion_factor_to_THz = data_p["phonopy"]["frequency_unit_conversion_factor"]
+        except Exception:
+            conversion_factor_to_THz = 15.633302
         conversion_factor_to_cm1 = conversion_factor_to_THz * thz2cm1
         conv  = conversion_factor_to_cm1
         hessian = hessian * conv * conv
