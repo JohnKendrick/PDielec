@@ -885,6 +885,8 @@ class ViewerTab(QWidget):
         # Get the cell with whole molecules from the analysis tab
         self.notebook.analysisTab.refresh()
         self.unit_cell = self.notebook.analysisTab.cell_of_molecules
+        if self.unit_cell is None:
+            return
         # Generate a super cell
         imageSpecifier = self.settings["Super Cell"]
         self.super_cell = SuperCell(self.unit_cell,imageSpecifier)
@@ -1241,6 +1243,8 @@ class ViewerTab(QWidget):
         else:
             self.notebook.analysisTab.refresh()
             self.unit_cell = self.notebook.analysisTab.cell_of_molecules
+            if self.unit_cell is None:
+                return
             self.element_names = self.unit_cell.element_names
             self.species = self.reader.getSpecies()
             debugger.print("refresh - species ",self.species)
