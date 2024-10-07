@@ -3,7 +3,8 @@
 The is example uses the pwscf.xml file to provide the information needed for pdgui.
 The program ignores the log files completely.
 The program uses pwscf.xml and urea.ir.dynG to provide the information it needs.
-urea.ir.dynG provides the Born charges, the dynamical matrix and the optical permittivity.
+urea.ir.dynG provides the Born charges, the dynamical matrix and the optical permittivity,
+pwscf.xml provides the rest.
 
 
 | **File**          | **Description**                                                           |
