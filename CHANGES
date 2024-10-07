@@ -10,7 +10,7 @@ version 8.1.3
    Removed the need for the mkl package.  But this means the number of processors used for threading
         is set by the environment variables.  It is best to NOT use threading and have the number of
         processors set to the number of cores.  The number of threads used by each core should be 1.
-        To force the BLAS routines in use it is best to use environment variables to control the 
+        To force the BLAS routines to use threads it is best to use environment variables to control the 
         number of threads.  For example....
         export OMP_NUM_THREADS=1
         export OPENBLAS_NUM_THREADS=1
@@ -25,6 +25,20 @@ version 8.1.3
    Added additional escape characters to CrystalOutputReader.py - to remove SyntaxWarning errors
    Added a -style default in the creation of the App.  Default style is "fusion"
    Fixed a bug in the save cif file (ViewerTab)
+   Added xml readers to VaspOutputReader and QEOutputReader
+   Added a new example to QE/Urea which tests the xml reader
+   Added a new example to Vasp/Urea which test the xml reader
+   GenericOutputReader:
+       Created a new routine to find the frequencies and normal modes from the mass-weighted hessian
+   QEOutputReader:
+       Added a code to read pwscf.xml and tensors.xml
+   PhonopyOutputReader:
+       PDGui now reads the conversion factor store by Phonopy to scale the Hessian
+   Utilities:
+       Altered the logic in the "find_program_from_routine".  The routine now 
+       recognises pwscf.xml and vasprun.xml files.  If an OUTCAR (Vasp) or a QE .log/.out is specified
+       on the command line the old method of analysing the output is used and the xml files are not read.
+       If vasprun.xml (Vasp) or a .dynG file is given on the command line then the xml will be read if it is there.
 
 version 8.1.2
    Added a .nojekyll file into the docs/ directory to stop git hub pages over processing things
