@@ -720,6 +720,8 @@ class AnalysisTab(QWidget):
         tolerance = self.settings["Bonding tolerance"]
         # Find the last unit cell read by the reader and its masses
         cell = self.reader.get_unit_cell()
+        if cell is None:
+            return
         atom_masses = cell.get_atomic_masses()
         self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance, radii=self.element_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
