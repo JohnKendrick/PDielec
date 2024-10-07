@@ -103,7 +103,6 @@ def find_program_from_name( filename ):
     """    
     head,tail = os.path.split(filename)
     root,ext = os.path.splitext(tail)
-    head_root = os.path.join(head,root)
     if os.path.isfile(os.path.join(head,"pwscf.xml")):
         if os.path.isfile(os.path.join(head,"phonopy.yaml")):
             # It is a phonopy calculation because phonopy.yaml is present
@@ -114,13 +113,16 @@ def find_program_from_name( filename ):
             return "quantum espresso",""
     if ext == ".dynG":
         if os.path.isfile(os.path.join(head,"phonopy.yaml")):
-            # It is a phonopy calculation because phonopy.yaml is present
-            # It is a quantum espresso calculation because a .dynG file is present
             return "phonopy","quantum espresso"
         else:
             # It is q-e but not Phonopy
             return "quantum espresso",""
     if tail == "OUTCAR":
+        if os.path.isfile(head+"phonopy.yaml"):
+            return "phonopy","vasp"
+        else:
+            return "vasp",""
+    if os.path.isfile(os.path.join(head,"vasprun.xml")):
         if os.path.isfile(head+"phonopy.yaml"):
             return "phonopy","vasp"
         else:
@@ -169,11 +171,6 @@ def find_program_from_name( filename ):
             return "phonopy","abinit"
         else:
             return "abinit",""
-    if ext ==  ".dynG":
-        if os.path.isfile(head+"phonopy.yaml"):
-            return "phonopy","quantum espresso"
-        else:
-            return "quantum espresso",""
     if ext ==  ".exp":
         return "experiment",""
     if ext ==  ".py":
@@ -230,11 +227,11 @@ def get_reader( name, program, qmprogram,debug=False):
     elif program == "vasp":
         names = list()
         name1 = name
-        name2 = os.path.join(head,"KPOINTS")
-        name3 = os.path.join(head,"vasprun.xml")
-        for n in [ name1, name2, name3 ]:
-            if os.path.isfile(n) and n not in names:
-                names.append(n)
+        if "OUTCAR" in name:
+            name2 = os.path.join(head,"KPOINTS")
+            names = [ name1, name2 ]
+        else:
+            names = [ name1 ]
         reader = VaspOutputReader( names )
     elif program == "gulp":
         names = [ name ]
@@ -246,30 +243,32 @@ def get_reader( name, program, qmprogram,debug=False):
         names = [ name ]
         reader = AbinitOutputReader( names )
     elif program == "quantum espresso":
-        tail1 = root+".log"
-        tail2 = root+".out"
-        tail3 = root+".dynG"               # The order is important
-        tail4 = "pwscf.xml"                # values that are not so accurate are read first
-        tail5 = "tensors.xml"              # they can be overwritten by output which has more precision
-        name1 = os.path.join(head,tail1)
-        name2 = os.path.join(head,tail2)
-        name3 = os.path.join(head,tail3)
-        name4 = os.path.join(head,tail4)
-        name5 = os.path.join(head,tail5)
-        names = list()
-        for n in [ name1, name2, name3, name4, name5 ]:
-            if debug:
-                print("get_reader:  n = ",n)
-            if os.path.isfile(n) and n not in names:
-                names.append(n)
-        # If pwscf.xml is present then don't try and parse the output file
-        if "pwscf.xml" in names:
-            if name1 in names:
-                names.remove(name1)
-            if name2 in names:
-                names.remove(name2)
+        pwscf_name = os.path.join(head,"pwscf.xml")
+        tensors_name = os.path.join(head,"tensors.xml")
+        if ext in [".xml",".dynG"] and os.path.isfile(pwscf_name) and os.path.isfile(tensors_name):
+            # Only handle xml but add the dynG file
+            tail3 = root+".dynG"               # The order is important
+            name1 = pwscf_name
+            name2 = tensors_name
+            name3 = os.path.join(head,tail3)
+            names = []
+            for n in [ name1, name2, name3 ]:
+                if os.path.isfile(n):
+                    names.append(n)
+        else:
+            # try and read the log file or out file based on the dynG file name
+            tail1 = root+".log"
+            tail2 = root+".out"
+            tail3 = root+".dynG"               # The order is important
+            name1 = os.path.join(head,tail1)
+            name2 = os.path.join(head,tail2)
+            name3 = os.path.join(head,tail3)
+            names = []
+            for n in [ name1, name2, name3 ]:
+                if os.path.isfile(n):
+                    names.append(n)
         if debug:
-            print("get_reader:  names = ",names)
+            print("get_reader:  names = ",names,flush=True)
         reader = QEOutputReader( names )
     elif program == "phonopy":
         # The order is important
