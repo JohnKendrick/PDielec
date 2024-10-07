@@ -269,7 +269,7 @@ class MainTab(QWidget):
         hbox.addWidget(self.scriptsfile_le)
         hbox.addWidget(script_button)
         form.addRow(label, hbox)
-        #jk # add form layout
+        # add form layout
         vbox.addLayout(form)
         # output window for unit cell
         self.cell_window_l = QLabel("Unit-cell (Angstrom) from "+self.settings["Output file name"], self)
@@ -617,13 +617,12 @@ class MainTab(QWidget):
             if program == "":
                 debugger.print("Program not found from filename",filename)
                 debugger.print("Proceeding with defaults",self.settings["Program"])
+            elif self.settings["Program"] != "Phonopy":
+                debugger.print("Program found from filename",program,filename)
+                self.settings["Program"] = program.capitalize()
+                self.settings["Phonopy QM program"] = qmprogram.capitalize()
             else:
-                if self.settings["Program"] != "Phonopy":
-                    debugger.print("Program found from filename",program,filename)
-                    self.settings["Program"] = program.capitalize()
-                    self.settings["Phonopy QM program"] = qmprogram.capitalize()
-                else:
-                    debugger.print("Ignoring automatic program determination: dealing with Phonopy ")
+                debugger.print("Ignoring automatic program determination: dealing with Phonopy ")
             self.directory = os.path.dirname(filename)
             self.notebook.app.setMyWindowTitle(self.directory)
             self.settings["Output file name"] = os.path.basename(filename)
