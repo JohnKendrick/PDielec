@@ -1077,8 +1077,9 @@ class VaspOutputReader(GenericOutputReader):
         conversion = -evtoj /amtokg / (4*np.pi *np.pi) / 1.0E-10**2 
         # convert to hertz to au
         conversion *= hertz**2
-        hessian = conversion * np.array(hessian)
-        self.mass_weighted_normal_modes, self.frequencies = self._calculate_normal_modes_and_frequencies(hessian,self.nions)
+        if hessian is not None:
+            hessian = conversion * np.array(hessian)
+            self.mass_weighted_normal_modes, self.frequencies = self._calculate_normal_modes_and_frequencies(hessian,self.nions)
         return
 
     def _handle_structures_xml(self,structures_xml):
