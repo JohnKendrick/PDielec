@@ -104,13 +104,13 @@ Attributes
 
       Notes
       -----
-      This function must be a method of a class that inherits from a PyQt or PySide 
+      This function must be a method of a class that inherits from a PyQt or PySide
       widget which has a closeEvent method to override, such as QMainWindow, QDialog, etc.
 
       The `self.notebook.pool` is an instance of a multiprocessing pool, which needs
       to be closed and joined properly to ensure all processes are terminated cleanly before the application exits.
 
-      The `super(App, self).closeEvent(event)` call makes sure that any close event operations defined in the 
+      The `super(App, self).closeEvent(event)` call makes sure that any close event operations defined in the
       base class (from which the current class is derived) are also executed.
 
       When the application is about to close, this method ensures clean termination

@@ -26,11 +26,22 @@ For example; ::
 
 or ::
 
-    pdgui OUTCAR                                                # A Vasp/Phonpy calculation
+    pdgui OUTCAR                                                # A Vasp calculation, only OUTCAR is parsed for information
+    pdgui vasprun.xml                                           # A Vasp calculation, only vasprun.xml is parsed for information
     pdgui LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out    # A Crystal calculation
-    pdgui run1.dynG                                             # A QE calculation
-    pdgui run2.out                                              # An Abinit calculation
+    pdgui run1.dynG                                             # A QE calculation, pwscf.xml is also read
+    pdgui run1.log                                              # A QE calculation, run1.dynG is also read
+    pdgui run2.abo                                              # An Abinit calculation
     pdgui run3.gout                                             # An Gulp calculation
+
+Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
+It is possible to specifiy the DFT program and the QM program used by Phonopy as the examples below; ::
+
+    pdgui -program vasp OUTCAR                                   # A Vasp calculation, only OUTCAR is parsed for information
+    pdgui -program phonopy -qmprogram vasp OUTCAR                # A Phonopy/Vasp calculation, only OUTCAR is parsed for information
+    pdgui -program phonopy -qmprogram vasp vasprun.xml           # A Phonopy/Vasp calculation, only OUTCAR is parsed for information
+    pdgui -program phonopy -qmprogram qe  pwscf.xml              # A Phonopy/QE calculation
+
 
 If running a script that contains program and output file information, then::
 
@@ -68,6 +79,9 @@ Several command line options may be useful in running the package.
    +-----------------------+----------------------------------------+
    | -program name         | An alternative way of defining the     |
    |                       | program used to create the output      |
+   +-----------------------+----------------------------------------+
+   | -qmprogram name       | Specifies the qm program used with     |
+   |                       | phonopy                                |
    +-----------------------+----------------------------------------+
    | -version              | Give information of the version no.    |
    +-----------------------+----------------------------------------+

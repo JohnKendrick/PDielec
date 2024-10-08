@@ -30,7 +30,6 @@ Functions
 
    PDielec.Utilities.find_program_from_name
    PDielec.Utilities.get_reader
-   PDielec.Utilities.pdgui_get_reader
    PDielec.Utilities.printsp
 
 
@@ -120,7 +119,7 @@ Functions
 
 
 
-.. py:function:: get_reader(name, program, qmprogram)
+.. py:function:: get_reader(name, program, qmprogram, debug=False)
 
    Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
 
@@ -134,6 +133,8 @@ Functions
        The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit', 'qe', and 'phonopy'.
    qmprogram : str
        The name of the quantum mechanical program used in conjunction with phonopy. Supported values are the same as for `program`, but its relevance is exclusive to when `program` is set to 'phonopy'.
+   debug : boolean
+       Optional.  If true print debug information.  Default is false
 
    Returns
    -------
@@ -148,52 +149,6 @@ Functions
    --------
    >>> reader = get_reader("output.log", "castep", "")
    >>> reader = get_reader("output", "phonopy", "vasp")
-
-
-
-.. py:function:: pdgui_get_reader(program, names, qmprogram)
-
-   Get the appropriate reader based on the provided program and file names.
-
-   This function determines the correct output reader to use based on the program specified and the presence of certain files
-   in the provided directory or file names list. It supports various quantum mechanics and molecular dynamics
-   programs as well as experiment data.
-
-   Parameters
-   ----------
-   program : str
-       The name of the program or an empty string to attempt automatic detection. Supported programs include 'vasp',
-       'castep', 'gulp', 'crystal', 'abinit', 'qe', 'phonopy', and 'experiment'.
-   names : list of str
-       A list containing either directory names or file names to be read or analysed.
-   qmprogram : str
-       Specifies the quantum mechanics program used in conjunction with 'phonopy'. It is only relevant if 'program'
-       is set to 'phonopy'. Supported programs include 'castep', 'vasp', 'gulp', 'crystal', 'abinit', and 'qe'.
-
-   Returns
-   -------
-   object
-       Returns an instance of the correct output reader based on the specified program and available files. If the
-       necessary files are not found or if the program is not recognized, it returns None.
-
-   Notes
-   -----
-   - The readers returned are capable of parsing output files from their respective programs and extracting relevant data.
-   - For 'phonopy', additional handling is included to combine phonopy output with quantum mechanics results from another
-     specified program.
-   - This function also handles directory or file existence checks and will print errors if required files are missing.
-
-   Examples
-   --------
-   To get a VASP output reader for a directory containing VASP output files:
-
-   >>> reader = pdgui_get_reader('', ['path/to/vasp/output'], '')
-   >>> print(reader)
-
-   For phonopy with VASP as the quantum mechanics program:
-
-   >>> qm_reader = pdgui_get_reader('phonopy', ['path/to/phonopy/files'], 'vasp')
-   >>> print(qm_reader)
 
 
 

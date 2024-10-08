@@ -132,8 +132,10 @@ Classes
        Refresh the GUI with the latest information
    requestRefresh
        Something has changed in the GUI that will need a refresh
-   save_cif
+   save_as_cif
        Write out a cif file
+   save_mode_as_cif
+       Write out a cif file with the mode displacememnt information
    setColour
        Set the colour of the specified element
 
@@ -575,7 +577,24 @@ Classes
 
 
 
-   .. py:method:: save_cif(filename)
+   .. py:method:: save_as_cif(filename)
+
+      Save the crystallographic information file (CIF) for the structure phases.
+
+      The cell is wrtten out
+
+      Parameters
+      ----------
+      filename : str
+          The name of the file where the CIF data will be saved.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: save_mode_as_cif(filename)
 
       Save the crystallographic information file (CIF) for different phases.
 

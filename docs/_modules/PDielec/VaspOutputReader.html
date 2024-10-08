@@ -290,12 +290,48 @@
 <span class="sd">&quot;&quot;&quot;VASP output reader.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">atomic_number_to_element</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">atomic_number_to_element</span><span class="p">,</span> <span class="n">hertz</span>
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
 <span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
+
+
+<div class="viewcode-block" id="read_xml_element"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.read_xml_element">[docs]</a><span class="k">def</span> <span class="nf">read_xml_element</span><span class="p">(</span><span class="n">ele</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read an xml element and return a value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ele : an xml element</span>
+<span class="sd">        An xml element</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the values returned</span>
+<span class="sd">    values : float, int or bool (or a list of them)</span>
+<span class="sd">        The return type depends on the contents of the element</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ele</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;separator&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">ele</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">ele</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+    <span class="k">elif</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">ele</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;logical&quot;</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+    <span class="k">elif</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">ele</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">and</span> <span class="n">ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span> <span class="kc">None</span> <span class="p">]</span> <span class="k">if</span> <span class="n">ele</span><span class="o">.</span><span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span> <span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+    <span class="k">if</span> <span class="n">ele</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">name</span><span class="p">,</span><span class="n">values</span></div>
 
 
 <div class="viewcode-block" id="myfloat"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.myfloat">[docs]</a><span class="k">def</span> <span class="nf">myfloat</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
@@ -420,7 +456,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^ *Atomic configuration&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_species</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;newmasses&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;  Mass of Ions in am&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_newmasses</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xml&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_xml</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="VaspOutputReader._read_forces"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_forces">[docs]</a>    <span class="k">def</span> <span class="nf">_read_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
@@ -1145,6 +1184,352 @@
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_energies_without_entropy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="VaspOutputReader._read_xml"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._read_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_read_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the VASP xml files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The file name of the xml file to be processed</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The routine only handles the Vasp output file vasprun.xml</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># For each file generate an xml tree to process.</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_xml filename = </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_xml tree = </span><span class="si">{</span><span class="n">tree</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_xml root = </span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_kpoints_xml</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;kpoints&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_parameters_xml</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_atominfo_xml</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;atominfo&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_structures_xml</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;structure&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_calculations_xml</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;calculation&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="VaspOutputReader._handle_calculations_xml"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._handle_calculations_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_calculations_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">calculations_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the calculations xml child.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        calculations_xml : a list of xml element</span>
+<span class="sd">            A list of calculations_xml elements</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.nions : int</span>
+<span class="sd">            The number of atoms</span>
+<span class="sd">        self.nspecies : int</span>
+<span class="sd">            The number of atoms</span>
+<span class="sd">        self.atom_type_list : list of ints</span>
+<span class="sd">            A list of the atom types in the order they will be given in the coordinate list</span>
+<span class="sd">        self.zerof_static_dielectric : 3x3 list of floats</span>
+<span class="sd">            The ionic contribution to the static dielectric </span>
+<span class="sd">        self.zerof_optical_dielectric : 3x3 list of floats</span>
+<span class="sd">            The zero frequency optical dielectric dielectric </span>
+<span class="sd">        self.final_free_energies : a list of floats</span>
+<span class="sd">            A list of the free energies at each geometry optimisation</span>
+<span class="sd">        self.final_energies_without_entropy : a list of floats</span>
+<span class="sd">            A list of the energies without entropy at each geometry optimisation</span>
+<span class="sd">        self.borncharges : a list of floats nionsx3x3</span>
+<span class="sd">            A list of the energies without entropy at each geometry optimisation</span>
+<span class="sd">        self.mass_weighted_normal_modes : ndarray floats (3*nions x n*nions)</span>
+<span class="sd">            The mass weighted normal modes</span>
+<span class="sd">        self.frequencies : ndarray floats (3*nions)</span>
+<span class="sd">            The frequencies in cm-1</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dipole</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">hessian</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">dielectric_tensor</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">forces_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">stress_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unit_cell_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dipole_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Loop around the calculations</span>
+        <span class="k">for</span> <span class="n">calcxml</span> <span class="ow">in</span> <span class="n">calculations_xml</span><span class="p">:</span>
+            <span class="n">lastscf</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;scstep/energy&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">dipoles</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;scstep/dipoles&quot;</span><span class="p">)</span>
+            <span class="n">lastdipole</span> <span class="o">=</span> <span class="n">dipoles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">dipoles</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="c1"># Energies from the last step in this calculation</span>
+            <span class="c1"># Correction because Vasp does not include the DFT energy</span>
+            <span class="c1"># properly in the calculate/energy entry</span>
+            <span class="n">de</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lastscf</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;i[@name=&quot;e_0_energy&quot;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span>
+                  <span class="nb">float</span><span class="p">(</span><span class="n">lastscf</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;i[@name=&quot;e_fr_energy&quot;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+            <span class="n">free_energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;energy/i[@name=&quot;e_fr_energy&quot;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="n">free_energy</span> <span class="o">+</span> <span class="n">de</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;energy/i[@name=&quot;e_wo_entrp&quot;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_energies_without_entropy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span>
+            <span class="c1"># Unit cell</span>
+            <span class="n">unit_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unit_cell_from_xml</span><span class="p">(</span><span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;structure&quot;</span><span class="p">))</span>
+            <span class="n">unit_cell_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unit_cell</span><span class="p">)</span>
+            <span class="c1"># Forces</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;varray[@name=&quot;forces&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">forces</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="n">xml</span><span class="p">:</span>
+                    <span class="n">forces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="p">)</span>
+            <span class="n">forces_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">forces</span><span class="p">)</span>
+            <span class="c1"># stresses </span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;varray[@name=&quot;stress&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">stress</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="n">xml</span><span class="p">:</span>
+                    <span class="n">stress</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">*</span><span class="mf">0.1</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
+            <span class="n">stress_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stress</span><span class="p">)</span>
+            <span class="c1"># dipoles</span>
+            <span class="k">if</span> <span class="n">lastdipole</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">xml</span> <span class="o">=</span> <span class="n">lastdipole</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;v[@name=&quot;dipole&quot;]&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">dipole</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">xml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span> 
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;dipole/v[@name=&quot;dipole&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">dipole</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">xml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+            <span class="n">dipole_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dipole</span><span class="p">)</span>
+            <span class="c1"># DFPT properties (There should only be one of these in a collection of calculations)</span>
+            <span class="c1"># epsilon ion</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;varray[@name=&quot;epsilon_ion&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">zerof_static_dielectric</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="n">xml</span><span class="p">:</span>
+                    <span class="n">zerof_static_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="p">)</span>
+                <span class="c1"># print(&#39;zerof_static_dielectric&#39;,zerof_static_dielectric,flush=True)</span>
+
+            <span class="c1"># epsilon optical</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;varray[@name=&quot;epsilon&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="n">xml</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="p">)</span>
+                <span class="c1"># print(&#39;self.zerof_optical_dielectric&#39;,self.zerof_optical_dielectric,flush=True)</span>
+
+            <span class="c1"># hessian tensor</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;dynmat/varray[@name=&quot;hessian&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">hessian</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">xml</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span>
+                        <span class="n">hessian</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span> <span class="p">)</span>
+            <span class="c1"># print(&#39;hessian&#39;, flush=True)</span>
+            <span class="c1"># print(hessian,flush=True)</span>
+            <span class="c1"># dielectric tensor</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;varray[@name=&quot;dielectric_dft&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xml</span><span class="p">):</span>
+                    <span class="n">dielectric_tensor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="p">)</span>
+                <span class="c1"># print(&#39;dielectric_tensor&#39;,dielectric_tensor,flush=True)</span>
+            <span class="c1">#</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;array[@name=&quot;born_charges&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Born effective charges</span>
+                <span class="c1">#        The order used with PDielec is:</span>
+                <span class="c1">#        d2E/dFxdX d2E/dFxdY d2E/dFxdZ        0 3 6</span>
+                <span class="c1">#        d2E/dFydX d2E/dFydY d2E/dFydZ        1 4 7</span>
+                <span class="c1">#        d2E/dFzdX d2E/dFzdY d2E/dFzdZ        2 5 8</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">element_xml</span> <span class="ow">in</span> <span class="n">xml</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>  <span class="c1"># 1. element = dimension</span>
+                    <span class="n">charges</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="n">element_xml</span><span class="p">:</span>
+                        <span class="n">charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span> <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charges</span><span class="p">)</span>
+               <span class="c1">#  print(&#39;born_charges&#39;,self.born_charges,flush=True)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Convert Hessian units, first to hertz, then to atomic units</span>
+        <span class="c1"># NB. this won&#39;t work with VASP 6</span>
+        <span class="c1">#</span>
+        <span class="n">evtoj</span> <span class="o">=</span> <span class="mf">1.60217733E-19</span>    <span class="c1"># Taken from VASP5.4</span>
+        <span class="n">amtokg</span> <span class="o">=</span> <span class="mf">1.6605402E-27</span>    <span class="c1"># Taken from VASP5.4</span>
+        <span class="c1"># convert to hertz        # Taken from VASP5.4</span>
+        <span class="n">conversion</span> <span class="o">=</span> <span class="o">-</span><span class="n">evtoj</span> <span class="o">/</span><span class="n">amtokg</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.0E-10</span><span class="o">**</span><span class="mi">2</span> 
+        <span class="c1"># convert to hertz to au</span>
+        <span class="n">conversion</span> <span class="o">*=</span> <span class="n">hertz</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="n">hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">hessian</span> <span class="o">=</span> <span class="n">conversion</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="n">hessian</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="VaspOutputReader._handle_structures_xml"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._handle_structures_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_structures_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">structures_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the structures xml child.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        structures_xml : a list of xml element</span>
+<span class="sd">            A list of structurexml elements</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.ncells : int</span>
+<span class="sd">            The number of unit cells read so far</span>
+<span class="sd">        self.volume : float</span>
+<span class="sd">            The volume of the last unit cell read</span>
+<span class="sd">        self.unit_cells : list of unit_cells</span>
+<span class="sd">            A list of the unit cells</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create a dictionary of structures</span>
+        <span class="n">structures</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">structures_xml</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="n">structures</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span>
+        <span class="c1"># Process the initial position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_unit_cell_from_xml</span><span class="p">(</span><span class="n">structures</span><span class="p">[</span><span class="s2">&quot;initialpos&quot;</span><span class="p">]))</span>
+        <span class="c1"># Book keeping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_handle_structure_xml: volume=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="VaspOutputReader._get_unit_cell_from_xml"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._get_unit_cell_from_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_get_unit_cell_from_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">structure_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the xml and return a unit cell with the dimensions and positions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        structure_xml : a structure xml element</span>
+<span class="sd">            A structure xml element</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cell : a unit_cell</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">structure_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;crystal/varray[@name=&#39;basis&#39;]&quot;</span><span class="p">):</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">([</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">structure_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;varray[@name=&#39;positions&#39;]&quot;</span><span class="p">):</span>
+            <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">([</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
+        <span class="n">unit_cell</span> <span class="o">=</span> <span class="p">(</span><span class="n">UnitCell</span><span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cell</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cell</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">))</span>
+        <span class="n">unit_cell</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+        <span class="n">unit_cell</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">unit_cell</span></div>
+
+<div class="viewcode-block" id="VaspOutputReader._handle_atominfo_xml"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._handle_atominfo_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_atominfo_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">atominfos_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the atminfos xml child.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        atominfos_xml : a list of xml element</span>
+<span class="sd">            A list of atminfo xml elements</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.nions : int</span>
+<span class="sd">            The number of atoms</span>
+<span class="sd">        self.nspecies : int</span>
+<span class="sd">            The number of atoms</span>
+<span class="sd">        self.atom_type_list : list of ints</span>
+<span class="sd">            A list of the atom types in the order they will be given in the coordinate list</span>
+<span class="sd">        self.species : a list strings</span>
+<span class="sd">            The list of unique species in the calculation. ie the list of atom types</span>
+<span class="sd">        self.species_list : a list strings</span>
+<span class="sd">            The list of species for all atoms</span>
+<span class="sd">        self.ions_per_tpye : a list ints</span>
+<span class="sd">            The list of atom types, could be used to lookup self.species</span>
+<span class="sd">        self.masses_per_type : a list floats</span>
+<span class="sd">            The list of masses for each atom type</span>
+<span class="sd">        self.masses : a list floats</span>
+<span class="sd">            The list of masses for each atom in the unit cell</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">atominfos_xml</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;atoms&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">atominfos_xml</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;types&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span><span class="p">)</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">atominfos_xml</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;array/[@name=&#39;atoms&#39;]/set&quot;</span><span class="p">):</span>
+            <span class="n">species</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">species</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">atominfos_xml</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;array/[@name=&#39;atomtypes&#39;]/set/rc&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span> <span class="n">entry</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">atom_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="p">[</span><span class="n">atom_type</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: nspecies&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: nions&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: ions_per_type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: atom_type_list&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: species&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: species_list&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: masses&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_atomicinfo_xml: masses_per_type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="VaspOutputReader._handle_parameters_xml"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._handle_parameters_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_parameters_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">parameters_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the parameters xml child.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameters_xml : a list of xml element</span>
+<span class="sd">            A list of parameters xml elements</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.electrons : int</span>
+<span class="sd">            The number of electrons</span>
+<span class="sd">        self.spin : int</span>
+<span class="sd">            The spin of the system</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">parameters_xml</span><span class="o">=</span><span class="n">parameters_xml</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">parameters_xml</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
+            <span class="n">name</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="n">read_xml_element</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;NELECT&quot;</span><span class="p">]</span><span class="o">+</span><span class="mf">0.0001</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;ISPIN&quot;</span><span class="p">]</span>
+        <span class="c1"># self.masses_per_type = parameters[&quot;POMASS&quot;] </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_parameters_xml: nelect&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_parameters_xml: spin&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="VaspOutputReader._handle_kpoints_xml"><a class="viewcode-back" href="../../autoapi/PDielec/VaspOutputReader/index.html#PDielec.VaspOutputReader.VaspOutputReader._handle_kpoints_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_kpoints_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">kpoints_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the kpoints xml child.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        kpoints_xml : a list of xml element</span>
+<span class="sd">            A list of kpoint xml elements</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.kpoint_grid : a list of 3 integers</span>
+<span class="sd">            The Monkorst Pack grid</span>
+<span class="sd">        self.kpoints : int</span>
+<span class="sd">            The number of kpoints</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kpoints_xml</span><span class="o">=</span><span class="n">kpoints_xml</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">kpoints_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;generation&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;v/[@name=&#39;divisions&#39;]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">xml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_kpoints_xml: kpoint_grid&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Number of kpoints</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">kpoints_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;varray/[@name=&#39;kpointlist&#39;]&quot;</span><span class="p">)</span>
+        <span class="n">vs</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_handle_kpoints_xml: kpoints&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span></div></div>
 </pre></div>
         </article>

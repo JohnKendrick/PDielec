@@ -426,8 +426,10 @@
 <span class="sd">        Refresh the GUI with the latest information</span>
 <span class="sd">    requestRefresh</span>
 <span class="sd">        Something has changed in the GUI that will need a refresh</span>
-<span class="sd">    save_cif</span>
+<span class="sd">    save_as_cif</span>
 <span class="sd">        Write out a cif file</span>
+<span class="sd">    save_mode_as_cif</span>
+<span class="sd">        Write out a cif file with the mode displacememnt information</span>
 <span class="sd">    setColour</span>
 <span class="sd">        Set the colour of the specified element</span>
 
@@ -673,9 +675,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gif_filename_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Save as gif&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gif_filename_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_filename_button_clicked</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gif_filename_button</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Save the animation as a gif file&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cif_filename_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Save as cif&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cif_filename_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Save as cif or mcif&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cif_filename_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_filename_button_clicked</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cif_filename_button</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Save the animation as a cif file&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cif_filename_button</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Save the structure as cif. Save the mode animation as mcif&quot;</span><span class="p">)</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Image file name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Give a file name in which to save the image.</span><span class="se">\n</span><span class="s2">If a return is pressed the filename is scanned to see whatyoe of file has been requested.&quot;</span><span class="p">)</span>
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename_le</span><span class="p">)</span>
@@ -769,7 +771,7 @@
         <span class="c1">#</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_filename</span>
         <span class="n">root</span><span class="p">,</span><span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="n">extension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;.mp4&quot;</span><span class="p">,</span> <span class="s2">&quot;.avi&quot;</span><span class="p">,</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="s2">&quot;.gif&quot;</span><span class="p">,</span> <span class="s2">&quot;.cif&quot;</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="n">extension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;.mp4&quot;</span><span class="p">,</span> <span class="s2">&quot;.avi&quot;</span><span class="p">,</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="s2">&quot;.gif&quot;</span><span class="p">,</span> <span class="s2">&quot;.cif&quot;</span><span class="p">,</span> <span class="s2">&quot;.mcif&quot;</span> <span class="p">):</span>
             <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Aborting on filename button clicked&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
             <span class="n">QMessageBox</span><span class="o">.</span><span class="n">about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s2">&quot;Image file name&quot;</span><span class="p">,</span> <span class="s2">&quot;The file name for the image is not valid &quot;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span>
             <span class="k">return</span>
@@ -787,7 +789,9 @@
         <span class="k">elif</span> <span class="n">extension</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;.avi&quot;</span><span class="p">,</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">,</span> <span class="s2">&quot;.gif&quot;</span> <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">opengl_widget</span><span class="o">.</span><span class="n">save_movie</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;.cif&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save_cif</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_as_cif</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;.mcif&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_mode_as_cif</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_type_index</span> <span class="o">=</span> <span class="n">old_plot_type</span>
         <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
         <span class="k">return</span></div>
@@ -1155,6 +1159,8 @@
         <span class="c1"># Get the cell with whole molecules from the analysis tab</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">cell_of_molecules</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="c1"># Generate a super cell</span>
         <span class="n">imageSpecifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Super Cell&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">super_cell</span> <span class="o">=</span> <span class="n">SuperCell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">,</span><span class="n">imageSpecifier</span><span class="p">)</span>
@@ -1288,9 +1294,26 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;calculatePhasePositions - exiting&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="ViewerTab.save_cif"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.save_cif">[docs]</a>    <span class="k">def</span> <span class="nf">save_cif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="ViewerTab.save_as_cif"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.save_as_cif">[docs]</a>    <span class="k">def</span> <span class="nf">save_as_cif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the crystallographic information file (CIF) for the structure phases.</span>
+
+<span class="sd">        The cell is wrtten out</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The name of the file where the CIF data will be saved.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span><span class="o">.</span><span class="n">write_cif</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ViewerTab.save_mode_as_cif"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif">[docs]</a>    <span class="k">def</span> <span class="nf">save_mode_as_cif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
         <span class="c1">#</span>
-        <span class="c1"># Write a single cif file containing all the phase information for discplacement along a mode</span>
+        <span class="c1"># Write a single cif file containing all the phase information for displacement along a mode</span>
         <span class="c1"># First transform to abc coordinates from xyz</span>
         <span class="c1">#</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the crystallographic information file (CIF) for different phases.</span>
@@ -1494,6 +1517,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">cell_of_molecules</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span><span class="o">.</span><span class="n">element_names</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">getSpecies</span><span class="p">()</span>
             <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;refresh - species &quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>

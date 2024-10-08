@@ -287,6 +287,7 @@
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;App Module.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
@@ -295,11 +296,12 @@
 
 <span class="kn">import</span> <span class="nn">PDielec.__init__</span>
 <span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">Utilities</span>
+<span class="kn">from</span> <span class="nn">PDielec.Calculator</span> <span class="kn">import</span> <span class="n">set_no_of_threads</span>
 <span class="kn">from</span> <span class="nn">PDielec.GUI.NoteBook</span> <span class="kn">import</span> <span class="n">NoteBook</span>
 <span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span>
-<span class="kn">from</span> <span class="nn">PDielec.Calculator</span> <span class="kn">import</span> <span class="n">set_no_of_threads</span>
 
 <span class="n">version</span> <span class="o">=</span> <span class="n">PDielec</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="n">__version__</span>
+
 
 <div class="viewcode-block" id="App"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/App/index.html#PDielec.GUI.App.App">[docs]</a><span class="k">class</span> <span class="nc">App</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing the main application window.</span>
@@ -385,7 +387,7 @@
 <span class="sd">        - To set the number of CPUs used: `--cpus 4`</span>
 <span class="sd">        - For help: `--help`</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">qm_program</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -412,10 +414,10 @@
         <span class="n">token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PDIELEC_THREADING&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">threading</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;TRUE&quot;</span> <span class="p">):</span>
-                <span class="n">threading</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;FALSE&quot;</span> <span class="p">):</span>
-                <span class="n">threading</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;TRUE&quot;</span><span class="p">):</span>
+            <span class="n">threading</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">):</span>
+            <span class="n">threading</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">threading</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
@@ -423,38 +425,38 @@
         <span class="c1"># Process any instructions on the input line</span>
         <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
             <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-d&quot;</span> <span class="p">,</span> <span class="s2">&quot;-debug&quot;</span> <span class="p">,</span> <span class="s2">&quot;--debug&quot;</span> <span class="p">):</span>
+            <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;-debug&quot;</span><span class="p">,</span> <span class="s2">&quot;--debug&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-nosplash&quot;</span> <span class="p">,</span> <span class="s2">&quot;--nosplash&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-nosplash&quot;</span><span class="p">,</span> <span class="s2">&quot;--nosplash&quot;</span><span class="p">):</span>
                 <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-exit&quot;</span> <span class="p">,</span> <span class="s2">&quot;--exit&quot;</span> <span class="p">,</span> <span class="s2">&quot;-quit&quot;</span> <span class="p">,</span> <span class="s2">&quot;--quit&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-exit&quot;</span><span class="p">,</span> <span class="s2">&quot;--exit&quot;</span><span class="p">,</span> <span class="s2">&quot;-quit&quot;</span><span class="p">,</span> <span class="s2">&quot;--quit&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">program_exit</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-script&quot;</span> <span class="p">,</span> <span class="s2">&quot;--script&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-script&quot;</span><span class="p">,</span> <span class="s2">&quot;--script&quot;</span><span class="p">):</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scriptname</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-spreadsheet&quot;</span> <span class="p">,</span> <span class="s2">&quot;--spreadsheet&quot;</span> <span class="p">,</span> <span class="s2">&quot;-xls&quot;</span> <span class="p">,</span> <span class="s2">&quot;--xls&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-spreadsheet&quot;</span><span class="p">,</span> <span class="s2">&quot;--spreadsheet&quot;</span><span class="p">,</span> <span class="s2">&quot;-xls&quot;</span><span class="p">,</span> <span class="s2">&quot;--xls&quot;</span><span class="p">):</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">spreadsheet_name</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-program&quot;</span> <span class="p">,</span> <span class="s2">&quot;--program&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-program&quot;</span><span class="p">,</span> <span class="s2">&quot;--program&quot;</span><span class="p">):</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">program</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
                 <span class="n">program_has_been_specified</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-qmprogram&quot;</span> <span class="p">,</span> <span class="s2">&quot;--qmprogram&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-qmprogram&quot;</span><span class="p">,</span> <span class="s2">&quot;--qmprogram&quot;</span><span class="p">):</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">qm_program</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-threading&quot;</span> <span class="p">,</span> <span class="s2">&quot;--threading&quot;</span> <span class="p">,</span> <span class="s2">&quot;-threads&quot;</span> <span class="p">,</span> <span class="s2">&quot;--threads&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-threading&quot;</span><span class="p">,</span> <span class="s2">&quot;--threading&quot;</span><span class="p">,</span> <span class="s2">&quot;-threads&quot;</span><span class="p">,</span> <span class="s2">&quot;--threads&quot;</span><span class="p">):</span>
                 <span class="n">threading</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-threads&quot;</span> <span class="p">,</span> <span class="s2">&quot;--threads&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-threads&quot;</span><span class="p">,</span> <span class="s2">&quot;--threads&quot;</span><span class="p">):</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">nthreads</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-cpus&quot;</span> <span class="p">,</span> <span class="s2">&quot;--cpus&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-cpus&quot;</span><span class="p">,</span> <span class="s2">&quot;--cpus&quot;</span><span class="p">):</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">ncpus</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-scenario&quot;</span> <span class="p">,</span> <span class="s2">&quot;--scenario&quot;</span> <span class="p">):</span>
+            <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-scenario&quot;</span><span class="p">,</span> <span class="s2">&quot;--scenario&quot;</span><span class="p">):</span>
                 <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">default_scenario</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">default_scenario</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;powder&quot;</span> <span class="p">,</span> <span class="s2">&quot;crystal&quot;</span> <span class="p">)</span> <span class="p">:</span>
+                <span class="k">if</span> <span class="n">default_scenario</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;powder&quot;</span><span class="p">,</span> <span class="s2">&quot;crystal&quot;</span><span class="p">):</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in default scenario: must be &#39;powder&#39; or &#39;crystal&#39;&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">print_usage</span><span class="p">()</span>
                     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
@@ -472,7 +474,7 @@
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">program_has_been_specified</span><span class="p">:</span>
-                <span class="n">program</span><span class="p">,</span><span class="n">qm_program</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="n">program</span><span class="p">,</span> <span class="n">qm_program</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">program_has_been_specified</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: program has been specified twice&quot;</span><span class="p">)</span>
@@ -500,7 +502,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
         <span class="n">QCoreApplication</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
         <span class="k">global</span> <span class="n">debugger</span>
-        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span><span class="s2">&quot;App:&quot;</span><span class="p">)</span>
+        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;App:&quot;</span><span class="p">)</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Start:: Initialising&quot;</span><span class="p">)</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;About to open the notebook&quot;</span><span class="p">)</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Program is&quot;</span><span class="p">,</span> <span class="n">program</span><span class="p">)</span>
@@ -519,16 +521,28 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Threading is False, so spawning separate processes, but each one will still have nthreads threads</span>
             <span class="n">set_no_of_threads</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span> <span class="o">=</span> <span class="n">NoteBook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">qm_program</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">spreadsheet_name</span><span class="p">,</span> <span class="n">scripting</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="n">progressbar</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span> <span class="n">ncpus</span><span class="o">=</span><span class="n">ncpus</span><span class="p">,</span> <span class="n">threading</span><span class="o">=</span><span class="n">threading</span><span class="p">,</span> <span class="n">default_scenario</span><span class="o">=</span><span class="n">default_scenario</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span> <span class="o">=</span> <span class="n">NoteBook</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">program</span><span class="p">,</span>
+            <span class="n">qm_program</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">,</span>
+            <span class="n">spreadsheet_name</span><span class="p">,</span>
+            <span class="n">scripting</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">,</span>
+            <span class="n">progressbar</span><span class="o">=</span><span class="n">progressbar</span><span class="p">,</span>
+            <span class="n">debug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span>
+            <span class="n">ncpus</span><span class="o">=</span><span class="n">ncpus</span><span class="p">,</span>
+            <span class="n">threading</span><span class="o">=</span><span class="n">threading</span><span class="p">,</span>
+            <span class="n">default_scenario</span><span class="o">=</span><span class="n">default_scenario</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;About to call setCentralWidget&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="p">)</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Finished call setCentralWidget&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Processing script&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">scriptname</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">readScript</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scriptname</span><span class="p">,</span><span class="n">spreadsheet_name</span><span class="o">=</span><span class="n">spreadsheet_name</span><span class="p">)</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Processing script&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scriptname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">readScript</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scriptname</span><span class="p">,</span> <span class="n">spreadsheet_name</span><span class="o">=</span><span class="n">spreadsheet_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">program_exit</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">spreadsheet_name</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Writing spreadsheeet on exit&quot;</span><span class="p">,</span><span class="n">spreadsheet_name</span><span class="p">)</span>
+                <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Writing spreadsheeet on exit&quot;</span><span class="p">,</span> <span class="n">spreadsheet_name</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">writeSpreadsheet</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">spreadsheet</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Exiting with sys.exit call&quot;</span><span class="p">)</span>
@@ -571,7 +585,7 @@
 <span class="sd">        - `-help`: Prints out help information.</span>
 <span class="sd">        - `-debug`: Switches on debugging information.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pdgui - graphical user interface to the PDielec package&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pdgui [program] filename [spreadsheet] [options]&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     program      The name of the program which created the outputfile&quot;</span><span class="p">)</span>
@@ -596,7 +610,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      -debug      Switches on debugging information&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="App.setMyWindowTitle"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/App/index.html#PDielec.GUI.App.App.setMyWindowTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setMyWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">title</span><span class="p">):</span>
+<div class="viewcode-block" id="App.setMyWindowTitle"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/App/index.html#PDielec.GUI.App.App.setMyWindowTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setMyWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the window title with the provided title appended to the PDGui version.</span>
 
 <span class="sd">        Parameters</span>
@@ -613,12 +627,12 @@
 <span class="sd">        -----</span>
 <span class="sd">        This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;PDGui </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">  - &quot;</span> <span class="o">+</span> <span class="n">title</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="App.readScript"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/App/index.html#PDielec.GUI.App.App.readScript">[docs]</a>    <span class="k">def</span> <span class="nf">readScript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">scriptname</span><span class="p">,</span><span class="n">spreadsheet_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="App.readScript"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/App/index.html#PDielec.GUI.App.App.readScript">[docs]</a>    <span class="k">def</span> <span class="nf">readScript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scriptname</span><span class="p">,</span> <span class="n">spreadsheet_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and execute a script, optionally changing the working directory to the script&#39;s location and optionally setting a spreadsheet name.</span>
 
 <span class="sd">        Parameters</span>
@@ -639,7 +653,7 @@
 
 <span class="sd">        After executing the script, it potentially updates the spreadsheet name in the notebook&#39;s mainTab settings if a non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with `QCoreApplication.processEvents()`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Start:: readScript&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">scripting</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">scriptname</span><span class="p">)</span>
@@ -650,11 +664,11 @@
         <span class="c1"># If a script is used there are no prompts for overwriting files etc.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">overwriting</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">scriptname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-            <span class="c1">#lines = fd.readlines()</span>
+            <span class="c1"># lines = fd.readlines()</span>
             <span class="n">script</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="n">exec</span><span class="p">(</span><span class="n">script</span><span class="p">)</span>
-            <span class="c1">#line_no = 0</span>
-            <span class="c1">#for line in lines:</span>
+            <span class="c1"># line_no = 0</span>
+            <span class="c1"># for line in lines:</span>
             <span class="c1">#    line_no += 1</span>
             <span class="c1">#    debugger.print(&#39;line: &#39;,line_no,line)</span>
             <span class="c1">#    exec(line)</span>
@@ -666,7 +680,7 @@
             <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;readScript notebook overwriting set to False&quot;</span><span class="p">)</span>
         <span class="c1"># The command line excel file overrides that in the script</span>
         <span class="k">if</span> <span class="n">spreadsheet_name</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;readScript overwriting spread sheet name:&quot;</span><span class="p">,</span><span class="n">spreadsheet_name</span><span class="p">)</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;readScript overwriting spread sheet name:&quot;</span><span class="p">,</span> <span class="n">spreadsheet_name</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Excel file name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spreadsheet_name</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;readScript notebook refresh&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -693,23 +707,24 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This function must be a method of a class that inherits from a PyQt or PySide </span>
+<span class="sd">        This function must be a method of a class that inherits from a PyQt or PySide</span>
 <span class="sd">        widget which has a closeEvent method to override, such as QMainWindow, QDialog, etc.</span>
 
 <span class="sd">        The `self.notebook.pool` is an instance of a multiprocessing pool, which needs</span>
 <span class="sd">        to be closed and joined properly to ensure all processes are terminated cleanly before the application exits.</span>
 
-<span class="sd">        The `super(App, self).closeEvent(event)` call makes sure that any close event operations defined in the </span>
+<span class="sd">        The `super(App, self).closeEvent(event)` call makes sure that any close event operations defined in the</span>
 <span class="sd">        base class (from which the current class is derived) are also executed.</span>
 
 <span class="sd">        When the application is about to close, this method ensures clean termination</span>
 <span class="sd">        of multiprocessing resources and performs any additional base class close event handling.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Close event has been captured&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">closeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div></div>
+
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>

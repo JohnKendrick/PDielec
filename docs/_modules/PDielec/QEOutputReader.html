@@ -290,10 +290,11 @@
 <span class="sd">&quot;&quot;&quot;QEOutputReader: Read the contents of a QE output file containing QE dynamical matrix.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">angs2bohr</span><span class="p">,</span> <span class="n">hartree2ev</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">angs2bohr</span><span class="p">,</span> <span class="n">au2GPa</span><span class="p">,</span> <span class="n">hartree2ev</span>
 <span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
 <span class="kn">from</span> <span class="nn">PDielec.UnitCell</span> <span class="kn">import</span> <span class="n">UnitCell</span>
 
@@ -331,7 +332,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;QE output&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span>                    <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span>                   <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alat_from_xml</span>          <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="QEOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -344,13 +346,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Define the search keys to be looked for in the files</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># Empty the dictionary matching phrases</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;header&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;Dynamical matrix file&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_header</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;Basis vectors&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice2&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;cubic&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_lattice_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;header&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;Dynamical matrix file&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;Basis vectors&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_basis_vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice2&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;cubic&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_basis_vectors</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;lattice3&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;CELL_PARAMETERS&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_cell_parameters</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;ATOMIC_POSITIONS&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_fractional_coordinates</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;dynamical&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Dynamical  Matrix in c&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dynamical</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;epsilon&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Dielectric Tensor:&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_epsilon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;dynamical&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Dynamical  Matrix in c&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_dynamical</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;epsilon&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Dielectric Tensor:&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_epsilon</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;charges&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *Effective Charges E-U:&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_born_charges</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;energy_cutoff&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *kinetic-energy cutoff&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_energy_cutoff</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *number of k points&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kpoints</span><span class="p">)</span>
@@ -363,7 +365,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^ *total *stress *.Ry&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pressure</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nions&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^ *number of atoms/cell&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_nions</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xml&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_xml</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="QEOutputReader._read_nions"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_nions">[docs]</a>    <span class="k">def</span> <span class="nf">_read_nions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
@@ -449,7 +454,7 @@
             <span class="n">t</span> <span class="o">=</span> <span class="n">angs2bohr</span>
         <span class="c1"># There are rounding errors when reading from the log file</span>
         <span class="c1"># So only read if there is no alternative</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat_from_xml</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="o">=</span> <span class="n">t</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_celldm1: _alat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
@@ -490,7 +495,7 @@
             <span class="n">t</span> <span class="o">=</span> <span class="n">angs2bohr</span>
         <span class="c1"># There are rounding errors when reading from the log file</span>
         <span class="c1"># So only read if there is no alternative</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat_from_xml</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="o">=</span> <span class="n">t</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_alat: _alat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
@@ -526,7 +531,7 @@
             <span class="n">t</span> <span class="o">=</span> <span class="n">angs2bohr</span>
         <span class="c1"># There are rounding errors when reading from the log file</span>
         <span class="c1"># So only read if there is no alternative</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat_from_xml</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="o">=</span> <span class="n">t</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_alat2: _alat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
@@ -682,20 +687,19 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_kpoints_grid kpoint_grid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_kpoint_grid kpoint_grid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="QEOutputReader._read_header"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_header">[docs]</a>    <span class="k">def</span> <span class="nf">_read_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="QEOutputReader._read_dyng_header"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_header">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process the header line from the dynG file.</span>
 
 <span class="sd">        This method updates the object&#39;s state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        line : str</span>
-<span class="sd">            The initial line to read from. Note: This parameter is not used in the current implementation and the function reads directly from the object&#39;s file_descriptor attribute.</span>
+<span class="sd">        None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -708,27 +712,30 @@
 <span class="sd">        This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Skip a couple of lines</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nions</span>    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">t</span>              <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">t</span>             <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">angs2bohr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0e-4</span><span class="p">:</span>
             <span class="n">t</span> <span class="o">=</span> <span class="n">angs2bohr</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="c1"># Only overwrite alat if it hasn&#39;t come from the xml file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat_from_xml</span><span class="p">:</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="o">=</span> <span class="n">t</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_header alat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_dyng_header alat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="QEOutputReader._read_epsilon"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">_read_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="QEOutputReader._read_dyng_epsilon"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process zero frequency optical permittivity data from the dynG file.</span>
 
 <span class="sd">        This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance&#39;s `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        line : not used</span>
-<span class="sd">            This parameter is present but not used in the function.</span>
+<span class="sd">        line : str</span>
+<span class="sd">            The last line read</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -752,7 +759,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_espilon zerof_optical_dielectric=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="QEOutputReader._read_masses"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_masses">[docs]</a>    <span class="k">def</span> <span class="nf">_read_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QEOutputReader._read_dyng_masses"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_masses">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the masses of species from an dynG file and populate mass and species lists.</span>
 
 <span class="sd">        This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.</span>
@@ -786,12 +793,11 @@
             <span class="c1"># The factor of two is because au in pwscf are half mass of electron</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">linea</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">amu</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_masses masses=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_coordinates</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_dyng_masses masses=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_dyng_masses species=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="QEOutputReader._read_dynamical"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dynamical">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dynamical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="QEOutputReader._read_dyng_dynamical"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_dynamical">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_dynamical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process the dynamical matrix from the dynG file.</span>
 
 <span class="sd">        This method reads a specific format from the current position of the file descriptor,</span>
@@ -801,8 +807,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        line : str</span>
-<span class="sd">            The line from which to start reading. This parameter is not used in the function</span>
-<span class="sd">            and likely represents a legacy or placeholder parameter.</span>
+<span class="sd">            The last line read</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -836,7 +841,7 @@
         <span class="c1"># end for a</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dynamical_matrix</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_read_dynamical&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_read_dyng_dynamical&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="QEOutputReader._read_born_charges"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_born_charges">[docs]</a>    <span class="k">def</span> <span class="nf">_read_born_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
@@ -908,7 +913,7 @@
         <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
         <span class="n">linea</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="c1"># Overwrite alat here as it is more accurate than anywhere else in the log file</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linea</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alat_from_xml</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">linea</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">linea</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">avector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="o">/</span><span class="n">angs2bohr</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">linea</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]]</span>
@@ -923,15 +928,14 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_cell_parameters: volume=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="QEOutputReader._read_lattice_vectors"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_lattice_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_lattice_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process lattice vectors from a synG file, then updates unit cell information.</span>
+<div class="viewcode-block" id="QEOutputReader._read_dyng_basis_vectors"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_basis_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_basis_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process lattice vectors from a dynG file, then updates unit cell information.</span>
 
 <span class="sd">        This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        line : str</span>
-<span class="sd">            The initial line from which to start reading the lattice vectors. Note: This parameter is mentioned for consistency with the function signature, but its utility within the function body as described is not clear and appears to be a placeholder.</span>
+<span class="sd">        None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -948,6 +952,8 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">linea</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Basis&quot;</span> <span class="ow">or</span> <span class="n">linea</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cubic&quot;</span><span class="p">:</span>
+            <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">avector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="o">/</span><span class="n">angs2bohr</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">linea</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]]</span>
         <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">bvector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span><span class="o">/</span><span class="n">angs2bohr</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">linea</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]]</span>
@@ -957,8 +963,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_lattices_vectors: volume=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read_masses</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_lattic_vectors: volume=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="QEOutputReader._read_fractional_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_fractional_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_read_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">line</span><span class="p">):</span>
@@ -993,20 +998,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">fractional_coordinates</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">species_list</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_fractional_coordinates: volume=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="QEOutputReader._read_dyng_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="QEOutputReader._read_dyng_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read dynamic coordinates from a dynG file and update related properties.</span>
 
 <span class="sd">        This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the corresponding `unit_cells` properties.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        line : str</span>
-<span class="sd">            The line from which coordinates are read. This parameter is mentioned for clarity but technically does not exist in the function&#39;s arguments. The actual reading is from the object&#39;s file_descriptor attribute, thus assuming this function is part of a class handling file input.</span>
+<span class="sd">        None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1054,7 +1058,367 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_dyng_coordinates: volume=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span></div></div>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._read_xml"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_read_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the QE xml files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The file name of the xml file to be processed</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The routine only handles the pwscf output file pwscf.xml</span>
+<span class="sd">        This file is created when a single point calculation is performed prior to the born calculation</span>
+<span class="sd">        The routine should also be able to parse an optimisation run.</span>
+<span class="sd">        In this case there is a &#39;steps&#39; entry in the xml</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># For each file generate an xml tree to process.</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: filename = &quot;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: tree = &quot;</span><span class="p">,</span><span class="n">tree</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: root = &quot;</span><span class="p">,</span><span class="n">root</span><span class="p">)</span>
+        <span class="n">inputxml</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+        <span class="n">outputxml</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+        <span class="n">stepsxml</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">outputxml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stepsxml</span> <span class="o">=</span> <span class="n">outputxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;steps&quot;</span><span class="p">)</span>
+        <span class="c1"># Handle the case of an optimisation or a single point calculation</span>
+        <span class="n">use_this_xml</span> <span class="o">=</span> <span class="n">stepsxml</span> <span class="k">if</span> <span class="n">stepsxml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">outputxml</span>
+        <span class="n">tensorsxml</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;EF_TENSORS&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: inputxml = &quot;</span><span class="p">,</span><span class="n">inputxml</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: outputxml = &quot;</span><span class="p">,</span><span class="n">outputxml</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: stepsxml = &quot;</span><span class="p">,</span><span class="n">stepsxml</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: use_this_xml = &quot;</span><span class="p">,</span><span class="n">use_this_xml</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QEOutputReader _read_xml: tensorsxml = &quot;</span><span class="p">,</span><span class="n">tensorsxml</span><span class="p">)</span>
+        <span class="c1"># Handle input</span>
+        <span class="k">if</span> <span class="n">inputxml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_basis</span><span class="p">(</span><span class="n">inputxml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;basis&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_atomic_species</span><span class="p">(</span><span class="n">inputxml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;atomic_species&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_kpoints</span><span class="p">(</span><span class="n">inputxml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;k_points_IBZ&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># Handle output </span>
+        <span class="k">if</span> <span class="n">outputxml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pressure</span><span class="p">(</span><span class="n">outputxml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;stress&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_band_structure</span><span class="p">(</span><span class="n">outputxml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;band_structure&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># Handle the case of optimisation</span>
+        <span class="k">if</span> <span class="n">use_this_xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_atomic_structure</span><span class="p">(</span><span class="n">use_this_xml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;atomic_structure&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_total_energy</span><span class="p">(</span><span class="n">use_this_xml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;total_energy&quot;</span><span class="p">))</span>
+        <span class="c1"># Handle ef tensors</span>
+        <span class="k">if</span> <span class="n">tensorsxml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dielectric_constant</span><span class="p">(</span><span class="n">tensorsxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;DIELECTRIC_CONSTANT&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_effective_charges</span><span class="p">(</span><span class="n">tensorsxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;EFFECTIVE_CHARGES_EU&quot;</span><span class="p">))</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._effective_charges"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._effective_charges">[docs]</a>    <span class="k">def</span> <span class="nf">_effective_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">effective_charges_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the effective_charges element(s).</span>
+
+<span class="sd">        For a given atom the ordering of the elements in the tensors.xml file appears to be:</span>
+<span class="sd">        d2E/dFxdX d2E/dFydX d2E/dFzdX        0 1 2</span>
+<span class="sd">        d2E/dFxdY d2E/dFydY d2E/dFzdY        3 4 5</span>
+<span class="sd">        d2E/dFxdZ d2E/dFydZ d2E/dFzdZ        6 7 8</span>
+
+<span class="sd">        The order used with PDielec is:</span>
+<span class="sd">        d2E/dFxdX d2E/dFxdY d2E/dFxdZ        0 3 6</span>
+<span class="sd">        d2E/dFydX d2E/dFydY d2E/dFydZ        1 4 7</span>
+<span class="sd">        d2E/dFzdX d2E/dFzdY d2E/dFzdZ        2 5 8</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        effective_charges_xml : an xml element</span>
+<span class="sd">            An effective_charges xml element</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.born_charges</span>
+<span class="sd">            The born_charges </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">charges_string</span> <span class="o">=</span> <span class="n">effective_charges_xml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">charges</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">charges_string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">([</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">0</span><span class="p">],</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">3</span><span class="p">],</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">([</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">4</span><span class="p">],</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">7</span><span class="p">]</span> <span class="p">])</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">([</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">5</span><span class="p">],</span> <span class="n">charges</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">8</span><span class="p">]</span> <span class="p">])</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">9</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_basis: born_charges=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._dielectric_constant"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._dielectric_constant">[docs]</a>    <span class="k">def</span> <span class="nf">_dielectric_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dielectric_constant_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the dielectric_constant element(s).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dielectric_constant_xml : an xml element</span>
+<span class="sd">            A dielectric_constant xml element</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.zerof_optical_dielectric</span>
+<span class="sd">            The zero frequency optical dielectric</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eps_string</span> <span class="o">=</span> <span class="n">dielectric_constant_xml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">eps_string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="n">eps</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_basis: zerof_optical_dielectric=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._basis"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._basis">[docs]</a>    <span class="k">def</span> <span class="nf">_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">basis_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the basis element(s).</span>
+
+<span class="sd">        Store the energy in eV</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        basis_xml : a basis xml element</span>
+<span class="sd">            A basis xml element</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.energy_cutoff</span>
+<span class="sd">            The energy cutoff in hartree</span>
+<span class="sd">        self.rho_cutoff</span>
+<span class="sd">            The charge density cutoff in hartree</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ecutwfc_xml</span> <span class="o">=</span> <span class="n">basis_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ecutwfc&quot;</span><span class="p">)</span>
+        <span class="n">ecutrho_xml</span> <span class="o">=</span> <span class="n">basis_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ecutrho&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span> <span class="n">ecutwfc_xml</span><span class="o">.</span><span class="n">text</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho_cutoff</span>    <span class="o">=</span> <span class="nb">float</span><span class="p">(</span> <span class="n">ecutrho_xml</span><span class="o">.</span><span class="n">text</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_basis: energy_cutoff=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_cutoff</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_basis: rho_cutoff=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rho_cutoff</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._total_energy"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._total_energy">[docs]</a>    <span class="k">def</span> <span class="nf">_total_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">total_energy_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the total_energy element(s).</span>
+
+<span class="sd">        Store the energy in eV</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        total_energy_xml : a list of xml element</span>
+<span class="sd">            A list of total_energy elements</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.energies :  a list of floats</span>
+<span class="sd">            The final energies in eV of each step in an optimisation</span>
+<span class="sd">        self.final_energy_without_entropy : float</span>
+<span class="sd">            The final energy in eV</span>
+<span class="sd">        self.final_free_energy : float</span>
+<span class="sd">            The final energy in eV</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energies</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">step_xml</span> <span class="ow">in</span> <span class="n">total_energy_xml</span><span class="p">:</span>
+            <span class="n">etot_xml</span> <span class="o">=</span> <span class="n">step_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;etot&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="n">hartree2ev</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span> <span class="n">etot_xml</span><span class="o">.</span><span class="n">text</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_energies_without_entropy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_total_energy: final_energy_without_entropy=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_total_energy: final_free_energy=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_total_energy: energies=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">energies</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._band_structure"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._band_structure">[docs]</a>    <span class="k">def</span> <span class="nf">_band_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">band_structure_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the band_structure element.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        band_structure_xml : an xml element</span>
+<span class="sd">            A band structure element</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.electrons : int</span>
+<span class="sd">            The number of electrons</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nelec_xml</span> <span class="o">=</span> <span class="n">band_structure_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;nelec&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">nelec_xml</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">+</span><span class="mf">0.00000001</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_band_structure: electrons=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">electrons</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._atomic_structure"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._atomic_structure">[docs]</a>    <span class="k">def</span> <span class="nf">_atomic_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">atomic_structure_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the atomic_structure element(s).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        atomic_structure_xml : a list of xml elements</span>
+<span class="sd">            A list of atomic structure elements</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.nions : int</span>
+<span class="sd">            The number of ions</span>
+<span class="sd">        self.unit_cells : unitCell</span>
+<span class="sd">            A list of the unit cells</span>
+<span class="sd">        self.volume :  float</span>
+<span class="sd">            A volume of the last unit cell</span>
+<span class="sd">        self.ncell :  int</span>
+<span class="sd">            A number of unit cells</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">structure_xml</span> <span class="ow">in</span> <span class="n">atomic_structure_xml</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">structure_xml</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_alat</span>  <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">structure_xml</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;alat&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_alat_from_xml</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">fractional_coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># First find the cell dimensions and volume</span>
+            <span class="n">cell_xml</span> <span class="o">=</span> <span class="n">structure_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;cell&quot;</span><span class="p">)</span>
+            <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">angs2bohr</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cell_xml</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+            <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">angs2bohr</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cell_xml</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+            <span class="n">a3</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">angs2bohr</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cell_xml</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UnitCell</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">))</span>
+            <span class="c1"># Now find the fractional coordinates</span>
+            <span class="n">positions_xml</span> <span class="o">=</span> <span class="n">structure_xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;atomic_positions&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span><span class="p">)</span> <span class="p">]</span>
+            <span class="k">for</span> <span class="n">atom_xml</span> <span class="ow">in</span> <span class="n">positions_xml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;atom&quot;</span><span class="p">):</span>
+                <span class="n">species</span> <span class="o">=</span> <span class="n">atom_xml</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="n">species_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+                <span class="n">species_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">species</span> <span class="p">)</span>
+                <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_alat</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">atom_xml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span>
+                <span class="n">fractional_coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_index</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span><span class="p">[</span><span class="n">species_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">fractional_coordinates</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">species_list</span><span class="p">)</span>
+            <span class="c1"># Book keeping</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_atomic_structure: volume=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+            
+<div class="viewcode-block" id="QEOutputReader._atomic_species"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._atomic_species">[docs]</a>    <span class="k">def</span> <span class="nf">_atomic_species</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">atomic_species_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the atomic_species element.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        atomic_species_xml : an xml element</span>
+<span class="sd">            The atomic species element</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.nspecies</span>
+<span class="sd">            The number of species</span>
+<span class="sd">        self.species</span>
+<span class="sd">            A list of the names of the species</span>
+<span class="sd">        self.masses_per_type</span>
+<span class="sd">            A list of the masses of the species</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atomic_species_xml</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;ntyp&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span>      <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">atomic_species_xml</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="o">.</span><span class="n">append</span> <span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;mass&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_atomic_species: nspecies=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_atomic_species: species=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_atomic_species: masses_per_type=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+            
+
+<div class="viewcode-block" id="QEOutputReader._kpoints"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._kpoints">[docs]</a>    <span class="k">def</span> <span class="nf">_kpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">kpoints_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the k_points element.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        kpoints_xml : an xml element</span>
+<span class="sd">            The k-point definition using Monkhorst-Pack</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.kpoints</span>
+<span class="sd">            A list of the number of kpoints to be used in a Monkhorst-Pack grid</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kpt_dict</span> <span class="o">=</span> <span class="n">kpoints_xml</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kpt_dict</span><span class="p">[</span><span class="s2">&quot;nk1&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kpt_dict</span><span class="p">[</span><span class="s2">&quot;nk2&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kpt_dict</span><span class="p">[</span><span class="s2">&quot;nk3&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_kpoints: kpoint_grid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._pressure"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._pressure">[docs]</a>    <span class="k">def</span> <span class="nf">_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pressure_xml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the pressure xml element.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pressure_xml : an xml element</span>
+<span class="sd">            The pressure is calculated for the average of the trace of the stress tensor</span>
+
+<span class="sd">        Set</span>
+<span class="sd">        ---</span>
+<span class="sd">        self.pressure</span>
+<span class="sd">            The pressure in GPa</span>
+<span class="sd">            The xml file holds the pressure in Hartree/Bohr3</span>
+<span class="sd">            Conversion to SI units is done by autoGPa from Constants.py</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stress</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">pressure_xml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="c1"># Take the trace of the (flat) matrix and convert from atomic units to GPa</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="n">au2GPa</span> <span class="o">*</span> <span class="p">(</span><span class="n">stress</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">stress</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">stress</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span> <span class="o">/</span> <span class="mf">3.0</span> 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_pressure: pressure=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pressure</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="QEOutputReader._read_dyng_file"><a class="viewcode-back" href="../../autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader._read_dyng_file">[docs]</a>    <span class="k">def</span> <span class="nf">_read_dyng_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">line</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a dynG file.</span>
+
+<span class="sd">        This method the dynG output file from a qe ph.x calculation of IR intensities</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        line : str</span>
+<span class="sd">            The first line of input in the dyng file</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Calls</span>
+<span class="sd">        - `_read_dyng_header`</span>
+<span class="sd">        - `_read_dyng_basis_vectors`</span>
+<span class="sd">        - `_read_dyng_masses`</span>
+<span class="sd">        - `_read_dyng_coordinates`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_read_dyng:&quot;</span> <span class="p">)</span>
+        <span class="c1"># Read the header</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_header</span><span class="p">()</span>
+        <span class="c1"># Read the basis vectors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_basis_vectors</span><span class="p">()</span>
+        <span class="c1"># Read the species masses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_masses</span><span class="p">()</span>
+        <span class="c1"># Read the fractional coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_dyng_coordinates</span><span class="p">()</span></div></div>
 </pre></div>
         </article>
       </div>

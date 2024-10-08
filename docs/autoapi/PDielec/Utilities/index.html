@@ -299,13 +299,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Utilities.find_program_from_name" title="PDielec.Utilities.find_program_from_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_program_from_name</span></code></a>(filename)</p></td>
 <td><p>Determine the simulation program from a given filename.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Utilities.get_reader" title="PDielec.Utilities.get_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reader</span></code></a>(name, program, qmprogram)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Utilities.get_reader" title="PDielec.Utilities.get_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reader</span></code></a>(name, program, qmprogram[, debug])</p></td>
 <td><p>Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Utilities.pdgui_get_reader" title="PDielec.Utilities.pdgui_get_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdgui_get_reader</span></code></a>(program, names, qmprogram)</p></td>
-<td><p>Get the appropriate reader based on the provided program and file names.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Utilities.printsp" title="PDielec.Utilities.printsp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">printsp</span></code></a>(name, matrix)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Utilities.printsp" title="PDielec.Utilities.printsp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">printsp</span></code></a>(name, matrix)</p></td>
 <td><p>Print 4x4 matrices or 4 vectors.</p></td>
 </tr>
 </tbody>
@@ -405,7 +402,7 @@ In the case of phonopy, the second string is the QM program that calculates the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Utilities.get_reader">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#get_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.get_reader" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#get_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.get_reader" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.</p>
 <p>This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.</p>
 <section id="id6">
@@ -416,6 +413,8 @@ In the case of phonopy, the second string is the QM program that calculates the 
 <dt>program<span class="classifier">str</span></dt><dd><p>The name of the simulation program. Supported values are ‘castep’, ‘vasp’, ‘gulp’, ‘crystal’, ‘abinit’, ‘qe’, and ‘phonopy’.</p>
 </dd>
 <dt>qmprogram<span class="classifier">str</span></dt><dd><p>The name of the quantum mechanical program used in conjunction with phonopy. Supported values are the same as for <cite>program</cite>, but its relevance is exclusive to when <cite>program</cite> is set to ‘phonopy’.</p>
+</dd>
+<dt>debug<span class="classifier">boolean</span></dt><dd><p>Optional.  If true print debug information.  Default is false</p>
 </dd>
 </dl>
 </section>
@@ -440,63 +439,11 @@ In the case of phonopy, the second string is the QM program that calculates the 
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PDielec.Utilities.pdgui_get_reader">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">pdgui_get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#pdgui_get_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.pdgui_get_reader" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the appropriate reader based on the provided program and file names.</p>
-<p>This function determines the correct output reader to use based on the program specified and the presence of certain files
-in the provided directory or file names list. It supports various quantum mechanics and molecular dynamics
-programs as well as experiment data.</p>
-<section id="id10">
-<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
-<dl class="simple">
-<dt>program<span class="classifier">str</span></dt><dd><p>The name of the program or an empty string to attempt automatic detection. Supported programs include ‘vasp’,
-‘castep’, ‘gulp’, ‘crystal’, ‘abinit’, ‘qe’, ‘phonopy’, and ‘experiment’.</p>
-</dd>
-<dt>names<span class="classifier">list of str</span></dt><dd><p>A list containing either directory names or file names to be read or analysed.</p>
-</dd>
-<dt>qmprogram<span class="classifier">str</span></dt><dd><p>Specifies the quantum mechanics program used in conjunction with ‘phonopy’. It is only relevant if ‘program’
-is set to ‘phonopy’. Supported programs include ‘castep’, ‘vasp’, ‘gulp’, ‘crystal’, ‘abinit’, and ‘qe’.</p>
-</dd>
-</dl>
-</section>
-<section id="id11">
-<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
-<dl class="simple">
-<dt>object</dt><dd><p>Returns an instance of the correct output reader based on the specified program and available files. If the
-necessary files are not found or if the program is not recognized, it returns None.</p>
-</dd>
-</dl>
-</section>
-<section id="id12">
-<h4>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>The readers returned are capable of parsing output files from their respective programs and extracting relevant data.</p></li>
-<li><p>For ‘phonopy’, additional handling is included to combine phonopy output with quantum mechanics results from another
-specified program.</p></li>
-<li><p>This function also handles directory or file existence checks and will print errors if required files are missing.</p></li>
-</ul>
-</section>
-<section id="id13">
-<h4>Examples<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
-<p>To get a VASP output reader for a directory containing VASP output files:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">pdgui_get_reader</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;path/to/vasp/output&#39;</span><span class="p">],</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>For phonopy with VASP as the quantum mechanics program:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qm_reader</span> <span class="o">=</span> <span class="n">pdgui_get_reader</span><span class="p">(</span><span class="s1">&#39;phonopy&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;path/to/phonopy/files&#39;</span><span class="p">],</span> <span class="s1">&#39;vasp&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qm_reader</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Utilities.printsp">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">printsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#printsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.printsp" title="Permalink to this definition">#</a></dt>
 <dd><p>Print 4x4 matrices or 4 vectors.</p>
-<section id="id14">
-<h4>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>name<span class="classifier">string</span></dt><dd><p>The name of the matrix</p>
 </dd>
@@ -504,12 +451,12 @@ specified program.</p></li>
 </dd>
 </dl>
 </section>
-<section id="id15">
-<h4>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
 <p>None</p>
 </section>
-<section id="id16">
-<h4>Notes<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<section id="id12">
+<h4>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -584,7 +531,6 @@ specified program.</p></li>
 </li>
 <li><a class="reference internal" href="#PDielec.Utilities.find_program_from_name"><code class="docutils literal notranslate"><span class="pre">find_program_from_name()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Utilities.get_reader"><code class="docutils literal notranslate"><span class="pre">get_reader()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Utilities.pdgui_get_reader"><code class="docutils literal notranslate"><span class="pre">pdgui_get_reader()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Utilities.printsp"><code class="docutils literal notranslate"><span class="pre">printsp()</span></code></a></li>
 </ul>
 </li>

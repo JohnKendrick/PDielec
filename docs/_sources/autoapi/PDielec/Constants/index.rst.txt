@@ -66,6 +66,12 @@
    +---------------------+-------------------------------------------------+
    | angs2bohr           | Convert angstrom to Bohr                        |
    +---------------------+-------------------------------------------------+
+   | hartree             | 1 hartree in SI units (J)                       |
+   +---------------------+-------------------------------------------------+
+   | au2GPA              | Convert pressure from au to GPa                 |
+   +---------------------+-------------------------------------------------+
+   | thz2cm1             | Convert thz frequency to cm^-1                  |
+   +---------------------+-------------------------------------------------+
 
    The masses of the elements are taken from:
    J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. Rosman and P. D. P. Taylor (2003).
@@ -99,6 +105,10 @@ Module Contents
    
 
 .. py:data:: atomic_number_to_element
+
+   
+
+.. py:data:: au2GPa
 
    
 
@@ -163,6 +173,10 @@ Module Contents
 
    
 
+.. py:data:: hartree
+
+   
+
 .. py:data:: hartree2ev
    :value: 27.211386245988
 
@@ -212,6 +226,10 @@ Module Contents
    
 
 .. py:data:: strength_conv
+
+   
+
+.. py:data:: thz2cm1
 
    
 

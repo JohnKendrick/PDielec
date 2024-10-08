@@ -42,6 +42,160 @@ Classes
    sets the type attribute to 'QE output', and initializes `_alat` attribute to None.
 
 
+   .. py:method:: _atomic_species(atomic_species_xml)
+
+      Process the atomic_species element.
+
+      Parameters
+      ----------
+      atomic_species_xml : an xml element
+          The atomic species element
+
+      Set
+      ---
+      self.nspecies
+          The number of species
+      self.species
+          A list of the names of the species
+      self.masses_per_type
+          A list of the masses of the species
+
+
+
+   .. py:method:: _atomic_structure(atomic_structure_xml)
+
+      Process the atomic_structure element(s).
+
+      Parameters
+      ----------
+      atomic_structure_xml : a list of xml elements
+          A list of atomic structure elements
+
+      Set
+      ---
+      self.nions : int
+          The number of ions
+      self.unit_cells : unitCell
+          A list of the unit cells
+      self.volume :  float
+          A volume of the last unit cell
+      self.ncell :  int
+          A number of unit cells
+
+
+
+   .. py:method:: _band_structure(band_structure_xml)
+
+      Process the band_structure element.
+
+      Parameters
+      ----------
+      band_structure_xml : an xml element
+          A band structure element
+
+      Set
+      ---
+      self.electrons : int
+          The number of electrons
+
+
+
+   .. py:method:: _basis(basis_xml)
+
+      Process the basis element(s).
+
+      Store the energy in eV
+
+      Parameters
+      ----------
+      basis_xml : a basis xml element
+          A basis xml element
+
+      Set
+      ---
+      self.energy_cutoff
+          The energy cutoff in hartree
+      self.rho_cutoff
+          The charge density cutoff in hartree
+
+
+
+   .. py:method:: _dielectric_constant(dielectric_constant_xml)
+
+      Process the dielectric_constant element(s).
+
+      Parameters
+      ----------
+      dielectric_constant_xml : an xml element
+          A dielectric_constant xml element
+
+      Set
+      ---
+      self.zerof_optical_dielectric
+          The zero frequency optical dielectric
+
+
+
+   .. py:method:: _effective_charges(effective_charges_xml)
+
+      Process the effective_charges element(s).
+
+      For a given atom the ordering of the elements in the tensors.xml file appears to be:
+      d2E/dFxdX d2E/dFydX d2E/dFzdX        0 1 2
+      d2E/dFxdY d2E/dFydY d2E/dFzdY        3 4 5
+      d2E/dFxdZ d2E/dFydZ d2E/dFzdZ        6 7 8
+
+      The order used with PDielec is:
+      d2E/dFxdX d2E/dFxdY d2E/dFxdZ        0 3 6
+      d2E/dFydX d2E/dFydY d2E/dFydZ        1 4 7
+      d2E/dFzdX d2E/dFzdY d2E/dFzdZ        2 5 8
+
+      Parameters
+      ----------
+      effective_charges_xml : an xml element
+          An effective_charges xml element
+
+      Set
+      ---
+      self.born_charges
+          The born_charges 
+
+
+
+   .. py:method:: _kpoints(kpoints_xml)
+
+      Process the k_points element.
+
+      Parameters
+      ----------
+      kpoints_xml : an xml element
+          The k-point definition using Monkhorst-Pack
+
+      Set
+      ---
+      self.kpoints
+          A list of the number of kpoints to be used in a Monkhorst-Pack grid
+
+
+
+   .. py:method:: _pressure(pressure_xml)
+
+      Process the pressure xml element.
+
+      Parameters
+      ----------
+      pressure_xml : an xml element
+          The pressure is calculated for the average of the trace of the stress tensor
+
+      Set
+      ---
+      self.pressure
+          The pressure in GPa
+          The xml file holds the pressure in Hartree/Bohr3
+          Conversion to SI units is done by autoGPa from Constants.py
+
+
+
    .. py:method:: _read_alat(line)
 
       Read and set the lattice parameter from a given line of text.
@@ -172,27 +326,32 @@ Classes
 
 
 
-   .. py:method:: _read_dynamical(line)
+   .. py:method:: _read_dyng_basis_vectors()
 
-      Read and process the dynamical matrix from the dynG file.
+      Read and process lattice vectors from a dynG file, then updates unit cell information.
 
-      This method reads a specific format from the current position of the file descriptor,
-      computes the Hessian matrix based on the read values, and updates the dynamical matrix.
-      The routine only reads the gamma point matrix
+      This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
 
       Parameters
       ----------
-      line : str
-          The line from which to start reading. This parameter is not used in the function
-          and likely represents a legacy or placeholder parameter.
+      None
 
       Returns
       -------
       None
 
+      Attributes Updated
+      ------------------
+      unit_cells : list
+          A list of `UnitCell` objects representing the unit cells read from the file. Updated by appending a new `UnitCell`.
+      ncells : int
+          The total number of unit cells, updated after reading new lattice vectors.
+      volume : float
+          The volume of the last read unit cell, updated after appending a new `UnitCell`.
 
 
-   .. py:method:: _read_dyng_coordinates(line)
+
+   .. py:method:: _read_dyng_coordinates()
 
       Read dynamic coordinates from a dynG file and update related properties.
 
@@ -200,8 +359,7 @@ Classes
 
       Parameters
       ----------
-      line : str
-          The line from which coordinates are read. This parameter is mentioned for clarity but technically does not exist in the function's arguments. The actual reading is from the object's file_descriptor attribute, thus assuming this function is part of a class handling file input.
+      None
 
       Returns
       -------
@@ -226,6 +384,122 @@ Classes
       --------
       `set_xyz_coordinates` : Method used to update xyz coordinates of the last unit cell.
       `set_element_names` : Method used to update element names of the last unit cell.
+
+
+
+   .. py:method:: _read_dyng_dynamical(line)
+
+      Read and process the dynamical matrix from the dynG file.
+
+      This method reads a specific format from the current position of the file descriptor,
+      computes the Hessian matrix based on the read values, and updates the dynamical matrix.
+      The routine only reads the gamma point matrix
+
+      Parameters
+      ----------
+      line : str
+          The last line read
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_dyng_epsilon(line)
+
+      Read and process zero frequency optical permittivity data from the dynG file.
+
+      This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
+
+      Parameters
+      ----------
+      line : str
+          The last line read
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method modifies the instance attribute `zerof_optical_dielectric` directly.
+      - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
+
+
+
+   .. py:method:: _read_dyng_file(line)
+
+      Read a dynG file.
+
+      This method the dynG output file from a qe ph.x calculation of IR intensities
+
+      Parameters
+      ----------
+      line : str
+          The first line of input in the dyng file
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Calls
+      - `_read_dyng_header`
+      - `_read_dyng_basis_vectors`
+      - `_read_dyng_masses`
+      - `_read_dyng_coordinates`
+
+
+
+   .. py:method:: _read_dyng_header()
+
+      Read and process the header line from the dynG file.
+
+      This method updates the object's state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
+
+      This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
+
+
+
+   .. py:method:: _read_dyng_masses()
+
+      Read the masses of species from an dynG file and populate mass and species lists.
+
+      This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
+
+      Parameters
+      ----------
+      None 
+
+      Returns
+      -------
+      None
+
+      Attributes Modified
+      -------------------
+      - `masses_per_type` : list
+          A list that this method populates with the calculated masses for each species.
+      - `species` : list
+          A list that this method populates with the capitalized species names.
+
+      Notes
+      -----
+      - The atomic mass unit (`amu`) is defined elsewhere
+      - It's assumed that `_read_dyng_coordinates` is a method within the same class that takes a single string argument.
 
 
 
@@ -310,28 +584,6 @@ Classes
 
 
 
-   .. py:method:: _read_epsilon(line)
-
-      Read and process zero frequency optical permittivity data from the dynG file.
-
-      This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
-
-      Parameters
-      ----------
-      line : not used
-          This parameter is present but not used in the function.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      - This method modifies the instance attribute `zerof_optical_dielectric` directly.
-      - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
-
-
-
    .. py:method:: _read_fractional_coordinates(line)
 
       Read the log file and sets the fractional coordinates and element names for the last unit cell in the object.
@@ -352,29 +604,6 @@ Classes
       - The function directly modifies the object's state by setting properties of the last unit cell (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`.
       - Only operates if `self.nions` is greater than 0.
       - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
-
-
-
-   .. py:method:: _read_header(line)
-
-      Read and process the header line from the dynG file.
-
-      This method updates the object's state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.
-
-      Parameters
-      ----------
-      line : str
-          The initial line to read from. Note: This parameter is not used in the current implementation and the function reads directly from the object's file_descriptor attribute.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
-
-      This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
 
 
 
@@ -417,60 +646,6 @@ Classes
       Notes
       -----
       This method modifies the state of the object by setting the `kpoints` attribute.
-
-
-
-   .. py:method:: _read_lattice_vectors(line)
-
-      Read and process lattice vectors from a synG file, then updates unit cell information.
-
-      This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
-
-      Parameters
-      ----------
-      line : str
-          The initial line from which to start reading the lattice vectors. Note: This parameter is mentioned for consistency with the function signature, but its utility within the function body as described is not clear and appears to be a placeholder.
-
-      Returns
-      -------
-      None
-
-      Attributes Updated
-      ------------------
-      unit_cells : list
-          A list of `UnitCell` objects representing the unit cells read from the file. Updated by appending a new `UnitCell`.
-      ncells : int
-          The total number of unit cells, updated after reading new lattice vectors.
-      volume : float
-          The volume of the last read unit cell, updated after appending a new `UnitCell`.
-
-
-
-   .. py:method:: _read_masses()
-
-      Read the masses of species from an dynG file and populate mass and species lists.
-
-      This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
-
-      Parameters
-      ----------
-      None 
-
-      Returns
-      -------
-      None
-
-      Attributes Modified
-      -------------------
-      - `masses_per_type` : list
-          A list that this method populates with the calculated masses for each species.
-      - `species` : list
-          A list that this method populates with the capitalized species names.
-
-      Notes
-      -----
-      - The atomic mass unit (`amu`) is defined elsewhere
-      - It's assumed that `_read_dyng_coordinates` is a method within the same class that takes a single string argument.
 
 
 
@@ -523,6 +698,46 @@ Classes
       Notes
       -----
       This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object's `debug` attribute is set to True.
+
+
+
+   .. py:method:: _read_xml(filename)
+
+      Process the QE xml files.
+
+      Parameters
+      ----------
+      filename : str
+          The file name of the xml file to be processed
+
+      Notes
+      -----
+      The routine only handles the pwscf output file pwscf.xml
+      This file is created when a single point calculation is performed prior to the born calculation
+      The routine should also be able to parse an optimisation run.
+      In this case there is a 'steps' entry in the xml
+
+
+
+   .. py:method:: _total_energy(total_energy_xml)
+
+      Process the total_energy element(s).
+
+      Store the energy in eV
+
+      Parameters
+      ----------
+      total_energy_xml : a list of xml element
+          A list of total_energy elements
+
+      Set
+      ---
+      self.energies :  a list of floats
+          The final energies in eV of each step in an optimisation
+      self.final_energy_without_entropy : float
+          The final energy in eV
+      self.final_free_energy : float
+          The final energy in eV
 
 
 

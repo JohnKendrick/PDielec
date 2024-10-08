@@ -422,10 +422,10 @@
 <td><p>Take the field directions in efield and use each direction to calculate a random rotation about that axis.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.set_affinity_on_worker" title="PDielec.Calculator.set_affinity_on_worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_affinity_on_worker</span></code></a>()</p></td>
-<td><p>When a new worker process is created, the affinity is set to all CPUs</p></td>
+<td><p>When a new worker process is created, the affinity is set to all CPUs.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.set_no_of_threads" title="PDielec.Calculator.set_no_of_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_no_of_threads</span></code></a>(nthreads)</p></td>
-<td><p>Set default number of threads</p></td>
+<td><p>Set default number of threads.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.solve_effective_medium_equations" title="PDielec.Calculator.solve_effective_medium_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_effective_medium_equations</span></code></a>(method, vf, size_mu, ...)</p></td>
 <td><p>Solve the effective medium equations.</p></td>
@@ -1659,16 +1659,19 @@ where I3 is a unit matrix, e is the direction, and ex is the cross product matri
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.set_affinity_on_worker">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">set_affinity_on_worker</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#set_affinity_on_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.set_affinity_on_worker" title="Permalink to this definition">#</a></dt>
-<dd><p>When a new worker process is created, the affinity is set to all CPUs</p>
+<dd><p>When a new worker process is created, the affinity is set to all CPUs.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.set_no_of_threads">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">set_no_of_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nthreads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#set_no_of_threads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.set_no_of_threads" title="Permalink to this definition">#</a></dt>
-<dd><p>Set default number of threads</p>
+<dd><p>Set default number of threads.</p>
 <section id="id102">
 <h4>Parameters<a class="headerlink" href="#id102" title="Permalink to this heading">#</a></h4>
-<p>ncpus : int the number of threads to be used</p>
+<dl class="simple">
+<dt>nthreads<span class="classifier">int the number of threads to be used</span></dt><dd><p>The number of threads to be applied</p>
+</dd>
+</dl>
 <p>The environment is modified to set the most common environment variables for the number of threads
 a BLAS implementation will use.
 BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB</p>

@@ -285,11 +285,21 @@ It can also be used as a command line tool without having to use the GUI, this n
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span>                                                <span class="c1"># A Vasp/Phonpy calculation</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span>                                                <span class="c1"># A Vasp calculation, only OUTCAR is parsed for information</span>
+<span class="n">pdgui</span> <span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span>                                           <span class="c1"># A Vasp calculation, only vasprun.xml is parsed for information</span>
 <span class="n">pdgui</span> <span class="n">LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON</span><span class="o">.</span><span class="n">out</span>    <span class="c1"># A Crystal calculation</span>
-<span class="n">pdgui</span> <span class="n">run1</span><span class="o">.</span><span class="n">dynG</span>                                             <span class="c1"># A QE calculation</span>
-<span class="n">pdgui</span> <span class="n">run2</span><span class="o">.</span><span class="n">out</span>                                              <span class="c1"># An Abinit calculation</span>
+<span class="n">pdgui</span> <span class="n">run1</span><span class="o">.</span><span class="n">dynG</span>                                             <span class="c1"># A QE calculation, pwscf.xml is also read</span>
+<span class="n">pdgui</span> <span class="n">run1</span><span class="o">.</span><span class="n">log</span>                                              <span class="c1"># A QE calculation, run1.dynG is also read</span>
+<span class="n">pdgui</span> <span class="n">run2</span><span class="o">.</span><span class="n">abo</span>                                              <span class="c1"># An Abinit calculation</span>
 <span class="n">pdgui</span> <span class="n">run3</span><span class="o">.</span><span class="n">gout</span>                                             <span class="c1"># An Gulp calculation</span>
+</pre></div>
+</div>
+<p>Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
+It is possible to specifiy the DFT program and the QM program used by Phonopy as the examples below;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">vasp</span> <span class="n">OUTCAR</span>                                   <span class="c1"># A Vasp calculation, only OUTCAR is parsed for information</span>
+<span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">phonopy</span> <span class="o">-</span><span class="n">qmprogram</span> <span class="n">vasp</span> <span class="n">OUTCAR</span>                <span class="c1"># A Phonopy/Vasp calculation, only OUTCAR is parsed for information</span>
+<span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">phonopy</span> <span class="o">-</span><span class="n">qmprogram</span> <span class="n">vasp</span> <span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span>           <span class="c1"># A Phonopy/Vasp calculation, only OUTCAR is parsed for information</span>
+<span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">phonopy</span> <span class="o">-</span><span class="n">qmprogram</span> <span class="n">qe</span>  <span class="n">pwscf</span><span class="o">.</span><span class="n">xml</span>              <span class="c1"># A Phonopy/QE calculation</span>
 </pre></div>
 </div>
 <p>If running a script that contains program and output file information, then:</p>
@@ -335,27 +345,31 @@ spreadsheet</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>An alternative way of defining the
 program used to create the output</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-version</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-qmprogram name</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Specifies the qm program used with
+phonopy</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-version</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Give information of the version no.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-debug</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-debug</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Debugging mode, only for developers</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-exit</p></td>
+<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-exit</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Exit the program after running the
 script</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-nosplash</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-nosplash</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Do not show the splash screen</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-cpus 2</p></td>
+<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-cpus 2</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Using 2 processors for multiprocessing
 or 2 threads if threading</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-threads</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-threads</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Using threading for multiprocessing</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-h</p></td>
+<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-h</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Print out help information</p></td>
 </tr>
 </tbody>

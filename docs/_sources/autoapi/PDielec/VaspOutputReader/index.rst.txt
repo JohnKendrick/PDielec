@@ -27,6 +27,7 @@ Functions
 .. autoapisummary::
 
    PDielec.VaspOutputReader.myfloat
+   PDielec.VaspOutputReader.read_xml_element
 
 
 
@@ -58,6 +59,141 @@ Functions
        The value of ibrion
    _potim : float
        The value of potim
+
+
+   .. py:method:: _get_unit_cell_from_xml(structure_xml)
+
+      Read the xml and return a unit cell with the dimensions and positions.
+
+      Parameters
+      ----------
+      structure_xml : a structure xml element
+          A structure xml element
+
+      Returns
+      -------
+      cell : a unit_cell
+
+
+
+   .. py:method:: _handle_atominfo_xml(atominfos_xml)
+
+      Process the atminfos xml child.
+
+      Parameters
+      ----------
+      atominfos_xml : a list of xml element
+          A list of atminfo xml elements
+
+      Set
+      ---
+      self.nions : int
+          The number of atoms
+      self.nspecies : int
+          The number of atoms
+      self.atom_type_list : list of ints
+          A list of the atom types in the order they will be given in the coordinate list
+      self.species : a list strings
+          The list of unique species in the calculation. ie the list of atom types
+      self.species_list : a list strings
+          The list of species for all atoms
+      self.ions_per_tpye : a list ints
+          The list of atom types, could be used to lookup self.species
+      self.masses_per_type : a list floats
+          The list of masses for each atom type
+      self.masses : a list floats
+          The list of masses for each atom in the unit cell
+
+
+
+   .. py:method:: _handle_calculations_xml(calculations_xml)
+
+      Process the calculations xml child.
+
+      Parameters
+      ----------
+      calculations_xml : a list of xml element
+          A list of calculations_xml elements
+
+      Set
+      ---
+      self.nions : int
+          The number of atoms
+      self.nspecies : int
+          The number of atoms
+      self.atom_type_list : list of ints
+          A list of the atom types in the order they will be given in the coordinate list
+      self.zerof_static_dielectric : 3x3 list of floats
+          The ionic contribution to the static dielectric 
+      self.zerof_optical_dielectric : 3x3 list of floats
+          The zero frequency optical dielectric dielectric 
+      self.final_free_energies : a list of floats
+          A list of the free energies at each geometry optimisation
+      self.final_energies_without_entropy : a list of floats
+          A list of the energies without entropy at each geometry optimisation
+      self.borncharges : a list of floats nionsx3x3
+          A list of the energies without entropy at each geometry optimisation
+      self.mass_weighted_normal_modes : ndarray floats (3*nions x n*nions)
+          The mass weighted normal modes
+      self.frequencies : ndarray floats (3*nions)
+          The frequencies in cm-1
+
+
+
+   .. py:method:: _handle_kpoints_xml(kpoints_xml)
+
+      Process the kpoints xml child.
+
+      Parameters
+      ----------
+      kpoints_xml : a list of xml element
+          A list of kpoint xml elements
+
+      Set
+      ---
+      self.kpoint_grid : a list of 3 integers
+          The Monkorst Pack grid
+      self.kpoints : int
+          The number of kpoints
+
+
+
+   .. py:method:: _handle_parameters_xml(parameters_xml)
+
+      Process the parameters xml child.
+
+      Parameters
+      ----------
+      parameters_xml : a list of xml element
+          A list of parameters xml elements
+
+      Set
+      ---
+      self.electrons : int
+          The number of electrons
+      self.spin : int
+          The spin of the system
+
+
+
+   .. py:method:: _handle_structures_xml(structures_xml)
+
+      Process the structures xml child.
+
+      Parameters
+      ----------
+      structures_xml : a list of xml element
+          A list of structurexml elements
+
+      Set
+      ---
+      self.ncells : int
+          The number of unit cells read so far
+      self.volume : float
+          The volume of the last unit cell read
+      self.unit_cells : list of unit_cells
+          A list of the unit cells
+
 
 
    .. py:method:: _read_array_dimensions(line)
@@ -604,6 +740,21 @@ Functions
 
 
 
+   .. py:method:: _read_xml(filename)
+
+      Process the VASP xml files.
+
+      Parameters
+      ----------
+      filename : str
+          The file name of the xml file to be processed
+
+      Notes
+      -----
+      The routine only handles the Vasp output file vasprun.xml
+
+
+
 
 .. py:function:: myfloat(string)
 
@@ -618,6 +769,24 @@ Functions
    -------
    float
        A standard float conversion of the input or a large number if '*' is found in the input.
+
+
+
+.. py:function:: read_xml_element(ele)
+
+   Read an xml element and return a value.
+
+   Parameters
+   ----------
+   ele : an xml element
+       An xml element
+
+   Returns
+   -------
+   name : str
+       The name of the values returned
+   values : float, int or bool (or a list of them)
+       The return type depends on the contents of the element
 
 
 

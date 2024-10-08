@@ -291,11 +291,10 @@
 <span class="kn">import</span> <span class="nn">platform</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">QCoreApplication</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">compat</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">QCoreApplication</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">QComboBox</span><span class="p">,</span>
-    <span class="n">QFileDialog</span><span class="p">,</span>
     <span class="n">QFormLayout</span><span class="p">,</span>
     <span class="n">QHBoxLayout</span><span class="p">,</span>
     <span class="n">QLabel</span><span class="p">,</span>
@@ -307,7 +306,7 @@
     <span class="n">QWidget</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span><span class="p">,</span> <span class="n">find_program_from_name</span><span class="p">,</span> <span class="n">pdgui_get_reader</span>
+<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span><span class="p">,</span> <span class="n">find_program_from_name</span><span class="p">,</span> <span class="n">get_reader</span>
 
 
 <div class="viewcode-block" id="MainTab"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/MainTab/index.html#PDielec.GUI.MainTab.MainTab">[docs]</a><span class="k">class</span> <span class="nc">MainTab</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
@@ -434,6 +433,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Compatibility mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Linux&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculationRequired</span> <span class="o">=</span> <span class="kc">True</span>
@@ -543,7 +543,7 @@
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scriptsfile_le</span><span class="p">)</span>
         <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">script_button</span><span class="p">)</span>
         <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">hbox</span><span class="p">)</span>
-        <span class="c1">#jk # add form layout</span>
+        <span class="c1"># add form layout</span>
         <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
         <span class="c1"># output window for unit cell</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cell_window_l</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Unit-cell (Angstrom) from &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Output file name&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">)</span>
@@ -720,8 +720,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cell_window_l</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Unit-cell (Angstrom) from &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Output file name&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies_window</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies_window_l</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Frequencies from &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Output file name&quot;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">pdgui_get_reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">],[</span> <span class="n">filename</span> <span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Phonopy QM program&quot;</span><span class="p">]</span> <span class="p">)</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">get_reader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">],</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Phonopy QM program&quot;</span><span class="p">],</span>
+                                 <span class="n">debug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in reading files - program  is &quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">])</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in reading files - filename is &quot;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
@@ -889,10 +891,12 @@
             <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                 <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Program not found from filename&quot;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
                 <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Proceeding with defaults&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;Phonopy&quot;</span><span class="p">:</span>
                 <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Program found from filename&quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Phonopy QM program&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qmprogram</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Ignoring automatic program determination: dealing with Phonopy &quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">setMyWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Output file name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>

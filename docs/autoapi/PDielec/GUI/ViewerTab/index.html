@@ -400,7 +400,9 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 </dd>
 <dt>requestRefresh</dt><dd><p>Something has changed in the GUI that will need a refresh</p>
 </dd>
-<dt>save_cif</dt><dd><p>Write out a cif file</p>
+<dt>save_as_cif</dt><dd><p>Write out a cif file</p>
+</dd>
+<dt>save_mode_as_cif</dt><dd><p>Write out a cif file with the mode displacememnt information</p>
 </dd>
 <dt>setColour</dt><dd><p>Set the colour of the specified element</p>
 </dd>
@@ -855,10 +857,10 @@ start and completion of the animation process.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.save_cif">
-<span class="sig-name descname"><span class="pre">save_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.save_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_cif" title="Permalink to this definition">#</a></dt>
-<dd><p>Save the crystallographic information file (CIF) for different phases.</p>
-<p>A copy is made of the current unit cell and a cell is wrtten out for each phase of the vibration</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.save_as_cif">
+<span class="sig-name descname"><span class="pre">save_as_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.save_as_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_as_cif" title="Permalink to this definition">#</a></dt>
+<dd><p>Save the crystallographic information file (CIF) for the structure phases.</p>
+<p>The cell is wrtten out</p>
 <section id="id49">
 <h5>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
@@ -870,8 +872,26 @@ start and completion of the animation process.</p>
 <h5>Returns<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif">
+<span class="sig-name descname"><span class="pre">save_mode_as_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.save_mode_as_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif" title="Permalink to this definition">#</a></dt>
+<dd><p>Save the crystallographic information file (CIF) for different phases.</p>
+<p>A copy is made of the current unit cell and a cell is wrtten out for each phase of the vibration</p>
 <section id="id51">
-<h5>Notes<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The name of the file where the CIF data will be saved.</p>
+</dd>
+</dl>
+</section>
+<section id="id52">
+<h5>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id53">
+<h5>Notes<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>This method relies on the <cite>self.unit_cell</cite> object, which should have a method <cite>set_xyz_coordinates</cite> and <cite>write_cif</cite>. It also uses <cite>self.settings</cite> to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that <cite>self.newXYZ</cite> is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.</p>
 </section>
 </dd></dl>
@@ -880,8 +900,8 @@ start and completion of the animation process.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.setColour">
 <span class="sig-name descname"><span class="pre">setColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.setColour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.setColour" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the colour of a specified element in the interface.</p>
-<section id="id52">
-<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
+<section id="id54">
+<h5>Parameters<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>element<span class="classifier">str</span></dt><dd><p>The element whose colour is to be set. Can be ‘Background’, ‘Cell’, ‘Arrow’, or any other custom element defined in <cite>element_colours</cite>.</p>
 </dd>
@@ -889,8 +909,8 @@ start and completion of the animation process.</p>
 </dd>
 </dl>
 </section>
-<section id="id53">
-<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
+<section id="id55">
+<h5>Returns<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="examples">
@@ -993,7 +1013,8 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_none"><code class="docutils literal notranslate"><span class="pre">ViewerTab.plot_none()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.refresh"><code class="docutils literal notranslate"><span class="pre">ViewerTab.refresh()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.requestRefresh"><code class="docutils literal notranslate"><span class="pre">ViewerTab.requestRefresh()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.save_cif"><code class="docutils literal notranslate"><span class="pre">ViewerTab.save_cif()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.save_as_cif"><code class="docutils literal notranslate"><span class="pre">ViewerTab.save_as_cif()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif"><code class="docutils literal notranslate"><span class="pre">ViewerTab.save_mode_as_cif()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.setColour"><code class="docutils literal notranslate"><span class="pre">ViewerTab.setColour()</span></code></a></li>
 </ul>
 </li>
