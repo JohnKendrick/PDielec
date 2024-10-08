@@ -45,6 +45,9 @@ The optical system is assembled using the :py:class:`System` class.
            
 **Change log:**
 
+    *01-10-2024*:
+        - Moving back to 63 bit arithmetic as scattering formalism is stable
+
     *01-01-2023*: 
         
         - Major changes introduced by John Kendrick to make the package compatible with PDielec and PDGUI.
@@ -179,7 +182,7 @@ def exact_inv_4x4(M):
 
     Notes
     -----
-    This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in FSRStools. Modified to work with clongdouble by JK.
+    This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in FSRStools. 
 
     See Also
     --------
@@ -204,13 +207,13 @@ def exact_inv_4x4(M):
     if detA == 0:
         try:
             print("Warning 4x4 inversion problem 1")
-            result = np.clongdouble(lag.pinv(np.cdouble(M)))
+            result = np.cdouble(lag.pinv(np.cdouble(M)))
         except Exception:
             print("Warning 4x4 inversion problem 2")
-            result = np.clongdouble(lag.pinv(np.complex64(M)))
+            result = np.cdouble(lag.pinv(np.cdouble(M)))
         return result
 
-    B = np.zeros(A.shape, dtype=np.clongdouble)
+    B = np.zeros(A.shape, dtype=np.cdouble)
     B[0, 0] = A[1, 1] * A[2, 2] * A[3, 3] + A[1, 2] * A[2, 3] * A[3, 1] + A[1, 3] * A[2, 1] * A[3, 2] - A[1, 1] * A[2, 3] * A[3, 2] - A[1, 2] * A[2, 1] * A[3, 3] - A[1, 3] * A[2, 2] * A[3, 1]
     B[0, 1] = A[0, 1] * A[2, 3] * A[3, 2] + A[0, 2] * A[2, 1] * A[3, 3] + A[0, 3] * A[2, 2] * A[3, 1] - A[0, 1] * A[2, 2] * A[3, 3] - A[0, 2] * A[2, 3] * A[3, 1] - A[0, 3] * A[2, 1] * A[3, 2]
     B[0, 2] = A[0, 1] * A[1, 2] * A[3, 3] + A[0, 2] * A[1, 3] * A[3, 1] + A[0, 3] * A[1, 1] * A[3, 2] - A[0, 1] * A[1, 3] * A[3, 2] - A[0, 2] * A[1, 1] * A[3, 3] - A[0, 3] * A[1, 2] * A[3, 1]
@@ -343,7 +346,7 @@ class Layer:
             When the input `epsilon` is not compatible in dimensions or data type.
 
         """        
-        self.epsilon = np.identity(3, dtype=np.clongdouble)
+        self.epsilon = np.identity(3, dtype=np.cdouble)
         self.mu = 1.0 ### mu=1 for now
 
         ## Added to handle overflow 
@@ -353,20 +356,20 @@ class Layer:
         self.coherent = True
 
         ### initialization of all important quantities
-        self.M = np.zeros((6, 6), dtype=np.clongdouble)                  # constitutive relations
-        self.a = np.zeros((6, 6), dtype=np.clongdouble) 
-        self.Delta = np.zeros((4, 4), dtype=np.clongdouble) 
-        self.qs = np.zeros(4, dtype=np.clongdouble)                      # out of plane wavevector
-        self.Py = np.zeros((3,4), dtype=np.clongdouble)                  # Poynting vector
-        self.gamma = np.zeros((4, 3), dtype=np.clongdouble)
-        self.Ai = np.zeros((4, 4), dtype=np.clongdouble) 
-        self.Ki = np.zeros((4, 4), dtype=np.clongdouble) 
-        self.Ti = np.zeros((4, 4), dtype=np.clongdouble)                 # Layer transfer matrix
-        self.Berreman = np.zeros((4,3), dtype=np.clongdouble)            # Stores the Berreman modes
+        self.M = np.zeros((6, 6), dtype=np.cdouble)                  # constitutive relations
+        self.a = np.zeros((6, 6), dtype=np.cdouble) 
+        self.Delta = np.zeros((4, 4), dtype=np.cdouble) 
+        self.qs = np.zeros(4, dtype=np.cdouble)                      # out of plane wavevector
+        self.Py = np.zeros((3,4), dtype=np.cdouble)                  # Poynting vector
+        self.gamma = np.zeros((4, 3), dtype=np.cdouble)
+        self.Ai = np.zeros((4, 4), dtype=np.cdouble) 
+        self.Ki = np.zeros((4, 4), dtype=np.cdouble) 
+        self.Ti = np.zeros((4, 4), dtype=np.cdouble)                 # Layer transfer matrix
+        self.Berreman = np.zeros((4,3), dtype=np.cdouble)            # Stores the Berreman modes
         self.useBerreman = False          # Boolean to replace Xu's eigenvectors by Berreman's in case of Birefringence
-        self.euler = np.identity(3, dtype=np.clongdouble)                # rotation matrix
+        self.euler = np.identity(3, dtype=np.cdouble)                # rotation matrix
         self.epsilon_tensor_function = None                              # Added by JK to store epsilon
-        self.propagation_exponents = np.zeros((4), dtype=np.clongdouble) # Stores the raw propagation exponents
+        self.propagation_exponents = np.zeros((4), dtype=np.cdouble) # Stores the raw propagation exponents
         
         # Store initialiser variables
         self.set_thickness(thickness)          # set the thickness, 1um by default
@@ -444,7 +447,7 @@ class Layer:
         f = f_in / (c_const * 100.0)
         epsilon_xstal = self.epsilon_tensor_function(f)
         if not isinstance(epsilon_xstal,np.ndarray):
-            epsilon_xstal = np.eye(3,dtype=np.clongdouble)*epsilon_xstal
+            epsilon_xstal = np.eye(3,dtype=np.cdouble)*epsilon_xstal
         #JK Changed the order of the transformation to a transformation of basis vectors
         # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
         # rather than a transformation of the coordinates active->passive
@@ -483,7 +486,7 @@ class Layer:
         self.euler[2, 1] = np.sin(theta) * np.cos(psi)
         self.euler[2, 2] = np.cos(theta)
         #JK Added the inverse calculation here so it is only done once
-        #JK self.euler_inverse = np.clongdouble(lag.pinv(np.cdouble(self.euler)))
+        #JK self.euler_inverse = np.cdouble(lag.pinv(np.cdouble(self.euler)))
         self.euler_inverse = exact_inv_3x3(self.euler)
 
     def calculate_matrices(self, zeta):
@@ -507,8 +510,8 @@ class Layer:
 
         """
         ## Constitutive matrix (see e.g. eqn (4))
-        self.M[0:3, 0:3] = np.clongdouble(self.epsilon.copy())
-        self.M[3:6, 3:6] = np.clongdouble(self.mu*np.identity(3))
+        self.M[0:3, 0:3] = np.cdouble(self.epsilon.copy())
+        self.M[3:6, 3:6] = np.cdouble(self.mu*np.identity(3))
 
         ## from eqn (10)
         b = self.M[2,2]*self.M[5,5] - self.M[2,5]*self.M[5,2]
@@ -525,7 +528,7 @@ class Layer:
 
         ## S Matrix (Don't know where it comes from since Delta is just S re-ordered)
         ## Note that after this only Delta is used
-        S = np.zeros((4, 4), dtype=np.clongdouble) ##
+        S = np.zeros((4, 4), dtype=np.cdouble) ##
         S[0,0] = self.M[0,0] + self.M[0,2]*self.a[2,0] + self.M[0,5]*self.a[5,0]
         S[0,1] = self.M[0,1] + self.M[0,2]*self.a[2,1] + self.M[0,5]*self.a[5,1]
         S[0,2] = self.M[0,3] + self.M[0,2]*self.a[2,3] + self.M[0,5]*self.a[5,3]
@@ -600,7 +603,7 @@ class Layer:
                 psiunsorted[km][comp] = np.real(psiunsorted[km][comp]) + 0.0j
 
                 
-        Berreman_unsorted = np.zeros((4,3), dtype=np.clongdouble)
+        Berreman_unsorted = np.zeros((4,3), dtype=np.cdouble)
         
         kt = 0 
         kr = 0
@@ -786,10 +789,10 @@ class Layer:
         
         ### gamma field vectors should be normalized to avoid any birefringence problems
         # use double square bracket notation to ensure correct array shape
-        gamma1 = np.array([[self.gamma[0,0], gamma12, gamma13]],dtype=np.clongdouble)
-        gamma2 = np.array([[gamma21, self.gamma[1,1], gamma23]],dtype=np.clongdouble)
-        gamma3 = np.array([[self.gamma[2,0], gamma32, gamma33]],dtype=np.clongdouble)
-        gamma4 = np.array([[gamma41, self.gamma[3,1], gamma43]],dtype=np.clongdouble)
+        gamma1 = np.array([[self.gamma[0,0], gamma12, gamma13]],dtype=np.cdouble)
+        gamma2 = np.array([[gamma21, self.gamma[1,1], gamma23]],dtype=np.cdouble)
+        gamma3 = np.array([[self.gamma[2,0], gamma32, gamma33]],dtype=np.cdouble)
+        gamma4 = np.array([[gamma41, self.gamma[3,1], gamma43]],dtype=np.cdouble)
         
         #### Regular case, no birefringence, we keep the Xu fields
         self.gamma[0,:] = gamma1/np.sqrt(np.sum(gamma1**2))      #lag.norm(gamma1)
@@ -921,7 +924,7 @@ class Layer:
 
         """
         for ii in range(4):
-            self.propagation_exponents[ii] = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            self.propagation_exponents[ii] = np.cdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
         return
 
     def calculate_propagation_matrix(self,f):
@@ -938,7 +941,7 @@ class Layer:
             A 4x4-array representing the boundary matrix :math:`K_i` of the layer.
 
         """
-        Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        Ki = np.zeros( (4,4), dtype=np.cdouble)
         self.calculate_propagation_exponents(f)
         for ii in range(4):
             exponent = self.propagation_exponents[ii]
@@ -1014,11 +1017,11 @@ class CoherentLayer(Layer):
         # test is being made to avoid overflow
         forward_exponents =      a.propagation_exponents
         reverse_exponents = -1.0*a.propagation_exponents
-        K_f = np.eye(4,dtype=np.clongdouble)
+        K_f = np.eye(4,dtype=np.cdouble)
         K_f[0,0] = np.exp(reverse_exponents[0])
         K_f[1,1] = np.exp(reverse_exponents[1])
         # Define the backward propagators
-        K_b = np.eye(4,dtype=np.clongdouble)
+        K_b = np.eye(4,dtype=np.cdouble)
         K_b[2,2] = np.exp(forward_exponents[2])
         K_b[3,3] = np.exp(forward_exponents[3])
         # Change rows and columns so rows are the eigenvectors
@@ -1099,7 +1102,7 @@ class SemiInfiniteLayer(CoherentLayer):
         None
 
         """
-        self.propagation_exponents = np.zeros( (4), dtype=np.clongdouble)
+        self.propagation_exponents = np.zeros( (4), dtype=np.cdouble)
         return
 
     def calculate_propagation_matrix(self,f):
@@ -1119,7 +1122,7 @@ class SemiInfiniteLayer(CoherentLayer):
 
         """
         self.calculate_propagation_exponents(f)
-        return np.eye( 4, dtype=np.clongdouble)
+        return np.eye( 4, dtype=np.cdouble)
         
 class IncoherentIntensityLayer(CoherentLayer):
     """Define an incoherent layer using intensity transfer matrices.
@@ -1210,9 +1213,9 @@ class IncoherentAveragePhaseLayer(CoherentLayer):
         """
         for ii in range(4):
             if ii < 2:
-                exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const))
+                exponent = np.cdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const))
             else:
-                exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const + self.phaseShift))
+                exponent = np.cdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const + self.phaseShift))
             self.propagation_exponents[ii] = exponent
         return
 
@@ -1270,7 +1273,7 @@ class IncoherentPhaseLayer(CoherentLayer):
         None
 
         """
-        qs = np.zeros( 4, dtype=np.clongdouble)
+        qs = np.zeros( 4, dtype=np.cdouble)
         # p-wave ->
         qs[0] = self.qs[0] - np.real(self.qs[1])    # Subtract the real part of s ->
         # s-wave ->
@@ -1280,7 +1283,7 @@ class IncoherentPhaseLayer(CoherentLayer):
         # s-wave <-
         qs[3] = self.qs[3] - np.real(self.qs[3])    # Subtract the real part of s <-
         for ii in range(4):
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
+            exponent = np.cdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
             self.propagation_exponents[ii] = exponent
         return
 
@@ -1411,8 +1414,8 @@ class System:
             self.layers=layers
 
         ## system transfer matrix
-        self.Gamma = np.zeros((4,4), dtype=np.clongdouble)
-        self.GammaStar = np.zeros((4,4), dtype=np.clongdouble)
+        self.Gamma = np.zeros((4,4), dtype=np.cdouble)
+        self.GammaStar = np.zeros((4,4), dtype=np.cdouble)
 
         if substrate is not None:
             self.substrate = substrate
@@ -1602,7 +1605,7 @@ class System:
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
                               [0,1,0,0],
-                              [0,0,0,1]],dtype=np.clongdouble)
+                              [0,0,0,1]],dtype=np.cdouble)
         incoherent = False
         Tlist = []
         # Initialise T with the substrate Transfer Matrix
@@ -1628,7 +1631,7 @@ class System:
         if incoherent:
             # If there was incoherence then process the whole list 
             # by calculating amplitudes everywhere
-            T =  np.identity(4, dtype=np.complex128)
+            T =  np.identity(4, dtype=np.cdouble)
             for t in Tlist:
                 T = np.matmul(T,np.absolute(t)**2)
             T = np.sqrt(T)
@@ -1708,20 +1711,20 @@ class System:
         R_out = np.array([Rpp,Rss,Rsp,Rps]) ## order matching Passler Matlab code
 
         # field transmission coefficients
-        t_out = np.zeros(4, dtype=np.clongdouble)
+        t_out = np.zeros(4, dtype=np.cdouble)
         tpp = (GammaStar[2,2]/Denom)/largest
         tss = (GammaStar[0,0]/Denom)/largest
         tps =-(GammaStar[2,0]/Denom)/largest
         tsp =-(GammaStar[0,2]/Denom)/largest
 
         #CHECK the ORDERING! JK
-        t_out = np.array([tpp, tps, tsp, tss],dtype=np.clongdouble)
+        t_out = np.array([tpp, tps, tsp, tss],dtype=np.cdouble)
 
         #### Intensity transmission requires Poynting vector analysis
         ## N.B: could be done mode-dependentely later
         ## start with the superstrate
         ## Incident fields are either p or s polarized
-        ksup = np.zeros((4,3), dtype=np.clongdouble) ## wavevector in superstrate
+        ksup = np.zeros((4,3), dtype=np.cdouble) ## wavevector in superstrate
         ksup[:,0] = zeta_sys
         for ii, qi in enumerate(self.superstrate.qs):
             ksup[ii,2] = qi
@@ -1736,7 +1739,7 @@ class System:
         ## Outgoing fields (eqn 17)
         Eout_pin = t_out[0]*self.substrate.gamma[0,:]+t_out[1]*self.substrate.gamma[1,:] #p-in, p or s out
         Eout_sin = t_out[2]*self.substrate.gamma[0,:]+t_out[3]*self.substrate.gamma[1,:] #s-in, p or s out
-        ksub = np.zeros((4,3), dtype=np.clongdouble)
+        ksub = np.zeros((4,3), dtype=np.cdouble)
         ksub[:,0] = zeta_sys
         for ii, qi in enumerate(self.substrate.qs):
             ksub[ii,2] = qi
@@ -1937,12 +1940,12 @@ class ScatteringMatrixSystem(System):
         tss = S[3,1]
         tps = S[2,1]
         tsp = S[3,0]
-        t_out = np.array([tpp, tps, tsp, tss],dtype=np.clongdouble)
+        t_out = np.array([tpp, tps, tsp, tss],dtype=np.cdouble)
 
         # Intensity transmission using Poynting vector analysis
         # start with the superstrate
         # Incident fields are either p or s polarized
-        ksup = np.zeros((4,3), dtype=np.clongdouble) ## wavevector in superstrate
+        ksup = np.zeros((4,3), dtype=np.cdouble) ## wavevector in superstrate
         ksup[:,0] = zeta_sys
         for ii, qi in enumerate(self.superstrate.qs):
             ksup[ii,2] = qi
@@ -1958,7 +1961,7 @@ class ScatteringMatrixSystem(System):
         # Substrate Poynting vector
         Eout_pin = t_out[0]*self.substrate.gamma[0,:]+t_out[1]*self.substrate.gamma[1,:] #p-in, p or s out
         Eout_sin = t_out[2]*self.substrate.gamma[0,:]+t_out[3]*self.substrate.gamma[1,:] #s-in, p or s out
-        ksub = np.zeros((4,3), dtype=np.clongdouble)
+        ksub = np.zeros((4,3), dtype=np.cdouble)
         ksub[:,0] = zeta_sys
         for ii, qi in enumerate(self.substrate.qs):
             ksub[ii,2] = qi
@@ -2084,8 +2087,8 @@ class SMatrix:
         # If b is none then the S-matrix was not initialised (could be the substrate)
         if b is None:
             b = SMatrix()
-        C = np.eye(2,dtype=np.clongdouble) - ( b.S11.dot(a.S22) ) 
-        D = np.eye(2,dtype=np.clongdouble) - ( a.S22.dot(b.S11) ) 
+        C = np.eye(2,dtype=np.cdouble) - ( b.S11.dot(a.S22) ) 
+        D = np.eye(2,dtype=np.cdouble) - ( a.S22.dot(b.S11) ) 
         C = exact_inv_2x2(C)
         D = exact_inv_2x2(D)
         Sab = SMatrix()
@@ -2112,7 +2115,7 @@ class SMatrix:
 
         Returns
         -------
-        S : ndarray, shape (4, 4), dtype=np.clongdouble
+        S : ndarray, shape (4, 4), dtype=np.cdouble
             The complete scattering parameter matrix of the two-port network.
 
         Notes
@@ -2120,7 +2123,7 @@ class SMatrix:
         The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before calling this method.
 
         """        
-        self.S = np.zeros( (4,4),dtype=np.clongdouble )
+        self.S = np.zeros( (4,4),dtype=np.cdouble )
         self.S[0:2,0:2] = self.S11
         self.S[2:4,2:4] = self.S22
         self.S[0:2,2:4] = self.S12

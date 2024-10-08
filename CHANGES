@@ -39,6 +39,7 @@ version 8.1.3
        recognises pwscf.xml and vasprun.xml files.  If an OUTCAR (Vasp) or a QE .log/.out is specified
        on the command line the old method of analysing the output is used and the xml files are not read.
        If vasprun.xml (Vasp) or a .dynG file is given on the command line then the xml will be read if it is there.
+   Changed the GTMCore.py use of clongdouble to cdouble.
 
 version 8.1.2
    Added a .nojekyll file into the docs/ directory to stop git hub pages over processing things
