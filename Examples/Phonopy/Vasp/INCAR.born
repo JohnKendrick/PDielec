@@ -1,0 +1,13 @@
+LCALCEPS = .TRUE. ! calculate dielectric constants
+POTIM = 0.4
+PREC   = Accurate
+LREAL  = .FALSE.
+ISMEAR = -5      ! Smearing method 0=Gaussian, -5=tetrahedron (needs gamma and >2 kpoints)
+SIGMA  = 0.05    ! Width of smearing 
+EDIFF  = 1.0E-8    ! A bit more accurate
+ENCUT = 600.0
+#NBANDS = 44
+IVDW =12
+LSCALU = .TRUE.  ! Optimised for a 4 core machine
+LMAXMIX = 4
+NCORE = 4        ! Optimised for a 4 core machine

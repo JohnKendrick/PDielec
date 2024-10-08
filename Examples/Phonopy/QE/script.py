@@ -116,11 +116,11 @@ tab.settings['Scenario index'] =  0
 #
 tab = self.notebook.plottingTab
 tab.settings['Minimum frequency'] =  1.0
-tab.settings['Maximum frequency'] =  200
+tab.settings['Maximum frequency'] =  2000.0
 tab.settings['Frequency increment'] =  0.2
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
-tab.settings['Plot type'] = 'Crystal Transmittance (P polarisation)'
+tab.settings['Plot type'] = 'Powder Molar Absorption'
 tab.settings['Frequency unit'] = 'wavenumber'
 tab.settings['concentration'] =  11.562263113176554
 tab.settings['cell concentration'] =  11.562263113176554

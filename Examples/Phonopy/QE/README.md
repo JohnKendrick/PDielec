@@ -1,7 +1,7 @@
 # Phonopy with Quantum-Espresso
 
-The source of the QE input and the source of the cell and coo-ordinates comes from urea.scf.in.
-This file contains the optimised geometry, the pseudo-potentials and the various cutoffs used, but it is a single point calculations.
+The source of the QE input and the source of the cell and co-ordinates comes from urea.scf.in.
+This file contains the optimised geometry, the pseudo-potentials and the various cutoffs used, but it is a single-point calculations.
 
 There were some changes needed though to make the phonopy program work as the phonopy qe reader cannot cope with all the options available to pwscf input.
 The most significant change I found was that the units on my CELL_PARAMETERS line were in curly brackets and Phonopy did not accept those.  Simply removing the curly brackets should be sufficient.
