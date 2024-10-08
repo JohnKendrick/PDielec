@@ -113,6 +113,7 @@ test_pdgui = [
 	"Phonopy/ZnO",
 	"Phonopy/Na2SO42",
 	"Phonopy/QE",
+	"Phonopy/Vasp",
 	"QE/Cocaine",
 	"QE/Na2SO42",
 	"QE/Na2SO42-v7",
