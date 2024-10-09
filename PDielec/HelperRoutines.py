@@ -113,7 +113,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
     permittivityObject.setEpsilonInfinity(epsilon_inf)
     return permittivityObject
 
-def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_definition="Average"):
+def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_definition="Average",debug=False):
     """Get a material with the given name.
 
     If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
@@ -135,7 +135,8 @@ def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_defi
         - Average causes the average weight for the element to be used
         - Isotope causes the most common isotope weight to be used
         - Program means use the mass used by the program
-
+    debug : boolean
+        If true debugging output is provided
 
     Returns
     -------
@@ -145,18 +146,27 @@ def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_defi
     Examples
     --------
     ```
-    material1 = get_material("example.dft")
-    material2 = get_material("gold")
+    material1 = getMaterial("example.dft")
+    material2 = getMaterial("gold")
     ```
 
     """
     # Let's see if the name is a file name that can be read
     program,qm_program = Utilities.find_program_from_name(name)
+    if debug:
+        print(f'getMaterial: program = {program}')
+        print(f'getMaterial: qmprogram = {qm_program}')
     if len(program) > 1:
-        reader = Utilities.get_reader(name,program,qm_program)
+        reader = Utilities.get_reader(name,program,qm_program,debug)
         reader.read_output()
+        if debug:
+            print(f'getMaterial: reader.print()')
+            reader.print()
         permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
+        if debug:
+            print(f'getMaterial: cell.print()')
+            cell.print()
         material = External("Dielectric layer",permittivityObject=permittivityObject,cell=cell)
     else:
         dataBase = MaterialsDataBase(dataBaseName)

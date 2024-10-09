@@ -103,6 +103,7 @@ def find_program_from_name( filename ):
     """    
     head,tail = os.path.split(filename)
     root,ext = os.path.splitext(tail)
+    head_root = os.path.join(head,root)
     if os.path.isfile(os.path.join(head,"pwscf.xml")):
         if os.path.isfile(os.path.join(head,"phonopy.yaml")):
             # It is a phonopy calculation because phonopy.yaml is present
@@ -137,12 +138,12 @@ def find_program_from_name( filename ):
             else:
                 return "castep",""
     if ext ==  ".out":
-        if os.path.isfile(head+root+".files"):
+        if os.path.isfile(head_root+".files"):
             if os.path.isfile(head+"phonopy.yaml"):
                 return "phonopy","abinit"
             else:
                 return "abinit",""
-        elif os.path.isfile(head+root+".dynG"):
+        elif os.path.isfile(head_root+".dynG"):
             if os.path.isfile(head+"phonopy.yaml"):
                 return "phonopy","quantum espresso"
             else:
@@ -152,12 +153,12 @@ def find_program_from_name( filename ):
         else:
             return "crystal",""
     if ext ==  ".log":
-        if os.path.isfile(head+root+".files"):
+        if os.path.isfile(head_root+".files"):
             if os.path.isfile(head+"phonopy.yaml"):
-                return "abinit","crystal"
+                return "phonopy","abinit"
             else:
                 return "abinit",""
-        elif os.path.isfile(head+root+".dynG"):
+        elif os.path.isfile(head_root+".dynG"):
             if os.path.isfile(head+"phonopy.yaml"):
                 return "phonopy","quantum espresso"
             else:
