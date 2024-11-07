@@ -148,7 +148,7 @@ Functions
 
 
 
-.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', eckart=True, mass_definition='Average')
+.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', eckart=True, mass_definition='Average', debug=False)
 
    Get a material with the given name.
 
@@ -171,7 +171,8 @@ Functions
        - Average causes the average weight for the element to be used
        - Isotope causes the most common isotope weight to be used
        - Program means use the mass used by the program
-
+   debug : boolean
+       If true debugging output is provided
 
    Returns
    -------
@@ -181,8 +182,8 @@ Functions
    Examples
    --------
    ```
-   material1 = get_material("example.dft")
-   material2 = get_material("gold")
+   material1 = getMaterial("example.dft")
+   material2 = getMaterial("gold")
    ```
 
 

@@ -67,7 +67,8 @@ preamble_maths = r'''
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 #mathjax_path = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js'
-mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+#mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
     'autoapi.extension',
     'sphinx.ext.viewcode',

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdielec"
-version = "8.1.3"
+version = "8.2.0"
 dependencies = [
     "setuptools",
     "scipy",
@@ -35,10 +35,10 @@ maintainers = [
   {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
 ]
 
-description = "PDielec package for the calculation of THz and infrared spectra"
+description = "PDielec package for the calculation of THz and infrared spectra for powders and single crystals"
 readme = "README.md"
 license = {file = "LICENSE.txt"}
-keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon"]
+keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon","Powder","Single Crystal"]
 
 classifiers = [
   "Development Status :: 5 - Production/Stable",

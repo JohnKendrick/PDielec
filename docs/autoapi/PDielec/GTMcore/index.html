@@ -315,7 +315,13 @@ describing the optical properties of a single layer.
 The optical system is assembled using the <a class="reference internal" href="#PDielec.GTMcore.System" title="PDielec.GTMcore.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> class.</p>
 <p><strong>Change log:</strong></p>
 <blockquote>
-<div><p><em>01-01-2023</em>:</p>
+<div><dl class="simple">
+<dt><em>01-10-2024</em>:</dt><dd><ul class="simple">
+<li><p>Moving back to 63 bit arithmetic as scattering formalism is stable</p></li>
+</ul>
+</dd>
+</dl>
+<p><em>01-01-2023</em>:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Major changes introduced by John Kendrick to make the package compatible with PDielec and PDGUI.</p></li>
@@ -988,7 +994,7 @@ the overall scattering matrix of the combined system.</p>
 <section id="id42">
 <h5>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>S<span class="classifier">ndarray, shape (4, 4), dtype=np.clongdouble</span></dt><dd><p>The complete scattering parameter matrix of the two-port network.</p>
+<dt>S<span class="classifier">ndarray, shape (4, 4), dtype=np.cdouble</span></dt><dd><p>The complete scattering parameter matrix of the two-port network.</p>
 </dd>
 </dl>
 </section>
@@ -1509,7 +1515,7 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 </section>
 <section id="id94">
 <h4>Notes<a class="headerlink" href="#id94" title="Permalink to this heading">#</a></h4>
-<p>This should give a higher precision and speed at a reduced noise, following D.Dietze’s implementation in FSRStools. Modified to work with clongdouble by JK.</p>
+<p>This should give a higher precision and speed at a reduced noise, following D.Dietze’s implementation in FSRStools.</p>
 </section>
 <section id="see-also">
 <h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
@@ -1703,11 +1709,11 @@ to distinguish itself from a system which uses the scattering matrix method</p>
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=9234fd31"></script>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=37b3a9b0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </body>
 </html>

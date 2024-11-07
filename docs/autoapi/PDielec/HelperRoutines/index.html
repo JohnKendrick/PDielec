@@ -293,7 +293,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum" title="PDielec.HelperRoutines.calculateSingleCrystalSpectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateSingleCrystalSpectrum</span></code></a>(frequencies_cm1, ...[, ...])</p></td>
 <td><p>Calculate a single crystal spectrum.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, eckart, mass_definition])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, eckart, ...])</p></td>
 <td><p>Get a material with the given name.</p></td>
 </tr>
 </tbody>
@@ -431,7 +431,7 @@ Information about the layer class can be found here (<a class="reference interna
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.getMaterial">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a material with the given name.</p>
 <p>If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
 If the name is a material name in the material database, this is used instead.
@@ -452,6 +452,8 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 - Isotope causes the most common isotope weight to be used
 - Program means use the mass used by the program</p>
 </dd>
+<dt>debug<span class="classifier">boolean</span></dt><dd><p>If true debugging output is provided</p>
+</dd>
 </dl>
 </section>
 <section id="id7">
@@ -464,8 +466,8 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 <section id="examples">
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">material1</span> <span class="pre">=</span> <span class="pre">get_material(&quot;example.dft&quot;)</span>
-<span class="pre">material2</span> <span class="pre">=</span> <span class="pre">get_material(&quot;gold&quot;)</span>
+<span class="pre">material1</span> <span class="pre">=</span> <span class="pre">getMaterial(&quot;example.dft&quot;)</span>
+<span class="pre">material2</span> <span class="pre">=</span> <span class="pre">getMaterial(&quot;gold&quot;)</span>
 <span class="pre">`</span></code></p>
 </section>
 </dd></dl>
@@ -551,7 +553,7 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=9234fd31"></script>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=37b3a9b0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

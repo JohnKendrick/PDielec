@@ -52,6 +52,9 @@
               
    **Change log:**
 
+       *01-10-2024*:
+           - Moving back to 63 bit arithmetic as scattering formalism is stable
+
        *01-01-2023*: 
            
            - Major changes introduced by John Kendrick to make the package compatible with PDielec and PDGUI.
@@ -650,7 +653,7 @@ Attributes
 
       Returns
       -------
-      S : ndarray, shape (4, 4), dtype=np.clongdouble
+      S : ndarray, shape (4, 4), dtype=np.cdouble
           The complete scattering parameter matrix of the two-port network.
 
       Notes
@@ -1121,7 +1124,7 @@ Attributes
 
    Notes
    -----
-   This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in FSRStools. Modified to work with clongdouble by JK.
+   This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in FSRStools. 
 
    See Also
    --------
