@@ -49,7 +49,7 @@ If you do not want to use conda or miniconda, PDielec is available on pypi.org a
    pip install --user pdielec
    pdgui
 
-Sometimes a pip install my fail because there isn't a wheel (compiled) version of a required package and the compilation is not possible because the necessary tools have not been installed.  In this case it is necessary to look to see what versions of the whl files are available on PyPi and ensure that the version of Python running is compatible.  Sometimes downgrading the Python version is enough to install all the software requirements from wheels, thereby avoiding recompilation.
+Sometimes a pip install may fail because there isn't a wheel (compiled) version of a required package and the compilation is not possible because the necessary tools have not been installed.  In this case it is necessary to look to see what versions of the whl files are available on PyPi and ensure that the version of Python running is compatible.  Sometimes downgrading the Python version is enough to install all the software requirements from wheels, thereby avoiding recompilation.
 
 
 GitHub - Linux
