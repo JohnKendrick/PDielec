@@ -1,4 +1,4 @@
-version 8.1.3
+version 8.2.0
    A -threads or --threads option has been added to pdgui.
    Added QT6 support by including the qtpy module
    Changed the use of scipy.interpolate.trapz to np.trapz
@@ -40,8 +40,6 @@ version 8.1.3
        on the command line the old method of analysing the output is used and the xml files are not read.
        If vasprun.xml (Vasp) or a .dynG file is given on the command line then the xml will be read if it is there.
    Changed the GTMCore.py use of clongdouble to cdouble.
-
-version 8.1.2
    Added a .nojekyll file into the docs/ directory to stop git hub pages over processing things
    Changed the name PDielec to pdielec in setup.py to help with Windows install on conda-forge
    Changed the find_program_from_name() function to return (program,qmprogram).  Affected routines are;
