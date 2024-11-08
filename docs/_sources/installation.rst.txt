@@ -12,17 +12,17 @@ Installation
    :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
 
 
-Anaconda
-========
+Conda
+=====
 
-Unless you are interested in the full Anaconda package, a Miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-Miniconda is the recommended environment for installing PDielec.  On Windows, it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when Miniconda is installed.
+Unless you are interested in the full conda package, a miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+Miniconda is the recommended environment for installing PDielec.  On Windows, it is necessary to run the commands in an conda command terminal, which will be added to the user's menu when miniconda is installed.
 
-PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows, and Mac systems.
-However, there are no example files installed, only the executables.  
+PDielec is available on the conda-forge channel and installation using conda can be performed on Linux, Windows, and Mac systems.
+However, in a conda installation, there are no example files installed, only the executables and python files.  
 Example files for each of the DFT packages supported can be downloaded from the Git repository.
 
-The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or Anaconda, a new environment should be created in which to install the package::
+The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or conda, a new environment should be created in which to install the package::
 
    conda create  --name pdielec
    conda activate pdielec
@@ -38,14 +38,18 @@ If at a later stage, you want to update PDielec to the latest version from conda
 
 This only works if the conda-forge channel has been added to the channel list for the environment.
 
+If the full GitHub installation is required to run the examples for instance, then this can be downloaded from
+
 
 PyPi
 ====
 
-If you do not want to use Anaconda or Miniconda, PDielec is available on pypi.org and can be installed using pip.::
+If you do not want to use conda or miniconda, PDielec is available on pypi.org and can be installed using pip.::
 
    pip install --user pdielec
    pdgui
+
+Sometimes a pip install my fail because there isn't a wheel (compiled) version of a required package and the compilation is not possible because the necessary tools have not been installed.  In this case it is necessary to look to see what versions of the whl files are available on PyPi and ensure that the version of Python running is compatible.  Sometimes downgrading the Python version is enough to install all the software requirements from wheels, thereby avoiding recompilation.
 
 
 GitHub - Linux
@@ -57,15 +61,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
   cd ~/Software
   git clone https://github.com/JohnKendrick/PDielec.git
 
-This will create a directory \~/Software/PDielec.  To make the program generally available to the user: ::
-
-  cd ~/Software/PDielec
-  pdmake install
-
-This copies the commands and modules to the \~/bin directory which should be included in your PATH environment variable.::
-
- export PATH=~/bin;$PATH
-
+This will create a directory \~/Software/PDielec. 
 
 As part of the installation, you will have to install several Python packages into your environment.  The full list of packages is as follows; ::
 
@@ -73,7 +69,6 @@ As part of the installation, you will have to install several Python packages in
     imageio
     imageio-ffmpeg
     matplotlib
-    mkl
     numpy
     openpyxl
     psutil
@@ -86,18 +81,18 @@ As part of the installation, you will have to install several Python packages in
     spglib
     termcolor
     XlsxWriter
-   scikit-learn
+    scikit-learn
 
 GitHub - Windows
 ================
 
-An Anaconda installation is now the recommended way of installing to a Windows machine.  See the section on Anaconda above.  If the user still wishes to proceed with a local installation based purely on the GitHub releases, see below.
+An conda installation is the recommended way of installing on a Windows machine.  See the section on conda above.  If the user still wishes to proceed with a local installation based purely on the GitHub releases, see below.
 
 
 Installation from repository
 ----------------------------
 
-This Windows installation method is only needed if installation through Anaconda is not possible.
+This Windows installation method is only needed if installation through conda is not possible.
 A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that runs all the test cases.  In the following instructions replace 'yourusername' with your user name.
 
 Install git
@@ -160,7 +155,7 @@ This should create a directory in Software called PDielec.  The "-c core.symlink
 Testing PDielec
 ...............
 
-Open a git bash console.  If you have installed Python using Anaconda then you need to 'source activate' the environment you have established before typing;::
+Open a git bash console.  If you have installed Python using conda then you need to 'source activate' the environment you have established before typing;::
 
   cd Software/PDielec
   pdmake test-preader

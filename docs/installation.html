@@ -277,14 +277,14 @@
         <article role="main">
           <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
-<section id="anaconda">
-<h2>Anaconda<a class="headerlink" href="#anaconda" title="Permalink to this heading">#</a></h2>
-<p>Unless you are interested in the full Anaconda package, a Miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-Miniconda is the recommended environment for installing PDielec.  On Windows, it is necessary to run the commands in an Anaconda command terminal, which will be added to the user’s menu when Miniconda is installed.</p>
-<p>PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows, and Mac systems.
-However, there are no example files installed, only the executables.
+<section id="conda">
+<h2>Conda<a class="headerlink" href="#conda" title="Permalink to this heading">#</a></h2>
+<p>Unless you are interested in the full conda package, a miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+Miniconda is the recommended environment for installing PDielec.  On Windows, it is necessary to run the commands in an conda command terminal, which will be added to the user’s menu when miniconda is installed.</p>
+<p>PDielec is available on the conda-forge channel and installation using conda can be performed on Linux, Windows, and Mac systems.
+However, in a conda installation, there are no example files installed, only the executables and python files.
 Example files for each of the DFT packages supported can be downloaded from the Git repository.</p>
-<p>The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or Anaconda, a new environment should be created in which to install the package:</p>
+<p>The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or conda, a new environment should be created in which to install the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
@@ -298,14 +298,16 @@ Example files for each of the DFT packages supported can be downloaded from the 
 </pre></div>
 </div>
 <p>This only works if the conda-forge channel has been added to the channel list for the environment.</p>
+<p>If the full GitHub installation is required to run the examples for instance, then this can be downloaded from</p>
 </section>
 <section id="pypi">
 <h2>PyPi<a class="headerlink" href="#pypi" title="Permalink to this heading">#</a></h2>
-<p>If you do not want to use Anaconda or Miniconda, PDielec is available on pypi.org and can be installed using pip.:</p>
+<p>If you do not want to use conda or miniconda, PDielec is available on pypi.org and can be installed using pip.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="n">pdielec</span>
 <span class="n">pdgui</span>
 </pre></div>
 </div>
+<p>Sometimes a pip install my fail because there isn’t a wheel (compiled) version of a required package and the compilation is not possible because the necessary tools have not been installed.  In this case it is necessary to look to see what versions of the whl files are available on PyPi and ensure that the version of Python running is compatible.  Sometimes downgrading the Python version is enough to install all the software requirements from wheels, thereby avoiding recompilation.</p>
 </section>
 <section id="github-linux">
 <h2>GitHub - Linux<a class="headerlink" href="#github-linux" title="Permalink to this heading">#</a></h2>
@@ -315,43 +317,34 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">JohnKendrick</span><span class="o">/</span><span class="n">PDielec</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>This will create a directory ~/Software/PDielec.  To make the program generally available to the user:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">Software</span><span class="o">/</span><span class="n">PDielec</span>
-<span class="n">pdmake</span> <span class="n">install</span>
-</pre></div>
-</div>
-<p>This copies the commands and modules to the ~/bin directory which should be included in your PATH environment variable.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PATH=~/bin;$PATH
-</pre></div>
-</div>
+<p>This will create a directory ~/Software/PDielec.</p>
 <p>As part of the installation, you will have to install several Python packages into your environment.  The full list of packages is as follows;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">dill</span>
- <span class="n">imageio</span>
- <span class="n">imageio</span><span class="o">-</span><span class="n">ffmpeg</span>
- <span class="n">matplotlib</span>
- <span class="n">mkl</span>
- <span class="n">numpy</span>
- <span class="n">openpyxl</span>
- <span class="n">psutil</span>
- <span class="n">PyOpenGL</span>
- <span class="n">PyYAML</span>
- <span class="n">QtPy</span>
- <span class="n">scikit_learn</span>
- <span class="n">scipy</span>
- <span class="n">setuptools</span>
- <span class="n">spglib</span>
- <span class="n">termcolor</span>
- <span class="n">XlsxWriter</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dill</span>
+<span class="n">imageio</span>
+<span class="n">imageio</span><span class="o">-</span><span class="n">ffmpeg</span>
+<span class="n">matplotlib</span>
+<span class="n">numpy</span>
+<span class="n">openpyxl</span>
+<span class="n">psutil</span>
+<span class="n">PyOpenGL</span>
+<span class="n">PyYAML</span>
+<span class="n">QtPy</span>
+<span class="n">scikit_learn</span>
+<span class="n">scipy</span>
+<span class="n">setuptools</span>
+<span class="n">spglib</span>
+<span class="n">termcolor</span>
+<span class="n">XlsxWriter</span>
 <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
 </pre></div>
 </div>
 </section>
 <section id="github-windows">
 <h2>GitHub - Windows<a class="headerlink" href="#github-windows" title="Permalink to this heading">#</a></h2>
-<p>An Anaconda installation is now the recommended way of installing to a Windows machine.  See the section on Anaconda above.  If the user still wishes to proceed with a local installation based purely on the GitHub releases, see below.</p>
+<p>An conda installation is the recommended way of installing on a Windows machine.  See the section on conda above.  If the user still wishes to proceed with a local installation based purely on the GitHub releases, see below.</p>
 <section id="installation-from-repository">
 <h3>Installation from repository<a class="headerlink" href="#installation-from-repository" title="Permalink to this heading">#</a></h3>
-<p>This Windows installation method is only needed if installation through Anaconda is not possible.
+<p>This Windows installation method is only needed if installation through conda is not possible.
 A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that runs all the test cases.  In the following instructions replace ‘yourusername’ with your user name.</p>
 <section id="install-git">
 <h4>Install git<a class="headerlink" href="#install-git" title="Permalink to this heading">#</a></h4>
@@ -410,7 +403,7 @@ A Windows 10 installation from the git repository which works for users without 
 </section>
 <section id="testing-pdielec">
 <h4>Testing PDielec<a class="headerlink" href="#testing-pdielec" title="Permalink to this heading">#</a></h4>
-<p>Open a git bash console.  If you have installed Python using Anaconda then you need to ‘source activate’ the environment you have established before typing;:</p>
+<p>Open a git bash console.  If you have installed Python using conda then you need to ‘source activate’ the environment you have established before typing;:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Software</span><span class="o">/</span><span class="n">PDielec</span>
 <span class="n">pdmake</span> <span class="n">test</span><span class="o">-</span><span class="n">preader</span>
 <span class="n">pdmake</span> <span class="n">test</span><span class="o">-</span><span class="n">pdgui</span>
@@ -803,7 +796,7 @@ A Windows 10 installation from the git repository which works for users without 
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
-<li><a class="reference internal" href="#anaconda">Anaconda</a></li>
+<li><a class="reference internal" href="#conda">Conda</a></li>
 <li><a class="reference internal" href="#pypi">PyPi</a></li>
 <li><a class="reference internal" href="#github-linux">GitHub - Linux</a></li>
 <li><a class="reference internal" href="#github-windows">GitHub - Windows</a><ul>
