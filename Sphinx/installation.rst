@@ -24,10 +24,9 @@ Example files for each of the DFT packages supported can be downloaded from the 
 
 The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or conda, a new environment should be created in which to install the package::
 
-   conda create  --name pdielec
-   conda activate pdielec
    conda config --add channels conda-forge
-   conda install -c conda-forge pdielec
+   conda create  --name pdielec pdielec
+   conda activate pdielec
    pdgui
 
 
@@ -38,7 +37,7 @@ If at a later stage, you want to update PDielec to the latest version from conda
 
 This only works if the conda-forge channel has been added to the channel list for the environment.
 
-If the full GitHub installation is required to run the examples for instance, then this can be downloaded from
+If the full GitHub installation is required to run the examples for instance, then this can be downloaded from GitHub as outlined below.
 
 
 PyPi
