@@ -674,6 +674,7 @@ class GenericOutputReader:
         self.mass_weighted_normal_modes, self.frequencies = self._calculate_normal_modes_and_frequencies(hessian,self.nions)
         if self.debug:
             print("calculated frequencies", self.frequencies)
+            print("mass-weighted normal modes", self.mass_weighted_normal_modes)
         # end for i
         return self.mass_weighted_normal_modes
 
@@ -834,7 +835,7 @@ class GenericOutputReader:
             mode = []
             n = 0
             for _j in range(natoms):
-                modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
+                modea = [eig_vec[n][i].item(), eig_vec[n+1][i].item(), eig_vec[n+2][i].item()]
                 n = n + 3
                 mode.append(modea)
             mass_weighted_normal_modes.append(mode)
