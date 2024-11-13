@@ -195,8 +195,7 @@ class System:
                 for i in range(len(self.vibrations)):
                         self.ADM[:,i]=self.vibrations[i].displacements
         def checkADM(self):
-                """Check orthogonalyty of the ADM"""
-                self.makeADM()
+                """Check orthogonality of the ADM"""
                 for n in range(self.ADM.shape[1]):
                         norm=np.linalg.norm(self.ADM[:,n])
                         #print("Norm of Vibrational Mode %d is %8.6f"%(n+1,norm))
@@ -471,13 +470,9 @@ def readPDielec(ifn):
         for imode,mode in enumerate(mass_weighted_normal_modes):
             for index,old_index in enumerate(original_atomic_order):
                 i = index*3
-                new_mass_weighted_normal_modes[imode,i+0] = mode[old_index][0]
-                new_mass_weighted_normal_modes[imode,i+1] = mode[old_index][1]
-                new_mass_weighted_normal_modes[imode,i+2] = mode[old_index][2]
-                new_normal_modes[imode,i+0] = new_mass_weighted_normal_modes[imode,i+0] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+1] = new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+2] = new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
-
+                new_normal_modes[imode,i+0] = mode[old_index][0] / math.sqrt(masses[index])
+                new_normal_modes[imode,i+1] = mode[old_index][1] / math.sqrt(masses[index])
+                new_normal_modes[imode,i+2] = mode[old_index][2] / math.sqrt(masses[index])
         #
         # OK - now we can start the interface to VibAnalysis
         #
@@ -1449,7 +1444,7 @@ Options:
                 system.normalizeVibrations()
         #jk system.sortVibrations()
         system.makeADM()
-        system.checkADM()
+        #jk system.checkADM()
         # Generate quasi-redundant internal coordinated
         of.write("\nGenerating Internal Coordinates...\n")
         makeIC(system,useric)
