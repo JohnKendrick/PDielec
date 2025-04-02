@@ -184,6 +184,7 @@ class GenericOutputReader:
         self.CrystalPermittivity        = None
         self.oscillator_strengths       = None
         self.edited_masses              = None
+        self.primitive_transformation   = None
         return
 
     def read_output(self):
@@ -426,7 +427,8 @@ class GenericOutputReader:
             title = f"Born Charges for Atom {i:d}"
             print3x3(title, charges)
         print3x3("Epsilon inf: ", self.zerof_optical_dielectric)
-        print3x3("Unit cell: ", self.unit_cells[-1].lattice)
+        #jk print3x3("Unit cell: ", self.unit_cells[-1].lattice)
+        self.unit_cells[-1].print()
         print(" ")
         print(f"Volume of cell: {self.volume:f}")
         mtotal = 0.0
