@@ -17,12 +17,13 @@
 
 import math
 import sys
+import spglib 
 from contextlib import nullcontext
 
 import numpy as np
 
 from PDielec.Calculator import calculate_angle, calculate_distance, calculate_torsion, cleanup_symbol
-from PDielec.Constants import avogadro_si, covalent_radii, element_to_atomic_number
+from PDielec.Constants import avogadro_si, covalent_radii, element_to_atomic_number, atomic_number_to_element
 from PDielec.Plotter import print_ints, print_reals, print_strings
 
 
@@ -164,13 +165,37 @@ class UnitCell:
         self.total_mass = 0.0
         self.lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
         self.units = units
-        if gamma is not None:
+        if  not None in [a, b, c, alpha, beta, gamma]:
             self.lattice = self.convert_abc_to_unitcell(a, b, c, alpha, beta, gamma)
-        else:
+        elif not None in [a, b, c]:
             self.lattice[0] = a
             self.lattice[1] = b
             self.lattice[2] = c
-        self._calculate_reciprocal_lattice(self.lattice)
+        else:
+            self.lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+        # convert lattice to an np array
+        self.lattice = np.array(self.lattice)
+        self._calculate_reciprocal_lattice()
+
+    def set_lattice(self, lattice):
+        """Set the lattice parameters with a 3x3 matrix.
+
+        The lattice is stored as a numpy array
+        The reciprical vectors are calculated.
+
+        Parameters
+        ----------
+        lattice : 3x3 list
+            The lattice vectors stored a ( a b c )
+            where a, b, c are 3 vectors in xyz space.
+
+        Returns
+        -------
+        None
+        """
+        self.lattice = np.array(lattice)
+        self._calculate_reciprocal_lattice()
+        return
 
     def write_cif(self, filename=None, filedescriptor=sys.stdout, description=None):
         """Write the crystallographic information file (CIF) representation of a structure.
@@ -351,11 +376,11 @@ class UnitCell:
         print_strings("Element names",self.element_names)
         print_reals("Element masses",self.atomic_masses)
         if len(self.element_names) > 0:
-            print_reals("Fractional coords",self.fractional_coordinates[0], format="{:12.6f}")
-            for frac in self.fractional_coordinates[1:]:
+            print("Fractional coords")
+            for frac in self.fractional_coordinates:
                 print_reals("",frac, format="{:12.6f}")
-            print_reals("Cartesian coords",self.xyz_coordinates[0], format="{:12.6f}")
-            for xyz in self.xyz_coordinates[1:]:
+            print("Cartesian coords")
+            for xyz in self.xyz_coordinates:
                 print_reals("",xyz, format="{:12.6f}")
             if self.molecules:
                 for molid,atoms in enumerate(self.molecules):
@@ -422,6 +447,21 @@ class UnitCell:
             "abc"  : cm_fractional,
             "all"  : (mass, cm_xyz, cm_fractional ),
         }.get(output, (mass, cm_xyz, cm_fractional))
+
+    def get_number_of_molecules(self):
+        """Get the number of molecules.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+            The number of molecules
+
+        """        
+        return [element_to_atomic_number[el] for el in self.element_names]
 
     def get_atomic_numbers(self):
         """Get the atomic numbers for the elements.
@@ -526,30 +566,27 @@ class UnitCell:
         y = a * (np.cos(gamma) - np.cos(alpha)*np.cos(beta))/np.sin(alpha)
         x = a * np.sqrt(1.0 - np.cos(beta)**2 - (y/a)**2)
         lattice[0] = [x, y, z]
-        self._calculate_reciprocal_lattice(lattice)
+        self._calculate_reciprocal_lattice()
         return self.lattice
 
-    def _calculate_reciprocal_lattice(self, lattice):
+    def _calculate_reciprocal_lattice(self):
         """Calculate the reciprocal lattice.
 
         Parameters
         ----------
-        lattice : 3x3 list of floats
-            Lattice as [a, b, c] where a/b/c are [x,y,z]
+        None
 
         Returns
         -------
         None
 
-        Returns
+        Modifies
         -------
-        sets the reciprocal lattice vectors
+        Sets the reciprocal lattice vectors from the lattice vectors
 
         """
-        self.lattice = np.array(lattice)
         self.a, self.b, self.c, self.alpha, self.beta, self.gamma = self.convert_unitcell_to_abc()
-        self.inverse_lattice = np.linalg.inv(self.lattice)
-        self.reciprocal_lattice = self.inverse_lattice
+        self.reciprocal_lattice = np.linalg.inv(self.lattice)
 
     def getVolume(self, units="cm"):
         """Calculate the volume.
@@ -664,8 +701,13 @@ class UnitCell:
         -------
         None
 
+        Modifies
+        -------
+        fractional_coordinates
+        xyz_coordinates
+        nions
         """
-        self.fractional_coordinates = coords
+        self.fractional_coordinates = np.array(coords)
         self.xyz_coordinates = self.convert_abc_to_xyz(coords)
         self.nions = len(coords)
         return
@@ -683,6 +725,12 @@ class UnitCell:
         Returns
         -------
         None
+
+        Modifies
+        -------
+        xyz_coordinates
+        fractional_coordinates
+        nions
 
         """
         self.xyz_coordinates = convert_length_units(coords,units,self.units)
@@ -715,6 +763,30 @@ class UnitCell:
           self.element_names.append(el)
         return
 
+    def set_atomic_numbers(self, atomic_numbers):
+        """Set the element names according to the atomic numbers for a molecule.
+
+        Parameters
+        ----------
+        atomic_numbers
+            A list containing the atomic numbers of the atoms
+
+        Returns
+        -------
+        None
+
+        Modifies
+        -------
+        element_names
+
+        Notes
+        -----
+        This method updates the `atomic numbers` attribute of the molecule
+
+        """        
+        self.element_names = [atomic_number_to_element[el] for el in atomic_numbers]
+        return
+
     def set_atom_labels(self, atom_labels):
         """Set the atom labels for a molecule.
 
@@ -738,6 +810,23 @@ class UnitCell:
         for el in atom_labels:
           self.atom_labels.append(el)
         return
+
+    def get_element_names(self):
+        """Get the names of elements in the cell.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        element_names : list
+            A list of strings representing element names to be cleaned and stored.
+
+        Notes
+        -----
+        """        
+        return self.element_names
 
     def get_atom_labels(self):
         """Get the atom labels for a molecule.
@@ -779,9 +868,10 @@ class UnitCell:
         atomic_nos = self.get_atomic_numbers()
         if len(atomic_nos) <= 0:
             return "P 1", 1
-        from spglib import get_spacegroup
         cell = ( self.lattice, self.fractional_coordinates, atomic_nos )
-        spacegroup = get_spacegroup(cell, symprec=symprec,angle_tolerance=angle_tolerance)
+        spacegroup = spglib.get_spacegroup(cell, symprec=symprec,angle_tolerance=angle_tolerance)
+        print('jk98',spacegroup)
+        print('jk98',cell)
         sp = spacegroup.split()
         symbol = sp[0]
         number = int(sp[1].replace("(","").replace(")",""))
@@ -805,12 +895,14 @@ class UnitCell:
 
         Returns
         -------
-        new_unit_cell, len(new_molecules), old_order
+        len(new_molecules)
 
         Notes
         -----
         The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
         `scale * (radi + radj) + tolerance`
+        The routine modifies its current instance
+        The ordering of the atoms is maintained
 
         """
         # Check that the covalent radius has been given
@@ -905,7 +997,7 @@ class UnitCell:
         #
         # BelongsToMolecule[i] holds which molecule the ith atom belongs to
         belongsToMolecule = {}
-        # molecules is a dictionary of molecules each entry is a is a list of atoms
+        # molecules is a dictionary of molecules each entry is a list of atoms
         molecules = {}
         molID = -1
         # We stop when all the atoms in the original cell belong to a molecule
@@ -974,58 +1066,35 @@ class UnitCell:
             cm_xyz = cm / mass
             cm_fractional = self.convert_xyz_to_abc(cm_xyz)
             self.centres_of_mass.append( cm_fractional )
-            #jk print('Mass', mass)
-            #jk print('Centre of mass', cm_fractional)
-        # Create a new unit cell with the atoms shifted so that whole molecules are ordered and within the cell
-        new_molecules = []
-        new_fractional = np.empty_like(self.fractional_coordinates)
-        new_element_names = []
-        new_index = 0
-        new_masses = []
-        old_order = []
+        #
+        # Create a new unit cell with the atoms shifted so that
+        # whole molecules are ordered and within the cell
+        #
+        new_fractional_coordinates = np.empty_like(self.fractional_coordinates)
         for mol_index in molecules:
-            new_atom_index = []
             cm = self.centres_of_mass[mol_index]
-            shift = np.array( [ 0.0, 0.0, 0.0] )
-            if cm[0] < 0.0:
-                shift += [ 1.0, 0.0, 0.0 ]
-            elif cm[0] > 1.0:
-                shift += [-1.0, 0.0, 0.0 ]
-            if cm[1] < 0.0:
-                shift += [ 0.0, 1.0, 0.0 ]
-            elif cm[1] > 1.0:
-                shift += [ 0.0,-1.0, 0.0 ]
-            if cm[2] < 0.0:
-                shift += [ 0.0, 0.0, 1.0 ]
-            elif cm[2] > 1.0:
-                shift += [ 0.0, 0.0,-1.0 ]
+            shift = -np.floor(cm)
             for atom_index in molecules[mol_index]:
                 old_index = index_supercell[atom_index]
-                old_order.append(old_index)
-                new_fractional[new_index] = shift + np.array(fractional_supercell[atom_index])
-                new_element_names.append(self.element_names[old_index])
-                new_masses.append(self.atomic_masses[old_index])
-                new_atom_index.append(new_index)
-                new_index += 1
-            new_molecules.append(new_atom_index)
-        # as well as being able to go from the new order and look up the old order
-        # we need to be able to take the old order and look up what the new order is
-        invert_old_order = np.zeros_like(old_order)
-        for i,j in enumerate(old_order):
-            invert_old_order[j] = i
-        new_bonds = []
-        for bond in bonds:
-            i,j = bond
-            ix = invert_old_order[index_supercell[i]]
-            jx = invert_old_order[index_supercell[j]]
-            new_bonds.append( (ix,jx) )
-        new_unit_cell = UnitCell( self.a, self.b, self.c, self.alpha, self.beta, self.gamma )
-        new_unit_cell.set_fractional_coordinates(new_fractional.tolist())
-        new_unit_cell.set_element_names(new_element_names)
-        new_unit_cell.set_atomic_masses(new_masses)
-        new_unit_cell.set_molecules(new_molecules)
-        new_unit_cell.set_bonds(new_bonds)
-        return new_unit_cell, len(new_molecules), old_order
+                new_fractional_coordinates[old_index] = shift + np.array(fractional_supercell[atom_index])
+        self.set_fractional_coordinates(new_fractional_coordinates)
+        #
+        # Replace the super cell id, with the index of the atom in the original cell
+        #
+        molecule_list = []
+        for mol_index in molecules:
+            atom_list = []
+            for atom_index in molecules[mol_index]:
+                atom_list.append(index_supercell[atom_index])
+            molecule_list.append(atom_list)
+        self.set_molecules(molecule_list)
+        bond_list = []
+        for i,j in bonds:
+            bond_list.append( (index_supercell[i], index_supercell[j]) )
+        self.set_bonds(bond_list)
+        print('jk987')
+        self.print()
+        return len(molecule_list)
 
     def get_bonds(self):
         """Return a list of bonds for the unit cell.
@@ -1176,3 +1245,180 @@ class UnitCell:
         self.molecules = molecules
         return
 
+    def fold_cell(self, symprec=1.0E-5):
+        """Fold a cell so that any atoms outside a single cell are moved inside.
+
+        Any molecule or bonding information is removed
+
+        Parameters
+        ----------
+        None
+
+        Modifies
+        -------
+        fractional_coordinates
+
+        """
+        new_labels = []
+        new_masses = []
+        new_names = []
+        new_positions = []
+        positions = self.fractional_coordinates
+        labels = self.get_atom_labels()
+        masses  = self.get_atomic_masses()
+        element_names  = self.get_element_names()
+        for p,l,m,e in zip(positions,labels,masses,element_names):
+            for i in range(3):
+                if p[i] >= 1.0 or p[i] < 0.0:
+                    p[i] = p[i] - math.floor(p[i])
+            #
+            # Only store the new atom position if it doesn't alread exist
+            # This could be done better, but will do for the time being
+            # For very large cells, an order N method will be needed
+            #
+            dist = 1.0
+            for frac in new_positions:
+                dist = min(dist, np.sqrt(np.sum(np.square(p-frac))))
+            if dist > symprec:
+                new_positions.append(p)
+                new_labels.append(l)
+                new_masses.append(m)
+                new_names.append(e)
+        self.set_atom_labels(new_labels)
+        self.set_atomic_masses(new_masses)
+        self.set_element_names(new_names)
+        self.set_fractional_coordinates(new_positions)
+        #
+        # Remove molecule and bonding information
+        #
+        self.molecules = []
+        self.bonds     = []
+        print('JK5 ---FOLDING------------------------------')
+        #jk self.print()
+        #jk print('JK5 ---END FOLDING--------------------------')
+
+    def trim_cell(self):
+        """Trim this cell so that any atoms outside a single cell are removed.
+
+        As well as removing the redundant atoms, a list of the mappings
+        from the original cell and to the old cell are generated
+
+        This routine is used when generating a primitive (the new) cell, from a standard cell
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        map_old_to_new : a list of integers
+        map_new_to_old : a list of integers
+
+        Modifies
+        --------
+        fractional_coordinates
+        atom_labels
+        atom_masses
+        element_names
+
+        """
+        positions = self.fractional_coordinates
+        labels = self.get_atom_labels()
+        masses  = self.get_atomic_masses()
+        element_names  = self.get_element_names()
+        keep_list = []; new_positions = []; new_labels = []; new_names = []; new_masses = []
+        map_new_to_old = []
+        map_old_to_new = []
+        index_primitive = -1
+        for index_cell,(p,l,m,n) in enumerate(zip(positions, labels, masses, element_names)):
+            keep = True
+            for i in range(3):
+                if p[i] >= 1.0 or p[i] < 0.0:
+                    keep = False
+            if keep:
+                keep_list.append(keep)
+                new_positions.append(p)
+                new_labels.append(l)
+                new_masses.append(m)
+                new_names.append(n)
+                index_primitive += 1
+                map_new_to_old.append(index_cell)
+            map_old_to_new.append(index_primitive)
+        # end for p,l,m,n
+        #
+        # Store the information in the current cell
+        #
+        self.set_atom_labels(new_labels)
+        self.set_atomic_masses(new_masses)
+        self.set_element_names(new_names)
+        self.set_fractional_coordinates(new_positions)
+        print('JK6 ----TRIM CELL---------------------------')
+        #self.print()
+        print("Map cell to primitive")
+        print(map_old_to_new)
+        print("Map primitive to cell")
+        print(map_new_to_old)
+        print('JK6 ----TRIM CELL---------------------------')
+        self.molecules = []
+        self.bonds     = []
+        return map_old_to_new, map_new_to_old
+
+    def guess_primitive_transform(self, symprec=1.0E-5):
+        """Guess the primitive cell on the basis of the centering.
+
+        This routine is based on a similar routine in phonopy get_primitive_matrix_by_centring
+
+        Parameters
+        ----------
+        symprec float (optional)
+            The symmetry precision used in determining the spacegroup
+
+        Returns
+        -------
+        A guess at the new unit cell
+
+        """
+        print('guess_primitive_transform',self.lattice)
+        spglib_cell = (self.lattice, 
+                       self.fractional_coordinates, 
+                       self.get_atomic_numbers())
+        dataset = spglib.get_symmetry_dataset(spglib_cell, symprec=symprec)
+        tmat = dataset.transformation_matrix
+        centring = dataset.international[0]
+        if centring == "P":
+            pmat = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]], dtype="double")
+        elif centring == "F":
+            pmat = np.array(
+              [[0.0, 1.0 / 2, 1.0 / 2], [1.0 / 2, 0, 1.0 / 2], [1.0 / 2, 1.0 / 2, 0.0]]
+            )
+        elif centring == "I":
+            pmat = np.array(
+              [
+                [-1.0 / 2, 1.0 / 2, 1.0 / 2],
+                [1.0 / 2, -1.0 / 2, 1.0 / 2],
+                [1.0 / 2, 1.0 / 2, -1.0 / 2],
+              ]
+            )
+        elif centring == "A":
+            pmat = np.array(
+                [[1.0, 0.0, 0.0], [0.0, 1.0 / 2, -1.0 / 2], [0.0, 1.0 / 2, 1.0 / 2]]
+            )
+        elif centring == "C":
+            pmat = np.array(
+              [[1.0 / 2, 1.0 / 2, 0], [-1.0 / 2, 1.0 / 2, 0], [0.0, 0.0, 1.0]]
+            )
+        elif centring == "R":
+            pmat = np.array(
+              [
+                [2.0 / 3, -1.0 / 3, -1.0 / 3],
+                [1.0 / 3, 1.0 / 3, -2.0 / 3],
+                [1.0 / 3, 1.0 / 3, 1.0 / 3],
+              ]
+            )
+        else:
+            pmat = np.eye(3)
+            print('Centring is not recognised',centring)
+        print('jk222 centring',centring)
+        print('jk222 tmat',tmat)
+        print('jk222 pmat',pmat)
+        return np.dot(np.linalg.inv(tmat), pmat)
