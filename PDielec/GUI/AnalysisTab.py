@@ -19,6 +19,8 @@ import math
 import matplotlib
 import matplotlib.figure
 import numpy as np
+import copy
+import sys
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.ticker import MaxNLocator
@@ -88,8 +90,6 @@ class AnalysisTab(QWidget):
         String representing the units used for frequency measurements. Initially set to None.
     cell_of_molecules : object or None
         An object containing information about the cell of molecules, if analysis has been run. Initially set to None.
-    original_atomic_order : list or None
-        List maintaining the original order of atoms as read from the input. Initially set to None.
     frequencies_cm1 : list
         A list holding frequency values in cm-1 units.
     mode_energies : list
@@ -174,7 +174,6 @@ class AnalysisTab(QWidget):
         self.number_of_molecules = 0
         self.frequency_units = None
         self.cell_of_molecules = None
-        self.original_atomic_order = None
         self.frequencies_cm1 = []
         self.mode_energies = []
         self.element_radii = covalent_radii
@@ -693,8 +692,8 @@ class AnalysisTab(QWidget):
         - `self.species` and `self.settings['Radii']`: Used for setting up element radii.
         - `self.notebook.settingsTab.settings`, `self.notebook.settingsTab.frequencies_cm1`, and 
         - `self.notebook.settingsTab.mass_weighted_normal_modes`: Access to settings and data specific to the settings tab.
-        - `self.cell_of_molecules`, `self.original_atomic_order`, `self.number_of_molecules`: Modifies and utilizes these attributes
-        - to hold molecular content, order of atoms, and the number of molecules, respectively.
+        - `self.cell_of_molecules`, `self.number_of_molecules`: Modifies and utilizes these attributes
+        - to hold molecular content, and the number of molecules, respectively.
 
         """        
         debugger.print("calculate")
@@ -719,36 +718,26 @@ class AnalysisTab(QWidget):
         scale = self.settings["Covalent radius scaling"]
         tolerance = self.settings["Bonding tolerance"]
         # Find the last unit cell read by the reader and its masses
-        cell = self.reader.get_unit_cell()
-        if cell is None:
+        # Take a copy of this cell, as we do not want the reader copy of the cell changing
+        self.cell_of_molecules = copy.deepcopy(self.reader.get_unit_cell())
+        if self.cell_of_molecules is None:
             return
-        atom_masses = cell.get_atomic_masses()
-        self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance, radii=self.element_radii)
+        nmols = self.cell_of_molecules.calculate_molecular_contents(scale=scale,
+                                                  tolerance=tolerance,
+                                                  radii=self.element_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
-        if self.number_of_molecules != nmols:
+        atom_masses = self.cell_of_molecules.get_atomic_masses()
+        if self.number_of_molecules != self.cell_of_molecules.get_number_of_molecules():
             if self.notebook.viewerTab is not None:
                 self.notebook.viewerTab.requestRefresh()
             self.number_of_molecules = nmols
         self.molecules_le.setText(f"{self.number_of_molecules}")
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
-        # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
-        nmodes,nions,temp = np.shape(normal_modes)
-        self.new_normal_modes = np.zeros( (nmodes,3*nions) )
-        self.new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
-        masses = self.cell_of_molecules.atomic_masses
-        for imode,mode in enumerate(mass_weighted_normal_modes):
-            for index,old_index in enumerate(self.original_atomic_order):
-                i = index*3
-                j = old_index*3
-                self.new_mass_weighted_normal_modes[imode,i+0] = mode[old_index][0]
-                self.new_mass_weighted_normal_modes[imode,i+1] = mode[old_index][1]
-                self.new_mass_weighted_normal_modes[imode,i+2] = mode[old_index][2]
-                self.new_normal_modes[imode,i+0] = self.new_mass_weighted_normal_modes[imode,i+0] / math.sqrt(masses[index])
-                self.new_normal_modes[imode,i+1] = self.new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
-                self.new_normal_modes[imode,i+2] = self.new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
-        # Calculate the distribution in energy for the normal modes
-        mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, self.frequencies_cm1, self.new_mass_weighted_normal_modes)
+        # Calulate the distribution in energy for the normal modes
+        mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, 
+                                                                 self.frequencies_cm1,
+                                                                 mass_weighted_normal_modes)
         # Deal with degeneracies
         degenerate_list = [ [] for f in self.frequencies_cm1]
         for i,fi in enumerate(self.frequencies_cm1):
@@ -773,9 +762,6 @@ class AnalysisTab(QWidget):
                     sume[k] += e / degeneracy
                 sums[4] = sume
             self.mode_energies.append(sums)
-        # Store the results in the spread shee
-        # if self.notebook.spreadsheet is not None:
-        #     self.writeSpreadsheet()
         # Flag that a recalculation is not needed
         self.refreshRequired = False
         QApplication.restoreOverrideCursor()
