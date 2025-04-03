@@ -1383,7 +1383,6 @@ class UnitCell:
         A guess at the new unit cell
 
         """
-        print('guess_primitive_transform',self.lattice)
         spglib_cell = (self.lattice, 
                        self.fractional_coordinates, 
                        self.get_atomic_numbers())

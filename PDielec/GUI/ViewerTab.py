@@ -500,7 +500,7 @@ class ViewerTab(QWidget):
         primitive_transform = self.standard_cell.guess_primitive_transform()
         new = []
         for row in primitive_transform:
-            new.append( [str(col) for col in row])
+            new.append( [f"{col:.9f}" for col in row])
         #jk print('jk555 guessed transform',new)
         self.settings["Primitive transform"] = new
         self.refreshRequired = True
