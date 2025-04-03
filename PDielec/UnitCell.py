@@ -870,8 +870,6 @@ class UnitCell:
             return "P 1", 1
         cell = ( self.lattice, self.fractional_coordinates, atomic_nos )
         spacegroup = spglib.get_spacegroup(cell, symprec=symprec,angle_tolerance=angle_tolerance)
-        print('jk98',spacegroup)
-        print('jk98',cell)
         sp = spacegroup.split()
         symbol = sp[0]
         number = int(sp[1].replace("(","").replace(")",""))
@@ -882,7 +880,7 @@ class UnitCell:
 
         Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
         A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
-        The routine returns the new unit cell, the number of molecules and the old ordering of the atoms.
+        The routine returns the the number of moleculess.
 
         Parameters
         ----------
@@ -895,7 +893,12 @@ class UnitCell:
 
         Returns
         -------
-        len(new_molecules)
+        int : the number of molecules
+
+        Modifies
+        --------
+        fractional_coordinates
+        bonds
 
         Notes
         -----
@@ -1092,8 +1095,6 @@ class UnitCell:
         for i,j in bonds:
             bond_list.append( (index_supercell[i], index_supercell[j]) )
         self.set_bonds(bond_list)
-        print('jk987')
-        self.print()
         return len(molecule_list)
 
     def get_bonds(self):
@@ -1248,7 +1249,8 @@ class UnitCell:
     def fold_cell(self, symprec=1.0E-5):
         """Fold a cell so that any atoms outside a single cell are moved inside.
 
-        Any molecule or bonding information is removed
+        Any molecule or bonding information is removed.  
+        Duplication of atoms is avoided
 
         Parameters
         ----------
@@ -1257,6 +1259,9 @@ class UnitCell:
         Modifies
         -------
         fractional_coordinates
+        atom_labels
+        atom_masses
+        element_names
 
         """
         new_labels = []
@@ -1293,7 +1298,7 @@ class UnitCell:
         #
         self.molecules = []
         self.bonds     = []
-        print('JK5 ---FOLDING------------------------------')
+        #jk print('JK5 ---FOLDING------------------------------')
         #jk self.print()
         #jk print('JK5 ---END FOLDING--------------------------')
 
@@ -1352,13 +1357,13 @@ class UnitCell:
         self.set_atomic_masses(new_masses)
         self.set_element_names(new_names)
         self.set_fractional_coordinates(new_positions)
-        print('JK6 ----TRIM CELL---------------------------')
-        #self.print()
-        print("Map cell to primitive")
-        print(map_old_to_new)
-        print("Map primitive to cell")
-        print(map_new_to_old)
-        print('JK6 ----TRIM CELL---------------------------')
+        #jk print('JK6 ----TRIM CELL---------------------------')
+        #jk self.print()
+        #jk print("Map cell to primitive")
+        #jk print(map_old_to_new)
+        #jk print("Map primitive to cell")
+        #jk print(map_new_to_old)
+        #jk print('JK6 ----TRIM CELL---------------------------')
         self.molecules = []
         self.bonds     = []
         return map_old_to_new, map_new_to_old
@@ -1418,7 +1423,7 @@ class UnitCell:
         else:
             pmat = np.eye(3)
             print('Centring is not recognised',centring)
-        print('jk222 centring',centring)
-        print('jk222 tmat',tmat)
-        print('jk222 pmat',pmat)
+        #jk print('jk222 centring',centring)
+        #jk print('jk222 tmat',tmat)
+        #jk print('jk222 pmat',pmat)
         return np.dot(np.linalg.inv(tmat), pmat)
