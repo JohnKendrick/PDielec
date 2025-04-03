@@ -2079,11 +2079,11 @@ def construct_projection_operator(atoms, xyzs, masses, nats):
    Returns
    -------
    type
-       Description of the returned object.
+       The projection operators for this molecule
 
    """
    mass,cm = calculate_centre_of_mass(xyzs,masses)
-   # The projection operator has dimension number_of_constraints*natoms*3
+   # The projection operator has dimension number_of_constraints,natoms*3
    ps = np.zeros( (6,nats*3) )
    x = 0
    y = 1
@@ -2133,21 +2133,21 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
    molecular_projection_operators = []
    molecule_masks = []
    for atoms in molecules:
-       mol_xyzs  = [ xyz[atom] for atom in atoms]
        mol_mask = np.zeros(nats*3)
        for atom in atoms:
            mol_mask[3*atom+0] = 1
            mol_mask[3*atom+1] = 1
            mol_mask[3*atom+2] = 1
+       molecule_masks.append(mol_mask)
+       mol_xyzs  = [ xyz[atom] for atom in atoms]
        mol_masses = [ atomic_masses[atom] for atom in atoms]
        projection_operators = construct_projection_operator(atoms,mol_xyzs,mol_masses,nats)
        projection_operators = orthogonalise_projection_operator(projection_operators)
        molecular_projection_operators.append(projection_operators)
-       #
-       molecule_masks.append(mol_mask)
    # Calculate the contributions to the kinetic energy in each mode
    energies_in_modes = []
    for mode in normal_modes:
+       mode = np.array(mode).flatten()
        mode_cm = mode
        centre_of_mass_energy = 0.0
        rotational_energy = 0.0
