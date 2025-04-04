@@ -26,46 +26,46 @@ same added coordinates.
 
 
 List of Internal Coordinates and their values
-    1 BOND O1 Ba2                  2.956
-    2 BOND O1 Ti3                  2.090
-    3 BOND Ba2 Ti3                 3.621
-    4 BOND Ba2 O4                  2.956
-    5 BOND Ba2 O5                  2.956
-    6 BOND Ti3 O4                  2.090
-    7 BOND Ti3 O5                  2.090
-    8 ANGLE Ba2 O1 Ti3            90.000
-    9 ANGLE O1 Ba2 Ti3            35.264
-   10 ANGLE O1 Ba2 O4             60.000
-   11 ANGLE O1 Ba2 O5             60.000
-   12 ANGLE O1 Ti3 Ba2            54.736
-   13 ANGLE O1 Ti3 O4             90.000
-   14 ANGLE O1 Ti3 O5             90.000
-   15 ANGLE Ti3 Ba2 O4            35.264
-   16 ANGLE Ti3 Ba2 O5            35.264
-   17 ANGLE Ba2 Ti3 O4            54.736
-   18 ANGLE Ba2 Ti3 O5            54.736
-   19 ANGLE O4 Ba2 O5             60.000
-   20 ANGLE Ba2 O4 Ti3            90.000
-   21 ANGLE Ba2 O5 Ti3            90.000
-   22 ANGLE O4 Ti3 O5             90.000
-   23 TORSION Ti3 O1 Ba2 O4      324.736
-   24 TORSION Ti3 O1 Ba2 O5       35.264
-   25 TORSION Ba2 O1 Ti3 O4       45.000
-   26 TORSION Ba2 O1 Ti3 O5      315.000
-   27 TORSION O1 Ba2 Ti3 O4      120.000
-   28 TORSION O1 Ba2 Ti3 O5      240.000
-   29 TORSION O1 Ba2 O4 Ti3      324.736
-   30 TORSION O1 Ba2 O5 Ti3       35.264
-   31 TORSION O1 Ti3 Ba2 O4      240.000
-   32 TORSION O1 Ti3 Ba2 O5      120.000
-   33 TORSION O1 Ti3 O4 Ba2       45.000
-   34 TORSION O1 Ti3 O5 Ba2      315.000
-   35 TORSION O4 Ba2 Ti3 O5      120.000
-   36 TORSION O5 Ba2 Ti3 O4      240.000
-   37 TORSION O5 Ba2 O4 Ti3       35.264
-   38 TORSION O4 Ba2 O5 Ti3      324.736
-   39 TORSION Ba2 O4 Ti3 O5       45.000
-   40 TORSION Ba2 O5 Ti3 O4      315.000
+    1 BOND O1 Ba4                  2.956
+    2 BOND O1 Ti5                  2.090
+    3 BOND O2 Ba4                  2.956
+    4 BOND O2 Ti5                  2.090
+    5 BOND O3 Ba4                  2.956
+    6 BOND O3 Ti5                  2.090
+    7 BOND Ba4 Ti5                 3.621
+    8 ANGLE Ba4 O1 Ti5            90.000
+    9 ANGLE O1 Ba4 O2             60.000
+   10 ANGLE O1 Ba4 O3             60.000
+   11 ANGLE O1 Ba4 Ti5            35.264
+   12 ANGLE O1 Ti5 O2             90.000
+   13 ANGLE O1 Ti5 O3             90.000
+   14 ANGLE O1 Ti5 Ba4            54.736
+   15 ANGLE Ba4 O2 Ti5            90.000
+   16 ANGLE O2 Ba4 O3             60.000
+   17 ANGLE O2 Ba4 Ti5            35.264
+   18 ANGLE O2 Ti5 O3             90.000
+   19 ANGLE O2 Ti5 Ba4            54.736
+   20 ANGLE Ba4 O3 Ti5            90.000
+   21 ANGLE O3 Ba4 Ti5            35.264
+   22 ANGLE O3 Ti5 Ba4            54.736
+   23 TORSION Ti5 O1 Ba4 O2       35.264
+   24 TORSION Ti5 O1 Ba4 O3       35.264
+   25 TORSION Ba4 O1 Ti5 O2       45.000
+   26 TORSION Ba4 O1 Ti5 O3       45.000
+   27 TORSION O1 Ba4 O2 Ti5      324.736
+   28 TORSION O1 Ba4 O3 Ti5       35.264
+   29 TORSION O1 Ba4 Ti5 O2      120.000
+   30 TORSION O1 Ba4 Ti5 O3      240.000
+   31 TORSION O1 Ti5 O2 Ba4       45.000
+   32 TORSION O1 Ti5 O3 Ba4       45.000
+   33 TORSION O1 Ti5 Ba4 O2      240.000
+   34 TORSION O1 Ti5 Ba4 O3      120.000
+   35 TORSION Ti5 O2 Ba4 O3       35.264
+   36 TORSION Ba4 O2 Ti5 O3       45.000
+   37 TORSION O2 Ba4 O3 Ti5      324.736
+   38 TORSION O2 Ba4 Ti5 O3      120.000
+   39 TORSION O2 Ti5 O3 Ba4       45.000
+   40 TORSION O2 Ti5 Ba4 O3      240.000
 
 
 Starting: Vibrational Mode Automatic Relevance Determination
@@ -78,226 +78,218 @@ Ending: Vibrational Mode Automatic Relevance Determination
 *** Vibrational Mode Automatic Relevance Determination (VMARD) ***
 
 Mode   0:    -0.00 cm-1 (IR:   0.0)
-  +0.6793 ( 32.9%) TORSION Ba2 O1 Ti3 O5
-  -0.2248 ( 10.9%) ANGLE O4 Ba2 O5
-  -0.2234 ( 10.8%) TORSION Ba2 O4 Ti3 O5
-  +0.2223 ( 10.8%) ANGLE O1 Ti3 O4
-  -0.1156 (  5.6%) TORSION O5 Ba2 Ti3 O4
-  +0.1156 (  5.6%) TORSION O4 Ba2 Ti3 O5
-  -0.0936 (  4.5%) TORSION O4 Ba2 O5 Ti3
-  +0.0929 (  4.5%) TORSION O5 Ba2 O4 Ti3
-  +0.0789 (  3.8%) TORSION O1 Ti3 Ba2 O4
-  -0.0789 (  3.8%) TORSION O1 Ba2 Ti3 O4
- Shown Composition:    0.0% BOND,  23.2% ANGLE,   0.0% OUT,  76.8% TOR
- Total Composition:    5.0% BOND,  23.3% ANGLE,   0.0% OUT,  71.8% TOR
- R**2 = 1.0000
+  -0.9216 ( 20.8%) BOND Ba4 Ti5
+  -0.7264 ( 16.4%) TORSION Ba4 O2 Ti5 O3
+  -0.6480 ( 14.6%) TORSION Ba4 O1 Ti5 O2
+  -0.4392 (  9.9%) ANGLE O1 Ti5 O3
+  +0.4345 (  9.8%) ANGLE O1 Ba4 O2
+  -0.3785 (  8.5%) ANGLE O2 Ti5 O3
+  -0.2372 (  5.4%) TORSION O1 Ba4 Ti5 O2
+  +0.2372 (  5.4%) TORSION O1 Ti5 Ba4 O2
+ Shown Composition:   22.9% BOND,  31.1% ANGLE,   0.0% OUT,  46.0% TOR
+ Total Composition:   24.8% BOND,  32.6% ANGLE,   0.0% OUT,  42.7% TOR
+ R**2 = 0.9999
  Explained Variance = 100.0 %
 
-Mode   1:     0.00 cm-1 (IR:   0.0)
-  -0.7111 ( 23.9%) TORSION Ba2 O4 Ti3 O5
-  -0.3398 ( 11.4%) TORSION Ba2 O1 Ti3 O5
-  -0.3086 ( 10.4%) ANGLE O1 Ba2 O5
-  +0.2187 (  7.4%) TORSION O1 Ti3 Ba2 O5
-  -0.2187 (  7.4%) TORSION O1 Ba2 Ti3 O5
-  +0.1996 (  6.7%) ANGLE O4 Ti3 O5
-  -0.1903 (  6.4%) ANGLE O1 Ti3 O5
-  +0.1464 (  4.9%) ANGLE O4 Ba2 O5
-  +0.1243 (  4.2%) TORSION O1 Ba2 O5 Ti3
-  +0.1210 (  4.1%) TORSION Ti3 O1 Ba2 O5
- Shown Composition:    0.0% BOND,  32.8% ANGLE,   0.0% OUT,  67.2% TOR
- Total Composition:    0.0% BOND,  31.0% ANGLE,   0.0% OUT,  69.0% TOR
+Mode   1:    -0.00 cm-1 (IR:   0.0)
+  -0.8606 ( 35.4%) TORSION Ba4 O2 Ti5 O3
+  -0.2312 (  9.5%) ANGLE O1 Ba4 O3
+  +0.2157 (  8.9%) ANGLE O1 Ba4 O2
+  -0.2059 (  8.5%) TORSION O1 Ba4 Ti5 O3
+  +0.2059 (  8.5%) TORSION O1 Ti5 Ba4 O3
+  +0.2049 (  8.4%) TORSION Ti5 O1 Ba4 O3
+  -0.1763 (  7.3%) TORSION Ti5 O1 Ba4 O2
+  -0.0923 (  3.8%) ANGLE O1 Ti5 O3
+ Shown Composition:    0.0% BOND,  24.6% ANGLE,   0.0% OUT,  75.4% TOR
+ Total Composition:    2.2% BOND,  22.2% ANGLE,   0.0% OUT,  75.6% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode   2:     0.00 cm-1 (IR:   0.0)
-  -0.7621 ( 29.7%) TORSION Ba2 O5 Ti3 O4
-  +0.2904 ( 11.3%) ANGLE O1 Ba2 O4
-  +0.2390 (  9.3%) TORSION O1 Ti3 Ba2 O4
-  -0.2390 (  9.3%) TORSION O1 Ba2 Ti3 O4
-  -0.1458 (  5.7%) TORSION Ba2 O1 Ti3 O4
-  +0.1449 (  5.6%) TORSION O1 Ba2 O4 Ti3
-  +0.1318 (  5.1%) TORSION Ti3 O1 Ba2 O4
-  -0.1306 (  5.1%) ANGLE O4 Ti3 O5
-  +0.1097 (  4.3%) ANGLE O1 Ti3 O4
-  -0.1037 (  4.0%) TORSION Ba2 O4 Ti3 O5
-  -0.1027 (  4.0%) ANGLE O1 Ti3 O5
- Shown Composition:    0.0% BOND,  26.4% ANGLE,   0.0% OUT,  73.6% TOR
- Total Composition:    0.1% BOND,  29.2% ANGLE,   0.0% OUT,  70.7% TOR
+  -0.8640 ( 29.8%) TORSION Ba4 O1 Ti5 O2
+  -0.3693 ( 12.7%) ANGLE O2 Ti5 O3
+  +0.2253 (  7.8%) ANGLE O1 Ti5 O2
+  -0.2156 (  7.4%) TORSION Ti5 O2 Ba4 O3
+  +0.2015 (  6.9%) ANGLE O1 Ba4 O2
+  +0.1873 (  6.5%) TORSION O2 Ba4 Ti5 O3
+  -0.1873 (  6.5%) TORSION O2 Ti5 Ba4 O3
+  -0.1718 (  5.9%) ANGLE O2 Ba4 O3
+  -0.1303 (  4.5%) ANGLE Ba4 O3 Ti5
+  -0.1102 (  3.8%) TORSION O1 Ba4 Ti5 O2
+  +0.1102 (  3.8%) TORSION O1 Ti5 Ba4 O2
+ Shown Composition:    0.0% BOND,  39.6% ANGLE,   0.0% OUT,  60.4% TOR
+ Total Composition:    2.4% BOND,  39.1% ANGLE,   0.0% OUT,  58.4% TOR
+ R**2 = 0.9999
+ Explained Variance = 100.0 %
+
+Mode   3:   197.73 cm-1 (IR: 148942.7)
+  -0.4840 ( 20.2%) TORSION Ba4 O2 Ti5 O3
+  -0.4306 ( 18.0%) TORSION Ti5 O2 Ba4 O3
+  +0.3346 ( 14.0%) BOND Ba4 Ti5
+  -0.2958 ( 12.4%) ANGLE O2 Ba4 Ti5
+  +0.2692 ( 11.2%) TORSION O1 Ti5 O3 Ba4
+  +0.2475 ( 10.3%) TORSION Ba4 O1 Ti5 O3
+ Shown Composition:   16.2% BOND,  14.3% ANGLE,   0.0% OUT,  69.4% TOR
+ Total Composition:   15.5% BOND,  16.5% ANGLE,   0.0% OUT,  68.0% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
-Mode   3:   197.73 cm-1 (IR: 148941.7)
-  -0.4226 ( 15.1%) TORSION Ba2 O5 Ti3 O4
-  +0.3933 ( 14.1%) ANGLE Ti3 Ba2 O5
-  -0.3707 ( 13.3%) BOND O1 Ba2
-  +0.2455 (  8.8%) TORSION Ba2 O1 Ti3 O5
-  -0.2399 (  8.6%) TORSION O5 Ba2 O4 Ti3
-  -0.2232 (  8.0%) BOND Ba2 O4
-  -0.1784 (  6.4%) TORSION Ti3 O1 Ba2 O4
-  -0.1521 (  5.4%) TORSION O4 Ba2 Ti3 O5
-  +0.1521 (  5.4%) TORSION O5 Ba2 Ti3 O4
- Shown Composition:   25.0% BOND,  16.5% ANGLE,   0.0% OUT,  58.5% TOR
- Total Composition:   26.0% BOND,  17.4% ANGLE,   0.0% OUT,  56.6% TOR
- R**2 = 1.0000
- Explained Variance = 100.0 %
-
-Mode   4:   197.73 cm-1 (IR: 148944.2)
-  +0.7525 ( 24.0%) TORSION Ba2 O4 Ti3 O5
-  +0.2803 (  8.9%) TORSION Ba2 O5 Ti3 O4
-  +0.2772 (  8.8%) TORSION O1 Ti3 Ba2 O5
-  -0.2772 (  8.8%) TORSION O1 Ba2 Ti3 O5
-  +0.2565 (  8.2%) TORSION Ti3 O1 Ba2 O5
-  -0.1977 (  6.3%) ANGLE O1 Ti3 O5
-  -0.1864 (  5.9%) ANGLE Ba2 O4 Ti3
-  +0.1841 (  5.9%) ANGLE Ti3 Ba2 O4
-  -0.1689 (  5.4%) BOND Ti3 O5
-  +0.1389 (  4.4%) TORSION O1 Ba2 O4 Ti3
-  +0.1244 (  4.0%) ANGLE Ba2 O5 Ti3
- Shown Composition:    5.9% BOND,  24.4% ANGLE,   0.0% OUT,  69.7% TOR
- Total Composition:    5.4% BOND,  24.4% ANGLE,   0.0% OUT,  70.2% TOR
+Mode   4:   197.73 cm-1 (IR: 148943.2)
+  +0.7963 ( 16.7%) TORSION Ba4 O2 Ti5 O3
+  +0.7282 ( 15.3%) BOND O1 Ba4
+  +0.6765 ( 14.2%) TORSION Ba4 O1 Ti5 O2
+  +0.5014 ( 10.5%) BOND O2 Ba4
+  -0.3794 (  8.0%) ANGLE O3 Ba4 Ti5
+  +0.3327 (  7.0%) TORSION O1 Ba4 O2 Ti5
+  +0.2562 (  5.4%) TORSION Ti5 O2 Ba4 O3
+  -0.2393 (  5.0%) TORSION O1 Ti5 O2 Ba4
+  +0.2102 (  4.4%) BOND O3 Ba4
+  -0.2053 (  4.3%) ANGLE O2 Ba4 O3
+ Shown Composition:   33.3% BOND,  13.5% ANGLE,   0.0% OUT,  53.2% TOR
+ Total Composition:   31.4% BOND,  12.4% ANGLE,   0.0% OUT,  56.2% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode   5:   197.74 cm-1 (IR: 148991.4)
-  +0.4196 ( 16.2%) TORSION Ba2 O1 Ti3 O4
-  -0.4196 ( 16.2%) TORSION Ba2 O1 Ti3 O5
-  +0.3537 ( 13.6%) ANGLE O1 Ba2 Ti3
-  -0.2850 ( 11.0%) ANGLE O4 Ti3 O5
-  -0.2257 (  8.7%) TORSION O5 Ba2 Ti3 O4
-  +0.2257 (  8.7%) TORSION O4 Ba2 Ti3 O5
-  +0.1761 (  6.8%) TORSION O1 Ba2 O4 Ti3
-  -0.1761 (  6.8%) TORSION O1 Ba2 O5 Ti3
-  -0.1577 (  6.1%) ANGLE Ba2 O1 Ti3
- Shown Composition:    0.0% BOND,  32.6% ANGLE,   0.0% OUT,  67.4% TOR
- Total Composition:    2.9% BOND,  33.8% ANGLE,   0.0% OUT,  63.3% TOR
+  -0.7488 ( 32.0%) TORSION Ba4 O1 Ti5 O2
+  -0.4814 ( 20.6%) TORSION Ti5 O1 Ba4 O2
+  +0.2332 ( 10.0%) ANGLE Ba4 O1 Ti5
+  -0.1357 (  5.8%) TORSION O2 Ba4 Ti5 O3
+  +0.1357 (  5.8%) TORSION O2 Ti5 Ba4 O3
+  +0.1344 (  5.8%) BOND O3 Ti5
+  +0.1342 (  5.7%) BOND O2 Ti5
+ Shown Composition:   13.4% BOND,  11.6% ANGLE,   0.0% OUT,  75.0% TOR
+ Total Composition:   22.1% BOND,  13.7% ANGLE,   0.0% OUT,  64.2% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode   6:   269.34 cm-1 (IR: 158113.1)
-  -0.4752 ( 14.9%) TORSION O5 Ba2 O4 Ti3
-  +0.4751 ( 14.9%) TORSION O4 Ba2 O5 Ti3
-  +0.4190 ( 13.1%) ANGLE O4 Ba2 O5
-  -0.3151 (  9.9%) TORSION Ba2 O1 Ti3 O4
-  +0.3151 (  9.9%) TORSION Ba2 O1 Ti3 O5
-  +0.2999 (  9.4%) BOND Ba2 Ti3
-  -0.2926 (  9.2%) ANGLE O4 Ti3 O5
-  -0.1488 (  4.7%) TORSION O4 Ba2 Ti3 O5
-  +0.1488 (  4.7%) TORSION O5 Ba2 Ti3 O4
- Shown Composition:   10.4% BOND,  24.6% ANGLE,   0.0% OUT,  65.0% TOR
- Total Composition:    9.4% BOND,  25.3% ANGLE,   0.0% OUT,  65.3% TOR
+  +0.5951 ( 19.4%) TORSION O1 Ba4 O2 Ti5
+  -0.4625 ( 15.1%) TORSION Ti5 O2 Ba4 O3
+  +0.4367 ( 14.2%) TORSION Ba4 O1 Ti5 O2
+  -0.4348 ( 14.2%) TORSION O1 Ti5 O2 Ba4
+  +0.3093 ( 10.1%) TORSION Ti5 O1 Ba4 O2
+  +0.2467 (  8.0%) ANGLE O1 Ti5 O3
+  +0.2466 (  8.0%) ANGLE O1 Ti5 O2
+  -0.2310 (  7.5%) ANGLE Ba4 O1 Ti5
+ Shown Composition:    0.0% BOND,  24.4% ANGLE,   0.0% OUT,  75.6% TOR
+ Total Composition:    3.3% BOND,  23.6% ANGLE,   0.0% OUT,  73.1% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
-Mode   7:   269.34 cm-1 (IR: 158145.0)
-  +0.6263 ( 19.2%) TORSION Ba2 O4 Ti3 O5
-  +0.4918 ( 15.1%) TORSION O1 Ba2 O5 Ti3
-  +0.4859 ( 14.9%) TORSION Ti3 O1 Ba2 O5
-  -0.4100 ( 12.6%) ANGLE O1 Ba2 O5
-  -0.2995 (  9.2%) BOND Ba2 Ti3
-  +0.2455 (  7.5%) ANGLE O1 Ti3 O5
-  -0.1505 (  4.6%) TORSION O1 Ba2 Ti3 O5
-  +0.1505 (  4.6%) TORSION O1 Ti3 Ba2 O5
- Shown Composition:   10.5% BOND,  22.9% ANGLE,   0.0% OUT,  66.6% TOR
- Total Composition:    9.2% BOND,  23.1% ANGLE,   0.0% OUT,  67.7% TOR
+Mode   7:   269.34 cm-1 (IR: 158144.6)
+  -0.5816 ( 13.7%) TORSION Ba4 O2 Ti5 O3
+  -0.5579 ( 13.2%) TORSION Ti5 O2 Ba4 O3
+  -0.5517 ( 13.0%) TORSION Ba4 O1 Ti5 O2
+  -0.4419 ( 10.4%) TORSION O1 Ba4 O2 Ti5
+  -0.4258 ( 10.1%) TORSION Ti5 O1 Ba4 O2
+  -0.4178 (  9.9%) BOND O1 Ba4
+  +0.3451 (  8.2%) ANGLE O2 Ba4 O3
+  -0.2892 (  6.8%) BOND O3 Ba4
+  +0.2045 (  4.8%) TORSION O1 Ti5 O2 Ba4
+  -0.1593 (  3.8%) BOND O2 Ba4
+ Shown Composition:   21.8% BOND,   8.7% ANGLE,   0.0% OUT,  69.5% TOR
+ Total Composition:   20.5% BOND,  10.5% ANGLE,   0.0% OUT,  69.0% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
-Mode   8:   269.34 cm-1 (IR: 158144.4)
-  -0.6108 ( 19.5%) TORSION Ba2 O5 Ti3 O4
-  -0.5633 ( 18.0%) TORSION O1 Ba2 O4 Ti3
-  -0.3571 ( 11.4%) TORSION Ti3 O1 Ba2 O4
-  -0.3446 ( 11.0%) ANGLE O1 Ba2 O4
-  -0.2961 (  9.5%) BOND Ba2 Ti3
-  -0.1484 (  4.7%) TORSION O1 Ti3 Ba2 O4
-  +0.1484 (  4.7%) TORSION O1 Ba2 Ti3 O4
-  +0.1204 (  3.9%) TORSION O1 Ti3 O4 Ba2
- Shown Composition:   11.4% BOND,  13.3% ANGLE,   0.0% OUT,  75.3% TOR
- Total Composition:   15.6% BOND,  20.7% ANGLE,   0.0% OUT,  63.7% TOR
- R**2 = 1.0000
+Mode   8:   269.34 cm-1 (IR: 158144.8)
+  -0.6231 ( 20.5%) TORSION Ba4 O2 Ti5 O3
+  -0.5770 ( 19.0%) TORSION Ti5 O1 Ba4 O3
+  -0.3639 ( 12.0%) TORSION O1 Ba4 O3 Ti5
+  +0.2551 (  8.4%) TORSION Ti5 O1 Ba4 O2
+  +0.2220 (  7.3%) BOND O3 Ti5
+  -0.2157 (  7.1%) TORSION O1 Ba4 O2 Ti5
+  +0.1747 (  5.8%) TORSION O1 Ba4 Ti5 O3
+  -0.1747 (  5.8%) TORSION O1 Ti5 Ba4 O3
+  -0.1232 (  4.1%) ANGLE O1 Ti5 Ba4
+  -0.1179 (  3.9%) ANGLE O3 Ti5 Ba4
+ Shown Composition:    7.8% BOND,   8.5% ANGLE,   0.0% OUT,  83.7% TOR
+ Total Composition:    9.7% BOND,  11.7% ANGLE,   0.0% OUT,  78.6% TOR
+ R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode   9:   270.59 cm-1 (IR:   0.0)
-  -0.7067 ( 15.6%) ANGLE Ba2 Ti3 O5
-  +0.7066 ( 15.6%) ANGLE Ba2 Ti3 O4
-  -0.3536 (  7.8%) TORSION Ba2 O5 Ti3 O4
-  -0.3536 (  7.8%) TORSION Ba2 O4 Ti3 O5
-  -0.3237 (  7.1%) TORSION O5 Ba2 O4 Ti3
-  -0.3237 (  7.1%) TORSION O4 Ba2 O5 Ti3
-  +0.3237 (  7.1%) TORSION Ti3 O1 Ba2 O5
-  +0.3237 (  7.1%) TORSION Ti3 O1 Ba2 O4
-  -0.3222 (  7.1%) TORSION O1 Ba2 O5 Ti3
-  -0.3222 (  7.1%) TORSION O1 Ba2 O4 Ti3
- Shown Composition:    0.0% BOND,  34.8% ANGLE,   0.0% OUT,  65.2% TOR
- Total Composition:    0.0% BOND,  31.2% ANGLE,   0.0% OUT,  68.8% TOR
+  -0.8595 ( 17.2%) ANGLE O1 Ti5 O3
+  +0.8593 ( 17.2%) ANGLE O1 Ti5 O2
+  -0.7798 ( 15.6%) TORSION O1 Ba4 O3 Ti5
+  -0.7798 ( 15.6%) TORSION O1 Ba4 O2 Ti5
+  +0.3398 (  6.8%) TORSION Ba4 O1 Ti5 O3
+  -0.2775 (  5.5%) BOND O3 Ba4
+  +0.2768 (  5.5%) ANGLE O2 Ti5 Ba4
+  -0.2767 (  5.5%) ANGLE O3 Ti5 Ba4
+ Shown Composition:    6.2% BOND,  51.1% ANGLE,   0.0% OUT,  42.7% TOR
+ Total Composition:    5.6% BOND,  45.4% ANGLE,   0.0% OUT,  49.0% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode  10:   270.59 cm-1 (IR:   0.0)
-  -0.9778 ( 34.4%) TORSION O1 Ti3 O4 Ba2
-  +0.3057 ( 10.7%) ANGLE Ba2 Ti3 O5
-  +0.2619 (  9.2%) TORSION Ba2 O5 Ti3 O4
-  -0.2283 (  8.0%) TORSION O1 Ti3 Ba2 O5
-  +0.2283 (  8.0%) TORSION O1 Ba2 Ti3 O5
-  -0.1822 (  6.4%) ANGLE Ba2 O5 Ti3
-  +0.1203 (  4.2%) BOND O1 Ti3
- Shown Composition:    5.2% BOND,  21.2% ANGLE,   0.0% OUT,  73.6% TOR
- Total Composition:    9.5% BOND,  19.1% ANGLE,   0.0% OUT,  71.4% TOR
+  -0.8112 ( 22.9%) ANGLE O1 Ti5 Ba4
+  +0.4905 ( 13.8%) TORSION O2 Ti5 O3 Ba4
+  +0.4364 ( 12.3%) TORSION Ba4 O1 Ti5 O2
+  +0.3802 ( 10.7%) ANGLE O2 Ti5 O3
+  -0.3765 ( 10.6%) TORSION Ti5 O2 Ba4 O3
+  +0.3371 (  9.5%) TORSION O1 Ba4 O2 Ti5
+  +0.2526 (  7.1%) TORSION O1 Ba4 O3 Ti5
+  +0.1576 (  4.4%) BOND Ba4 Ti5
+ Shown Composition:    4.9% BOND,  36.7% ANGLE,   0.0% OUT,  58.4% TOR
+ Total Composition:    7.9% BOND,  34.8% ANGLE,   0.0% OUT,  57.3% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode  11:   270.59 cm-1 (IR:   0.0)
-  -0.7049 ( 18.8%) TORSION O1 Ti3 O5 Ba2
-  -0.5354 ( 14.3%) ANGLE Ba2 Ti3 O4
-  -0.5333 ( 14.2%) TORSION O5 Ba2 O4 Ti3
-  +0.4424 ( 11.8%) TORSION Ti3 O1 Ba2 O4
-  -0.3671 (  9.8%) ANGLE Ba2 O5 Ti3
-  -0.2944 (  7.8%) TORSION O4 Ba2 O5 Ti3
-  +0.2691 (  7.2%) TORSION Ba2 O4 Ti3 O5
-  -0.1483 (  4.0%) TORSION O1 Ba2 O5 Ti3
- Shown Composition:    0.0% BOND,  27.4% ANGLE,   0.0% OUT,  72.6% TOR
- Total Composition:    0.0% BOND,  25.4% ANGLE,   0.0% OUT,  74.6% TOR
+  -1.0234 ( 30.3%) TORSION O1 Ti5 O2 Ba4
+  +0.6512 ( 19.3%) TORSION Ba4 O1 Ti5 O3
+  +0.6081 ( 18.0%) TORSION Ba4 O2 Ti5 O3
+  +0.5349 ( 15.8%) BOND O1 Ba4
+  -0.1916 (  5.7%) TORSION O2 Ti5 O3 Ba4
+  +0.1489 (  4.4%) BOND O3 Ba4
+ Shown Composition:   21.7% BOND,   0.0% ANGLE,   0.0% OUT,  78.3% TOR
+ Total Composition:   20.2% BOND,   0.0% ANGLE,   0.0% OUT,  79.8% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode  12:   493.61 cm-1 (IR: 87113.0)
-  +1.0156 ( 30.6%) ANGLE O1 Ba2 Ti3
-  -0.4158 ( 12.5%) TORSION O4 Ba2 O5 Ti3
-  +0.4158 ( 12.5%) TORSION O5 Ba2 O4 Ti3
-  +0.3517 ( 10.6%) BOND Ba2 O4
-  +0.3517 ( 10.6%) BOND Ba2 O5
-  -0.3048 (  9.2%) ANGLE O4 Ba2 O5
-  +0.1789 (  5.4%) BOND O1 Ti3
- Shown Composition:   29.1% BOND,  43.5% ANGLE,   0.0% OUT,  27.4% TOR
- Total Composition:   26.7% BOND,  39.9% ANGLE,   0.0% OUT,  33.4% TOR
- R**2 = 0.9999
+  -0.7570 ( 21.5%) ANGLE O1 Ba4 Ti5
+  -0.4384 ( 12.4%) TORSION Ti5 O1 Ba4 O2
+  -0.4303 ( 12.2%) BOND O3 Ba4
+  -0.4040 ( 11.5%) BOND O2 Ba4
+  +0.3950 ( 11.2%) ANGLE O2 Ba4 O3
+  -0.3153 (  8.9%) TORSION Ba4 O1 Ti5 O2
+  -0.2629 (  7.5%) ANGLE O1 Ba4 O3
+  -0.2451 (  7.0%) ANGLE O1 Ba4 O2
+  -0.1324 (  3.8%) ANGLE O1 Ti5 O2
+ Shown Composition:   24.7% BOND,  53.0% ANGLE,   0.0% OUT,  22.3% TOR
+ Total Composition:   23.7% BOND,  55.0% ANGLE,   0.0% OUT,  21.4% TOR
+ R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode  13:   493.61 cm-1 (IR: 87120.1)
-  -1.0148 ( 30.6%) ANGLE Ti3 Ba2 O4
-  -0.4158 ( 12.5%) TORSION Ti3 O1 Ba2 O5
-  -0.4157 ( 12.5%) TORSION O1 Ba2 O5 Ti3
-  -0.3518 ( 10.6%) BOND O1 Ba2
-  -0.3515 ( 10.6%) BOND Ba2 O5
-  +0.3048 (  9.2%) ANGLE O1 Ba2 O5
-  -0.1959 (  5.9%) TORSION Ba2 O4 Ti3 O5
-  -0.1796 (  5.4%) BOND Ti3 O4
- Shown Composition:   27.3% BOND,  40.9% ANGLE,   0.0% OUT,  31.8% TOR
- Total Composition:   26.7% BOND,  39.9% ANGLE,   0.0% OUT,  33.4% TOR
- R**2 = 0.9999
+  +1.1472 ( 34.8%) ANGLE O2 Ba4 Ti5
+  +0.3804 ( 11.5%) BOND O1 Ba4
+  +0.3801 ( 11.5%) BOND O3 Ba4
+  +0.3361 ( 10.2%) TORSION Ti5 O1 Ba4 O3
+  +0.3358 ( 10.2%) TORSION O1 Ba4 O3 Ti5
+  -0.2884 (  8.8%) ANGLE O1 Ba4 O3
+  +0.1925 (  5.8%) TORSION Ba4 O2 Ti5 O3
+  +0.1766 (  5.4%) TORSION Ti5 O2 Ba4 O3
+ Shown Composition:   23.5% BOND,  44.3% ANGLE,   0.0% OUT,  32.2% TOR
+ Total Composition:   23.1% BOND,  45.3% ANGLE,   0.0% OUT,  31.6% TOR
+ R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode  14:   493.61 cm-1 (IR: 87120.1)
-  +1.0148 ( 30.6%) ANGLE Ti3 Ba2 O5
-  -0.4158 ( 12.5%) TORSION Ti3 O1 Ba2 O4
-  -0.4157 ( 12.5%) TORSION O1 Ba2 O4 Ti3
-  +0.3518 ( 10.6%) BOND O1 Ba2
-  +0.3515 ( 10.6%) BOND Ba2 O4
-  -0.3048 (  9.2%) ANGLE O1 Ba2 O4
-  -0.1959 (  5.9%) TORSION Ba2 O5 Ti3 O4
-  +0.1796 (  5.4%) BOND Ti3 O5
- Shown Composition:   27.3% BOND,  40.9% ANGLE,   0.0% OUT,  31.8% TOR
- Total Composition:   26.7% BOND,  39.9% ANGLE,   0.0% OUT,  33.4% TOR
- R**2 = 0.9999
+  +1.0284 ( 29.3%) BOND O3 Ti5
+  -0.8128 ( 23.1%) TORSION O1 Ba4 O2 Ti5
+  +0.3596 ( 10.2%) TORSION O1 Ti5 O2 Ba4
+  -0.2841 (  8.1%) BOND O1 Ti5
+  +0.2714 (  7.7%) TORSION O2 Ti5 O3 Ba4
+  -0.1722 (  4.9%) ANGLE O1 Ba4 O2
+  -0.1403 (  4.0%) TORSION Ti5 O2 Ba4 O3
+  -0.1395 (  4.0%) ANGLE Ba4 O2 Ti5
+ Shown Composition:   40.9% BOND,   9.7% ANGLE,   0.0% OUT,  49.4% TOR
+ Total Composition:   37.4% BOND,  14.1% ANGLE,   0.0% OUT,  48.5% TOR
+ R**2 = 1.0000
  Explained Variance = 100.0 %
 
 *** End of Vibrational Mode Automatic Relevance Determination (VMARD) ***
