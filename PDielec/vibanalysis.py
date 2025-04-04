@@ -458,26 +458,14 @@ def readPDielec(ifn):
         # We need to see if we can generate whole molecules using translational symmetry
         scale = 1.1      # Scaling factor for covalent radii
         tolerance  = Opts["tol"]  # Tolerance in bonding
-        new_cell,natoms,original_atomic_order = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance)
+        nmols = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance)
         print("Bonding tolerance",tolerance,file=sys.stderr)
-        print("Number of molecules",len(new_cell.molecules),file=sys.stderr)
-        # Reorder the normal mode atoms so that the mass weighted normal modes order 
-        # agrees with the ordering in the cell_of_molecules cell
-        nmodes,nions,temp = np.shape(normal_modes)
-        new_normal_modes = np.zeros( (nmodes,3*nions) )
-        new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
-        masses = new_cell.get_atomic_masses()
-        for imode,mode in enumerate(mass_weighted_normal_modes):
-            for index,old_index in enumerate(original_atomic_order):
-                i = index*3
-                new_normal_modes[imode,i+0] = mode[old_index][0] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+1] = mode[old_index][1] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+2] = mode[old_index][2] / math.sqrt(masses[index])
+        print("Number of molecules",nmols,file=sys.stderr)
         #
         # OK - now we can start the interface to VibAnalysis
         #
         o=System()
-        for el,m,c in zip(new_cell.element_names,new_cell.atomic_masses, new_cell.xyz_coordinates):
+        for el,m,c in zip(cell.element_names,cell.atomic_masses, cell.xyz_coordinates):
             # print('Adding atom ',el.lower(),c,m)
             o.addAtom(el.lower(), c, m)
         # get frequency list
@@ -487,8 +475,8 @@ def readPDielec(ifn):
         # get normal mode displacements
         ndegs = len(frequencies)
         for i in range(ndegs):
-            # print('Adding displacement ',i,new_normal_modes[i])
-            o.addDisplacements(i,new_normal_modes[i])
+            # print('Adding displacement ',i,normal_modes[i])
+            o.addDisplacements(i,normal_modes[i].flatten())
         # get IR intensities
         for i,intens in enumerate(intensities):
             # Not sure of the units expected here
