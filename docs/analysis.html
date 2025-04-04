@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,13 +7,13 @@
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Applications of Effective Medium Theory" href="application_notes_1.html" /><link rel="prev" title="Theory for Single Crystal Optics" href="theory_single_crystal.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>Phonon Analysis - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=2e0a580d" />
     
     
@@ -73,7 +73,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -88,22 +88,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -116,6 +157,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -134,7 +177,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -180,63 +224,64 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -260,11 +305,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/analysis.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -274,13 +325,13 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="phonon-analysis">
-<h1>Phonon Analysis<a class="headerlink" href="#phonon-analysis" title="Permalink to this heading">#</a></h1>
+<h1>Phonon Analysis<a class="headerlink" href="#phonon-analysis" title="Link to this heading">¶</a></h1>
 <p>PDGui performs an analysis of a phonon mode in terms of the percentage
 of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id64" title="Peter Uhd Jepsen and Stewart J. Clark. Precise ab-initio prediction of terahertz vibrational modes in crystalline systems. Chemical Physics Letters, 442(4-6):275–280, Jul 2007. doi:10.1016/j.cplett.2007.05.112.">54</a>]</span>).  In addition, for those systems with more than one formula unit in the unit-cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
 <section id="molecular-systems">
-<h2>Molecular Systems<a class="headerlink" href="#molecular-systems" title="Permalink to this heading">#</a></h2>
+<h2>Molecular Systems<a class="headerlink" href="#molecular-systems" title="Link to this heading">¶</a></h2>
 <p>It is common in molecular calculations of
 vibrational properties to construct a force constant matrix which enforces the
 requirements of zero energy change for centre-of-mass motion and rigid-body rotation. This can be achieved by using projection operators to transform
@@ -288,49 +339,49 @@ the second derivative matrix to a set of coordinates that no longer include cent
 <p>Defining a projection operator as;</p>
 <div class="math-wrapper docutils container" id="equation-eq-projectionop">
 <div class="math notranslate nohighlight" id="equation-eq-projectionop">
-<span class="eqno">(75)<a class="headerlink" href="#equation-eq-projectionop" title="Permalink to this equation">#</a></span>\[\tensorbf{P} = \tensorbf{1} - \fieldbf{V} \fieldbf{V}^{T}\]</div>
+<span class="eqno">(75)<a class="headerlink" href="#equation-eq-projectionop" title="Link to this equation">¶</a></span>\[\tensorbf{P} = \tensorbf{1} - \fieldbf{V} \fieldbf{V}^{T}\]</div>
 </div>
 <p>where <span class="math notranslate nohighlight">\(\fieldbf{V}\)</span> is an orthonormal column vector with length <span class="math notranslate nohighlight">\(3N\)</span> (<span class="math notranslate nohighlight">\(N\)</span> is the number of atoms), the centre-of-mass motion
 can be described in Cartesian space as all atoms moving along the x, y or
 z axis with the same displacement. So considering the projection of the centre-of-mass motion along the x-axis, for each atom <span class="math notranslate nohighlight">\(a\)</span> we can write;</p>
 <div class="math-wrapper docutils container" id="equation-eq-cmx1">
 <div class="math notranslate nohighlight" id="equation-eq-cmx1">
-<span class="eqno">(76)<a class="headerlink" href="#equation-eq-cmx1" title="Permalink to this equation">#</a></span>\[\begin{split}\fieldbf{V}^{x}_{a} = \left(\begin{matrix} 1 \\ 0 \\ 0 \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(76)<a class="headerlink" href="#equation-eq-cmx1" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x}_{a} = \left(\begin{matrix} 1 \\ 0 \\ 0 \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>For the projection operator which will project out all components of translation along the x-axis for every atom in the molecule we have;</p>
 <div class="math-wrapper docutils container" id="equation-eq-cmx2">
 <div class="math notranslate nohighlight" id="equation-eq-cmx2">
-<span class="eqno">(77)<a class="headerlink" href="#equation-eq-cmx2" title="Permalink to this equation">#</a></span>\[\begin{split}\fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
+<span class="eqno">(77)<a class="headerlink" href="#equation-eq-cmx2" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
 </div>
 <p>There are two other projection operators describing translation along the y- and z-axis.</p>
 <p>In a similar fashion, it is possible to describe an infinitesimal molecular rotation using a vector V and therefore constructing a projection operator to remove rigid-body rotation.  If the coordinates of atom <span class="math notranslate nohighlight">\(a\)</span> relative to the centre-of-mass of the molecule are <span class="math notranslate nohighlight">\(x, y \text{ and } z\)</span>, the component of the projection vector, <span class="math notranslate nohighlight">\(\tensorbf{V}\)</span> representing rotation about the x-axis in the yz-plane is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotyz">
 <div class="math notranslate nohighlight" id="equation-eq-rotyz">
-<span class="eqno">(78)<a class="headerlink" href="#equation-eq-rotyz" title="Permalink to this equation">#</a></span>\[\begin{split} \fieldbf{V}^{yz}_{a} = \left(\begin{matrix} 0 \\ -z \\ +y \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(78)<a class="headerlink" href="#equation-eq-rotyz" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz}_{a} = \left(\begin{matrix} 0 \\ -z \\ +y \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>In a similar fashion rotations about the y- and z-axis are respectively;</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotxz">
 <div class="math notranslate nohighlight" id="equation-eq-rotxz">
-<span class="eqno">(79)<a class="headerlink" href="#equation-eq-rotxz" title="Permalink to this equation">#</a></span>\[\begin{split}\fieldbf{V}^{xz}_{a} = \left(\begin{matrix} +z \\ 0 \\ -x \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(79)<a class="headerlink" href="#equation-eq-rotxz" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xz}_{a} = \left(\begin{matrix} +z \\ 0 \\ -x \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>and</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotxy">
 <div class="math notranslate nohighlight" id="equation-eq-rotxy">
-<span class="eqno">(80)<a class="headerlink" href="#equation-eq-rotxy" title="Permalink to this equation">#</a></span>\[\begin{split}\fieldbf{V}^{xy}_{a} = \left(\begin{matrix} -y \\ +x \\ 0 \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(80)<a class="headerlink" href="#equation-eq-rotxy" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xy}_{a} = \left(\begin{matrix} -y \\ +x \\ 0 \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>In a similar fashion to Equation <a class="reference internal" href="#equation-eq-cmx2">(77)</a> the complete projection operators for the 3 rotational modes can be assembled (using rotation about the x-axis as an example)</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotyz2">
 <div class="math notranslate nohighlight" id="equation-eq-rotyz2">
-<span class="eqno">(81)<a class="headerlink" href="#equation-eq-rotyz2" title="Permalink to this equation">#</a></span>\[\begin{split} \fieldbf{V}^{yz} = \begin{pmatrix} \fieldbf{V}^{yz}_{1} \\ \fieldbf{V}^{yz}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
+<span class="eqno">(81)<a class="headerlink" href="#equation-eq-rotyz2" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz} = \begin{pmatrix} \fieldbf{V}^{yz}_{1} \\ \fieldbf{V}^{yz}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
 </div>
 <p>In practice, the projection operators will be defined using mass-weighted cartesian coordinates as this simplifies the expressions used later.  As an example the transformation to mass-weighted coordinates for atom <span class="math notranslate nohighlight">\(a\)</span> translating along the x-axis is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-mass-weight">
 <div class="math notranslate nohighlight" id="equation-eq-mass-weight">
-<span class="eqno">(82)<a class="headerlink" href="#equation-eq-mass-weight" title="Permalink to this equation">#</a></span>\[\sqrt{m_a} \fieldbf{V}^{x}_{a}\]</div>
+<span class="eqno">(82)<a class="headerlink" href="#equation-eq-mass-weight" title="Link to this equation">¶</a></span>\[\sqrt{m_a} \fieldbf{V}^{x}_{a}\]</div>
 </div>
 </section>
 <section id="periodic-systems">
-<h2>Periodic Systems<a class="headerlink" href="#periodic-systems" title="Permalink to this heading">#</a></h2>
+<h2>Periodic Systems<a class="headerlink" href="#periodic-systems" title="Link to this heading">¶</a></h2>
 <p>The invariants of the energy in a periodic system are the three
 translational modes corresponding to motion of all the atoms in the same
 direction.  The rotation of an infinite lattice is not invariant.  However,  it is proposed to construct projection operators for each
@@ -341,7 +392,7 @@ be a projection operator for each external mode in the system.</p>
 <p>Hug and Haesler have shown <span id="id2">[<a class="reference internal" href="zreferences.html#id65" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">55</a>]</span> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kep">
 <div class="math notranslate nohighlight" id="equation-eq-kep">
-<span class="eqno">(83)<a class="headerlink" href="#equation-eq-kep" title="Permalink to this equation">#</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
+<span class="eqno">(83)<a class="headerlink" href="#equation-eq-kep" title="Link to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
 \sum\limits_{a}{T_{a,p}} =
 \frac{1}{2}\sum\limits_{a}{m_a \fieldbf{\Delta\dot{x}}^T_{a,p}\fieldbf{\Delta \dot{x}}_{a,p} } =
 \frac{1}{2} \dot{Q^2_p} \sum\limits_{a} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
@@ -356,7 +407,7 @@ Derivation of this expression has made use of the following
 relationship between the mass-weighted normal mode;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy">
-<span class="eqno">(84)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Permalink to this equation">#</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
+<span class="eqno">(84)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Link to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
 </div>
 <p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id65" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">55</a>]</span>, since the kinetic energy can be expressed as
 atomic contributions, consideration of the Virial theorem indicates that
@@ -367,56 +418,56 @@ mode, <span class="math notranslate nohighlight">\(p\)</span>,  will have its to
 molecules in the unit-cell according to;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy-total">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-total">
-<span class="eqno">(85)<a class="headerlink" href="#equation-eq-kinetic-energy-total" title="Permalink to this equation">#</a></span>\[ E^{total}_p = \sum\limits_{mol} {E^{mol}_p }\]</div>
+<span class="eqno">(85)<a class="headerlink" href="#equation-eq-kinetic-energy-total" title="Link to this equation">¶</a></span>\[ E^{total}_p = \sum\limits_{mol} {E^{mol}_p }\]</div>
 </div>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy-molecular">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-molecular">
-<span class="eqno">(86)<a class="headerlink" href="#equation-eq-kinetic-energy-molecular" title="Permalink to this equation">#</a></span>\[E^{mol}_p = \dot{Q^2_p} \sum\limits_{a \in mol} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
+<span class="eqno">(86)<a class="headerlink" href="#equation-eq-kinetic-energy-molecular" title="Link to this equation">¶</a></span>\[E^{mol}_p = \dot{Q^2_p} \sum\limits_{a \in mol} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
 </div>
 <p>To calculate the contribution a particular mode has to the centre-of-mass kinetic energy we use the projection operators given in Equation <a class="reference internal" href="#equation-eq-cmx2">(77)</a> (now in mass-weighted Cartesian coordinates) where only the atoms in that molecule are used to construct the operator;</p>
 <div class="math-wrapper docutils container" id="equation-eq-finaloperator">
 <div class="math notranslate nohighlight" id="equation-eq-finaloperator">
-<span class="eqno">(87)<a class="headerlink" href="#equation-eq-finaloperator" title="Permalink to this equation">#</a></span>\[\tensorbf{P}^x_{mol} = \tensorbf{1} - \fieldbf{V}^x_{mol} (\fieldbf{V}^x_{mol})^T\]</div>
+<span class="eqno">(87)<a class="headerlink" href="#equation-eq-finaloperator" title="Link to this equation">¶</a></span>\[\tensorbf{P}^x_{mol} = \tensorbf{1} - \fieldbf{V}^x_{mol} (\fieldbf{V}^x_{mol})^T\]</div>
 </div>
 <p>This approach is used to define  6 projection operators for each molecule. The centre-of-mass energy contained in the <span class="math notranslate nohighlight">\(p_{th}\)</span> mode can be written as;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-cm">
 <div class="math notranslate nohighlight" id="equation-eq-energy-cm">
-<span class="eqno">(88)<a class="headerlink" href="#equation-eq-energy-cm" title="Permalink to this equation">#</a></span>\[E^{cm}_p = \dot{Q^2_p} \sum\limits_{i=x,y,z}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
+<span class="eqno">(88)<a class="headerlink" href="#equation-eq-energy-cm" title="Link to this equation">¶</a></span>\[E^{cm}_p = \dot{Q^2_p} \sum\limits_{i=x,y,z}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
 </div>
 <p>and the rigid-body rotational energy associated with the mode is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-rot">
 <div class="math notranslate nohighlight" id="equation-eq-energy-rot">
-<span class="eqno">(89)<a class="headerlink" href="#equation-eq-energy-rot" title="Permalink to this equation">#</a></span>\[E^{rot}_p = \dot{Q^2_p} \sum\limits_{i=xy,yz,xz}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
+<span class="eqno">(89)<a class="headerlink" href="#equation-eq-energy-rot" title="Link to this equation">¶</a></span>\[E^{rot}_p = \dot{Q^2_p} \sum\limits_{i=xy,yz,xz}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
 </div>
 <p>The molecular vibrational contribution, which can be used to classify the internal modes of the system, can be obtained by subtracting the centre-of-mass and rigid-body rotational; energies from the total;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-vib">
 <div class="math notranslate nohighlight" id="equation-eq-energy-vib">
-<span class="eqno">(90)<a class="headerlink" href="#equation-eq-energy-vib" title="Permalink to this equation">#</a></span>\[E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p\]</div>
+<span class="eqno">(90)<a class="headerlink" href="#equation-eq-energy-vib" title="Link to this equation">¶</a></span>\[E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p\]</div>
 </div>
 <p>Since all of the energy terms depend in the same way on <span class="math notranslate nohighlight">\(\dot{Q}_p\)</span>, it is not required in the calculation of the relative contributions to the energy coming from the external (molecular centre-of-mass and rigid-body rotation) and the internal modes (vibrational contributions)</p>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
 <p>In order to calculate the relative internal and external contributions to each phonon mode it is first necessary to identify the molecules in the crystal.  In many cases, the unit-cell is packed with atoms in such a way that the cell is filled, rather than in a way reflecting the bondedness of the molecules.  The program first replicates the atoms in all cells neighbouring the central unit-cell.  Within this supercell the bonds are determined by calculating the distances between all atoms in the supercell.  In practice, an order N method is used whereby instead of searching all the supercell only the space around each atom is searched for potentially bonded partners.  The criterion of the presence of a bond between atoms <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> is given by the requirement that the distance between the atoms <span class="math notranslate nohighlight">\(r{ij}\)</span> is less than the bonding requirement;</p>
 <div class="math-wrapper docutils container" id="equation-eq-bond">
 <div class="math notranslate nohighlight" id="equation-eq-bond">
-<span class="eqno">(91)<a class="headerlink" href="#equation-eq-bond" title="Permalink to this equation">#</a></span>\[r_{ij} &lt; scale (radius_i+radius_j)+toler\]</div>
+<span class="eqno">(91)<a class="headerlink" href="#equation-eq-bond" title="Link to this equation">¶</a></span>\[r_{ij} &lt; scale (radius_i+radius_j)+toler\]</div>
 </div>
 <p>Here <span class="math notranslate nohighlight">\(radius_i\)</span> is the covalent radius of atom <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(scale\)</span> and <span class="math notranslate nohighlight">\(toler\)</span> are factors that can be altered when running the program.</p>
 <p>Once the bonding in the supercell has been determined the program starts with the first atom in the central cell and determines all atoms which are connected to the molecule that it is in.  If there are any remaining atoms in the central cell which are not bonded yet then further molecules are added until all atoms in the central cell have been allocated to a molecule.</p>
 <p>Finally a new cell with the same dimensions as the original is constructed.  Where necessary each molecule is shifted into the cell so that the molecule’s centre-of-mass lies within it.</p>
 <p>The projection operators, Equation <a class="reference internal" href="#equation-eq-finaloperator">(87)</a>, can now be constructed and the relative energies calculated using Equations <a class="reference internal" href="#equation-eq-energy-cm">(88)</a>, <a class="reference internal" href="#equation-eq-energy-rot">(89)</a> and <a class="reference internal" href="#equation-eq-energy-vib">(90)</a>.</p>
 <section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h3>
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 <section id="isoleucine">
-<h2>Isoleucine<a class="headerlink" href="#isoleucine" title="Permalink to this heading">#</a></h2>
+<h2>Isoleucine<a class="headerlink" href="#isoleucine" title="Link to this heading">¶</a></h2>
 <p>The example of a calculation on isoleucine using Castep is available in the Examples/Castep/Isoleucine directory of the distribution.  The analysis was performed using PDGui.
 The program first finds the four molecules of isoleucine in the unit-cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 6</span></a>.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-isoleucine-mols">
 <table class="styled-table docutils align-center" id="tab-isoleucine-mols">
-<caption><span class="caption-number">Table 6 </span><span class="caption-text">Molecular constituents of the isoleucine unit-cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Permalink to this table">#</a></caption>
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">Molecular constituents of the isoleucine unit-cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 20.0%" />
@@ -464,7 +515,7 @@ The program first finds the four molecules of isoleucine in the unit-cell of the
 However, for this latter mode there is a considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and the contribution from vibrational modes (see the %vib column) increases.  The total contribution from molecular motion is summarised in the last four columns.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-isoleucine-results">
 <table class="styled-table docutils align-center" id="tab-isoleucine-results">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text">Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Permalink to this table">#</a></caption>
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 12.5%" />
 <col style="width: 12.5%" />
@@ -672,7 +723,7 @@ However, for this latter mode there is a considerable contribution from rigid-bo
 </div>
 </section>
 <section id="batio3">
-<h2>BaTiO<sub>3</sub><a class="headerlink" href="#batio3" title="Permalink to this heading">#</a></h2>
+<h2>BaTiO<sub>3</sub><a class="headerlink" href="#batio3" title="Link to this heading">¶</a></h2>
 <p>The example for
 BaTiO<sub>3</sub>
 can be found in Example/AbInit/BaTiO3 in the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using PDGui.
@@ -680,7 +731,7 @@ For this example, the default covalent radius of the Barium atoms has been chang
 <p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 8</span></a> below.  In this example, the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moiety. Above 200 cm<sup>-1</sup> there is a much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-batio3-results">
 <table class="styled-table docutils align-center" id="tab-batio3-results">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Permalink to this table">#</a></caption>
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 16.7%" />
 <col style="width: 16.7%" />
@@ -812,7 +863,7 @@ For this example, the default covalent radius of the Barium atoms has been chang
 <span id="fig-batio3-analysis"></span><a class="reference internal image-reference" href="_images/batio3_internal_external.png"><img alt="_images/batio3_internal_external.png" src="_images/batio3_internal_external.png" style="width: 612.0px; height: 846.9px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Internal and external contributions to the phonon modes of BaTiO<sub>3</sub></span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Internal and external contributions to the phonon modes of BaTiO<sub>3</sub></span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -893,11 +944,11 @@ For this example, the default covalent radius of the Barium atoms has been chang
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=37b3a9b0"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</div><script src="_static/documentation_options.js?v=15c97ff8"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    <script>window.MathJax = {"extensions": ["AMSmath.js"], "tex": {"macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

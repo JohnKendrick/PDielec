@@ -1,5 +1,5 @@
-:py:mod:`PDielec.Calculator`
-============================
+PDielec.Calculator
+==================
 
 .. py:module:: PDielec.Calculator
 
@@ -9,12 +9,8 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -70,6 +66,8 @@ Functions
    PDielec.Calculator.waterman_truell_scattering
 
 
+Module Contents
+---------------
 
 .. py:function:: _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size)
 
@@ -623,7 +621,7 @@ Functions
    Returns
    -------
    type
-       Description of the returned object.
+       The projection operators for this molecule
 
 
 

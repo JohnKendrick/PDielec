@@ -451,7 +451,7 @@ class ViewerTab(QWidget):
         None
 
         Modifies
-        -------
+        --------
         primitive_transform
 
         """
@@ -495,6 +495,8 @@ class ViewerTab(QWidget):
         -------
         None
 
+        Modifies
+        --------
         Modifies primitive unit cell
 
         """
@@ -519,6 +521,8 @@ class ViewerTab(QWidget):
         -------
         None
 
+        Modifies
+        --------
         Modifies primitive unit cell
 
         """
@@ -544,7 +548,8 @@ class ViewerTab(QWidget):
         -------
         None
 
-        Modifies 
+        Modifies
+        --------
         self.settings["Primitive transform"]
 
         """
@@ -1621,7 +1626,7 @@ class PrimitiveTransformWindow(QDialog):
         None
 
         Modifies
-        -------
+        --------
         primitive_transform_table
 
         """

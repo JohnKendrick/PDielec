@@ -581,7 +581,7 @@ class UnitCell:
         None
 
         Modifies
-        -------
+        --------
         Sets the reciprocal lattice vectors from the lattice vectors
 
         """
@@ -702,7 +702,7 @@ class UnitCell:
         None
 
         Modifies
-        -------
+        --------
         fractional_coordinates
         xyz_coordinates
         nions
@@ -727,7 +727,7 @@ class UnitCell:
         None
 
         Modifies
-        -------
+        --------
         xyz_coordinates
         fractional_coordinates
         nions
@@ -776,7 +776,7 @@ class UnitCell:
         None
 
         Modifies
-        -------
+        --------
         element_names
 
         Notes
@@ -1257,7 +1257,7 @@ class UnitCell:
         None
 
         Modifies
-        -------
+        --------
         fractional_coordinates
         atom_labels
         atom_masses

@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.ViewerTab`
-===============================
+PDielec.GUI.ViewerTab
+=====================
 
 .. py:module:: PDielec.GUI.ViewerTab
 
@@ -9,23 +9,145 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
+   PDielec.GUI.ViewerTab.PrimitiveTransformWindow
    PDielec.GUI.ViewerTab.ViewerTab
 
 
+Module Contents
+---------------
+
+.. py:class:: PrimitiveTransformWindow(primitive_transform, message='Primitive Transform', parent=None, debug=False)
+
+   Bases: :py:obj:`qtpy.QtWidgets.QDialog`
+
+
+   A GUI window for displaying and editing the primitive transform matrix.
+
+   Parameters
+   ----------
+   primitive_transform : 3x3 array of floats
+       The current transformation matrix
+   message : str
+       Message to displayed
+   parent : QWidget, optional
+       The parent widget of this window. The default is None.
+   debug : bool, optional
+       Flag to enable or disable debug mode. The default is False.
+
+   Attributes
+   ----------
+   primitive_transform : 3x3 array of strs
+       The primitive transform matrix
+   message : str
+       The message displayed at the top of the window.
+   layout : QVBoxLayout
+       The main layout of the window.
+   buttonBox : QDialogButtonBox
+       The dialog box containing Ok and Cancel buttons.
+
+   Methods
+   -------
+   reDrawPrimitiveTable
+       draw the primitive transform table
+   getPrimitiveTransform
+       Return the primitive transform matrix
+   on_primitive_transform_table_itemChanged
+       Handles a change in the primitive transform table
+
+
+
+   .. py:method:: getPrimitiveTransform()
+
+      Return the primtive transformation matrix
+
+      The primitive transformation is stored as a 3x3 list of strings.
+      The strings are treated as python commands to return a value.:w
+
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      3x3 array of floats
+
+
+
+
+   .. py:method:: on_primitive_transform_table_itemChanged(item)
+
+      Handle a change to the primitive table.
+
+      The item which has changed is ignored and the whole table is rebuilt
+
+      Parameters
+      ----------
+      item : the item changed
+          The item which has changed
+
+      Returns
+      -------
+      None
+
+      Modifies
+      --------
+      self.settings["Primitive transform"]
+
+
+
+
+   .. py:method:: reDrawPrimitiveTable()
+
+      Redraw the 3x3 table representing the primitive cell transformation.
+
+      The table is generated from the strings stored in self.primitive_transform_as_str
+      If a number is stored it is converted to a string.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Modifies
+      --------
+      primitive_transform_table
+
+
+
+
+   .. py:attribute:: buttonBox
+
+
+   .. py:attribute:: debugger
+
+
+   .. py:attribute:: layout
+
+
+   .. py:attribute:: message
+      :value: 'Primitive Transform'
+
+
+
+   .. py:attribute:: primitive_transform_as_str
+
+
+   .. py:attribute:: primitive_transform_table
 
 
 .. py:class:: ViewerTab(parent, debug=False)
 
-
    Bases: :py:obj:`qtpy.QtWidgets.QWidget`
+
 
    A class representing a viewer tab in a graphical user interface, specifically for visualizing molecular structures and vibrational modes.
 
@@ -60,7 +182,7 @@ Classes
        The index of the currently selected plot type.
    number_of_molecules : int
        The number of molecules in the visualization.
-   unit_cell, super_cell, cell_edges, cell_corners : Various
+   standard_cell, unit_cell, super_cell, cell_edges, cell_corners : Various
        Attributes related to the molecular/crystalline structure and its visualization.
    element_colours : dict
        A mapping of elements to their colors used in the visualization.
@@ -100,12 +222,16 @@ Classes
        Handles a click on the coloured button
    on_coloured_element_clicked
        Changes the colour of an element
+   on_edit_button_clicked
+       Edit the primitive transform to the matrix in the GUI
    on_filename_button_clicked
        Handles a click on the file name button
    on_filename_le_changed
        Handles a change to the file name
    on_filename_le_return
        Handles a return press in the file name widget
+   on_guess_button_clicked
+       Guess the primitive transform to the matrix in the GUI
    on_light_switches_cb_activated
        Activates the light switch combobox
    on_maximum_displacement_changed
@@ -120,6 +246,8 @@ Classes
        Handles the change in the b supercell parameter
    on_super_cell_changed_c
        Handles the change in the c supercell parameter
+   on_reset_button_clicked
+       Changes the primitive transform back to a unit matrix
    plot
        Plot the 3D view of the molecule
    plot_animation
@@ -140,9 +268,12 @@ Classes
        Set the colour of the specified element
 
 
+
    .. py:method:: calculate()
 
-      Perform calculations related to the notebook object, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
+      Perform calculations related to the ViewerTab instance, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
+      In addition, calculate the primitive cell if a primitive transformation is given.
+      The supercell is calculated from the primitive cell.
 
       Parameters
       ----------
@@ -151,6 +282,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -170,6 +302,39 @@ Classes
 
 
 
+
+   .. py:method:: convert_primitive_transform()
+
+      Convert the primitive transform stored as strings in settings to an np.array.
+
+      Parameters
+      ----------
+      None
+
+      Modifies
+      --------
+      primitive_transform
+
+
+
+
+   .. py:method:: createPrimitiveTransformTabEntry()
+
+      Create a one line entry to modify the primitive cell transformaton matrix.
+
+      Add buttons to reset, edit and if possible read the transformation matrix
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      a widget
+
+
+
+
    .. py:method:: on_arrow_radius_changed(value)
 
       Handle the event where the arrow's radius value is changed.
@@ -184,6 +349,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -205,6 +371,7 @@ Classes
 
 
 
+
    .. py:method:: on_bond_radius_changed(value)
 
       Handle bond radius change events.
@@ -220,6 +387,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -241,6 +409,7 @@ Classes
 
 
 
+
    .. py:method:: on_coloured_button_clicked(boolean)
 
       Handle the event when a coloured button is clicked.
@@ -255,6 +424,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -273,6 +443,28 @@ Classes
       Returns
       -------
       None
+
+
+
+
+   .. py:method:: on_edit_button_clicked(item)
+
+      Edit the primitive transform.
+
+      The primtive transform window dialog is shown and any edits applied
+
+      Parameters
+      ----------
+      item : bool   Unused
+
+      Returns
+      -------
+      None
+
+      Modifies
+      --------
+      Modifies primitive unit cell
+
 
 
 
@@ -306,6 +498,7 @@ Classes
 
 
 
+
    .. py:method:: on_filename_le_changed(text)
 
       Handle changes to the filename line edit.
@@ -320,6 +513,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -339,6 +533,28 @@ Classes
 
 
 
+
+   .. py:method:: on_guess_button_clicked(item)
+
+      Guess the primitive transform button click.
+
+      The primitive transform is guessed from the spacegroup
+
+      Parameters
+      ----------
+      item : bool   Unused
+
+      Returns
+      -------
+      None
+
+      Modifies
+      --------
+      Modifies primitive unit cell
+
+
+
+
    .. py:method:: on_light_switches_cb_activated(index)
 
       Activate or deactivate the light switch based on the current state and updates the GUI accordingly.
@@ -351,6 +567,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -368,6 +585,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -390,6 +608,47 @@ Classes
 
 
 
+
+   .. py:method:: on_primitive_button_clicked(item)
+
+      Handle a push of the primitive transform button.
+
+      When the button is pushed the primitive transform is loaded from phonopy.yaml
+
+      Parameters
+      ----------
+      item : bool   Unused
+
+      Returns
+      -------
+      None
+
+      Modifies
+      --------
+      self.settings["Primitive transform"]
+
+
+
+
+   .. py:method:: on_reset_button_clicked(item)
+
+      Handle a push of the reset transform button.
+
+      When the button is pushed the primitive transform is set to unity
+
+      Parameters
+      ----------
+      item : bool   Unused
+
+      Returns
+      -------
+      None
+
+      Used to modify the primitive unit cell
+
+
+
+
    .. py:method:: on_selected_mode_changed()
 
       Handle the changes when a new vibrational mode is selected in the UI.
@@ -406,6 +665,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -428,6 +688,7 @@ Classes
 
 
 
+
    .. py:method:: on_super_cell_changed_b(newb)
 
       Update the 'b' component of the 'Super Cell' setting and trigger a refresh.
@@ -444,6 +705,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -466,6 +728,7 @@ Classes
 
 
 
+
    .. py:method:: plot()
 
       Plot data based on the instance's current plot type.
@@ -481,6 +744,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -503,6 +767,7 @@ Classes
 
 
 
+
    .. py:method:: plot_arrows()
 
       Plot arrows showing the vibrational mode of a molecule.
@@ -519,6 +784,7 @@ Classes
 
 
 
+
    .. py:method:: plot_none()
 
       Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
@@ -532,6 +798,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -561,6 +828,7 @@ Classes
 
 
 
+
    .. py:method:: requestRefresh()
 
       Initiate a refresh request.
@@ -574,6 +842,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -594,6 +863,7 @@ Classes
 
 
 
+
    .. py:method:: save_mode_as_cif(filename)
 
       Save the crystallographic information file (CIF) for different phases.
@@ -611,7 +881,8 @@ Classes
 
       Notes
       -----
-      This method relies on the `self.unit_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
+      This method relies on the `self.standard_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
+
 
 
 
@@ -639,5 +910,179 @@ Classes
       ```
 
 
+
+
+   .. py:attribute:: UVW
+
+
+   .. py:attribute:: arrow_radius_sb
+
+
+   .. py:attribute:: atom_scaling_sb
+
+
+   .. py:attribute:: bond_cell_background_arrow_buttons
+      :value: []
+
+
+
+   .. py:attribute:: bond_cell_background_arrow_names
+      :value: ['Background', 'Cell', 'Bonds', 'Arrows']
+
+
+
+   .. py:attribute:: bond_radius_sb
+
+
+   .. py:attribute:: cell_corners
+      :value: None
+
+
+
+   .. py:attribute:: cell_edges
+      :value: None
+
+
+
+   .. py:attribute:: cell_radius_sb
+
+
+   .. py:attribute:: cif_filename_button
+
+
+   .. py:attribute:: coloured_buttons_widget
+
+
+   .. py:attribute:: coloured_elements_widget
+
+
+   .. py:attribute:: debug
+      :value: False
+
+
+
+   .. py:attribute:: debugger
+
+
+   .. py:attribute:: element_coloured_buttons
+      :value: []
+
+
+
+   .. py:attribute:: element_coloured_hbox
+
+
+   .. py:attribute:: element_colours
+
+
+   .. py:attribute:: element_names
+      :value: []
+
+
+
+   .. py:attribute:: filename_le
+
+
+   .. py:attribute:: frequencies_cm1
+
+
+   .. py:attribute:: frequency_le
+
+
+   .. py:attribute:: gif_filename_button
+
+
+   .. py:attribute:: image_filename
+      :value: ''
+
+
+
+   .. py:attribute:: light_switches
+      :value: [False, False, False, False, False, False, False, False]
+
+
+
+   .. py:attribute:: light_switches_cb
+
+
+   .. py:attribute:: maximum_displacement_sb
+
+
+   .. py:attribute:: mp4_filename_button
+
+
+   .. py:attribute:: notebook
+
+
+   .. py:attribute:: number_of_molecules
+      :value: 0
+
+
+
+   .. py:attribute:: opengl_widget
+
+
+   .. py:attribute:: plot_type_index
+      :value: 1
+
+
+
+   .. py:attribute:: plot_types
+      :value: ['Animation', 'Arrows', 'No arrows or animation']
+
+
+
+   .. py:attribute:: plottype_cb
+
+
+   .. py:attribute:: png_filename_button
+
+
+   .. py:attribute:: primitive_transform_tab_entry
+      :value: None
+
+
+
+   .. py:attribute:: reader
+
+
+   .. py:attribute:: refreshRequired
+      :value: True
+
+
+
+   .. py:attribute:: selected_mode_sb
+
+
+   .. py:attribute:: settings
+
+
+   .. py:attribute:: settingsTab
+
+
+   .. py:attribute:: species
+      :value: []
+
+
+
+   .. py:attribute:: standard_cell
+      :value: None
+
+
+
+   .. py:attribute:: super_cell
+      :value: None
+
+
+
+   .. py:attribute:: super_cell_hbox
+
+
+   .. py:attribute:: super_cell_spinBoxes
+      :value: []
+
+
+
+   .. py:attribute:: super_cell_widget
 
 

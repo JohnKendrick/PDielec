@@ -68,7 +68,7 @@ preamble_maths = r'''
 # ones.
 #mathjax_path = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js'
 #mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
-mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js?config=TeX-AMS-MML_HTMLorMML'
+#mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
     'autoapi.extension',
     'sphinx.ext.viewcode',
@@ -134,10 +134,10 @@ def setup(sphinx):
 
 
 bibtex_bibfiles = ['pdielec.bib']
-mathjax_config = {
+mathjax3_config = {
     "extensions": ["AMSmath.js"] ,
-    "TeX": {
-        "Macros": { 
+    "tex": {
+        "macros": { 
             "tensor":   ["{\\bar{\\bar{#1}}}", 1],
             "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1],
             "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1],

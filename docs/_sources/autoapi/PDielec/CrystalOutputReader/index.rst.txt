@@ -1,5 +1,5 @@
-:py:mod:`PDielec.CrystalOutputReader`
-=====================================
+PDielec.CrystalOutputReader
+===========================
 
 .. py:module:: PDielec.CrystalOutputReader
 
@@ -9,23 +9,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.CrystalOutputReader.CrystalOutputReader
 
 
-
+Module Contents
+---------------
 
 .. py:class:: CrystalOutputReader(filenames)
 
-
    Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
 
    Read contents of a directory containing Crystal input and output files.
 
@@ -39,6 +37,7 @@ Classes
    Notes
    -----
    This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+
 
 
    .. py:method:: _read_born_charges(line)
@@ -63,6 +62,7 @@ Classes
 
 
 
+
    .. py:method:: _read_born_charges_from_born_dat(filename)
 
       Read born charges from a .born.dat file and store them in the instance variable.
@@ -79,6 +79,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -100,6 +101,7 @@ Classes
       Note
       ----
       This method directly modifies the `born_charges` attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's formatted in a specific way expected by the logic of this method.
+
 
 
 
@@ -125,6 +127,7 @@ Classes
 
 
 
+
    .. py:method:: _read_electrons(line)
 
       Parse the number of electrons from a string and assign it to the instance variable.
@@ -137,6 +140,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -165,6 +169,7 @@ Classes
 
 
 
+
    .. py:method:: _read_energy2(line)
 
       Read and set the final free energy and final energy without entropy from a line of text.
@@ -185,6 +190,7 @@ Classes
 
 
 
+
    .. py:method:: _read_energy3(line)
 
       Parse energy information from a given line of text and update object properties.
@@ -198,6 +204,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -224,6 +231,7 @@ Classes
       - The method reads lines sequentially from the `file_descriptor` and expects the file to be formatted in a specific way, with optical dielectric components starting from a certain line.
       - Each line read corresponds to a different component of the optical dielectric tensor, and the method parses these lines to identify the component and its value.
       - After reading and storing the components' values, the method also updates the symmetric components of the tensor (i.e., sets optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding symmetric values).
+
 
 
 
@@ -263,6 +271,7 @@ Classes
 
 
 
+
    .. py:method:: _read_hessfreq_dat(filename)
 
       Read a Hessian frequency data from a given file and update the dynamical matrix.
@@ -279,6 +288,7 @@ Classes
       See Also
       --------
       _dynamical_matrix : Updates the dynamical matrix of the system using the processed Hessian matrix.
+
 
 
 
@@ -311,6 +321,7 @@ Classes
 
 
 
+
    .. py:method:: _read_kpoints(line)
 
       Parse a line of text to extract k-point grid dimensions and the total number of k-points.
@@ -325,6 +336,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -344,6 +356,7 @@ Classes
       ----------
       line : str
           The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the `line` parameter could be omitted or revised.
+
 
 
 
@@ -381,6 +394,7 @@ Classes
 
 
 
+
    .. py:method:: _read_output_eigenvectors(line)
 
       Read and process output eigenvectors from a file descriptor.
@@ -404,6 +418,7 @@ Classes
 
 
 
+
    .. py:method:: _read_output_files()
 
       Read the Crystal files in the directory.
@@ -414,6 +429,21 @@ Classes
       -------
       None
 
+
+
+
+   .. py:attribute:: _fractional_coordinates
+      :value: []
+
+
+
+   .. py:attribute:: hessian_symmetrisation
+      :value: 'crystal'
+
+
+
+   .. py:attribute:: type
+      :value: 'Crystal output'
 
 
 

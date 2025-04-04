@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.SingleCrystalScenarioTab`
-==============================================
+PDielec.GUI.SingleCrystalScenarioTab
+====================================
 
 .. py:module:: PDielec.GUI.SingleCrystalScenarioTab
 
@@ -9,29 +9,8 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab
-
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
@@ -41,10 +20,29 @@ Attributes
    PDielec.GUI.SingleCrystalScenarioTab.thickness_units
 
 
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations
+
+
+Module Contents
+---------------
+
 .. py:class:: SingleCrystalScenarioTab(parent, debug=False)
 
-
    Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
+
 
    A tab class for handling a single crystal scenario.
 
@@ -180,6 +178,7 @@ Attributes
         A widget to handle the smoothing information
 
 
+
    .. py:method:: angleOfIncidenceWidget()
 
       Create an angle of incidence widget.
@@ -193,6 +192,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -230,6 +230,7 @@ Attributes
 
 
 
+
    .. py:method:: calculate(vs_cm1)
 
       Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
@@ -246,6 +247,7 @@ Attributes
       Notes
       -----
       This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
+
 
 
 
@@ -283,6 +285,7 @@ Attributes
 
 
 
+
    .. py:method:: createToolBar(layer, layerIndex, nLayers)
 
       Create the tool bar used for the material layer.
@@ -299,6 +302,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -321,6 +325,7 @@ Attributes
 
 
 
+
    .. py:method:: createToolBarMoveDownButton(layer, layerIndex, nLayers)
 
       Create the move down button as part of the layer toolbar.
@@ -337,6 +342,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -359,6 +365,7 @@ Attributes
 
 
 
+
    .. py:method:: deleteLayer(x, layer, layerIndex)
 
       Handle a delete layer button press.
@@ -378,6 +385,7 @@ Attributes
 
 
 
+
    .. py:method:: drawLayerTable()
 
       Draw a table with all the layers in it.
@@ -394,6 +402,7 @@ Attributes
 
 
 
+
    .. py:method:: generateLayerSettings()
 
       Generate the settings dictionary for every layer.
@@ -406,6 +415,7 @@ Attributes
       -------
       list
           A list of dictionary settings for each layer.
+
 
 
 
@@ -427,6 +437,7 @@ Attributes
 
 
 
+
    .. py:method:: getMaterialFromDataBase(name, permittivity=None)
 
       Get the given material from the database.
@@ -445,6 +456,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -471,6 +483,7 @@ Attributes
 
 
 
+
    .. py:method:: get_results(vs_cm1)
 
       Return the results of the single crystal calculation.
@@ -485,6 +498,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -505,6 +519,7 @@ Attributes
 
 
 
+
    .. py:method:: greyed_out()
 
       Have a look through the settings and see if we need to grey anything out.
@@ -516,6 +531,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -538,6 +554,7 @@ Attributes
 
 
 
+
    .. py:method:: moveLayerUp(x, layer, layerIndex)
 
       Move a layer up (sequence number gets smaller by 1).
@@ -554,6 +571,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -580,6 +598,7 @@ Attributes
 
 
 
+
    .. py:method:: on_angle_of_incidence_sb_changed(value)
 
       Update the 'Angle of incidence' setting and mark a refresh as required upon a change in the angle of incidence spinbox value.
@@ -594,6 +613,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -619,6 +639,7 @@ Attributes
 
 
 
+
    .. py:method:: on_film_thickness_sb_changed(value, layer)
 
       Handle film thickness spin box change.
@@ -640,6 +661,7 @@ Attributes
 
 
 
+
    .. py:method:: on_global_azimuthal_angle_sb_changed(value)
 
       Handle the change in global azimuthal angle setting.
@@ -655,6 +677,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -683,6 +706,7 @@ Attributes
 
 
 
+
    .. py:method:: on_layerTable_itemChanged(item)
 
       Handle a change to the layer table.
@@ -697,6 +721,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -719,6 +744,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -748,6 +774,7 @@ Attributes
 
 
 
+
    .. py:method:: on_newLayer_cb_activated(index)
 
       Handle a new layer button click.
@@ -763,6 +790,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -788,6 +816,7 @@ Attributes
 
 
 
+
    .. py:method:: on_partially_incoherent_kernel_sb_changed(value)
 
       Handle the change in the partially incoherent kernel spinbox value.
@@ -800,6 +829,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -821,6 +851,7 @@ Attributes
 
 
 
+
    .. py:method:: on_partially_incoherent_samples_sb_changed(value)
 
       Handle the change in partially incoherent samples setting.
@@ -833,6 +864,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -853,6 +885,7 @@ Attributes
 
 
 
+
    .. py:method:: on_print_button_clicked(x, layer)
 
       Print the permittivity for the layer.
@@ -870,6 +903,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -894,6 +928,7 @@ Attributes
 
 
 
+
    .. py:method:: openDB_button_clicked()
 
       Open a new materials' database.
@@ -910,6 +945,7 @@ Attributes
 
 
 
+
    .. py:method:: partialIncoherenceWidget()
 
       Create a partial incoherence widget.
@@ -921,6 +957,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -958,6 +995,7 @@ Attributes
 
 
 
+
    .. py:method:: printLayerSettings(message)
 
       Print the settings related to the layers.
@@ -979,12 +1017,14 @@ Attributes
 
 
 
+
    .. py:method:: redrawLayerTable()
 
       Redraw the layer table widget.
 
       Adds a row for each layer in the gadget.
       The row is drawn using redrawLayerTableRow()
+
 
 
    .. py:method:: redrawLayerTableRow(sequenceNumber, layer, rowCount, firstLayer, lastLayer)
@@ -1014,6 +1054,7 @@ Attributes
 
 
 
+
    .. py:method:: refresh(force=False)
 
       Refresh the current state, optionally forcing a refresh.
@@ -1035,6 +1076,7 @@ Attributes
 
 
 
+
    .. py:method:: setMaterialNames()
 
       Set and append a material name to the list of material names.
@@ -1053,6 +1095,7 @@ Attributes
 
 
 
+
    .. py:method:: set_noCalculationsRequired()
 
       Determine the number of calculations required.
@@ -1067,6 +1110,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -1088,6 +1132,7 @@ Attributes
 
 
 
+
    .. py:method:: smoothingWidget()
 
       Create a smoothing widget used by the partial incoherence method.
@@ -1100,6 +1145,104 @@ Attributes
       -------
       None
 
+
+
+
+   .. py:attribute:: DataBase
+
+
+   .. py:attribute:: calculationRequired
+      :value: True
+
+
+
+   .. py:attribute:: cell
+      :value: None
+
+
+
+   .. py:attribute:: epsilon
+      :value: []
+
+
+
+   .. py:attribute:: exponent_threshold
+      :value: 11000
+
+
+
+   .. py:attribute:: form
+
+
+   .. py:attribute:: layers
+      :value: []
+
+
+
+   .. py:attribute:: legend_le
+
+
+   .. py:attribute:: materialNames
+      :value: []
+
+
+
+   .. py:attribute:: mode_cb
+
+
+   .. py:attribute:: noCalculationsRequired
+      :value: 1
+
+
+
+   .. py:attribute:: notebook
+
+
+   .. py:attribute:: number_of_average_incoherent_layers
+      :value: 0
+
+
+
+   .. py:attribute:: p_absorbtance
+      :value: []
+
+
+
+   .. py:attribute:: p_reflectance
+      :value: []
+
+
+
+   .. py:attribute:: p_transmittance
+      :value: []
+
+
+
+   .. py:attribute:: reader
+
+
+   .. py:attribute:: refreshRequired
+      :value: True
+
+
+
+   .. py:attribute:: s_absorbtance
+      :value: []
+
+
+
+   .. py:attribute:: s_reflectance
+      :value: []
+
+
+
+   .. py:attribute:: s_transmittance
+      :value: []
+
+
+
+   .. py:attribute:: scenarioType
+      :value: 'Single crystal'
 
 
 
@@ -1142,18 +1285,13 @@ Attributes
 
 .. py:data:: gtmMethods
 
-   
-
 .. py:data:: incoherentOptions
    :value: ['Coherent', 'Incoherent (intensity)', 'Incoherent (phase averaging)', 'Incoherent (non-reflective)']
 
-   
 
 .. py:data:: thickness_conversion_factors
 
-   
-
 .. py:data:: thickness_units
+   :value: ['ang', 'nm', 'um', 'mm', 'cm']
 
-   
 
