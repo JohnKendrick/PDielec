@@ -41,7 +41,7 @@ from qtpy.QtWidgets import (
     QTableWidgetItem,
 )
 
-from PDielec.Constants import elemental_colours
+from PDielec.Constants import elemental_colours, vesta_elemental_colours, jmol_elemental_colours
 from PDielec.GUI.OpenGLWidget import OpenGLWidget
 from PDielec import Calculator
 
@@ -214,6 +214,8 @@ class ViewerTab(QWidget):
         self.settings["Number of phase steps"] = 41
         self.settings["Super Cell"] =  [ 1, 1, 1 ]
         self.settings["Primitive transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
+        self.settings["Element colours"] = None
+        self.settings["Element palette"] = "Jmol"
         self.light_switches = [False]*8
         self.light_switches[0] = True
         self.light_switches[1] = True
@@ -226,7 +228,6 @@ class ViewerTab(QWidget):
         self.cell_corners = None
         # element_colours is a dictionary
         self.element_colours = elemental_colours
-        self.settings["Element colours"] = None
         self.element_names = []
         self.species       = []
         self.element_coloured_buttons = []
@@ -501,7 +502,6 @@ class ViewerTab(QWidget):
         new = []
         for row in primitive_transform:
             new.append( [f"{col:.9f}" for col in row])
-        #jk print('jk555 guessed transform',new)
         self.settings["Primitive transform"] = new
         self.refreshRequired = True
         self.refresh()
@@ -1076,7 +1076,6 @@ class ViewerTab(QWidget):
         #
         cell = copy.copy(self.standard_cell)
         primitive_transform = self.convert_primitive_transform()
-        #jk print('jk32 ', primitive_transform)
         self.primitive_cell = PrimitiveCell(cell,transformation=primitive_transform)
         primitive_normal_modes = self.primitive_cell.calculateNormalModes(standard_normal_modes)
         #
@@ -1413,6 +1412,12 @@ class ViewerTab(QWidget):
             return
         self.debugger.print("refresh widget",force)
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        if "vesta" in self.settings["Element palette"].lower():
+            self.element_colours = vesta_elemental_colours
+        elif "jmol" in self.settings["Element palette"].lower():
+            self.element_colours = jmol_elemental_colours
+        else:
+            self.element_colours = elemental_colours
         self.calculate()
         #
         # Block signals during refresh
