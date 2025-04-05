@@ -590,23 +590,23 @@ class MainTab(QWidget):
         # Open a file chooser
         #options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
-        if self.settings["Program"] == "Castep":
+        if self.settings["Program"].lower() == "castep":
             selfilter = "Castep (*.castep)"
-        elif self.settings["Program"] == "Abinit":
+        elif self.settings["Program"].lower() == "abinit":
             selfilter = "Abinit (*.out *.abo)"
-        elif self.settings["Program"] == "Gulp":
+        elif self.settings["Program"].lower() == "gulp":
             selfilter = "Gulp (*.gout)"
-        elif self.settings["Program"] == "Vasp":
+        elif self.settings["Program"].lower() == "vasp":
             selfilter = "Vasp (OUTCAR*)"
-        elif self.settings["Program"] == "Quantum Espresso":
+        elif self.settings["Program"].lower() == "quantum espresso":
             selfilter = "Quantum Espresso (*.dynG)"
-        elif self.settings["Program"] == "Crystal":
+        elif self.settings["Program"].lower() == "crystal":
             selfilter = "Crystal (*.out  *.log)"
-        elif self.settings["Program"] == "Phonopy":
+        elif self.settings["Program"].lower() == "phonopy":
             selfilter = "Phonopy (*)"
-        elif self.settings["Program"] == "Experiment":
+        elif self.settings["Program"].lower() == "experiment":
             selfilter = "Experiment (*.exp)"
-        elif self.settings["Program"] == "Pdgui":
+        elif self.settings["Program"].lower() == "pdgui":
             selfilter = "PDGui (*.py)"
         else:
             selfilter = "All files (*)"
@@ -629,7 +629,7 @@ class MainTab(QWidget):
             self.file_le.setText(self.settings["Output file name"])
             debugger.print("new file name", self.directory, self.settings["Output file name"])
             self.notebook.deleteAllScenarios()
-            if self.settings["Program"] == "pdgui":
+            if self.settings["Program"].lower() == "pdgui":
                 #
                 # If we have changed the file then reset some of the settingsTab settings
                 # before we read in the script.
@@ -726,7 +726,7 @@ class MainTab(QWidget):
             self.settings["Output file name"] = os.path.basename(filename)
             debugger.print("new file name", self.settings["Output file name"])
             self.notebook.deleteAllScenarios()
-            if self.settings["Program"] == "pdgui":
+            if self.settings["Program"].lower() == "pdgui":
                 #
                 # If we are reading a script the reset the defaults before reading the script
                 #
