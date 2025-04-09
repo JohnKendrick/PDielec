@@ -1105,7 +1105,8 @@ class OpenGLWidget(QOpenGLWidget):
 
         Notes
         -----
-        This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current. It also updates `self.matrix` with an identity matrix and sets `self.current_phase` based on the total number of phases.
+        This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current.
+        It also updates the rotation with `self.matrix` and sets `self.current_phase` based on the total number of phases.
 
         """        
         if self.image_size is None or self.my_width is None or self.my_height is None:
@@ -1120,7 +1121,8 @@ class OpenGLWidget(QOpenGLWidget):
         glOrtho(-orthox, orthox, -orthoy, orthoy, -orthoz, orthoz)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        self.matrix =  np.eye( 4, dtype=np.float32)
+        glMultMatrixf(self.matrix)
+        # self.matrix =  np.eye( 4, dtype=np.float32)
         # reset the current phase to the centre of the phases
         self.current_phase = int(self.number_of_phases / 2)
         debugger.print("set projection matrix ortho", orthox, orthoy, orthoz)
