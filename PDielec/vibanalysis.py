@@ -84,6 +84,21 @@ def InitialiseVaOpts():
 
     Radii=[ 0.5, 0.3, 1.7, 1.1, 0.9, 0.7, 0.6, 0.6, 0.5, 0.4, 1.9, 1.5, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 2.4, 1.9, 1.8, 1.8, 1.7, 1.7, 1.6, 1.6, 1.5, 1.5, 1.5, 1.4, 1.4, 1.3, 1.1, 1.0, 0.9, 0.9, 2.7, 2.2, 2.1, 2.1, 2.0, 1.9, 1.8, 1.8, 1.7, 1.7, 1.7, 1.6, 1.6, 1.5, 1.3, 1.2, 1.2, 1.1, 3.0, 2.5, 2.0, 2.0, 2.5, 2.1, 2.1, 2.4, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.2, 2.2, 2.2, 2.1, 2.0, 1.9, 1.9, 1.9, 1.8, 1.8, 1.7, 1.7, 1.6, 1.5, 1.4]
 
+    #
+    # Use the PDielec constants instead of the original
+    # =================================================
+    #
+    from PDielec import Constants
+    Symbols = []
+    Masses = []
+    Radii = []
+    for symbol in Constants.isotope_masses:
+        Symbols.append(symbol.lower())
+        Masses.append(Constants.isotope_masses[symbol])
+        Radii.append(Constants.covalent_radii[symbol])
+    # ========================================
+    # End of PDielec changes for the constants
+    #
     #balancing parameters
     sangles=1.0
     souts=1.0
