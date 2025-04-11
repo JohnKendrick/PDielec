@@ -196,10 +196,17 @@ class SuperCell:
             number of images.
 
         """
-        nmodes,nions3 = np.shape(modes)
+        nmodes,nions,_ = np.shape(modes)
+        nions3 = nions*3
+        # Make a copy of the modes, transforming [nmodes, nions, 3] to [ nmodes, nions3 ]
+        modes_copy = np.zeros( (nmodes, nions3) )
+        for imode,mode in enumerate(modes):
+            pos = 0
+            modes_copy[imode] = mode.flatten()
+        # Now make multiple copies of the normal modes for each image.
         mult = len(self.imageList)
         normal_modes = np.zeros( (nmodes, mult*nions3) )
-        for mode_index,mode in enumerate(modes):
+        for mode_index,mode in enumerate(modes_copy):
             pos = 0
             for  _i,_j,_k in self.imageList:
                 for m in mode:
@@ -313,6 +320,7 @@ class SuperCell:
         corners.append( np.array( [  i,0.0,  k] ) )
         corners.append( np.array( [  i,  j,  k] ) )
         corners.append( np.array( [0.0,  j,  k] ) )
+        labels = [ "o", "a", "", "b", "c", "", "", "" ]
         centre = np.array ( [0.0, 0.0, 0.0] )
         for corner in corners:
             centre += corner
@@ -334,7 +342,7 @@ class SuperCell:
         edges.append( (corners_xyz[6] , corners_xyz[5]) )
         edges.append( (corners_xyz[7] , corners_xyz[6]) )
         edges.append( (corners_xyz[7] , corners_xyz[4]) )
-        return corners_xyz,edges
+        return corners_xyz,edges,labels
 
     def calculateCentreOfBox(self):
         """Calculate the centre of the super-cell in cartesian coordinates.
