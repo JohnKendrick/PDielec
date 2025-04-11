@@ -20,7 +20,7 @@ import sys
 
 import numpy as np
 
-from PDielec.Calculator import cleanup_symbol
+from PDielec.Calculator import cleanup_symbol, calculate_normal_modes_and_frequencies
 from PDielec.Constants import amu, avogadro_si, wavenumber
 from PDielec.IO import pdielec_io
 from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
@@ -664,16 +664,16 @@ class GenericOutputReader:
         if self.debug:
             print("masses", masses)
             print("non mass weighted hessian", self.nomass_hessian[0:4][0])
-        hessian = self._modify_mass_weighting(self.nomass_hessian, masses)
+        self.hessian = self._modify_mass_weighting(self.nomass_hessian, masses)
         if self.debug:
-            print("mass weighted hessian", hessian[0:4][0])
+            print("mass weighted hessian", self.hessian[0:4][0])
         # Project out the translational modes if requested
         if self.eckart:
-            hessian = self.project(hessian)
+            self.hessian = self.project(self.hessian)
             if self.debug:
-                print("projected hessian", hessian[0:4][0])
+                print("projected hessian", self.hessian[0:4][0])
         # Find its eigenvalues and eigen vectors
-        self.mass_weighted_normal_modes, self.frequencies = self._calculate_normal_modes_and_frequencies(hessian,self.nions)
+        self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(self.hessian)
         if self.debug:
             print("calculated frequencies", self.frequencies)
             print("mass-weighted normal modes", self.mass_weighted_normal_modes)
@@ -791,58 +791,10 @@ class GenericOutputReader:
             hessian = self.project(hessian)
         if self.debug:
             print("projected hessian", hessian[0:4][0])
-        self.mass_weighted_normal_modes, self.frequencies = self._calculate_normal_modes_and_frequencies(hessian,self.nions)
+        self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(hessian)
         if self.debug:
             print("non mass weighted hessian", self.nomass_hessian[0:4][0])
         return
-
-    def _calculate_normal_modes_and_frequencies(self,hessian, natoms):
-        """"From the mass weighted hessian compute the normal modes and the frequencies.
-
-        Parameters
-        ----------
-        hessian : a symmetric 2d numpy array of 3*natoms, 3*natoms
-            This is the mass-weighted hessian
-        natoms : int
-            The number of atoms
-
-        Returns
-        -------
-        frequencies : a list of floats
-            The frequencies in cm-1
-        mass_weighted_normal_modes : a 3*natoms, 3*natoms 2D list
-            The eigen vectors of the hessian
-
-        """
-        # diagonalise
-        eig_val, eig_vec = np.linalg.eigh(hessian)
-        nmodes = 3*natoms
-        #
-        # If eig_val has negative values then we store the negative frequency
-        # convert to cm-1
-        frequencies_a = np.zeros(nmodes)
-        for i, eig in enumerate(eig_val):
-            if eig < 0:
-                frequencies_a[i] = -math.sqrt(-eig) / wavenumber
-            else:
-                frequencies_a[i] = math.sqrt(eig) / wavenumber
-            # end if
-        # end for
-        mass_weighted_normal_modes = []
-        frequencies = frequencies_a.tolist()
-        if self.debug:
-            print("frequencies", frequencies)
-        # Store the mass weighted normal modes
-        for i in range(nmodes):
-            mode = []
-            n = 0
-            for _j in range(natoms):
-                modea = [eig_vec[n][i].item(), eig_vec[n+1][i].item(), eig_vec[n+2][i].item()]
-                n = n + 3
-                mode.append(modea)
-            mass_weighted_normal_modes.append(mode)
-        # end for i
-        return mass_weighted_normal_modes, frequencies_a
 
     def reset_born_charges(self):
         """Reset the born charges to their original values if they are not currently being used.
