@@ -132,45 +132,8 @@ class PrimitiveCell(UnitCell):
         # Atoms, labels, masses and element names are removed if the atom is not unique
         # The map lists help remember the relationship between everything.
         #
-        self.fold_cell()
-        self.map_old_to_new, self.map_new_to_old = self.trim_cell()
+        #self.fold_cell()
+        self.map_old_to_new, self.map_new_to_old = self.fold_cell()
         #jk print('JK2 ----After trim-------------------------')
         #jk self.print()
         #jk print('JK2 ---------------------------------------')
-
-    def calculateNormalModes(self,modes):
-        """Calculate and return the normal modes of the primitive cell.
-
-        Normal modes are initially an np array of nmodes, 3*nions.
-        The number of modes stays the same but the number of ions reduces.
-
-        Parameters
-        ----------
-        modes : a list of floats
-            A list of the modes to be used in the calculation
-
-        Returns
-        -------
-        np.ndarray
-            Array representing the normal modes of the supercell. Initially, this is an array
-            of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the
-            number of ions per mode. The shape may vary as the number of ions increases with the
-            number of images.
-
-        """
-        nmodes,nions,_ = np.shape(modes)
-        newions3 = 3*len(self.map_new_to_old)
-        normal_modes = np.zeros( (nmodes, newions3) )
-        for mode_index,mode in enumerate(modes):
-            mode = np.array(mode).flatten()
-            for new_index,old_index in enumerate(self.map_new_to_old):
-                old_pos=old_index*3
-                new_pos=new_index*3
-                for i in range(3):
-                  normal_modes[mode_index,new_pos] = mode[old_pos] 
-                  old_pos += 1
-                  new_pos += 1
-                #end for i in range(3)
-            #end for index
-        # for mode
-        return normal_modes
