@@ -30,7 +30,7 @@ from scipy.stats import lognorm
 # The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github
 #
 from PDielec import Mie
-from PDielec.Constants import d2byamuang2
+from PDielec.Constants import d2byamuang2, wavenumber
 
 Mie.crossover = 0.01
 
@@ -2383,6 +2383,51 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          if debugger is not None:
              debugger.print("get_pool using the multiprocessing package")
      return Pool(ncpus, initializer=initializer, initargs=initargs)
+
+def calculate_normal_modes_and_frequencies(hessian):
+    """"From the mass weighted hessian compute the normal modes and the frequencies.
+
+    Parameters
+    ----------
+    hessian : a symmetric 2d numpy array of 3*natoms, 3*natoms
+        This is the mass-weighted hessian
+
+    Returns
+    -------
+    frequencies : a list of floats
+        The frequencies in cm-1
+    mass_weighted_normal_modes : a 3*natoms, 3*natoms 2D list
+        The eigen vectors of the hessian
+
+    """
+    # diagonalise
+    eig_val, eig_vec = np.linalg.eigh(hessian)
+    nmodes = len(eig_val)
+    natoms = int(nmodes/3+0.0000001)
+    #
+    # If eig_val has negative values then we store the negative frequency
+    # convert to cm-1
+    frequencies_a = np.zeros(nmodes)
+    for i, eig in enumerate(eig_val):
+        if eig < 0:
+            frequencies_a[i] = -math.sqrt(-eig) / wavenumber
+        else:
+            frequencies_a[i] = math.sqrt(eig) / wavenumber
+        # end if
+    # end for
+    mass_weighted_normal_modes = []
+    frequencies = frequencies_a.tolist()
+    # Store the mass weighted normal modes
+    for i in range(nmodes):
+        mode = []
+        n = 0
+        for _j in range(natoms):
+            modea = [eig_vec[n][i].item(), eig_vec[n+1][i].item(), eig_vec[n+2][i].item()]
+            n = n + 3
+            mode.append(modea)
+        mass_weighted_normal_modes.append(mode)
+    # end for i
+    return mass_weighted_normal_modes, frequencies_a
 
 def set_no_of_threads(nthreads):
     """Set default number of threads.
