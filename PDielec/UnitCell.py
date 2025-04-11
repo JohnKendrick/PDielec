@@ -265,13 +265,19 @@ class UnitCell:
             print(" ",                                               file=file_)
         return
 
-    def getBoundingBox(self, units="Angstrom"):
+    def getBoundingBox(self, originXYZ = None, originABC = None, units="Angstrom"):
         """Generate the corners and edges of a bounding box.
 
         This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
 
         Parameters
         ----------
+        originABC : a list of 3 floats
+            Defines the centre about which the box is centred
+            The basis for the coordinates are abc
+        originXYZ : a list of 3 floats
+            Defines the centre about which the box is centred
+            The basis for the coordinates are xyz
         units : str
             An optional unit of length required for output, default is Angstrom
 
@@ -289,6 +295,14 @@ class UnitCell:
             corners_xyz, edges = object.getBoundingBox()
 
         """        
+        if originABC is None and originXYZ is None:
+            originABC = np.zero( 3 )
+            originXYZ = np.zero( 3 )
+        elif originABC is not None:
+            originXYZ = self.convert_abc_to_xyz(originABC)
+        elif originXYZ is not None:
+            originABC = self.convert_xyz_to_abc(originXYZ)
+        #
         # Return a box with 12 edges which represent the unit cell in cartesian space
         #  7---6
         # /|  /|
@@ -305,6 +319,12 @@ class UnitCell:
         corners.append( np.array( [1.0,0.0,1.0] ) )
         corners.append( np.array( [1.0,1.0,1.0] ) )
         corners.append( np.array( [0.0,1.0,1.0] ) )
+        labels = [ "o", "a", "", "b", "c", "", "", "" ]
+        centre = np.array ( [0.0, 0.0, 0.0] )
+        for corner in corners:
+            centre += corner
+        centre = centre / 8.0
+        corners = [ corner - centre + originABC for corner  in corners ]
         # Now calculate the corners in cartesian space
         corners_xyz = [ self.convert_abc_to_xyz(corner) for corner in corners ]
         # Now calculate the edges each edge is a tuple with a beginning coordinate and an end coordinate
@@ -324,7 +344,7 @@ class UnitCell:
         # Convert to the required output unit
         corners = convert_length_units(corners,self.units,units)
         edges   = convert_length_units(edges  ,self.units,units)
-        return corners_xyz,edges
+        return corners_xyz,edges,labels
 
     def getDensity(self, units="cm"):
         """Calculate the density of the crystal.
@@ -447,6 +467,21 @@ class UnitCell:
             "abc"  : cm_fractional,
             "all"  : (mass, cm_xyz, cm_fractional ),
         }.get(output, (mass, cm_xyz, cm_fractional))
+
+    def get_number_of_atoms(self):
+        """Get the number of atoms.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+            The number of atoms
+
+        """        
+        return self.nions
 
     def get_number_of_molecules(self):
         """Get the number of molecules.
@@ -1256,6 +1291,11 @@ class UnitCell:
         ----------
         None
 
+        Returns
+        -------
+        map_old_to_new : a list of integers
+        map_new_to_old : a list of integers
+
         Modifies
         --------
         fractional_coordinates
@@ -1272,7 +1312,10 @@ class UnitCell:
         labels = self.get_atom_labels()
         masses  = self.get_atomic_masses()
         element_names  = self.get_element_names()
-        for p,l,m,e in zip(positions,labels,masses,element_names):
+        map_new_to_old = []
+        map_old_to_new = []
+        new_index = 0
+        for old_index,(p,l,m,e) in enumerate(zip(positions,labels,masses,element_names)):
             for i in range(3):
                 if p[i] >= 1.0 or p[i] < 0.0:
                     p[i] = p[i] - math.floor(p[i])
@@ -1284,11 +1327,14 @@ class UnitCell:
             dist = 1.0
             for frac in new_positions:
                 dist = min(dist, np.sqrt(np.sum(np.square(p-frac))))
+            map_old_to_new.append(new_index)
             if dist > symprec:
                 new_positions.append(p)
                 new_labels.append(l)
                 new_masses.append(m)
                 new_names.append(e)
+                map_new_to_old.append(old_index)
+                new_index += 1
         self.set_atom_labels(new_labels)
         self.set_atomic_masses(new_masses)
         self.set_element_names(new_names)
@@ -1298,9 +1344,7 @@ class UnitCell:
         #
         self.molecules = []
         self.bonds     = []
-        #jk print('JK5 ---FOLDING------------------------------')
-        #jk self.print()
-        #jk print('JK5 ---END FOLDING--------------------------')
+        return map_old_to_new, map_new_to_old
 
     def trim_cell(self):
         """Trim this cell so that any atoms outside a single cell are removed.
@@ -1334,21 +1378,21 @@ class UnitCell:
         keep_list = []; new_positions = []; new_labels = []; new_names = []; new_masses = []
         map_new_to_old = []
         map_old_to_new = []
-        index_primitive = -1
+        index_primitive = 0
         for index_cell,(p,l,m,n) in enumerate(zip(positions, labels, masses, element_names)):
             keep = True
             for i in range(3):
                 if p[i] >= 1.0 or p[i] < 0.0:
                     keep = False
+            map_old_to_new.append(index_primitive)
             if keep:
                 keep_list.append(keep)
                 new_positions.append(p)
                 new_labels.append(l)
                 new_masses.append(m)
                 new_names.append(n)
-                index_primitive += 1
                 map_new_to_old.append(index_cell)
-            map_old_to_new.append(index_primitive)
+                index_primitive += 1
         # end for p,l,m,n
         #
         # Store the information in the current cell
@@ -1357,13 +1401,6 @@ class UnitCell:
         self.set_atomic_masses(new_masses)
         self.set_element_names(new_names)
         self.set_fractional_coordinates(new_positions)
-        #jk print('JK6 ----TRIM CELL---------------------------')
-        #jk self.print()
-        #jk print("Map cell to primitive")
-        #jk print(map_old_to_new)
-        #jk print("Map primitive to cell")
-        #jk print(map_new_to_old)
-        #jk print('JK6 ----TRIM CELL---------------------------')
         self.molecules = []
         self.bonds     = []
         return map_old_to_new, map_new_to_old
@@ -1422,7 +1459,4 @@ class UnitCell:
         else:
             pmat = np.eye(3)
             print('Centring is not recognised',centring)
-        #jk print('jk222 centring',centring)
-        #jk print('jk222 tmat',tmat)
-        #jk print('jk222 pmat',pmat)
         return np.dot(np.linalg.inv(tmat), pmat)
