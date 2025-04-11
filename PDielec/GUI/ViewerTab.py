@@ -208,6 +208,8 @@ class ViewerTab(QWidget):
         self.settings["Bond radius"]           = 0.1
         self.settings["Cell colour"]           = [ 255,   0,   0, 255 ]
         self.settings["Cell radius"]           = 0.1
+        self.settings["Text colour"]           = [ 255, 255,   0, 255 ]
+        self.settings["Text size"]             = "24"
         self.settings["Background colour"]     = [ 120, 120, 120, 255 ]
         self.settings["Arrow colour"]          = [   0, 255,   0, 255 ]
         self.settings["Arrow radius"]          = 0.07
@@ -280,7 +282,7 @@ class ViewerTab(QWidget):
         for change_function,tip in zip(super_cell_changed,super_cell_tooltip):
             spinBox = QSpinBox(self)
             spinBox.setToolTip(tip)
-            spinBox.setRange(1,5)
+            spinBox.setRange(1,20)
             spinBox.setSingleStep(1)
             spinBox.valueChanged.connect(change_function)
             self.super_cell_spinBoxes.append(spinBox)
@@ -1066,37 +1068,45 @@ class ViewerTab(QWidget):
         if self.standard_cell is None:
             return
         #
-        # Get the mass weighted normal modes from the settingsTab
-        # calculate the normal modes from them
-        #
-        atom_masses = self.standard_cell.get_atomic_masses()
-        standard_mass_weighted_normal_modes = self.notebook.settingsTab.mass_weighted_normal_modes
-        standard_normal_modes = Calculator.normal_modes(atom_masses, standard_mass_weighted_normal_modes)
-        #
         # Transform the standard cell to a primitive cell
         # this involves folding the cell into itself and applying the Primitive transformation
         # In the process there is a reordering of the atoms which is kept track of in the primitive cell
-        # NOTE: The primitive cell may have fewer atoms than the standard cell, but the number of 
-        #       normal modes stays the same
+        # NOTE: The primitive cell will have fewer atoms than the standard cell
         #
         cell = copy.copy(self.standard_cell)
         primitive_transform = self.convert_primitive_transform()
         self.primitive_cell = PrimitiveCell(cell,transformation=primitive_transform)
-        primitive_normal_modes = self.primitive_cell.calculateNormalModes(standard_normal_modes)
+        self.opengl_widget.define_orientations(self.primitive_cell)
+        self.opengl_widget.set_orientation(self.opengl_widget.orientation)
         #
         # Calculate the whole molecule content of the primitive cell
         #
         tolerance = self.notebook.analysisTab.settings["Bonding tolerance"]
         scale     = self.notebook.analysisTab.settings["Covalent radius scaling"]
         radii     = self.notebook.analysisTab.element_radii
-        nmols = self.primitive_cell.calculate_molecular_contents(
-                                                        scale=scale,
-                                                        tolerance=tolerance,
-                                                        radii=radii)
+        nmols = cell.calculate_molecular_contents( scale=scale,
+                                                   tolerance=tolerance,
+                                                   radii=radii)
+        #jk#
+        #jk# Get the mass weighted hessian from the reader
+        #jk# All mass settings, eckart and symmetry have been applied there
+        #jk#
+        #jkhessian = self.reader.hessian
+        #jk#
+        #jk# Calculate the primitive hessian
+        #jk#
+        #jkprimitive_hessian = self.calculate_primitive_hessian(hessian,self.standard_cell,self.primitive_cell)
+        #jkprint('jk100 primitive hessian',primitive_hessian)
+        #jkprint('jk101 primitive hessian',np.shape(primitive_hessian))
+        #jkprimitive_mass_weighted_normal_modes, frequencies = Calculator.calculate_normal_modes_and_frequencies(primitive_hessian)
+        #jkprint('jk99 frequencies',frequencies)
+        atom_masses = cell.get_atomic_masses()
+        mass_weighted_normal_modes = self.reader.mass_weighted_normal_modes
+        normal_modes = Calculator.normal_modes(atom_masses,mass_weighted_normal_modes)
         # Generate a super cell
         imageSpecifier = self.settings["Super Cell"]
-        self.super_cell = SuperCell(self.primitive_cell,imageSpecifier)
-        self.normal_modes = self.super_cell.calculateNormalModes(primitive_normal_modes)
+        self.super_cell = SuperCell(cell,imageSpecifier)
+        self.normal_modes = self.super_cell.calculateNormalModes(normal_modes)
         self.bonds = self.super_cell.calculateBonds()
         self.snapshot_number = 0
         self.nbonds = len(self.bonds)
@@ -1106,7 +1116,7 @@ class ViewerTab(QWidget):
         self.number_of_modes = len(self.normal_modes)
         # get the cell edges for the bounding box, shifted to the centre of mass origin
         totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(output=all)
-        self.cell_corners,self.cell_edges = self.super_cell.getBoundingBox(centreOfMassABC)
+        self.cell_corners,self.cell_edges,self.cell_labels = self.primitive_cell.getBoundingBox(originXYZ = centreOfMassXYZ)
         self.element_names = self.super_cell.getElementNames()
         self.species = self.reader.getSpecies()
         covalent_radii = self.notebook.analysisTab.element_radii
@@ -1137,6 +1147,45 @@ class ViewerTab(QWidget):
         QApplication.restoreOverrideCursor()
         self.debugger.print("Finished:: calculate")
         return
+
+    def calculate_primitive_hessian(self, hessian, standard_cell, primitive_cell):
+        """Calculate and return the primitive hessian.
+
+        Parameters
+        ----------
+        hessian : an array of floats (dimension 3*natoms x 3*natoms)
+            The mass weighted hessian of the standard cell   
+        standard_cell : a unit cell
+            The unit cell used to calculate the input hessian
+        primitive_cell : a unit cell
+            The primitive cell used to calculate the output hessian
+
+        Returns
+        -------
+        np.ndarray (dimension 3*nprimitive_atoms x 3*nprimitive_atoms)
+            Array representing the primitive hessian
+
+        """
+        natoms = standard_cell.get_number_of_atoms()
+        nmodes = natoms*3
+        nprimitiveatoms = primitive_cell.get_number_of_atoms()
+        mapping = primitive_cell.map_new_to_old
+        print('jkaa new_to_old',mapping)
+        primitive_hessian = np.zeros( (nprimitiveatoms*3, nprimitiveatoms*3) )
+        inew3 = 0
+        for inew in range(nprimitiveatoms):
+            iold3 = 3*mapping[inew]
+            for ixyz in range(3):
+                jnew3 = 0
+                for jnew in range(nprimitiveatoms):
+                    jold3 = 3*mapping[jnew]
+                    for jxyz in range(3):
+                        primitive_hessian[inew3,jnew3] = hessian[iold3, jold3]
+                        jnew3 += 1
+                        jold3 += 1
+                inew3 += 1
+                iold3 += 1
+        return primitive_hessian
 
     def setColour(self, element, colour):
         """Set the colour of a specified element in the interface.
@@ -1214,8 +1263,9 @@ class ViewerTab(QWidget):
         for phase_index in range(len(phases)):
             for col, rad, xyz in zip(self.colours, self.radii, self.newXYZ[phase_index]):
                 self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
-            for p in self.cell_corners:
+            for p,l in zip(self.cell_corners,self.cell_labels):
                 self.opengl_widget.addSphere(self.settings["Cell colour"], self.settings["Cell radius"], p, phase=phase_index )
+                self.opengl_widget.addText(l, self.settings["Text colour"], self.settings["Text size"], p, phase=phase_index)
             for bond in self.bonds:
                 i,j = bond
                 self.opengl_widget.addCylinder(self.settings["Bond colour"], self.settings["Bond radius"], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
