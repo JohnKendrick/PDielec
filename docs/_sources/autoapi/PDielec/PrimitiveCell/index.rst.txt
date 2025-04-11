@@ -1,0 +1,84 @@
+PDielec.PrimitiveCell
+=====================
+
+.. py:module:: PDielec.PrimitiveCell
+
+.. autoapi-nested-parse::
+
+   The PrimitiveCell module.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.PrimitiveCell.PrimitiveCell
+
+
+Module Contents
+---------------
+
+.. py:class:: PrimitiveCell(aUnitCell, transformation=None)
+
+   Bases: :py:obj:`PDielec.UnitCell.UnitCell`
+
+
+   Hold primitive-cell information; the unit cell and the primitive-cell size.
+
+   Inherits from UnitCell, but adds a new variable, the original cell
+   The initialisation is always performed with a unit cell.
+   A transformation of the original cell can be applied using the transformaton matrix
+
+   Parameters
+   ----------
+   aUnitCell : :class:`~PDielec.UnitCell.UnitCell`
+       The unit cell associated with this instance.
+
+   Attributes
+   ----------
+   unitCell : :class:`~PDielec.UnitCell.UnitCell`
+       The primitive cell associated with this instance. (see :class:`~PDielec.UnitCell.UnitCell`)
+   originalCell : :class:`~PDielec.UnitCell.UnitCell`
+       The original cell associated with this instance. (see :class:`~PDielec.UnitCell.UnitCell`)
+   method   : str
+       A string with either "auto" or "given"
+   transformation : 3x3 list
+       A transformation matrix to create the primitive cell
+
+   Notes
+   -----
+
+   See Also
+   --------
+   :class:`~PDielec.UnitCell.UnitCell`
+
+
+
+   .. py:method:: calculateNormalModes(modes)
+
+      Calculate and return the normal modes of the primitive cell.
+
+      Normal modes are initially an np array of nmodes, 3*nions.
+      The number of modes stays the same but the number of ions reduces.
+
+      Parameters
+      ----------
+      modes : a list of floats
+          A list of the modes to be used in the calculation
+
+      Returns
+      -------
+      np.ndarray
+          Array representing the normal modes of the supercell. Initially, this is an array
+          of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the
+          number of ions per mode. The shape may vary as the number of ions increases with the
+          number of images.
+
+
+
+
+   .. py:attribute:: originalCell
+
+
