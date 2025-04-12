@@ -216,6 +216,7 @@ class ViewerTab(QWidget):
         self.settings["Number of phase steps"] = 41
         self.settings["Super Cell"] =  [ 1, 1, 1 ]
         self.settings["Primitive transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
+        self.settings["hkl"] =  (1, 0, 0)
         self.settings["Element colours"] = None
         self.settings["Element palette"] = "Jmol"
         self.light_switches = [False]*8
@@ -237,6 +238,7 @@ class ViewerTab(QWidget):
         self.bond_cell_background_arrow_names = ["Background","Cell","Bonds","Arrows"]
         self.image_filename = ""
         self.primitive_transform_tab_entry = None
+        self.hkl_tab_entry = None
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -270,6 +272,10 @@ class ViewerTab(QWidget):
         # The primitive transform window popup
         #
         self.primitive_transform_tab_entry = self.createPrimitiveTransformTabEntry()
+        #
+        # The hkl tab entry
+        #
+        self.hkl_tab_entry = self.createHKLTabEntry()
         #
         # The super-cell widget
         #
@@ -397,6 +403,7 @@ class ViewerTab(QWidget):
         self.settingsTab.addTab(self.atom_scaling_sb, "Atom Scaling")
         self.settingsTab.addTab(self.super_cell_widget, "Super Cell")
         self.settingsTab.addTab(self.primitive_transform_tab_entry, "Primitive Transform")
+        self.settingsTab.addTab(self.hkl_tab_entry, "HKL")
         self.settingsTab.addTab(self.light_switches_cb, "Lighting")
         self.settingsTab.addTab(self.maximum_displacement_sb, "Maximum Displacement")
         self.settingsTab.addTab(self.bond_radius_sb, "Bond Radius")
@@ -457,10 +464,12 @@ class ViewerTab(QWidget):
         primitive_transform
 
         """
+        self.debugger.print("convert_primitive_transform")
         transform = []
         for row in self.settings["Primitive transform"]:
             new_row = [ eval(col) for col in row ]
             transform.append(new_row)
+        self.debugger.print("convert_primitive_transform", np.array(transform))
         return np.array(transform)
        
     def on_reset_button_clicked(self, item):
@@ -480,7 +489,9 @@ class ViewerTab(QWidget):
 
         """
        
+        self.debugger.print("on_reset_button_clicked",item)
         self.settings["Primitive transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
+        self.debugger.print("on_guess_button_clicked transform",self.settings["Primitive transform"])
         self.refreshRequired = True
         self.refresh()
 
@@ -502,11 +513,13 @@ class ViewerTab(QWidget):
         Modifies primitive unit cell
 
         """
+        self.debugger.print("on_guess_button_clicked",item)
         primitive_transform = self.standard_cell.guess_primitive_transform()
         new = []
         for row in primitive_transform:
             new.append( [f"{col:.9f}" for col in row])
         self.settings["Primitive transform"] = new
+        self.debugger.print("on_guess_button_clicked transform",self.settings["Primitive transform"])
         self.refreshRequired = True
         self.refresh()
 
@@ -528,12 +541,14 @@ class ViewerTab(QWidget):
         Modifies primitive unit cell
 
         """
+        self.debugger.print("on_edit_button_clicked",item)
         primitive_transform_window = PrimitiveTransformWindow(self.settings["Primitive transform"],
                                                                    debug=self.debugger.state())
         if primitive_transform_window.exec():
             # The 'Ok' button was pressed
             # get the new transform and replace the old one
             self.settings["Primitive transform"] = primitive_transform_window.getPrimitiveTransform()
+            self.debugger.print("on_edit_button_clicked transform",self.settings["Primitive transform"])
             self.refreshRequired = True
             self.refresh()
 
@@ -555,12 +570,82 @@ class ViewerTab(QWidget):
         self.settings["Primitive transform"]
 
         """
+        self.debugger.print("on_primitive_button_clicked",item)
         if self.reader is not None:
             if self.reader.primitive_transformation is not None:
                 self.settings["Primitive transform"] = self.reader.primitive_transformation
+                self.debugger.print("on_primtive_button_clicked transform",self.settings["Primitive transform"])
         # change the primitive transform window popup
         self.refreshRequired = True
         self.refresh()
+
+    def createHKLTabEntry(self):
+        """Create a one line entry to allow an entry of the hkl for a surface.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        a widget
+
+        """
+        self.debugger.print("CreateHKLTabEntry")
+        h,k,l = self.settings["hkl"]
+        # unique direction (hkl)
+        h_sb = QSpinBox(self)
+        h_sb.setToolTip("Define the h dimension of the surface")
+        h_sb.setRange(-20,20)
+        h_sb.setValue(h)
+        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
+        k_sb = QSpinBox(self)
+        k_sb.setToolTip("Define the k dimension of the surface")
+        k_sb.setRange(-20,20)
+        k_sb.setValue(k)
+        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
+        l_sb = QSpinBox(self)
+        l_sb.setToolTip("Define the l dimension of the surface")
+        l_sb.setRange(-20,20)
+        l_sb.setValue(l)
+        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
+        hbox = QHBoxLayout()
+        hbox.addWidget(h_sb)
+        hbox.addWidget(k_sb)
+        hbox.addWidget(l_sb)
+        widget = QWidget(self)
+        widget.setLayout(hbox)
+        return widget
+
+    def on_hkl_sb_changed(self,value,index):
+        """Handle a change in a value of h,k or, l.
+
+        Parameters
+        ----------
+        value : int
+            The value of h,k or l
+
+        index : integer
+          1, 2, or 3 for h, k or l
+
+        Modifies
+        --------
+        settings["hkl"]
+
+        """
+        self.debugger.print("on_hkl_sb_changed", value, index)
+        h,k,l = self.settings["hkl"]
+        if index == 0:
+            h = value
+        elif index == 1:
+            k = value
+        else:
+            l = value
+        self.settings["hkl"] = (h,k,l)
+        self.opengl_widget.define_surface_orientations(self.primitive_cell,self.settings["hkl"])
+        self.debugger.print("on_hkl_sb_changed hkl=", self.settings["hkl"])
+        return 
+    
 
     def createPrimitiveTransformTabEntry(self):
         """Create a one line entry to modify the primitive cell transformaton matrix.
@@ -576,6 +661,7 @@ class ViewerTab(QWidget):
         a widget
 
         """
+        self.debugger.print("createPrimitiveTransformTabEntry")
         hbox = QHBoxLayout()
         button = QPushButton("Reset transformation matrix")
         button.setToolTip("Reset the transformation to a unit matrix")
@@ -1077,6 +1163,7 @@ class ViewerTab(QWidget):
         primitive_transform = self.convert_primitive_transform()
         self.primitive_cell = PrimitiveCell(cell,transformation=primitive_transform)
         self.opengl_widget.define_orientations(self.primitive_cell)
+        self.opengl_widget.define_surface_orientations(self.primitive_cell,self.settings["hkl"])
         self.opengl_widget.set_orientation(self.opengl_widget.orientation)
         #
         # Calculate the whole molecule content of the primitive cell

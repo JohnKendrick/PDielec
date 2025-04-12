@@ -286,6 +286,7 @@ class OpenGLWidget(QOpenGLWidget):
                                          "Z": ( [1,0,0], [0,0,1], [1,0,0] ),
         }
         self.orientation             = "z"
+        self.hkl                     = (1,0,0)
         self.light_switches          = None
         d = 200.0
         self.light_positions = [ [-d, d, d], [ d,-d, d], [-d,-d, d], [ d, d, d], [-d, d,-d], [ d,-d,-d], [-d,-d,-d], [ d, d,-d] ]
@@ -555,6 +556,11 @@ class OpenGLWidget(QOpenGLWidget):
                 self.set_orientation("Z")
             else:
                 self.set_orientation("z")
+        elif key == Qt.Key_S:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("S")
+            else:
+                self.set_orientation("s")
         elif key == Qt.Key_P:
             self.save_movie("movie.mp4")
         elif key == Qt.Key_F:
@@ -621,6 +627,54 @@ class OpenGLWidget(QOpenGLWidget):
         glMultMatrixf(self.matrix)
         self.current_phase = int(self.number_of_phases / 2)
         self.update()
+
+    def define_surface_orientations(self, cell, hkl):
+        """Set the up orientations for the surface hkl.
+
+        Parameters
+        ----------
+        cell : unitCell
+            The cell used to define the orientations with respect to a, b, c
+        hkl : a tuple of 3 integers
+            The values of h, k and l
+
+        Modifies
+        --------
+        orientation_definitions
+
+        """        
+        debugger.print("define_surface_orientations", cell,hkl)
+        if cell is None: 
+            return
+        #
+        # Choose the out axis, by converting hkl to xyz
+        #
+        s = cell.convert_hkl_to_xyz(hkl)
+        #
+        # Find the lattice vector that is least like the surface normal
+        #
+        sdot_min = 1.0E12
+        i_min = -1
+        for i,abc in enumerate(cell.lattice):
+            abc = abc / np.linalg.norm(abc)
+            sdot = np.dot(s,abc)
+            if abs(sdot) < sdot_min:
+                sdot_min = sdot
+                i_min    = i
+        #
+        # Choose the up axis, by projecting out the surface normal
+        #
+        s_up = cell.lattice[i_min] - np.dot(s,cell.lattice[i_min])*s
+        #
+        # Choose the across axis by find the normal to s and s_up
+        #
+        s_across = np.cross(s,s_up)
+        self.orientation_definitions["s"] = (s, s_up, s_across)
+        self.orientation_definitions["S"] = (s_up, s, s_across)
+        debugger.print("s       :",s)
+        debugger.print("s_up    :",s_up)
+        debugger.print("s_across:",s_across)
+        return
 
     def define_orientations(self, cell):
         """Set the up orientations for the cell.
