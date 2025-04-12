@@ -975,7 +975,7 @@ class OpenGLWidget(QOpenGLWidget):
             xshift = -0.02 * (self.xAtMove - self.xAtPress)
             yshift = -0.02 * (self.yAtMove - self.yAtPress)
             zshift = 0.0
-            up,across,out = self.orientation_definitions[self.orientation]
+            up,across,out = self.current_orientation
             shifted = xshift*np.array(out)+yshift*np.array(across)
             self.translate(shifted[0], shifted[1])
             self.update()
