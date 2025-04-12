@@ -286,6 +286,7 @@ class OpenGLWidget(QOpenGLWidget):
                                          "Z": ( [1,0,0], [0,0,1], [1,0,0] ),
         }
         self.orientation             = "z"
+        self.current_orientation     = self.orientation_definitions[self.orientation]
         self.hkl                     = (1,0,0)
         self.light_switches          = None
         d = 200.0
@@ -440,14 +441,22 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print("molecule rotation",x,y,z)
         self.myMakeCurrent()
         glMatrixMode(GL_MODELVIEW)
-        glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
-        up,across,out = self.orientation_definitions[self.orientation]
+        self.matrix=glGetFloatv(GL_MODELVIEW_MATRIX)
+        old_matrix = self.matrix[:3,:3]
+        #up,across,out = self.orientation_definitions[self.orientation]
+        up,across,out = self.current_orientation
         debugger.print("up",up)
         debugger.print("across",across)
         debugger.print("out",out)
         glRotatef(scale*x, across[0], across[1], across[2])
         glRotatef(scale*y,     up[0],     up[1],     up[2])
         glRotatef(scale*z,    out[0],    out[1],    out[2])
+        self.matrix=glGetFloatv(GL_MODELVIEW_MATRIX)
+        new_matrix = self.matrix[:3,:3]
+        new_up     = np.dot(new_matrix,np.dot(old_matrix.T,up))
+        new_out    = np.dot(new_matrix,np.dot(old_matrix.T,out))
+        new_across = np.dot(new_matrix,np.dot(old_matrix.T,across))
+        self.current_orientation = (new_up, new_across, new_out)
         self.update()
 
     def keyPressEvent(self, event):
@@ -613,9 +622,8 @@ class OpenGLWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         glPushMatrix()
-        glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
         gluLookAt(out[0], out[1], out[2], 0, 0, 0, up[0], up[1], up[2])
-        glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
+        self.matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
         glPopMatrix()
         self.matrix[0,3] = 0
         self.matrix[1,3] = 0
@@ -625,6 +633,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.matrix[3,2] = 0
         self.matrix[3,3] = 1
         glMultMatrixf(self.matrix)
+        self.current_orientation = self.orientation_definitions[self.orientation]
         self.current_phase = int(self.number_of_phases / 2)
         self.update()
 
@@ -1396,7 +1405,6 @@ class OpenGLWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         glMultMatrixf(self.matrix)
-        # self.matrix =  np.eye( 4, dtype=np.float32)
         # reset the current phase to the centre of the phases
         self.current_phase = int(self.number_of_phases / 2)
         debugger.print("set projection matrix ortho", orthox, orthoy, orthoz)
