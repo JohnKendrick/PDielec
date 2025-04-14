@@ -275,19 +275,20 @@ class OpenGLWidget(QOpenGLWidget):
         self.background_colour      = None
         self.show_full_screen       = False
         self.writer                 = None
-        self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
-        self.matrix =  np.eye( 4, dtype=np.float32)
-        # The orientation definitions are up, out, across vectors respectively
-        self.orientation_definitions = { "x": ( [1,0,0], [0,1,0], [0,0,1] ),
-                                         "y": ( [0,1,0], [0,0,1], [1,0,0] ),
-                                         "z": ( [0,0,1], [1,0,0], [0,1,0] ),
-                                         "X": ( [0,1,0], [1,0,0], [0,1,0] ),
-                                         "Y": ( [0,0,1], [0,1,0], [1,0,0] ),
-                                         "Z": ( [1,0,0], [0,0,1], [1,0,0] ),
+        self.rotation_centre        = np.array( [0.0, 0.0, 0.0] )
+        self.matrix                 =  np.eye( 4, dtype=np.float32)
+        # The orientation definitions are up, across, out vectors respectively
+        self.orientation_definitions = { "x": ( [0,1,0], [0,0,1], [1,0,0] ),
+                                         "y": ( [0,0,1], [1,0,0], [0,1,0] ),
+                                         "z": ( [1,0,0], [0,1,0], [0,0,1] ),
+                                         "X": ( [1,0,0], [0,1,0], [0,0,1] ),
+                                         "Y": ( [0,1,0], [0,0,1], [1,0,0] ),
+                                         "Z": ( [0,0,1], [1,0,0], [0,1,0] ),
         }
         self.orientation             = "z"
         self.current_orientation     = self.orientation_definitions[self.orientation]
         self.hkl                     = (1,0,0)
+        self.cell                    = None
         self.light_switches          = None
         d = 200.0
         self.light_positions = [ [-d, d, d], [ d,-d, d], [-d,-d, d], [ d, d, d], [-d, d,-d], [ d,-d,-d], [-d,-d,-d], [ d, d,-d] ]
@@ -443,7 +444,6 @@ class OpenGLWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
         self.matrix=glGetFloatv(GL_MODELVIEW_MATRIX)
         old_matrix = self.matrix[:3,:3]
-        #up,across,out = self.orientation_definitions[self.orientation]
         up,across,out = self.current_orientation
         debugger.print("up",up)
         debugger.print("across",across)
@@ -456,7 +456,17 @@ class OpenGLWidget(QOpenGLWidget):
         new_up     = np.dot(new_matrix,np.dot(old_matrix.T,up))
         new_out    = np.dot(new_matrix,np.dot(old_matrix.T,out))
         new_across = np.dot(new_matrix,np.dot(old_matrix.T,across))
+        new_up     = new_up / np.linalg.norm(new_up)
+        new_out    = new_out / np.linalg.norm(new_out)
+        new_across = new_across / np.linalg.norm(new_across)
         self.current_orientation = (new_up, new_across, new_out)
+        hkl_up     = self.cell.convert_xyz_to_hkl(new_up)
+        hkl_across = self.cell.convert_xyz_to_hkl(new_across)
+        hkl_out    = self.cell.convert_xyz_to_hkl(new_out)
+        self.current_hkl_orientation = (hkl_up, hkl_across, hkl_out)
+        debugger.print("hkl_up",hkl_up)
+        debugger.print("hkl_across",hkl_across)
+        debugger.print("hkl_out",hkl_out)
         self.update()
 
     def keyPressEvent(self, event):
@@ -520,17 +530,17 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print("kepressevent",key,modifiers,control,shift)
         amount = 45.0 if modifiers & Qt.ShiftModifier or modifiers & Qt.ControlModifier else 5.0
         if key == Qt.Key_Left:
-            self.moleculeRotate(+amount,1.0,0.0,0.0)
-        elif key == Qt.Key_Right:
-            self.moleculeRotate(-amount,1.0,0.0,0.0)
-        elif key == Qt.Key_Up:
-            self.moleculeRotate(-amount,0.0,0.0,1.0)
-        elif key == Qt.Key_Down:
-            self.moleculeRotate(+amount,0.0,0.0,1.0)
-        elif key == Qt.Key_R:
             self.moleculeRotate(+amount,0.0,1.0,0.0)
-        elif key == Qt.Key_L:
+        elif key == Qt.Key_Right:
             self.moleculeRotate(-amount,0.0,1.0,0.0)
+        elif key == Qt.Key_Up:
+            self.moleculeRotate(-amount,1.0,0.0,0.0)
+        elif key == Qt.Key_Down:
+            self.moleculeRotate(+amount,1.0,0.0,0.0)
+        elif key == Qt.Key_R:
+            self.moleculeRotate(-amount,0.0,0.0,1.0)
+        elif key == Qt.Key_L:
+            self.moleculeRotate(+amount,0.0,0.0,1.0)
         elif key == Qt.Key_Plus:
             self.zoom(+1.0)
         elif key == Qt.Key_Minus:
@@ -538,16 +548,22 @@ class OpenGLWidget(QOpenGLWidget):
         elif key == Qt.Key_A:
             if modifiers & Qt.ShiftModifier:
                 self.set_orientation("A")
+            elif modifiers & Qt.ControlModifier:
+                self.set_orientation("a*")
             else:
                 self.set_orientation("a")
         elif key == Qt.Key_B:
             if modifiers & Qt.ShiftModifier:
                 self.set_orientation("B")
+            elif modifiers & Qt.ControlModifier:
+                self.set_orientation("b*")
             else:
                 self.set_orientation("b")
         elif key == Qt.Key_C:
             if modifiers & Qt.ShiftModifier:
                 self.set_orientation("C")
+            elif modifiers & Qt.ControlModifier:
+                self.set_orientation("c*")
             else:
                 self.set_orientation("c")
         elif key == Qt.Key_X:
@@ -583,6 +599,7 @@ class OpenGLWidget(QOpenGLWidget):
             glLoadIdentity()
             self.matrix =  np.eye( 4, dtype=np.float32)
             self.current_phase = int(self.number_of_phases / 2)
+            self.set_orientation("z")
             debugger.print("Home key", self.current_phase)
             self.update()
 
@@ -602,7 +619,6 @@ class OpenGLWidget(QOpenGLWidget):
                    "c" means     c-axis       cXa
         The use of a capital letter means the axes are reversed
 
-
         Parameters
         ----------
         orientation : str
@@ -614,7 +630,7 @@ class OpenGLWidget(QOpenGLWidget):
 
         """        
         debugger.print("set_orientations", orientation)
-        out,up,across = self.orientation_definitions[orientation]
+        up,across,out = self.orientation_definitions[orientation]
         debugger.print("out   :",out)
         debugger.print("up    :",up)
         debugger.print("across:",across)
@@ -622,7 +638,7 @@ class OpenGLWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         glPushMatrix()
-        gluLookAt(out[0], out[1], out[2], 0, 0, 0, up[0], up[1], up[2])
+        gluLookAt(200*out[0], 200*out[1], 200*out[2], 0, 0, 0, up[0], up[1], up[2])
         self.matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
         glPopMatrix()
         self.matrix[0,3] = 0
@@ -633,6 +649,13 @@ class OpenGLWidget(QOpenGLWidget):
         self.matrix[3,2] = 0
         self.matrix[3,3] = 1
         glMultMatrixf(self.matrix)
+        hkl_out    = self.cell.convert_xyz_to_hkl(out)
+        hkl_up     = self.cell.convert_xyz_to_hkl(up)
+        hkl_across = self.cell.convert_xyz_to_hkl(across)
+        debugger.print("hkl_out   :",hkl_out)
+        debugger.print("hkl_up    :",hkl_up)
+        debugger.print("hkl_across:",hkl_across)
+        self.current_hkl_orientation = (hkl_up, hkl_across, hkl_out)
         self.current_orientation = self.orientation_definitions[self.orientation]
         self.current_phase = int(self.number_of_phases / 2)
         self.update()
@@ -655,6 +678,7 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print("define_surface_orientations", cell,hkl)
         if cell is None: 
             return
+        self.cell = cell
         #
         # Choose the out axis, by converting hkl to xyz
         #
@@ -678,8 +702,11 @@ class OpenGLWidget(QOpenGLWidget):
         # Choose the across axis by find the normal to s and s_up
         #
         s_across = np.cross(s,s_up)
-        self.orientation_definitions["s"] = (s, s_up, s_across)
-        self.orientation_definitions["S"] = (s_up, s, s_across)
+        s        = s / np.linalg.norm(s)
+        s_up     = s_up / np.linalg.norm(s)
+        s_across = s_across / np.linalg.norm(s)
+        self.orientation_definitions["s"] = (s_up, s_across, s)
+        self.orientation_definitions["S"] = (s, s_across, s_up)
         debugger.print("s       :",s)
         debugger.print("s_up    :",s_up)
         debugger.print("s_across:",s_across)
@@ -695,6 +722,9 @@ class OpenGLWidget(QOpenGLWidget):
                    "a" means     a-axis       axb            ax(axb)
                    "b" means     b-axis       bxc            bx(bxc)
                    "c" means     c-axis       cxa            cx(cxa)
+                   "a*" means    a*-axis      a*xb*          a*x(a*xb*)
+                   "b*" means    b*-axis      b*xc*          b*x(b*xc*)
+                   "c*" means    c*-axis      c*xa*          c*x(c*xa*)
         A capital letter indicates that the up and out designations are reversed
 
 
@@ -718,12 +748,24 @@ class OpenGLWidget(QOpenGLWidget):
         a_across = np.cross(a,a_up)
         b_across = np.cross(b,b_up)
         c_across = np.cross(c,c_up)
-        self.orientation_definitions["a"] = (a, a_up, a_across)
-        self.orientation_definitions["A"] = (a_up, a, a_across)
-        self.orientation_definitions["b"] = (b, b_up, b_across)
-        self.orientation_definitions["B"] = (b_up, b, b_across)
-        self.orientation_definitions["c"] = (c, c_up, c_across)
-        self.orientation_definitions["C"] = (c_up, c, c_across)
+        astar = cell.reciprocal_lattice[0] / np.linalg.norm(cell.reciprocal_lattice[0])
+        bstar = cell.reciprocal_lattice[1] / np.linalg.norm(cell.reciprocal_lattice[1])
+        cstar = cell.reciprocal_lattice[2] / np.linalg.norm(cell.reciprocal_lattice[2])
+        astar_up = np.cross(astar,bstar)
+        bstar_up = np.cross(bstar,cstar)
+        cstar_up = np.cross(cstar,astar)
+        astar_across = np.cross(astar,astar_up)
+        bstar_across = np.cross(bstar,bstar_up)
+        cstar_across = np.cross(cstar,cstar_up)
+        self.orientation_definitions["a"]  = (a_up, a_across, a)
+        self.orientation_definitions["a*"] = (astar_up, astar_across, astar)
+        self.orientation_definitions["A"]  = (a, a_across, a_up)
+        self.orientation_definitions["b"]  = (b_up, b_across, b)
+        self.orientation_definitions["b*"] = (bstar_up, bstar_across, bstar)
+        self.orientation_definitions["B"]  = (b, b_across, b_up)
+        self.orientation_definitions["c"]  = (c_up, c_across,c )
+        self.orientation_definitions["c*"] = (cstar_up, cstar_across,cstar )
+        self.orientation_definitions["C"]  = (c, c_across, c_up)
         debugger.print("a       :",a)
         debugger.print("a_up    :",a_up)
         debugger.print("a_across:",a_across)
@@ -969,14 +1011,14 @@ class OpenGLWidget(QOpenGLWidget):
                 # handle ordinary rotation
                 xrotate =-(self.xAtMove - self.xAtPress)
                 yrotate = (self.yAtMove - self.yAtPress)
-                self.moleculeRotate(0.3,xrotate,0,yrotate)
+                self.moleculeRotate(0.3,yrotate,xrotate,0)
         elif buttons & Qt.MidButton:
             debugger.print("Mouse event - mid button")
             xshift = -0.02 * (self.xAtMove - self.xAtPress)
             yshift = -0.02 * (self.yAtMove - self.yAtPress)
             zshift = 0.0
             up,across,out = self.current_orientation
-            shifted = xshift*np.array(out)+yshift*np.array(across)
+            shifted = xshift*np.array(across)+yshift*np.array(up)
             self.translate(shifted[0], shifted[1])
             self.update()
         debugger.print("Mouse event - xy", self.xAtPress,self.yAtPress)
@@ -1079,10 +1121,31 @@ class OpenGLWidget(QOpenGLWidget):
         self.drawSpheres()
         self.drawCylinders()
         self.drawTexts()
+        self.drawHKLInfo()
         if self.show_arrows:
             self.drawArrows()
         glPopMatrix()
 
+    def drawHKLInfo(self):
+        """Draw the hkl info on the screen.
+
+        The hkl information (up, is vertical out, out of the screen)
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """        
+        debugger.print("drawHKLInfo")
+        hkl_up, hkl_across, hkl_out = self.current_hkl_orientation
+        hkl_string = f"hkl = {hkl_out}  HKL (vertical) = {hkl_up}"
+        self.renderText(10,10,0,hkl_string,screen_coordinates=True)
+        debugger.print("drawHKLInfo", hkl_string)
+        return
     def drawSpheres(self):
         """Draw spheres based on the object's current phase and spheres attributes.
 
@@ -1143,7 +1206,7 @@ class OpenGLWidget(QOpenGLWidget):
         for text,color,size,pos in self.texts[self.current_phase]:
             self.renderText(pos[0],pos[1],pos[2],text)
 
-    def renderText(self, x, y, z, string):
+    def renderText(self, x, y, z, string, screen_coordinates=False):
         """Draw text in the widget.
 
         Draw the text in string at the position starting x, y, z
@@ -1154,6 +1217,9 @@ class OpenGLWidget(QOpenGLWidget):
             The position at which to start drawning
         string : str
             The text
+        screen_coordinates : bool
+            Optional parameter by default the coordinates are model coordinates
+            If true the screen coordinates are used
 
         Returns
         -------
@@ -1166,8 +1232,12 @@ class OpenGLWidget(QOpenGLWidget):
         model = glGetDoublev(GL_MODELVIEW_MATRIX)
         proj  = glGetDoublev(GL_PROJECTION_MATRIX)
         view  = glGetIntegerv(GL_VIEWPORT)
-        textPosX, textPosY, textPosZ = gluProject(x, y, z, model, proj, view)
-        textPosY = height - textPosY
+        if not screen_coordinates:
+            textPosX, textPosY, textPosZ = gluProject(x, y, z, model, proj, view)
+            textPosY = height - textPosY
+        else:
+            textPosX = x
+            textPosY = height-y
         painter = QPainter(self)
         painter.setPen(Qt.yellow)
         painter.setFont(QFont("Helvetica", 14))

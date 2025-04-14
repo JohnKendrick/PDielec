@@ -128,7 +128,7 @@ class ViewerTab(QWidget):
     on_coloured_element_clicked
         Changes the colour of an element
     on_edit_button_clicked
-        Edit the primitive transform to the matrix in the GUI
+        Edit the transform matrix in the GUI
     on_filename_button_clicked
         Handles a click on the file name button
     on_filename_le_changed
@@ -136,7 +136,7 @@ class ViewerTab(QWidget):
     on_filename_le_return
         Handles a return press in the file name widget
     on_guess_button_clicked
-        Guess the primitive transform to the matrix in the GUI
+        Guess the transform to a primitive cell
     on_light_switches_cb_activated
         Activates the light switch combobox
     on_maximum_displacement_changed
@@ -152,7 +152,7 @@ class ViewerTab(QWidget):
     on_super_cell_changed_c
         Handles the change in the c supercell parameter
     on_reset_button_clicked
-        Changes the primitive transform back to a unit matrix
+        Changes the transform back to a unit matrix
     plot
         Plot the 3D view of the molecule
     plot_animation
@@ -215,7 +215,7 @@ class ViewerTab(QWidget):
         self.settings["Arrow radius"]          = 0.07
         self.settings["Number of phase steps"] = 41
         self.settings["Super Cell"] =  [ 1, 1, 1 ]
-        self.settings["Primitive transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
+        self.settings["Transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
         self.settings["hkl"] =  (1, 0, 0)
         self.settings["Element colours"] = None
         self.settings["Element palette"] = "Jmol"
@@ -237,7 +237,8 @@ class ViewerTab(QWidget):
         self.bond_cell_background_arrow_buttons = []
         self.bond_cell_background_arrow_names = ["Background","Cell","Bonds","Arrows"]
         self.image_filename = ""
-        self.primitive_transform_tab_entry = None
+        self.transform_tab_entry = None
+        self.transformed_cell = None
         self.hkl_tab_entry = None
         # store the notebook
         self.notebook = parent
@@ -269,9 +270,9 @@ class ViewerTab(QWidget):
         label = QLabel("Frequency (cm-1)", self)
         form.addRow(label, self.frequency_le)
         #
-        # The primitive transform window popup
+        # The transform window popup
         #
-        self.primitive_transform_tab_entry = self.createPrimitiveTransformTabEntry()
+        self.transform_tab_entry = self.createTransformTabEntry()
         #
         # The hkl tab entry
         #
@@ -280,7 +281,7 @@ class ViewerTab(QWidget):
         # The super-cell widget
         #
         self.super_cell_widget = QWidget(self)
-        self.super_cell_widget.setToolTip("Generate a super-cell")
+        self.super_cell_widget.setToolTip("Generate a super-cell\nThe super-cell is a multiple of the DFT cell, not the transformed cell")
         self.super_cell_hbox = QHBoxLayout()
         self.super_cell_spinBoxes = []
         super_cell_changed = [self.on_super_cell_changed_a, self.on_super_cell_changed_b, self.on_super_cell_changed_c]
@@ -345,7 +346,7 @@ class ViewerTab(QWidget):
         self.maximum_displacement_sb.setToolTip("Set the size of the maximum displacement")
         self.maximum_displacement_sb.valueChanged.connect(self.on_maximum_displacement_changed)
         #
-        # Add a comb box to select which type of plot
+        # Add a combo box to select which type of plot
         #
         self.plottype_cb = QComboBox(self)
         self.plottype_cb.setToolTip("The plot can either be an animation or the modes can be shown by arrow")
@@ -379,6 +380,7 @@ class ViewerTab(QWidget):
             self.element_coloured_buttons.append(button)
             self.element_coloured_hbox.addWidget(button)
         self.coloured_elements_widget.setLayout(self.element_coloured_hbox)
+        self.coloured_elements_widget.setToolTip("Change the colour of the elements")
         #
         # Colours list of buttons with colours
         #
@@ -393,6 +395,7 @@ class ViewerTab(QWidget):
             button.clicked.connect(self.on_coloured_button_clicked)
             self.bond_cell_background_arrow_buttons.append(button)
             hbox.addWidget(button)
+        self.coloured_buttons_widget.setToolTip("Change the colours of the background, cell, bonds and arrows")
         self.coloured_buttons_widget.setLayout(hbox)
         #
         # Add a tab widget for the settings
@@ -402,7 +405,7 @@ class ViewerTab(QWidget):
         self.settingsTab.addTab(self.coloured_buttons_widget, "Colours")
         self.settingsTab.addTab(self.atom_scaling_sb, "Atom Scaling")
         self.settingsTab.addTab(self.super_cell_widget, "Super Cell")
-        self.settingsTab.addTab(self.primitive_transform_tab_entry, "Primitive Transform")
+        self.settingsTab.addTab(self.transform_tab_entry, "Transform")
         self.settingsTab.addTab(self.hkl_tab_entry, "HKL")
         self.settingsTab.addTab(self.light_switches_cb, "Lighting")
         self.settingsTab.addTab(self.maximum_displacement_sb, "Maximum Displacement")
@@ -452,8 +455,8 @@ class ViewerTab(QWidget):
         self.setLayout(vbox)
         self.debugger.print("Finished:: initialisation")
 
-    def convert_primitive_transform(self):
-        """Convert the primitive transform stored as strings in settings to an np.array.
+    def convert_transform(self):
+        """Convert the transform stored as strings in settings to an np.array.
 
         Parameters
         ----------
@@ -461,21 +464,21 @@ class ViewerTab(QWidget):
 
         Modifies
         --------
-        primitive_transform
+        transform
 
         """
-        self.debugger.print("convert_primitive_transform")
+        self.debugger.print("convert_transform")
         transform = []
-        for row in self.settings["Primitive transform"]:
+        for row in self.settings["Transform"]:
             new_row = [ eval(col) for col in row ]
             transform.append(new_row)
-        self.debugger.print("convert_primitive_transform", np.array(transform))
+        self.debugger.print("convert_transform", np.array(transform))
         return np.array(transform)
        
     def on_reset_button_clicked(self, item):
         """Handle a push of the reset transform button.
 
-        When the button is pushed the primitive transform is set to unity
+        When the button is pushed the transform is set to unity
 
         Parameters
         ----------
@@ -485,13 +488,11 @@ class ViewerTab(QWidget):
         -------
         None
 
-        Used to modify the primitive unit cell
-
         """
        
         self.debugger.print("on_reset_button_clicked",item)
-        self.settings["Primitive transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
-        self.debugger.print("on_guess_button_clicked transform",self.settings["Primitive transform"])
+        self.settings["Transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
+        self.debugger.print("on_guess_button_clicked transform",self.settings["Transform"])
         self.refreshRequired = True
         self.refresh()
 
@@ -514,19 +515,19 @@ class ViewerTab(QWidget):
 
         """
         self.debugger.print("on_guess_button_clicked",item)
-        primitive_transform = self.standard_cell.guess_primitive_transform()
+        transform = self.standard_cell.guess_primitive_transform()
         new = []
-        for row in primitive_transform:
+        for row in transform:
             new.append( [f"{col:.9f}" for col in row])
-        self.settings["Primitive transform"] = new
-        self.debugger.print("on_guess_button_clicked transform",self.settings["Primitive transform"])
+        self.settings["Transform"] = new
+        self.debugger.print("on_guess_button_clicked transform",self.settings["Transform"])
         self.refreshRequired = True
         self.refresh()
 
     def on_edit_button_clicked(self, item):
-        """Edit the primitive transform.
+        """Edit the transform.
 
-        The primtive transform window dialog is shown and any edits applied
+        The transform window dialog is shown and any edits applied
 
         Parameters
         ----------
@@ -542,13 +543,13 @@ class ViewerTab(QWidget):
 
         """
         self.debugger.print("on_edit_button_clicked",item)
-        primitive_transform_window = PrimitiveTransformWindow(self.settings["Primitive transform"],
-                                                                   debug=self.debugger.state())
-        if primitive_transform_window.exec():
+        transform_window = TransformWindow(self.settings["Transform"],
+                                           debug=self.debugger.state())
+        if transform_window.exec():
             # The 'Ok' button was pressed
             # get the new transform and replace the old one
-            self.settings["Primitive transform"] = primitive_transform_window.getPrimitiveTransform()
-            self.debugger.print("on_edit_button_clicked transform",self.settings["Primitive transform"])
+            self.settings["Transform"] = transform_window.getTransform()
+            self.debugger.print("on_edit_button_clicked transform",self.settings["Transform"])
             self.refreshRequired = True
             self.refresh()
 
@@ -614,6 +615,7 @@ class ViewerTab(QWidget):
         hbox.addWidget(k_sb)
         hbox.addWidget(l_sb)
         widget = QWidget(self)
+        widget.setToolTip("Define a surface of the transformed cell using (hkl)")
         widget.setLayout(hbox)
         return widget
 
@@ -642,13 +644,13 @@ class ViewerTab(QWidget):
         else:
             l = value
         self.settings["hkl"] = (h,k,l)
-        self.opengl_widget.define_surface_orientations(self.primitive_cell,self.settings["hkl"])
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,self.settings["hkl"])
         self.debugger.print("on_hkl_sb_changed hkl=", self.settings["hkl"])
         return 
     
 
-    def createPrimitiveTransformTabEntry(self):
-        """Create a one line entry to modify the primitive cell transformaton matrix.
+    def createTransformTabEntry(self):
+        """Create a one line entry to modify the cell transformaton matrix.
 
         Add buttons to reset, edit and if possible read the transformation matrix
 
@@ -661,7 +663,7 @@ class ViewerTab(QWidget):
         a widget
 
         """
-        self.debugger.print("createPrimitiveTransformTabEntry")
+        self.debugger.print("createTransformTabEntry")
         hbox = QHBoxLayout()
         button = QPushButton("Reset transformation matrix")
         button.setToolTip("Reset the transformation to a unit matrix")
@@ -1115,8 +1117,8 @@ class ViewerTab(QWidget):
 
     def calculate(self):
         """Perform calculations related to the ViewerTab instance, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
-        In addition, calculate the primitive cell if a primitive transformation is given.
-        The supercell is calculated from the primitive cell.
+        In addition, calculate the transformed cell if a transformation is given.
+        The supercell is calculated from the dft cell.
 
         Parameters
         ----------
@@ -1154,19 +1156,19 @@ class ViewerTab(QWidget):
         if self.standard_cell is None:
             return
         #
-        # Transform the standard cell to a primitive cell
-        # this involves folding the cell into itself and applying the Primitive transformation
-        # In the process there is a reordering of the atoms which is kept track of in the primitive cell
-        # NOTE: The primitive cell will have fewer atoms than the standard cell
+        # Transform the standard cell 
+        # this involves folding the cell into itself and applying the transformation
+        # In the process there is a reordering of the atoms which is kept track of in the transformed cell
+        # NOTE: The transformed cell may have fewer atoms than the standard cell
         #
         cell = copy.copy(self.standard_cell)
-        primitive_transform = self.convert_primitive_transform()
-        self.primitive_cell = PrimitiveCell(cell,transformation=primitive_transform)
-        self.opengl_widget.define_orientations(self.primitive_cell)
-        self.opengl_widget.define_surface_orientations(self.primitive_cell,self.settings["hkl"])
+        transform = self.convert_transform()
+        self.transformed_cell = PrimitiveCell(cell,transformation=transform)
+        self.opengl_widget.define_orientations(self.transformed_cell)
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,self.settings["hkl"])
         self.opengl_widget.set_orientation(self.opengl_widget.orientation)
         #
-        # Calculate the whole molecule content of the primitive cell
+        # Calculate the whole molecule content of the DFT cell
         #
         tolerance = self.notebook.analysisTab.settings["Bonding tolerance"]
         scale     = self.notebook.analysisTab.settings["Covalent radius scaling"]
@@ -1174,19 +1176,6 @@ class ViewerTab(QWidget):
         nmols = cell.calculate_molecular_contents( scale=scale,
                                                    tolerance=tolerance,
                                                    radii=radii)
-        #jk#
-        #jk# Get the mass weighted hessian from the reader
-        #jk# All mass settings, eckart and symmetry have been applied there
-        #jk#
-        #jkhessian = self.reader.hessian
-        #jk#
-        #jk# Calculate the primitive hessian
-        #jk#
-        #jkprimitive_hessian = self.calculate_primitive_hessian(hessian,self.standard_cell,self.primitive_cell)
-        #jkprint('jk100 primitive hessian',primitive_hessian)
-        #jkprint('jk101 primitive hessian',np.shape(primitive_hessian))
-        #jkprimitive_mass_weighted_normal_modes, frequencies = Calculator.calculate_normal_modes_and_frequencies(primitive_hessian)
-        #jkprint('jk99 frequencies',frequencies)
         atom_masses = cell.get_atomic_masses()
         mass_weighted_normal_modes = self.reader.mass_weighted_normal_modes
         normal_modes = Calculator.normal_modes(atom_masses,mass_weighted_normal_modes)
@@ -1203,7 +1192,7 @@ class ViewerTab(QWidget):
         self.number_of_modes = len(self.normal_modes)
         # get the cell edges for the bounding box, shifted to the centre of mass origin
         totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(output=all)
-        self.cell_corners,self.cell_edges,self.cell_labels = self.primitive_cell.getBoundingBox(originXYZ = centreOfMassXYZ)
+        self.cell_corners,self.cell_edges,self.cell_labels = self.transformed_cell.getBoundingBox(originXYZ = centreOfMassXYZ)
         self.element_names = self.super_cell.getElementNames()
         self.species = self.reader.getSpecies()
         covalent_radii = self.notebook.analysisTab.element_radii
@@ -1234,45 +1223,6 @@ class ViewerTab(QWidget):
         QApplication.restoreOverrideCursor()
         self.debugger.print("Finished:: calculate")
         return
-
-    def calculate_primitive_hessian(self, hessian, standard_cell, primitive_cell):
-        """Calculate and return the primitive hessian.
-
-        Parameters
-        ----------
-        hessian : an array of floats (dimension 3*natoms x 3*natoms)
-            The mass weighted hessian of the standard cell   
-        standard_cell : a unit cell
-            The unit cell used to calculate the input hessian
-        primitive_cell : a unit cell
-            The primitive cell used to calculate the output hessian
-
-        Returns
-        -------
-        np.ndarray (dimension 3*nprimitive_atoms x 3*nprimitive_atoms)
-            Array representing the primitive hessian
-
-        """
-        natoms = standard_cell.get_number_of_atoms()
-        nmodes = natoms*3
-        nprimitiveatoms = primitive_cell.get_number_of_atoms()
-        mapping = primitive_cell.map_new_to_old
-        print('jkaa new_to_old',mapping)
-        primitive_hessian = np.zeros( (nprimitiveatoms*3, nprimitiveatoms*3) )
-        inew3 = 0
-        for inew in range(nprimitiveatoms):
-            iold3 = 3*mapping[inew]
-            for ixyz in range(3):
-                jnew3 = 0
-                for jnew in range(nprimitiveatoms):
-                    jold3 = 3*mapping[jnew]
-                    for jxyz in range(3):
-                        primitive_hessian[inew3,jnew3] = hessian[iold3, jold3]
-                        jnew3 += 1
-                        jold3 += 1
-                inew3 += 1
-                iold3 += 1
-        return primitive_hessian
 
     def setColour(self, element, colour):
         """Set the colour of a specified element in the interface.
@@ -1636,12 +1586,12 @@ class ViewerTab(QWidget):
         self.debugger.print("Finished:: refresh")
         return
 
-class PrimitiveTransformWindow(QDialog):
-    """A GUI window for displaying and editing the primitive transform matrix.
+class TransformWindow(QDialog):
+    """A GUI window for displaying and editing the transform matrix.
 
     Parameters
     ----------
-    primitive_transform : 3x3 array of floats
+    transform : 3x3 array of floats
         The current transformation matrix
     message : str
         Message to displayed
@@ -1652,8 +1602,8 @@ class PrimitiveTransformWindow(QDialog):
 
     Attributes
     ----------
-    primitive_transform : 3x3 array of strs
-        The primitive transform matrix
+    transform : 3x3 array of strs
+        The transform matrix
     message : str
         The message displayed at the top of the window.
     layout : QVBoxLayout
@@ -1663,22 +1613,22 @@ class PrimitiveTransformWindow(QDialog):
 
     Methods
     -------
-    reDrawPrimitiveTable
-        draw the primitive transform table
-    getPrimitiveTransform
-        Return the primitive transform matrix
-    on_primitive_transform_table_itemChanged
-        Handles a change in the primitive transform table
+    reDrawTransformTable
+        draw the transform table
+    getTransform
+        Return the transform matrix
+    on_transform_table_itemChanged
+        Handles a change in the transform table
 
     """
 
-    def __init__(self, primitive_transform, message = "Primitive Transform", parent=None, debug=False ):
-        """Initialize a Primitive Transform Window instance.
+    def __init__(self, transform, message = "Cell Transform", parent=None, debug=False ):
+        """Initialize a Transform Window instance.
 
         Parameters
         ----------
-        primitive_transform : a 3x3 list of strs
-            The primitive transformation matrix
+        transform : a 3x3 list of strs
+            The transformation matrix
         message : str, optional
             Custom message to display in the window. The default is an empty string.
         parent : QWidget, optional
@@ -1694,34 +1644,34 @@ class PrimitiveTransformWindow(QDialog):
 
         """        
         super().__init__(parent)
-        self.debugger = Debug(debug,"PrimitiveTransformWindow")
+        self.debugger = Debug(debug,"TransformWindow")
         self.debugger.print("Start:: initialiser")
         # Set up the buttons of the button box
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
         self.buttonBox = QDialogButtonBox(QBtn)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
-        # Initialize the primitive transform as a 3x3 array of strings
-        self.primitive_transform_as_str = primitive_transform
-        self.debugger.print("primitive transform:", self.primitive_transform_as_str)
+        # Initialize the transform as a 3x3 array of strings
+        self.transform_as_str = transform
+        self.debugger.print("transform:", self.transform_as_str)
         self.message = message
         # The dialog will have a vertical layout
         self.layout = QVBoxLayout(self)
-        # Create the primitive transfom table widget
-        self.primitive_transform_table = QTableWidget()
-        self.primitive_transform_table.setToolTip("Transformation for a primitive cell")
-        self.primitive_transform_table.setShowGrid(True)
-        self.primitive_transform_table.setRowCount(3)
-        self.primitive_transform_table.setColumnCount(3)
-        self.reDrawPrimitiveTable()
-        self.primitive_transform_table.itemChanged.connect(self.on_primitive_transform_table_itemChanged)
-        self.layout.addWidget(self.primitive_transform_table)
+        # Create the transfom table widget
+        self.transform_table = QTableWidget()
+        self.transform_table.setToolTip("Transformation for a cell")
+        self.transform_table.setShowGrid(True)
+        self.transform_table.setRowCount(3)
+        self.transform_table.setColumnCount(3)
+        self.reDrawTransformTable()
+        self.transform_table.itemChanged.connect(self.on_transform_table_itemChanged)
+        self.layout.addWidget(self.transform_table)
         # Add the button box
         self.layout.addWidget(self.buttonBox)
         self.debugger.print("Finished:: initialiser")
 
-    def on_primitive_transform_table_itemChanged(self,item):
-        """Handle a change to the primitive table.
+    def on_transform_table_itemChanged(self,item):
+        """Handle a change to the transform table.
 
         The item which has changed is ignored and the whole table is rebuilt
 
@@ -1736,22 +1686,22 @@ class PrimitiveTransformWindow(QDialog):
 
         Modifies
         --------
-        self.settings["Primitive transform"]
+        self.settings["Transform"]
 
         """
-        self.debugger.print("on_primitive_transform_table_itemChanged: ",item)
-        if self.primitive_transform_table is None:
+        self.debugger.print("on_transform_table_itemChanged: ",item)
+        if self.transform_table is None:
             return
         for col in range(3):
             for row in range(3):
-                self.primitive_transform_as_str[row][col] = self.primitive_transform_table.item(row,col).text()
-        self.debugger.print("New transform", self.primitive_transform_as_str)
+                self.transform_as_str[row][col] = self.transform_table.item(row,col).text()
+        self.debugger.print("New transform", self.transform_as_str)
         return
 
-    def reDrawPrimitiveTable(self):
-        """Redraw the 3x3 table representing the primitive cell transformation.
+    def reDrawTransformTable(self):
+        """Redraw the 3x3 table representing the cell transformation.
 
-        The table is generated from the strings stored in self.primitive_transform_as_str
+        The table is generated from the strings stored in self.transform_as_str
         If a number is stored it is converted to a string.
 
         Parameters
@@ -1764,20 +1714,20 @@ class PrimitiveTransformWindow(QDialog):
 
         Modifies
         --------
-        primitive_transform_table
+        transform_table
 
         """
         self.debugger.print("reDrawPrimtiveTable: ")
-        tw = self.primitive_transform_table
+        tw = self.transform_table
         for col in range(3):
             for row in range(3):
-                tw.setItem(row,col,QTableWidgetItem( self.primitive_transform_as_str[row][col] ) )
+                tw.setItem(row,col,QTableWidgetItem( self.transform_as_str[row][col] ) )
         return
 
-    def getPrimitiveTransform(self):
+    def getTransform(self):
         """Return the primtive transformation matrix
 
-        The primitive transformation is stored as a 3x3 list of strings.
+        The transformation is stored as a 3x3 list of strings.
         The strings are treated as python commands to return a value.:w
 
 
@@ -1790,6 +1740,6 @@ class PrimitiveTransformWindow(QDialog):
         3x3 array of floats
 
         """
-        self.debugger.print("getPrimitiveTransform: ")
-        return self.primitive_transform_as_str
+        self.debugger.print("getTransform: ")
+        return self.transform_as_str
 
