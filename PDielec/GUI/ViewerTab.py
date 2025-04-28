@@ -595,25 +595,25 @@ class ViewerTab(QWidget):
         self.debugger.print("CreateHKLTabEntry")
         h,k,l = self.settings["hkl"]
         # unique direction (hkl)
-        h_sb = QSpinBox(self)
-        h_sb.setToolTip("Define the h dimension of the surface")
-        h_sb.setRange(-20,20)
-        h_sb.setValue(h)
-        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
-        k_sb = QSpinBox(self)
-        k_sb.setToolTip("Define the k dimension of the surface")
-        k_sb.setRange(-20,20)
-        k_sb.setValue(k)
-        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
-        l_sb = QSpinBox(self)
-        l_sb.setToolTip("Define the l dimension of the surface")
-        l_sb.setRange(-20,20)
-        l_sb.setValue(l)
-        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
+        self.h_sb = QSpinBox(self)
+        self.h_sb.setToolTip("Define the h dimension of the surface")
+        self.h_sb.setRange(-20,20)
+        self.h_sb.setValue(h)
+        self.h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
+        self.k_sb = QSpinBox(self)
+        self.k_sb.setToolTip("Define the k dimension of the surface")
+        self.k_sb.setRange(-20,20)
+        self.k_sb.setValue(k)
+        self.k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
+        self.l_sb = QSpinBox(self)
+        self.l_sb.setToolTip("Define the l dimension of the surface")
+        self.l_sb.setRange(-20,20)
+        self.l_sb.setValue(l)
+        self.l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
         hbox = QHBoxLayout()
-        hbox.addWidget(h_sb)
-        hbox.addWidget(k_sb)
-        hbox.addWidget(l_sb)
+        hbox.addWidget(self.h_sb)
+        hbox.addWidget(self.k_sb)
+        hbox.addWidget(self.l_sb)
         widget = QWidget(self)
         widget.setToolTip("Define a surface of the transformed cell using (hkl)")
         widget.setLayout(hbox)
@@ -643,6 +643,22 @@ class ViewerTab(QWidget):
             k = value
         else:
             l = value
+        #
+        # Do not allow 0,0,0
+        #
+        if abs(h) + abs(k) + abs(l) == 0:
+            h = 0
+            k = 0
+            l = 1
+            self.h_sb.blockSignals(True)
+            self.k_sb.blockSignals(True)
+            self.l_sb.blockSignals(True)
+            self.h_sb.setValue(h)
+            self.k_sb.setValue(k)
+            self.l_sb.setValue(l)
+            self.h_sb.blockSignals(False)
+            self.k_sb.blockSignals(False)
+            self.l_sb.blockSignals(False)
         self.settings["hkl"] = (h,k,l)
         self.opengl_widget.define_surface_orientations(self.transformed_cell,self.settings["hkl"])
         self.debugger.print("on_hkl_sb_changed hkl=", self.settings["hkl"])

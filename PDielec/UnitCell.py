@@ -708,6 +708,9 @@ class UnitCell:
                 result = lcd
                 break
         results = numbers * result
+        maximum = np.max(np.abs(results))
+        if maximum > 20:
+            results = 20/maximum * results 
         rounded = np.round(results)
         return [ round(r) for r in rounded ]
 

@@ -1146,6 +1146,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.renderText(10,10,0,hkl_string,screen_coordinates=True)
         debugger.print("drawHKLInfo", hkl_string)
         return
+
     def drawSpheres(self):
         """Draw spheres based on the object's current phase and spheres attributes.
 
