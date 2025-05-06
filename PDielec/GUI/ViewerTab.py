@@ -900,6 +900,9 @@ class ViewerTab(QWidget):
         colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         self.element_colours[text] = rgba
+        #
+        # This is a setting based on the element, there is a colour for each element
+        #
         self.settings["Element colours"] = [ self.element_colours[el] for el in self.species ]
         self.refreshRequired = True
         self.refresh()
@@ -1209,13 +1212,29 @@ class ViewerTab(QWidget):
         # get the cell edges for the bounding box, shifted to the centre of mass origin
         totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(output=all)
         self.cell_corners,self.cell_edges,self.cell_labels = self.transformed_cell.getBoundingBox(originXYZ = centreOfMassXYZ)
+        #
+        # self.element_names is a list of element names for each atom
+        # self.species is just a unique list of species
+        #
         self.element_names = self.super_cell.getElementNames()
         self.species = self.reader.getSpecies()
         covalent_radii = self.notebook.analysisTab.element_radii
+        #
+        # Overwrite the element colours from the settings entry
+        #
+        if self.settings["Element colours"] is not None:
+            self.debugger.print("refresh - processing colours ",self.species)
+            for el,colour in zip(self.species,self.settings["Element colours"]):
+                self.element_colours[el] = colour
+        #
+        # Define the radius and colour for every atom from the element_names
+        #
         self.radii = [self.settings["Atom scaling"]*covalent_radii[el] for el in self.element_names ]
         self.colours = [ self.element_colours[el] for el in self.element_names ]
+        #
         # reorder the displacement info in the normal modes into U,V and W lists
         # Using deque here rather than a simple list as the memory allocation doesn't have to be contiguous
+        #
         self.UVW.clear()
         for displacements in self.normal_modes:
             uvw = deque()
@@ -1560,10 +1579,6 @@ class ViewerTab(QWidget):
             self.element_names = self.standard_cell.element_names
             self.species = self.reader.getSpecies()
             self.debugger.print("refresh - species ",self.species)
-            if self.settings["Element colours"] is not None:
-                self.debugger.print("refresh - processing colours ",self.species)
-                for el,colour in zip(self.species,self.settings["Element colours"]):
-                    self.element_colours[el] = colour
             self.settings["Element colours"] = [ self.element_colours[el] for el in self.species ]
         count = self.element_coloured_hbox.count()
         if count == 0:

@@ -454,19 +454,22 @@ class OpenGLWidget(QOpenGLWidget):
         self.matrix=glGetFloatv(GL_MODELVIEW_MATRIX)
         new_matrix = self.matrix[:3,:3]
         new_up     = np.dot(new_matrix,np.dot(old_matrix.T,up))
-        new_out    = np.dot(new_matrix,np.dot(old_matrix.T,out))
         new_across = np.dot(new_matrix,np.dot(old_matrix.T,across))
+        new_out    = np.dot(new_matrix,np.dot(old_matrix.T,out))
         new_up     = new_up / np.linalg.norm(new_up)
-        new_out    = new_out / np.linalg.norm(new_out)
         new_across = new_across / np.linalg.norm(new_across)
+        new_out    = new_out / np.linalg.norm(new_out)
         self.current_orientation = (new_up, new_across, new_out)
-        hkl_up     = self.cell.convert_xyz_to_hkl(new_up)
-        hkl_across = self.cell.convert_xyz_to_hkl(new_across)
-        hkl_out    = self.cell.convert_xyz_to_hkl(new_out)
-        self.current_hkl_orientation = (hkl_up, hkl_across, hkl_out)
-        debugger.print("hkl_up",hkl_up)
-        debugger.print("hkl_across",hkl_across)
-        debugger.print("hkl_out",hkl_out)
+        debugger.print("new_up",new_up)
+        debugger.print("new_across",new_across)
+        debugger.print("new_out",new_out)
+        uvw_up     = self.cell.convert_xyz_to_integer_abc(new_up)
+        uvw_across = self.cell.convert_xyz_to_integer_abc(new_across)
+        uvw_out    = self.cell.convert_xyz_to_integer_abc(new_out)
+        self.current_uvw_orientation = (uvw_up, uvw_across, uvw_out)
+        debugger.print("uvw_up",uvw_up)
+        debugger.print("uvw_across",uvw_across)
+        debugger.print("uvw_out",uvw_out)
         self.update()
 
     def keyPressEvent(self, event):
@@ -548,6 +551,8 @@ class OpenGLWidget(QOpenGLWidget):
         elif key == Qt.Key_A:
             if modifiers & Qt.ShiftModifier:
                 self.set_orientation("A")
+                if modifiers & Qt.ControlModifier:
+                    self.set_orientation("A*")
             elif modifiers & Qt.ControlModifier:
                 self.set_orientation("a*")
             else:
@@ -555,6 +560,8 @@ class OpenGLWidget(QOpenGLWidget):
         elif key == Qt.Key_B:
             if modifiers & Qt.ShiftModifier:
                 self.set_orientation("B")
+                if modifiers & Qt.ControlModifier:
+                    self.set_orientation("B*")
             elif modifiers & Qt.ControlModifier:
                 self.set_orientation("b*")
             else:
@@ -562,6 +569,8 @@ class OpenGLWidget(QOpenGLWidget):
         elif key == Qt.Key_C:
             if modifiers & Qt.ShiftModifier:
                 self.set_orientation("C")
+                if modifiers & Qt.ControlModifier:
+                    self.set_orientation("C*")
             elif modifiers & Qt.ControlModifier:
                 self.set_orientation("c*")
             else:
@@ -632,8 +641,8 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print("set_orientations", orientation)
         up,across,out = self.orientation_definitions[orientation]
         debugger.print("out   :",out)
-        debugger.print("up    :",up)
         debugger.print("across:",across)
+        debugger.print("up    :",up)
         self.orientation = orientation
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
@@ -649,13 +658,13 @@ class OpenGLWidget(QOpenGLWidget):
         self.matrix[3,2] = 0
         self.matrix[3,3] = 1
         glMultMatrixf(self.matrix)
-        hkl_out    = self.cell.convert_xyz_to_hkl(out)
-        hkl_up     = self.cell.convert_xyz_to_hkl(up)
-        hkl_across = self.cell.convert_xyz_to_hkl(across)
-        debugger.print("hkl_out   :",hkl_out)
-        debugger.print("hkl_up    :",hkl_up)
-        debugger.print("hkl_across:",hkl_across)
-        self.current_hkl_orientation = (hkl_up, hkl_across, hkl_out)
+        uvw_out    = self.cell.convert_xyz_to_integer_abc(out)
+        uvw_across = self.cell.convert_xyz_to_integer_abc(across)
+        uvw_up     = self.cell.convert_xyz_to_integer_abc(up)
+        debugger.print(f"uvw_out   : {out} to {uvw_out}")
+        debugger.print(f"uvw_across: {across} to {uvw_across}")
+        debugger.print(f"uvw_up    : {up} to {uvw_up}")
+        self.current_uvw_orientation = (uvw_up, uvw_across, uvw_out)
         self.current_orientation = self.orientation_definitions[self.orientation]
         self.current_phase = int(self.number_of_phases / 2)
         self.update()
@@ -683,6 +692,8 @@ class OpenGLWidget(QOpenGLWidget):
         # Choose the out axis, by converting hkl to xyz
         #
         s = cell.convert_hkl_to_xyz(hkl)
+        s = s / np.linalg.norm(s)
+        debugger.print("s    :",s)
         #
         # Find the lattice vector that is least like the surface normal
         #
@@ -691,9 +702,12 @@ class OpenGLWidget(QOpenGLWidget):
         for i,abc in enumerate(cell.lattice):
             abc = abc / np.linalg.norm(abc)
             sdot = np.dot(s,abc)
+            debugger.print(f"abc {abc}, sdot {sdot} ")
             if abs(sdot) < sdot_min:
                 sdot_min = sdot
                 i_min    = i
+                debugger.print("sdot_min    :",sdot_min)
+                debugger.print("i_min       :",i_min)
         #
         # Choose the up axis, by projecting out the surface normal
         #
@@ -702,9 +716,8 @@ class OpenGLWidget(QOpenGLWidget):
         # Choose the across axis by find the normal to s and s_up
         #
         s_across = np.cross(s,s_up)
-        s        = s / np.linalg.norm(s)
-        s_up     = s_up / np.linalg.norm(s)
-        s_across = s_across / np.linalg.norm(s)
+        s_up     = s_up / np.linalg.norm(s_up)
+        s_across = s_across / np.linalg.norm(s_across)
         self.orientation_definitions["s"] = (s_up, s_across, s)
         self.orientation_definitions["S"] = (s, s_across, s_up)
         debugger.print("s       :",s)
@@ -748,9 +761,9 @@ class OpenGLWidget(QOpenGLWidget):
         a_across = np.cross(a,a_up)
         b_across = np.cross(b,b_up)
         c_across = np.cross(c,c_up)
-        astar = cell.reciprocal_lattice[0] / np.linalg.norm(cell.reciprocal_lattice[0])
-        bstar = cell.reciprocal_lattice[1] / np.linalg.norm(cell.reciprocal_lattice[1])
-        cstar = cell.reciprocal_lattice[2] / np.linalg.norm(cell.reciprocal_lattice[2])
+        astar = cell.reciprocal_lattice.T[0] / np.linalg.norm(cell.reciprocal_lattice.T[0])
+        bstar = cell.reciprocal_lattice.T[1] / np.linalg.norm(cell.reciprocal_lattice.T[1])
+        cstar = cell.reciprocal_lattice.T[2] / np.linalg.norm(cell.reciprocal_lattice.T[2])
         astar_up = np.cross(astar,bstar)
         bstar_up = np.cross(bstar,cstar)
         cstar_up = np.cross(cstar,astar)
@@ -760,12 +773,15 @@ class OpenGLWidget(QOpenGLWidget):
         self.orientation_definitions["a"]  = (a_up, a_across, a)
         self.orientation_definitions["a*"] = (astar_up, astar_across, astar)
         self.orientation_definitions["A"]  = (a, a_across, a_up)
+        self.orientation_definitions["A*"] = (astar, astar_across, astar_up)
         self.orientation_definitions["b"]  = (b_up, b_across, b)
         self.orientation_definitions["b*"] = (bstar_up, bstar_across, bstar)
         self.orientation_definitions["B"]  = (b, b_across, b_up)
+        self.orientation_definitions["B*"] = (bstar, bstar_across, bstar_up)
         self.orientation_definitions["c"]  = (c_up, c_across,c )
         self.orientation_definitions["c*"] = (cstar_up, cstar_across,cstar )
         self.orientation_definitions["C"]  = (c, c_across, c_up)
+        self.orientation_definitions["C*"] = (cstar, cstar_across, cstar_up)
         debugger.print("a       :",a)
         debugger.print("a_up    :",a_up)
         debugger.print("a_across:",a_across)
@@ -1121,15 +1137,15 @@ class OpenGLWidget(QOpenGLWidget):
         self.drawSpheres()
         self.drawCylinders()
         self.drawTexts()
-        self.drawHKLInfo()
+        self.drawUVWInfo()
         if self.show_arrows:
             self.drawArrows()
         glPopMatrix()
 
-    def drawHKLInfo(self):
-        """Draw the hkl info on the screen.
+    def drawUVWInfo(self):
+        """Draw the uvw info on the screen.
 
-        The hkl information (up, is vertical out, out of the screen)
+        The uvw information (up, across, out of the screen)
 
         Parameters
         ----------
@@ -1140,11 +1156,11 @@ class OpenGLWidget(QOpenGLWidget):
         None
 
         """        
-        debugger.print("drawHKLInfo")
-        hkl_up, hkl_across, hkl_out = self.current_hkl_orientation
-        hkl_string = f"hkl = {hkl_out}  HKL (vertical) = {hkl_up}"
-        self.renderText(10,10,0,hkl_string,screen_coordinates=True)
-        debugger.print("drawHKLInfo", hkl_string)
+        debugger.print("drawUVWInfo")
+        uvw_up, uvw_across, uvw_out = self.current_uvw_orientation
+        uvw_string = f"uvw (perpendicular to screen) = {uvw_out}  UVW (vertical) = {uvw_up}"
+        self.renderText(10,10,0,uvw_string,screen_coordinates=True)
+        debugger.print("drawUVWInfo", uvw_string)
         return
 
     def drawSpheres(self):

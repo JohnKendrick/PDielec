@@ -656,8 +656,8 @@ class UnitCell:
         xyz = np.array(xyz)
         return np.dot(xyz, self.reciprocal_lattice)
 
-    def convert_xyz_to_hkl(self, xyz):
-        """Convert xyz coordinates to hkl miller indices.
+    def convert_xyz_to_integer_abc(self, xyz):
+        """Convert xyz coordinates to integer abc indices.
 
         Parameters
         ----------
@@ -666,16 +666,16 @@ class UnitCell:
 
         Returns
         -------
-        hkl : list of hkl coordinates
+        abc : list of abc coordinates
 
         """
         xyz = np.array(xyz)
-        hkl_array = np.dot(xyz,self.lattice.T)
+        abc_array =  np.dot(xyz, self.reciprocal_lattice)
         #
         # Find the common denominator
         #
-        hkl = self.find_lcd(hkl_array)
-        return hkl
+        abc = self.find_lcd(abc_array)
+        return abc
 
     def find_lcd(self, numbers):
         """Find the approximated lowest common denominator
