@@ -1355,7 +1355,7 @@ class ViewerTab(QWidget):
         self.number_of_modes = len(self.normal_modes)
         # get the cell edges for the bounding box, shifted to the centre of mass origin
         totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(output=all)
-        self.cell_corners,self.cell_edges,self.cell_labels = self.transformed_cell.getBoundingBox(originXYZ = centreOfMassXYZ)
+        self.cell_corners,self.cell_edges,self.cell_labels = self.transformed_cell.getBoundingBox(originABC=[0.5,0.5,0.5])
         #
         # self.element_names is a list of element names for each atom
         # self.species is just a unique list of species
