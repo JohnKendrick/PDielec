@@ -296,8 +296,8 @@ class UnitCell:
 
         """        
         if originABC is None and originXYZ is None:
-            originABC = np.zero( 3 )
-            originXYZ = np.zero( 3 )
+            originABC = np.zeros( 3 )
+            originXYZ = np.zeros( 3 )
         elif originABC is not None:
             originXYZ = self.convert_abc_to_xyz(originABC)
         elif originXYZ is not None:
