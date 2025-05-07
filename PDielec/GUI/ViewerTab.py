@@ -216,7 +216,8 @@ class ViewerTab(QWidget):
         self.settings["Number of phase steps"] = 41
         self.settings["Super Cell"] =  [ 1, 1, 1 ]
         self.settings["Transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
-        self.settings["hkl"] =  (1, 0, 0)
+        self.settings["hkl"] =  (0, 0, 1)
+        self.settings["uvw"] =  (1, 0, 0)
         self.settings["Element colours"] = None
         self.settings["Element palette"] = "Jmol"
         self.light_switches = [False]*8
@@ -240,6 +241,20 @@ class ViewerTab(QWidget):
         self.transform_tab_entry = None
         self.transformed_cell = None
         self.hkl_tab_entry = None
+        self.toggle_names =  ["Show cell labels",
+                              "Show cell",
+                              "Show orientation",
+                              "Show bonds",
+                              "Show atoms",
+                              "Show debug information",
+                             ]
+        self.settings["Toggle states"] = [ True,
+                               True,
+                               True,
+                               True,
+                               True,
+                               False,
+                             ]
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -358,6 +373,15 @@ class ViewerTab(QWidget):
         label.setToolTip("The plot can either be an animation or the modes can be shown by arrow")
         form.addRow(label, self.plottype_cb)
         #
+        # Toggle switches
+        #
+        self.toggles_cb = QComboBox(self)
+        self.toggles_cb.setToolTip("The toggles switches")
+        for toggle,state in zip(self.toggle_names,self.settings["Toggle states"]):
+            string = f"{toggle} is on" if state else f"{toggle} is off"
+            self.toggles_cb.addItem(string)
+        self.toggles_cb.activated.connect(self.on_toggles_cb_activated)
+        #
         # Light switches
         #
         self.light_switches_cb = QComboBox(self)
@@ -403,12 +427,13 @@ class ViewerTab(QWidget):
         self.settingsTab = QTabWidget(self)
         self.settingsTab.addTab(self.coloured_elements_widget, "Elements")
         self.settingsTab.addTab(self.coloured_buttons_widget, "Colours")
-        self.settingsTab.addTab(self.atom_scaling_sb, "Atom Scaling")
+        self.settingsTab.addTab(self.atom_scaling_sb, "Atom Size")
         self.settingsTab.addTab(self.super_cell_widget, "Super Cell")
         self.settingsTab.addTab(self.transform_tab_entry, "Transform")
-        self.settingsTab.addTab(self.hkl_tab_entry, "HKL")
+        self.settingsTab.addTab(self.hkl_tab_entry, "Surface")
         self.settingsTab.addTab(self.light_switches_cb, "Lighting")
-        self.settingsTab.addTab(self.maximum_displacement_sb, "Maximum Displacement")
+        self.settingsTab.addTab(self.toggles_cb, "Toggles")
+        self.settingsTab.addTab(self.maximum_displacement_sb, "Displacement")
         self.settingsTab.addTab(self.bond_radius_sb, "Bond Radius")
         self.settingsTab.addTab(self.cell_radius_sb, "Cell Radius")
         self.settingsTab.addTab(self.arrow_radius_sb, "Arrow Radius")
@@ -593,32 +618,141 @@ class ViewerTab(QWidget):
 
         """
         self.debugger.print("CreateHKLTabEntry")
-        h,k,l = self.settings["hkl"]
         # unique direction (hkl)
-        self.h_sb = QSpinBox(self)
-        self.h_sb.setToolTip("Define the h dimension of the surface")
-        self.h_sb.setRange(-20,20)
-        self.h_sb.setValue(h)
-        self.h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
-        self.k_sb = QSpinBox(self)
-        self.k_sb.setToolTip("Define the k dimension of the surface")
-        self.k_sb.setRange(-20,20)
-        self.k_sb.setValue(k)
-        self.k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
-        self.l_sb = QSpinBox(self)
-        self.l_sb.setToolTip("Define the l dimension of the surface")
-        self.l_sb.setRange(-20,20)
-        self.l_sb.setValue(l)
-        self.l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
+        self.h_sb, self.k_sb, self.l_sb = self.hkl_spin_boxes()
+        # unique direction (uvw)
+        self.u_sb, self.v_sb, self.w_sb = self.uvw_spin_boxes()
+        container = QHBoxLayout()
+        form = QFormLayout()
         hbox = QHBoxLayout()
         hbox.addWidget(self.h_sb)
         hbox.addWidget(self.k_sb)
         hbox.addWidget(self.l_sb)
+        label = QLabel("    hkl:")
+        form.addRow(label, hbox)
+        container.addLayout(form)
+        form = QFormLayout()
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.u_sb)
+        hbox.addWidget(self.v_sb)
+        hbox.addWidget(self.w_sb)
+        label = QLabel("    uvw:")
+        form.addRow(label, hbox)
+        container.addLayout(form)
         widget = QWidget(self)
-        widget.setToolTip("Define a surface of the transformed cell using (hkl)")
-        widget.setLayout(hbox)
+        widget.setToolTip("Define a surface of the transformed cell using (hkl) & [uvw]")
+        widget.setLayout(container)
         return widget
 
+    def hkl_spin_boxes(self):
+        """Create the spin boxes for hkl. 
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        a set of spin boxes
+
+        """
+        infostring = "\nThe surface (hkl) is displayed using the keyboard shortcuts 's' or 'S'.\n's' shows the surface in the plane of the screen.\n'S' shows the surface edge on.\n [uvw] defines a perpendicular to the surface normal.\n(hkl) takes precedence unless it is (000).\nIf hkl is (000) 's' shows [uvw] perpendicular to the screen \nand 'S' shows [uvw] vertical on the screen"
+        h,k,l = self.settings["hkl"]
+        h_sb = QSpinBox(self)
+        h_sb.setToolTip(f"Define the h dimension of the surface"+infostring)
+        h_sb.setRange(-20,20)
+        h_sb.setValue(h)
+        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
+        k_sb = QSpinBox(self)
+        k_sb.setToolTip(f"Define the k dimension of the surface"+infostring)
+        k_sb.setRange(-20,20)
+        k_sb.setValue(k)
+        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
+        l_sb = QSpinBox(self)
+        l_sb.setToolTip(f"Define the l dimension of the surface"+infostring)
+        l_sb.setRange(-20,20)
+        l_sb.setValue(l)
+        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
+        return h_sb, k_sb, l_sb
+
+    def uvw_spin_boxes(self):
+        """Create the spin boxes for uvw. 
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        a set of spin boxes
+
+        """
+        infostring = "\nThe surface (hkl) is displayed using the keyboard shortcuts 's' or 'S'.\n's' shows the surface in the plane of the screen.\n'S' shows the surface edge on.\n [uvw] defines a perpendicular to the surface normal.\n(hkl) takes presidence unless it is (000).\nIn this case 's' shows [uvw] perpendicular to the screen and 'S' show [uvw] vertical on the screen\n "
+        h,k,l = self.settings["uvw"]
+        h_sb = QSpinBox(self)
+        h_sb.setToolTip(f"Define the u dimension of the surface"+infostring)
+        h_sb.setRange(-20,20)
+        h_sb.setValue(h)
+        h_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,0))
+        k_sb = QSpinBox(self)
+        k_sb.setToolTip(f"Define the v dimension of the surface"+infostring)
+        k_sb.setRange(-20,20)
+        k_sb.setValue(k)
+        k_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,1))
+        l_sb = QSpinBox(self)
+        l_sb.setToolTip(f"Define the w dimension of the surface"+infostring)
+        l_sb.setRange(-20,20)
+        l_sb.setValue(l)
+        l_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,2))
+        return h_sb, k_sb, l_sb
+
+    def on_uvw_sb_changed(self,value,index):
+        """Handle a change in a value of u,v or, w.
+
+        Parameters
+        ----------
+        value : int
+            The value of u,v or w
+
+        index : integer
+          1, 2, or 3 for u, v or w
+
+        Modifies
+        --------
+        settings["uvw"]
+
+        """
+        self.debugger.print("on_uvw_sb_changed", value, index)
+        u,v,w = self.settings["uvw"]
+        if index == 0:
+            u = value
+        elif index == 1:
+            v = value
+        else:
+            w = value
+        #
+        # Do not allow 0,0,0
+        #
+        if abs(u) + abs(v) + abs(w) == 0:
+            u = 1
+            v = 0
+            w = 0
+            self.u_sb.blockSignals(True)
+            self.v_sb.blockSignals(True)
+            self.w_sb.blockSignals(True)
+            self.u_sb.setValue(u)
+            self.v_sb.setValue(v)
+            self.w_sb.setValue(w)
+            self.u_sb.blockSignals(False)
+            self.v_sb.blockSignals(False)
+            self.w_sb.blockSignals(False)
+        self.settings["uvw"] = (u,v,w)
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,
+                                                       self.settings["hkl"],
+                                                       self.settings["uvw"])
+        self.debugger.print("on_uvw_sb_changed uvw=", self.settings["uvw"])
+        return 
+    
     def on_hkl_sb_changed(self,value,index):
         """Handle a change in a value of h,k or, l.
 
@@ -643,30 +777,16 @@ class ViewerTab(QWidget):
             k = value
         else:
             l = value
-        #
-        # Do not allow 0,0,0
-        #
-        if abs(h) + abs(k) + abs(l) == 0:
-            h = 0
-            k = 0
-            l = 1
-            self.h_sb.blockSignals(True)
-            self.k_sb.blockSignals(True)
-            self.l_sb.blockSignals(True)
-            self.h_sb.setValue(h)
-            self.k_sb.setValue(k)
-            self.l_sb.setValue(l)
-            self.h_sb.blockSignals(False)
-            self.k_sb.blockSignals(False)
-            self.l_sb.blockSignals(False)
         self.settings["hkl"] = (h,k,l)
-        self.opengl_widget.define_surface_orientations(self.transformed_cell,self.settings["hkl"])
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,
+                                                       self.settings["hkl"],
+                                                       self.settings["uvw"])
         self.debugger.print("on_hkl_sb_changed hkl=", self.settings["hkl"])
         return 
     
 
     def createTransformTabEntry(self):
-        """Create a one line entry to modify the cell transformaton matrix.
+        """Create a one line entry to modify the cell transformation matrix.
 
         Add buttons to reset, edit and if possible read the transformation matrix
 
@@ -943,6 +1063,28 @@ class ViewerTab(QWidget):
         self.refresh()
         return
 
+    def on_toggles_cb_activated(self, index):
+        """Activate or deactivate the various toglles based on the current state and updates the GUI accordingly.
+
+        Parameters
+        ----------
+        index : int
+            Index of the toggle in `self.toggle_name` list
+
+        Returns
+        -------
+        None
+
+        """        
+        self.debugger.print("on_toggles_cb_activated")
+        self.settings["Toggle states"][index] = not self.settings["Toggle states"][index]
+        state = self.settings["Toggle states"][index]
+        string = f"{self.toggle_names[index]} is on" if state else f"{self.toggle_names[index]} is off"
+        self.toggles_cb.setItemText(index,string)
+        self.refreshRequired = True
+        self.refresh()
+        self.plot()
+        return
 
     def on_light_switches_cb_activated(self, index):
         """Activate or deactivate the light switch based on the current state and updates the GUI accordingly.
@@ -967,14 +1109,14 @@ class ViewerTab(QWidget):
         return
 
     def on_maximum_displacement_changed(self,value):
-        """Handle changes to the maximum displacement setting.
+        """Handle changes to the displacement setting.
 
-        This method updates the 'Maximum displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
+        This method updates the 'Displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
 
         Parameters
         ----------
         value : float
-            The new value for the maximum displacement setting.
+            The new value for the displacement setting.
 
         Returns
         -------
@@ -1184,7 +1326,9 @@ class ViewerTab(QWidget):
         transform = self.convert_transform()
         self.transformed_cell = PrimitiveCell(cell,transformation=transform)
         self.opengl_widget.define_orientations(self.transformed_cell)
-        self.opengl_widget.define_surface_orientations(self.transformed_cell,self.settings["hkl"])
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,
+                                                       self.settings["hkl"],
+                                                       self.settings["uvw"])
         self.opengl_widget.set_orientation(self.opengl_widget.orientation)
         #
         # Calculate the whole molecule content of the DFT cell
@@ -1332,17 +1476,45 @@ class ViewerTab(QWidget):
         self.opengl_widget.deleteCylinders()
         self.opengl_widget.createArrays(len(phases))
         self.debugger.print("calculatePhasePositions - adding spheres and cylinders")
+        if self.get_toggle_state("Show debug information"):
+            self.debugger = Debug(True,"ViewerTab")
+            self.debugger.print("Debug is on:: toggle")
+            self.debug = True
+        else:
+            self.debugger.print("Debug is off:: toggle")
+            self.debugger = Debug(False,"ViewerTab")
+            self.debug = False
+        if self.get_toggle_state("Show orientation"):
+            self.opengl_widget.show_orientation = True
+        else:
+            self.opengl_widget.show_orientation = False
         for phase_index in range(len(phases)):
             for col, rad, xyz in zip(self.colours, self.radii, self.newXYZ[phase_index]):
-                self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
+                if self.get_toggle_state("Show atoms"):
+                    self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
             for p,l in zip(self.cell_corners,self.cell_labels):
-                self.opengl_widget.addSphere(self.settings["Cell colour"], self.settings["Cell radius"], p, phase=phase_index )
-                self.opengl_widget.addText(l, self.settings["Text colour"], self.settings["Text size"], p, phase=phase_index)
-            for bond in self.bonds:
-                i,j = bond
-                self.opengl_widget.addCylinder(self.settings["Bond colour"], self.settings["Bond radius"], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
-            for p1,p2 in self.cell_edges:
-                self.opengl_widget.addCylinder(self.settings["Cell colour"], self.settings["Cell radius"], p1, p2, phase=phase_index)
+                if self.get_toggle_state("Show cell"):
+                    self.opengl_widget.addSphere(self.settings["Cell colour"],
+                                                 self.settings["Cell radius"],
+                                                 p,
+                                                 phase=phase_index )
+                if self.get_toggle_state("Show cell labels") and self.get_toggle_state("Show cell"):
+                    self.opengl_widget.addText(l, 
+                                               self.settings["Text colour"], 
+                                               self.settings["Text size"], 
+                                               p, 
+                                               phase=phase_index)
+            if self.get_toggle_state("Show bonds"):
+                for bond in self.bonds:
+                    i,j = bond
+                    self.opengl_widget.addCylinder(self.settings["Bond colour"],
+                                                   self.settings["Bond radius"],
+                                                   self.newXYZ[phase_index,i],
+                                                   self.newXYZ[phase_index,j],
+                                                   phase=phase_index)
+            if self.get_toggle_state("Show cell"):
+                for p1,p2 in self.cell_edges:
+                    self.opengl_widget.addCylinder(self.settings["Cell colour"], self.settings["Cell radius"], p1, p2, phase=phase_index)
         self.debugger.print("calculatePhasePositions - exiting")
         return
 
@@ -1557,6 +1729,17 @@ class ViewerTab(QWidget):
             self.selected_mode_sb.setValue(self.settings["Selected mode"])
             self.frequency_le.setText("{:.5f}".format(self.frequencies_cm1[self.settings["Selected mode"]-1]))
         self.debugger.print("refresh: selected mode is now",self.selected_mode_sb.value())
+        for index,(toggle,state) in enumerate(zip(self.toggle_names,self.settings["Toggle states"])):
+            string = f"{toggle} is on" if state else f"{toggle} is off"
+            self.toggles_cb.setItemText(index,string)
+        h,k,l = self.settings["hkl"]
+        self.h_sb.setValue(h)
+        self.k_sb.setValue(k)
+        self.l_sb.setValue(l)
+        u,v,w = self.settings["uvw"]
+        self.u_sb.setValue(u)
+        self.v_sb.setValue(v)
+        self.w_sb.setValue(w)
         self.atom_scaling_sb.setValue(self.settings["Atom scaling"])
         self.bond_radius_sb.setValue(self.settings["Bond radius"])
         self.cell_radius_sb.setValue(self.settings["Cell radius"])
@@ -1616,6 +1799,27 @@ class ViewerTab(QWidget):
         QApplication.restoreOverrideCursor()
         self.debugger.print("Finished:: refresh")
         return
+
+    def get_toggle_state(self,toggle):
+        """Return the state of the given toggle.
+
+        Parameters
+        ----------
+        toggle : str
+            The toggle name
+
+        Returns
+        -------
+        bool
+
+        """
+       
+        self.debugger.print("get_toggle_state: ")
+        if toggle not in self.toggle_names:
+            return True
+        index = self.toggle_names.index(toggle)
+        self.debugger.print("get_toggle_state: {index}")
+        return self.settings["Toggle states"][index]
 
 class TransformWindow(QDialog):
     """A GUI window for displaying and editing the transform matrix.
@@ -1756,7 +1960,7 @@ class TransformWindow(QDialog):
         return
 
     def getTransform(self):
-        """Return the primtive transformation matrix
+        """Return the primtive transformation matrix.
 
         The transformation is stored as a 3x3 list of strings.
         The strings are treated as python commands to return a value.:w
@@ -1773,4 +1977,3 @@ class TransformWindow(QDialog):
         """
         self.debugger.print("getTransform: ")
         return self.transform_as_str
-

@@ -269,6 +269,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.cylinder_stacks        = 2
         self.timer                  = None
         self.show_arrows            = True
+        self.show_orientation       = False
         self.timer_interval         = 60
         self.my_width               = None
         self.my_height              = None
@@ -669,8 +670,13 @@ class OpenGLWidget(QOpenGLWidget):
         self.current_phase = int(self.number_of_phases / 2)
         self.update()
 
-    def define_surface_orientations(self, cell, hkl):
+    def define_surface_orientations(self, cell, hkl, uvw):
         """Set the up orientations for the surface hkl.
+
+        hkl defines the surface as (hkl)
+        uvw defines a normal to the surface (hkl)
+            [uvw] is made orthogonal to the (hkl) normal
+        if (hkl) is (000) [uvw] is used to define the unique direction
 
         Parameters
         ----------
@@ -678,40 +684,79 @@ class OpenGLWidget(QOpenGLWidget):
             The cell used to define the orientations with respect to a, b, c
         hkl : a tuple of 3 integers
             The values of h, k and l
+        uvw : a tuple of 3 integers
+            The values of u, v and w
+
 
         Modifies
         --------
         orientation_definitions
 
         """        
-        debugger.print("define_surface_orientations", cell,hkl)
+        debugger.print("define_surface_orientations", cell,hkl,uvw)
         if cell is None: 
             return
         self.cell = cell
-        #
-        # Choose the out axis, by converting hkl to xyz
-        #
-        s = cell.convert_hkl_to_xyz(hkl)
-        s = s / np.linalg.norm(s)
-        debugger.print("s    :",s)
-        #
-        # Find the lattice vector that is least like the surface normal
-        #
-        sdot_min = 1.0E12
-        i_min = -1
-        for i,abc in enumerate(cell.lattice):
-            abc = abc / np.linalg.norm(abc)
-            sdot = np.dot(s,abc)
-            debugger.print(f"abc {abc}, sdot {sdot} ")
-            if abs(sdot) < sdot_min:
-                sdot_min = sdot
-                i_min    = i
-                debugger.print("sdot_min    :",sdot_min)
-                debugger.print("i_min       :",i_min)
-        #
-        # Choose the up axis, by projecting out the surface normal
-        #
-        s_up = cell.lattice[i_min] - np.dot(s,cell.lattice[i_min])*s
+        hklsum = abs(hkl[0]) + abs(hkl[1]) + abs(hkl[2])
+        if hklsum > 0:
+            #
+            # Choose the out axis, by converting hkl to xyz
+            #
+            s = cell.convert_hkl_to_xyz(hkl)
+            s = s / np.linalg.norm(s)
+            debugger.print("s    :",s)
+            #
+            # Make sure that the [uvw] direction is orthogonal to (hkl)
+            #
+            uvw_xyz = cell.convert_abc_to_xyz(uvw)
+            uvw_xyz = uvw_xyz / np.linalg.norm(uvw_xyz)
+            sdot = np.dot(s, uvw_xyz)
+            if abs(sdot) > 0.999:
+                #
+                # [uvw] and (hkl) are too close to each other
+                # Find the lattice vector that is least like the surface normal
+                #
+                sdot_min = 1.0E12
+                i_min = -1
+                for i,abc in enumerate(cell.lattice):
+                    abc = abc / np.linalg.norm(abc)
+                    sdot = np.dot(s,abc)
+                    debugger.print(f"abc {abc}, sdot {sdot} ")
+                    if abs(sdot) < sdot_min:
+                        sdot_min = sdot
+                        i_min    = i
+                        debugger.print("sdot_min    :",sdot_min)
+                        debugger.print("i_min       :",i_min)
+                    #
+                    # Choose the up axis, by projecting out the surface normal
+                    #
+                    s_up = cell.lattice[i_min] - np.dot(s,cell.lattice[i_min])*s
+            else:
+                s_up = uvw_xyz - np.dot(s,uvw_xyz)*s
+        else:
+            #
+            # hkl has been set to (000) so [uvw] becomes the dominant vector
+            #
+            s = cell.convert_abc_to_xyz(uvw)
+            s = s / np.linalg.norm(s)
+            #
+            # Find the lattice vector that is least like the surface normal
+            #
+            sdot_min = 1.0E12
+            i_min = -1
+            for i,abc in enumerate(cell.lattice):
+                abc = abc / np.linalg.norm(abc)
+                sdot = np.dot(s,abc)
+                debugger.print(f"abc {abc}, sdot {sdot} ")
+                if abs(sdot) < sdot_min:
+                    sdot_min = sdot
+                    i_min    = i
+                    debugger.print("sdot_min    :",sdot_min)
+                    debugger.print("i_min       :",i_min)
+            #
+            # Choose the up axis, by projecting out the dominant vector
+            #
+            s_up = cell.lattice[i_min] - np.dot(s,cell.lattice[i_min])*s
         #
         # Choose the across axis by find the normal to s and s_up
         #
@@ -1137,7 +1182,8 @@ class OpenGLWidget(QOpenGLWidget):
         self.drawSpheres()
         self.drawCylinders()
         self.drawTexts()
-        self.drawUVWInfo()
+        if self.show_orientation:
+            self.drawUVWInfo()
         if self.show_arrows:
             self.drawArrows()
         glPopMatrix()
@@ -1158,7 +1204,7 @@ class OpenGLWidget(QOpenGLWidget):
         """        
         debugger.print("drawUVWInfo")
         uvw_up, uvw_across, uvw_out = self.current_uvw_orientation
-        uvw_string = f"uvw (perpendicular to screen) = {uvw_out}  UVW (vertical) = {uvw_up}"
+        uvw_string = f"Normal to screen = {uvw_out},  screen vertical = {uvw_up}"
         self.renderText(10,10,0,uvw_string,screen_coordinates=True)
         debugger.print("drawUVWInfo", uvw_string)
         return
@@ -1456,7 +1502,10 @@ class OpenGLWidget(QOpenGLWidget):
             dist = math.sqrt(np.dot(vec,vec))
             if dist > maxsize:
                 maxsize = dist
-        self.image_size = maxsize
+        if maxsize > 0:
+            self.image_size = maxsize
+        else:
+            self.image_size = 10.0
         self.setProjectionMatrix()
         debugger.print("setImageSize",self.image_size)
 
