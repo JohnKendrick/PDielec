@@ -246,14 +246,12 @@ class ViewerTab(QWidget):
                               "Show orientation",
                               "Show bonds",
                               "Show atoms",
-                              "Show debug information",
                              ]
         self.settings["Toggle states"] = [ True,
                                True,
                                True,
                                True,
                                True,
-                               False,
                              ]
         # store the notebook
         self.notebook = parent
@@ -1816,7 +1814,7 @@ class ViewerTab(QWidget):
        
         self.debugger.print("get_toggle_state: ")
         if toggle not in self.toggle_names:
-            return True
+            return False
         index = self.toggle_names.index(toggle)
         self.debugger.print("get_toggle_state: {index}")
         return self.settings["Toggle states"][index]
