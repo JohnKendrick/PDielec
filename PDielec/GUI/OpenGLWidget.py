@@ -21,6 +21,7 @@ from collections import deque
 import numpy as np
 import OpenGL
 from OpenGL.GL import (
+    GL_ALL_ATTRIB_BITS,
     GL_AMBIENT,
     GL_BACK,
     GL_BLEND,
@@ -74,7 +75,9 @@ from OpenGL.GL import (
     glMatrixMode,
     glMultMatrixf,
     glOrtho,
+    glPopAttrib,
     glPopMatrix,
+    glPushAttrib,
     glPushMatrix,
     glRotated,
     glRotatef,
@@ -1301,12 +1304,15 @@ class OpenGLWidget(QOpenGLWidget):
         else:
             textPosX = x
             textPosY = height-y
-        painter = QPainter(self)
+        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        painter = QPainter()
+        painter.begin(self)
         painter.setPen(Qt.yellow)
         painter.setFont(QFont("Helvetica", 14))
         painter.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
         painter.drawText(int(textPosX), int(textPosY), string)
         painter.end()
+        glPopAttrib()
         return
 
 
