@@ -101,7 +101,7 @@ from OpenGL.GLU import (
 )
 from qtpy.QtCore import Qt, QTimer
 from qtpy.QtGui import QSurfaceFormat, QPainter, QFont
-from qtpy.QtWidgets import QOpenGLWidget
+from qtpy.QtWidgets import QOpenGLWidget, QMessageBox
 
 from PDielec.Utilities import Debug
 
@@ -476,6 +476,61 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print("uvw_out",uvw_out)
         self.update()
 
+    def show_help_dialog(self):
+        """Show the help dialogue message.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+
+        help_string = """
+  Key      	Description                                         
+  ------	--------------------------------------------------  
+  ⇒      	: Rotate around screen vertical axis 5 degrees       
+  Shift⇒ 	: Rotate around screen vertical axis  45 degrees     
+  ⇐      	: Rotate around screen vertical axis -5 degrees      
+  Shift⇐ 	: Rotate around screen vertical axis  -45 degrees    
+  ⇑      	: Rotate around screen horizontal axis 5 degrees     
+  Shift⇑ 	: Rotate around screen horizontal axis  45 degrees   
+  ⇓      	: Rotate around screen horizontal axis -5 degrees    
+  Shift⇓ 	: Rotate around screen horizontal axis  -45 degrees  
+  l      	: Rotate cell anticlockwise  5 degrees               
+  L      	: Rotate cell anticlockwise  45 degrees              
+  r      	: Rotate cell clockwise  5 degrees                   
+  R      	: Rotate cell clockwise  45 degrees                 
+  x      	: Show the cell with the x-axis normal to the screen   
+  X      	: Show the cell with the x-axis vertical on the screen          
+  y      	: Show the cell with the y-axis normal to the screen   
+  Y      	: Show the cell with the y-axis vertical on the screen          
+  z      	: Show the cell with the z-axis normal to the screen   
+  Z      	: Show the cell with the Z-axis vertical on the screen          
+  a      	: Show the cell with the a-axis normal to the screen   
+  A      	: Show the cell with the a-axis vertical on the screen          
+  {ctrl}a	: Show the cell with the reciprocal a-axis normal to the screen  
+  {ctrl}A	: Show the cell with the reciprocal a-axis vertical on the screen
+  b      	: Show the cell with the b-axis normal to the screen
+  B      	: Show the cell with the b-axis vertical on the screen 
+  {ctrl}b	: Show the cell with the reciprocal b-axis normal to the screen
+  {ctrl}B	: Show the cell with the reciprocal b-axis vertical on the screen
+  c      	: Show the cell with the c-axis normal to the screen
+  C      	: Show the cell with the c-axis vertical on the screen
+  {ctrl}c	: Show the cell with the reciprocal c-axis normal to the screen
+  {ctrl}C	: Show the cell with the reciprocal c-axis vertical on the screen
+  s      	: Show (hkl) surface normal & [uvw] vertical on the screen
+  S      	: Show (hkl) surface vertical & [uvw] normal on the screen
+"""
+        msg = QMessageBox(self)
+        msg.setWindowTitle("Keyboard Shortcuts Help")
+        msg.setText(help_string)
+        msg.exec()
+      
+   
+
     def keyPressEvent(self, event):
         """Handle keyboard events for specific actions.
 
@@ -548,6 +603,8 @@ class OpenGLWidget(QOpenGLWidget):
             self.moleculeRotate(-amount,0.0,0.0,1.0)
         elif key == Qt.Key_L:
             self.moleculeRotate(+amount,0.0,0.0,1.0)
+        elif key == Qt.Key_H:
+            self.show_help_dialog()
         elif key == Qt.Key_Plus:
             self.zoom(+1.0)
         elif key == Qt.Key_Minus:
@@ -642,7 +699,7 @@ class OpenGLWidget(QOpenGLWidget):
         None
 
         """        
-        debugger.print("set_orientations", orientation)
+        debugger.print("set_orientation", orientation)
         up,across,out = self.orientation_definitions[orientation]
         debugger.print("out   :",out)
         debugger.print("across:",across)
