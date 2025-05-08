@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdielec"
-version = "8.2.0"
+version = "8.3.0"
 dependencies = [
     "setuptools",
     "scipy",
