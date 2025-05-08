@@ -1767,8 +1767,7 @@ def solve_effective_medium_equations(
     (v_cm1,crystalPermittivity) = atuple
     # convert the size to a dimensionless number which is 2*pi*size/lambda
     lambda_mu = 1.0E4 / (v_cm1 + 1.0e-12)
-    if size_mu < 1.0e-12:
-        size_mu = 1.0e-12
+    size_mu = max(size_mu, 1.0e-12)
     size = 2.0*np.pi*size_mu / lambda_mu
     data = ""
     # Calculate the permittivity of the matrix as an isotropic tensor at v_cm1
@@ -2055,8 +2054,7 @@ def orthogonalise_projection_operator(ps):
                    # Gramm Schmidt orthogonoalisation
                    dotprod = np.dot(p,q)
                    ps[j] = q - dotprod*p
-                   if max_overlap < dotprod:
-                       max_overlap = dotprod
+                   max_overlap = max(max_overlap, dotprod)
    if cycle >= maxcyc:
        print("WARNING Schmidt Orthogonalisation Failed", max_overlap)
        sys.exit()
@@ -2416,7 +2414,6 @@ def calculate_normal_modes_and_frequencies(hessian):
         # end if
     # end for
     mass_weighted_normal_modes = []
-    frequencies = frequencies_a.tolist()
     # Store the mass weighted normal modes
     for i in range(nmodes):
         mode = []

@@ -13,18 +13,18 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """ViewerTab module."""
+import copy
 import os
 from collections import deque
 
 import numpy as np
-import copy
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
     QApplication,
-    QDialog,
-    QDialogButtonBox,
     QColorDialog,
     QComboBox,
+    QDialog,
+    QDialogButtonBox,
     QDoubleSpinBox,
     QFormLayout,
     QHBoxLayout,
@@ -34,20 +34,20 @@ from qtpy.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QSpinBox,
+    QTableWidget,
+    QTableWidgetItem,
     QTabWidget,
     QVBoxLayout,
     QWidget,
-    QTableWidget,
-    QTableWidgetItem,
 )
 
-from PDielec.Constants import elemental_colours, vesta_elemental_colours, jmol_elemental_colours
-from PDielec.GUI.OpenGLWidget import OpenGLWidget
 from PDielec import Calculator
+from PDielec.Constants import elemental_colours, jmol_elemental_colours, vesta_elemental_colours
+from PDielec.GUI.OpenGLWidget import OpenGLWidget
+from PDielec.PrimitiveCell import PrimitiveCell
 
 # Need the SuperCell & PrimitiveCell classes
 from PDielec.SuperCell import SuperCell
-from PDielec.PrimitiveCell import PrimitiveCell
 
 # Import plotting requirements
 from PDielec.Utilities import Debug
@@ -498,21 +498,21 @@ class ViewerTab(QWidget):
         self.debugger.print("convert_transform", np.array(transform))
         return np.array(transform)
        
-    def on_reset_button_clicked(self, item):
+    def on_reset_button_clicked(self, item ):
         """Handle a push of the reset transform button.
 
-        When the button is pushed the transform is set to unity
+        When the button is pushed the transform is set to unity.
 
         Parameters
         ----------
-        item : bool   Unused
+        item : bool
+            ignored
 
         Returns
         -------
         None
 
         """
-       
         self.debugger.print("on_reset_button_clicked",item)
         self.settings["Transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
         self.debugger.print("on_guess_button_clicked transform",self.settings["Transform"])
@@ -526,7 +526,8 @@ class ViewerTab(QWidget):
 
         Parameters
         ----------
-        item : bool   Unused
+        item : bool
+            ignored
 
         Returns
         -------
@@ -554,7 +555,8 @@ class ViewerTab(QWidget):
 
         Parameters
         ----------
-        item : bool   Unused
+        item : bool
+            ignored
 
         Returns
         -------
@@ -583,7 +585,8 @@ class ViewerTab(QWidget):
 
         Parameters
         ----------
-        item : bool   Unused
+        item : bool
+            ignored
 
         Returns
         -------
@@ -595,10 +598,9 @@ class ViewerTab(QWidget):
 
         """
         self.debugger.print("on_primitive_button_clicked",item)
-        if self.reader is not None:
-            if self.reader.primitive_transformation is not None:
-                self.settings["Primitive transform"] = self.reader.primitive_transformation
-                self.debugger.print("on_primtive_button_clicked transform",self.settings["Primitive transform"])
+        if self.reader is not None and self.reader.primitive_transformation is not None:
+            self.settings["Primitive transform"] = self.reader.primitive_transformation
+            self.debugger.print("on_primtive_button_clicked transform",self.settings["Primitive transform"])
         # change the primitive transform window popup
         self.refreshRequired = True
         self.refresh()
@@ -643,7 +645,7 @@ class ViewerTab(QWidget):
         return widget
 
     def hkl_spin_boxes(self):
-        """Create the spin boxes for hkl. 
+        """Create the spin boxes for hkl.
 
         Parameters
         ----------
@@ -657,24 +659,24 @@ class ViewerTab(QWidget):
         infostring = "\nThe surface (hkl) is displayed using the keyboard shortcuts 's' or 'S'.\n's' shows the surface in the plane of the screen.\n'S' shows the surface edge on.\n [uvw] defines a perpendicular to the surface normal.\n(hkl) takes precedence unless it is (000).\nIf hkl is (000) 's' shows [uvw] perpendicular to the screen \nand 'S' shows [uvw] vertical on the screen"
         h,k,l = self.settings["hkl"]
         h_sb = QSpinBox(self)
-        h_sb.setToolTip(f"Define the h dimension of the surface"+infostring)
+        h_sb.setToolTip("Define the h dimension of the surface"+infostring)
         h_sb.setRange(-20,20)
         h_sb.setValue(h)
         h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
         k_sb = QSpinBox(self)
-        k_sb.setToolTip(f"Define the k dimension of the surface"+infostring)
+        k_sb.setToolTip("Define the k dimension of the surface"+infostring)
         k_sb.setRange(-20,20)
         k_sb.setValue(k)
         k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
         l_sb = QSpinBox(self)
-        l_sb.setToolTip(f"Define the l dimension of the surface"+infostring)
+        l_sb.setToolTip("Define the l dimension of the surface"+infostring)
         l_sb.setRange(-20,20)
         l_sb.setValue(l)
         l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
         return h_sb, k_sb, l_sb
 
     def uvw_spin_boxes(self):
-        """Create the spin boxes for uvw. 
+        """Create the spin boxes for uvw.
 
         Parameters
         ----------
@@ -688,17 +690,17 @@ class ViewerTab(QWidget):
         infostring = "\nThe surface (hkl) is displayed using the keyboard shortcuts 's' or 'S'.\n's' shows the surface in the plane of the screen.\n'S' shows the surface edge on.\n [uvw] defines a perpendicular to the surface normal.\n(hkl) takes presidence unless it is (000).\nIn this case 's' shows [uvw] perpendicular to the screen and 'S' show [uvw] vertical on the screen\n "
         h,k,l = self.settings["uvw"]
         h_sb = QSpinBox(self)
-        h_sb.setToolTip(f"Define the u dimension of the surface"+infostring)
+        h_sb.setToolTip("Define the u dimension of the surface"+infostring)
         h_sb.setRange(-20,20)
         h_sb.setValue(h)
         h_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,0))
         k_sb = QSpinBox(self)
-        k_sb.setToolTip(f"Define the v dimension of the surface"+infostring)
+        k_sb.setToolTip("Define the v dimension of the surface"+infostring)
         k_sb.setRange(-20,20)
         k_sb.setValue(k)
         k_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,1))
         l_sb = QSpinBox(self)
-        l_sb.setToolTip(f"Define the w dimension of the surface"+infostring)
+        l_sb.setToolTip("Define the w dimension of the surface"+infostring)
         l_sb.setRange(-20,20)
         l_sb.setValue(l)
         l_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,2))
@@ -1276,6 +1278,7 @@ class ViewerTab(QWidget):
 
     def calculate(self):
         """Perform calculations related to the ViewerTab instance, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
+
         In addition, calculate the transformed cell if a transformation is given.
         The supercell is calculated from the dft cell.
 
@@ -1334,9 +1337,9 @@ class ViewerTab(QWidget):
         tolerance = self.notebook.analysisTab.settings["Bonding tolerance"]
         scale     = self.notebook.analysisTab.settings["Covalent radius scaling"]
         radii     = self.notebook.analysisTab.element_radii
-        nmols = cell.calculate_molecular_contents( scale=scale,
-                                                   tolerance=tolerance,
-                                                   radii=radii)
+        cell.calculate_molecular_contents( scale=scale,
+                                           tolerance=tolerance,
+                                           radii=radii)
         atom_masses = cell.get_atomic_masses()
         mass_weighted_normal_modes = self.reader.mass_weighted_normal_modes
         normal_modes = Calculator.normal_modes(atom_masses,mass_weighted_normal_modes)
@@ -1347,7 +1350,6 @@ class ViewerTab(QWidget):
         self.bonds = self.super_cell.calculateBonds()
         self.snapshot_number = 0
         self.nbonds = len(self.bonds)
-        #
         self.XYZ = self.super_cell.calculateXYZ()
         self.natoms = len(self.XYZ)
         self.number_of_modes = len(self.normal_modes)
@@ -1811,7 +1813,6 @@ class ViewerTab(QWidget):
         bool
 
         """
-       
         self.debugger.print("get_toggle_state: ")
         if toggle not in self.toggle_names:
             return False

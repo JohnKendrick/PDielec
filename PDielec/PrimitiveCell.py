@@ -17,7 +17,9 @@
 
 import numpy as np
 import spglib
+
 from PDielec.UnitCell import UnitCell
+
 
 class PrimitiveCell(UnitCell):
     """Hold primitive-cell information; the unit cell and the primitive-cell size.
@@ -42,9 +44,6 @@ class PrimitiveCell(UnitCell):
     transformation : 3x3 list
         A transformation matrix to create the primitive cell
 
-    Notes
-    -----
-
     See Also
     --------
     :class:`~PDielec.UnitCell.UnitCell`
@@ -52,7 +51,7 @@ class PrimitiveCell(UnitCell):
     """
 
     def __init__(self, aUnitCell, transformation=None):
-        """Initialize the primitive cell with a unit cell
+        """Initialize the primitive cell with a unit cell.
 
         Parameters
         ----------
@@ -68,9 +67,6 @@ class PrimitiveCell(UnitCell):
             The primitive cell associated with this instance.
         transformation : 3x3 list (optional)
             A transformation matrix to create the primitive cell
-
-        Notes
-        -----
 
         """
         #

@@ -16,7 +16,9 @@
 """The SuperCell module."""
 
 import numpy as np
+
 from PDielec.Plotter import print_ints, print_reals
+
 
 class SuperCell:
     """Hold super-cell information; the unit cell and the super-cell size.

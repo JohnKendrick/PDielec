@@ -45,8 +45,6 @@ from OpenGL.GL import (
     GL_LINEAR_ATTENUATION,
     GL_MODELVIEW,
     GL_MODELVIEW_MATRIX,
-    GL_PROJECTION_MATRIX,
-    GL_VIEWPORT,
     GL_MULTISAMPLE,
     GL_NO_ERROR,
     GL_NORMALIZE,
@@ -54,19 +52,22 @@ from OpenGL.GL import (
     GL_POLYGON_SMOOTH,
     GL_POSITION,
     GL_PROJECTION,
+    GL_PROJECTION_MATRIX,
     GL_SHININESS,
     GL_SMOOTH,
     GL_SPECULAR,
+    GL_VIEWPORT,
     glClear,
     glClearColor,
-    glColor,
     glClearDepth,
     glCullFace,
     glDepthFunc,
     glDisable,
     glEnable,
+    glGetDoublev,
     glGetError,
     glGetFloatv,
+    glGetIntegerv,
     glLight,
     glLightfv,
     glLoadIdentity,
@@ -85,27 +86,23 @@ from OpenGL.GL import (
     glShadeModel,
     glTranslated,
     glTranslatef,
-    glGetDoublev,
-    glGetIntegerv,
 )
 from OpenGL.GLU import (
     GLU_FILL,
     GLU_SMOOTH,
     gluCylinder,
+    gluLookAt,
     gluNewQuadric,
+    gluProject,
     gluQuadricDrawStyle,
     gluQuadricNormals,
     gluSphere,
-    gluProject,
-    gluLookAt,
 )
 from qtpy.QtCore import Qt, QTimer
-from qtpy.QtGui import QSurfaceFormat, QPainter, QFont
-from qtpy.QtWidgets import QOpenGLWidget, QMessageBox
+from qtpy.QtGui import QFont, QPainter, QSurfaceFormat
+from qtpy.QtWidgets import QMessageBox, QOpenGLWidget
 
 from PDielec.Utilities import Debug
-
-import sys
 
 # The following lines seem to fix a problem when running on low end machines
 OpenGL.USE_ACCELERATE = False
@@ -486,8 +483,8 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """
 
+        """
         help_string = """
   Key      	Description                                         
   ------	--------------------------------------------------  
@@ -1137,7 +1134,6 @@ class OpenGLWidget(QOpenGLWidget):
             debugger.print("Mouse event - mid button")
             xshift = -0.02 * (self.xAtMove - self.xAtPress)
             yshift = -0.02 * (self.yAtMove - self.yAtPress)
-            zshift = 0.0
             up,across,out = self.current_orientation
             shifted = xshift*np.array(across)+yshift*np.array(up)
             self.translate(shifted[0], shifted[1])
@@ -1321,12 +1317,12 @@ class OpenGLWidget(QOpenGLWidget):
         Returns
         -------
         None
-        """        
 
+        """        
         debugger.print("drawTexts")
         if len(self.texts) == 0:
             return
-        for text,color,size,pos in self.texts[self.current_phase]:
+        for text,_color,_size,pos in self.texts[self.current_phase]:
             self.renderText(pos[0],pos[1],pos[2],text)
 
     def renderText(self, x, y, z, string, screen_coordinates=False):
@@ -1349,8 +1345,7 @@ class OpenGLWidget(QOpenGLWidget):
         None
 
         """        
-        width = self.width();
-        height = self.height();
+        height = self.height()
 
         model = glGetDoublev(GL_MODELVIEW_MATRIX)
         proj  = glGetDoublev(GL_PROJECTION_MATRIX)
@@ -1563,8 +1558,7 @@ class OpenGLWidget(QOpenGLWidget):
             pos = sphere.position
             vec = pos - self.rotation_centre
             dist = math.sqrt(np.dot(vec,vec))
-            if dist > maxsize:
-                maxsize = dist
+            maxsize = max(maxsize, dist)
         if maxsize > 0:
             self.image_size = maxsize
         else:

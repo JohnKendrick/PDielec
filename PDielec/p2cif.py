@@ -199,7 +199,6 @@ def main():
     results = results_map_object.get()
     for _name,cell in results:
         cell.write_cif()
-    #
     p.close()
     p.join()
     return

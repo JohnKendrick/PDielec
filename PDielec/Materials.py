@@ -290,7 +290,6 @@ class MaterialsDataBase:
                     beta = float(worksheet[cell2].value)
                 elif "gamma" in token:
                     gamma = float(worksheet[cell2].value)
-        #
         if avector is not None and bvector is not None and cvector is not None:
             unitCell = UnitCell(a=avector,b=bvector,c=cvector)
         elif a is not None and b is not None and c is not None and alpha is not None and beta is not None and gamma is not None:

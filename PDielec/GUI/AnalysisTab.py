@@ -13,14 +13,13 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """AnalysisTab Module."""
-import math
 
 # Import plotting requirements
+import copy
+
 import matplotlib
 import matplotlib.figure
 import numpy as np
-import copy
-import sys
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.ticker import MaxNLocator
@@ -445,7 +444,6 @@ class AnalysisTab(QWidget):
         headers = ["Mode","Frequency (cm-1)", "Centre of mass %","Rotational %", "Vibrational %"]
         for mol in range(self.number_of_molecules):
             headers.append("Molecule "+str(mol)+" %")
-        #
         sp.writeNextRow(headers,col=1)
         for imode,(freq,energies) in enumerate(zip(self.frequencies_cm1,self.mode_energies)):
            tote,cme,rote,vibe, molecular_energies = energies
@@ -726,14 +724,11 @@ class AnalysisTab(QWidget):
                                                   tolerance=tolerance,
                                                   radii=self.element_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
-        atom_masses = self.cell_of_molecules.get_atomic_masses()
         if self.number_of_molecules != self.cell_of_molecules.get_number_of_molecules():
             if self.notebook.viewerTab is not None:
                 self.notebook.viewerTab.requestRefresh()
             self.number_of_molecules = nmols
         self.molecules_le.setText(f"{self.number_of_molecules}")
-        # get the normal modes from the mass weighted ones
-        normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Calulate the distribution in energy for the normal modes
         mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, 
                                                                  self.frequencies_cm1,

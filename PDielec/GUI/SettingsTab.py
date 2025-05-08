@@ -335,7 +335,6 @@ class SettingsTab(QWidget):
         self.optical_tw.blockSignals(True)
         self.optical_tw.setSizePolicy(sizePolicy)
         form.addRow(QLabel("Optical permittivity:", self), self.optical_tw)
-        #
         vbox.addLayout(form)
         # output window
         # Create Table containing the IR active modes
@@ -1186,7 +1185,6 @@ class SettingsTab(QWidget):
             return
         self.vs_cm1 = vs_cm1.copy()
         dielectricFunction = self.CrystalPermittivityObject.function()
-        # 
         self.crystal_permittivity = []
         debugger.print("About to calculate settings crystal dielectric using pool")
         # Loop over the frequencies and calculate the crystal dielectric for each frequency

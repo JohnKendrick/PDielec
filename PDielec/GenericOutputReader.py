@@ -20,7 +20,7 @@ import sys
 
 import numpy as np
 
-from PDielec.Calculator import cleanup_symbol, calculate_normal_modes_and_frequencies
+from PDielec.Calculator import calculate_normal_modes_and_frequencies, cleanup_symbol
 from PDielec.Constants import amu, avogadro_si, wavenumber
 from PDielec.IO import pdielec_io
 from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
@@ -126,7 +126,6 @@ class GenericOutputReader:
             print("Error in calling the generic output reader some files are not present")
             print(filenames)
             return
-        # 
         self._outputfiles               = filenames
         self.names                      = [os.path.abspath(f) for f in filenames]
         self.debug                      = False
@@ -352,7 +351,6 @@ class GenericOutputReader:
                 print("Using the edited masses")
             self.masses = self.edited_masses
             return
-        # 
         if not self.program_mass_dictionary:
             # We only want to do this once - remember the program masses as a dictionary
             if self.debug:
@@ -694,7 +692,6 @@ class GenericOutputReader:
             The matrix with translational modes projected out.
 
         """
-        #
         new_hessian = np.zeros_like(hessian)
         nmodes = self.nions*3
         unit = np.eye(nmodes)
@@ -766,7 +763,6 @@ class GenericOutputReader:
         if self.debug:
             print("_dynamical_matrix")
             print("hessian", hessian[0:4][0])
-        #
         masses = np.array(self.masses)*amu
         if self.debug:
             print("masses", self.masses, masses)

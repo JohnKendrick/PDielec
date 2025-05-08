@@ -23,6 +23,7 @@ import numpy as np
 from PDielec.Constants import atomic_number_to_element, hertz
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+from PDielec.Calculator import calculate_normal_modes_and_frequencies
 
 
 def read_xml_element(ele):
@@ -211,8 +212,7 @@ class VaspOutputReader(GenericOutputReader):
             forces = [ float(f) for f in line.split()[3:6] ]
             for f in forces:
                 rmsf += f*f
-                if abs(f) > maxf:
-                    maxf = abs(f)
+                maxf = max(maxf, abs(f))
                 # end if
             # end for f
         #end for i
@@ -1052,7 +1052,6 @@ class VaspOutputReader(GenericOutputReader):
                 for vxml in enumerate(xml):
                     dielectric_tensor.append( [ float(f) for f in vxml.text.split()] )
                 # print('dielectric_tensor',dielectric_tensor,flush=True)
-            #
             xml = calcxml.find('array[@name="born_charges"]')
             if xml is not None:
                 # Born effective charges
@@ -1079,7 +1078,7 @@ class VaspOutputReader(GenericOutputReader):
         conversion *= hertz**2
         if hessian is not None:
             hessian = conversion * np.array(hessian)
-            self.mass_weighted_normal_modes, self.frequencies = self._calculate_normal_modes_and_frequencies(hessian,self.nions)
+            self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(hessian)
         return
 
     def _handle_structures_xml(self,structures_xml):

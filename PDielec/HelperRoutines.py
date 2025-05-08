@@ -154,18 +154,18 @@ def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_defi
     # Let's see if the name is a file name that can be read
     program,qm_program = Utilities.find_program_from_name(name)
     if debug:
-        print(f'getMaterial: program = {program}')
-        print(f'getMaterial: qmprogram = {qm_program}')
+        print(f"getMaterial: program = {program}")
+        print(f"getMaterial: qmprogram = {qm_program}")
     if len(program) > 1:
         reader = Utilities.get_reader(name,program,qm_program,debug)
         reader.read_output()
         if debug:
-            print(f'getMaterial: reader.print()')
+            print("getMaterial: reader.print()")
             reader.print()
         permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
         if debug:
-            print(f'getMaterial: cell.print()')
+            print("getMaterial: cell.print()")
             cell.print()
         material = External("Dielectric layer",permittivityObject=permittivityObject,cell=cell)
     else:

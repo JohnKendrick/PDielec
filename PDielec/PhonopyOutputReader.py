@@ -166,7 +166,7 @@ class PhonopyOutputReader(GenericOutputReader):
         for i in range(self.nions):
             # self._old_masses.append(data_p["primitive_cell"]["points"][i]["mass"])
             self._old_masses.append(data_p["unit_cell"]["points"][i]["mass"])
-        if "primitive_matrix" in data_p.keys():
+        if "primitive_matrix" in data_p:
             self.primitive_transformation = data_p["primitive_matrix"]
         dynmat = []
         dynmat_data = data_q["phonon"][0]["dynamical_matrix"]

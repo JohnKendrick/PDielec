@@ -521,7 +521,6 @@ class PowderScenarioTab(ScenarioTab):
         #
         hbox = self.add_scenario_buttons()
         form.addRow(hbox)
-        #
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
@@ -1395,7 +1394,6 @@ class PowderScenarioTab(ScenarioTab):
             # mass fraction takes precedence
             self.update_vf_sb()
             self.update_mf_sb()
-        #
         index = self.methods_cb.findText(self.settings["Effective medium method"], Qt.MatchFixedString)
         self.methods_cb.setCurrentIndex(index)
         self.size_sb.setValue(self.settings["Particle size(mu)"])

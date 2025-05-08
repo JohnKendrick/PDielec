@@ -17,13 +17,13 @@
 
 import math
 import sys
-import spglib 
 from contextlib import nullcontext
 
 import numpy as np
+import spglib
 
 from PDielec.Calculator import calculate_angle, calculate_distance, calculate_torsion, cleanup_symbol
-from PDielec.Constants import avogadro_si, covalent_radii, element_to_atomic_number, atomic_number_to_element
+from PDielec.Constants import atomic_number_to_element, avogadro_si, covalent_radii, element_to_atomic_number
 from PDielec.Plotter import print_ints, print_reals, print_strings
 
 
@@ -165,9 +165,9 @@ class UnitCell:
         self.total_mass = 0.0
         self.lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
         self.units = units
-        if  not None in [a, b, c, alpha, beta, gamma]:
+        if  None not in [a, b, c, alpha, beta, gamma]:
             self.lattice = self.convert_abc_to_unitcell(a, b, c, alpha, beta, gamma)
-        elif not None in [a, b, c]:
+        elif None not in [a, b, c]:
             self.lattice[0] = a
             self.lattice[1] = b
             self.lattice[2] = c
@@ -192,6 +192,7 @@ class UnitCell:
         Returns
         -------
         None
+
         """
         self.lattice = np.array(lattice)
         self._calculate_reciprocal_lattice()
@@ -674,11 +675,10 @@ class UnitCell:
         #
         # Find the common denominator
         #
-        abc = self.find_lcd(abc_array)
-        return abc
+        return self.find_lcd(abc_array)
 
     def find_lcd(self, numbers):
-        """Find the approximated lowest common denominator
+        """Find the approximated lowest common denominator.
 
         Return the list as integers divided by the lowest common denominator
 
@@ -799,6 +799,7 @@ class UnitCell:
         fractional_coordinates
         xyz_coordinates
         nions
+
         """
         self.fractional_coordinates = np.array(coords)
         self.xyz_coordinates = self.convert_abc_to_xyz(coords)
@@ -916,8 +917,6 @@ class UnitCell:
         element_names : list
             A list of strings representing element names to be cleaned and stored.
 
-        Notes
-        -----
         """        
         return self.element_names
 
@@ -1029,8 +1028,7 @@ class UnitCell:
         rmax = 0.0
         for el in self.element_names:
             #jk print("Element name",el)
-            if radii[el] > rmax:
-                rmax = radii[el]
+            rmax = max(rmax, radii[el])
         boxSize = 2.0*scale*rmax + 0.5 + tolerance
         #jk print('rmax = ',rmax)
         # Put atoms into boxes and store the box info in Atom_box_id
@@ -1347,7 +1345,8 @@ class UnitCell:
 
         Parameters
         ----------
-        None
+        symprec : float
+            The symmetry precision
 
         Returns
         -------
@@ -1433,7 +1432,11 @@ class UnitCell:
         labels = self.get_atom_labels()
         masses  = self.get_atomic_masses()
         element_names  = self.get_element_names()
-        keep_list = []; new_positions = []; new_labels = []; new_names = []; new_masses = []
+        keep_list = []
+        new_positions = []
+        new_labels = []
+        new_names = []
+        new_masses = []
         map_new_to_old = []
         map_old_to_new = []
         index_primitive = 0
@@ -1470,7 +1473,7 @@ class UnitCell:
 
         Parameters
         ----------
-        symprec float (optional)
+        symprec : float (optional)
             The symmetry precision used in determining the spacegroup
 
         Returns
@@ -1516,5 +1519,5 @@ class UnitCell:
             )
         else:
             pmat = np.eye(3)
-            print('Centring is not recognised',centring)
+            print("Centring is not recognised",centring)
         return np.dot(np.linalg.inv(tmat), pmat)

@@ -257,15 +257,16 @@ def checkLocalExecutables():
     """
     global rootDirectory
     os.chdir(rootDirectory)
+    result = True
     if not os.path.isfile("preader"):
-        return False
+        result =  False
     if not os.path.isfile("p2cif"):
-        return False
+        result =  False
     if not os.path.isfile("pdgui"):
-        return False
+        result =  False
     if not os.path.isfile("vibanalysis"):
-        return False
-    return True
+        result =  False
+    return result
 
 def install(scripts):
     """Install a set of scripts into a specified directory.
@@ -779,9 +780,7 @@ def changePadding(all):
     maxlen = 0
     for d in all:
         maxlen = max(maxlen,len(d))
-    if maxlen < settings["padding"]:
-        maxlen = settings["padding"]
-    return maxlen
+    return max(maxlen, settings["padding"])
 
 def runTests(testlist, testType, regenerate):
     """Run the tests given in the directories stored in testlist.
@@ -1040,9 +1039,7 @@ def testForRootDirectory(path):
 
     """    
     test = os.path.join(path,"Examples")
-    if not os.path.isdir(test):
-        return False
-    return True
+    return os.path.isdir(test)
 
 def findRootDirectory(start):
     """Find the root directory starting from start.
@@ -1221,7 +1218,6 @@ def main():
         test_all.extend(test_pdgui)
         test_all.extend(test_vibanalysis)
         settings["padding"] = changePadding(test_all)
-    #
     for action in actions:
         if action == "test all":
             runTests(test_p2cif      ,"p2cif"      ,regenerate)
