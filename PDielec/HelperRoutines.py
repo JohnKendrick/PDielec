@@ -171,9 +171,14 @@ def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_defi
     else:
         dataBase = MaterialsDataBase(dataBaseName)
         sheets = dataBase.getSheetNames()
-        if name not in sheets:
-            print("Material name not valid ",name)
-        material = dataBase.getMaterial(name)
+        if debug:
+            print("getMaterial: sheets",sheets)
+        if name in sheets:
+            material = dataBase.getMaterial(name)
+        else:
+            print("Material name not valid: ",name)
+            print("Available materials:     ",sheets)
+            material = None
     return material
 
 def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method="Scattering matrix"):
@@ -300,8 +305,14 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
     previous_solution_shared = np.eye( 3 )
     crystalPermittivityFunction = dielectric.getPermittivityFunction()
     results = []
+    unitMatrix = np.eye(3)
     for v_cm1 in frequencies_cm1:
         crystalPermittivity = crystalPermittivityFunction(v_cm1)
+        #
+        # Cope with the case that the dielectric is isotropic
+        #
+        if dielectric.isScalar():
+            crystalPermittivity = crystalPermittivity*unitMatrix
         result = Calculator.solve_effective_medium_equations(method,volume_fraction,
                        particle_size_mu,particle_sigma_mu,matrixPermittivityFunction,
                        shape,depolarisation,concentration,
@@ -319,3 +330,23 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)
          sp_atr.append(spatr)
     return np.array(absorptionCoefficient), np.array(permittivity)
+
+def maxwell_garnett(em, ei, f):
+    """Calculate the dielectric constant of a mixture using Maxwell-Garnett.
+
+    Parameters
+    ----------
+    em : float
+        The dielectric constant of the host
+    ei : float
+        The dielectric constant of the inclusion
+    f : float
+        The volume fraction of the inclusion
+
+    Returns
+    -------
+    float
+        The dielectric constant of the mixture
+    """
+
+    return em*( 2*f*(ei-em)+ ei + 2*em) / ( 2*em + ei - f*(ei-em))

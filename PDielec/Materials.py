@@ -22,6 +22,7 @@ import sys
 
 import numpy as np
 import openpyxl as xl
+import math
 
 from PDielec import Calculator, DielectricFunction
 from PDielec import __file__ as PDielec_init_filename
@@ -86,6 +87,8 @@ class MaterialsDataBase:
         Reads constant permittivity data for a given material from the spreadsheet.
     readTabulatedRefractiveIndex(sheet, worksheet, density)
         Reads tabulated refractive index data for a given material from the spreadsheet.
+    readTabulatedSpectroscopy(sheet, worksheet, density)
+        Reads tabulated n and alpha (in cm-1) data for a given material from the spreadsheet.
     readTabulatedPermittivity(sheet, worksheet, density)
         Reads tabulated permittivity data for a given material from the spreadsheet.
     readLorentzDrude(sheet, worksheet, density, unitCell)
@@ -290,6 +293,7 @@ class MaterialsDataBase:
                     beta = float(worksheet[cell2].value)
                 elif "gamma" in token:
                     gamma = float(worksheet[cell2].value)
+        #
         if avector is not None and bvector is not None and cvector is not None:
             unitCell = UnitCell(a=avector,b=bvector,c=cvector)
         elif a is not None and b is not None and c is not None and alpha is not None and beta is not None and gamma is not None:
@@ -301,6 +305,8 @@ class MaterialsDataBase:
             material = self.readConstantPermittivity(sheet,worksheet,density)
         elif "tabulated" in entry and "refractive" in entry:
             material = self.readTabulatedRefractiveIndex(sheet,worksheet,density)
+        elif "tabulated" in entry and "spec" in entry:
+            material = self.readTabulatedSpectroscopy(sheet,worksheet,density)
         elif "tabulated" in entry and ("permitt" in entry or "dielec" in entry):
             material = self.readTabulatedPermittivity(sheet,worksheet,density)
         elif "lorentz" in entry and "drude" in entry:
@@ -398,6 +404,45 @@ class MaterialsDataBase:
             except Exception:
                 print("Error in Tabulated: ",a.value,c.value,d.value)
         return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
+
+    def readTabulatedSpectroscopy(self,sheet,worksheet,density):
+        """Read tabulated refractive index data from the spreadsheet.
+
+        Parameters
+        ----------
+        sheet : str
+            The worksheet name.
+        worksheet : worksheet
+            The worksheet.
+        density : float
+            The density of the material.
+
+        Returns
+        -------
+        None
+
+        """
+        # Tabulated refractive index + absorption (in cm^-1)
+        permittivities = []
+        vs_cm1 = []
+        for a, c, d in zip(worksheet["A"][1:] ,worksheet["C"][1:] , worksheet["D"][1:]):
+            if a.value is None or c.value is None or d.value is None:
+                break
+            try:
+               v = float(a.value)
+               n = float(c.value)
+               a = float(d.value)
+               k = a /(v * 4 * np.pi * math.log10(math.e))
+               nk = complex(n, k)
+               permittivity = Calculator.calculate_permittivity(nk)
+               permittivities.append(permittivity)
+               vs_cm1.append(v)
+            except Exception:
+                print("Error in Tabulated: ",a.value,c.value,d.value)
+        #return permittivities, vs_cm1
+        return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)        
+        
+
 
     def readTabulatedPermittivity(self,sheet,worksheet,density):
         """Read tabulated permittivity data from the spreadsheet.
