@@ -1044,9 +1044,12 @@ class VaspOutputReader(GenericOutputReader):
                 for v in xml.iter():
                     if v.tag == "v":
                         hessian.append( [ float(f) for f in v.text.split() ] )
-            # print('hessian', flush=True)
-            # print(hessian,flush=True)
-            # dielectric tensor
+            # dielectric tensor (epsilon_scf)
+            xml = calcxml.find('varray[@name="epsilon_scf"]')
+            if xml is not None:
+                for vxml in enumerate(xml):
+                    dielectric_tensor.append( [ float(f) for f in vxml.text.split()] )
+            # dielectric tensor (dielectric_dft)
             xml = calcxml.find('varray[@name="dielectric_dft"]')
             if xml is not None:
                 for vxml in enumerate(xml):
