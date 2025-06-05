@@ -22,7 +22,7 @@ from contextlib import nullcontext
 import numpy as np
 import spglib
 
-from PDielec.Calculator import calculate_angle, calculate_distance, calculate_torsion, cleanup_symbol
+from PDielec.Calculator import calculate_angle, calculate_distance, calculate_torsion, cleanup_symbol, similarity_transform
 from PDielec.Constants import atomic_number_to_element, avogadro_si, covalent_radii, element_to_atomic_number
 from PDielec.Plotter import print_ints, print_reals, print_strings
 
@@ -68,6 +68,8 @@ def convert_length_units(value, units_in, units_out):
                  }
     units_in  = units_in.lower()
     units_out = units_out.lower()
+    if units_in == units_out:
+        return value
     # Deal with a possible list
     wasList = False
     if isinstance(value, list):
@@ -97,6 +99,7 @@ class UnitCell:
         Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
     units : str
         An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
+        The internal unit is always the angstrom
 
     Notes
     -----
@@ -131,6 +134,7 @@ class UnitCell:
             Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
         units : str
             An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
+            The internal unit is always the angstrom
 
         Notes
         -----
@@ -164,10 +168,15 @@ class UnitCell:
         self.centres_of_mass = []
         self.total_mass = 0.0
         self.lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
-        self.units = units
+        # The internal units will be angstrom
+        self.units = "Angstrom"
         if  None not in [a, b, c, alpha, beta, gamma]:
+            abc = convert_length_units( [a, b, c],units,self.units )
+            a, b, c = tuple(abc)
             self.lattice = self.convert_abc_to_unitcell(a, b, c, alpha, beta, gamma)
         elif None not in [a, b, c]:
+            abc = convert_length_units( [a, b, c],units,self.units )
+            a, b, c = tuple(abc)
             self.lattice[0] = a
             self.lattice[1] = b
             self.lattice[2] = c
@@ -177,7 +186,7 @@ class UnitCell:
         self.lattice = np.array(self.lattice)
         self._calculate_reciprocal_lattice()
 
-    def set_lattice(self, lattice):
+    def set_lattice(self, lattice, units="Angstrom"):
         """Set the lattice parameters with a 3x3 matrix.
 
         The lattice is stored as a numpy array
@@ -194,6 +203,7 @@ class UnitCell:
         None
 
         """
+        lattice = convert_length_units(lattice,units,self.units)
         self.lattice = np.array(lattice)
         self._calculate_reciprocal_lattice()
         return
@@ -234,7 +244,7 @@ class UnitCell:
         >>> cell.write_cif('example.cif')
 
         """        
-        abc = convert_length_units( [self.a, self.b, self.c],self.units,"Angstrom" )
+        abc = [self.a, self.b, self.c]
         volume = self.getVolume("Angstrom")
         spg_symbol, spg_number = self.find_symmetry()
         # Open the filename if it is given
@@ -1014,7 +1024,6 @@ class UnitCell:
                 index_supercell.append( l )
                 new_position = [ (xyz1 + xyz2)  for xyz1, xyz2 in zip(a, tr) ]
                 fractional_supercell.append( new_position )
-                #jk print('New positions ',new_position,l,i,j,k)
         # Convert fractional supercell coordinates to xyz
         # xyz_supercell will be an np array
         xyz_supercell = np.empty_like(fractional_supercell)
@@ -1027,10 +1036,8 @@ class UnitCell:
         # calculate boxsize
         rmax = 0.0
         for el in self.element_names:
-            #jk print("Element name",el)
             rmax = max(rmax, radii[el])
         boxSize = 2.0*scale*rmax + 0.5 + tolerance
-        #jk print('rmax = ',rmax)
         # Put atoms into boxes and store the box info in Atom_box_id
         Atom_box_id = []
         for i,xyz in enumerate(xyz_supercell):
@@ -1045,7 +1052,6 @@ class UnitCell:
                 BoxAtoms[abc] = [i]
         # Calculate the neighbouring boxes for each occupied box
         for abc in BoxAtoms:
-            #jk print('Box ',abc, BoxAtoms[abc])
             a,b,c = abc
             BoxNeighbours[abc] = []
             for i in [ -1, 0, 1]:
@@ -1057,7 +1063,6 @@ class UnitCell:
         # Calculate the bonding the supercell
         bondedToAtom = {}
         for i,xyzi in enumerate(xyz_supercell):
-            #jk print('Calculating bonding to ',i,xyzi)
             bondedToAtom[i] = []
             # Find the element name for this atom in the supercell
             ip = index_supercell[i]
@@ -1077,7 +1082,6 @@ class UnitCell:
                             if dist2 < dist1:
                                 bondedToAtom[i].append(j)
                                 bondedToAtom[j].append(i)
-                                #jk print('new bond', i, j, i_el, j_el, xyzi, xyz_supercell[j], dist1, dist2)
                             # end if dist2 < dist1
                         # end if j < i
                     # end for j
@@ -1098,8 +1102,6 @@ class UnitCell:
         remainingAtoms = [ atom for atom in range(self.nions) ]
         bonds = []
         while len(remainingAtoms) > 0:
-            #jk print("Remaining atoms")
-            #jk print(remainingAtoms)
             # create a new molecule from the first atom which has no molecule assigned to it
             molID += 1
             useAtom = remainingAtoms[0]
@@ -1116,18 +1118,15 @@ class UnitCell:
                     if i in belongsToMolecule:
                         # atom i is already assigned to a molecule
                         useThisMolecule = belongsToMolecule[i]
-                        #jk print("Using this molecule", useThisMolecule)
                         # Go through all the atoms bonded to i and add to the current molecule
                         for j in bondedToAtom[i]:
                             jx = index_supercell[j]
-                            #jk print("atom j / jx is bonded to atom i",j,jx,i)
                             # The image of j in the original cell might not be available, and j might be bonded
                             if jx in remainingAtoms and j not in belongsToMolecule:
                                 # if j was not already in a molecule then we have new information
                                 moreAtomsToBeFound = True
                                 molecules[useThisMolecule].append(j)
                                 belongsToMolecule[j] = useThisMolecule
-                                #jk print("Removing atom index(j) from remaining atoms",index_supercell[j])
                                 remainingAtoms.remove(jx)
                             # The j'th atom could be already specified and we have a ring....
                             # We also need to make sure that we have unique bonds
@@ -1141,15 +1140,11 @@ class UnitCell:
                 # end for i
             # while moreAtomsToBeFound
         # until all the atoms belong to a molecule
-        #jk print('Number of molecules', molID+1)
         self.centres_of_mass = []
         self.total_mass = 0.0
         for mol_index in molecules:
-            #jk print('Molecule ',mol_index)
-            #jk print('Atoms ',molecules[mol_index])
             for atom_index in molecules[mol_index]:
                 index = index_supercell[atom_index]
-                #jk print('New atom index, old index', atom_index, index, self.element_names[index])
             # Calculate centre of mass
             mass = 0.0
             cm = np.zeros(3)
@@ -1337,6 +1332,20 @@ class UnitCell:
         self.molecules = molecules
         return
 
+    def get_species(self):
+        """Return a list of the unique species in the cell.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        A list of strings
+
+        """
+        return list(set(self.element_names))
+
     def fold_cell(self, symprec=1.0E-5):
         """Fold a cell so that any atoms outside a single cell are moved inside.
 
@@ -1521,3 +1530,4 @@ class UnitCell:
             pmat = np.eye(3)
             print("Centring is not recognised",centring)
         return np.dot(np.linalg.inv(tmat), pmat)
+

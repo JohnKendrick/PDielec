@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdielec"
-version = "8.3.0"
+version = "9.0.0"
 dependencies = [
     "setuptools",
     "scipy",
@@ -61,12 +61,13 @@ Repository    = "https://github.com/JohnKendrick/PDielec.git"
 Changelog     = "https://github.com/JohnKendrick/PDielec/blob/master/CHANGES.txt"
 
 [project.scripts]
-preader        = "PDielec.preader:main"
-p2cif          = "PDielec.p2cif:main"
-pdcompare      = "PDielec.pdcompare:main"
-pickled_reader = "PDielec.pickled_reader:main"
-vibanalysis    = "PDielec.vibanalysis:main"
-pdmake         = "PDielec.pdmake:main"
+preader              = "PDielec.preader:main"
+p2cif                = "PDielec.p2cif:main"
+pdcompare            = "PDielec.pdcompare:main"
+phonopy-pdielec-born = "PDielec.phonopy_pdielec_born:main"
+pickled_reader       = "PDielec.pickled_reader:main"
+vibanalysis          = "PDielec.vibanalysis:main"
+pdmake               = "PDielec.pdmake:main"
 
 [project.gui-scripts]
 pdgui = "PDielec.pdgui:main"

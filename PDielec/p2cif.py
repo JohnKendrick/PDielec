@@ -69,7 +69,6 @@ def read_a_file( calling_parameters):
         A tuple containing the parameters for the file reading operation. Expected to contain
         - name (str): The name of the file to be read.
         - program (str): The type of program or file format to use for reading.
-        - qmprogram (str): Specific quantum mechanics program details, if applicable.
         - debug (bool): A flag indicating whether debugging is enabled.
 
     Returns
@@ -86,8 +85,8 @@ def read_a_file( calling_parameters):
     with a `read_output` method and a `unit_cells` attribute that is a list.
 
     """    
-    name, program, qmprogram, debug = calling_parameters
-    reader = Utilities.get_reader(name,program,qmprogram)
+    name, program, debug = calling_parameters
+    reader = Utilities.get_reader(name,program)
     reader.debug = debug
     reader.read_output()
     return name,reader.get_unit_cell()
@@ -128,8 +127,6 @@ def main():
         print('           "phonopy", "qe", "vasp", "experiment", "auto"               ', file=sys.stderr)
         print("           The default is auto, so the program tries to guess the package from   ", file=sys.stderr)
         print("           the contents of the directory.  However this is not fool-proof!       ", file=sys.stderr)
-        print("           If phonopy is used it must be followed by the QM package              ", file=sys.stderr)
-        print("           in auto mode if the file was created by a phonopy VASP is assumed     ", file=sys.stderr)
         print("  -debug   to switch on more debug information                                   ", file=sys.stderr)
         sys.exit()
 
@@ -138,7 +135,6 @@ def main():
     ntokens = len(tokens)-1
     itoken = -1
     program = "auto"
-    qmprogram = "vasp"
     debug = False
     while itoken < ntokens:
         itoken += 1
@@ -148,15 +144,10 @@ def main():
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
-            if program == "phonopy":
-                itoken += 1
-                qmprogram = tokens[itoken]
         else:
             files.append(token)
 
     if program == "qe":
-        program = "quantum espresso"
-    if qmprogram == "qe":
         program = "quantum espresso"
 
     if len(program) < 1:
@@ -166,12 +157,6 @@ def main():
     if program not in ["abinit","castep","crystal","gulp","quantum espresso","vasp","phonopy","experiment","auto"]:
         print("Program is not recognised: ",program,file=sys.stderr)
         sys.exit()
-
-    if program == "phonopy":
-        if qmprogram not in ["abinit","castep","crystal","gulp","quantum espresso","vasp"]:
-            print("Phonopy QM program is not recognised: ",qmprogram,file=sys.stderr)
-            sys.exit()
-        print("  QM program used by Phonopy is: ",qmprogram,file=sys.stderr)
 
     print("  Program is ",program,file=sys.stderr)
 
@@ -191,8 +176,8 @@ def main():
     for name in files:
         prog = program
         if program == "auto":
-            prog,qmprogram = Utilities.find_program_from_name(name)
-        calling_parameters.append( (name, prog, qmprogram, debug) )
+            prog = Utilities.find_program_from_name(name)
+        calling_parameters.append( (name, prog, debug) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)
     results_map_object.wait()

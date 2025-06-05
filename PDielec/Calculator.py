@@ -2446,6 +2446,46 @@ def set_no_of_threads(nthreads):
     os.environ["BLIS_NUM_THREADS"]       = str(nthreads)
     os.environ["VECLIB_MAXIMUM_THREADS"] = str(nthreads)
 
+def compute_all_sg_permutations(rot,mat):
+    """Similarity transformation by R x M x R^-1.
+
+    This routine was taken from Phonopy.
+
+    Parameters
+    ----------
+    rot : 3x3 floats
+        The rotation matrix
+    mat : 3x3 floats
+        The matrix to be transformed
+    """
+
+    return np.dot(rot, np.dot(mat, np.linalg.inv(rot)))
+
+
+
+def set_affinity_on_worker():
+    """When a new worker process is created, the affinity is set to all CPUs."""
+    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
+    #JK Commented out for the time being
+    #JK os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
+
+def similarity_transform(rot,mat):
+    """Similarity transformation by R x M x R^-1.
+
+    This routine was taken from Phonopy.
+
+    Parameters
+    ----------
+    rot : 3x3 floats
+        The rotation matrix
+    mat : 3x3 floats
+        The matrix to be transformed
+    """
+
+    return np.dot(rot, np.dot(mat, np.linalg.inv(rot)))
+
+
+
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs."""
     #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())

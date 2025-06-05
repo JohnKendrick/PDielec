@@ -14,6 +14,13 @@ version 8.3.0
    The routine for calculating the normal modes from a hessian has been moved to Calculator.py
    The vibanalysis tool now uses Symbols, Radii and Masses from PDGui
    The normal modes no longer have to be reordered as the creation of whole molecules does not reorder the atoms
+   Changes to the way that Phonopy calculations are handled
+       There is no longer any need for a qm_program as all the information will come from Phonopy
+       A new command using Phonopy API, phonopy-pdielec-born.  
+           The command reads a BORN file and writes out a file BORN_PDIELEC which has all atoms represented
+           The new command uses only Phonopy modules, no PDielec modules
+       All the Phonopy examples have been altered to use the new method
+       The option for specifiying a qm_program has been removed
 version 8.2.0
    A -threads or --threads option has been added to pdgui.
    Added QT6 support by including the qtpy module

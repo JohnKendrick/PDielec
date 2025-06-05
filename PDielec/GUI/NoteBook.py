@@ -49,8 +49,6 @@ class NoteBook(QWidget):
         The parent widget.
     program : str
         Description or identifier of the program associated with the notebook.
-    qm_program : str
-        Description or identifier of the qm program associated with phonopy
     filename : str
         Name of the file, if any, associated with the notebook.
     spreadsheet : type
@@ -111,7 +109,7 @@ class NoteBook(QWidget):
 
     """
 
-    def __init__(self, parent, program, qm_program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario="powder",ncpus=0, threading=False):
+    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario="powder",ncpus=0, threading=False):
         """Initialise the main NoteBook.
 
         This method initializes the main widget with all necessary components
@@ -125,8 +123,6 @@ class NoteBook(QWidget):
             The parent widget which this widget is a part of.
         program : str
             Represents the program used to generate the output
-        qm_program : str
-            Represents the QM program used by phonopy
         filename : str
             The path to a file that is relevant for initializing the application.
             This could be a configuration file, a data file, etc.
@@ -202,7 +198,7 @@ class NoteBook(QWidget):
         #
         self.tabs = QTabWidget(self)
         self.tabs.currentChanged.connect(self.on_tabs_currentChanged)
-        self.mainTab = MainTab(self, program, qm_program, filename, spreadsheet, debug=debug)
+        self.mainTab = MainTab(self, program, filename, spreadsheet, debug=debug)
         self.settingsTab = SettingsTab(self, debug=debug)
         if filename != "" and not self.scripting:
             debugger.print("Refreshing settingsTab in notebook initialisation - filename",filename)

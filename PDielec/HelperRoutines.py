@@ -152,12 +152,11 @@ def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_defi
 
     """
     # Let's see if the name is a file name that can be read
-    program,qm_program = Utilities.find_program_from_name(name)
+    program = Utilities.find_program_from_name(name)
     if debug:
         print(f"getMaterial: program = {program}")
-        print(f"getMaterial: qmprogram = {qm_program}")
     if len(program) > 1:
-        reader = Utilities.get_reader(name,program,qm_program,debug)
+        reader = Utilities.get_reader(name,program,debug)
         reader.read_output()
         if debug:
             print("getMaterial: reader.print()")
