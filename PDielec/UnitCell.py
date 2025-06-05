@@ -1335,6 +1335,8 @@ class UnitCell:
     def get_species(self):
         """Return a list of the unique species in the cell.
 
+        The unique list needs to maintain the order seen in the original list
+
         Parameters
         ----------
         None
@@ -1344,7 +1346,11 @@ class UnitCell:
         A list of strings
 
         """
-        return list(set(self.element_names))
+        result = []
+        for name in self.element_names:
+            if name not in result:
+                result.append(name)
+        return result
 
     def fold_cell(self, symprec=1.0E-5):
         """Fold a cell so that any atoms outside a single cell are moved inside.
