@@ -31,8 +31,8 @@ from PDielec.Constants  import angs2bohr, amu, wavenumber
 def longitudinal_frequencies(file):
     '''Calculate longitudinal frequencies'''
     # Set up the reader for this file
-    program,qmprogram = Utilities.find_program_from_name(file)
-    reader = Utilities.get_reader(file,program,qmprogram)
+    program = Utilities.find_program_from_name(file)
+    reader = Utilities.get_reader(file,program)
     # Initiate reading of the file
     reader.read_output()
     # Extract the information we need for calculating the longitudinal modes
