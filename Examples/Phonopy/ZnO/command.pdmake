@@ -1,2 +1,2 @@
 PDGui Phonopy for ZnO
-pdgui phonopy -qmprogram vasp OUTCAR.born
+pdgui phonopy phonopy.yaml

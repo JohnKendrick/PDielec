@@ -1,2 +1,2 @@
 PDGUI Phonopy-Vasp for Urea
-pdgui phonopy -qmprogram vasp vasprun.xml
+pdgui phonopy qpoints.yaml

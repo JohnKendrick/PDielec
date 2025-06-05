@@ -1,2 +1,2 @@
 PDGUI Phonopy-QE for Urea
-pdgui phonopy -qmprogram qe pwscf.xml
+pdgui phonopy phonopy.yaml

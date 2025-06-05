@@ -3,6 +3,15 @@
 
 This calculation was performed using the VASP interface.  A supercell of 1x1x1 was used for a Gamma point calculation
 The input for the VASP calculations can be found in the VASP.Born directory
+The POSCAR and OUTCAR files are linked to corresponding files in the VASP.Born directory.
+The Born charges are calculated using Phonopy and the Phonopy helper script from PDielec, phonopy-pdielec-born.
+The final charges for all atoms in the system are stored in BORN_PDIELEC
+
+```
+phonopy-vasp-born --outcar OUTCAR
+phonopy-pdielec-born BORN_PDIELEC
+```
+
 The calculation of the displaced energies and forces was prepared with;
 
 ```
@@ -37,10 +46,10 @@ The output from this command is stored in qpoints.yaml and phonopy.yaml
 | qpoints.yaml      | phonopy qpoints file                         |
 | FORCE_SETS        | phonopy Force sets file                      |
 | KPOINTS           | VASP KPOINTS file                            |
-| OUTCAR            | File linked to OUTCAR.born                   |
-| OUTCAR.born       | VASP output file for Born charges            |
+| OUTCAR            | Link to the OUTCAR in VASP.born              |
+| POSCAR            | Link to the POSCAR in VASP.born              |
 | results.ref.xlsx  | Reference results for test suite             |
 | script.py         | pdgui test script                            |
-| VASP.Born/        | Directory containing born charge calculation |
+| VASP.Born/        | Directory containing Born charge calculation |
 
 [Back](..)

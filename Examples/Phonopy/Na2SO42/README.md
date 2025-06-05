@@ -17,6 +17,14 @@ phonopy -f */vasprun.xml
 
 The Born charges were calculated using Vasp on a non-supercell and the output is in the VASP/OUTCAR file.  The appropriate KPOINTS and INCAR files are KPOINTS.born and INCAR.born also in the VASP/ directory
 Generally speaking the KPOINTS file for the Born charge calculation will be different to that used for the forces calculation. 
+A BORN file was created using the Phonopy command, phonopy_vasp_born.
+The BORN file only contains symmetry unique atoms.
+A PDielec command phonopy_pdielec_born was used to create BORN_PDIELEC which contains the Born charges of all atoms.
+
+```
+phonopy-vasp-born > BORN
+phonopy-pdielec-born BORN_PDIELEC
+```
 
 phonopy was used to calculate and store the dynamical matrix at the Gamma point with;
 
@@ -39,8 +47,9 @@ phononwebsite at http://henriquemiranda.github.io/phononwebsite/
 | disp.yaml          | phonopy file generated running phonopy                    |
 | FORCE_SETS         | phonopy file generated running phonopy                    |
 | KPOINTS            | The VASP KPOINTS file                                     |
-| OUTCAR             | a link to OUTCAR.born                                     |
-| OUTCAR.born        | VASP output containing born charges                       |
+| vasprun.xml        | a link to vasprun.xml                                     |
+| BORN               | The Phonopy BORN file                                     |
+| BORN_PDIELEC       | The PDielec BORN file                                     |
 | SPOSCAR            | Supercell atom positions for VASP                         |
 | VASP/              | Directory used to calculat Born charges (see OUTCAR.born) |
 | command.pdmake     | pdmake commands for test suite                            |
