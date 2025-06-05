@@ -575,17 +575,17 @@ class MainTab(QWidget):
         elif self.settings["Program"].lower() == "crystal":
             selfilter = "Crystal (*.out  *.log)"
         elif self.settings["Program"].lower() == "phonopy":
-            selfilter = "Phonopy (*)"
+            selfilter = "Phonopy (*.yaml)"
         elif self.settings["Program"].lower() == "experiment":
             selfilter = "Experiment (*.exp)"
         elif self.settings["Program"].lower() == "pdgui":
             selfilter = "PDGui (*.py)"
         else:
             selfilter = "All files (*)"
-        filename,myfilter = compat.getopenfilename(self,"Open MM/QM Output file","","Abinit (*.out *.abo);;Castep (*.castep);;Crystal (*.out  *.log);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*);;Quantum Espresso (*.dynG);;Vasp (OUTCAR*);;PDGui (*.py);;All files(*)",selfilter)
+        filename,myfilter = compat.getopenfilename(self,"Open MM/QM Output file","","Abinit (*.out *.abo);;Castep (*.castep);;Crystal (*.out  *.log);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (*.yaml);;Quantum Espresso (*.dynG);;Vasp (OUTCAR*);;PDGui (*.py);;All files(*)",selfilter)
         # Process the filename
         if filename != "":
-            program,qmprogram = find_program_from_name(filename)
+            program = find_program_from_name(filename)
             if program == "":
                 debugger.print("Program not found from filename",filename)
                 debugger.print("Proceeding with defaults",self.settings["Program"])
@@ -682,7 +682,7 @@ class MainTab(QWidget):
         debugger.print("Start:: on_file_le_return ", self.file_le.text())
         filename = self.file_le.text()
         if filename != "":
-            program,qmprogram = find_program_from_name(filename)
+            program = find_program_from_name(filename)
             if program == "":
                 debugger.print("Finished:: on_file_le_return ")
                 return
