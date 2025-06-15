@@ -17,9 +17,7 @@
 
 The program reads the phonopy.yaml file and the BORN file.
 The BORN file must be created using the standard Phonopy tools
-The program writes out the static permittivity and the Born charges
-    in a format similar to Phonopy's.   But all atoms in the unit cell are in the file.
-    Not just the symmetry unique ones.
+The program writes out the static permittivity and the Born charges in a format similar to Phonopy's.   But all atoms in the unit cell are in the file.  Not just the symmetry unique ones.
 
 phonopy-pdielec-born BORN-PDIELEC
     This command writes out the permitivity and the Born charges to the file "BORN-PDIELEC"

@@ -677,13 +677,16 @@ class OpenGLWidget(QOpenGLWidget):
         The orientation is set using gluLookAt to define the modelview matrix
         The rotation parts of the transformation matrix are maintained
         The translation part is set to unity.
+
                              Points out    Points up
+
                    "x" means     x-axis       y-axis
                    "y" means     y-axis       z-axis
                    "z" means     z-axis       x-axis
                    "a" means     a-axis       aXb
                    "b" means     b-axis       bXc
                    "c" means     c-axis       cXa
+
         The use of a capital letter means the axes are reversed
 
         Parameters
@@ -731,8 +734,7 @@ class OpenGLWidget(QOpenGLWidget):
         """Set the up orientations for the surface hkl.
 
         hkl defines the surface as (hkl)
-        uvw defines a normal to the surface (hkl)
-            [uvw] is made orthogonal to the (hkl) normal
+        uvw defines a normal to the surface (hkl), [uvw] is made orthogonal to the (hkl) normal
         if (hkl) is (000) [uvw] is used to define the unique direction
 
         Parameters
@@ -831,6 +833,7 @@ class OpenGLWidget(QOpenGLWidget):
         """Set the up orientations for the cell.
 
                              Points out    Points up  Points across
+
                    "x" means     x-axis       y-axis         z-axis
                    "y" means     y-axis       z-axis         x-axis
                    "z" means     z-axis       x-axis         y-axis
@@ -840,6 +843,7 @@ class OpenGLWidget(QOpenGLWidget):
                    "a*" means    a*-axis      a*xb*          a*x(a*xb*)
                    "b*" means    b*-axis      b*xc*          b*x(b*xc*)
                    "c*" means    c*-axis      c*xa*          c*x(c*xa*)
+
         A capital letter indicates that the up and out designations are reversed
 
 
