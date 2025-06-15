@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""PDielec interface program to Phonopy
+"""PDielec interface program to Phonopy.
 
 The program reads the phonopy.yaml file and the BORN file.
 The BORN file must be created using the standard Phonopy tools
@@ -26,15 +26,15 @@ phonopy-pdielec-born BORN-PDIELEC
 
 """
 
-import numpy as np
-import sys
 import os
+import sys
+
 import phonopy
-from phonopy import Phonopy
-from phonopy.structure.atoms import PhonopyAtoms
 from phonopy.file_IO import parse_BORN
 
+
 def show_usage():
+    """Show the usage message."""
     print("")
     print("USAGE:")
     print("phonopy-pdielec-born [--symprec 1.0E-5] [-input BORN] [-nosym] outputfilename")
@@ -44,7 +44,7 @@ def show_usage():
     print(" -nosym   Stops symmetry being used in parsing the BORN file")
 
 def main():
-    """Main routine for the phonopy-pdielec-born command.
+    """Define the main routine for the phonopy-pdielec-born command.
 
     The routine makes extensive use of Phonopy's API
     It reads the phonopy.yaml file to determine the primitive cell

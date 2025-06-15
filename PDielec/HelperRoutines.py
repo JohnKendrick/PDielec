@@ -346,6 +346,6 @@ def maxwell_garnett(em, ei, f):
     -------
     float
         The dielectric constant of the mixture
-    """
 
+    """
     return em*( 2*f*(ei-em)+ ei + 2*em) / ( 2*em + ei - f*(ei-em))

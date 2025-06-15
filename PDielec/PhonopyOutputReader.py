@@ -159,21 +159,12 @@ class PhonopyOutputReader(GenericOutputReader):
             self.primitive_transformation = data_p["primitive_matrix"]
         else:
             self.primitive_transformation = None
-        if "primitive_cell" in data_p:
-            primitive_cell = self.read_cell(data_p["primitive_cell"])
-        else:
-            primitive_cell = None
-        if "unit_cell" in data_p:
-            unit_cell = self.read_cell(data_p["unit_cell"])
-        else:
-            unit_cell = None
+        primitive_cell = self.read_cell(data_p["primitive_cell"]) if "primitive_cell" in data_p else None
+        unit_cell = self.read_cell(data_p["unit_cell"]) if "unit_cell" in data_p else None
         #
         # Use the cell that is consistent with the primitive_axes
         #
-        if primitive_axes is not None:
-            cell = primitive_cell
-        else:
-            cell = unit_cell
+        cell = primitive_cell if primitive_axes is not None else unit_cell
         self._old_masses = cell.get_atomic_masses()
         self.nions = len(self._old_masses)
         self.species = cell.get_species()
@@ -238,6 +229,7 @@ class PhonopyOutputReader(GenericOutputReader):
         Returns
         -------
         cell : unitCell
+
         """        
         lattice = yaml["lattice"]
         points = yaml["points"]
@@ -267,8 +259,9 @@ class PhonopyOutputReader(GenericOutputReader):
         --------
         zerof_optical_dielectric : the zero frequency optical permittivity
         born_charges             : the born charges
+
         """        
-        with open(filename, "r") as fd:
+        with open(filename) as fd:
             #
             # Skip a line
             #
@@ -277,9 +270,9 @@ class PhonopyOutputReader(GenericOutputReader):
             # Read dielectric constant
             #
             line = fd.readline().split()
-            if not len(line) == 9:
+            if len(line) != 9:
                 print("BORN file format of line 2 is incorrect")
-                return None
+                return
             self.zerof_optical_dielectric = np.reshape([float(x) for x in line], (3, 3))
             #
             # Read Born effective charge
@@ -289,9 +282,9 @@ class PhonopyOutputReader(GenericOutputReader):
                 line = fd.readline().split()
                 if len(line) == 0:
                     print("Number of lines for Born effect charge is not enough.")
-                    return None
-                if not len(line) == 9:
+                    return
+                if len(line) != 9:
                     print("BORN file format of line %d is incorrect" % (i + 3))
-                    return None
+                    return
                 self.born_charges[i] = np.reshape([float(x) for x in line], (3, 3))
         return

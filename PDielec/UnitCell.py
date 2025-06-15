@@ -22,7 +22,12 @@ from contextlib import nullcontext
 import numpy as np
 import spglib
 
-from PDielec.Calculator import calculate_angle, calculate_distance, calculate_torsion, cleanup_symbol, similarity_transform
+from PDielec.Calculator import (
+    calculate_angle,
+    calculate_distance,
+    calculate_torsion,
+    cleanup_symbol,
+)
 from PDielec.Constants import atomic_number_to_element, avogadro_si, covalent_radii, element_to_atomic_number
 from PDielec.Plotter import print_ints, print_reals, print_strings
 
@@ -197,6 +202,9 @@ class UnitCell:
         lattice : 3x3 list
             The lattice vectors stored a ( a b c )
             where a, b, c are 3 vectors in xyz space.
+        units : str
+            A string indicating the units used in lattice.
+            Internally the units are Angstrom
 
         Returns
         -------

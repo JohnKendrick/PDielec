@@ -2457,8 +2457,8 @@ def compute_all_sg_permutations(rot,mat):
         The rotation matrix
     mat : 3x3 floats
         The matrix to be transformed
-    """
 
+    """
     return np.dot(rot, np.dot(mat, np.linalg.inv(rot)))
 
 
@@ -2480,14 +2480,6 @@ def similarity_transform(rot,mat):
         The rotation matrix
     mat : 3x3 floats
         The matrix to be transformed
+
     """
-
     return np.dot(rot, np.dot(mat, np.linalg.inv(rot)))
-
-
-
-def set_affinity_on_worker():
-    """When a new worker process is created, the affinity is set to all CPUs."""
-    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
-    #JK Commented out for the time being
-    #JK os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
