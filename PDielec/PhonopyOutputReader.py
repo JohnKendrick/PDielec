@@ -164,7 +164,7 @@ class PhonopyOutputReader(GenericOutputReader):
         #
         # Use the cell that is consistent with the primitive_axes
         #
-        cell = primitive_cell if primitive_axes is not None else unit_cell
+        cell = primitive_cell
         self._old_masses = cell.get_atomic_masses()
         self.nions = len(self._old_masses)
         self.species = cell.get_species()
