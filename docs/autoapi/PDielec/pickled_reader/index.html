@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.preader" href="../preader/index.html" /><link rel="prev" title="PDielec.pdmake" href="../pdmake/index.html" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.preader" href="../preader/index.html" /><link rel="prev" title="PDielec.phonopy_pdielec_born" href="../phonopy_pdielec_born/index.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PDielec.pickled_reader - PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -358,7 +360,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pickled_reader.main">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pickled_reader.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pickled_reader.main" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pickled_reader.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pickled_reader.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pickled_reader.main" title="Link to this definition">¶</a></dt>
 <dd><p>Enter point for main program.</p>
 <blockquote>
 <div><p>his function reads a serialized object from a pickle file specified as the first command line argument. It deserializes objects from the file until it reaches the end of the file and then iterates through these objects, printing their details and the details of their last unit cell.</p>
@@ -389,7 +391,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pickled_reader.print_help">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pickled_reader.</span></span><span class="sig-name descname"><span class="pre">print_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pickled_reader.print_help" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pickled_reader.</span></span><span class="sig-name descname"><span class="pre">print_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pickled_reader.html#print_help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pickled_reader.print_help" title="Link to this definition">¶</a></dt>
 <dd><p>Print help information to standard error and exit the program.</p>
 <p>This function prints out instructions for using a command-line tool that reads in a pickled file. The file should have been created with a specific flag (‘-pickle’) using the ‘preader’ command. It also outputs the version of the program.</p>
 <p>No parameters are accepted or required by this function.</p>
@@ -419,14 +421,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../pdmake/index.html">
+          <a class="prev-page" href="../phonopy_pdielec_born/index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PDielec.pdmake</div>
+                <div class="title">PDielec.phonopy_pdielec_born</div>
                 
               </div>
             </a>
@@ -480,7 +482,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

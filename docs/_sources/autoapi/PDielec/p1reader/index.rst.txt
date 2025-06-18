@@ -65,7 +65,6 @@ Module Contents
        - If less than one argument is provided.
        - If the `-version` argument is provided.
        - If no program is specified or an unrecognized program is given.
-       - If `phonopy` is chosen but an unrecognized quantum mechanics (QM) program is specified.
        - If the specified file does not exist.
        - When critical configuration issues are encountered.
 

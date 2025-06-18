@@ -47,35 +47,9 @@ Module Contents
    transformation : 3x3 list
        A transformation matrix to create the primitive cell
 
-   Notes
-   -----
-
    See Also
    --------
    :class:`~PDielec.UnitCell.UnitCell`
-
-
-
-   .. py:method:: calculateNormalModes(modes)
-
-      Calculate and return the normal modes of the primitive cell.
-
-      Normal modes are initially an np array of nmodes, 3*nions.
-      The number of modes stays the same but the number of ions reduces.
-
-      Parameters
-      ----------
-      modes : a list of floats
-          A list of the modes to be used in the calculation
-
-      Returns
-      -------
-      np.ndarray
-          Array representing the normal modes of the supercell. Initially, this is an array
-          of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the
-          number of ions per mode. The shape may vary as the number of ions increases with the
-          number of images.
-
 
 
 

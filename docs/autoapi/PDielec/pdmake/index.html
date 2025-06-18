@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.pickled_reader" href="../pickled_reader/index.html" /><link rel="prev" title="PDielec.pdgui" href="../pdgui/index.html" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.phonopy_pdielec_born" href="../phonopy_pdielec_born/index.html" /><link rel="prev" title="PDielec.pdgui" href="../pdgui/index.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PDielec.pdmake - PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -472,7 +474,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.changePadding">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">changePadding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.changePadding" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">changePadding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#changePadding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.changePadding" title="Link to this definition">¶</a></dt>
 <dd><p>Change the padding based on the maximum length of elements in a list or the predefined setting.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
@@ -499,7 +501,7 @@ it returns the maximum length found.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.checkLocalExecutables">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">checkLocalExecutables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.checkLocalExecutables" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">checkLocalExecutables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#checkLocalExecutables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.checkLocalExecutables" title="Link to this definition">¶</a></dt>
 <dd><p>Check to see if the rootDirectory has the executables we need.</p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
@@ -519,7 +521,7 @@ it returns the maximum length found.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.compareFiles">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">compareFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.compareFiles" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">compareFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#compareFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.compareFiles" title="Link to this definition">¶</a></dt>
 <dd><p>Compare two text files for differences.</p>
 <p>This function opens and reads two text files line by line and then compares them word by word,
 ignoring certain punctuation marks. If any differences are found in either numeric values
@@ -560,7 +562,7 @@ floating-point inaccuracies.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.compareNmaFiles">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">compareNmaFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.compareNmaFiles" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">compareNmaFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#compareNmaFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.compareNmaFiles" title="Link to this definition">¶</a></dt>
 <dd><p>Compare two NMA files for differences within a tolerance.</p>
 <section id="id6">
 <h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
@@ -590,7 +592,7 @@ and the total number of differences in these values are counted and returned.</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.findRootDirectory">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">findRootDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.findRootDirectory" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">findRootDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#findRootDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.findRootDirectory" title="Link to this definition">¶</a></dt>
 <dd><p>Find the root directory starting from start.</p>
 <section id="id9">
 <h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
@@ -610,7 +612,7 @@ and the total number of differences in these values are counted and returned.</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.install">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scripts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.install" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scripts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#install"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.install" title="Link to this definition">¶</a></dt>
 <dd><p>Install a set of scripts into a specified directory.</p>
 <section id="id11">
 <h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
@@ -637,7 +639,7 @@ may raise exceptions related to the execution of shell commands.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.main">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.main" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.main" title="Link to this definition">¶</a></dt>
 <dd><p>Process command line arguments and execute actions (main routine).</p>
 <p>This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.</p>
 <section id="id13">
@@ -683,7 +685,7 @@ may raise exceptions related to the execution of shell commands.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.mychdir">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">mychdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.mychdir" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">mychdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#mychdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.mychdir" title="Link to this definition">¶</a></dt>
 <dd><p>Local version of os.chdir with some testing.</p>
 <section id="id16">
 <h3>Notes<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
@@ -694,7 +696,7 @@ additional testing or functionality tailored to specific needs.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.readNmaFile">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">readNmaFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.readNmaFile" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">readNmaFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#readNmaFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.readNmaFile" title="Link to this definition">¶</a></dt>
 <dd><p>Read and extract data from an NMA file.</p>
 <section id="id17">
 <h3>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
@@ -732,7 +734,7 @@ All extracted values are then summed up and returned.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.readPdMakefile">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">readPdMakefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.readPdMakefile" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">readPdMakefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#readPdMakefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.readPdMakefile" title="Link to this definition">¶</a></dt>
 <dd><p>Read a custom makefile and return the title and instructions.</p>
 <section id="id21">
 <h3>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
@@ -785,7 +787,7 @@ stated in the function definition.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.redirect">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">redirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.redirect" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">redirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#redirect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.redirect" title="Link to this definition">¶</a></dt>
 <dd><p>Redirect the standard output to a specified file.</p>
 <p>This function is a context manager that redirects <cite>sys.stdout</cite> to a file,
 optionally suppressing stderr output if not in debug mode. It is useful for
@@ -824,7 +826,7 @@ the Logger class.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runClean">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runClean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runClean" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runClean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runClean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runClean" title="Link to this definition">¶</a></dt>
 <dd><p>Clean old results from the Examples directory.</p>
 <p>This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.</p>
 <section id="id28">
@@ -844,7 +846,7 @@ the Logger class.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runP2CifTest">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runP2CifTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runP2CifTest" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runP2CifTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runP2CifTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runP2CifTest" title="Link to this definition">¶</a></dt>
 <dd><p>Run a test on p2cif.</p>
 <section id="id30">
 <h3>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h3>
@@ -861,7 +863,7 @@ the Logger class.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runPDGuiTest">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPDGuiTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runPDGuiTest" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPDGuiTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPDGuiTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPDGuiTest" title="Link to this definition">¶</a></dt>
 <dd><p>Run a pdgui test.</p>
 <section id="id31">
 <h3>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h3>
@@ -880,7 +882,7 @@ the Logger class.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runPdMakefile">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPdMakefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdmakefile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runPdMakefile" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPdMakefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdmakefile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPdMakefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPdMakefile" title="Link to this definition">¶</a></dt>
 <dd><p>Run a specific pdMakefile.</p>
 <section id="id32">
 <h3>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h3>
@@ -904,7 +906,7 @@ Then the instructions are processed according to the context (preader, pdgui, p2
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runPreaderTest">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPreaderTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runPreaderTest" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPreaderTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPreaderTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPreaderTest" title="Link to this definition">¶</a></dt>
 <dd><p>Run a preader test.</p>
 <section id="id34">
 <h3>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h3>
@@ -921,7 +923,7 @@ Then the instructions are processed according to the context (preader, pdgui, p2
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runPyPi">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPyPi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runPyPi" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPyPi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPyPi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPyPi" title="Link to this definition">¶</a></dt>
 <dd><p>Create PyPi distribution files, restricted by OS.</p>
 <p>This function changes the current working directory to <cite>rootDirectory</cite>
 and runs a series of shell commands that clean up previous distribution files and
@@ -930,7 +932,7 @@ create new PyPi distribution files. The function is not designed to run on Windo
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runTests">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runTests" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runTests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runTests" title="Link to this definition">¶</a></dt>
 <dd><p>Run the tests given in the directories stored in testlist.</p>
 <section id="id35">
 <h3>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h3>
@@ -947,7 +949,7 @@ create new PyPi distribution files. The function is not designed to run on Windo
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.runVibAnalysis">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runVibAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.runVibAnalysis" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runVibAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runVibAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runVibAnalysis" title="Link to this definition">¶</a></dt>
 <dd><p>Run a vibanalysis test.</p>
 <section id="id36">
 <h3>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h3>
@@ -964,7 +966,7 @@ create new PyPi distribution files. The function is not designed to run on Windo
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.testForRootDirectory">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">testForRootDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.testForRootDirectory" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">testForRootDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#testForRootDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.testForRootDirectory" title="Link to this definition">¶</a></dt>
 <dd><p>Test if a given path contains a subdirectory named ‘Examples’.</p>
 <p>This function checks if the given path has a direct subdirectory
 called ‘Examples’ and returns a boolean indicating the result.</p>
@@ -987,7 +989,7 @@ otherwise returns False.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.pdmake.usage">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.pdmake.usage" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.usage" title="Link to this definition">¶</a></dt>
 <dd><p>Print usage instructions for the command line tool.</p>
 <p>This function outputs instructions to <cite>sys.stderr</cite> for using the command line tool, including available commands and options. It also handles platform-specific instructions for Linux systems.</p>
 <dl class="simple">
@@ -1059,12 +1061,12 @@ otherwise returns False.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../pickled_reader/index.html">
+          <a class="next-page" href="../phonopy_pdielec_born/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.pickled_reader</div>
+                <div class="title">PDielec.phonopy_pdielec_born</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1159,7 +1161,7 @@ otherwise returns False.</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

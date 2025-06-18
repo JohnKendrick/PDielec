@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -394,7 +396,6 @@
 <span class="sd">        A tuple containing the parameters for the file reading operation. Expected to contain</span>
 <span class="sd">        - name (str): The name of the file to be read.</span>
 <span class="sd">        - program (str): The type of program or file format to use for reading.</span>
-<span class="sd">        - qmprogram (str): Specific quantum mechanics program details, if applicable.</span>
 <span class="sd">        - debug (bool): A flag indicating whether debugging is enabled.</span>
 
 <span class="sd">    Returns</span>
@@ -411,8 +412,8 @@
 <span class="sd">    with a `read_output` method and a `unit_cells` attribute that is a list.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="n">name</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">qmprogram</span><span class="p">,</span> <span class="n">debug</span> <span class="o">=</span> <span class="n">calling_parameters</span>
-    <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">debug</span> <span class="o">=</span> <span class="n">calling_parameters</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">program</span><span class="p">)</span>
     <span class="n">reader</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
     <span class="n">reader</span><span class="o">.</span><span class="n">read_output</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">name</span><span class="p">,</span><span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span></div>
@@ -456,8 +457,6 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           &quot;phonopy&quot;, &quot;qe&quot;, &quot;vasp&quot;, &quot;experiment&quot;, &quot;auto&quot;               &#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           The default is auto, so the program tries to guess the package from   &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           the contents of the directory.  However this is not fool-proof!       &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           If phonopy is used it must be followed by the QM package              &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           in auto mode if the file was created by a phonopy VASP is assumed     &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  -debug   to switch on more debug information                                   &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
@@ -466,7 +465,6 @@
     <span class="n">ntokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
     <span class="n">itoken</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
-    <span class="n">qmprogram</span> <span class="o">=</span> <span class="s2">&quot;vasp&quot;</span>
     <span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -476,15 +474,10 @@
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-program&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">program</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
-                <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">qmprogram</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
-        <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;quantum espresso&quot;</span>
-    <span class="k">if</span> <span class="n">qmprogram</span> <span class="o">==</span> <span class="s2">&quot;qe&quot;</span><span class="p">:</span>
         <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;quantum espresso&quot;</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">program</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -494,12 +487,6 @@
     <span class="k">if</span> <span class="n">program</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;castep&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;gulp&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span><span class="p">,</span><span class="s2">&quot;phonopy&quot;</span><span class="p">,</span><span class="s2">&quot;experiment&quot;</span><span class="p">,</span><span class="s2">&quot;auto&quot;</span><span class="p">]:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Program is not recognised: &quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">qmprogram</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;abinit&quot;</span><span class="p">,</span><span class="s2">&quot;castep&quot;</span><span class="p">,</span><span class="s2">&quot;crystal&quot;</span><span class="p">,</span><span class="s2">&quot;gulp&quot;</span><span class="p">,</span><span class="s2">&quot;quantum espresso&quot;</span><span class="p">,</span><span class="s2">&quot;vasp&quot;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Phonopy QM program is not recognised: &quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  QM program used by Phonopy is: &quot;</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Program is &quot;</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
@@ -519,15 +506,14 @@
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="n">prog</span> <span class="o">=</span> <span class="n">program</span>
         <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
-            <span class="n">prog</span><span class="p">,</span><span class="n">qmprogram</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">calling_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">prog</span><span class="p">,</span> <span class="n">qmprogram</span><span class="p">,</span> <span class="n">debug</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">prog</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">calling_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">prog</span><span class="p">,</span> <span class="n">debug</span><span class="p">)</span> <span class="p">)</span>
     <span class="c1"># Calculate the results in parallel</span>
     <span class="n">results_map_object</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map_async</span><span class="p">(</span><span class="n">read_a_file</span><span class="p">,</span><span class="n">calling_parameters</span><span class="p">)</span>
     <span class="n">results_map_object</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">results_map_object</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">_name</span><span class="p">,</span><span class="n">cell</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="n">cell</span><span class="o">.</span><span class="n">write_cif</span><span class="p">()</span>
-    <span class="c1">#</span>
     <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
     <span class="k">return</span></div>
@@ -568,7 +554,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

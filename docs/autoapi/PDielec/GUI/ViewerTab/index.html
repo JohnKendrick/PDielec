@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -332,8 +334,8 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow" title="PDielec.GUI.ViewerTab.PrimitiveTransformWindow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrimitiveTransformWindow</span></code></a></p></td>
-<td><p>A GUI window for displaying and editing the primitive transform matrix.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow" title="PDielec.GUI.ViewerTab.TransformWindow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TransformWindow</span></code></a></p></td>
+<td><p>A GUI window for displaying and editing the transform matrix.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab" title="PDielec.GUI.ViewerTab.ViewerTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ViewerTab</span></code></a></p></td>
 <td><p>A class representing a viewer tab in a graphical user interface, specifically for visualizing molecular structures and vibrational modes.</p></td>
@@ -345,14 +347,14 @@
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ViewerTab.</span></span><span class="sig-name descname"><span class="pre">PrimitiveTransformWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitive_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Primitive</span> <span class="pre">Transform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ViewerTab.</span></span><span class="sig-name descname"><span class="pre">TransformWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Cell</span> <span class="pre">Transform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#TransformWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QDialog</span></code></p>
-<p>A GUI window for displaying and editing the primitive transform matrix.</p>
+<p>A GUI window for displaying and editing the transform matrix.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>primitive_transform<span class="classifier">3x3 array of floats</span></dt><dd><p>The current transformation matrix</p>
+<dt>transform<span class="classifier">3x3 array of floats</span></dt><dd><p>The current transformation matrix</p>
 </dd>
 <dt>message<span class="classifier">str</span></dt><dd><p>Message to displayed</p>
 </dd>
@@ -365,7 +367,7 @@
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>primitive_transform<span class="classifier">3x3 array of strs</span></dt><dd><p>The primitive transform matrix</p>
+<dt>transform<span class="classifier">3x3 array of strs</span></dt><dd><p>The transform matrix</p>
 </dd>
 <dt>message<span class="classifier">str</span></dt><dd><p>The message displayed at the top of the window.</p>
 </dd>
@@ -378,18 +380,18 @@
 <section id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>reDrawPrimitiveTable</dt><dd><p>draw the primitive transform table</p>
+<dt>reDrawTransformTable</dt><dd><p>draw the transform table</p>
 </dd>
-<dt>getPrimitiveTransform</dt><dd><p>Return the primitive transform matrix</p>
+<dt>getTransform</dt><dd><p>Return the transform matrix</p>
 </dd>
-<dt>on_primitive_transform_table_itemChanged</dt><dd><p>Handles a change in the primitive transform table</p>
+<dt>on_transform_table_itemChanged</dt><dd><p>Handles a change in the transform table</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.getPrimitiveTransform">
-<span class="sig-name descname"><span class="pre">getPrimitiveTransform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.getPrimitiveTransform" title="Link to this definition">¶</a></dt>
-<dd><p>Return the primtive transformation matrix</p>
-<p>The primitive transformation is stored as a 3x3 list of strings.
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.getTransform">
+<span class="sig-name descname"><span class="pre">getTransform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#TransformWindow.getTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.getTransform" title="Link to this definition">¶</a></dt>
+<dd><p>Return the primtive transformation matrix.</p>
+<p>The transformation is stored as a 3x3 list of strings.
 The strings are treated as python commands to return a value.:w</p>
 <section id="id1">
 <h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
@@ -402,9 +404,9 @@ The strings are treated as python commands to return a value.:w</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.on_primitive_transform_table_itemChanged">
-<span class="sig-name descname"><span class="pre">on_primitive_transform_table_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.on_primitive_transform_table_itemChanged" title="Link to this definition">¶</a></dt>
-<dd><p>Handle a change to the primitive table.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.on_transform_table_itemChanged">
+<span class="sig-name descname"><span class="pre">on_transform_table_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#TransformWindow.on_transform_table_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.on_transform_table_itemChanged" title="Link to this definition">¶</a></dt>
+<dd><p>Handle a change to the transform table.</p>
 <p>The item which has changed is ignored and the whole table is rebuilt</p>
 <section id="id2">
 <h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
@@ -419,15 +421,15 @@ The strings are treated as python commands to return a value.:w</p>
 </section>
 <section id="modifies">
 <h4>Modifies<a class="headerlink" href="#modifies" title="Link to this heading">¶</a></h4>
-<p>self.settings[“Primitive transform”]</p>
+<p>self.settings[“Transform”]</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.reDrawPrimitiveTable">
-<span class="sig-name descname"><span class="pre">reDrawPrimitiveTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.reDrawPrimitiveTable" title="Link to this definition">¶</a></dt>
-<dd><p>Redraw the 3x3 table representing the primitive cell transformation.</p>
-<p>The table is generated from the strings stored in self.primitive_transform_as_str
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.reDrawTransformTable">
+<span class="sig-name descname"><span class="pre">reDrawTransformTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#TransformWindow.reDrawTransformTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.reDrawTransformTable" title="Link to this definition">¶</a></dt>
+<dd><p>Redraw the 3x3 table representing the cell transformation.</p>
+<p>The table is generated from the strings stored in self.transform_as_str
 If a number is stored it is converted to a string.</p>
 <section id="id4">
 <h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
@@ -439,38 +441,38 @@ If a number is stored it is converted to a string.</p>
 </section>
 <section id="id6">
 <h4>Modifies<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
-<p>primitive_transform_table</p>
+<p>transform_table</p>
 </section>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.buttonBox">
-<span class="sig-name descname"><span class="pre">buttonBox</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.buttonBox" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.buttonBox">
+<span class="sig-name descname"><span class="pre">buttonBox</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.buttonBox" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.debugger">
-<span class="sig-name descname"><span class="pre">debugger</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.debugger" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.debugger">
+<span class="sig-name descname"><span class="pre">debugger</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.debugger" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.layout">
-<span class="sig-name descname"><span class="pre">layout</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.layout" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.layout">
+<span class="sig-name descname"><span class="pre">layout</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.layout" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.message">
-<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Primitive</span> <span class="pre">Transform'</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.message" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Cell</span> <span class="pre">Transform'</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.message" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_as_str">
-<span class="sig-name descname"><span class="pre">primitive_transform_as_str</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_as_str" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.transform_as_str">
+<span class="sig-name descname"><span class="pre">transform_as_str</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.transform_as_str" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_table">
-<span class="sig-name descname"><span class="pre">primitive_transform_table</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_table" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.TransformWindow.transform_table">
+<span class="sig-name descname"><span class="pre">transform_table</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.TransformWindow.transform_table" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -478,7 +480,7 @@ If a number is stored it is converted to a string.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ViewerTab.</span></span><span class="sig-name descname"><span class="pre">ViewerTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ViewerTab.</span></span><span class="sig-name descname"><span class="pre">ViewerTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>A class representing a viewer tab in a graphical user interface, specifically for visualizing molecular structures and vibrational modes.</p>
 <p>This class integrates several widgets to enable the selection and visualization of various
@@ -555,7 +557,7 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 </dd>
 <dt>on_coloured_element_clicked</dt><dd><p>Changes the colour of an element</p>
 </dd>
-<dt>on_edit_button_clicked</dt><dd><p>Edit the primitive transform to the matrix in the GUI</p>
+<dt>on_edit_button_clicked</dt><dd><p>Edit the transform matrix in the GUI</p>
 </dd>
 <dt>on_filename_button_clicked</dt><dd><p>Handles a click on the file name button</p>
 </dd>
@@ -563,7 +565,7 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 </dd>
 <dt>on_filename_le_return</dt><dd><p>Handles a return press in the file name widget</p>
 </dd>
-<dt>on_guess_button_clicked</dt><dd><p>Guess the primitive transform to the matrix in the GUI</p>
+<dt>on_guess_button_clicked</dt><dd><p>Guess the transform to a primitive cell</p>
 </dd>
 <dt>on_light_switches_cb_activated</dt><dd><p>Activates the light switch combobox</p>
 </dd>
@@ -579,7 +581,7 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 </dd>
 <dt>on_super_cell_changed_c</dt><dd><p>Handles the change in the c supercell parameter</p>
 </dd>
-<dt>on_reset_button_clicked</dt><dd><p>Changes the primitive transform back to a unit matrix</p>
+<dt>on_reset_button_clicked</dt><dd><p>Changes the transform back to a unit matrix</p>
 </dd>
 <dt>plot</dt><dd><p>Plot the 3D view of the molecule</p>
 </dd>
@@ -602,10 +604,10 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.calculate" title="Link to this definition">¶</a></dt>
-<dd><p>Perform calculations related to the ViewerTab instance, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
-In addition, calculate the primitive cell if a primitive transformation is given.
-The supercell is calculated from the primitive cell.</p>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.calculate" title="Link to this definition">¶</a></dt>
+<dd><p>Perform calculations related to the ViewerTab instance, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.</p>
+<p>In addition, calculate the transformed cell if a transformation is given.
+The supercell is calculated from the dft cell.</p>
 <section id="id10">
 <h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <p>None</p>
@@ -618,7 +620,7 @@ The supercell is calculated from the primitive cell.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.calculatePhasePositions">
-<span class="sig-name descname"><span class="pre">calculatePhasePositions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.calculatePhasePositions" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculatePhasePositions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.calculatePhasePositions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.calculatePhasePositions" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate and update the phase positions for the normal mode of a molecular structure visualization.</p>
 <p>This function calculates the phase positions for all atoms in a molecular structure over a range of phase steps. It updates the visualization by adding spheres and cylinders to represent atoms and bonds in different phase positions. The phase steps are adjusted to be odd in number, ensuring symmetry around zero phase. The function directly modifies the OpenGL widget used for visualization by deleting existing graphical representations and creating new ones based on the calculated positions.</p>
 <section id="id12">
@@ -632,24 +634,23 @@ The supercell is calculated from the primitive cell.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.convert_primitive_transform">
-<span class="sig-name descname"><span class="pre">convert_primitive_transform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.convert_primitive_transform" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the primitive transform stored as strings in settings to an np.array.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.convert_transform">
+<span class="sig-name descname"><span class="pre">convert_transform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.convert_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.convert_transform" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the transform stored as strings in settings to an np.array.</p>
 <section id="id14">
 <h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id15">
 <h4>Modifies<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
-<p>primitive_transform</p>
+<p>transform</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.createPrimitiveTransformTabEntry">
-<span class="sig-name descname"><span class="pre">createPrimitiveTransformTabEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.createPrimitiveTransformTabEntry" title="Link to this definition">¶</a></dt>
-<dd><p>Create a one line entry to modify the primitive cell transformaton matrix.</p>
-<p>Add buttons to reset, edit and if possible read the transformation matrix</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.createHKLTabEntry">
+<span class="sig-name descname"><span class="pre">createHKLTabEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.createHKLTabEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.createHKLTabEntry" title="Link to this definition">¶</a></dt>
+<dd><p>Create a one line entry to allow an entry of the hkl for a surface.</p>
 <section id="id16">
 <h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <p>None</p>
@@ -661,71 +662,60 @@ The supercell is calculated from the primitive cell.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_arrow_radius_changed">
-<span class="sig-name descname"><span class="pre">on_arrow_radius_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_arrow_radius_changed" title="Link to this definition">¶</a></dt>
-<dd><p>Handle the event where the arrow’s radius value is changed.</p>
-<p>This method updates the setting for the arrow’s radius, recalculates, and replots based on the new value.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.createTransformTabEntry">
+<span class="sig-name descname"><span class="pre">createTransformTabEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.createTransformTabEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.createTransformTabEntry" title="Link to this definition">¶</a></dt>
+<dd><p>Create a one line entry to modify the cell transformation matrix.</p>
+<p>Add buttons to reset, edit and if possible read the transformation matrix</p>
 <section id="id18">
 <h4>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the arrow radius.</p>
-</dd>
-</dl>
+<p>None</p>
 </section>
 <section id="id19">
 <h4>Returns<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<p>a widget</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_atom_scaling_changed">
-<span class="sig-name descname"><span class="pre">on_atom_scaling_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_atom_scaling_changed" title="Link to this definition">¶</a></dt>
-<dd><p>Handle changes to atom scaling settings.</p>
-<p>This method updates the atom scaling setting based on a new value,
-recalculates relevant data, and triggers a plot update.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.get_toggle_state">
+<span class="sig-name descname"><span class="pre">get_toggle_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toggle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.get_toggle_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.get_toggle_state" title="Link to this definition">¶</a></dt>
+<dd><p>Return the state of the given toggle.</p>
 <section id="id20">
 <h4>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>value<span class="classifier">float</span></dt><dd><p>The new value for atom scaling.</p>
+<dt>toggle<span class="classifier">str</span></dt><dd><p>The toggle name</p>
 </dd>
 </dl>
 </section>
 <section id="id21">
 <h4>Returns<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<p>bool</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_bond_radius_changed">
-<span class="sig-name descname"><span class="pre">on_bond_radius_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_bond_radius_changed" title="Link to this definition">¶</a></dt>
-<dd><p>Handle bond radius change events.</p>
-<p>This method updates the ‘Bond radius’ setting with the new value, recalculates
-the necessary data, and then replots the results.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.hkl_spin_boxes">
+<span class="sig-name descname"><span class="pre">hkl_spin_boxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.hkl_spin_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.hkl_spin_boxes" title="Link to this definition">¶</a></dt>
+<dd><p>Create the spin boxes for hkl.</p>
 <section id="id22">
 <h4>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the bond radius.</p>
-</dd>
-</dl>
+<p>None</p>
 </section>
 <section id="id23">
 <h4>Returns<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<p>a set of spin boxes</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_cell_radius_changed">
-<span class="sig-name descname"><span class="pre">on_cell_radius_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_cell_radius_changed" title="Link to this definition">¶</a></dt>
-<dd><p>Handle the event when the cell radius setting is changed.</p>
-<p>This method updates the ‘Cell radius’ setting with the new value, recalculates
-the necessary data, and then replots the results.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_arrow_radius_changed">
+<span class="sig-name descname"><span class="pre">on_arrow_radius_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_arrow_radius_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_arrow_radius_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle the event where the arrow’s radius value is changed.</p>
+<p>This method updates the setting for the arrow’s radius, recalculates, and replots based on the new value.</p>
 <section id="id24">
 <h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the cell radius.</p>
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the arrow radius.</p>
 </dd>
 </dl>
 </section>
@@ -736,14 +726,15 @@ the necessary data, and then replots the results.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_coloured_button_clicked">
-<span class="sig-name descname"><span class="pre">on_coloured_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_coloured_button_clicked" title="Link to this definition">¶</a></dt>
-<dd><p>Handle the event when a coloured button is clicked.</p>
-<p>This function triggers a color dialog upon the click of a designated button. It captures the selected color and applies it to a specific setting based on the button’s label (e.g., Background, Cell, Bonds, Arrows). The settings are modified to include the chosen color, and a refresh is triggered to apply the changes.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_atom_scaling_changed">
+<span class="sig-name descname"><span class="pre">on_atom_scaling_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_atom_scaling_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_atom_scaling_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle changes to atom scaling settings.</p>
+<p>This method updates the atom scaling setting based on a new value,
+recalculates relevant data, and triggers a plot update.</p>
 <section id="id26">
 <h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>boolean<span class="classifier">bool</span></dt><dd><p>This parameter is not used in the function.</p>
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value for atom scaling.</p>
 </dd>
 </dl>
 </section>
@@ -754,15 +745,15 @@ the necessary data, and then replots the results.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_coloured_element_clicked">
-<span class="sig-name descname"><span class="pre">on_coloured_element_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_coloured_element_clicked" title="Link to this definition">¶</a></dt>
-<dd><p>Handle a click event on an element with colour functionality.</p>
-<p>A colour dialogue is invoked and the chosen colour is assigned to the element in question
-The settings dictionary is updated with the new colours and a refresh requested</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_bond_radius_changed">
+<span class="sig-name descname"><span class="pre">on_bond_radius_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_bond_radius_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_bond_radius_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle bond radius change events.</p>
+<p>This method updates the ‘Bond radius’ setting with the new value, recalculates
+the necessary data, and then replots the results.</p>
 <section id="id28">
 <h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>boolean<span class="classifier">any</span></dt><dd><p>This parameter is a dummy parameters</p>
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the bond radius.</p>
 </dd>
 </dl>
 </section>
@@ -773,40 +764,99 @@ The settings dictionary is updated with the new colours and a refresh requested<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_edit_button_clicked">
-<span class="sig-name descname"><span class="pre">on_edit_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_edit_button_clicked" title="Link to this definition">¶</a></dt>
-<dd><p>Edit the primitive transform.</p>
-<p>The primtive transform window dialog is shown and any edits applied</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_cell_radius_changed">
+<span class="sig-name descname"><span class="pre">on_cell_radius_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_cell_radius_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_cell_radius_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle the event when the cell radius setting is changed.</p>
+<p>This method updates the ‘Cell radius’ setting with the new value, recalculates
+the necessary data, and then replots the results.</p>
 <section id="id30">
 <h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
-<p>item : bool   Unused</p>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the cell radius.</p>
+</dd>
+</dl>
 </section>
 <section id="id31">
 <h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_coloured_button_clicked">
+<span class="sig-name descname"><span class="pre">on_coloured_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_coloured_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_coloured_button_clicked" title="Link to this definition">¶</a></dt>
+<dd><p>Handle the event when a coloured button is clicked.</p>
+<p>This function triggers a color dialog upon the click of a designated button. It captures the selected color and applies it to a specific setting based on the button’s label (e.g., Background, Cell, Bonds, Arrows). The settings are modified to include the chosen color, and a refresh is triggered to apply the changes.</p>
 <section id="id32">
-<h4>Modifies<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>boolean<span class="classifier">bool</span></dt><dd><p>This parameter is not used in the function.</p>
+</dd>
+</dl>
+</section>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_coloured_element_clicked">
+<span class="sig-name descname"><span class="pre">on_coloured_element_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_coloured_element_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_coloured_element_clicked" title="Link to this definition">¶</a></dt>
+<dd><p>Handle a click event on an element with colour functionality.</p>
+<p>A colour dialogue is invoked and the chosen colour is assigned to the element in question
+The settings dictionary is updated with the new colours and a refresh requested</p>
+<section id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>boolean<span class="classifier">any</span></dt><dd><p>This parameter is a dummy parameters</p>
+</dd>
+</dl>
+</section>
+<section id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_edit_button_clicked">
+<span class="sig-name descname"><span class="pre">on_edit_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_edit_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_edit_button_clicked" title="Link to this definition">¶</a></dt>
+<dd><p>Edit the transform.</p>
+<p>The transform window dialog is shown and any edits applied</p>
+<section id="id36">
+<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>item<span class="classifier">bool</span></dt><dd><p>ignored</p>
+</dd>
+</dl>
+</section>
+<section id="id37">
+<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id38">
+<h4>Modifies<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
 <p>Modifies primitive unit cell</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_filename_button_clicked">
-<span class="sig-name descname"><span class="pre">on_filename_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_button_clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_filename_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_filename_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the action triggered by clicking the filename button.</p>
 <p>This method checks if the selected filename has a valid extension and exists. If any
 checks fail, it alerts the user and aborts the operation. Otherwise, it proceeds to
 save the current state or image of the OpenGL widget in the specified file format.</p>
-<section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<section id="id39">
+<h4>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>boolean<span class="classifier">any</span></dt><dd><p>This is a dummy parameter.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<section id="id40">
+<h4>Returns<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="raises">
@@ -826,215 +876,164 @@ the application’s cursor is restored to its default state after the operation 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_changed">
-<span class="sig-name descname"><span class="pre">on_filename_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_filename_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_filename_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes to the filename line edit.</p>
 <p>This method is triggered when the text in the filename line edit changes. It updates the internal state to reflect the new filename.</p>
-<section id="id35">
-<h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id41">
+<h4>Parameters<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new text from the filename line edit.</p>
 </dd>
 </dl>
 </section>
-<section id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<section id="id42">
+<h4>Returns<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_return">
-<span class="sig-name descname"><span class="pre">on_filename_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_return" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_filename_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_filename_le_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_return" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event triggered by the return key press within the filename input field.</p>
 <p>This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It primarily invokes the filename button click event handler, simulating a click operation on the associated button.</p>
-<section id="id37">
-<h4>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<section id="id43">
+<h4>Parameters<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id38">
-<h4>Returns<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<section id="id44">
+<h4>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_guess_button_clicked">
-<span class="sig-name descname"><span class="pre">on_guess_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_guess_button_clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_guess_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_guess_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_guess_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Guess the primitive transform button click.</p>
 <p>The primitive transform is guessed from the spacegroup</p>
-<section id="id39">
-<h4>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
-<p>item : bool   Unused</p>
+<section id="id45">
+<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>item<span class="classifier">bool</span></dt><dd><p>ignored</p>
+</dd>
+</dl>
 </section>
-<section id="id40">
-<h4>Returns<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<section id="id46">
+<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id41">
-<h4>Modifies<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<section id="id47">
+<h4>Modifies<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <p>Modifies primitive unit cell</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_hkl_sb_changed">
+<span class="sig-name descname"><span class="pre">on_hkl_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_hkl_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_hkl_sb_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle a change in a value of h,k or, l.</p>
+<section id="id48">
+<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>The value of h,k or l</p>
+</dd>
+<dt>index<span class="classifier">integer</span></dt><dd><p>1, 2, or 3 for h, k or l</p>
+</dd>
+</dl>
+</section>
+<section id="id49">
+<h4>Modifies<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<p>settings[“hkl”]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_light_switches_cb_activated">
-<span class="sig-name descname"><span class="pre">on_light_switches_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_light_switches_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_light_switches_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_light_switches_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_light_switches_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Activate or deactivate the light switch based on the current state and updates the GUI accordingly.</p>
-<section id="id42">
-<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<section id="id50">
+<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>Index of the light switch in <cite>self.light_switches</cite> list that needs to be toggled.</p>
 </dd>
 </dl>
 </section>
-<section id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<section id="id51">
+<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_maximum_displacement_changed">
-<span class="sig-name descname"><span class="pre">on_maximum_displacement_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_maximum_displacement_changed" title="Link to this definition">¶</a></dt>
-<dd><p>Handle changes to the maximum displacement setting.</p>
-<p>This method updates the ‘Maximum displacement’ setting, recalculates based on the new value, and then replots the relevant data or figures.</p>
-<section id="id44">
-<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<span class="sig-name descname"><span class="pre">on_maximum_displacement_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_maximum_displacement_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_maximum_displacement_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle changes to the displacement setting.</p>
+<p>This method updates the ‘Displacement’ setting, recalculates based on the new value, and then replots the relevant data or figures.</p>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the maximum displacement setting.</p>
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the displacement setting.</p>
 </dd>
 </dl>
 </section>
-<section id="id45">
-<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<section id="id53">
+<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_plottype_cb_changed">
-<span class="sig-name descname"><span class="pre">on_plottype_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_plottype_cb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_plottype_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_plottype_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_plottype_cb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in plot type selection.</p>
 <p>This method updates the plot type index based on the user’s selection and then
 re-plots the data according to the new plot type.
 Plot types can be: ‘Animation’, ‘Arrows’, or ‘No arrows or animation’.</p>
-<section id="id46">
-<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<section id="id54">
+<h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the newly selected plot type.</p>
 </dd>
 </dl>
 </section>
-<section id="id47">
-<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<section id="id55">
+<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_primitive_button_clicked">
-<span class="sig-name descname"><span class="pre">on_primitive_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_primitive_button_clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_primitive_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_primitive_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_primitive_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle a push of the primitive transform button.</p>
 <p>When the button is pushed the primitive transform is loaded from phonopy.yaml</p>
-<section id="id48">
-<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
-<p>item : bool   Unused</p>
+<section id="id56">
+<h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>item<span class="classifier">bool</span></dt><dd><p>ignored</p>
+</dd>
+</dl>
 </section>
-<section id="id49">
-<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<section id="id57">
+<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id50">
-<h4>Modifies<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<section id="id58">
+<h4>Modifies<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
 <p>self.settings[“Primitive transform”]</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_reset_button_clicked">
-<span class="sig-name descname"><span class="pre">on_reset_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_reset_button_clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_reset_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_reset_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_reset_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle a push of the reset transform button.</p>
-<p>When the button is pushed the primitive transform is set to unity</p>
-<section id="id51">
-<h4>Parameters<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
-<p>item : bool   Unused</p>
-</section>
-<section id="id52">
-<h4>Returns<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
-<p>None</p>
-<p>Used to modify the primitive unit cell</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_selected_mode_changed">
-<span class="sig-name descname"><span class="pre">on_selected_mode_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_selected_mode_changed" title="Link to this definition">¶</a></dt>
-<dd><p>Handle the changes when a new vibrational mode is selected in the UI.</p>
-<p>This function updates the application state based on the newly selected vibrational mode. It
-updates the displayed frequency, removes existing arrows from the OpenGL widget,
-computes maximum displacement for scaling, and plots new arrows with updated settings.
-It also invokes the calculate and plot functions to reflect changes in the UI.</p>
-<section id="id53">
-<h4>Parameters<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id54">
-<h4>Returns<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_a">
-<span class="sig-name descname"><span class="pre">on_super_cell_changed_a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_a" title="Link to this definition">¶</a></dt>
-<dd><p>Update the ‘a’ parameter of the ‘Super Cell’ setting and refresh the object state.</p>
-<p>This function takes a new value for ‘a’, updates the ‘Super Cell’ setting of the object
-accordingly (while keeping ‘b’ and ‘c’ parameters unchanged), marks the object as
-requiring refresh, and finally calls the refresh method.</p>
-<section id="id55">
-<h4>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>newa<span class="classifier">int</span></dt><dd><p>The new value for the ‘a’ parameter to be set in the ‘Super Cell’ setting.</p>
-</dd>
-</dl>
-</section>
-<section id="id56">
-<h4>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_b">
-<span class="sig-name descname"><span class="pre">on_super_cell_changed_b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_b" title="Link to this definition">¶</a></dt>
-<dd><p>Update the ‘b’ component of the ‘Super Cell’ setting and trigger a refresh.</p>
-<p>This function takes a new value for ‘b’, updates the ‘Super Cell’ setting of the object
-accordingly (while keeping ‘a’ and ‘c’ parameters unchanged), marks the object as
-requiring refresh, and finally calls the refresh method.</p>
-<section id="id57">
-<h4>Parameters<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>newb<span class="classifier">int</span></dt><dd><p>The new value for the ‘b’ component of the ‘Super Cell’.</p>
-</dd>
-</dl>
-</section>
-<section id="id58">
-<h4>Returns<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_c">
-<span class="sig-name descname"><span class="pre">on_super_cell_changed_c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_c" title="Link to this definition">¶</a></dt>
-<dd><p>Update the ‘c’ component of the ‘Super Cell’ setting and refresh the object.</p>
-<p>This function takes a new value for ‘c’, updates the ‘Super Cell’ setting of the object
-accordingly (while keeping ‘a’ and ‘b’ parameters unchanged), marks the object as
-requiring refresh, and finally calls the refresh method.</p>
+<p>When the button is pushed the transform is set to unity.</p>
 <section id="id59">
 <h4>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>newc<span class="classifier">int</span></dt><dd><p>The new value to set for the ‘c’ component of the ‘Super Cell’ setting.</p>
+<dt>item<span class="classifier">bool</span></dt><dd><p>ignored</p>
 </dd>
 </dl>
 </section>
@@ -1045,12 +1044,13 @@ requiring refresh, and finally calls the refresh method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot" title="Link to this definition">¶</a></dt>
-<dd><p>Plot data based on the instance’s current plot type.</p>
-<p>This method selects a plotting routine based on the value of <cite>self.plot_type_index</cite>.
-It does an early return if <cite>self.reader</cite> is None, indicating there might be no data
-to plot. It logs the method’s progress using a debugger’s print function.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_selected_mode_changed">
+<span class="sig-name descname"><span class="pre">on_selected_mode_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_selected_mode_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_selected_mode_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle the changes when a new vibrational mode is selected in the UI.</p>
+<p>This function updates the application state based on the newly selected vibrational mode. It
+updates the displayed frequency, removes existing arrows from the OpenGL widget,
+computes maximum displacement for scaling, and plots new arrows with updated settings.
+It also invokes the calculate and plot functions to reflect changes in the UI.</p>
 <section id="id61">
 <h4>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
 <p>None</p>
@@ -1062,16 +1062,18 @@ to plot. It logs the method’s progress using a debugger’s print function.</p
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_animation">
-<span class="sig-name descname"><span class="pre">plot_animation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_animation" title="Link to this definition">¶</a></dt>
-<dd><p>Initiate and display an animation of a vibrational mode in an OpenGL widget.</p>
-<p>This method controls the display of a predefined animation within
-an OpenGL widget. It hides any arrows, triggers a visual update,
-and starts the animation process. Debug messages are logged at the
-start and completion of the animation process.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_a">
+<span class="sig-name descname"><span class="pre">on_super_cell_changed_a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_super_cell_changed_a"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_a" title="Link to this definition">¶</a></dt>
+<dd><p>Update the ‘a’ parameter of the ‘Super Cell’ setting and refresh the object state.</p>
+<p>This function takes a new value for ‘a’, updates the ‘Super Cell’ setting of the object
+accordingly (while keeping ‘b’ and ‘c’ parameters unchanged), marks the object as
+requiring refresh, and finally calls the refresh method.</p>
 <section id="id63">
 <h4>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<dl class="simple">
+<dt>newa<span class="classifier">int</span></dt><dd><p>The new value for the ‘a’ parameter to be set in the ‘Super Cell’ setting.</p>
+</dd>
+</dl>
 </section>
 <section id="id64">
 <h4>Returns<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
@@ -1080,13 +1082,18 @@ start and completion of the animation process.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_arrows">
-<span class="sig-name descname"><span class="pre">plot_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_arrows" title="Link to this definition">¶</a></dt>
-<dd><p>Plot arrows showing the vibrational mode of a molecule.</p>
-<p>This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_b">
+<span class="sig-name descname"><span class="pre">on_super_cell_changed_b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_super_cell_changed_b"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_b" title="Link to this definition">¶</a></dt>
+<dd><p>Update the ‘b’ component of the ‘Super Cell’ setting and trigger a refresh.</p>
+<p>This function takes a new value for ‘b’, updates the ‘Super Cell’ setting of the object
+accordingly (while keeping ‘a’ and ‘c’ parameters unchanged), marks the object as
+requiring refresh, and finally calls the refresh method.</p>
 <section id="id65">
 <h4>Parameters<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<dl class="simple">
+<dt>newb<span class="classifier">int</span></dt><dd><p>The new value for the ‘b’ component of the ‘Super Cell’.</p>
+</dd>
+</dl>
 </section>
 <section id="id66">
 <h4>Returns<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
@@ -1095,13 +1102,18 @@ start and completion of the animation process.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_none">
-<span class="sig-name descname"><span class="pre">plot_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_none" title="Link to this definition">¶</a></dt>
-<dd><p>Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.</p>
-<p>This method is intended to reset or clear the current state of the Open GL widget by disabling any arrow visuals, stopping any animations that might be running, and then updating the widget to reflect these changes.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_c">
+<span class="sig-name descname"><span class="pre">on_super_cell_changed_c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_super_cell_changed_c"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_c" title="Link to this definition">¶</a></dt>
+<dd><p>Update the ‘c’ component of the ‘Super Cell’ setting and refresh the object.</p>
+<p>This function takes a new value for ‘c’, updates the ‘Super Cell’ setting of the object
+accordingly (while keeping ‘a’ and ‘b’ parameters unchanged), marks the object as
+requiring refresh, and finally calls the refresh method.</p>
 <section id="id67">
 <h4>Parameters<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<dl class="simple">
+<dt>newc<span class="classifier">int</span></dt><dd><p>The new value to set for the ‘c’ component of the ‘Super Cell’ setting.</p>
+</dd>
+</dl>
 </section>
 <section id="id68">
 <h4>Returns<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
@@ -1110,14 +1122,13 @@ start and completion of the animation process.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.refresh" title="Link to this definition">¶</a></dt>
-<dd><p>Refresh the state of the object, optionally forcing the refresh.</p>
-<p>This method updates the object’s state by recalculating and refreshing its components. It checks whether a refresh is necessary or if it has been forced. It iterates through child widgets to block signals, updates settings from a notebook, adjusts visual elements based on these settings, and ultimately recalculates and replots data.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_toggles_cb_activated">
+<span class="sig-name descname"><span class="pre">on_toggles_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_toggles_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_toggles_cb_activated" title="Link to this definition">¶</a></dt>
+<dd><p>Activate or deactivate the various toglles based on the current state and updates the GUI accordingly.</p>
 <section id="id69">
 <h4>Parameters<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>force<span class="classifier">bool, optional</span></dt><dd><p>If True, the refresh proceeds regardless of whether it is deemed necessary based on the object state. Default is False.</p>
+<dt>index<span class="classifier">int</span></dt><dd><p>Index of the toggle in <cite>self.toggle_name</cite> list</p>
 </dd>
 </dl>
 </section>
@@ -1125,8 +1136,110 @@ start and completion of the animation process.</p>
 <h4>Returns<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_uvw_sb_changed">
+<span class="sig-name descname"><span class="pre">on_uvw_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_uvw_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_uvw_sb_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handle a change in a value of u,v or, w.</p>
 <section id="id71">
-<h4>Notes<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>The value of u,v or w</p>
+</dd>
+<dt>index<span class="classifier">integer</span></dt><dd><p>1, 2, or 3 for u, v or w</p>
+</dd>
+</dl>
+</section>
+<section id="id72">
+<h4>Modifies<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<p>settings[“uvw”]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot data based on the instance’s current plot type.</p>
+<p>This method selects a plotting routine based on the value of <cite>self.plot_type_index</cite>.
+It does an early return if <cite>self.reader</cite> is None, indicating there might be no data
+to plot. It logs the method’s progress using a debugger’s print function.</p>
+<section id="id73">
+<h4>Parameters<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id74">
+<h4>Returns<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_animation">
+<span class="sig-name descname"><span class="pre">plot_animation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot_animation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_animation" title="Link to this definition">¶</a></dt>
+<dd><p>Initiate and display an animation of a vibrational mode in an OpenGL widget.</p>
+<p>This method controls the display of a predefined animation within
+an OpenGL widget. It hides any arrows, triggers a visual update,
+and starts the animation process. Debug messages are logged at the
+start and completion of the animation process.</p>
+<section id="id75">
+<h4>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id76">
+<h4>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_arrows">
+<span class="sig-name descname"><span class="pre">plot_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot_arrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_arrows" title="Link to this definition">¶</a></dt>
+<dd><p>Plot arrows showing the vibrational mode of a molecule.</p>
+<p>This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.</p>
+<section id="id77">
+<h4>Parameters<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id78">
+<h4>Returns<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.plot_none">
+<span class="sig-name descname"><span class="pre">plot_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot_none"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_none" title="Link to this definition">¶</a></dt>
+<dd><p>Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.</p>
+<p>This method is intended to reset or clear the current state of the Open GL widget by disabling any arrow visuals, stopping any animations that might be running, and then updating the widget to reflect these changes.</p>
+<section id="id79">
+<h4>Parameters<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id80">
+<h4>Returns<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.refresh" title="Link to this definition">¶</a></dt>
+<dd><p>Refresh the state of the object, optionally forcing the refresh.</p>
+<p>This method updates the object’s state by recalculating and refreshing its components. It checks whether a refresh is necessary or if it has been forced. It iterates through child widgets to block signals, updates settings from a notebook, adjusts visual elements based on these settings, and ultimately recalculates and replots data.</p>
+<section id="id81">
+<h4>Parameters<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>force<span class="classifier">bool, optional</span></dt><dd><p>If True, the refresh proceeds regardless of whether it is deemed necessary based on the object state. Default is False.</p>
+</dd>
+</dl>
+</section>
+<section id="id82">
+<h4>Returns<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id83">
+<h4>Notes<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>The function begins by checking if a refresh is required or has been forced. If neither condition is met, it aborts the refresh.</p></li>
 <li><p>It temporarily changes the cursor to a waiting cursor to indicate processing.</p></li>
@@ -1140,65 +1253,65 @@ start and completion of the animation process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.requestRefresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.requestRefresh" title="Link to this definition">¶</a></dt>
 <dd><p>Initiate a refresh request.</p>
 <p>This method sets an internal flag to indicate that a refresh is required.</p>
-<section id="id72">
-<h4>Parameters<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<section id="id84">
+<h4>Parameters<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id73">
-<h4>Returns<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
+<section id="id85">
+<h4>Returns<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.save_as_cif">
-<span class="sig-name descname"><span class="pre">save_as_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_as_cif" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_as_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.save_as_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_as_cif" title="Link to this definition">¶</a></dt>
 <dd><p>Save the crystallographic information file (CIF) for the structure phases.</p>
 <p>The cell is wrtten out</p>
-<section id="id74">
-<h4>Parameters<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
+<section id="id86">
+<h4>Parameters<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The name of the file where the CIF data will be saved.</p>
 </dd>
 </dl>
 </section>
-<section id="id75">
-<h4>Returns<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
+<section id="id87">
+<h4>Returns<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif">
-<span class="sig-name descname"><span class="pre">save_mode_as_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_mode_as_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.save_mode_as_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif" title="Link to this definition">¶</a></dt>
 <dd><p>Save the crystallographic information file (CIF) for different phases.</p>
 <p>A copy is made of the current unit cell and a cell is wrtten out for each phase of the vibration</p>
-<section id="id76">
-<h4>Parameters<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
+<section id="id88">
+<h4>Parameters<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The name of the file where the CIF data will be saved.</p>
 </dd>
 </dl>
 </section>
-<section id="id77">
-<h4>Returns<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
+<section id="id89">
+<h4>Returns<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id78">
-<h4>Notes<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
+<section id="id90">
+<h4>Notes<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
 <p>This method relies on the <cite>self.standard_cell</cite> object, which should have a method <cite>set_xyz_coordinates</cite> and <cite>write_cif</cite>. It also uses <cite>self.settings</cite> to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that <cite>self.newXYZ</cite> is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.setColour">
-<span class="sig-name descname"><span class="pre">setColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.setColour" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.setColour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.setColour" title="Link to this definition">¶</a></dt>
 <dd><p>Set the colour of a specified element in the interface.</p>
-<section id="id79">
-<h4>Parameters<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<section id="id91">
+<h4>Parameters<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>element<span class="classifier">str</span></dt><dd><p>The element whose colour is to be set. Can be ‘Background’, ‘Cell’, ‘Arrow’, or any other custom element defined in <cite>element_colours</cite>.</p>
 </dd>
@@ -1206,8 +1319,8 @@ start and completion of the animation process.</p>
 </dd>
 </dl>
 </section>
-<section id="id80">
-<h4>Returns<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
+<section id="id92">
+<h4>Returns<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="examples">
@@ -1217,6 +1330,20 @@ start and completion of the animation process.</p>
 <span class="pre">myObject.setColour('Cell',</span> <span class="pre">'red')</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">#</span> <span class="pre">Sets</span> <span class="pre">the</span> <span class="pre">cell</span> <span class="pre">colour</span> <span class="pre">to</span> <span class="pre">red</span>
 <span class="pre">myObject.setColour('customElement',</span> <span class="pre">'blue')</span>&#160; <span class="pre">#</span> <span class="pre">Sets</span> <span class="pre">a</span> <span class="pre">custom</span> <span class="pre">element's</span> <span class="pre">colour</span> <span class="pre">to</span> <span class="pre">blue</span>
 <span class="pre">`</span></code></p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.uvw_spin_boxes">
+<span class="sig-name descname"><span class="pre">uvw_spin_boxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.uvw_spin_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.uvw_spin_boxes" title="Link to this definition">¶</a></dt>
+<dd><p>Create the spin boxes for uvw.</p>
+<section id="id93">
+<h4>Parameters<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id94">
+<h4>Returns<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h4>
+<p>a set of spin boxes</p>
 </section>
 </dd></dl>
 
@@ -1331,6 +1458,11 @@ start and completion of the animation process.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.hkl_tab_entry">
+<span class="sig-name descname"><span class="pre">hkl_tab_entry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.hkl_tab_entry" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.image_filename">
 <span class="sig-name descname"><span class="pre">image_filename</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.image_filename" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1391,11 +1523,6 @@ start and completion of the animation process.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.primitive_transform_tab_entry">
-<span class="sig-name descname"><span class="pre">primitive_transform_tab_entry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.primitive_transform_tab_entry" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.reader">
 <span class="sig-name descname"><span class="pre">reader</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.reader" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1448,6 +1575,26 @@ start and completion of the animation process.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.super_cell_widget">
 <span class="sig-name descname"><span class="pre">super_cell_widget</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.super_cell_widget" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.toggle_names">
+<span class="sig-name descname"><span class="pre">toggle_names</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Show</span> <span class="pre">cell</span> <span class="pre">labels',</span> <span class="pre">'Show</span> <span class="pre">cell',</span> <span class="pre">'Show</span> <span class="pre">orientation',</span> <span class="pre">'Show</span> <span class="pre">bonds',</span> <span class="pre">'Show</span> <span class="pre">atoms']</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.toggle_names" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.toggles_cb">
+<span class="sig-name descname"><span class="pre">toggles_cb</span></span><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.toggles_cb" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.transform_tab_entry">
+<span class="sig-name descname"><span class="pre">transform_tab_entry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.transform_tab_entry" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.transformed_cell">
+<span class="sig-name descname"><span class="pre">transformed_cell</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.transformed_cell" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1514,23 +1661,26 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#">PDielec.GUI.ViewerTab</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.getPrimitiveTransform"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.getPrimitiveTransform()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.on_primitive_transform_table_itemChanged"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.on_primitive_transform_table_itemChanged()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.reDrawPrimitiveTable"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.reDrawPrimitiveTable()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.buttonBox"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.buttonBox</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.debugger"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.debugger</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.layout"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.layout</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.message"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.message</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_as_str"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.primitive_transform_as_str</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_table"><code class="docutils literal notranslate"><span class="pre">PrimitiveTransformWindow.primitive_transform_table</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow"><code class="docutils literal notranslate"><span class="pre">TransformWindow</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.getTransform"><code class="docutils literal notranslate"><span class="pre">TransformWindow.getTransform()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.on_transform_table_itemChanged"><code class="docutils literal notranslate"><span class="pre">TransformWindow.on_transform_table_itemChanged()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.reDrawTransformTable"><code class="docutils literal notranslate"><span class="pre">TransformWindow.reDrawTransformTable()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.buttonBox"><code class="docutils literal notranslate"><span class="pre">TransformWindow.buttonBox</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.debugger"><code class="docutils literal notranslate"><span class="pre">TransformWindow.debugger</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.layout"><code class="docutils literal notranslate"><span class="pre">TransformWindow.layout</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.message"><code class="docutils literal notranslate"><span class="pre">TransformWindow.message</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.transform_as_str"><code class="docutils literal notranslate"><span class="pre">TransformWindow.transform_as_str</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.TransformWindow.transform_table"><code class="docutils literal notranslate"><span class="pre">TransformWindow.transform_table</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab"><code class="docutils literal notranslate"><span class="pre">ViewerTab</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.calculate"><code class="docutils literal notranslate"><span class="pre">ViewerTab.calculate()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.calculatePhasePositions"><code class="docutils literal notranslate"><span class="pre">ViewerTab.calculatePhasePositions()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.convert_primitive_transform"><code class="docutils literal notranslate"><span class="pre">ViewerTab.convert_primitive_transform()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.createPrimitiveTransformTabEntry"><code class="docutils literal notranslate"><span class="pre">ViewerTab.createPrimitiveTransformTabEntry()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.convert_transform"><code class="docutils literal notranslate"><span class="pre">ViewerTab.convert_transform()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.createHKLTabEntry"><code class="docutils literal notranslate"><span class="pre">ViewerTab.createHKLTabEntry()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.createTransformTabEntry"><code class="docutils literal notranslate"><span class="pre">ViewerTab.createTransformTabEntry()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.get_toggle_state"><code class="docutils literal notranslate"><span class="pre">ViewerTab.get_toggle_state()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.hkl_spin_boxes"><code class="docutils literal notranslate"><span class="pre">ViewerTab.hkl_spin_boxes()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_arrow_radius_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_arrow_radius_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_atom_scaling_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_atom_scaling_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_bond_radius_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_bond_radius_changed()</span></code></a></li>
@@ -1542,6 +1692,7 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_filename_le_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_return"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_filename_le_return()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_guess_button_clicked"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_guess_button_clicked()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_hkl_sb_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_hkl_sb_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_light_switches_cb_activated"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_light_switches_cb_activated()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_maximum_displacement_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_maximum_displacement_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_plottype_cb_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_plottype_cb_changed()</span></code></a></li>
@@ -1551,6 +1702,8 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_a"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_super_cell_changed_a()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_b"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_super_cell_changed_b()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_super_cell_changed_c"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_super_cell_changed_c()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_toggles_cb_activated"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_toggles_cb_activated()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.on_uvw_sb_changed"><code class="docutils literal notranslate"><span class="pre">ViewerTab.on_uvw_sb_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.plot"><code class="docutils literal notranslate"><span class="pre">ViewerTab.plot()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_animation"><code class="docutils literal notranslate"><span class="pre">ViewerTab.plot_animation()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_arrows"><code class="docutils literal notranslate"><span class="pre">ViewerTab.plot_arrows()</span></code></a></li>
@@ -1560,6 +1713,7 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.save_as_cif"><code class="docutils literal notranslate"><span class="pre">ViewerTab.save_as_cif()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.save_mode_as_cif"><code class="docutils literal notranslate"><span class="pre">ViewerTab.save_mode_as_cif()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.setColour"><code class="docutils literal notranslate"><span class="pre">ViewerTab.setColour()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.uvw_spin_boxes"><code class="docutils literal notranslate"><span class="pre">ViewerTab.uvw_spin_boxes()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.UVW"><code class="docutils literal notranslate"><span class="pre">ViewerTab.UVW</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.arrow_radius_sb"><code class="docutils literal notranslate"><span class="pre">ViewerTab.arrow_radius_sb</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.atom_scaling_sb"><code class="docutils literal notranslate"><span class="pre">ViewerTab.atom_scaling_sb</span></code></a></li>
@@ -1582,6 +1736,7 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.frequencies_cm1"><code class="docutils literal notranslate"><span class="pre">ViewerTab.frequencies_cm1</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.frequency_le"><code class="docutils literal notranslate"><span class="pre">ViewerTab.frequency_le</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.gif_filename_button"><code class="docutils literal notranslate"><span class="pre">ViewerTab.gif_filename_button</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.hkl_tab_entry"><code class="docutils literal notranslate"><span class="pre">ViewerTab.hkl_tab_entry</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.image_filename"><code class="docutils literal notranslate"><span class="pre">ViewerTab.image_filename</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.light_switches"><code class="docutils literal notranslate"><span class="pre">ViewerTab.light_switches</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.light_switches_cb"><code class="docutils literal notranslate"><span class="pre">ViewerTab.light_switches_cb</span></code></a></li>
@@ -1594,7 +1749,6 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_types"><code class="docutils literal notranslate"><span class="pre">ViewerTab.plot_types</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.plottype_cb"><code class="docutils literal notranslate"><span class="pre">ViewerTab.plottype_cb</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.png_filename_button"><code class="docutils literal notranslate"><span class="pre">ViewerTab.png_filename_button</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.primitive_transform_tab_entry"><code class="docutils literal notranslate"><span class="pre">ViewerTab.primitive_transform_tab_entry</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.reader"><code class="docutils literal notranslate"><span class="pre">ViewerTab.reader</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.refreshRequired"><code class="docutils literal notranslate"><span class="pre">ViewerTab.refreshRequired</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.selected_mode_sb"><code class="docutils literal notranslate"><span class="pre">ViewerTab.selected_mode_sb</span></code></a></li>
@@ -1606,6 +1760,10 @@ start and completion of the animation process.</p>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.super_cell_hbox"><code class="docutils literal notranslate"><span class="pre">ViewerTab.super_cell_hbox</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.super_cell_spinBoxes"><code class="docutils literal notranslate"><span class="pre">ViewerTab.super_cell_spinBoxes</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.super_cell_widget"><code class="docutils literal notranslate"><span class="pre">ViewerTab.super_cell_widget</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.toggle_names"><code class="docutils literal notranslate"><span class="pre">ViewerTab.toggle_names</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.toggles_cb"><code class="docutils literal notranslate"><span class="pre">ViewerTab.toggles_cb</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.transform_tab_entry"><code class="docutils literal notranslate"><span class="pre">ViewerTab.transform_tab_entry</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ViewerTab.ViewerTab.transformed_cell"><code class="docutils literal notranslate"><span class="pre">ViewerTab.transformed_cell</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1621,7 +1779,7 @@ start and completion of the animation process.</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=5fa4622c"></script>

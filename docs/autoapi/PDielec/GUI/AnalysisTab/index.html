@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -343,7 +345,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.AnalysisTab.</span></span><span class="sig-name descname"><span class="pre">AnalysisTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.AnalysisTab.</span></span><span class="sig-name descname"><span class="pre">AnalysisTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.</p>
 <p>This class inherits from QWidget
@@ -446,7 +448,7 @@ Key features include plotting vibrational mode decompositions</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.calculate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.</p>
 <p>This method orchestrates the calculation process, setting up necessary parameters, processing molecular contents
 based on the provided settings, calculating normal modes and their mass weighting, and finally computing the energy
@@ -474,7 +476,7 @@ distribution among the modes. It updates the UI and internal state as necessary 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged">
-<span class="sig-name descname"><span class="pre">on_element_radii_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_element_radii_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_element_radii_tw_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged" title="Link to this definition">¶</a></dt>
 <dd><p>Respond to changes in element radii within a widget.</p>
 <section id="id2">
 <h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
@@ -491,7 +493,7 @@ distribution among the modes. It updates the UI and internal state as necessary 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked">
-<span class="sig-name descname"><span class="pre">on_element_radii_tw_itemClicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_element_radii_tw_itemClicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_element_radii_tw_itemClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the item clicked event for a TableWidget related to element radii.</p>
 <section id="id4">
 <h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
@@ -513,7 +515,7 @@ event has occurred, allowing subsequent events to be processed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed">
-<span class="sig-name descname"><span class="pre">on_plottype_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_plottype_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_plottype_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle a change in plot type selection.</p>
 <section id="id7">
 <h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
@@ -530,7 +532,7 @@ event has occurred, allowing subsequent events to be processed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_scale_changed">
-<span class="sig-name descname"><span class="pre">on_scale_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_scale_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_scale_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_scale_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_scale_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event when the scale setting is changed.</p>
 <p>This function is typically connected to a signal that is emitted when the
 scaling factor for the covalent radius is adjusted in a graphical user interface.
@@ -552,7 +554,7 @@ a plot update.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed">
-<span class="sig-name descname"><span class="pre">on_title_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_title_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_title_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle title change events.</p>
 <section id="id11">
 <h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
@@ -569,7 +571,7 @@ a plot update.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed">
-<span class="sig-name descname"><span class="pre">on_tolerance_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_tolerance_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_tolerance_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event when the tolerance value changes.</p>
 <p>This function updates the ‘Bonding tolerance’ setting based on the provided value, marks the system as requiring a refresh, and then recalculates and replots the data.</p>
 <section id="id13">
@@ -587,7 +589,7 @@ a plot update.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed">
-<span class="sig-name descname"><span class="pre">on_vmax_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_vmax_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_vmax_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in maximum value for frequency.</p>
 <section id="id15">
 <h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
@@ -604,7 +606,7 @@ a plot update.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed">
-<span class="sig-name descname"><span class="pre">on_vmin_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_vmin_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_vmin_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in minimum value of frequency.</p>
 <section id="id17">
 <h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
@@ -621,7 +623,7 @@ a plot update.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_width_changed">
-<span class="sig-name descname"><span class="pre">on_width_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_width_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_width_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_width_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_width_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes to the width property.</p>
 <p>This method is called when the width property of an object is changed. It updates the stored width value in the object’s settings and then re-plots the object to reflect the new width.</p>
 <section id="id19">
@@ -639,7 +641,7 @@ a plot update.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot" title="Link to this definition">¶</a></dt>
 <dd><p>Plot the spectroscopic data based on the selected plot type.</p>
 <p>This method selects between two plotting strategies: ‘internal_external’
 or ‘molecular’, depending on the state of <cite>plot_type_index</cite>. If no data
@@ -664,7 +666,7 @@ based on the value of <cite>self.plot_type_index</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external">
-<span class="sig-name descname"><span class="pre">plot_internal_external</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_internal_external</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.plot_internal_external"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external" title="Link to this definition">¶</a></dt>
 <dd><p>Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.</p>
 <section id="id24">
 <h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
@@ -688,7 +690,7 @@ based on the value of <cite>self.plot_type_index</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.plot_molecular">
-<span class="sig-name descname"><span class="pre">plot_molecular</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_molecular" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_molecular</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.plot_molecular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_molecular" title="Link to this definition">¶</a></dt>
 <dd><p>Plot the molecular composition of vibrational energy.</p>
 <p>This method visualizes the distribution of vibrational energy across different molecules
 within specified frequency limits. It creates a bar chart representing the percentage of
@@ -721,7 +723,7 @@ are appropriately imported or accessible within the scope.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Refresh the widget state, optionally enforcing refresh.</p>
 <p>This method updates the widgets’ states and values according to the current settings. It first checks if a refresh is required or if the <cite>force</cite> parameter is set to <cite>True</cite>. If neither condition is met, it exits early. Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission during state update. It then updates various UI components with new settings values, calculates and plots according to the updated settings, and finally re-enables signals for all child QWidget instances.</p>
 <section id="id30">
@@ -739,7 +741,7 @@ are appropriately imported or accessible within the scope.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh" title="Link to this definition">¶</a></dt>
 <dd><p>Mark the instance as requiring a refresh.</p>
 <p>Sets the instance attribute <cite>refreshRequired</cite> to True, indicating that a refresh is necessary.</p>
 <section id="id32">
@@ -754,7 +756,7 @@ are appropriately imported or accessible within the scope.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius">
-<span class="sig-name descname"><span class="pre">setCovalentRadius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setCovalentRadius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.setCovalentRadius"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius" title="Link to this definition">¶</a></dt>
 <dd><p>Set the covalent radius for a given element and update the plot.</p>
 <section id="id34">
 <h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
@@ -773,7 +775,7 @@ are appropriately imported or accessible within the scope.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw">
-<span class="sig-name descname"><span class="pre">set_radii_tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_radii_tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.set_radii_tw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw" title="Link to this definition">¶</a></dt>
 <dd><p>Set or update the atomic radii in the GUI’s table widget based on the current settings and active file.</p>
 <p>This method updates the radii configuration within the element radii table widget of the GUI. It first ensures that
 a reader object, a program, and a filename are set and available. If any of these are missing, the process is aborted
@@ -792,7 +794,7 @@ it updates the settings with the possibly new radii values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.writeSpreadsheet">
-<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.writeSpreadsheet" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.writeSpreadsheet" title="Link to this definition">¶</a></dt>
 <dd><p>Write analysis data into a selected worksheet in the notebook’s spreadsheet.</p>
 <p>This method assumes the existence of a spreadsheet object within the notebook
 attribute of the class instance. It selects a worksheet named ‘Analysis’,
@@ -1062,7 +1064,7 @@ vibrational mode contributions for molecules and internal/external modes.</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=5fa4622c"></script>

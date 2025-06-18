@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -345,6 +347,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, eckart, ...])</p></td>
 <td><p>Get a material with the given name.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.maxwell_garnett" title="PDielec.HelperRoutines.maxwell_garnett"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxwell_garnett</span></code></a>(em, ei, f)</p></td>
+<td><p>Calculate the dielectric constant of a mixture using Maxwell-Garnett.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -353,7 +358,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculateDFTPermittivityObject">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateDFTPermittivityObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.HelperRoutines.calculateDFTPermittivityObject" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateDFTPermittivityObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculateDFTPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculateDFTPermittivityObject" title="Link to this definition">¶</a></dt>
 <dd><p>Define a permittivity object for the DFT calculation from the given reader.</p>
 <p>This routine reads in the details of the DFT calculation
 Calculates the hessian and normal modes
@@ -385,7 +390,7 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculatePowderSpectrum">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculatePowderSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Maxwell-Garnett'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.HelperRoutines.calculatePowderSpectrum" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculatePowderSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Maxwell-Garnett'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculatePowderSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculatePowderSpectrum" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.</p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
@@ -425,7 +430,7 @@ permittivity: Complex permittivities</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculateSingleCrystalSpectrum">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateSingleCrystalSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_azimuthal_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculateSingleCrystalSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_azimuthal_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculateSingleCrystalSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate a single crystal spectrum.</p>
 <p>Calculate a single crystal spectrum from the frequencies, a list of layers (<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>), the incident angle
 the global azimuthal angle and optional specification of the method of calculation.
@@ -483,7 +488,7 @@ Information about the layer class can be found here (<a class="reference interna
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.getMaterial">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Link to this definition">¶</a></dt>
 <dd><p>Get a material with the given name.</p>
 <p>If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
 If the name is a material name in the material database, this is used instead.
@@ -521,6 +526,30 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 <span class="pre">material1</span> <span class="pre">=</span> <span class="pre">getMaterial(&quot;example.dft&quot;)</span>
 <span class="pre">material2</span> <span class="pre">=</span> <span class="pre">getMaterial(&quot;gold&quot;)</span>
 <span class="pre">`</span></code></p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.HelperRoutines.maxwell_garnett">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">maxwell_garnett</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">em</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ei</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#maxwell_garnett"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.maxwell_garnett" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the dielectric constant of a mixture using Maxwell-Garnett.</p>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>em<span class="classifier">float</span></dt><dd><p>The dielectric constant of the host</p>
+</dd>
+<dt>ei<span class="classifier">float</span></dt><dd><p>The dielectric constant of the inclusion</p>
+</dd>
+<dt>f<span class="classifier">float</span></dt><dd><p>The volume fraction of the inclusion</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h3>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>float</dt><dd><p>The dielectric constant of the mixture</p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
@@ -589,6 +618,7 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 <li><a class="reference internal" href="#PDielec.HelperRoutines.calculatePowderSpectrum"><code class="docutils literal notranslate"><span class="pre">calculatePowderSpectrum()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum"><code class="docutils literal notranslate"><span class="pre">calculateSingleCrystalSpectrum()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial"><code class="docutils literal notranslate"><span class="pre">getMaterial()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines.maxwell_garnett"><code class="docutils literal notranslate"><span class="pre">maxwell_garnett()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -602,7 +632,7 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

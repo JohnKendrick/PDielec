@@ -699,13 +699,13 @@ Module Contents
 
 
 
-   .. py:method:: calculate(v)
+   .. py:method:: calculate(f_cm1)
 
       Calculate the permittivity at a given frequency.
 
       Parameters
       ----------
-      v : float
+      f_cm1 : float
           The frequency in cm-1
 
       Returns

@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -350,7 +352,7 @@
 <span class="c1"># The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github</span>
 <span class="c1">#</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mie</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">d2byamuang2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">d2byamuang2</span><span class="p">,</span> <span class="n">wavenumber</span>
 
 <span class="n">Mie</span><span class="o">.</span><span class="n">crossover</span> <span class="o">=</span> <span class="mf">0.01</span>
 
@@ -2194,8 +2196,7 @@
     <span class="p">(</span><span class="n">v_cm1</span><span class="p">,</span><span class="n">crystalPermittivity</span><span class="p">)</span> <span class="o">=</span> <span class="n">atuple</span>
     <span class="c1"># convert the size to a dimensionless number which is 2*pi*size/lambda</span>
     <span class="n">lambda_mu</span> <span class="o">=</span> <span class="mf">1.0E4</span> <span class="o">/</span> <span class="p">(</span><span class="n">v_cm1</span> <span class="o">+</span> <span class="mf">1.0e-12</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">size_mu</span> <span class="o">&lt;</span> <span class="mf">1.0e-12</span><span class="p">:</span>
-        <span class="n">size_mu</span> <span class="o">=</span> <span class="mf">1.0e-12</span>
+    <span class="n">size_mu</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">size_mu</span><span class="p">,</span> <span class="mf">1.0e-12</span><span class="p">)</span>
     <span class="n">size</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">size_mu</span> <span class="o">/</span> <span class="n">lambda_mu</span>
     <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="c1"># Calculate the permittivity of the matrix as an isotropic tensor at v_cm1</span>
@@ -2494,8 +2495,7 @@
                    <span class="c1"># Gramm Schmidt orthogonoalisation</span>
                    <span class="n">dotprod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">q</span><span class="p">)</span>
                    <span class="n">ps</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span> <span class="o">-</span> <span class="n">dotprod</span><span class="o">*</span><span class="n">p</span>
-                   <span class="k">if</span> <span class="n">max_overlap</span> <span class="o">&lt;</span> <span class="n">dotprod</span><span class="p">:</span>
-                       <span class="n">max_overlap</span> <span class="o">=</span> <span class="n">dotprod</span>
+                   <span class="n">max_overlap</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_overlap</span><span class="p">,</span> <span class="n">dotprod</span><span class="p">)</span>
    <span class="k">if</span> <span class="n">cycle</span> <span class="o">&gt;=</span> <span class="n">maxcyc</span><span class="p">:</span>
        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING Schmidt Orthogonalisation Failed&quot;</span><span class="p">,</span> <span class="n">max_overlap</span><span class="p">)</span>
        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
@@ -2848,6 +2848,53 @@
      <span class="k">return</span> <span class="n">Pool</span><span class="p">(</span><span class="n">ncpus</span><span class="p">,</span> <span class="n">initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">,</span> <span class="n">initargs</span><span class="o">=</span><span class="n">initargs</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="calculate_normal_modes_and_frequencies">
+<a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.calculate_normal_modes_and_frequencies">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="n">hessian</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;From the mass weighted hessian compute the normal modes and the frequencies.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hessian : a symmetric 2d numpy array of 3*natoms, 3*natoms</span>
+<span class="sd">        This is the mass-weighted hessian</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    frequencies : a list of floats</span>
+<span class="sd">        The frequencies in cm-1</span>
+<span class="sd">    mass_weighted_normal_modes : a 3*natoms, 3*natoms 2D list</span>
+<span class="sd">        The eigen vectors of the hessian</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># diagonalise</span>
+    <span class="n">eig_val</span><span class="p">,</span> <span class="n">eig_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
+    <span class="n">nmodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eig_val</span><span class="p">)</span>
+    <span class="n">natoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nmodes</span><span class="o">/</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.0000001</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># If eig_val has negative values then we store the negative frequency</span>
+    <span class="c1"># convert to cm-1</span>
+    <span class="n">frequencies_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nmodes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">eig</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">eig_val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">eig</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">frequencies_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="n">eig</span><span class="p">)</span> <span class="o">/</span> <span class="n">wavenumber</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">frequencies_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eig</span><span class="p">)</span> <span class="o">/</span> <span class="n">wavenumber</span>
+        <span class="c1"># end if</span>
+    <span class="c1"># end for</span>
+    <span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Store the mass weighted normal modes</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmodes</span><span class="p">):</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">natoms</span><span class="p">):</span>
+            <span class="n">modea</span> <span class="o">=</span> <span class="p">[</span><span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">3</span>
+            <span class="n">mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modea</span><span class="p">)</span>
+        <span class="n">mass_weighted_normal_modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+    <span class="c1"># end for i</span>
+    <span class="k">return</span> <span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="n">frequencies_a</span></div>
+
+
 <div class="viewcode-block" id="set_no_of_threads">
 <a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.set_no_of_threads">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_no_of_threads</span><span class="p">(</span><span class="n">nthreads</span><span class="p">):</span>
@@ -2871,6 +2918,26 @@
     <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;VECLIB_MAXIMUM_THREADS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="compute_all_sg_permutations">
+<a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.compute_all_sg_permutations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_all_sg_permutations</span><span class="p">(</span><span class="n">rot</span><span class="p">,</span><span class="n">mat</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Similarity transformation by R x M x R^-1.</span>
+
+<span class="sd">    This routine was taken from Phonopy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rot : 3x3 floats</span>
+<span class="sd">        The rotation matrix</span>
+<span class="sd">    mat : 3x3 floats</span>
+<span class="sd">        The matrix to be transformed</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">rot</span><span class="p">)))</span></div>
+
+
+
+
 <div class="viewcode-block" id="set_affinity_on_worker">
 <a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.set_affinity_on_worker">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_affinity_on_worker</span><span class="p">():</span>
@@ -2879,6 +2946,24 @@
     <span class="c1">#JK print(&quot;I&#39;m the process %d, setting affinity to all CPUs.&quot; % os.getpid())</span>
     <span class="c1">#JK Commented out for the time being</span>
     <span class="c1">#JK os.system(&quot;taskset -p 0xff %d &gt; /dev/null&quot; % os.getpid())</span>
+
+<div class="viewcode-block" id="similarity_transform">
+<a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.similarity_transform">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">similarity_transform</span><span class="p">(</span><span class="n">rot</span><span class="p">,</span><span class="n">mat</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Similarity transformation by R x M x R^-1.</span>
+
+<span class="sd">    This routine was taken from Phonopy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rot : 3x3 floats</span>
+<span class="sd">        The rotation matrix</span>
+<span class="sd">    mat : 3x3 floats</span>
+<span class="sd">        The matrix to be transformed</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">rot</span><span class="p">)))</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -2911,7 +2996,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -370,7 +372,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">PlottingTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">PlottingTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.</p>
 <p>This class is responsible for handling plotting functionalities like choosing plot types, setting molar definitions and frequency values, managing interactions with UI components such as spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.</p>
@@ -434,7 +436,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.get_number_of_calculations_required">
-<span class="sig-name descname"><span class="pre">get_number_of_calculations_required</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.get_number_of_calculations_required" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_number_of_calculations_required</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.get_number_of_calculations_required"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.get_number_of_calculations_required" title="Link to this definition">¶</a></dt>
 <dd><p>Return the total number of spectra that need to be calculated.</p>
 <p>Only spectra that need a refresh are included.</p>
 <section id="id2">
@@ -452,7 +454,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.get_total_number_of_frequency_calculations">
-<span class="sig-name descname"><span class="pre">get_total_number_of_frequency_calculations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.get_total_number_of_frequency_calculations" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_total_number_of_frequency_calculations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.get_total_number_of_frequency_calculations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.get_total_number_of_frequency_calculations" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate and return the total number of frequency calculations required.</p>
 <p>This method computes the total number of frequency calculations based on the current settings for minimum frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the increment has changed since the last update.</p>
 <section id="id3">
@@ -470,7 +472,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.greyed_out">
-<span class="sig-name descname"><span class="pre">greyed_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.greyed_out" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">greyed_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.greyed_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.greyed_out" title="Link to this definition">¶</a></dt>
 <dd><p>Handle items that should be greyed out if they are not needed.</p>
 <section id="id5">
 <h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
@@ -484,7 +486,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_funits_cb_activated">
-<span class="sig-name descname"><span class="pre">on_funits_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_funits_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_funits_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_funits_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_funits_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the activation of a frequency unit combo box item.</p>
 <p>This method updates the active frequency unit in the settings, triggers necessary refresh processes and logs the change.</p>
 <section id="id7">
@@ -518,7 +520,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_molar_cb_activated">
-<span class="sig-name descname"><span class="pre">on_molar_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_molar_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_molar_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_molar_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_molar_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the activation of the molar combobox option.</p>
 <p>This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the application state, including setting concentrations, refreshing UI elements, and potentially triggering further calculations or refreshes as needed.</p>
 <section id="id9">
@@ -541,7 +543,7 @@ refresh : A method to refresh the UI elements.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_natoms_changed">
-<span class="sig-name descname"><span class="pre">on_natoms_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_natoms_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_natoms_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_natoms_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_natoms_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in the number of atoms.</p>
 <p>This method is called when the number of atoms changes. It updates the relevant setting in the instance, recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then triggers the refresh process.</p>
 <section id="id11">
@@ -562,7 +564,7 @@ refresh : A method to refresh the UI elements.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_plot_type_cb_activated">
-<span class="sig-name descname"><span class="pre">on_plot_type_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_plot_type_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_plot_type_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_plot_type_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_plot_type_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle plot type change from a combo box.</p>
 <p>This method gets triggered when the plot type in a combo box is changed.
 It updates the plot type in the settings, marks the current state as needing a refresh,
@@ -582,7 +584,7 @@ requests the fitter tab to refresh, and finally refreshes the current view.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_vinc_changed">
-<span class="sig-name descname"><span class="pre">on_vinc_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vinc_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_vinc_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_vinc_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vinc_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in frequency increment and update GUI accordingly.</p>
 <p>This function is triggered when there’s a change in the frequency increment value. It adjusts the number of GUI elements based on
 new values of minimum and maximum frequency and the changed frequency increment. It also updates the settings dict with the
@@ -610,7 +612,7 @@ new frequency increment value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_vmax_changed">
-<span class="sig-name descname"><span class="pre">on_vmax_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vmax_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_vmax_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_vmax_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vmax_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event when the maximum frequency setting is changed.</p>
 <p>This method is triggered whenever there is a change in the maximum frequency setting (<cite>vmax</cite>). It blocks signal emission from the <cite>vmax_sb</cite> spinner box (presumably, a GUI element for setting <cite>vmax</cite>), reads the current minimum (<cite>vmin</cite>) and maximum (<cite>vmax</cite>) frequency settings, and updates the corresponding setting based on the specified frequency unit. If the frequency unit denotes a frequency, <cite>vmax</cite> is converted and stored as the ‘Maximum frequency’ in the settings dictionary in the ‘wavenumber’ unit. Otherwise, it updates the ‘Minimum frequency’ with the converted value. This method also triggers any necessary refresh operations in the user interface and finally unblocks signal emissions from the <cite>vmax_sb</cite>.</p>
 <section id="id17">
@@ -632,7 +634,7 @@ new frequency increment value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_vmin_changed">
-<span class="sig-name descname"><span class="pre">on_vmin_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vmin_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_vmin_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_vmin_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vmin_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in the minimum frequency setting.</p>
 <p>This method adjusts the stored minimum frequency in the settings according to the new
 minimum frequency input by the user. It first blocks the signals of the minimum frequency spinbox
@@ -661,7 +663,7 @@ the minimum frequency spinbox and logs the completion of the process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.plot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.plot" title="Link to this definition">¶</a></dt>
 <dd><p>Plot the results based on specified settings and scenarios.</p>
 <p>This function generates a plot for the given scenarios under the analysis settings
 defined in the notebook object’s tabs. It handles various conditions to properly format
@@ -692,7 +694,7 @@ are dynamically set based on the configuration.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Refresh the current state based on the changes in settings, forces refresh if needed.</p>
 <p>This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment) based on the current settings. It ensures that these settings are within logical limits. The function updates GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization plot based on the refreshed data. If the ‘force’ flag is set or if a refresh is deemed necessary due to significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to optimize performance.</p>
 <section id="id26">
@@ -728,7 +730,7 @@ are dynamically set based on the configuration.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.requestRefresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.requestRefresh" title="Link to this definition">¶</a></dt>
 <dd><p>Initiate a refresh request.</p>
 <p>This function flags that a refresh is required
 It doesn’t return any value.</p>
@@ -744,7 +746,7 @@ It doesn’t return any value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.requestScenarioRefresh">
-<span class="sig-name descname"><span class="pre">requestScenarioRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.requestScenarioRefresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">requestScenarioRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.requestScenarioRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.requestScenarioRefresh" title="Link to this definition">¶</a></dt>
 <dd><p>Request a refresh on all scenarios within a notebook.</p>
 <p>This function triggers a refresh process for the settings tab and all scenarios within the notebook.</p>
 <section id="id31">
@@ -759,14 +761,14 @@ It doesn’t return any value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.set_concentrations">
-<span class="sig-name descname"><span class="pre">set_concentrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.set_concentrations" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_concentrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.set_concentrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.set_concentrations" title="Link to this definition">¶</a></dt>
 <dd><p>Set the concentration based on the molar definition in settings.</p>
 <p>This method updates the concentration value in the settings dictionary based on the ‘Molar definition’ key. It calculates concentration values differently based on whether the molar definition is set to ‘Molecules’, ‘Unit cells’, or ‘Atoms’. It also enables or disables the <cite>natoms_sb</cite> spin box accordingly.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.writeSpreadsheet">
-<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.writeSpreadsheet" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.writeSpreadsheet" title="Link to this definition">¶</a></dt>
 <dd><p>Update and write the results of powder and crystal scenarios to a spreadsheet.</p>
 <p>This function navigates through each scenario defined in the <cite>notebook</cite> attribute, extracts relevant data such as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet object’s methods for selecting worksheets, writing rows, and dealing with data transformation. The function also handles the calculation of molar absorption coefficients with unit conversion when necessary.</p>
 <section id="id33">
@@ -781,7 +783,7 @@ It doesn’t return any value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.write_crystal_results">
-<span class="sig-name descname"><span class="pre">write_crystal_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legends</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.write_crystal_results" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">write_crystal_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legends</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.write_crystal_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.write_crystal_results" title="Link to this definition">¶</a></dt>
 <dd><p>Write single crystal results to a spread sheet.</p>
 <section id="id35">
 <h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
@@ -806,7 +808,7 @@ It doesn’t return any value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.write_eps_results">
-<span class="sig-name descname"><span class="pre">write_eps_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielecv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.write_eps_results" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">write_eps_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielecv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.write_eps_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.write_eps_results" title="Link to this definition">¶</a></dt>
 <dd><p>Write real and imaginary parts of crystal permittivity to a spreadsheet.</p>
 <section id="id37">
 <h4>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
@@ -835,7 +837,7 @@ The output data starts from the second column (index 1), and for each row writte
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.write_powder_results">
-<span class="sig-name descname"><span class="pre">write_powder_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legends</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.write_powder_results" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">write_powder_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legends</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.write_powder_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.write_powder_results" title="Link to this definition">¶</a></dt>
 <dd><p>Write the powder simulation results to a worksheet.</p>
 <section id="id40">
 <h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
@@ -993,7 +995,7 @@ The output data starts from the second column (index 1), and for each row writte
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.convert_frequency_units">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">convert_frequency_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.convert_frequency_units" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">convert_frequency_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#convert_frequency_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.convert_frequency_units" title="Link to this definition">¶</a></dt>
 <dd><p>Convert between frequency and wavelength units.</p>
 <p>The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
 The unit strings are turned into lower-case so case is irrelevant</p>
@@ -1019,7 +1021,7 @@ The unit strings are turned into lower-case so case is irrelevant</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.isThisAFrequencyUnit">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">isThisAFrequencyUnit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.PlottingTab.isThisAFrequencyUnit" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">isThisAFrequencyUnit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#isThisAFrequencyUnit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.isThisAFrequencyUnit" title="Link to this definition">¶</a></dt>
 <dd><p>Return true if this is a frequency unit, false if a wavelength.</p>
 <p>Units of frequency are ‘wavenumber’,’THz’,’GHz’
 Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’</p>
@@ -1164,7 +1166,7 @@ Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=5fa4622c"></script>

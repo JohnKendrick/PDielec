@@ -125,27 +125,6 @@ Module Contents
 
 
 
-   .. py:method:: _calculate_normal_modes_and_frequencies(hessian, natoms)
-
-      "From the mass weighted hessian compute the normal modes and the frequencies.
-
-      Parameters
-      ----------
-      hessian : a symmetric 2d numpy array of 3*natoms, 3*natoms
-          This is the mass-weighted hessian
-      natoms : int
-          The number of atoms
-
-      Returns
-      -------
-      frequencies : a list of floats
-          The frequencies in cm-1
-      mass_weighted_normal_modes : a 3*natoms, 3*natoms 2D list
-          The eigen vectors of the hessian
-
-
-
-
    .. py:method:: _dynamical_matrix(hessian)
 
       Process the dynamical matrix.

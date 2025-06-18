@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -325,9 +327,25 @@
 <li><a href="PDielec/DielectricFunction.html">PDielec.DielectricFunction</a></li>
 <li><a href="PDielec/ExperimentOutputReader.html">PDielec.ExperimentOutputReader</a></li>
 <li><a href="PDielec/GTMcore.html">PDielec.GTMcore</a></li>
+<li><a href="PDielec/GUI/AnalysisTab.html">PDielec.GUI.AnalysisTab</a></li>
+<li><a href="PDielec/GUI/App.html">PDielec.GUI.App</a></li>
+<li><a href="PDielec/GUI/FitterTab.html">PDielec.GUI.FitterTab</a></li>
+<li><a href="PDielec/GUI/MainTab.html">PDielec.GUI.MainTab</a></li>
+<li><a href="PDielec/GUI/NoteBook.html">PDielec.GUI.NoteBook</a></li>
+<li><a href="PDielec/GUI/OpenGLWidget.html">PDielec.GUI.OpenGLWidget</a></li>
+<li><a href="PDielec/GUI/PlottingTab.html">PDielec.GUI.PlottingTab</a></li>
+<li><a href="PDielec/GUI/PowderScenarioTab.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li><a href="PDielec/GUI/ScenarioTab.html">PDielec.GUI.ScenarioTab</a></li>
+<li><a href="PDielec/GUI/SettingsTab.html">PDielec.GUI.SettingsTab</a></li>
+<li><a href="PDielec/GUI/SingleCrystalLayer.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li><a href="PDielec/GUI/SingleCrystalScenarioTab.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li><a href="PDielec/GUI/SpreadSheetManager.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li><a href="PDielec/GUI/ViewerTab.html">PDielec.GUI.ViewerTab</a></li>
 <li><a href="PDielec/GenericOutputReader.html">PDielec.GenericOutputReader</a></li>
 <li><a href="PDielec/GulpOutputReader.html">PDielec.GulpOutputReader</a></li>
+<li><a href="PDielec/HelperRoutines.html">PDielec.HelperRoutines</a></li>
 <li><a href="PDielec/IO.html">PDielec.IO</a></li>
+<li><a href="PDielec/Materials.html">PDielec.Materials</a></li>
 <li><a href="PDielec/Mie.html">PDielec.Mie</a></li>
 <li><a href="PDielec/PhonopyOutputReader.html">PDielec.PhonopyOutputReader</a></li>
 <li><a href="PDielec/Plotter.html">PDielec.Plotter</a></li>
@@ -337,8 +355,19 @@
 <li><a href="PDielec/UnitCell.html">PDielec.UnitCell</a></li>
 <li><a href="PDielec/Utilities.html">PDielec.Utilities</a></li>
 <li><a href="PDielec/VaspOutputReader.html">PDielec.VaspOutputReader</a></li>
+<li><a href="PDielec/checkcsv.html">PDielec.checkcsv</a></li>
+<li><a href="PDielec/checkexcel.html">PDielec.checkexcel</a></li>
+<li><a href="PDielec/graphdatagenerator.html">PDielec.graphdatagenerator</a></li>
 <li><a href="PDielec/p1reader.html">PDielec.p1reader</a></li>
 <li><a href="PDielec/p2cif.html">PDielec.p2cif</a></li>
+<li><a href="PDielec/pdcompare.html">PDielec.pdcompare</a></li>
+<li><a href="PDielec/pdgui.html">PDielec.pdgui</a></li>
+<li><a href="PDielec/pdmake.html">PDielec.pdmake</a></li>
+<li><a href="PDielec/phonopy_pdielec_born.html">PDielec.phonopy_pdielec_born</a></li>
+<li><a href="PDielec/pickled_reader.html">PDielec.pickled_reader</a></li>
+<li><a href="PDielec/preader.html">PDielec.preader</a></li>
+<li><a href="PDielec/vibanalysis.html">PDielec.vibanalysis</a></li>
+<li><a href="PyQt6/QtGui.html">PyQt6.QtGui</a></li>
 </ul>
         </article>
       </div>
@@ -371,7 +400,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>

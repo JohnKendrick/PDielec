@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -343,7 +345,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.PhonopyOutputReader.</span></span><span class="sig-name descname"><span class="pre">PhonopyOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.PhonopyOutputReader.</span></span><span class="sig-name descname"><span class="pre">PhonopyOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a directory containing Phonopy input and output files.</p>
 <p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
@@ -352,36 +354,72 @@
 <dl class="simple">
 <dt>names<span class="classifier">list</span></dt><dd><p>A list of file names to be used.</p>
 </dd>
-<dt>qmreader<span class="classifier">object</span></dt><dd><p>An instance of another class used for reading.</p>
-</dd>
 </dl>
-</section>
-<section id="notes">
-<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
-<p>This method sets the type of the output to ‘Phonopy output’ and
-associates a quantum mechanics (QM) reader object with the instance.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files" title="Link to this definition">¶</a></dt>
 <dd><p>Read the Phonopy files in the directory.</p>
-<p>Uses the qmreader to read in the electronic structure information and copies it to the current object.
-Then it reads the dynamical matrix from phonopy</p>
+<p>reads the dynamical matrix from phonopy
+reads the Born charges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader.read_born_file">
+<span class="sig-name descname"><span class="pre">read_born_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">natoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader.read_born_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_born_file" title="Link to this definition">¶</a></dt>
+<dd><p>Read the BORN_PDIELEC file in the current directory.</p>
+<p>The BORN_PDIELEC file was created by a phonopy helper routine such as phonopy-pdielec-born
+It contains the optical permittivity and the Born charges</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>natoms<span class="classifier">int</span></dt><dd><p>The number of atoms</p>
+</dd>
+<dt>filename<span class="classifier">str</span></dt><dd><p>The filename (probably “BORN_PDIELEC”)</p>
+</dd>
+</dl>
+</section>
+<section id="modifies">
+<h4>Modifies<a class="headerlink" href="#modifies" title="Link to this heading">¶</a></h4>
+<p>zerof_optical_dielectric : the zero frequency optical permittivity
+born_charges             : the born charges</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader.read_cell">
+<span class="sig-name descname"><span class="pre">read_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader.read_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_cell" title="Link to this definition">¶</a></dt>
+<dd><p>Read and process yaml string and extract a unit cell.</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>yaml<span class="classifier">str</span></dt><dd><p>A yaml string containing a phonopy cell</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<p>cell : unitCell</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix">
-<span class="sig-name descname"><span class="pre">read_dynamical_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader.read_dynamical_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">read_dynamical_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phonopy_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qpoints_filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader.read_dynamical_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Read and process the dynamical matrix from output files.</p>
 <p>This method reads the dynamical matrix and other relevant data from the specified
 output files, calculates the Hessian matrix, converts its units, and computes the
 eigenvalues and eigenvectors to determine frequencies and mass-weighted normal modes.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
-<p>None explicitly, but relies on the instance attributes <cite>_outputfiles</cite> and <cite>nions</cite>
-to determine the files to read and number of ions, respectively.</p>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>phonopy_filename<span class="classifier">str</span></dt><dd><p>The phonopy.yaml file name</p>
+</dd>
+<dt>qpoints_filename<span class="classifier">str</span></dt><dd><p>The qpoints.yaml file name</p>
+</dd>
+</dl>
 </section>
-<section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>None</dt><dd><p>This method directly modifies the instance attributes <cite>_old_masses</cite>, <cite>frequencies</cite>,
 and <cite>mass_weighted_normal_modes</cite> based on the data read and calculations performed.</p>
@@ -399,8 +437,8 @@ and <cite>mass_weighted_normal_modes</cite> based on the data read and calculati
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h4>Notes<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>It first attempts to use the CLoader for parsing YAML files for performance reasons and falls
 back to the standard Loader if CLoader is not available, issuing a warning in such cases.</p></li>
@@ -416,13 +454,13 @@ frequencies and normal modes are stored in corresponding instance attributes.</p
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader.qmreader">
-<span class="sig-name descname"><span class="pre">qmreader</span></span><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.qmreader" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Phonopy</span> <span class="pre">output'</span></em><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.type" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader.type">
-<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Phonopy</span> <span class="pre">output'</span></em><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.type" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader.units">
+<span class="sig-name descname"><span class="pre">units</span></span><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.units" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -491,9 +529,11 @@ frequencies and normal modes are stored in corresponding instance attributes.</p
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader._read_output_files()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_born_file"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader.read_born_file()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_cell"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader.read_cell()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader.read_dynamical_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.qmreader"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader.qmreader</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.type"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader.type</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader.units"><code class="docutils literal notranslate"><span class="pre">PhonopyOutputReader.units</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -509,7 +549,7 @@ frequencies and normal modes are stored in corresponding instance attributes.</p
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

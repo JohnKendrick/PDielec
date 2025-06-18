@@ -620,6 +620,8 @@ Module Contents
        Reads constant permittivity data for a given material from the spreadsheet.
    readTabulatedRefractiveIndex(sheet, worksheet, density)
        Reads tabulated refractive index data for a given material from the spreadsheet.
+   readTabulatedSpectroscopy(sheet, worksheet, density)
+       Reads tabulated n and alpha (in cm-1) data for a given material from the spreadsheet.
    readTabulatedPermittivity(sheet, worksheet, density)
        Reads tabulated permittivity data for a given material from the spreadsheet.
    readLorentzDrude(sheet, worksheet, density, unitCell)
@@ -813,6 +815,26 @@ Module Contents
 
 
    .. py:method:: readTabulatedRefractiveIndex(sheet, worksheet, density)
+
+      Read tabulated refractive index data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: readTabulatedSpectroscopy(sheet, worksheet, density)
 
       Read tabulated refractive index data from the spreadsheet.
 

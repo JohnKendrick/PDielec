@@ -14,23 +14,23 @@ Classes
 
 .. autoapisummary::
 
-   PDielec.GUI.ViewerTab.PrimitiveTransformWindow
+   PDielec.GUI.ViewerTab.TransformWindow
    PDielec.GUI.ViewerTab.ViewerTab
 
 
 Module Contents
 ---------------
 
-.. py:class:: PrimitiveTransformWindow(primitive_transform, message='Primitive Transform', parent=None, debug=False)
+.. py:class:: TransformWindow(transform, message='Cell Transform', parent=None, debug=False)
 
    Bases: :py:obj:`qtpy.QtWidgets.QDialog`
 
 
-   A GUI window for displaying and editing the primitive transform matrix.
+   A GUI window for displaying and editing the transform matrix.
 
    Parameters
    ----------
-   primitive_transform : 3x3 array of floats
+   transform : 3x3 array of floats
        The current transformation matrix
    message : str
        Message to displayed
@@ -41,8 +41,8 @@ Module Contents
 
    Attributes
    ----------
-   primitive_transform : 3x3 array of strs
-       The primitive transform matrix
+   transform : 3x3 array of strs
+       The transform matrix
    message : str
        The message displayed at the top of the window.
    layout : QVBoxLayout
@@ -52,20 +52,20 @@ Module Contents
 
    Methods
    -------
-   reDrawPrimitiveTable
-       draw the primitive transform table
-   getPrimitiveTransform
-       Return the primitive transform matrix
-   on_primitive_transform_table_itemChanged
-       Handles a change in the primitive transform table
+   reDrawTransformTable
+       draw the transform table
+   getTransform
+       Return the transform matrix
+   on_transform_table_itemChanged
+       Handles a change in the transform table
 
 
 
-   .. py:method:: getPrimitiveTransform()
+   .. py:method:: getTransform()
 
-      Return the primtive transformation matrix
+      Return the primtive transformation matrix.
 
-      The primitive transformation is stored as a 3x3 list of strings.
+      The transformation is stored as a 3x3 list of strings.
       The strings are treated as python commands to return a value.:w
 
 
@@ -80,9 +80,9 @@ Module Contents
 
 
 
-   .. py:method:: on_primitive_transform_table_itemChanged(item)
+   .. py:method:: on_transform_table_itemChanged(item)
 
-      Handle a change to the primitive table.
+      Handle a change to the transform table.
 
       The item which has changed is ignored and the whole table is rebuilt
 
@@ -97,16 +97,16 @@ Module Contents
 
       Modifies
       --------
-      self.settings["Primitive transform"]
+      self.settings["Transform"]
 
 
 
 
-   .. py:method:: reDrawPrimitiveTable()
+   .. py:method:: reDrawTransformTable()
 
-      Redraw the 3x3 table representing the primitive cell transformation.
+      Redraw the 3x3 table representing the cell transformation.
 
-      The table is generated from the strings stored in self.primitive_transform_as_str
+      The table is generated from the strings stored in self.transform_as_str
       If a number is stored it is converted to a string.
 
       Parameters
@@ -119,7 +119,7 @@ Module Contents
 
       Modifies
       --------
-      primitive_transform_table
+      transform_table
 
 
 
@@ -134,14 +134,14 @@ Module Contents
 
 
    .. py:attribute:: message
-      :value: 'Primitive Transform'
+      :value: 'Cell Transform'
 
 
 
-   .. py:attribute:: primitive_transform_as_str
+   .. py:attribute:: transform_as_str
 
 
-   .. py:attribute:: primitive_transform_table
+   .. py:attribute:: transform_table
 
 
 .. py:class:: ViewerTab(parent, debug=False)
@@ -223,7 +223,7 @@ Module Contents
    on_coloured_element_clicked
        Changes the colour of an element
    on_edit_button_clicked
-       Edit the primitive transform to the matrix in the GUI
+       Edit the transform matrix in the GUI
    on_filename_button_clicked
        Handles a click on the file name button
    on_filename_le_changed
@@ -231,7 +231,7 @@ Module Contents
    on_filename_le_return
        Handles a return press in the file name widget
    on_guess_button_clicked
-       Guess the primitive transform to the matrix in the GUI
+       Guess the transform to a primitive cell
    on_light_switches_cb_activated
        Activates the light switch combobox
    on_maximum_displacement_changed
@@ -247,7 +247,7 @@ Module Contents
    on_super_cell_changed_c
        Handles the change in the c supercell parameter
    on_reset_button_clicked
-       Changes the primitive transform back to a unit matrix
+       Changes the transform back to a unit matrix
    plot
        Plot the 3D view of the molecule
    plot_animation
@@ -272,8 +272,9 @@ Module Contents
    .. py:method:: calculate()
 
       Perform calculations related to the ViewerTab instance, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
-      In addition, calculate the primitive cell if a primitive transformation is given.
-      The supercell is calculated from the primitive cell.
+
+      In addition, calculate the transformed cell if a transformation is given.
+      The supercell is calculated from the dft cell.
 
       Parameters
       ----------
@@ -303,9 +304,9 @@ Module Contents
 
 
 
-   .. py:method:: convert_primitive_transform()
+   .. py:method:: convert_transform()
 
-      Convert the primitive transform stored as strings in settings to an np.array.
+      Convert the transform stored as strings in settings to an np.array.
 
       Parameters
       ----------
@@ -313,14 +314,29 @@ Module Contents
 
       Modifies
       --------
-      primitive_transform
+      transform
 
 
 
 
-   .. py:method:: createPrimitiveTransformTabEntry()
+   .. py:method:: createHKLTabEntry()
 
-      Create a one line entry to modify the primitive cell transformaton matrix.
+      Create a one line entry to allow an entry of the hkl for a surface.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      a widget
+
+
+
+
+   .. py:method:: createTransformTabEntry()
+
+      Create a one line entry to modify the cell transformation matrix.
 
       Add buttons to reset, edit and if possible read the transformation matrix
 
@@ -331,6 +347,37 @@ Module Contents
       Returns
       -------
       a widget
+
+
+
+
+   .. py:method:: get_toggle_state(toggle)
+
+      Return the state of the given toggle.
+
+      Parameters
+      ----------
+      toggle : str
+          The toggle name
+
+      Returns
+      -------
+      bool
+
+
+
+
+   .. py:method:: hkl_spin_boxes()
+
+      Create the spin boxes for hkl.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      a set of spin boxes
 
 
 
@@ -449,13 +496,14 @@ Module Contents
 
    .. py:method:: on_edit_button_clicked(item)
 
-      Edit the primitive transform.
+      Edit the transform.
 
-      The primtive transform window dialog is shown and any edits applied
+      The transform window dialog is shown and any edits applied
 
       Parameters
       ----------
-      item : bool   Unused
+      item : bool
+          ignored
 
       Returns
       -------
@@ -542,7 +590,8 @@ Module Contents
 
       Parameters
       ----------
-      item : bool   Unused
+      item : bool
+          ignored
 
       Returns
       -------
@@ -551,6 +600,25 @@ Module Contents
       Modifies
       --------
       Modifies primitive unit cell
+
+
+
+
+   .. py:method:: on_hkl_sb_changed(value, index)
+
+      Handle a change in a value of h,k or, l.
+
+      Parameters
+      ----------
+      value : int
+          The value of h,k or l
+
+      index : integer
+        1, 2, or 3 for h, k or l
+
+      Modifies
+      --------
+      settings["hkl"]
 
 
 
@@ -573,14 +641,14 @@ Module Contents
 
    .. py:method:: on_maximum_displacement_changed(value)
 
-      Handle changes to the maximum displacement setting.
+      Handle changes to the displacement setting.
 
-      This method updates the 'Maximum displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
+      This method updates the 'Displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
 
       Parameters
       ----------
       value : float
-          The new value for the maximum displacement setting.
+          The new value for the displacement setting.
 
       Returns
       -------
@@ -617,7 +685,8 @@ Module Contents
 
       Parameters
       ----------
-      item : bool   Unused
+      item : bool
+          ignored
 
       Returns
       -------
@@ -634,17 +703,16 @@ Module Contents
 
       Handle a push of the reset transform button.
 
-      When the button is pushed the primitive transform is set to unity
+      When the button is pushed the transform is set to unity.
 
       Parameters
       ----------
-      item : bool   Unused
+      item : bool
+          ignored
 
       Returns
       -------
       None
-
-      Used to modify the primitive unit cell
 
 
 
@@ -725,6 +793,41 @@ Module Contents
       Returns
       -------
       None
+
+
+
+
+   .. py:method:: on_toggles_cb_activated(index)
+
+      Activate or deactivate the various toglles based on the current state and updates the GUI accordingly.
+
+      Parameters
+      ----------
+      index : int
+          Index of the toggle in `self.toggle_name` list
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_uvw_sb_changed(value, index)
+
+      Handle a change in a value of u,v or, w.
+
+      Parameters
+      ----------
+      value : int
+          The value of u,v or w
+
+      index : integer
+        1, 2, or 3 for u, v or w
+
+      Modifies
+      --------
+      settings["uvw"]
 
 
 
@@ -912,6 +1015,21 @@ Module Contents
 
 
 
+   .. py:method:: uvw_spin_boxes()
+
+      Create the spin boxes for uvw.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      a set of spin boxes
+
+
+
+
    .. py:attribute:: UVW
 
 
@@ -992,6 +1110,11 @@ Module Contents
    .. py:attribute:: gif_filename_button
 
 
+   .. py:attribute:: hkl_tab_entry
+      :value: None
+
+
+
    .. py:attribute:: image_filename
       :value: ''
 
@@ -1038,11 +1161,6 @@ Module Contents
    .. py:attribute:: png_filename_button
 
 
-   .. py:attribute:: primitive_transform_tab_entry
-      :value: None
-
-
-
    .. py:attribute:: reader
 
 
@@ -1084,5 +1202,23 @@ Module Contents
 
 
    .. py:attribute:: super_cell_widget
+
+
+   .. py:attribute:: toggle_names
+      :value: ['Show cell labels', 'Show cell', 'Show orientation', 'Show bonds', 'Show atoms']
+
+
+
+   .. py:attribute:: toggles_cb
+
+
+   .. py:attribute:: transform_tab_entry
+      :value: None
+
+
+
+   .. py:attribute:: transformed_cell
+      :value: None
+
 
 

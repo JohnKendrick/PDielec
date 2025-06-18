@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -340,7 +342,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Calculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup_symbol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Calculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_normal_modes_and_frequencies</span><span class="p">,</span> <span class="n">cleanup_symbol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">avogadro_si</span><span class="p">,</span> <span class="n">wavenumber</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.IO</span><span class="w"> </span><span class="kn">import</span> <span class="n">pdielec_io</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Plotter</span><span class="w"> </span><span class="kn">import</span> <span class="n">print3x3</span><span class="p">,</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_reals</span><span class="p">,</span> <span class="n">print_strings</span>
@@ -448,7 +450,6 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in calling the generic output reader some files are not present&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="c1"># </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span>               <span class="o">=</span> <span class="n">filenames</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span>                      <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">debug</span>                      <span class="o">=</span> <span class="kc">False</span>
@@ -691,7 +692,6 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using the edited masses&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">masses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edited_masses</span>
             <span class="k">return</span>
-        <span class="c1"># </span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">program_mass_dictionary</span><span class="p">:</span>
             <span class="c1"># We only want to do this once - remember the program masses as a dictionary</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
@@ -1024,16 +1024,16 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;masses&quot;</span><span class="p">,</span> <span class="n">masses</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;non mass weighted hessian&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nomass_hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modify_mass_weighting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nomass_hessian</span><span class="p">,</span> <span class="n">masses</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modify_mass_weighting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nomass_hessian</span><span class="p">,</span> <span class="n">masses</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mass weighted hessian&quot;</span><span class="p">,</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mass weighted hessian&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="c1"># Project out the translational modes if requested</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eckart</span><span class="p">:</span>
-            <span class="n">hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hessian</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;projected hessian&quot;</span><span class="p">,</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;projected hessian&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="c1"># Find its eigenvalues and eigen vectors</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="n">hessian</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hessian</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculated frequencies&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mass-weighted normal modes&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">)</span>
@@ -1057,7 +1057,6 @@
 <span class="sd">            The matrix with translational modes projected out.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#</span>
         <span class="n">new_hessian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
         <span class="n">nmodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="o">*</span><span class="mi">3</span>
         <span class="n">unit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nmodes</span><span class="p">)</span>
@@ -1135,7 +1134,6 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_dynamical_matrix&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hessian&quot;</span><span class="p">,</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-        <span class="c1">#</span>
         <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span><span class="o">*</span><span class="n">amu</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;masses&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">,</span> <span class="n">masses</span><span class="p">)</span>
@@ -1160,61 +1158,10 @@
             <span class="n">hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;projected hessian&quot;</span><span class="p">,</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="n">hessian</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;non mass weighted hessian&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nomass_hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span></div>
-
-
-<div class="viewcode-block" id="GenericOutputReader._calculate_normal_modes_and_frequencies">
-<a class="viewcode-back" href="../../autoapi/PDielec/GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader._calculate_normal_modes_and_frequencies">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hessian</span><span class="p">,</span> <span class="n">natoms</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;From the mass weighted hessian compute the normal modes and the frequencies.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        hessian : a symmetric 2d numpy array of 3*natoms, 3*natoms</span>
-<span class="sd">            This is the mass-weighted hessian</span>
-<span class="sd">        natoms : int</span>
-<span class="sd">            The number of atoms</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        frequencies : a list of floats</span>
-<span class="sd">            The frequencies in cm-1</span>
-<span class="sd">        mass_weighted_normal_modes : a 3*natoms, 3*natoms 2D list</span>
-<span class="sd">            The eigen vectors of the hessian</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># diagonalise</span>
-        <span class="n">eig_val</span><span class="p">,</span> <span class="n">eig_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
-        <span class="n">nmodes</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">natoms</span>
-        <span class="c1">#</span>
-        <span class="c1"># If eig_val has negative values then we store the negative frequency</span>
-        <span class="c1"># convert to cm-1</span>
-        <span class="n">frequencies_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nmodes</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">eig</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">eig_val</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">eig</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">frequencies_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="n">eig</span><span class="p">)</span> <span class="o">/</span> <span class="n">wavenumber</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">frequencies_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eig</span><span class="p">)</span> <span class="o">/</span> <span class="n">wavenumber</span>
-            <span class="c1"># end if</span>
-        <span class="c1"># end for</span>
-        <span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">frequencies_a</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;frequencies&quot;</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
-        <span class="c1"># Store the mass weighted normal modes</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmodes</span><span class="p">):</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">natoms</span><span class="p">):</span>
-                <span class="n">modea</span> <span class="o">=</span> <span class="p">[</span><span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">eig_vec</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
-                <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">3</span>
-                <span class="n">mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modea</span><span class="p">)</span>
-            <span class="n">mass_weighted_normal_modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
-        <span class="c1"># end for i</span>
-        <span class="k">return</span> <span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="n">frequencies_a</span></div>
 
 
 <div class="viewcode-block" id="GenericOutputReader.reset_born_charges">
@@ -1421,7 +1368,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

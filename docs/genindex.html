@@ -216,6 +216,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -268,6 +269,7 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -354,8 +356,6 @@
         <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator._brug_minimise_scalar">_brug_minimise_scalar() (in module PDielec.Calculator)</a>
 </li>
         <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator._brug_minimise_tensor">_brug_minimise_tensor() (in module PDielec.Calculator)</a>
-</li>
-        <li><a href="autoapi/PDielec/GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader._calculate_normal_modes_and_frequencies">_calculate_normal_modes_and_frequencies() (PDielec.GenericOutputReader.GenericOutputReader method)</a>
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell._calculate_reciprocal_lattice">_calculate_reciprocal_lattice() (PDielec.UnitCell.UnitCell method)</a>
 </li>
@@ -825,6 +825,8 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.addSphere">addSphere() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.addText">addText() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
+</li>
         <li><a href="autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibIntensity">addVibIntensity() (PDielec.vibanalysis.System method)</a>
 </li>
         <li><a href="autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibration">addVibration() (PDielec.vibanalysis.System method)</a>
@@ -990,7 +992,7 @@
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.buttonBox">buttonBox (PDielec.GUI.SingleCrystalLayer.ShowLayerWindow attribute)</a>
 
         <ul>
-          <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.buttonBox">(PDielec.GUI.ViewerTab.PrimitiveTransformWindow attribute)</a>
+          <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.buttonBox">(PDielec.GUI.ViewerTab.TransformWindow attribute)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -1071,6 +1073,8 @@
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculate_molecular_contents">calculate_molecular_contents() (PDielec.UnitCell.UnitCell method)</a>
 </li>
+        <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.calculate_normal_modes_and_frequencies">calculate_normal_modes_and_frequencies() (in module PDielec.Calculator)</a>
+</li>
         <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.calculate_permittivity">calculate_permittivity() (in module PDielec.Calculator)</a>
 </li>
         <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.IncoherentAveragePhaseLayer.calculate_propagation_exponents">calculate_propagation_exponents() (PDielec.GTMcore.IncoherentAveragePhaseLayer method)</a>
@@ -1133,12 +1137,8 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculateLabFrameEpsilon">calculateLabFrameEpsilon() (PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer method)</a>
 </li>
-        <li><a href="autoapi/PDielec/PrimitiveCell/index.html#PDielec.PrimitiveCell.PrimitiveCell.calculateNormalModes">calculateNormalModes() (PDielec.PrimitiveCell.PrimitiveCell method)</a>
-
-        <ul>
-          <li><a href="autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateNormalModes">(PDielec.SuperCell.SuperCell method)</a>
+        <li><a href="autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateNormalModes">calculateNormalModes() (PDielec.SuperCell.SuperCell method)</a>
 </li>
-        </ul></li>
         <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.calculatePhasePositions">calculatePhasePositions() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculatePowderSpectrum">calculatePowderSpectrum() (in module PDielec.HelperRoutines)</a>
@@ -1173,18 +1173,20 @@
         </ul></li>
         <li><a href="autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader">CastepOutputReader (class in PDielec.CastepOutputReader)</a>
 </li>
-        <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.cell">cell (PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab attribute)</a>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.cell">cell (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
 
         <ul>
+          <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.cell">(PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab attribute)</a>
+</li>
           <li><a href="autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.cell">(PDielec.Materials.Material attribute)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.cell_corners">cell_corners (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.cell_edges">cell_edges (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.cell_of_molecules">cell_of_molecules (PDielec.GUI.AnalysisTab.AnalysisTab attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.cell_radius_sb">cell_radius_sb (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
@@ -1269,6 +1271,8 @@
 </li>
         <li><a href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.compareNmaFiles">compareNmaFiles() (in module PDielec.pdmake)</a>
 </li>
+        <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.compute_all_sg_permutations">compute_all_sg_permutations() (in module PDielec.Calculator)</a>
+</li>
         <li><a href="autoapi/PDielec/Materials/index.html#PDielec.Materials.Constant">Constant (class in PDielec.Materials)</a>
 </li>
         <li><a href="autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.ConstantScalar">ConstantScalar (class in PDielec.DielectricFunction)</a>
@@ -1287,11 +1291,13 @@
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.convert_length_units">convert_length_units() (in module PDielec.UnitCell)</a>
 </li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.convert_primitive_transform">convert_primitive_transform() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.convert_transform">convert_transform() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_unitcell_to_abc">convert_unitcell_to_abc() (PDielec.UnitCell.UnitCell method)</a>
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_xyz_to_abc">convert_xyz_to_abc() (PDielec.UnitCell.UnitCell method)</a>
+</li>
+        <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_xyz_to_integer_abc">convert_xyz_to_integer_abc() (PDielec.UnitCell.UnitCell method)</a>
 </li>
         <li><a href="autoapi/PDielec/Constants/index.html#PDielec.Constants.coulomb">coulomb (in module PDielec.Constants)</a>
 </li>
@@ -1299,11 +1305,11 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.createArrays">createArrays() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.createHKLTabEntry">createHKLTabEntry() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
+</li>
         <li><a href="autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.createImages">createImages() (PDielec.SuperCell.SuperCell method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SettingsTab/index.html#PDielec.GUI.SettingsTab.SettingsTab.createIntensityTable">createIntensityTable() (PDielec.GUI.SettingsTab.SettingsTab method)</a>
-</li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.createPrimitiveTransformTabEntry">createPrimitiveTransformTabEntry() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBar">createToolBar() (PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
 </li>
@@ -1312,6 +1318,8 @@
         <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveDownButton">createToolBarMoveDownButton() (PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveUpButton">createToolBarMoveUpButton() (PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.createTransformTabEntry">createTransformTabEntry() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.cross_correlation_le">cross_correlation_le (PDielec.GUI.FitterTab.FitterTab attribute)</a>
 </li>
@@ -1336,6 +1344,8 @@
         <li><a href="autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Sellmeier.Cs">Cs (PDielec.DielectricFunction.Sellmeier attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SettingsTab/index.html#PDielec.GUI.SettingsTab.SettingsTab.current_mass_definition_index">current_mass_definition_index (PDielec.GUI.SettingsTab.SettingsTab attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.current_orientation">current_orientation (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.current_phase">current_phase (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
 </li>
@@ -1389,13 +1399,17 @@
           <li><a href="autoapi/PDielec/Utilities/index.html#PDielec.Utilities.Debug.debug">(PDielec.Utilities.Debug attribute)</a>
 </li>
         </ul></li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.debugger">debugger (PDielec.GUI.ViewerTab.PrimitiveTransformWindow attribute)</a>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.debugger">debugger (PDielec.GUI.ViewerTab.TransformWindow attribute)</a>
 
         <ul>
           <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.debugger">(PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
 </li>
         </ul></li>
         <li><a href="autoapi/PDielec/Constants/index.html#PDielec.Constants.debye">debye (in module PDielec.Constants)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.define_orientations">define_orientations() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.define_surface_orientations">define_surface_orientations() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.defineLights">defineLights() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
@@ -1417,10 +1431,12 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteSpheres">deleteSpheres() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
-        <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.Delta">Delta (PDielec.GTMcore.Layer attribute)</a>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteTexts">deleteTexts() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.Delta">Delta (PDielec.GTMcore.Layer attribute)</a>
+</li>
         <li><a href="autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.density">density (PDielec.Materials.Material attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.density_sb">density_sb (PDielec.GUI.PowderScenarioTab.PowderScenarioTab attribute)</a>
@@ -1470,6 +1486,10 @@
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine3">drawLayerWidgetLine3() (PDielec.GUI.SingleCrystalLayer.ShowLayerWindow method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawSpheres">drawSpheres() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawTexts">drawTexts() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawUVWInfo">drawUVWInfo() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
         <li><a href="autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.drude">drude (PDielec.DielectricFunction.DFT attribute)</a>
 </li>
@@ -1627,6 +1647,8 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.find_delimiter">find_delimiter() (in module PDielec.GUI.FitterTab)</a>
 </li>
+        <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.find_lcd">find_lcd() (PDielec.UnitCell.UnitCell method)</a>
+</li>
         <li><a href="autoapi/PDielec/Utilities/index.html#PDielec.Utilities.find_program_from_name">find_program_from_name() (in module PDielec.Utilities)</a>
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.find_symmetry">find_symmetry() (PDielec.UnitCell.UnitCell method)</a>
@@ -1751,6 +1773,8 @@
 </li>
         <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.get_layer">get_layer() (PDielec.GTMcore.System method)</a>
 </li>
+        <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_number_of_atoms">get_number_of_atoms() (PDielec.UnitCell.UnitCell method)</a>
+</li>
         <li><a href="autoapi/PDielec/GUI/PlottingTab/index.html#PDielec.GUI.PlottingTab.PlottingTab.get_number_of_calculations_required">get_number_of_calculations_required() (PDielec.GUI.PlottingTab.PlottingTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_number_of_molecules">get_number_of_molecules() (PDielec.UnitCell.UnitCell method)</a>
@@ -1771,9 +1795,13 @@
           <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results">(PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_species">get_species() (PDielec.UnitCell.UnitCell method)</a>
+</li>
         <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.get_substrate">get_substrate() (PDielec.GTMcore.System method)</a>
 </li>
         <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.get_superstrate">get_superstrate() (PDielec.GTMcore.System method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.get_toggle_state">get_toggle_state() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_torsions">get_torsions() (PDielec.UnitCell.UnitCell method)</a>
 </li>
@@ -1873,8 +1901,6 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPhaseShift">getPhaseShift() (PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer method)</a>
 </li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.getPrimitiveTransform">getPrimitiveTransform() (PDielec.GUI.ViewerTab.PrimitiveTransformWindow method)</a>
-</li>
         <li><a href="autoapi/PDielec/GUI/MainTab/index.html#PDielec.GUI.MainTab.MainTab.getRelativeFileName">getRelativeFileName() (PDielec.GUI.MainTab.MainTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/Materials/index.html#PDielec.Materials.MaterialsDataBase.getSheetNames">getSheetNames() (PDielec.Materials.MaterialsDataBase method)</a>
@@ -1896,6 +1922,8 @@
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessInMetres">getThicknessInMetres() (PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessUnit">getThicknessUnit() (PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.getTransform">getTransform() (PDielec.GUI.ViewerTab.TransformWindow method)</a>
 </li>
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.getVolume">getVolume() (PDielec.UnitCell.UnitCell method)</a>
 </li>
@@ -1941,19 +1969,27 @@
           <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.Cylinder.height">(PDielec.GUI.OpenGLWidget.Cylinder attribute)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/Constants/index.html#PDielec.Constants.hertz">hertz (in module PDielec.Constants)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/CrystalOutputReader/index.html#PDielec.CrystalOutputReader.CrystalOutputReader.hessian_symmetrisation">hessian_symmetrisation (PDielec.CrystalOutputReader.CrystalOutputReader attribute)</a>
 
         <ul>
           <li><a href="autoapi/PDielec/GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader.hessian_symmetrisation">(PDielec.GenericOutputReader.GenericOutputReader attribute)</a>
 </li>
         </ul></li>
-        <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.hkl">hkl (PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer attribute)</a>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.hkl">hkl (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
+
+        <ul>
+          <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.hkl">(PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer attribute)</a>
 </li>
+        </ul></li>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.hkl_label">hkl_label (PDielec.GUI.PowderScenarioTab.PowderScenarioTab attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.hkl_spin_boxes">hkl_spin_boxes() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.hkl_tab_entry">hkl_tab_entry (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.hodrick_prescott_filter">hodrick_prescott_filter() (in module PDielec.Calculator)</a>
 </li>
@@ -2254,7 +2290,7 @@
         <ul>
           <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.layout">(PDielec.GUI.SingleCrystalLayer.ShowLayerWindow attribute)</a>
 </li>
-          <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.layout">(PDielec.GUI.ViewerTab.PrimitiveTransformWindow attribute)</a>
+          <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.layout">(PDielec.GUI.ViewerTab.TransformWindow attribute)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -2321,6 +2357,8 @@
           <li><a href="autoapi/PDielec/pdgui/index.html#PDielec.pdgui.main">(in module PDielec.pdgui)</a>
 </li>
           <li><a href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.main">(in module PDielec.pdmake)</a>
+</li>
+          <li><a href="autoapi/PDielec/phonopy_pdielec_born/index.html#PDielec.phonopy_pdielec_born.main">(in module PDielec.phonopy_pdielec_born)</a>
 </li>
           <li><a href="autoapi/PDielec/pickled_reader/index.html#PDielec.pickled_reader.main">(in module PDielec.pickled_reader)</a>
 </li>
@@ -2397,12 +2435,14 @@
 </li>
         <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.maxwell">maxwell() (in module PDielec.Calculator)</a>
 </li>
+        <li><a href="autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.maxwell_garnett">maxwell_garnett() (in module PDielec.HelperRoutines)</a>
+</li>
         <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.maxwell_sihvola">maxwell_sihvola() (in module PDielec.Calculator)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.message">message (PDielec.GUI.SingleCrystalLayer.ShowLayerWindow attribute)</a>
 
         <ul>
-          <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.message">(PDielec.GUI.ViewerTab.PrimitiveTransformWindow attribute)</a>
+          <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.message">(PDielec.GUI.ViewerTab.TransformWindow attribute)</a>
 </li>
         </ul></li>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.methods">methods (PDielec.GUI.PowderScenarioTab.PowderScenarioTab attribute)</a>
@@ -2538,6 +2578,8 @@
           <li><a href="autoapi/PDielec/pdgui/index.html#module-PDielec.pdgui">PDielec.pdgui</a>
 </li>
           <li><a href="autoapi/PDielec/pdmake/index.html#module-PDielec.pdmake">PDielec.pdmake</a>
+</li>
+          <li><a href="autoapi/PDielec/phonopy_pdielec_born/index.html#module-PDielec.phonopy_pdielec_born">PDielec.phonopy_pdielec_born</a>
 </li>
           <li><a href="autoapi/PDielec/PhonopyOutputReader/index.html#module-PDielec.PhonopyOutputReader">PDielec.PhonopyOutputReader</a>
 </li>
@@ -2805,6 +2847,8 @@
         <ul>
           <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed">(PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
 </li>
+          <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.on_hkl_sb_changed">(PDielec.GUI.ViewerTab.ViewerTab method)</a>
+</li>
         </ul></li>
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.on_hpfilter_lambda_sb_changed">on_hpfilter_lambda_sb_changed() (PDielec.GUI.FitterTab.FitterTab method)</a>
 </li>
@@ -2864,13 +2908,11 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed">on_percentage_partial_incoherence_sb_changed() (PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_i_sb_changed">on_permittivity_i_sb_changed() (PDielec.GUI.PowderScenarioTab.PowderScenarioTab method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_r_sb_changed">on_permittivity_r_sb_changed() (PDielec.GUI.PowderScenarioTab.PowderScenarioTab method)</a>
-</li>
-        <li><a href="autoapi/PDielec/GUI/MainTab/index.html#PDielec.GUI.MainTab.MainTab.on_phonopy_program_cb_activated">on_phonopy_program_cb_activated() (PDielec.GUI.MainTab.MainTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/PlottingTab/index.html#PDielec.GUI.PlottingTab.PlottingTab.on_plot_type_cb_activated">on_plot_type_cb_activated() (PDielec.GUI.PlottingTab.PlottingTab method)</a>
 </li>
@@ -2881,8 +2923,6 @@
 </li>
         </ul></li>
         <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.on_primitive_button_clicked">on_primitive_button_clicked() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
-</li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.on_primitive_transform_table_itemChanged">on_primitive_transform_table_itemChanged() (PDielec.GUI.ViewerTab.PrimitiveTransformWindow method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked">on_print_button_clicked() (PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
 </li>
@@ -2938,7 +2978,13 @@
         </ul></li>
         <li><a href="autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed">on_title_changed() (PDielec.GUI.AnalysisTab.AnalysisTab method)</a>
 </li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.on_toggles_cb_activated">on_toggles_cb_activated() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
+</li>
         <li><a href="autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed">on_tolerance_changed() (PDielec.GUI.AnalysisTab.AnalysisTab method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.on_transform_table_itemChanged">on_transform_table_itemChanged() (PDielec.GUI.ViewerTab.TransformWindow method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.on_uvw_sb_changed">on_uvw_sb_changed() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_vf_sb_changed">on_vf_sb_changed() (PDielec.GUI.PowderScenarioTab.PowderScenarioTab method)</a>
 </li>
@@ -2995,6 +3041,10 @@
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.optimiseFit">optimiseFit() (PDielec.GUI.FitterTab.FitterTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.optimiseFunction">optimiseFunction() (PDielec.GUI.FitterTab.FitterTab method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.orientation">orientation (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.orientation_definitions">orientation_definitions (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader.original_born_charges">original_born_charges (PDielec.GenericOutputReader.GenericOutputReader attribute)</a>
 </li>
@@ -3307,6 +3357,13 @@
 </li>
         </ul></li>
         <li>
+    PDielec.phonopy_pdielec_born
+
+        <ul>
+          <li><a href="autoapi/PDielec/phonopy_pdielec_born/index.html#module-PDielec.phonopy_pdielec_born">module</a>
+</li>
+        </ul></li>
+        <li>
     PDielec.PhonopyOutputReader
 
         <ul>
@@ -3341,6 +3398,8 @@
           <li><a href="autoapi/PDielec/PrimitiveCell/index.html#module-PDielec.PrimitiveCell">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     PDielec.QEOutputReader
 
@@ -3355,8 +3414,6 @@
           <li><a href="autoapi/PDielec/SuperCell/index.html#module-PDielec.SuperCell">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     PDielec.UnitCell
 
@@ -3401,8 +3458,6 @@
           <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.phaseShift">(PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer attribute)</a>
 </li>
         </ul></li>
-        <li><a href="autoapi/PDielec/GUI/MainTab/index.html#PDielec.GUI.MainTab.MainTab.phonopy_program_cb">phonopy_program_cb (PDielec.GUI.MainTab.MainTab attribute)</a>
-</li>
         <li><a href="autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader">PhonopyOutputReader (class in PDielec.PhonopyOutputReader)</a>
 </li>
         <li><a href="autoapi/PDielec/Constants/index.html#PDielec.Constants.planck_si">planck_si (in module PDielec.Constants)</a>
@@ -3477,17 +3532,9 @@
 </li>
         <li><a href="autoapi/PDielec/GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader.pressures">pressures (PDielec.GenericOutputReader.GenericOutputReader attribute)</a>
 </li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_as_str">primitive_transform_as_str (PDielec.GUI.ViewerTab.PrimitiveTransformWindow attribute)</a>
-</li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.primitive_transform_tab_entry">primitive_transform_tab_entry (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
-</li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.primitive_transform_table">primitive_transform_table (PDielec.GUI.ViewerTab.PrimitiveTransformWindow attribute)</a>
-</li>
         <li><a href="autoapi/PDielec/GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader.primitive_transformation">primitive_transformation (PDielec.GenericOutputReader.GenericOutputReader attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/PrimitiveCell/index.html#PDielec.PrimitiveCell.PrimitiveCell">PrimitiveCell (class in PDielec.PrimitiveCell)</a>
-</li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow">PrimitiveTransformWindow (class in PDielec.GUI.ViewerTab)</a>
 </li>
         <li><a href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.print">print (in module PDielec.pdmake)</a>
 </li>
@@ -3589,12 +3636,6 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/QEOutputReader/index.html#PDielec.QEOutputReader.QEOutputReader">QEOutputReader (class in PDielec.QEOutputReader)</a>
 </li>
-        <li><a href="autoapi/PDielec/GUI/MainTab/index.html#PDielec.GUI.MainTab.MainTab.qmreader">qmreader (PDielec.GUI.MainTab.MainTab attribute)</a>
-
-        <ul>
-          <li><a href="autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.qmreader">(PDielec.PhonopyOutputReader.PhonopyOutputReader attribute)</a>
-</li>
-        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer.qs">qs (PDielec.GTMcore.Layer attribute)</a>
@@ -3627,6 +3668,10 @@
           <li><a href="autoapi/PDielec/preader/index.html#PDielec.preader.read_a_file">(in module PDielec.preader)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_born_file">read_born_file() (PDielec.PhonopyOutputReader.PhonopyOutputReader method)</a>
+</li>
+        <li><a href="autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_cell">read_cell() (PDielec.PhonopyOutputReader.PhonopyOutputReader method)</a>
+</li>
         <li><a href="autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix">read_dynamical_matrix() (PDielec.PhonopyOutputReader.PhonopyOutputReader method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.read_experimental_file">read_experimental_file() (in module PDielec.GUI.FitterTab)</a>
@@ -3685,6 +3730,8 @@
 </li>
         <li><a href="autoapi/PDielec/Materials/index.html#PDielec.Materials.MaterialsDataBase.readTabulatedRefractiveIndex">readTabulatedRefractiveIndex() (PDielec.Materials.MaterialsDataBase method)</a>
 </li>
+        <li><a href="autoapi/PDielec/Materials/index.html#PDielec.Materials.MaterialsDataBase.readTabulatedSpectroscopy">readTabulatedSpectroscopy() (PDielec.Materials.MaterialsDataBase method)</a>
+</li>
         <li><a href="autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readUserIC">readUserIC() (in module PDielec.vibanalysis)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.realPermittivity">realPermittivity (PDielec.GUI.PowderScenarioTab.PowderScenarioTab attribute)</a>
@@ -3703,7 +3750,7 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTableRow">redrawLayerTableRow() (PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab method)</a>
 </li>
-        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.PrimitiveTransformWindow.reDrawPrimitiveTable">reDrawPrimitiveTable() (PDielec.GUI.ViewerTab.PrimitiveTransformWindow method)</a>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.reDrawTransformTable">reDrawTransformTable() (PDielec.GUI.ViewerTab.TransformWindow method)</a>
 </li>
         <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.reflectance_atr">reflectance_atr() (in module PDielec.Calculator)</a>
 </li>
@@ -3752,6 +3799,8 @@
 </li>
         </ul></li>
         <li><a href="autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.removeVibrations">removeVibrations() (PDielec.vibanalysis.System method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.renderText">renderText() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.replot">replot() (PDielec.GUI.FitterTab.FitterTab method)</a>
 </li>
@@ -3933,6 +3982,8 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/SettingsTab/index.html#PDielec.GUI.SettingsTab.SettingsTab.set_optical_permittivity_tw">set_optical_permittivity_tw() (PDielec.GUI.SettingsTab.SettingsTab method)</a>
 </li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.set_orientation">set_orientation() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
+</li>
         <li><a href="autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw">set_radii_tw() (PDielec.GUI.AnalysisTab.AnalysisTab method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab.set_reader">set_reader() (PDielec.GUI.ScenarioTab.ScenarioTab method)</a>
@@ -4063,6 +4114,12 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.show_full_screen">show_full_screen (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
 </li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.show_help_dialog">show_help_dialog() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.show_orientation">show_orientation (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/phonopy_pdielec_born/index.html#PDielec.phonopy_pdielec_born.show_usage">show_usage() (in module PDielec.phonopy_pdielec_born)</a>
+</li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.showArrows">showArrows() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow">ShowLayerWindow (class in PDielec.GUI.SingleCrystalLayer)</a>
@@ -4080,6 +4137,8 @@
 </li>
         </ul></li>
         <li><a href="autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.sigmas_tw">sigmas_tw (PDielec.GUI.FitterTab.FitterTab attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/Calculator/index.html#PDielec.Calculator.similarity_transform">similarity_transform() (in module PDielec.Calculator)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer">SingleCrystalLayer (class in PDielec.GUI.SingleCrystalLayer)</a>
 </li>
@@ -4233,6 +4292,8 @@
 </li>
         <li><a href="autoapi/PDielec/Utilities/index.html#PDielec.Utilities.Debug.text">text (PDielec.Utilities.Debug attribute)</a>
 </li>
+        <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.texts">texts (PDielec.GUI.OpenGLWidget.OpenGLWidget attribute)</a>
+</li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness">thickness (PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.thickness_conversion_factors">thickness_conversion_factors (in module PDielec.GUI.SingleCrystalScenarioTab)</a>
@@ -4255,10 +4316,14 @@
 </li>
         <li><a href="autoapi/PDielec/GUI/App/index.html#PDielec.GUI.App.App.title">title (PDielec.GUI.App.App attribute)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.title_le">title_le (PDielec.GUI.AnalysisTab.AnalysisTab attribute)</a>
 </li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.toggle_names">toggle_names (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.toggles_cb">toggles_cb (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.tolerance_sp">tolerance_sp (PDielec.GUI.AnalysisTab.AnalysisTab attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/AnalysisTab/index.html#PDielec.GUI.AnalysisTab.AnalysisTab.toolbar">toolbar (PDielec.GUI.AnalysisTab.AnalysisTab attribute)</a>
@@ -4276,6 +4341,16 @@
         <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.total_mass">total_mass (PDielec.UnitCell.UnitCell attribute)</a>
 </li>
         <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.TransferMatrixSystem">TransferMatrixSystem (class in PDielec.GTMcore)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.transform_as_str">transform_as_str (PDielec.GUI.ViewerTab.TransformWindow attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.transform_tab_entry">transform_tab_entry (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow.transform_table">transform_table (PDielec.GUI.ViewerTab.TransformWindow attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.transformed_cell">transformed_cell (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.TransformWindow">TransformWindow (class in PDielec.GUI.ViewerTab)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/OpenGLWidget/index.html#PDielec.GUI.OpenGLWidget.OpenGLWidget.translate">translate() (PDielec.GUI.OpenGLWidget.OpenGLWidget method)</a>
 </li>
@@ -4333,8 +4408,12 @@
 </li>
         <li><a href="autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.SMatrix.unitMatrix">unitMatrix() (PDielec.GTMcore.SMatrix method)</a>
 </li>
-        <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.units">units (PDielec.UnitCell.UnitCell attribute)</a>
+        <li><a href="autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.units">units (PDielec.PhonopyOutputReader.PhonopyOutputReader attribute)</a>
+
+        <ul>
+          <li><a href="autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.units">(PDielec.UnitCell.UnitCell attribute)</a>
 </li>
+        </ul></li>
         <li><a href="autoapi/PDielec/GUI/PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.update_mf_sb">update_mf_sb() (PDielec.GUI.PowderScenarioTab.PowderScenarioTab method)</a>
 </li>
     </ul></td>
@@ -4352,6 +4431,8 @@
         <li><a href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.useLocal">useLocal (in module PDielec.pdmake)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.UVW">UVW (PDielec.GUI.ViewerTab.ViewerTab attribute)</a>
+</li>
+        <li><a href="autoapi/PDielec/GUI/ViewerTab/index.html#PDielec.GUI.ViewerTab.ViewerTab.uvw_spin_boxes">uvw_spin_boxes() (PDielec.GUI.ViewerTab.ViewerTab method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -4591,7 +4672,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="_static/documentation_options.js?v=0b13d40c"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>

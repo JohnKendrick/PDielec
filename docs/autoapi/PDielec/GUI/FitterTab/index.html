@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -370,7 +372,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">FitterTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">FitterTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>Initialize the main FitterTab with its components and connect signals to slots.</p>
 <p>A class for managing and displaying a spectroscopic fitting interface within a QWidget.
@@ -456,7 +458,7 @@ This constructor sets up the UI for a spectral analysis widget, initializing all
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.fittingButtonClicked">
-<span class="sig-name descname"><span class="pre">fittingButtonClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.fittingButtonClicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fittingButtonClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.fittingButtonClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.fittingButtonClicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the click event on the fitting button.</p>
 <p>This method toggles the fitting process on and off. When clicked,
 it changes the button’s text accordingly to reflect the current
@@ -476,7 +478,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_baseline_cb_changed">
-<span class="sig-name descname"><span class="pre">on_baseline_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_baseline_cb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_baseline_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_baseline_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_baseline_cb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change event of the baseline checkbox.</p>
 <p>This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and marks refresh as required.</p>
 <section id="id2">
@@ -494,7 +496,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_fitting_type_cb_activated">
-<span class="sig-name descname"><span class="pre">on_fitting_type_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_fitting_type_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_fitting_type_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_fitting_type_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_fitting_type_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the activation of a fitting type option.</p>
 <p>This method updates the current settings to reflect the selected fitting type based on the provided index. It also marks the state as requiring a refresh.</p>
 <section id="id4">
@@ -512,7 +514,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_frequency_scaling_factor_sb_changed">
-<span class="sig-name descname"><span class="pre">on_frequency_scaling_factor_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_frequency_scaling_factor_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_frequency_scaling_factor_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_frequency_scaling_factor_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_frequency_scaling_factor_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes in the frequency scaling factor setting.</p>
 <p>This function changes the frequency scaling factor setting. It updates the setting with the new value and marks a refresh as necessary. It also handles conversion errors gracefully.</p>
 <section id="id6">
@@ -536,7 +538,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_hpfilter_lambda_sb_changed">
-<span class="sig-name descname"><span class="pre">on_hpfilter_lambda_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_hpfilter_lambda_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_hpfilter_lambda_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_hpfilter_lambda_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_hpfilter_lambda_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes to the high-pass filter lambda scrollbar value.</p>
 <section id="id9">
 <h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
@@ -553,7 +555,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_independent_yaxes_cb_changed">
-<span class="sig-name descname"><span class="pre">on_independent_yaxes_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_independent_yaxes_cb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_independent_yaxes_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_independent_yaxes_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_independent_yaxes_cb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change of state for the independent Y-axes checkbox.</p>
 <section id="id11">
 <h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
@@ -574,7 +576,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_iterations_sb_changed">
-<span class="sig-name descname"><span class="pre">on_iterations_sb_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_iterations_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_iterations_sb_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_iterations_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_iterations_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes in the iterations spin box value.</p>
 <p>This method is called when the iterations spin box value is changed. It updates the ‘Number of iterations’ setting with the new value and flags that a refresh is required.</p>
 <section id="id14">
@@ -589,7 +591,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_optimise_frequency_scaling_cb_changed">
-<span class="sig-name descname"><span class="pre">on_optimise_frequency_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_optimise_frequency_scaling_cb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_optimise_frequency_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_optimise_frequency_scaling_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_optimise_frequency_scaling_cb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes in the frequency scaling optimization option.</p>
 <p>This method updates the ‘Optimise frequency scaling’ setting based on the state of a checkbox and marks that a refresh is required based on the new setting.</p>
 <section id="id16">
@@ -607,7 +609,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_scenario_cb_activated">
-<span class="sig-name descname"><span class="pre">on_scenario_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_scenario_cb_activated" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_scenario_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_scenario_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_scenario_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle scenario combobox activation.</p>
 <p>This function is triggered when a scenario combobox option is selected. It logs the activation with the selected index, marks that a refresh is required, and updates the settings to reflect the new scenario.</p>
 <section id="id18">
@@ -625,7 +627,7 @@ to allow a new fitting process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_sigmas_tw_itemChanged">
-<span class="sig-name descname"><span class="pre">on_sigmas_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_sigmas_tw_itemChanged" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_sigmas_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_sigmas_tw_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_sigmas_tw_itemChanged" title="Link to this definition">¶</a></dt>
 <dd><p>Handle item changed event in a table widget for sigma values.</p>
 <p>This method updates mode fitting status and sigma values based on changes in a table widget,
 redraws the table widget, and refreshes output based on the modifications. It also handles error
@@ -654,7 +656,7 @@ for invalid numeric input for sigma values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_changed">
-<span class="sig-name descname"><span class="pre">on_spectrafile_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_spectrafile_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrafile_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes to the spectra file input field.</p>
 <p>This method is triggered when the text of the spectrum file input field changes. It updates the ‘Experimental file name’ setting with the new text, marks the current experimental file as unread, and indicates that a refresh is required.</p>
 <section id="id22">
@@ -676,7 +678,7 @@ for invalid numeric input for sigma values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_return">
-<span class="sig-name descname"><span class="pre">on_spectrafile_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_return" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_spectrafile_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrafile_le_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_return" title="Link to this definition">¶</a></dt>
 <dd><p>Handle file selection for experimental spectra.</p>
 <p>This method is executed when an action associated with the <cite>spectrafile_le</cite> widget is performed. It prompts the user to select a file if the currently specified file does not exist or cannot be found. It updates the application’s settings with the new file name, if a file is selected.</p>
 <section id="id25">
@@ -696,7 +698,7 @@ for invalid numeric input for sigma values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectral_difference_threshold_sb_changed">
-<span class="sig-name descname"><span class="pre">on_spectral_difference_threshold_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectral_difference_threshold_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_spectral_difference_threshold_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectral_difference_threshold_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectral_difference_threshold_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes in spectral difference threshold setting.</p>
 <p>This function is called when the ‘Spectral difference threshold’ setting is changed.
 It updates the setting value, converting it to a float, and sets a flag indicating that a refresh is required.</p>
@@ -715,7 +717,7 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_cb_changed">
-<span class="sig-name descname"><span class="pre">on_spectrum_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_cb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_spectrum_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrum_scaling_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_cb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change event of the spectrum scaling checkbox.</p>
 <p>This method is triggered whenever the spectrum scaling checkbox’s state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.</p>
 <section id="id30">
@@ -733,7 +735,7 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_factor_sb_changed">
-<span class="sig-name descname"><span class="pre">on_spectrum_scaling_factor_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_factor_sb_changed" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_spectrum_scaling_factor_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrum_scaling_factor_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_factor_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in spectrum scaling factor.</p>
 <section id="id32">
 <h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
@@ -754,7 +756,7 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.optimiseFit">
-<span class="sig-name descname"><span class="pre">optimiseFit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.optimiseFit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimiseFit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.optimiseFit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.optimiseFit" title="Link to this definition">¶</a></dt>
 <dd><p>Optimise the fit based on the initial and adjusted sigmas and potential frequency scaling.</p>
 <p>Instructions for determining the best fitting parameters for the model are conducted
 within the constraints of predefined modes. The function iterates to minimize the discrepancy
@@ -787,7 +789,7 @@ depends on whether the optimization process is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.optimiseFunction">
-<span class="sig-name descname"><span class="pre">optimiseFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.optimiseFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimiseFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.optimiseFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.optimiseFunction" title="Link to this definition">¶</a></dt>
 <dd><p>Optimise the fitting function based on given variables.</p>
 <p>This method adjusts internal settings based on an array of variables to
 optimise the fitting function according to the predefined criteria
@@ -837,7 +839,7 @@ predefined extremely negative value (e.g., -9.9e+99).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legends</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.plot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legends</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.plot" title="Link to this definition">¶</a></dt>
 <dd><p>Plot experimental and calculated data on the same or separate y-axes.</p>
 <p>This method plots provided experimental and calculated data sets using Matplotlib. It supports plotting
 data with independent y-axes and applying frequency shift and scaling to the x-axis. The plot appearance,
@@ -872,7 +874,7 @@ including color mapping, line width, and labels, is customizable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.print_settings">
-<span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.print_settings" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.print_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.print_settings" title="Link to this definition">¶</a></dt>
 <dd><p>Print the settings attributes of the instance.</p>
 <section id="id44">
 <h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
@@ -887,7 +889,7 @@ including color mapping, line width, and labels, is customizable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.redraw_sigmas_tw">
-<span class="sig-name descname"><span class="pre">redraw_sigmas_tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.redraw_sigmas_tw" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">redraw_sigmas_tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.redraw_sigmas_tw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.redraw_sigmas_tw" title="Link to this definition">¶</a></dt>
 <dd><p>Redraw the table widget for sigmas.</p>
 <p>This method updates the table widget <cite>sigmas_tw</cite> used for displaying sigma, frequency, and intensity
 information. It checks if the data lists (<cite>sigmas_cm1</cite>, <cite>frequencies_cm1</cite>, and <cite>intensities</cite>) are non-empty
@@ -914,7 +916,7 @@ whether it is fitted, respectively.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.refresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Refresh the state of the application based on user-defined conditions and settings.</p>
 <section id="id49">
 <h4>Parameters<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
@@ -936,7 +938,7 @@ whether it is fitted, respectively.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.replot">
-<span class="sig-name descname"><span class="pre">replot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">replot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.replot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replot" title="Link to this definition">¶</a></dt>
 <dd><p>Replots the experimental spectrum along with calculated frequencies and spectra.</p>
 <p>This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related information such as legends and labels.</p>
 <section id="id52">
@@ -951,7 +953,7 @@ whether it is fitted, respectively.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.replotButton1Clicked">
-<span class="sig-name descname"><span class="pre">replotButton1Clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replotButton1Clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">replotButton1Clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.replotButton1Clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replotButton1Clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the click event on the replot button.</p>
 <p>This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot operation and invokes the refresh method to update the plot.</p>
 <section id="id54">
@@ -970,7 +972,7 @@ whether it is fitted, respectively.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.replotButton2Clicked">
-<span class="sig-name descname"><span class="pre">replotButton2Clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replotButton2Clicked" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">replotButton2Clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.replotButton2Clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replotButton2Clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event when the second replot button is clicked.</p>
 <p>This method updates various attributes to indicate that a refresh of the plot is required,
 specifically with a frequency shift. It records that this button was the last one pressed
@@ -987,7 +989,7 @@ and then initiates the refresh process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.requestRefresh" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.requestRefresh" title="Link to this definition">¶</a></dt>
 <dd><p>Request a refresh of the interface.</p>
 <section id="id59">
 <h4>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
@@ -1224,7 +1226,7 @@ and then initiates the refresh process.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.calculateCrossCorrelation">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">calculateCrossCorrelation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculated_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.calculateCrossCorrelation" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">calculateCrossCorrelation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculated_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#calculateCrossCorrelation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.calculateCrossCorrelation" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</p>
 <p>The calculated and experimental spectra share the same frequencies (xaxis).  If a scaling factor is applied,
 the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
@@ -1261,7 +1263,7 @@ the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.calculateSpectralDifference">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">calculateSpectralDifference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculated_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.calculateSpectralDifference" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">calculateSpectralDifference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculated_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#calculateSpectralDifference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.calculateSpectralDifference" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.</p>
 <section id="id64">
 <h3>Parameters<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
@@ -1300,7 +1302,7 @@ the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.find_delimiter">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">find_delimiter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.find_delimiter" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">find_delimiter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#find_delimiter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.find_delimiter" title="Link to this definition">¶</a></dt>
 <dd><p>Find the delimiter used in a CSV file.</p>
 <section id="id67">
 <h3>Parameters<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h3>
@@ -1325,7 +1327,7 @@ the given file by analyzing the first 5000 bytes of the file.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.is_float">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">is_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.is_float" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">is_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#is_float"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.is_float" title="Link to this definition">¶</a></dt>
 <dd><p>Test to see if element is a float.</p>
 <section id="id70">
 <h3>Parameters<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
@@ -1345,7 +1347,7 @@ the given file by analyzing the first 5000 bytes of the file.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.read_experimental_file">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">read_experimental_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.read_experimental_file" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">read_experimental_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#read_experimental_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.read_experimental_file" title="Link to this definition">¶</a></dt>
 <dd><p>Read an experimental file.</p>
 <section id="id72">
 <h3>Parameters<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
@@ -1379,7 +1381,7 @@ the given file by analyzing the first 5000 bytes of the file.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.resample_experimental_spectrum">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">resample_experimental_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calculated_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline_removal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'False'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HPFilter_lambda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.FitterTab.resample_experimental_spectrum" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">resample_experimental_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calculated_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline_removal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'False'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HPFilter_lambda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#resample_experimental_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.resample_experimental_spectrum" title="Link to this definition">¶</a></dt>
 <dd><p>Resample the experimental spectrum to match calculated frequencies and optionally apply baseline removal.</p>
 <p>This method modifies the experimental spectrum to align with the calculated
 frequencies. It pads the spectrum at both ends with zeros outside the calculated
@@ -1565,7 +1567,7 @@ for baseline removal on the resampled spectrum.</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=5fa4622c"></script>

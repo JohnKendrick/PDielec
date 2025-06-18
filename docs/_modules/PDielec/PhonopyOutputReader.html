@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -339,6 +341,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">thz2cm1</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GenericOutputReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericOutputReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.UnitCell</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitCell</span>
 
 
 <div class="viewcode-block" id="PhonopyOutputReader">
@@ -352,36 +355,29 @@
 <span class="sd">    ----------</span>
 <span class="sd">    names : list</span>
 <span class="sd">        A list of file names to be used.</span>
-<span class="sd">    qmreader : object</span>
-<span class="sd">        An instance of another class used for reading.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This method sets the type of the output to &#39;Phonopy output&#39; and </span>
-<span class="sd">    associates a quantum mechanics (QM) reader object with the instance.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">qmreader</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a Phonopy output reader.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        names : list</span>
 <span class="sd">            A list of file names to be used.</span>
-<span class="sd">        qmreader : object</span>
-<span class="sd">            An instance of another class used for reading.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This method sets the type of the output to &#39;Phonopy output&#39; and </span>
-<span class="sd">        associates a quantum mechanics (QM) reader object with the instance.</span>
+<span class="sd">        This routine reads files with fixed names:</span>
+<span class="sd">                  phonopy.yaml    contains details of the cells used</span>
+<span class="sd">                  qpoints.yaml    contains the dynamical matrix</span>
+<span class="sd">                  BORN_PDIELEC    generated from the BORN file using phonopy-pdielec-born</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
-        <span class="c1"># We have to use the qm reader to do the reading of the QM files</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;Phonopy output&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span>                <span class="o">=</span> <span class="n">qmreader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span>                   <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;length&quot;</span>          <span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">,</span>
+                                         <span class="s2">&quot;mass&quot;</span>            <span class="p">:</span> <span class="s2">&quot;AMU&quot;</span><span class="p">,</span>
+                                         <span class="s2">&quot;force&quot;</span>           <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                                         <span class="s2">&quot;force_constants&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">}</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="PhonopyOutputReader._read_output_files">
@@ -389,51 +385,21 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the Phonopy files in the directory.</span>
 
-<span class="sd">        Uses the qmreader to read in the electronic structure information and copies it to the current object.</span>
-<span class="sd">        Then it reads the dynamical matrix from phonopy</span>
+<span class="sd">        reads the dynamical matrix from phonopy</span>
+<span class="sd">        reads the Born charges</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Set the qm reader to have all the settings that phonopy reader has</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">eckart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eckart</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span>
-        <span class="c1"># trigger the reading of the qm files</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">read_output</span><span class="p">()</span>
-        <span class="c1"># We don&#39;t call self._read_outputfile as this starts looking for keywords</span>
-        <span class="c1"># for f in self._outputfiles:</span>
-        <span class="c1">#     self._read_output_file(f)</span>
-        <span class="c1">#</span>
-        <span class="c1"># Instead copy anything useful from the QM calcs to self</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">ncells</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span>              <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">unit_cells</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">volume</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spin</span>                    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">spin</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">energy_cutoff</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">energy_cutoff</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span>                 <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">kpoints</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span>             <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">kpoint_grid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nbands</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">nbands</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span>                   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">nions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">ions_per_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">atom_type_list</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span>               <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">electrons</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">magnetization</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">final_energy_without_entropy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">final_free_energy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span>                <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">pressure</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span>         <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">masses_per_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">ions_per_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">masses</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">masses</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span>                <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">nspecies</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">species</span>                 <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">getSpecies</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span>            <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">born_charges</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zerof_static_dielectric</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">zerof_static_dielectric</span>
         <span class="c1"># Calculate dynamical matrix</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">read_dynamical_matrix</span><span class="p">()</span>
+        <span class="n">qpoints_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">phonopy_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">born_filename</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_dynamical_matrix</span><span class="p">(</span><span class="n">phonopy_filename</span><span class="p">,</span><span class="n">qpoints_filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_born_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="n">born_filename</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 
 <div class="viewcode-block" id="PhonopyOutputReader.read_dynamical_matrix">
 <a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">read_dynamical_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_dynamical_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">phonopy_filename</span><span class="p">,</span> <span class="n">qpoints_filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process the dynamical matrix from output files.</span>
 
 <span class="sd">        This method reads the dynamical matrix and other relevant data from the specified</span>
@@ -442,8 +408,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        None explicitly, but relies on the instance attributes `_outputfiles` and `nions` </span>
-<span class="sd">        to determine the files to read and number of ions, respectively.</span>
+<span class="sd">        phonopy_filename : str</span>
+<span class="sd">            The phonopy.yaml file name</span>
+<span class="sd">        qpoints_filename : str</span>
+<span class="sd">            The qpoints.yaml file name</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -484,17 +452,72 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Yaml CLoader is not avaiable, using fallback&quot;</span><span class="p">)</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loader</span> <span class="k">as</span> <span class="n">Loader</span>
         <span class="c1"># the first name has to be the qpoints file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">qpoints_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
             <span class="n">data_q</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
         <span class="c1"># the second name has to be the phonopy file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">phonopy_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
             <span class="n">data_p</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
-            <span class="c1"># self._old_masses.append(data_p[&quot;primitive_cell&quot;][&quot;points&quot;][i][&quot;mass&quot;])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;unit_cell&quot;</span><span class="p">][</span><span class="s2">&quot;points&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;mass&quot;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="s2">&quot;primitive_matrix&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="c1">#</span>
+        <span class="c1"># process phonopy.yaml</span>
+        <span class="c1">#</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;frequency_unit_conversion_factor&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="mf">15.633302</span>
+        <span class="n">conversion_factor_to_cm1</span> <span class="o">=</span> <span class="n">conversion_factor_to_THz</span> <span class="o">*</span> <span class="n">thz2cm1</span>
+        <span class="c1">#</span>
+        <span class="c1"># Get units</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="s2">&quot;physical_unit&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;atomic_mass&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;atomic_mass&quot;</span><span class="p">]</span>     <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;atomic_mass&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;length&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">]</span>          <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;length&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;force&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;force&quot;</span><span class="p">]</span>           <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;force&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;force_constants&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;force_constants&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;force_constants&quot;</span><span class="p">]</span>
+        <span class="c1">#</span>
+        <span class="c1"># Determine axes and cells</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="s2">&quot;primitive_axes&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;configuration&quot;</span><span class="p">]:</span>
+            <span class="n">primitive_axes</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;configuration&quot;</span><span class="p">][</span><span class="s2">&quot;primitive_axes&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">primitive_axes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;primitive_matrix&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">primitive_transformation</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;primitive_matrix&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">primitive_transformation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">primitive_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_cell</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;primitive_cell&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;primitive_cell&quot;</span> <span class="ow">in</span> <span class="n">data_p</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">unit_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_cell</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;unit_cell&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;unit_cell&quot;</span> <span class="ow">in</span> <span class="n">data_p</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="c1">#</span>
+        <span class="c1"># Use the cell that is consistent with the primitive_axes</span>
+        <span class="c1">#</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">primitive_cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_species</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_element_names</span><span class="p">()</span>
+        <span class="c1"># Calculate the number of ions / type</span>
+        <span class="c1"># Determine the atom type list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">_species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="p">]</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="n">species_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span><span class="p">[</span><span class="n">species_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_index</span><span class="p">)</span>
+        <span class="c1"># Determine the mass of each type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass_per_type</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">:</span>
+             <span class="n">element_index</span> <span class="o">=</span> <span class="n">elements</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="p">[</span><span class="n">element_index</span><span class="p">])</span>
+        <span class="c1"># Proceed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span> <span class="o">=</span> <span class="p">[</span> <span class="n">cell</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Process qpoints.yaml</span>
+        <span class="c1">#</span>
         <span class="n">dynmat</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dynmat_data</span> <span class="o">=</span> <span class="n">data_q</span><span class="p">[</span><span class="s2">&quot;phonon&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;dynamical_matrix&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dynmat_data</span><span class="p">:</span>
@@ -504,13 +527,7 @@
         <span class="c1"># Make sure the hessian is real</span>
         <span class="n">hessian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">dynmat</span><span class="p">)</span>
         <span class="c1"># We need to convert to cm-1</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;frequency_unit_conversion_factor&quot;</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="mf">15.633302</span>
-        <span class="n">conversion_factor_to_cm1</span> <span class="o">=</span> <span class="n">conversion_factor_to_THz</span> <span class="o">*</span> <span class="n">thz2cm1</span>
-        <span class="n">conv</span>  <span class="o">=</span> <span class="n">conversion_factor_to_cm1</span>
-        <span class="n">hessian</span> <span class="o">=</span> <span class="n">hessian</span> <span class="o">*</span> <span class="n">conv</span> <span class="o">*</span> <span class="n">conv</span>
+        <span class="n">hessian</span> <span class="o">=</span> <span class="n">hessian</span> <span class="o">*</span> <span class="n">conversion_factor_to_cm1</span> <span class="o">*</span> <span class="n">conversion_factor_to_cm1</span>
         <span class="c1"># Find its eigenvalues and eigen vectors</span>
         <span class="n">eig_val</span><span class="p">,</span> <span class="n">eig_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -529,8 +546,84 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
         <span class="c1"># end for i</span>
         <span class="k">return</span></div>
-</div>
 
+
+<div class="viewcode-block" id="PhonopyOutputReader.read_cell">
+<a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_cell">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process yaml string and extract a unit cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        yaml : str</span>
+<span class="sd">            A yaml string containing a phonopy cell</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cell : unitCell</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">lattice</span> <span class="o">=</span> <span class="n">yaml</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">yaml</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">]</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">]</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">]</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">]</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">units</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">])</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">set_atomic_masses</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cell</span></div>
+
+
+<div class="viewcode-block" id="PhonopyOutputReader.read_born_file">
+<a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_born_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_born_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">natoms</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the BORN_PDIELEC file in the current directory.</span>
+
+<span class="sd">        The BORN_PDIELEC file was created by a phonopy helper routine such as phonopy-pdielec-born</span>
+<span class="sd">        It contains the optical permittivity and the Born charges</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        natoms : int</span>
+<span class="sd">            The number of atoms</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The filename (probably &quot;BORN_PDIELEC&quot;)</span>
+
+<span class="sd">        Modifies</span>
+<span class="sd">        --------</span>
+<span class="sd">        zerof_optical_dielectric : the zero frequency optical permittivity</span>
+<span class="sd">        born_charges             : the born charges</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># Skip a line</span>
+            <span class="c1">#</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="c1">#</span>
+            <span class="c1"># Read dielectric constant</span>
+            <span class="c1">#</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BORN file format of line 2 is incorrect&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="p">],</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="c1">#</span>
+            <span class="c1"># Read Born effective charge</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">natoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">natoms</span><span class="p">):</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of lines for Born effect charge is not enough.&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BORN file format of line </span><span class="si">%d</span><span class="s2"> is incorrect&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">))</span>
+                    <span class="k">return</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="p">],</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">return</span></div>
+</div>
 
 </pre></div>
         </article>
@@ -564,7 +657,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

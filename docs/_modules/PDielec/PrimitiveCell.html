@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -337,7 +339,9 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">spglib</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.UnitCell</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitCell</span>
+
 
 <div class="viewcode-block" id="PrimitiveCell">
 <a class="viewcode-back" href="../../autoapi/PDielec/PrimitiveCell/index.html#PDielec.PrimitiveCell.PrimitiveCell">[docs]</a>
@@ -364,9 +368,6 @@
 <span class="sd">    transformation : 3x3 list</span>
 <span class="sd">        A transformation matrix to create the primitive cell</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    :class:`~PDielec.UnitCell.UnitCell`</span>
@@ -374,7 +375,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aUnitCell</span><span class="p">,</span> <span class="n">transformation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the primitive cell with a unit cell</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the primitive cell with a unit cell.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -390,9 +391,6 @@
 <span class="sd">            The primitive cell associated with this instance.</span>
 <span class="sd">        transformation : 3x3 list (optional)</span>
 <span class="sd">            A transformation matrix to create the primitive cell</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#</span>
@@ -454,52 +452,12 @@
         <span class="c1"># Atoms, labels, masses and element names are removed if the atom is not unique</span>
         <span class="c1"># The map lists help remember the relationship between everything.</span>
         <span class="c1">#</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fold_cell</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">map_old_to_new</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_new_to_old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trim_cell</span><span class="p">()</span>
+        <span class="c1">#self.fold_cell()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_old_to_new</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_new_to_old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fold_cell</span><span class="p">()</span></div>
+
         <span class="c1">#jk print(&#39;JK2 ----After trim-------------------------&#39;)</span>
         <span class="c1">#jk self.print()</span>
         <span class="c1">#jk print(&#39;JK2 ---------------------------------------&#39;)</span>
-
-<div class="viewcode-block" id="PrimitiveCell.calculateNormalModes">
-<a class="viewcode-back" href="../../autoapi/PDielec/PrimitiveCell/index.html#PDielec.PrimitiveCell.PrimitiveCell.calculateNormalModes">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calculateNormalModes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">modes</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate and return the normal modes of the primitive cell.</span>
-
-<span class="sd">        Normal modes are initially an np array of nmodes, 3*nions.</span>
-<span class="sd">        The number of modes stays the same but the number of ions reduces.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        modes : a list of floats</span>
-<span class="sd">            A list of the modes to be used in the calculation</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        np.ndarray</span>
-<span class="sd">            Array representing the normal modes of the supercell. Initially, this is an array</span>
-<span class="sd">            of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the</span>
-<span class="sd">            number of ions per mode. The shape may vary as the number of ions increases with the</span>
-<span class="sd">            number of images.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">nmodes</span><span class="p">,</span><span class="n">nions</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span>
-        <span class="n">newions3</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_new_to_old</span><span class="p">)</span>
-        <span class="n">normal_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">nmodes</span><span class="p">,</span> <span class="n">newions3</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">for</span> <span class="n">mode_index</span><span class="p">,</span><span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">new_index</span><span class="p">,</span><span class="n">old_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_new_to_old</span><span class="p">):</span>
-                <span class="n">old_pos</span><span class="o">=</span><span class="n">old_index</span><span class="o">*</span><span class="mi">3</span>
-                <span class="n">new_pos</span><span class="o">=</span><span class="n">new_index</span><span class="o">*</span><span class="mi">3</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-                  <span class="n">normal_modes</span><span class="p">[</span><span class="n">mode_index</span><span class="p">,</span><span class="n">new_pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span><span class="p">[</span><span class="n">old_pos</span><span class="p">]</span> 
-                  <span class="n">old_pos</span> <span class="o">+=</span> <span class="mi">1</span>
-                  <span class="n">new_pos</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="c1">#end for i in range(3)</span>
-            <span class="c1">#end for index</span>
-        <span class="c1"># for mode</span>
-        <span class="k">return</span> <span class="n">normal_modes</span></div>
-</div>
-
 </pre></div>
         </article>
       </div>
@@ -532,7 +490,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

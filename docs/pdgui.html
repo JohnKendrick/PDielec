@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
-<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE" name="keywords" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Other Software Components" href="software.html" /><link rel="prev" title="Installation" href="installation.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
@@ -220,6 +220,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -272,6 +273,7 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -343,14 +345,13 @@ It can also be used as a command line tool without having to use the GUI, this n
 <span class="n">pdgui</span> <span class="n">run1</span><span class="o">.</span><span class="n">log</span>                                              <span class="c1"># A QE calculation, run1.dynG is also read</span>
 <span class="n">pdgui</span> <span class="n">run2</span><span class="o">.</span><span class="n">abo</span>                                              <span class="c1"># An Abinit calculation</span>
 <span class="n">pdgui</span> <span class="n">run3</span><span class="o">.</span><span class="n">gout</span>                                             <span class="c1"># An Gulp calculation</span>
+<span class="n">pdgui</span> <span class="n">phonopy</span><span class="o">.</span><span class="n">yaml</span>                                          <span class="c1"># A Phonopy calculation</span>
 </pre></div>
 </div>
 <p>Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
 It is possible to specifiy the DFT program and the QM program used by Phonopy as the examples below;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">vasp</span> <span class="n">OUTCAR</span>                                   <span class="c1"># A Vasp calculation, only OUTCAR is parsed for information</span>
-<span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">phonopy</span> <span class="o">-</span><span class="n">qmprogram</span> <span class="n">vasp</span> <span class="n">OUTCAR</span>                <span class="c1"># A Phonopy/Vasp calculation, only OUTCAR is parsed for information</span>
-<span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">phonopy</span> <span class="o">-</span><span class="n">qmprogram</span> <span class="n">vasp</span> <span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span>           <span class="c1"># A Phonopy/Vasp calculation, only OUTCAR is parsed for information</span>
-<span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">phonopy</span> <span class="o">-</span><span class="n">qmprogram</span> <span class="n">qe</span>  <span class="n">pwscf</span><span class="o">.</span><span class="n">xml</span>              <span class="c1"># A Phonopy/QE calculation</span>
+<span class="n">pdgui</span> <span class="o">-</span><span class="n">program</span> <span class="n">phonopy</span> <span class="n">phonopy</span><span class="o">.</span><span class="n">yaml</span>                          <span class="c1"># A Phonopy calculation</span>
 </pre></div>
 </div>
 <p>If running a script that contains program and output file information, then:</p>
@@ -396,31 +397,27 @@ spreadsheet</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>An alternative way of defining the
 program used to create the output</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-qmprogram name</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Specifies the qm program used with
-phonopy</p></td>
-</tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-version</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-version</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Give information of the version no.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-debug</p></td>
+<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-debug</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Debugging mode, only for developers</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-exit</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-exit</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Exit the program after running the
 script</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-nosplash</p></td>
+<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-nosplash</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Do not show the splash screen</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-cpus 2</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-cpus 2</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Using 2 processors for multiprocessing
 or 2 threads if threading</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-threads</p></td>
+<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-threads</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Using threading for multiprocessing</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-h</p></td>
+<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-h</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Print out help information</p></td>
 </tr>
 </tbody>
@@ -447,7 +444,7 @@ or 2 threads if threading</p></td>
 </figcaption>
 </figure>
 <p>The QM/MM program can be chosen from the dropdown list.
-The current list of packages supported are Abinit, Castep, Crystal, Experiment, Gulp, Phonopy - Vasp, Quantum Espresso, Vasp, and PDGui.
+The current list of packages supported are Abinit, Castep, Crystal, Experiment, Gulp, Phonopy, Quantum Espresso, Vasp, and PDGui.
 The output file name can be provided in the text box below it, or it can be specified using the <cite>File manager</cite> button.  In addition to input files from QM/MM programs, the program can read Python script files written by PDGui.  These should have a ‘.py’ extension.
 The <em>Experimental</em> file format allows the user to provide their specification of a dielectric medium, where a code other than that catered for by the program has been used.
 The file format is described in full in the section: <a class="reference internal" href="software.html#experimental-file-format"><span class="std std-ref">Experimental File Format</span></a>
@@ -878,7 +875,7 @@ The speedup is calculated by running the benchmark suite (pdmake benchmarks), wh
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="_static/documentation_options.js?v=0b13d40c"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>

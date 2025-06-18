@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -337,13 +339,18 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">spglib</span> 
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">nullcontext</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spglib</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Calculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_angle</span><span class="p">,</span> <span class="n">calculate_distance</span><span class="p">,</span> <span class="n">calculate_torsion</span><span class="p">,</span> <span class="n">cleanup_symbol</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">avogadro_si</span><span class="p">,</span> <span class="n">covalent_radii</span><span class="p">,</span> <span class="n">element_to_atomic_number</span><span class="p">,</span> <span class="n">atomic_number_to_element</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Calculator</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calculate_angle</span><span class="p">,</span>
+    <span class="n">calculate_distance</span><span class="p">,</span>
+    <span class="n">calculate_torsion</span><span class="p">,</span>
+    <span class="n">cleanup_symbol</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">atomic_number_to_element</span><span class="p">,</span> <span class="n">avogadro_si</span><span class="p">,</span> <span class="n">covalent_radii</span><span class="p">,</span> <span class="n">element_to_atomic_number</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Plotter</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_reals</span><span class="p">,</span> <span class="n">print_strings</span>
 
 
@@ -390,6 +397,8 @@
                  <span class="p">}</span>
     <span class="n">units_in</span>  <span class="o">=</span> <span class="n">units_in</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="n">units_out</span> <span class="o">=</span> <span class="n">units_out</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">units_in</span> <span class="o">==</span> <span class="n">units_out</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">value</span>
     <span class="c1"># Deal with a possible list</span>
     <span class="n">wasList</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -422,6 +431,7 @@
 <span class="sd">        Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.</span>
 <span class="sd">    units : str</span>
 <span class="sd">        An optional unit such as &#39;a.u., au bohr angs angstrom Angs Angstrom or nm&#39;  The default is Angstrom.</span>
+<span class="sd">        The internal unit is always the angstrom</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -456,6 +466,7 @@
 <span class="sd">            Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.</span>
 <span class="sd">        units : str</span>
 <span class="sd">            An optional unit such as &#39;a.u., au bohr angs angstrom Angs Angstrom or nm&#39;  The default is Angstrom.</span>
+<span class="sd">            The internal unit is always the angstrom</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -489,10 +500,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">centres_of_mass</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_mass</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
-        <span class="k">if</span>  <span class="ow">not</span> <span class="kc">None</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">]:</span>
+        <span class="c1"># The internal units will be angstrom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;Angstrom&quot;</span>
+        <span class="k">if</span>  <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">]:</span>
+            <span class="n">abc</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span><span class="n">units</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="p">)</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">abc</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_unitcell</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]:</span>
+            <span class="n">abc</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span><span class="n">units</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="p">)</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">abc</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
@@ -504,7 +520,7 @@
 
 <div class="viewcode-block" id="UnitCell.set_lattice">
 <a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_lattice">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lattice</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lattice</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the lattice parameters with a 3x3 matrix.</span>
 
 <span class="sd">        The lattice is stored as a numpy array</span>
@@ -515,11 +531,16 @@
 <span class="sd">        lattice : 3x3 list</span>
 <span class="sd">            The lattice vectors stored a ( a b c )</span>
 <span class="sd">            where a, b, c are 3 vectors in xyz space.</span>
+<span class="sd">        units : str</span>
+<span class="sd">            A string indicating the units used in lattice.</span>
+<span class="sd">            Internally the units are Angstrom</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lattice</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span><span class="n">units</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_reciprocal_lattice</span><span class="p">()</span>
         <span class="k">return</span></div>
@@ -563,7 +584,7 @@
 <span class="sd">        &gt;&gt;&gt; cell.write_cif(&#39;example.cif&#39;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">abc</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="s2">&quot;Angstrom&quot;</span> <span class="p">)</span>
+        <span class="n">abc</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">]</span>
         <span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
         <span class="n">spg_symbol</span><span class="p">,</span> <span class="n">spg_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_symmetry</span><span class="p">()</span>
         <span class="c1"># Open the filename if it is given</span>
@@ -598,13 +619,19 @@
 
 <div class="viewcode-block" id="UnitCell.getBoundingBox">
 <a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.getBoundingBox">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">getBoundingBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBoundingBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">originXYZ</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">originABC</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the corners and edges of a bounding box.</span>
 
 <span class="sd">        This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        originABC : a list of 3 floats</span>
+<span class="sd">            Defines the centre about which the box is centred</span>
+<span class="sd">            The basis for the coordinates are abc</span>
+<span class="sd">        originXYZ : a list of 3 floats</span>
+<span class="sd">            Defines the centre about which the box is centred</span>
+<span class="sd">            The basis for the coordinates are xyz</span>
 <span class="sd">        units : str</span>
 <span class="sd">            An optional unit of length required for output, default is Angstrom</span>
 
@@ -622,6 +649,14 @@
 <span class="sd">            corners_xyz, edges = object.getBoundingBox()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">if</span> <span class="n">originABC</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">originXYZ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">originABC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="mi">3</span> <span class="p">)</span>
+            <span class="n">originXYZ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="mi">3</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">originABC</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">originXYZ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">originABC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">originXYZ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">originABC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">originXYZ</span><span class="p">)</span>
+        <span class="c1">#</span>
         <span class="c1"># Return a box with 12 edges which represent the unit cell in cartesian space</span>
         <span class="c1">#  7---6</span>
         <span class="c1"># /|  /|</span>
@@ -638,6 +673,12 @@
         <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
         <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
         <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="p">]</span>
+        <span class="n">centre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">(</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">:</span>
+            <span class="n">centre</span> <span class="o">+=</span> <span class="n">corner</span>
+        <span class="n">centre</span> <span class="o">=</span> <span class="n">centre</span> <span class="o">/</span> <span class="mf">8.0</span>
+        <span class="n">corners</span> <span class="o">=</span> <span class="p">[</span> <span class="n">corner</span> <span class="o">-</span> <span class="n">centre</span> <span class="o">+</span> <span class="n">originABC</span> <span class="k">for</span> <span class="n">corner</span>  <span class="ow">in</span> <span class="n">corners</span> <span class="p">]</span>
         <span class="c1"># Now calculate the corners in cartesian space</span>
         <span class="n">corners_xyz</span> <span class="o">=</span> <span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">corner</span><span class="p">)</span> <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">corners</span> <span class="p">]</span>
         <span class="c1"># Now calculate the edges each edge is a tuple with a beginning coordinate and an end coordinate</span>
@@ -657,7 +698,7 @@
         <span class="c1"># Convert to the required output unit</span>
         <span class="n">corners</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="n">corners</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">units</span><span class="p">)</span>
         <span class="n">edges</span>   <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="n">edges</span>  <span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">units</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">corners_xyz</span><span class="p">,</span><span class="n">edges</span></div>
+        <span class="k">return</span> <span class="n">corners_xyz</span><span class="p">,</span><span class="n">edges</span><span class="p">,</span><span class="n">labels</span></div>
 
 
 <div class="viewcode-block" id="UnitCell.getDensity">
@@ -789,6 +830,24 @@
             <span class="s2">&quot;abc&quot;</span>  <span class="p">:</span> <span class="n">cm_fractional</span><span class="p">,</span>
             <span class="s2">&quot;all&quot;</span>  <span class="p">:</span> <span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span> <span class="p">),</span>
         <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UnitCell.get_number_of_atoms">
+<a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_number_of_atoms">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of atoms.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The number of atoms</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span></div>
 
 
 <div class="viewcode-block" id="UnitCell.get_number_of_molecules">
@@ -991,6 +1050,69 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reciprocal_lattice</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="UnitCell.convert_xyz_to_integer_abc">
+<a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_xyz_to_integer_abc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_xyz_to_integer_abc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert xyz coordinates to integer abc indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xyz : list 3 floats</span>
+<span class="sd">            List of xyz</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        abc : list of abc coordinates</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+        <span class="n">abc_array</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reciprocal_lattice</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Find the common denominator</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_lcd</span><span class="p">(</span><span class="n">abc_array</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UnitCell.find_lcd">
+<a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.find_lcd">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_lcd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numbers</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the approximated lowest common denominator.</span>
+
+<span class="sd">        Return the list as integers divided by the lowest common denominator</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        numbers : array of floats</span>
+<span class="sd">            List of numbers</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results : list of integers</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">smallest</span> <span class="o">=</span> <span class="mf">1.0E99</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0E-2</span><span class="p">:</span>
+                <span class="n">smallest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">smallest</span><span class="p">)</span>
+        <span class="n">numbers</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">/</span><span class="n">smallest</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># largest = int(np.max(np.round(np.abs(numbers))))</span>
+        <span class="n">largest</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">for</span> <span class="n">lcd</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">largest</span><span class="p">):</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">*</span><span class="n">lcd</span>
+            <span class="n">rounded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new</span><span class="o">-</span><span class="n">rounded</span><span class="p">)</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="mf">1.0E-8</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">lcd</span>
+                <span class="k">break</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">numbers</span> <span class="o">*</span> <span class="n">result</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">maximum</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="mi">20</span><span class="o">/</span><span class="n">maximum</span> <span class="o">*</span> <span class="n">results</span> 
+        <span class="n">rounded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rounded</span> <span class="p">]</span></div>
+
+
 <div class="viewcode-block" id="UnitCell.convert_hkl_to_xyz">
 <a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_hkl_to_xyz">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">convert_hkl_to_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hkl</span><span class="p">):</span>
@@ -999,7 +1121,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        hkl : list 3 ints</span>
-<span class="sd">            List if hkls</span>
+<span class="sd">            List of hkls</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1084,6 +1206,7 @@
 <span class="sd">        fractional_coordinates</span>
 <span class="sd">        xyz_coordinates</span>
 <span class="sd">        nions</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
@@ -1216,8 +1339,6 @@
 <span class="sd">        element_names : list</span>
 <span class="sd">            A list of strings representing element names to be cleaned and stored.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span></div>
 
@@ -1324,7 +1445,6 @@
                 <span class="n">index_supercell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">l</span> <span class="p">)</span>
                 <span class="n">new_position</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">xyz1</span> <span class="o">+</span> <span class="n">xyz2</span><span class="p">)</span>  <span class="k">for</span> <span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">tr</span><span class="p">)</span> <span class="p">]</span>
                 <span class="n">fractional_supercell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">new_position</span> <span class="p">)</span>
-                <span class="c1">#jk print(&#39;New positions &#39;,new_position,l,i,j,k)</span>
         <span class="c1"># Convert fractional supercell coordinates to xyz</span>
         <span class="c1"># xyz_supercell will be an np array</span>
         <span class="n">xyz_supercell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">fractional_supercell</span><span class="p">)</span>
@@ -1337,11 +1457,8 @@
         <span class="c1"># calculate boxsize</span>
         <span class="n">rmax</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">:</span>
-            <span class="c1">#jk print(&quot;Element name&quot;,el)</span>
-            <span class="k">if</span> <span class="n">radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rmax</span><span class="p">:</span>
-                <span class="n">rmax</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span>
+            <span class="n">rmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rmax</span><span class="p">,</span> <span class="n">radii</span><span class="p">[</span><span class="n">el</span><span class="p">])</span>
         <span class="n">boxSize</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">scale</span><span class="o">*</span><span class="n">rmax</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">tolerance</span>
-        <span class="c1">#jk print(&#39;rmax = &#39;,rmax)</span>
         <span class="c1"># Put atoms into boxes and store the box info in Atom_box_id</span>
         <span class="n">Atom_box_id</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">xyz</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xyz_supercell</span><span class="p">):</span>
@@ -1356,7 +1473,6 @@
                 <span class="n">BoxAtoms</span><span class="p">[</span><span class="n">abc</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="c1"># Calculate the neighbouring boxes for each occupied box</span>
         <span class="k">for</span> <span class="n">abc</span> <span class="ow">in</span> <span class="n">BoxAtoms</span><span class="p">:</span>
-            <span class="c1">#jk print(&#39;Box &#39;,abc, BoxAtoms[abc])</span>
             <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">abc</span>
             <span class="n">BoxNeighbours</span><span class="p">[</span><span class="n">abc</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
@@ -1368,7 +1484,6 @@
         <span class="c1"># Calculate the bonding the supercell</span>
         <span class="n">bondedToAtom</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">xyzi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xyz_supercell</span><span class="p">):</span>
-            <span class="c1">#jk print(&#39;Calculating bonding to &#39;,i,xyzi)</span>
             <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="c1"># Find the element name for this atom in the supercell</span>
             <span class="n">ip</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -1388,7 +1503,6 @@
                             <span class="k">if</span> <span class="n">dist2</span> <span class="o">&lt;</span> <span class="n">dist1</span><span class="p">:</span>
                                 <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
                                 <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-                                <span class="c1">#jk print(&#39;new bond&#39;, i, j, i_el, j_el, xyzi, xyz_supercell[j], dist1, dist2)</span>
                             <span class="c1"># end if dist2 &lt; dist1</span>
                         <span class="c1"># end if j &lt; i</span>
                     <span class="c1"># end for j</span>
@@ -1409,8 +1523,6 @@
         <span class="n">remainingAtoms</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span> <span class="p">]</span>
         <span class="n">bonds</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">remainingAtoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c1">#jk print(&quot;Remaining atoms&quot;)</span>
-            <span class="c1">#jk print(remainingAtoms)</span>
             <span class="c1"># create a new molecule from the first atom which has no molecule assigned to it</span>
             <span class="n">molID</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">useAtom</span> <span class="o">=</span> <span class="n">remainingAtoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1427,18 +1539,15 @@
                     <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">belongsToMolecule</span><span class="p">:</span>
                         <span class="c1"># atom i is already assigned to a molecule</span>
                         <span class="n">useThisMolecule</span> <span class="o">=</span> <span class="n">belongsToMolecule</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                        <span class="c1">#jk print(&quot;Using this molecule&quot;, useThisMolecule)</span>
                         <span class="c1"># Go through all the atoms bonded to i and add to the current molecule</span>
                         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
                             <span class="n">jx</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-                            <span class="c1">#jk print(&quot;atom j / jx is bonded to atom i&quot;,j,jx,i)</span>
                             <span class="c1"># The image of j in the original cell might not be available, and j might be bonded</span>
                             <span class="k">if</span> <span class="n">jx</span> <span class="ow">in</span> <span class="n">remainingAtoms</span> <span class="ow">and</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">belongsToMolecule</span><span class="p">:</span>
                                 <span class="c1"># if j was not already in a molecule then we have new information</span>
                                 <span class="n">moreAtomsToBeFound</span> <span class="o">=</span> <span class="kc">True</span>
                                 <span class="n">molecules</span><span class="p">[</span><span class="n">useThisMolecule</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
                                 <span class="n">belongsToMolecule</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">useThisMolecule</span>
-                                <span class="c1">#jk print(&quot;Removing atom index(j) from remaining atoms&quot;,index_supercell[j])</span>
                                 <span class="n">remainingAtoms</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">jx</span><span class="p">)</span>
                             <span class="c1"># The j&#39;th atom could be already specified and we have a ring....</span>
                             <span class="c1"># We also need to make sure that we have unique bonds</span>
@@ -1452,15 +1561,11 @@
                 <span class="c1"># end for i</span>
             <span class="c1"># while moreAtomsToBeFound</span>
         <span class="c1"># until all the atoms belong to a molecule</span>
-        <span class="c1">#jk print(&#39;Number of molecules&#39;, molID+1)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">centres_of_mass</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_mass</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">mol_index</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">:</span>
-            <span class="c1">#jk print(&#39;Molecule &#39;,mol_index)</span>
-            <span class="c1">#jk print(&#39;Atoms &#39;,molecules[mol_index])</span>
             <span class="k">for</span> <span class="n">atom_index</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">[</span><span class="n">mol_index</span><span class="p">]:</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span>
-                <span class="c1">#jk print(&#39;New atom index, old index&#39;, atom_index, index, self.element_names[index])</span>
             <span class="c1"># Calculate centre of mass</span>
             <span class="n">mass</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -1664,6 +1769,29 @@
         <span class="k">return</span></div>
 
 
+<div class="viewcode-block" id="UnitCell.get_species">
+<a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_species">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_species</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of the unique species in the cell.</span>
+
+<span class="sd">        The unique list needs to maintain the order seen in the original list</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A list of strings</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
 <div class="viewcode-block" id="UnitCell.fold_cell">
 <a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.fold_cell">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fold_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symprec</span><span class="o">=</span><span class="mf">1.0E-5</span><span class="p">):</span>
@@ -1674,7 +1802,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        None</span>
+<span class="sd">        symprec : float</span>
+<span class="sd">            The symmetry precision</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        map_old_to_new : a list of integers</span>
+<span class="sd">        map_new_to_old : a list of integers</span>
 
 <span class="sd">        Modifies</span>
 <span class="sd">        --------</span>
@@ -1692,7 +1826,10 @@
         <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_atom_labels</span><span class="p">()</span>
         <span class="n">masses</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">()</span>
         <span class="n">element_names</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_names</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">p</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span><span class="n">labels</span><span class="p">,</span><span class="n">masses</span><span class="p">,</span><span class="n">element_names</span><span class="p">):</span>
+        <span class="n">map_new_to_old</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">map_old_to_new</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">old_index</span><span class="p">,(</span><span class="n">p</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">e</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span><span class="n">labels</span><span class="p">,</span><span class="n">masses</span><span class="p">,</span><span class="n">element_names</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
                     <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -1704,11 +1841,14 @@
             <span class="n">dist</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="k">for</span> <span class="n">frac</span> <span class="ow">in</span> <span class="n">new_positions</span><span class="p">:</span>
                 <span class="n">dist</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">frac</span><span class="p">))))</span>
+            <span class="n">map_old_to_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_index</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">dist</span> <span class="o">&gt;</span> <span class="n">symprec</span><span class="p">:</span>
                 <span class="n">new_positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
                 <span class="n">new_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
                 <span class="n">new_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
                 <span class="n">new_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">map_new_to_old</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">old_index</span><span class="p">)</span>
+                <span class="n">new_index</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_atom_labels</span><span class="p">(</span><span class="n">new_labels</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_atomic_masses</span><span class="p">(</span><span class="n">new_masses</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">new_names</span><span class="p">)</span>
@@ -1717,11 +1857,9 @@
         <span class="c1"># Remove molecule and bonding information</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span>     <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span>     <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">map_old_to_new</span><span class="p">,</span> <span class="n">map_new_to_old</span></div>
 
-        <span class="c1">#jk print(&#39;JK5 ---FOLDING------------------------------&#39;)</span>
-        <span class="c1">#jk self.print()</span>
-        <span class="c1">#jk print(&#39;JK5 ---END FOLDING--------------------------&#39;)</span>
 
 <div class="viewcode-block" id="UnitCell.trim_cell">
 <a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.trim_cell">[docs]</a>
@@ -1754,24 +1892,28 @@
         <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_atom_labels</span><span class="p">()</span>
         <span class="n">masses</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">()</span>
         <span class="n">element_names</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_names</span><span class="p">()</span>
-        <span class="n">keep_list</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">new_positions</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">new_labels</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">new_names</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">new_masses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">keep_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_positions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_masses</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">map_new_to_old</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">map_old_to_new</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">index_primitive</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">index_primitive</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">index_cell</span><span class="p">,(</span><span class="n">p</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="n">element_names</span><span class="p">)):</span>
             <span class="n">keep</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
                     <span class="n">keep</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">map_old_to_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_primitive</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">keep</span><span class="p">:</span>
                 <span class="n">keep_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span>
                 <span class="n">new_positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
                 <span class="n">new_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
                 <span class="n">new_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
                 <span class="n">new_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-                <span class="n">index_primitive</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">map_new_to_old</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_cell</span><span class="p">)</span>
-            <span class="n">map_old_to_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_primitive</span><span class="p">)</span>
+                <span class="n">index_primitive</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="c1"># end for p,l,m,n</span>
         <span class="c1">#</span>
         <span class="c1"># Store the information in the current cell</span>
@@ -1780,13 +1922,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_atomic_masses</span><span class="p">(</span><span class="n">new_masses</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">new_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">new_positions</span><span class="p">)</span>
-        <span class="c1">#jk print(&#39;JK6 ----TRIM CELL---------------------------&#39;)</span>
-        <span class="c1">#jk self.print()</span>
-        <span class="c1">#jk print(&quot;Map cell to primitive&quot;)</span>
-        <span class="c1">#jk print(map_old_to_new)</span>
-        <span class="c1">#jk print(&quot;Map primitive to cell&quot;)</span>
-        <span class="c1">#jk print(map_new_to_old)</span>
-        <span class="c1">#jk print(&#39;JK6 ----TRIM CELL---------------------------&#39;)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span>     <span class="o">=</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">map_old_to_new</span><span class="p">,</span> <span class="n">map_new_to_old</span></div>
@@ -1801,7 +1936,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        symprec float (optional)</span>
+<span class="sd">        symprec : float (optional)</span>
 <span class="sd">            The symmetry precision used in determining the spacegroup</span>
 
 <span class="sd">        Returns</span>
@@ -1847,12 +1982,10 @@
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Centring is not recognised&#39;</span><span class="p">,</span><span class="n">centring</span><span class="p">)</span>
-        <span class="c1">#jk print(&#39;jk222 centring&#39;,centring)</span>
-        <span class="c1">#jk print(&#39;jk222 tmat&#39;,tmat)</span>
-        <span class="c1">#jk print(&#39;jk222 pmat&#39;,pmat)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Centring is not recognised&quot;</span><span class="p">,</span><span class="n">centring</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">tmat</span><span class="p">),</span> <span class="n">pmat</span><span class="p">)</span></div>
 </div>
+
 
 </pre></div>
         </article>
@@ -1886,7 +2019,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

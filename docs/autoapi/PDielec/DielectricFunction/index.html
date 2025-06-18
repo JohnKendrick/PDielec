@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -1076,12 +1078,12 @@ Epsilon infinity is included in the total permittivity</p>
 <p>None</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.calculate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the permittivity at a given frequency.</p>
 <section id="id54">
 <h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
+<dt>f_cm1<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
 </dd>
 </dl>
 </section>
@@ -1713,7 +1715,7 @@ Epsilon infinity is not used in the calculation.</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

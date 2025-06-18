@@ -29,6 +29,7 @@ Functions
    PDielec.Calculator.calculate_centre_of_mass
    PDielec.Calculator.calculate_distance
    PDielec.Calculator.calculate_energy_distribution
+   PDielec.Calculator.calculate_normal_modes_and_frequencies
    PDielec.Calculator.calculate_permittivity
    PDielec.Calculator.calculate_refractive_index
    PDielec.Calculator.calculate_refractive_index_scalar
@@ -36,6 +37,7 @@ Functions
    PDielec.Calculator.calculate_torsion
    PDielec.Calculator.cleanup_symbol
    PDielec.Calculator.coherent
+   PDielec.Calculator.compute_all_sg_permutations
    PDielec.Calculator.construct_projection_operator
    PDielec.Calculator.determineEulerAngles
    PDielec.Calculator.direction_from_shape
@@ -62,6 +64,7 @@ Functions
    PDielec.Calculator.rodridgues_rotations
    PDielec.Calculator.set_affinity_on_worker
    PDielec.Calculator.set_no_of_threads
+   PDielec.Calculator.similarity_transform
    PDielec.Calculator.solve_effective_medium_equations
    PDielec.Calculator.waterman_truell_scattering
 
@@ -447,6 +450,24 @@ Module Contents
 
 
 
+.. py:function:: calculate_normal_modes_and_frequencies(hessian)
+
+   "From the mass weighted hessian compute the normal modes and the frequencies.
+
+   Parameters
+   ----------
+   hessian : a symmetric 2d numpy array of 3*natoms, 3*natoms
+       This is the mass-weighted hessian
+
+   Returns
+   -------
+   frequencies : a list of floats
+       The frequencies in cm-1
+   mass_weighted_normal_modes : a 3*natoms, 3*natoms 2D list
+       The eigen vectors of the hessian
+
+
+
 .. py:function:: calculate_permittivity(refractive_index, debug=False)
 
    Calculate the permittivity from the refractive index.
@@ -600,6 +621,21 @@ Module Contents
    -------
    tensor
        The effective dielectric constant.
+
+
+
+.. py:function:: compute_all_sg_permutations(rot, mat)
+
+   Similarity transformation by R x M x R^-1.
+
+   This routine was taken from Phonopy.
+
+   Parameters
+   ----------
+   rot : 3x3 floats
+       The rotation matrix
+   mat : 3x3 floats
+       The matrix to be transformed
 
 
 
@@ -1149,6 +1185,21 @@ Module Contents
    The environment is modified to set the most common environment variables for the number of threads
    a BLAS implementation will use.
    BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB
+
+
+
+.. py:function:: similarity_transform(rot, mat)
+
+   Similarity transformation by R x M x R^-1.
+
+   This routine was taken from Phonopy.
+
+   Parameters
+   ----------
+   rot : 3x3 floats
+       The rotation matrix
+   mat : 3x3 floats
+       The matrix to be transformed
 
 
 

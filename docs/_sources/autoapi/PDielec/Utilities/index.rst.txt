@@ -106,9 +106,8 @@ Module Contents
 
    Returns
    -------
-   (str1,str2)
-       A tuple of 2 strings, the first, str1, is the program name that was used to calculate the frequencies.
-       In the case of phonopy, the second string is the QM program that calculates the forces
+   str
+       The program name that was used to calculate the frequencies.
 
    Notes
    -----
@@ -120,16 +119,15 @@ Module Contents
 
        program = find_program_from_name('./data/structure.castep')
        print(program)
-       # Output: ("castep","")
+       # Output: "castep"
 
-       program = find_program_from_name('path/to/simulation/OUTCAR')
+       program = find_program_from_name('path/to/simulation/phonopy.yaml')
        print(program)
-       # Output: ("phonopy","vasp")
-       # Depends on the presence of 'phonopy.yaml'
+       # Output: "phonopy"
 
 
 
-.. py:function:: get_reader(name, program, qmprogram, debug=False)
+.. py:function:: get_reader(name, program, debug=False)
 
    Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
 
@@ -141,24 +139,18 @@ Module Contents
        The primary filepath or name associated with the output file(s).
    program : str
        The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit', 'qe', and 'phonopy'.
-   qmprogram : str
-       The name of the quantum mechanical program used in conjunction with phonopy. Supported values are the same as for `program`, but its relevance is exclusive to when `program` is set to 'phonopy'.
    debug : boolean
        Optional.  If true print debug information.  Default is false
 
    Returns
    -------
    object
-       An instance of the appropriate output reader class based on the input `program` and, if applicable, `qmprogram`.
-
-   Notes
-   -----
-   For phonopy simulations, both phonon and quantum mechanical output files are considered. If the `qmprogram` is not compatible or not specified, the function will exit.
+       An instance of the appropriate output reader class based on the input `program`
 
    Examples
    --------
-   >>> reader = get_reader("output.log", "castep", "")
-   >>> reader = get_reader("output", "phonopy", "vasp")
+   >>> reader = get_reader("output.log", "castep")
+   >>> reader = get_reader("output", "phonopy")
 
 
 

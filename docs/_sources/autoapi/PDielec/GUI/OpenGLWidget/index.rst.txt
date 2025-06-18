@@ -161,6 +161,8 @@ Module Contents
        A queue that holds sphere objects to be rendered. These can represent atoms or other spherical entities.
    cylinders : deque
        A queue that holds cylinder objects representing bonds or connections between spheres.
+   texts : deque
+       A queue that holds text objects.
    arrows : deque
        A queue that holds arrow objects, useful for indicating directions or forces.
    light_positions : list
@@ -200,7 +202,7 @@ Module Contents
        Starts or restarts the animation timer.
    paintGL()
        The main rendering function called by the Qt framework to draw the OpenGL scene.
-   drawSpheres(), drawCylinders(), drawArrows()
+   drawSpheres(), drawCylinders(), drawArrows(), drawTexts()
        Functions responsible for drawing the respective geometric objects.
    resizeGL(w, h)
        Adjusts the viewport and projection matrix on widget resize.
@@ -216,7 +218,7 @@ Module Contents
        Sets the center of rotation for the scene.
    createArrays(nphases)
        Initializes storage for drawable objects across animation phases.
-   deleteSpheres(), deleteCylinders(), deleteArrows()
+   deleteSpheres(), deleteCylinders(), deleteArrows(), deleteTexts()
        Convenience methods for clearing the drawable objects.
    addArrows(colour, radius, direction, length, phase=0)
        Adds an arrow to the scene.
@@ -224,6 +226,8 @@ Module Contents
        Adds a cylinder to the scene.
    addSphere(colour, radius, pos, phase=0)
        Adds a sphere to the scene.
+   addText(colour, size, pos, phase=0)
+       Adds a text to the scene.
 
 
 
@@ -297,6 +301,30 @@ Module Contents
 
 
 
+   .. py:method:: addText(string, colour, size, pos, phase=0)
+
+      Add a text object to the specified phase collection of texts.
+
+      Parameters
+      ----------
+      string : str
+          The content of the text.
+      colour : str
+          The color of the text.
+      size : float
+          The size of the text
+      pos : tuple
+          The starting position of the text (x, y, z coordinates).
+      phase : int, optional
+          The phase to which the text should be added. Default is 0.
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: createArrays(nphases)
 
       Create or reinitialize arrays for spheres and cylinders for each phase.
@@ -314,8 +342,8 @@ Module Contents
 
       Notes
       -----
-      - Assumes `self.spheres` and `self.cylinders` are already defined as lists.
-      - It uses the `clear` method on both `self.spheres` and `self.cylinders`, which is available for lists in Python 3.3 and later.
+      - Assumes `self.spheres`, `self.texts` and `self.cylinders` are already defined as lists.
+      - It uses the `clear` method, which is available for lists in Python 3.3 and later.
 
 
 
@@ -345,6 +373,62 @@ Module Contents
         - The position of each light with `glLightfv(light, GL_POSITION, position)`.
       - If `self.linearAttenuation` is True, linear attenuation is set for each light with `glLight(light, GL_LINEAR_ATTENUATION, 1.0)`.
       - Each light in `self.lights` is either enabled or disabled based on its corresponding status in `self.light_switches`.
+
+
+
+
+   .. py:method:: define_orientations(cell)
+
+      Set the up orientations for the cell.
+
+                           Points out    Points up  Points across
+
+                 "x" means     x-axis       y-axis         z-axis
+                 "y" means     y-axis       z-axis         x-axis
+                 "z" means     z-axis       x-axis         y-axis
+                 "a" means     a-axis       axb            ax(axb)
+                 "b" means     b-axis       bxc            bx(bxc)
+                 "c" means     c-axis       cxa            cx(cxa)
+                 "a*" means    a*-axis      a*xb*          a*x(a*xb*)
+                 "b*" means    b*-axis      b*xc*          b*x(b*xc*)
+                 "c*" means    c*-axis      c*xa*          c*x(c*xa*)
+
+      A capital letter indicates that the up and out designations are reversed
+
+
+      Parameters
+      ----------
+      cell : unitCell
+          The cell used to define the orientations with respect to a, b, c
+
+      Modifies
+      --------
+      orientation_definitions
+
+
+
+
+   .. py:method:: define_surface_orientations(cell, hkl, uvw)
+
+      Set the up orientations for the surface hkl.
+
+      hkl defines the surface as (hkl)
+      uvw defines a normal to the surface (hkl), [uvw] is made orthogonal to the (hkl) normal
+      if (hkl) is (000) [uvw] is used to define the unique direction
+
+      Parameters
+      ----------
+      cell : unitCell
+          The cell used to define the orientations with respect to a, b, c
+      hkl : a tuple of 3 integers
+          The values of h, k and l
+      uvw : a tuple of 3 integers
+          The values of u, v and w
+
+
+      Modifies
+      --------
+      orientation_definitions
 
 
 
@@ -394,6 +478,23 @@ Module Contents
       Delete all spheres from the current context.
 
       This method clears the collection of spheres.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: deleteTexts()
+
+      Delete all texts from the current context.
+
+      This method clears the collection of texts.
 
       Parameters
       ----------
@@ -484,6 +585,42 @@ Module Contents
       Notes
       -----
       Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`, `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.
+
+
+
+
+   .. py:method:: drawTexts()
+
+      Draw the texts stored in the object.
+
+      This method iterates through the list of text objects for the current phase, 
+      computes the required material colors based on predefined factors, and renders 
+      each text using OpenGL commands.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: drawUVWInfo()
+
+      Draw the uvw info on the screen.
+
+      The uvw information (up, across, out of the screen)
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
 
 
 
@@ -593,7 +730,7 @@ Module Contents
       y : float
           The degree of rotation around the y-axis (degrees).
       z : float
-          Degree of rotation around the z-axis (degrees) is ignored, the parameter is preserved for interface consistency or future use.
+          Degree of rotation around the z-axis (degrees).
 
       Returns
       -------
@@ -713,7 +850,7 @@ Module Contents
       Render OpenGL graphics for the current scene.
 
       This method prepares the graphics context, clears the buffer, sets the background color,
-      and draws the current scene which may include spheres, cylinders, and arrows based on the object's state.
+      and draws the current scene which may include spheres, cylinders, texts and arrows based on the object's state.
 
       Parameters
       ----------
@@ -735,6 +872,29 @@ Module Contents
       - Utilizes several attributes of the instance (`self`), including `background_colour`,
         `rotation_centre`, and `show_arrows`, to determine how to render the scene.
       - The OpenGL context is modified by setting the clear color and transforming the modelview matrix.
+
+
+
+
+   .. py:method:: renderText(x, y, z, string, screen_coordinates=False)
+
+      Draw text in the widget.
+
+      Draw the text in string at the position starting x, y, z
+
+      Parameters
+      ----------
+      x, y, z : floats
+          The position at which to start drawning
+      string : str
+          The text
+      screen_coordinates : bool
+          Optional parameter by default the coordinates are model coordinates
+          If true the screen coordinates are used
+
+      Returns
+      -------
+      None
 
 
 
@@ -824,7 +984,8 @@ Module Contents
 
       Notes
       -----
-      This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current. It also updates `self.matrix` with an identity matrix and sets `self.current_phase` based on the total number of phases.
+      This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current.
+      It also updates the rotation with `self.matrix` and sets `self.current_phase` based on the total number of phases.
 
 
 
@@ -838,6 +999,38 @@ Module Contents
       pos : array_like
           The position to set the rotation centre. Expected to be an iterable
           with numerical values that can be converted to a NumPy array.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: set_orientation(orientation)
+
+      Set the molecular orientation.
+
+      The orientation can be one of 'x', 'y', 'z', 'a', 'b', 'c'
+      The orientation is set using gluLookAt to define the modelview matrix
+      The rotation parts of the transformation matrix are maintained
+      The translation part is set to unity.
+
+                           Points out    Points up
+
+                 "x" means     x-axis       y-axis
+                 "y" means     y-axis       z-axis
+                 "z" means     z-axis       x-axis
+                 "a" means     a-axis       aXb
+                 "b" means     b-axis       bXc
+                 "c" means     c-axis       cXa
+
+      The use of a capital letter means the axes are reversed
+
+      Parameters
+      ----------
+      orientation : str
+          The required orientation
 
       Returns
       -------
@@ -862,6 +1055,21 @@ Module Contents
       Notes
       -----
       This function updates the `show_arrows` attribute based on the "show" parameter and prints the current status to the debugger.
+
+
+
+
+   .. py:method:: show_help_dialog()
+
+      Show the help dialogue message.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
 
 
 
@@ -1058,6 +1266,16 @@ Module Contents
 
 
 
+   .. py:attribute:: cell
+      :value: None
+
+
+
+   .. py:attribute:: current_orientation
+      :value: ([1, 0, 0], [0, 1, 0], [0, 0, 1])
+
+
+
    .. py:attribute:: current_phase
       :value: 0
 
@@ -1096,6 +1314,11 @@ Module Contents
 
    .. py:attribute:: glintMaterialFactor
       :value: 100.0
+
+
+
+   .. py:attribute:: hkl
+      :value: (1, 0, 0)
 
 
 
@@ -1146,6 +1369,14 @@ Module Contents
 
 
 
+   .. py:attribute:: orientation
+      :value: 'z'
+
+
+
+   .. py:attribute:: orientation_definitions
+
+
    .. py:attribute:: phase_direction
       :value: 1
 
@@ -1160,6 +1391,11 @@ Module Contents
 
 
    .. py:attribute:: show_full_screen
+      :value: False
+
+
+
+   .. py:attribute:: show_orientation
       :value: False
 
 
@@ -1185,6 +1421,9 @@ Module Contents
 
 
    .. py:attribute:: spheres
+
+
+   .. py:attribute:: texts
 
 
    .. py:attribute:: timer

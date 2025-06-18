@@ -68,6 +68,7 @@ Submodules
    /autoapi/PDielec/pdcompare/index
    /autoapi/PDielec/pdgui/index
    /autoapi/PDielec/pdmake/index
+   /autoapi/PDielec/phonopy_pdielec_born/index
    /autoapi/PDielec/pickled_reader/index
    /autoapi/PDielec/preader/index
    /autoapi/PDielec/vibanalysis/index
@@ -85,6 +86,6 @@ Package Contents
 ----------------
 
 .. py:data:: __version__
-   :value: '8.2.0'
+   :value: '9.0.0'
 
 

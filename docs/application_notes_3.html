@@ -1,0 +1,750 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE" name="keywords" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="autoapi/index.html" /><link rel="prev" title="Single Crystal Applications" href="application_notes_2.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>Phonopy Examples - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Phonopy Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/application_notes_3.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="phonopy-examples">
+<h1>Phonopy Examples<a class="headerlink" href="#phonopy-examples" title="Link to this heading">¶</a></h1>
+<p>Phonopy <span id="id1">[<a class="reference internal" href="zreferences.html#id13" title="Atsushi Togo and Isao Tanaka. First principles phonon calculations in materials science. Scripta Materialia, 108:1-5, Nov 2015. arXiv:1506.08498, doi:10.1016/j.scriptamat.2015.07.021.">6</a>]</span> is an open source package for the calculation of phonon’s using the harmonic and quasi-harmonic approximations.
+Calculations of the phonon spectrum at the <span class="math notranslate nohighlight">\(\Gamma\)</span> point in the Brillouin-zone using Phonopy can be used by PDielec to calculate the absorption spectrum of powdered and crystalline materials.
+The only additional requirement for performing calculations using PDielec with Phonopy is the provision of <span class="math notranslate nohighlight">\(\epsilon _{\infty}\)</span> and the Born charges.
+These are also required by Phonopy if the non-analytical correction is necessary.
+In this case, Phonopy provides a script for several DFT packages which converts the DFT calculation of Born charges to a file BORN, which contains the <span class="math notranslate nohighlight">\(\epsilon _{\infty}\)</span> and the Born charges.  For VASP, the script is called phonopy-vasp-born.
+The BORN file stores only the symmetry unique charges and PDielec provides a command, phonopy-pdielec-born, which reads the BORN file and generates all of the Born charges.
+The command only uses the Phonopy API, so it is necessary to use it in an environment that has Phonopy installed.</p>
+<section id="al2o3">
+<h2>α-Al<sub>2</sub>O<sub>3</sub><a class="headerlink" href="#al2o3" title="Link to this heading">¶</a></h2>
+<p>This example is based on the example/Al2O3 given in the Phonopy
+distribution. There may be some differences between the present calculations
+and that in Phonopy’s distribution as the INCAR, KPOINTS and
+POTCAR files are not present in the distribution.</p>
+<p>α-Al<sub>2</sub>O<sub>3</sub> or corundum belongs to the <span class="math notranslate nohighlight">\(R\overline{3}c\)</span> space group.
+The standard cell has 6 formula units (30 atoms) in the cell, and the primitive cell has 2 formula units (10 atoms).</p>
+<figure class="align-default" id="id2">
+<span id="al2o3-primitive-cell"></span><a class="reference internal image-reference" href="_images/al2o3_primitive_cell.png"><img alt="_images/al2o3_primitive_cell.png" src="_images/al2o3_primitive_cell.png" style="width: 441.0px; height: 333.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 65 </span><span class="caption-text">The primitive cell of Corundum</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<span id="al2o3-standard-cell"></span><a class="reference internal image-reference" href="_images/al2o3_standard_cell.png"><img alt="_images/al2o3_standard_cell.png" src="_images/al2o3_standard_cell.png" style="width: 523.1999999999999px; height: 308.4px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 66 </span><span class="caption-text">The standard cell of Corundum</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In the PDielec’s Examples/Phonopy/Al2O3 directory there are two directories, Standard_cell/ and Primitive_cell, containing results of Phonopy calculations for the standard and primitive cells respectively.</p>
+<p>It is assumed that the optimisation of the structure has already been done as indicated below</p>
+<section id="geometry-optimisation">
+<h3>Geometry Optimisation<a class="headerlink" href="#geometry-optimisation" title="Link to this heading">¶</a></h3>
+<p>The INCAR file for used for the optimisation was;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PREC</span> <span class="o">=</span> <span class="n">accurate</span>
+<span class="n">ALGO</span> <span class="o">=</span> <span class="n">Normal</span>
+<span class="n">ADDGRID</span> <span class="o">=</span> <span class="n">T</span>
+<span class="n">NELMIN</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">IBRION</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">POTIM</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">NSW</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">EDIFF</span> <span class="o">=</span> <span class="mf">1E-8</span>
+<span class="n">EDIFFG</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1E-3</span>
+<span class="n">ENCUT</span> <span class="o">=</span> <span class="mf">500.00000000</span>
+<span class="n">LREAL</span> <span class="o">=</span> <span class="n">F</span>
+<span class="n">ISMEAR</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">SIGMA</span> <span class="o">=</span> <span class="mf">0.01000000</span>
+<span class="n">GGA</span> <span class="o">=</span> <span class="n">PS</span>
+<span class="n">LMAXMIX</span> <span class="o">=</span> <span class="mi">4</span>
+</pre></div>
+</div>
+<p>The KPOINTS file is;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Regular</span> <span class="n">k</span><span class="o">-</span><span class="n">point</span> <span class="n">mesh</span>
+<span class="mi">0</span>
+<span class="n">Monkhurst</span><span class="o">-</span><span class="n">Pack</span>
+<span class="mi">3</span> <span class="mi">3</span> <span class="mi">1</span>
+<span class="mi">0</span> <span class="mi">0</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>The optimised POSCAR is;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generated</span> <span class="n">by</span> <span class="n">phonopy</span>
+   <span class="mf">1.0000000000000000</span>
+     <span class="mf">4.7742263452989944</span>    <span class="mf">0.0000000000000000</span>   <span class="o">-</span><span class="mf">0.0000000000000000</span>
+    <span class="o">-</span><span class="mf">2.3871131726494972</span>    <span class="mf">4.1346012984458653</span>    <span class="mf">0.0000000000000000</span>
+    <span class="o">-</span><span class="mf">0.0000000000000000</span>    <span class="mf">0.0000000000000000</span>   <span class="mf">13.0113593913272219</span>
+   <span class="n">Al</span>   <span class="n">O</span>
+    <span class="mi">12</span>    <span class="mi">18</span>
+<span class="n">Direct</span>
+  <span class="mf">0.3333333333333357</span>  <span class="mf">0.6666666666666643</span>  <span class="mf">0.0187603745624614</span>
+  <span class="mf">0.3333333333333357</span>  <span class="mf">0.6666666666666643</span>  <span class="mf">0.3145729587708743</span>
+  <span class="mf">0.0000000000000000</span>  <span class="mf">0.0000000000000000</span>  <span class="mf">0.1479062921042100</span>
+  <span class="mf">0.6666666666666643</span>  <span class="mf">0.3333333333333357</span>  <span class="mf">0.1854270412291257</span>
+  <span class="mf">0.0000000000000000</span>  <span class="mf">0.0000000000000000</span>  <span class="mf">0.3520937078957900</span>
+  <span class="mf">0.0000000000000000</span>  <span class="mf">0.0000000000000000</span>  <span class="mf">0.6479062921042100</span>
+  <span class="mf">0.6666666666666643</span>  <span class="mf">0.3333333333333357</span>  <span class="mf">0.4812396254375386</span>
+  <span class="mf">0.3333333333333357</span>  <span class="mf">0.6666666666666643</span>  <span class="mf">0.5187603745624614</span>
+  <span class="mf">0.6666666666666643</span>  <span class="mf">0.3333333333333357</span>  <span class="mf">0.6854270412291257</span>
+  <span class="mf">0.6666666666666643</span>  <span class="mf">0.3333333333333357</span>  <span class="mf">0.9812396254375386</span>
+  <span class="mf">0.3333333333333357</span>  <span class="mf">0.6666666666666643</span>  <span class="mf">0.8145729587708743</span>
+  <span class="mf">0.0000000000000000</span>  <span class="mf">0.0000000000000000</span>  <span class="mf">0.8520937078957900</span>
+  <span class="mf">0.3058086537880129</span>  <span class="mf">0.0000000000000000</span>  <span class="mf">0.2500000000000000</span>
+  <span class="mf">0.3608580128786514</span>  <span class="mf">0.3333333333333357</span>  <span class="mf">0.0833333333333357</span>
+  <span class="mf">0.0000000000000000</span>  <span class="mf">0.3058086537880129</span>  <span class="mf">0.2500000000000000</span>
+  <span class="mf">0.6666666666666643</span>  <span class="mf">0.0275246795453228</span>  <span class="mf">0.0833333333333357</span>
+  <span class="mf">0.6941913462119871</span>  <span class="mf">0.6941913462119871</span>  <span class="mf">0.2500000000000000</span>
+  <span class="mf">0.9724753204546772</span>  <span class="mf">0.6391419871213486</span>  <span class="mf">0.0833333333333357</span>
+  <span class="mf">0.9724753204546772</span>  <span class="mf">0.3333333333333357</span>  <span class="mf">0.5833333333333357</span>
+  <span class="mf">0.0275246795453228</span>  <span class="mf">0.6666666666666643</span>  <span class="mf">0.4166666666666643</span>
+  <span class="mf">0.6666666666666643</span>  <span class="mf">0.6391419871213486</span>  <span class="mf">0.5833333333333357</span>
+  <span class="mf">0.3333333333333357</span>  <span class="mf">0.3608580128786514</span>  <span class="mf">0.4166666666666643</span>
+  <span class="mf">0.3608580128786514</span>  <span class="mf">0.0275246795453228</span>  <span class="mf">0.5833333333333357</span>
+  <span class="mf">0.6391419871213486</span>  <span class="mf">0.9724753204546772</span>  <span class="mf">0.4166666666666643</span>
+  <span class="mf">0.6391419871213486</span>  <span class="mf">0.6666666666666643</span>  <span class="mf">0.9166666666666643</span>
+  <span class="mf">0.6941913462119871</span>  <span class="mf">0.0000000000000000</span>  <span class="mf">0.7500000000000000</span>
+  <span class="mf">0.3333333333333357</span>  <span class="mf">0.9724753204546772</span>  <span class="mf">0.9166666666666643</span>
+  <span class="mf">0.0000000000000000</span>  <span class="mf">0.6941913462119871</span>  <span class="mf">0.7500000000000000</span>
+  <span class="mf">0.0275246795453228</span>  <span class="mf">0.3608580128786514</span>  <span class="mf">0.9166666666666643</span>
+  <span class="mf">0.3058086537880129</span>  <span class="mf">0.3058086537880129</span>  <span class="mf">0.7500000000000000</span>
+</pre></div>
+</div>
+</section>
+<section id="calculation-of-the-born-charges-and-epsilon-infty">
+<h3>Calculation of the Born charges and <span class="math notranslate nohighlight">\(\epsilon _{\infty}\)</span><a class="headerlink" href="#calculation-of-the-born-charges-and-epsilon-infty" title="Link to this heading">¶</a></h3>
+<p>Phonopy allows for the calculation of the phonons in either the primitive or standard basis.
+Starting the calculation in the standard cell basis will allow later calculations in the primitive celll basis.</p>
+<p>In the Standard_cell/Born directory a calculation of the Born charges and
+<span class="math notranslate nohighlight">\(\epsilon _{\infty}\)</span>
+was performed.  The inputs and outputs can be found in the distribution.</p>
+<p>The optimised results (KPOINTS, INCAR, POSCAR, CONTCAR, POTCAR) have been
+copied to the Standard_cell/Born/ directory making sure that CONTCAR has been copied to POSCAR.
+The KPOINTS file has been edited to increase the number of k-points.</p>
+<p>The INCAR for a single point, with the calculation of epsilon infinity and
+Born charges(LEPSILON) is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PREC</span> <span class="o">=</span> <span class="n">accurate</span>
+<span class="n">ALGO</span> <span class="o">=</span> <span class="n">Normal</span>
+<span class="n">ADDGRID</span> <span class="o">=</span> <span class="n">T</span>
+<span class="n">NELMIN</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">PREC</span> <span class="o">=</span> <span class="n">Accurate</span>
+  <span class="n">IBRION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+  <span class="n">NELMIN</span> <span class="o">=</span> <span class="mi">5</span>
+   <span class="n">ENCUT</span> <span class="o">=</span> <span class="mi">500</span>
+   <span class="n">EDIFF</span> <span class="o">=</span> <span class="mf">1.000000e-08</span>
+  <span class="n">ISMEAR</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="n">SIGMA</span> <span class="o">=</span> <span class="mf">1.000000e-02</span>
+   <span class="n">IALGO</span> <span class="o">=</span> <span class="mi">38</span>
+   <span class="n">LREAL</span> <span class="o">=</span> <span class="o">.</span><span class="n">FALSE</span><span class="o">.</span>
+   <span class="n">LWAVE</span> <span class="o">=</span> <span class="o">.</span><span class="n">FALSE</span><span class="o">.</span>
+  <span class="n">LCHARG</span> <span class="o">=</span> <span class="o">.</span><span class="n">FALSE</span><span class="o">.</span>
+<span class="n">LEPSILON</span> <span class="o">=</span> <span class="o">.</span><span class="n">TRUE</span><span class="o">.</span>
+<span class="n">LMAXMIX</span>  <span class="o">=</span> <span class="mi">4</span>
+<span class="n">GGA</span>      <span class="o">=</span> <span class="n">PS</span>
+</pre></div>
+</div>
+<p>The KPOINTS file is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Regular</span> <span class="n">k</span><span class="o">-</span><span class="n">point</span> <span class="n">mesh</span>
+<span class="mi">0</span>
+<span class="n">Gamma</span>
+<span class="mi">6</span> <span class="mi">6</span> <span class="mi">2</span>
+<span class="mi">0</span> <span class="mi">0</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>Once the calculation is completed, the symmetry unique charges are calculated using the Phonopy script “phonopy-vasp-born”.
+Later on these will be converted to PDielec format, which has all of the atoms in the file, not just the symmetry unique ones.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span><span class="o">-</span><span class="n">vasp</span><span class="o">-</span><span class="n">born</span> <span class="o">&gt;</span> <span class="n">BORN</span>
+</pre></div>
+</div>
+</section>
+<section id="standard-cell-phonopy-calculation">
+<h3>Standard Cell Phonopy calculation<a class="headerlink" href="#standard-cell-phonopy-calculation" title="Link to this heading">¶</a></h3>
+<p>From the Standard_cell/Born directory copy the BORN, POSCAR, POTCAR and KPOINTS files to Standard_cell/.
+The higher density of k-points is no longer needed, indeed the density may be reduced if a supercell is used.</p>
+<p>Modify the INCAR file to do single point calculations with no storage of
+the charge density or the wavefunction:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">PREC</span> <span class="o">=</span> <span class="n">Accurate</span>
+    <span class="n">ALGO</span> <span class="o">=</span> <span class="n">Normal</span>
+  <span class="n">IBRION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+  <span class="n">NELMIN</span> <span class="o">=</span> <span class="mi">5</span>
+   <span class="n">ENCUT</span> <span class="o">=</span> <span class="mi">500</span>
+   <span class="n">EDIFF</span> <span class="o">=</span> <span class="mf">1.000000e-08</span>
+  <span class="n">ISMEAR</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="n">SIGMA</span> <span class="o">=</span> <span class="mf">1.000000e-02</span>
+   <span class="n">LREAL</span> <span class="o">=</span> <span class="o">.</span><span class="n">FALSE</span><span class="o">.</span>
+   <span class="n">LWAVE</span> <span class="o">=</span> <span class="o">.</span><span class="n">FALSE</span><span class="o">.</span>
+  <span class="n">LCHARG</span> <span class="o">=</span> <span class="o">.</span><span class="n">FALSE</span><span class="o">.</span>
+<span class="n">LMAXMIX</span>  <span class="o">=</span> <span class="mi">4</span>
+<span class="n">GGA</span>      <span class="o">=</span> <span class="n">PS</span>
+<span class="n">ADDGRID</span>  <span class="o">=</span> <span class="n">T</span>
+</pre></div>
+</div>
+<p>Since we will change the size of the cell, we can modify the KPOINTS
+file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Regular</span> <span class="n">k</span><span class="o">-</span><span class="n">point</span> <span class="n">mesh</span>
+<span class="mi">0</span>
+<span class="n">Monkhurst</span><span class="o">-</span><span class="n">Pack</span>
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">1</span>
+<span class="mi">0</span> <span class="mi">0</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">Using Phonopy to create the perturbed and unperturbed structures.</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">dim</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">1</span>
+<span class="n">mkdir</span> <span class="n">SuperCell</span>
+<span class="n">cp</span> <span class="n">SPOSCAR</span> <span class="n">SuperCell</span><span class="o">/</span><span class="n">POSCAR</span>
+<span class="p">(</span><span class="n">cd</span> <span class="n">SuperCell</span><span class="p">;</span> <span class="n">cp</span> <span class="o">../</span><span class="n">INCAR</span> <span class="o">.</span><span class="p">;</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">../</span><span class="n">POTCAR</span><span class="p">;</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">../</span><span class="n">KPOINTS</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">An unperturbed supercell calculation will be performed to calculate the
+wavefunction and charge density. The perturbed geometries are stored
+in POSCAR-??? files amd the supercell in SPOSCAR. The size of the
+supercell will be 2,2,1.</div>
+<div class="line">Once the supercell
+POSCAR file has been created, links are made to POTCAR and KPOINTS in
+the SuperCell/ directory. The INCAR file is copied as it will be
+edited to save the wavefunction and charge density files.</div>
+</div>
+<p>Edit the SuperCell/INCAR file so that the wavefunction and charge are
+saved. The WAVECAR and CHGCAR files will restart the perturbed
+calculations. After running the VASP job in SuperCell/. Create links for
+the WAVECAR and CHGCAR files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="n">SuperCell</span><span class="o">/</span><span class="n">WAVECAR</span><span class="p">;</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="n">SuperCell</span><span class="o">/</span><span class="n">CHGCAR</span>
+</pre></div>
+</div>
+<p>Move the POSCAR-??? files for each displacement to a directory (POSCARS)
+where the calculations will be performed. POTCAR, KPOINTS and INCAR
+files are the same for every calculation, so link to the original
+SuperCell files. An advantage of using links for these files is that
+changes to the INCAR or KPOINTS files apply to all calculations. WAVECAR
+and CHGCAR links need to be made in each of the perturbed geometry
+directories.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mkdir POSCARS
+for f in POSCAR-*
+do
+   mkdir POSCARS/$f
+   cp $f POSCARS/$f/POSCAR
+   ( cd POSCARS/$f; ln -s ../../INCAR; ln -s ../../POTCAR; ln -s ../../KPOINTS; ln -s ../../WAVECAR; ln -s ../../CHGCAR )
+done
+</pre></div>
+</div>
+<p>Submit all the jobs to a batch queue for processing.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd POSCARS
+for d in *
+do
+(cd $d; runvasp $d 8 8 )
+done
+</pre></div>
+</div>
+<section id="calculate-the-forces-sets">
+<h4>Calculate the FORCES_SETS<a class="headerlink" href="#calculate-the-forces-sets" title="Link to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span> <span class="o">-</span><span class="n">f</span> <span class="n">POSCARS</span><span class="o">/</span><span class="n">POSCAR</span><span class="o">-</span><span class="p">{</span><span class="mf">001..005</span><span class="p">}</span><span class="o">/</span><span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-the-dynamical-matrix">
+<h4>Calculate the Dynamical Matrix<a class="headerlink" href="#calculate-the-dynamical-matrix" title="Link to this heading">¶</a></h4>
+<p>The dynamical matrix is calculated in the standard basis, not the
+primitive.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span> <span class="o">--</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;2 2 1&quot;</span> <span class="o">--</span><span class="n">qpoints</span><span class="o">=</span><span class="s2">&quot;0 0 0&quot;</span> <span class="o">--</span><span class="n">writedm</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-the-full-set-of-born-charges">
+<h4>Calculate the full set of Born charges<a class="headerlink" href="#calculate-the-full-set-of-born-charges" title="Link to this heading">¶</a></h4>
+<p>PDielec needs the Born charges for every atom, not just the symmetry
+unique ones. The full set of charges is generated in file “PDIELEC_BORN”
+by the <code class="docutils literal notranslate"><span class="pre">phonopy-pdielec-born</span></code> command provided by PDielec. Note that
+this command only uses the Phonopy API, no feature of the PDielec
+API is used.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span><span class="o">-</span><span class="n">pdielec</span><span class="o">-</span><span class="n">born</span> <span class="o">&gt;</span> <span class="n">BORN_PDIELEC</span>
+</pre></div>
+</div>
+<p>For comparison the BORN file for provided in the distribution of Phonopy is;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># epsilon and Z* of atoms 1 13</span>
+   <span class="mf">3.27649624</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">3.27649624</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">3.21878866</span>
+   <span class="mf">2.96008813</span>   <span class="o">-</span><span class="mf">0.02948662</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">0.02948662</span>    <span class="mf">2.96008813</span>   <span class="o">-</span><span class="mf">0.00000000</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">2.92614183</span>
+  <span class="o">-</span><span class="mf">2.07328119</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>   <span class="o">-</span><span class="mf">0.00000000</span>   <span class="o">-</span><span class="mf">1.87350298</span>    <span class="mf">0.25811770</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">0.35087130</span>   <span class="o">-</span><span class="mf">1.95076122</span>
+</pre></div>
+</div>
+<p>Whilst the BORN file calculated by the present calculation is;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># epsilon and Z* of atoms 1 13</span>
+   <span class="mf">3.27607426</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">3.27607426</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">3.23683513</span>
+   <span class="mf">2.95996414</span>   <span class="o">-</span><span class="mf">0.02948839</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">0.02948839</span>    <span class="mf">2.95996414</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>   <span class="o">-</span><span class="mf">0.00000000</span>    <span class="mf">2.92951772</span>
+  <span class="o">-</span><span class="mf">2.07319123</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>    <span class="mf">0.00000000</span>   <span class="o">-</span><span class="mf">1.87342763</span>    <span class="mf">0.25818161</span>    <span class="mf">0.00000000</span>    <span class="mf">0.35167360</span>   <span class="o">-</span><span class="mf">1.95301181</span>
+</pre></div>
+</div>
+<p>The agreement is accurate to 3 decimal places.</p>
+</section>
+<section id="standard-cell-pdgui">
+<h4>Standard Cell - PDGui<a class="headerlink" href="#standard-cell-pdgui" title="Link to this heading">¶</a></h4>
+<p>A pdgui calculation of the infrared intensities and the phonon
+frequencies is now possible.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">phonopy</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>PDGui can be given any yaml file on the command line, the actual files
+read are always phonopy,yaml, qpoints.yaml and BORN_PDIELEC.</p>
+</section>
+</section>
+</section>
+<section id="primitive-cell-phonopy">
+<h2>Primitive Cell Phonopy<a class="headerlink" href="#primitive-cell-phonopy" title="Link to this heading">¶</a></h2>
+<p>A primitive cell calculation of the dynamical matrix will be performed in
+the Primitive_cell/ directory. Copy over files from the following files from the Standard_cell/ directory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Standard_cell</span>
+<span class="n">cp</span> <span class="n">BORN</span> <span class="n">FORCE_SETS</span> <span class="n">phonopy_disp</span><span class="o">.</span><span class="n">yaml</span> <span class="n">phonopy</span><span class="o">.</span><span class="n">yaml</span> <span class="o">../</span><span class="n">Primitive_cell</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">The primitive cell has fewer atoms (10) in it than the standard cell (30), so
+the BORN_PDIELEC file needs to be calculated as it stores the Born charges for all atoms.
+Before doing this the phonopy.yaml has to be updated with the primitive cell.</div>
+<div class="line">This is carried out by during a calculation of the dynamical matrix in the
+primitive basis. After this the phonopy.yaml file should have the
+primitive cell and the BORN_PDIELEC file can be calculated. It is
+important that the BORN_PDIELEC file is always updated after a change
+to phonopy.yaml.</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span> <span class="o">--</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;2 2 1&quot;</span> <span class="o">--</span><span class="n">qpoints</span><span class="o">=</span><span class="s2">&quot;0 0 0&quot;</span> <span class="o">--</span><span class="n">writedm</span> <span class="o">--</span><span class="n">pa</span> <span class="n">auto</span>
+<span class="n">phonopy</span><span class="o">-</span><span class="n">pdielec</span><span class="o">-</span><span class="n">born</span> <span class="o">&gt;</span> <span class="n">BORN_PDIELEC</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">At this point it possible to calculate the absorption using pdgui, in the same way as was done previsouly, but now the primtive cell basis is used.</div>
+</div>
+</section>
+<section id="comparison-of-results">
+<h2>Comparison of results<a class="headerlink" href="#comparison-of-results" title="Link to this heading">¶</a></h2>
+<p>In the following figures the results of the two different Phonopy calculations are compared.
+In addition results are shown for DFTP calculations on the same systems.
+The first figure shows a comparison over the full frequency range.
+The second figure compares the results over a limited frequency range to highlight the small differences between the calculations.</p>
+<figure class="align-default" id="id4">
+<span id="comparisons-1"></span><img alt="_images/Phonopy_comparisons.svg" src="_images/Phonopy_comparisons.svg" />
+<figcaption>
+<p><span class="caption-number">Fig. 67 </span><span class="caption-text">Comparison of absorption predicted by Phonopy and DFTP (full frequencies)</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id5">
+<span id="comparisons-2"></span><img alt="_images/Phonopy_comparisons_2.svg" src="_images/Phonopy_comparisons_2.svg" />
+<figcaption>
+<p><span class="caption-number">Fig. 68 </span><span class="caption-text">Comparison of absorption predicted by Phonopy and DFTP (restricted frequencies)</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The results of the two DFPT calculations are indistinguishable from one another, as are those of the two Phonopy calculations.
+There is a small shift in the frequency peaks predicted by DFPT and Phonopy but this is to be expected.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="autoapi/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">API Reference</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="application_notes_2.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Single Crystal Applications</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Phonopy Examples</a><ul>
+<li><a class="reference internal" href="#al2o3">α-Al<sub>2</sub>O<sub>3</sub></a><ul>
+<li><a class="reference internal" href="#geometry-optimisation">Geometry Optimisation</a></li>
+<li><a class="reference internal" href="#calculation-of-the-born-charges-and-epsilon-infty">Calculation of the Born charges and <span class="math notranslate nohighlight">\(\epsilon _{\infty}\)</span></a></li>
+<li><a class="reference internal" href="#standard-cell-phonopy-calculation">Standard Cell Phonopy calculation</a><ul>
+<li><a class="reference internal" href="#calculate-the-forces-sets">Calculate the FORCES_SETS</a></li>
+<li><a class="reference internal" href="#calculate-the-dynamical-matrix">Calculate the Dynamical Matrix</a></li>
+<li><a class="reference internal" href="#calculate-the-full-set-of-born-charges">Calculate the full set of Born charges</a></li>
+<li><a class="reference internal" href="#standard-cell-pdgui">Standard Cell - PDGui</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#primitive-cell-phonopy">Primitive Cell Phonopy</a></li>
+<li><a class="reference internal" href="#comparison-of-results">Comparison of results</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=0b13d40c"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    <script>window.MathJax = {"extensions": ["AMSmath.js"], "tex": {"macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

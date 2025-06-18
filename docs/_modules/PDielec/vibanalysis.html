@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PDielec.vibanalysis - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=2e0a580d" />
     
     
@@ -70,7 +70,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -85,22 +85,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -113,6 +154,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -131,7 +174,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -173,67 +217,70 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -260,7 +307,8 @@
           <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -270,7 +318,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for PDielec.vibanalysis</h1><div class="highlight"><pre>
 <span></span><span class="ch">#! /usr/bin/env python3</span>
 <span class="sd">&quot;&quot;&quot;vibAnalysis is a Python tool written by Filipe Teixeira the original is available on</span>
@@ -304,18 +352,20 @@
 <span class="c1"># Original file is va.py.original</span>
 <span class="c1">#</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">reload</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">sklearn</span> <span class="k">as</span> <span class="nn">skl</span>
-<span class="kn">import</span> <span class="nn">sklearn.linear_model</span> <span class="k">as</span> <span class="nn">sklm</span>
-<span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">skmt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">skl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sklm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">skmt</span>
 
 
-<div class="viewcode-block" id="InitialiseVaOpts"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.InitialiseVaOpts">[docs]</a><span class="k">def</span> <span class="nf">InitialiseVaOpts</span><span class="p">():</span>
+<div class="viewcode-block" id="InitialiseVaOpts">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.InitialiseVaOpts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">InitialiseVaOpts</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Define default options for the Vibanalysis package&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">Opts</span>
     <span class="k">global</span> <span class="n">Symbols</span>
@@ -358,27 +408,51 @@
 
     <span class="n">Radii</span><span class="o">=</span><span class="p">[</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">]</span>
 
+    <span class="c1">#</span>
+    <span class="c1"># Use the PDielec constants instead of the original</span>
+    <span class="c1"># =================================================</span>
+    <span class="c1">#</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constants</span>
+    <span class="n">Symbols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Masses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Radii</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">Constants</span><span class="o">.</span><span class="n">isotope_masses</span><span class="p">:</span>
+        <span class="n">Symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="n">Masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">isotope_masses</span><span class="p">[</span><span class="n">symbol</span><span class="p">])</span>
+        <span class="n">Radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Constants</span><span class="o">.</span><span class="n">covalent_radii</span><span class="p">[</span><span class="n">symbol</span><span class="p">])</span>
+    <span class="c1"># ========================================</span>
+    <span class="c1"># End of PDielec changes for the constants</span>
+    <span class="c1">#</span>
     <span class="c1">#balancing parameters</span>
     <span class="n">sangles</span><span class="o">=</span><span class="mf">1.0</span>
     <span class="n">souts</span><span class="o">=</span><span class="mf">1.0</span>
     <span class="n">storsions</span><span class="o">=</span><span class="mf">1.0</span></div>
+
 <span class="c1">## Object Classes ##</span>
 
-<div class="viewcode-block" id="Atom"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Atom">[docs]</a><span class="k">class</span> <span class="nc">Atom</span><span class="p">:</span>
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symbol</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">mass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Atom">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Atom">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Atom</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symbol</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">mass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">=</span><span class="n">mass</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">mass</span><span class="o">==</span><span class="kc">None</span><span class="p">):</span>
                         <span class="n">mass</span><span class="o">=</span><span class="n">Masses</span><span class="p">[</span><span class="n">Symbols</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">lower</span><span class="p">())]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-<div class="viewcode-block" id="Atom.punch"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Atom.punch">[docs]</a>        <span class="k">def</span> <span class="nf">punch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Atom.punch">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Atom.punch">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">punch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="n">o</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">:</span><span class="s2">2s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="si">:</span><span class="s2">8.4f</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                         <span class="n">o</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">%+16.4f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                <span class="k">return</span><span class="p">(</span><span class="n">o</span><span class="p">)</span></div></div>
+                <span class="k">return</span><span class="p">(</span><span class="n">o</span><span class="p">)</span></div>
+</div>
 
-<div class="viewcode-block" id="Vibration"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration">[docs]</a><span class="k">class</span> <span class="nc">Vibration</span><span class="p">:</span>
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">ndegs</span><span class="p">,</span><span class="n">adv</span><span class="o">=</span><span class="p">[],</span><span class="n">ir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">raman</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">sym</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Vibration">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Vibration</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">ndegs</span><span class="p">,</span><span class="n">adv</span><span class="o">=</span><span class="p">[],</span><span class="n">ir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">raman</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">sym</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
                 <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adv</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">displacements</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ndegs</span><span class="p">)</span>
@@ -394,30 +468,50 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">VMLD</span><span class="o">=</span><span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">VMARD</span><span class="o">=</span><span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">symmetry</span><span class="o">=</span><span class="n">sym</span>
-<div class="viewcode-block" id="Vibration.editDisplacements"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.editDisplacements">[docs]</a>        <span class="k">def</span> <span class="nf">editDisplacements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="Vibration.editDisplacements">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.editDisplacements">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">editDisplacements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">d</span><span class="p">):</span>
                 <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">!=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacements</span><span class="p">)):</span>
                         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warnning: New displacements do not conform to previous.&quot;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">displacements</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
-<div class="viewcode-block" id="Vibration.editIntensity"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.editIntensity">[docs]</a>        <span class="k">def</span> <span class="nf">editIntensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;IR&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Vibration.editIntensity">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.editIntensity">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">editIntensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;IR&quot;</span><span class="p">):</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">==</span><span class="s2">&quot;IR&quot;</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">intIR</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
                 <span class="k">elif</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">==</span><span class="s2">&quot;RAMAN&quot;</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">intRaman</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
-<div class="viewcode-block" id="Vibration.addVMP"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMP">[docs]</a>        <span class="k">def</span> <span class="nf">addVMP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vmp</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Vibration.addVMP">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMP">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addVMP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vmp</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMP&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vmp</span><span class="p">)</span></div>
-<div class="viewcode-block" id="Vibration.addVMLD"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMLD">[docs]</a>        <span class="k">def</span> <span class="nf">addVMLD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">coefs</span><span class="p">,</span><span class="n">r2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">exvar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Vibration.addVMLD">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMLD">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addVMLD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">coefs</span><span class="p">,</span><span class="n">r2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">exvar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMLD&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMLD_R2&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">r2</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMLD_EV&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">exvar</span></div>
-<div class="viewcode-block" id="Vibration.addVMBLD"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMBLD">[docs]</a>        <span class="k">def</span> <span class="nf">addVMBLD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">coefs</span><span class="p">,</span><span class="n">r2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">exvar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Vibration.addVMBLD">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMBLD">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addVMBLD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">coefs</span><span class="p">,</span><span class="n">r2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">exvar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMBLD&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMBLD_R2&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">r2</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMBLD_EV&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">exvar</span></div>
-<div class="viewcode-block" id="Vibration.addVMARD"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMARD">[docs]</a>        <span class="k">def</span> <span class="nf">addVMARD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">coefs</span><span class="p">,</span><span class="n">r2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">exvar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Vibration.addVMARD">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.addVMARD">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addVMARD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">coefs</span><span class="p">,</span><span class="n">r2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">exvar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMARD&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMARD_R2&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">r2</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">[</span><span class="s2">&quot;VMARD_EV&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">exvar</span></div>
-<div class="viewcode-block" id="Vibration.string"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.string">[docs]</a>        <span class="k">def</span> <span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Vibration.string">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.Vibration.string">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">o</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
                 <span class="c1">#jk if(n&gt;0):</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">):</span>
@@ -434,10 +528,14 @@
                         <span class="n">o</span> <span class="o">+=</span> <span class="s2">&quot;,Raman: </span><span class="si">%5.1f</span><span class="s2">)&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intRaman</span><span class="p">)</span>
                 <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intRaman</span> <span class="o">==</span> <span class="kc">None</span><span class="p">):</span>
                         <span class="n">o</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
-                <span class="k">return</span> <span class="n">o</span></div></div>
+                <span class="k">return</span> <span class="n">o</span></div>
+</div>
 
-<div class="viewcode-block" id="System"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System">[docs]</a><span class="k">class</span> <span class="nc">System</span><span class="p">:</span>
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">System</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">=</span><span class="p">[]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">geo</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="o">=</span><span class="mi">0</span>
@@ -446,44 +544,72 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">intcoords</span><span class="o">=</span><span class="p">[]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="o">=</span><span class="kc">None</span>
-<div class="viewcode-block" id="System.punch"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.punch">[docs]</a>        <span class="k">def</span> <span class="nf">punch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="System.punch">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.punch">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">punch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="n">o</span><span class="o">=</span><span class="s2">&quot;System Data:</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="n">o</span> <span class="o">+=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of atoms = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">o</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Atoms, Masses and Positions:</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
                         <span class="n">o</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">punch</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="k">return</span><span class="p">(</span><span class="n">o</span><span class="p">)</span></div>
-<div class="viewcode-block" id="System.addAtom"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addAtom">[docs]</a>        <span class="k">def</span> <span class="nf">addAtom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symbol</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">mass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.addAtom">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addAtom">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addAtom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symbol</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">mass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">mass</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span></div>
-<div class="viewcode-block" id="System.addVibration"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibration">[docs]</a>        <span class="k">def</span> <span class="nf">addVibration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequency</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.addVibration">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibration">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addVibration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequency</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vibration</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="p">))</span></div>
-<div class="viewcode-block" id="System.addVibIntensity"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibIntensity">[docs]</a>        <span class="k">def</span> <span class="nf">addVibIntensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;IR&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.addVibIntensity">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibIntensity">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addVibIntensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;IR&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">editIntensity</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="n">kind</span><span class="p">)</span></div>
-<div class="viewcode-block" id="System.addVibSymmetry"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibSymmetry">[docs]</a>        <span class="k">def</span> <span class="nf">addVibSymmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">sym</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.addVibSymmetry">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addVibSymmetry">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addVibSymmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">sym</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">symmetry</span><span class="o">=</span><span class="n">sym</span></div>
-<div class="viewcode-block" id="System.addDisplacements"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addDisplacements">[docs]</a>        <span class="k">def</span> <span class="nf">addDisplacements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">displacements</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.addDisplacements">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.addDisplacements">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">addDisplacements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idx</span><span class="p">,</span><span class="n">displacements</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">editDisplacements</span><span class="p">(</span><span class="n">displacements</span><span class="p">)</span></div>
-<div class="viewcode-block" id="System.makeADM"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.makeADM">[docs]</a>        <span class="k">def</span> <span class="nf">makeADM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.makeADM">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.makeADM">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">makeADM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">)))</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">)):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">displacements</span></div>
-<div class="viewcode-block" id="System.checkADM"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.checkADM">[docs]</a>        <span class="k">def</span> <span class="nf">checkADM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">                </span><span class="sd">&quot;&quot;&quot;Check orthogonalyty of the ADM&quot;&quot;&quot;</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">makeADM</span><span class="p">()</span>
+
+<div class="viewcode-block" id="System.checkADM">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.checkADM">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">checkADM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;Check orthogonality of the ADM&quot;&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                         <span class="n">norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="p">[:,</span><span class="n">n</span><span class="p">])</span>
                         <span class="c1">#print(&quot;Norm of Vibrational Mode %d is %8.6f&quot;%(n+1,norm))</span>
                         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                                 <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="p">[:,</span><span class="n">n</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">ADM</span><span class="p">[:,</span><span class="n">m</span><span class="p">])</span></div>
+
                                 <span class="c1">#print(&quot;Cross between Mode %d and Mode %d is: %8.6f&quot;%(n+1,m+1,c))</span>
-<div class="viewcode-block" id="System.makeGeo"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.makeGeo">[docs]</a>        <span class="k">def</span> <span class="nf">makeGeo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="System.makeGeo">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.makeGeo">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">makeGeo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">geo</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="o">=</span><span class="p">[]</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">geo</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">r</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span></div>
-<div class="viewcode-block" id="System.tripleMass"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.tripleMass">[docs]</a>        <span class="k">def</span> <span class="nf">tripleMass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.tripleMass">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.tripleMass">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">tripleMass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="n">o</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="p">)</span>
                 <span class="n">n</span><span class="o">=</span><span class="mi">0</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">natoms</span><span class="p">):</span>
@@ -492,33 +618,55 @@
                                 <span class="n">o</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mass</span>
                                 <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">return</span> <span class="n">o</span></div>
-<div class="viewcode-block" id="System.massWeightS"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.massWeightS">[docs]</a>        <span class="k">def</span> <span class="nf">massWeightS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.massWeightS">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.massWeightS">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">massWeightS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="n">mass</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tripleMass</span><span class="p">())</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">mass</span></div>
-<div class="viewcode-block" id="System.normalizeS"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.normalizeS">[docs]</a>        <span class="k">def</span> <span class="nf">normalizeS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.normalizeS">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.normalizeS">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">normalizeS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span></div>
+
                 <span class="c1">#self.S *= Opts[&quot;delta&quot;] #do we need this?</span>
-<div class="viewcode-block" id="System.massWeightVibrations"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.massWeightVibrations">[docs]</a>        <span class="k">def</span> <span class="nf">massWeightVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="System.massWeightVibrations">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.massWeightVibrations">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">massWeightVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="n">mass</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tripleMass</span><span class="p">())</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">)):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">displacements</span> <span class="o">*=</span> <span class="n">mass</span></div>
-<div class="viewcode-block" id="System.normalizeVibrations"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.normalizeVibrations">[docs]</a>        <span class="k">def</span> <span class="nf">normalizeVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="System.normalizeVibrations">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.normalizeVibrations">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">normalizeVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">)):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">displacements</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">displacements</span><span class="p">)</span></div>
-<div class="viewcode-block" id="System.removeVibrations"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.removeVibrations">[docs]</a>        <span class="k">def</span> <span class="nf">removeVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">elst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))):</span>
+
+<div class="viewcode-block" id="System.removeVibrations">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.removeVibrations">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">removeVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">elst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))):</span>
                 <span class="n">idx</span><span class="o">=</span><span class="p">[]</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">)):</span>
                         <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">elst</span><span class="p">):</span>
                                 <span class="n">idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">]</span></div>
-<div class="viewcode-block" id="System.sortVibrations"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.sortVibrations">[docs]</a>        <span class="k">def</span> <span class="nf">sortVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="System.sortVibrations">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.System.sortVibrations">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">sortVibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">frequency</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</div>
+
 
 <span class="c1">## Input-Output Functions ##</span>
 
-<div class="viewcode-block" id="readMopac2016"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readMopac2016">[docs]</a><span class="k">def</span> <span class="nf">readMopac2016</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
+<div class="viewcode-block" id="readMopac2016">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readMopac2016">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">readMopac2016</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens a MOPAC2016 output file ifn and returns A System object.</span>
 <span class="sd">        Depending on Linear and Transition, freqs and modes will be</span>
 <span class="sd">        pruned out of the translational and rotational components.</span>
@@ -603,7 +751,10 @@
         <span class="k">return</span> <span class="n">o</span></div>
 
 
-<div class="viewcode-block" id="readHess"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readHess">[docs]</a><span class="k">def</span> <span class="nf">readHess</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
+
+<div class="viewcode-block" id="readHess">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readHess">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">readHess</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens Orca Hess file ifn and returns A System object.</span>
 <span class="sd">        Depending on Linear and Transition, freqs and modes will be</span>
 <span class="sd">        pruned out of the translational and rotational components.</span>
@@ -690,20 +841,23 @@
         <span class="n">o</span><span class="o">.</span><span class="n">removeVibrations</span><span class="p">(</span><span class="n">excl</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">o</span></div>
 
-<div class="viewcode-block" id="readPDielec"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readPDielec">[docs]</a><span class="k">def</span> <span class="nf">readPDielec</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
+
+<div class="viewcode-block" id="readPDielec">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readPDielec">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">readPDielec</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Use PDielec library to read hessian information.</span>
 <span class="sd">        only the first 3 modes will be pruned; the translational components.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Open the file use pdielec library</span>
-        <span class="kn">import</span> <span class="nn">math</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
-        <span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">Calculator</span><span class="p">,</span> <span class="n">Utilities</span>
-        <span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">average_masses</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Calculator</span><span class="p">,</span> <span class="n">Utilities</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">average_masses</span>
         <span class="c1"># Use as many defaults as possible</span>
         <span class="c1"># First determine the program used to create the output file</span>
-        <span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">ifn</span><span class="p">)</span>
+        <span class="n">program</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">ifn</span><span class="p">)</span>
         <span class="c1"># Create the reader</span>
-        <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">ifn</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">ifn</span><span class="p">,</span><span class="n">program</span><span class="p">)</span>
         <span class="c1"># Assume that projection is going to be used</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">eckart</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
@@ -733,30 +887,14 @@
         <span class="c1"># We need to see if we can generate whole molecules using translational symmetry</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.1</span>      <span class="c1"># Scaling factor for covalent radii</span>
         <span class="n">tolerance</span>  <span class="o">=</span> <span class="n">Opts</span><span class="p">[</span><span class="s2">&quot;tol&quot;</span><span class="p">]</span>  <span class="c1"># Tolerance in bonding</span>
-        <span class="n">new_cell</span><span class="p">,</span><span class="n">natoms</span><span class="p">,</span><span class="n">original_atomic_order</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">calculate_molecular_contents</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">)</span>
+        <span class="n">nmols</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">calculate_molecular_contents</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bonding tolerance&quot;</span><span class="p">,</span><span class="n">tolerance</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of molecules&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">new_cell</span><span class="o">.</span><span class="n">molecules</span><span class="p">),</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="c1"># Reorder the normal mode atoms so that the mass weighted normal modes order </span>
-        <span class="c1"># agrees with the ordering in the cell_of_molecules cell</span>
-        <span class="n">nmodes</span><span class="p">,</span><span class="n">nions</span><span class="p">,</span><span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">normal_modes</span><span class="p">)</span>
-        <span class="n">new_normal_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">nmodes</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="n">nions</span><span class="p">)</span> <span class="p">)</span>
-        <span class="n">new_mass_weighted_normal_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">nmodes</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="n">nions</span><span class="p">)</span> <span class="p">)</span>
-        <span class="n">masses</span> <span class="o">=</span> <span class="n">new_cell</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">imode</span><span class="p">,</span><span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mass_weighted_normal_modes</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">old_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">original_atomic_order</span><span class="p">):</span>
-                <span class="n">i</span> <span class="o">=</span> <span class="n">index</span><span class="o">*</span><span class="mi">3</span>
-                <span class="n">new_mass_weighted_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span><span class="p">[</span><span class="n">old_index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">new_mass_weighted_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span><span class="p">[</span><span class="n">old_index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">new_mass_weighted_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span><span class="p">[</span><span class="n">old_index</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
-                <span class="n">new_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mass_weighted_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">masses</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-                <span class="n">new_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mass_weighted_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">masses</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-                <span class="n">new_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mass_weighted_normal_modes</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">masses</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of molecules&quot;</span><span class="p">,</span><span class="n">nmols</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># OK - now we can start the interface to VibAnalysis</span>
         <span class="c1">#</span>
         <span class="n">o</span><span class="o">=</span><span class="n">System</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">el</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new_cell</span><span class="o">.</span><span class="n">element_names</span><span class="p">,</span><span class="n">new_cell</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">,</span> <span class="n">new_cell</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">el</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">element_names</span><span class="p">,</span><span class="n">cell</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">,</span> <span class="n">cell</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">):</span>
             <span class="c1"># print(&#39;Adding atom &#39;,el.lower(),c,m)</span>
             <span class="n">o</span><span class="o">.</span><span class="n">addAtom</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
         <span class="c1"># get frequency list</span>
@@ -766,8 +904,8 @@
         <span class="c1"># get normal mode displacements</span>
         <span class="n">ndegs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndegs</span><span class="p">):</span>
-            <span class="c1"># print(&#39;Adding displacement &#39;,i,new_normal_modes[i])</span>
-            <span class="n">o</span><span class="o">.</span><span class="n">addDisplacements</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">new_normal_modes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="c1"># print(&#39;Adding displacement &#39;,i,normal_modes[i])</span>
+            <span class="n">o</span><span class="o">.</span><span class="n">addDisplacements</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">normal_modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
         <span class="c1"># get IR intensities</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">intens</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">intensities</span><span class="p">):</span>
             <span class="c1"># Not sure of the units expected here</span>
@@ -782,7 +920,10 @@
         <span class="c1">#JK o.removeVibrations(excl)</span>
         <span class="k">return</span> <span class="n">o</span></div>
 
-<div class="viewcode-block" id="readG09log"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readG09log">[docs]</a><span class="k">def</span> <span class="nf">readG09log</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
+
+<div class="viewcode-block" id="readG09log">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readG09log">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">readG09log</span><span class="p">(</span><span class="n">ifn</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens Gaussian09 log file ifn and returns a System object with</span>
 <span class="sd">        information regarding the system and vibrations.</span>
 <span class="sd">        Depending on Linear and Transition, freqs and modes will be</span>
@@ -885,7 +1026,10 @@
         <span class="c1">#        modes[:,i]=modes[:,i]/np.linalg.norm(modes[:,i])</span>
         <span class="k">return</span> <span class="n">o</span></div>
 
-<div class="viewcode-block" id="readUserIC"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readUserIC">[docs]</a><span class="k">def</span> <span class="nf">readUserIC</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+
+<div class="viewcode-block" id="readUserIC">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.readUserIC">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">readUserIC</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads additional internal coordinates defined by the user&quot;&quot;&quot;</span>
         <span class="n">o</span><span class="o">=</span><span class="p">[]</span>
         <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
@@ -910,7 +1054,10 @@
                                 <span class="k">continue</span>
         <span class="k">return</span><span class="p">(</span><span class="n">o</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="modeStr"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.modeStr">[docs]</a><span class="k">def</span> <span class="nf">modeStr</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span><span class="n">symbs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="modeStr">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.modeStr">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">modeStr</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span><span class="n">symbs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a formatted string describing mode&quot;&quot;&quot;</span>
         <span class="n">o</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
         <span class="k">if</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># bond</span>
@@ -923,7 +1070,10 @@
                 <span class="n">o</span><span class="o">=</span><span class="s2">&quot;TORSION </span><span class="si">%s%d</span><span class="s2"> </span><span class="si">%s%d</span><span class="s2"> </span><span class="si">%s%d</span><span class="s2"> </span><span class="si">%s%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">symbs</span><span class="p">[</span><span class="n">mode</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span><span class="n">mode</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">symbs</span><span class="p">[</span><span class="n">mode</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span><span class="n">mode</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">symbs</span><span class="p">[</span><span class="n">mode</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span><span class="n">mode</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">symbs</span><span class="p">[</span><span class="n">mode</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span><span class="n">mode</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span><span class="p">(</span><span class="n">o</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="punchIC"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.punchIC">[docs]</a><span class="k">def</span> <span class="nf">punchIC</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+
+<div class="viewcode-block" id="punchIC">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.punchIC">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">punchIC</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Punches a list of internal coordinates and their</span>
 <span class="sd">        meassured values to file o</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -941,7 +1091,10 @@
                 <span class="n">o</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%-25s</span><span class="s2"> </span><span class="si">%8.3f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">desc</span><span class="p">,</span><span class="n">val</span><span class="p">))</span>
         <span class="n">o</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="animateMode"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.animateMode">[docs]</a><span class="k">def</span> <span class="nf">animateMode</span><span class="p">(</span><span class="n">tfn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">nsteps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">damp</span><span class="o">=</span><span class="mf">0.33</span><span class="p">):</span>
+
+<div class="viewcode-block" id="animateMode">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.animateMode">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">animateMode</span><span class="p">(</span><span class="n">tfn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">nsteps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">damp</span><span class="o">=</span><span class="mf">0.33</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Displaces geo over vibrational displacement m and punches a xyz file tfn&quot;&quot;&quot;</span>
         <span class="n">natoms</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span>
         <span class="n">tf</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">tfn</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
@@ -954,7 +1107,10 @@
                         <span class="n">tf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%3s</span><span class="s2"> </span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">symbol</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">g</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">],</span><span class="n">g</span><span class="p">[(</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">g</span><span class="p">[(</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">]))</span>
         <span class="n">tf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="animateIC"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.animateIC">[docs]</a><span class="k">def</span> <span class="nf">animateIC</span><span class="p">(</span><span class="n">tfn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">nsteps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">damp</span><span class="o">=</span><span class="mf">0.33</span><span class="p">):</span>
+
+<div class="viewcode-block" id="animateIC">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.animateIC">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">animateIC</span><span class="p">(</span><span class="n">tfn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">nsteps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">damp</span><span class="o">=</span><span class="mf">0.33</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Displaces geo over internal coordinate m and punches a xyz file tfn&quot;&quot;&quot;</span>
         <span class="n">natoms</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span>
         <span class="n">tf</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">tfn</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
@@ -967,7 +1123,10 @@
                         <span class="n">tf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%3s</span><span class="s2"> </span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">symbol</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">g</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">],</span><span class="n">g</span><span class="p">[(</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span><span class="n">g</span><span class="p">[(</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">]))</span>
         <span class="n">tf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="printResults"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.printResults">[docs]</a><span class="k">def</span> <span class="nf">printResults</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+
+<div class="viewcode-block" id="printResults">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.printResults">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">printResults</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints the results of the analysis stored in system s onto file o&quot;&quot;&quot;</span>
         <span class="n">lanalysis</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;VMP&quot;</span><span class="p">,</span><span class="s2">&quot;VMLD&quot;</span><span class="p">,</span><span class="s2">&quot;VMBLD&quot;</span><span class="p">,</span><span class="s2">&quot;VMARD&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">lanalysis</span><span class="p">:</span>
@@ -1030,15 +1189,21 @@
                         <span class="k">elif</span><span class="p">(</span><span class="n">a</span><span class="o">==</span><span class="s2">&quot;VMARD&quot;</span><span class="p">):</span>
                                 <span class="n">o</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">*** End of Vibrational Mode Automatic Relevance Determination (VMARD) ***</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+
 <span class="c1">## Support Functions ##</span>
 
-<div class="viewcode-block" id="bondLength"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.bondLength">[docs]</a><span class="k">def</span> <span class="nf">bondLength</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">bl</span><span class="p">):</span>
+<div class="viewcode-block" id="bondLength">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.bondLength">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">bondLength</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">bl</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns distance between atoms bl[1] and bl[0]</span>
 <span class="sd">        (numbering starts at 0) in geometry geo</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">geo</span><span class="p">[</span><span class="n">bl</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">bl</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span></div>
 
-<div class="viewcode-block" id="angleAmp"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.angleAmp">[docs]</a><span class="k">def</span> <span class="nf">angleAmp</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">al</span><span class="p">,</span><span class="n">deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="angleAmp">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.angleAmp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">angleAmp</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">al</span><span class="p">,</span><span class="n">deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns amplitude (optnialy in degs) for the valence angle formed by</span>
 <span class="sd">        the atoms in al, with al[1] being the apex (numbering starts at 0).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1060,7 +1225,10 @@
                 <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">phi</span></div>
 
-<div class="viewcode-block" id="oopAmp"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.oopAmp">[docs]</a><span class="k">def</span> <span class="nf">oopAmp</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">al</span><span class="p">,</span><span class="n">deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="oopAmp">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.oopAmp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">oopAmp</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">al</span><span class="p">,</span><span class="n">deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns amplitude (optnialy in degs) for the out-of-plane angle formed by</span>
 <span class="sd">        the atoms in al, with al[1] being the central atom (numbering starts at 0).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1099,7 +1267,10 @@
                 <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">phi</span></div>
 
-<div class="viewcode-block" id="torsionAmp"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.torsionAmp">[docs]</a><span class="k">def</span> <span class="nf">torsionAmp</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">al</span><span class="p">,</span><span class="n">deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="torsionAmp">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.torsionAmp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">torsionAmp</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span><span class="n">al</span><span class="p">,</span><span class="n">deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns amplitude (optnialy in degs) for the 0-1-2-3 torsion angle formed by</span>
 <span class="sd">        the atoms in al, with al[1] and al[2] defining the central bond</span>
 <span class="sd">        (numbering starts at 0).</span>
@@ -1137,7 +1308,10 @@
                 <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">phi</span></div>
 
-<div class="viewcode-block" id="makeIC"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.makeIC">[docs]</a><span class="k">def</span> <span class="nf">makeIC</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">useric</span><span class="o">=</span><span class="p">[]):</span>
+
+<div class="viewcode-block" id="makeIC">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.makeIC">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">makeIC</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">useric</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Automatically identifies internal coordinates using</span>
 <span class="sd">        connectivity deduced from covalent radii and generates</span>
 <span class="sd">        Wilson&#39;s S matrix for the specified geometry</span>
@@ -1366,9 +1540,12 @@
         <span class="c1">#clean-up S</span>
         <span class="n">o</span><span class="o">.</span><span class="n">S</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">S</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span></div>
 
+
 <span class="c1">## Analysis Functions ##</span>
 
-<div class="viewcode-block" id="VMP"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMP">[docs]</a><span class="k">def</span> <span class="nf">VMP</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+<div class="viewcode-block" id="VMP">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMP">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">VMP</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a simple projection of the normal modes</span>
 <span class="sd">        over the internal coordinates S stored in system s. Other inputs:</span>
 <span class="sd">        - of: handle for the output file (for logging)</span>
@@ -1384,7 +1561,10 @@
                 <span class="n">s</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">addVMP</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="n">of</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Ending: Normal Mode Projection</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VMLD"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMLD">[docs]</a><span class="k">def</span> <span class="nf">VMLD</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+
+<div class="viewcode-block" id="VMLD">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMLD">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">VMLD</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a Linear Decomposition of the vibrational modes</span>
 <span class="sd">        over the internal coordinates stored in the system s.</span>
 <span class="sd">        Inputs:</span>
@@ -1404,7 +1584,10 @@
                 <span class="n">s</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">addVMLD</span><span class="p">(</span><span class="n">regressor</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">exvar</span><span class="p">)</span>
         <span class="n">of</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Ending: Vibrational Mode Linear Decomposition</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VMBLD"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMBLD">[docs]</a><span class="k">def</span> <span class="nf">VMBLD</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+
+<div class="viewcode-block" id="VMBLD">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMBLD">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">VMBLD</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a Linear Decomposition of the vibrational modes</span>
 <span class="sd">        over the internal coordinates stored in the system s using Bayesian </span>
 <span class="sd">        Ridge Regression.</span>
@@ -1428,7 +1611,10 @@
                 <span class="n">s</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">addVMBLD</span><span class="p">(</span><span class="n">regressor</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">exvar</span><span class="p">)</span>
         <span class="n">of</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Ending: Vibrational Mode Bayesian Linear Decomposition</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VMARD"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMARD">[docs]</a><span class="k">def</span> <span class="nf">VMARD</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+
+<div class="viewcode-block" id="VMARD">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.VMARD">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">VMARD</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a Linear Decomposition of the vibrational modes</span>
 <span class="sd">        using Bayesian regression with Automatic Relevance Determination</span>
 <span class="sd">        over the internal coordinates stored in the system s.</span>
@@ -1452,7 +1638,10 @@
                 <span class="n">s</span><span class="o">.</span><span class="n">vibrations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">addVMARD</span><span class="p">(</span><span class="n">regressor</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">exvar</span><span class="p">)</span>
         <span class="n">of</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Ending: Vibrational Mode Automatic Relevance Determination</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../autoapi/PDielec/vibanalysis/index.html#PDielec.vibanalysis.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 <span class="c1">## Main executable ##</span>
         <span class="c1"># Force a reset of the options</span>
         <span class="k">global</span> <span class="n">Opts</span>
@@ -1723,7 +1912,7 @@
                 <span class="n">system</span><span class="o">.</span><span class="n">normalizeVibrations</span><span class="p">()</span>
         <span class="c1">#jk system.sortVibrations()</span>
         <span class="n">system</span><span class="o">.</span><span class="n">makeADM</span><span class="p">()</span>
-        <span class="n">system</span><span class="o">.</span><span class="n">checkADM</span><span class="p">()</span>
+        <span class="c1">#jk system.checkADM()</span>
         <span class="c1"># Generate quasi-redundant internal coordinated</span>
         <span class="n">of</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generating Internal Coordinates...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">makeIC</span><span class="p">(</span><span class="n">system</span><span class="p">,</span><span class="n">useric</span><span class="p">)</span>
@@ -1769,6 +1958,7 @@
         <span class="n">of</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
+
 <span class="k">if</span><span class="p">(</span><span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">):</span>
         <span class="n">main</span><span class="p">()</span>
 </pre></div>
@@ -1803,9 +1993,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=37b3a9b0"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     </body>
 </html>

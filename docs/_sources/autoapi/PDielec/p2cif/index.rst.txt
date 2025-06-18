@@ -86,7 +86,6 @@ Module Contents
        A tuple containing the parameters for the file reading operation. Expected to contain
        - name (str): The name of the file to be read.
        - program (str): The type of program or file format to use for reading.
-       - qmprogram (str): Specific quantum mechanics program details, if applicable.
        - debug (bool): A flag indicating whether debugging is enabled.
 
    Returns

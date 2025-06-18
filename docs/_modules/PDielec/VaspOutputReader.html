@@ -217,6 +217,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -269,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -340,6 +342,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Calculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_normal_modes_and_frequencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">atomic_number_to_element</span><span class="p">,</span> <span class="n">hertz</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GenericOutputReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericOutputReader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.UnitCell</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitCell</span>
@@ -544,8 +547,7 @@
             <span class="n">forces</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="p">]</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">forces</span><span class="p">:</span>
                 <span class="n">rmsf</span> <span class="o">+=</span> <span class="n">f</span><span class="o">*</span><span class="n">f</span>
-                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">maxf</span><span class="p">:</span>
-                    <span class="n">maxf</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">maxf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">maxf</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
                 <span class="c1"># end if</span>
             <span class="c1"># end for f</span>
         <span class="c1">#end for i</span>
@@ -1455,15 +1457,17 @@
                 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">xml</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span>
                         <span class="n">hessian</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="p">]</span> <span class="p">)</span>
-            <span class="c1"># print(&#39;hessian&#39;, flush=True)</span>
-            <span class="c1"># print(hessian,flush=True)</span>
-            <span class="c1"># dielectric tensor</span>
+            <span class="c1"># dielectric tensor (epsilon_scf)</span>
+            <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;varray[@name=&quot;epsilon_scf&quot;]&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xml</span><span class="p">):</span>
+                    <span class="n">dielectric_tensor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="p">)</span>
+            <span class="c1"># dielectric tensor (dielectric_dft)</span>
             <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;varray[@name=&quot;dielectric_dft&quot;]&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">vxml</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xml</span><span class="p">):</span>
                     <span class="n">dielectric_tensor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">[</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vxml</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="p">)</span>
                 <span class="c1"># print(&#39;dielectric_tensor&#39;,dielectric_tensor,flush=True)</span>
-            <span class="c1">#</span>
             <span class="n">xml</span> <span class="o">=</span> <span class="n">calcxml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;array[@name=&quot;born_charges&quot;]&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">xml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># Born effective charges</span>
@@ -1490,7 +1494,7 @@
         <span class="n">conversion</span> <span class="o">*=</span> <span class="n">hertz</span><span class="o">**</span><span class="mi">2</span>
         <span class="k">if</span> <span class="n">hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">hessian</span> <span class="o">=</span> <span class="n">conversion</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="n">hessian</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">calculate_normal_modes_and_frequencies</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 
@@ -1717,7 +1721,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

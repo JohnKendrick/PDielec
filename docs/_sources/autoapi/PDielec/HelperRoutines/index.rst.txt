@@ -20,6 +20,7 @@ Functions
    PDielec.HelperRoutines.calculatePowderSpectrum
    PDielec.HelperRoutines.calculateSingleCrystalSpectrum
    PDielec.HelperRoutines.getMaterial
+   PDielec.HelperRoutines.maxwell_garnett
 
 
 Module Contents
@@ -183,6 +184,26 @@ Module Contents
    material1 = getMaterial("example.dft")
    material2 = getMaterial("gold")
    ```
+
+
+
+.. py:function:: maxwell_garnett(em, ei, f)
+
+   Calculate the dielectric constant of a mixture using Maxwell-Garnett.
+
+   Parameters
+   ----------
+   em : float
+       The dielectric constant of the host
+   ei : float
+       The dielectric constant of the inclusion
+   f : float
+       The volume fraction of the inclusion
+
+   Returns
+   -------
+   float
+       The dielectric constant of the mixture
 
 
 

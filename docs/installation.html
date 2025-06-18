@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
-<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE" name="keywords" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="PDGui" href="pdgui.html" /><link rel="prev" title="Introduction" href="introduction.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
@@ -220,6 +220,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -272,6 +273,7 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -684,102 +686,107 @@ A Windows 10 installation from the git repository which works for users without 
 <td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Mie method with varying volume fractions and sphere size distributions</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Na2SO42</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Al2O3</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Al2O3</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Primitive and standard cell exampl of using Phonopy</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Na2SO42</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes, with varying volume fractions</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/ZnO</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/ZnO</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Crystal</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Crystal</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy/Crystal</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Urea</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Powder and single crystal Phonopy example using Crystal</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/QE</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/QE</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy/QE</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Urea</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Powder and single crystal Phonopy example using QE</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Vasp</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Vasp</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy/Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Urea</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Powder and single crystal Phonopy example using Vasp</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Cocaine</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Cocaine</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Cocaine</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwel-Garnett sphere, using QE 4.1</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Na2SO42</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Na2SO42</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 5.1</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Na2SO42-v7</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Na2SO42-v7</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 7.3.1</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Urea</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Urea</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Urea</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and single crystal, using QE 7.3.1</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/ZnO</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/ZnO</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 5.4.0</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/Bi2Se3</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/Bi2Se3</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Bi2Se3</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Single crystal example of thick slab, angle of incidence varies from 0 to 90</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/Bi2Se3_film</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/Bi2Se3_film</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Bi2Se3</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Single crystal example of thin film, angle of incidence varies from 0 to 90</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/L-Alanine</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/L-Alanine</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>L-Alanine</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Explores single crystal calculations on L-Alanine and compares the results with experiment</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/BaTiO3</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/BaTiO3</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Abinit</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>BaTiO3</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Exploration of size effects in Bruggeman effective medium theory</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/MgO</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/MgO</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Exploration of size effects in Bruggeman and Maxwell-Garnett effective  medium theories</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/ZnO</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/ZnO</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Exploration of size effects in Maxwell-Garnett effective medium theory</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/F-Apatite</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/F-Apatite</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>F-Apatite</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett, sphere plates and needles, using Vasp 5.3.5</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/Na2SO42</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/Na2SO42</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman, needle, plate and needle, using Vasp 5.3.5</p></td>
 </tr>
-<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/Urea</p></td>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/Urea</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Urea</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Powder and single crystal exampl, using Vasp 5.4.4</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/ZnO</p></td>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/ZnO</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
 <td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman, needle, plate and needle, mass fraction, using Vasp 5.3.5</p></td>
@@ -874,7 +881,7 @@ A Windows 10 installation from the git repository which works for users without 
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="_static/documentation_options.js?v=0b13d40c"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>

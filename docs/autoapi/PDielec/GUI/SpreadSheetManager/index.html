@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -343,7 +345,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SpreadSheetManager.</span></span><span class="sig-name descname"><span class="pre">SpreadSheetManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SpreadSheetManager.</span></span><span class="sig-name descname"><span class="pre">SpreadSheetManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager" title="Link to this definition">¶</a></dt>
 <dd><p>A manager for handling operations on an Excel workbook via xlsxwriter.</p>
 <p>This class provides methods for managing a workbook with various tabs
 (named worksheets), writing data to these worksheets, and handling complex
@@ -396,7 +398,7 @@ data types specifically tailored for scientific or engineering applications.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.close" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.close" title="Link to this definition">¶</a></dt>
 <dd><p>Close the workbook if it hasn’t been closed already.</p>
 <p>Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.</p>
 <section id="id1">
@@ -411,7 +413,7 @@ data types specifically tailored for scientific or engineering applications.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.delete" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.delete" title="Link to this definition">¶</a></dt>
 <dd><p>Delete all the data in the current worksheet.</p>
 <p>Clears all entries in the worksheet represented by <cite>self</cite> by setting each cell’s value to an empty string.
 After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.</p>
@@ -427,7 +429,7 @@ After clearing the data, it resets the current position, maximum column, and max
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.openWorkSheet">
-<span class="sig-name descname"><span class="pre">openWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.openWorkSheet" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">openWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.openWorkSheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.openWorkSheet" title="Link to this definition">¶</a></dt>
 <dd><p>Open a new worksheet in a workbook.</p>
 <section id="id4">
 <h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
@@ -451,7 +453,7 @@ handled by the instance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.selectWorkSheet">
-<span class="sig-name descname"><span class="pre">selectWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.selectWorkSheet" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">selectWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.selectWorkSheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.selectWorkSheet" title="Link to this definition">¶</a></dt>
 <dd><p>Select or opens a worksheet by name.</p>
 <section id="id6">
 <h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
@@ -474,7 +476,7 @@ the worksheet name.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.write" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.write" title="Link to this definition">¶</a></dt>
 <dd><p>Write an item to a specific position in the active worksheet, handling complex numbers.</p>
 <section id="id9">
 <h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
@@ -505,7 +507,7 @@ and the updated column is used for adjusting the max column.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.writeNextRow">
-<span class="sig-name descname"><span class="pre">writeNextRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.writeNextRow" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">writeNextRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.writeNextRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.writeNextRow" title="Link to this definition">¶</a></dt>
 <dd><p>Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.</p>
 <section id="id12">
 <h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
@@ -675,7 +677,7 @@ and the updated column is used for adjusting the max column.</p></li>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=5fa4622c"></script>

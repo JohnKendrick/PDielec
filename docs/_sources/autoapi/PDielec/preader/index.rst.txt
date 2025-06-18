@@ -14,8 +14,6 @@ PDielec.preader
                   "phonopy", "qe", "vasp", "experiment", "auto"
                   The default is auto, so the program tries to guess the package from
                   the contents of the directory.  However this is not fool-proof!
-                  If phonopy is used it must be followed by the QM package
-                  in auto mode if the file was created by a phonopy VASP is assumed
          -masses [average|isotope|program]  chooses the atomic mass definition average
                  The default is "average"
          -mass  element mass
@@ -67,8 +65,6 @@ Module Contents
                   "phonopy", "qe", "vasp", "experiment", "auto"
                   The default is auto, so the program tries to guess the package from
                   the contents of the directory.  However this is not fool-proof!
-                  If phonopy is used it must be followed by the QM package
-                  in auto mode if the file was created by a phonopy VASP is assumed
          -masses [average|isotope|program]  chooses the atomic mass definition average
                  The default is "average"
          -mass  element mass
@@ -122,7 +118,6 @@ Module Contents
        - mass_dictionary : dict (A dictionary containing mass information when `mass_definition` is not 'program'.)
        - global_no_calculation : bool (A flag to indicate whether any calculations should be performed.)
        - program : str (Name of the computational chemistry program used to generate the file.)
-       - qmprogram : str (Specifies the quantum mechanics program used.)
        - debug : bool (If set to True, additional debug information will be printed.)
 
    Returns

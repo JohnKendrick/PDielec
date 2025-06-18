@@ -42,6 +42,7 @@ Module Contents
        Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
    units : str
        An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
+       The internal unit is always the angstrom
 
    Notes
    -----
@@ -211,7 +212,7 @@ Module Contents
       Parameters
       ----------
       hkl : list 3 ints
-          List if hkls
+          List of hkls
 
       Returns
       -------
@@ -255,6 +256,40 @@ Module Contents
 
 
 
+   .. py:method:: convert_xyz_to_integer_abc(xyz)
+
+      Convert xyz coordinates to integer abc indices.
+
+      Parameters
+      ----------
+      xyz : list 3 floats
+          List of xyz
+
+      Returns
+      -------
+      abc : list of abc coordinates
+
+
+
+
+   .. py:method:: find_lcd(numbers)
+
+      Find the approximated lowest common denominator.
+
+      Return the list as integers divided by the lowest common denominator
+
+      Parameters
+      ----------
+      numbers : array of floats
+          List of numbers
+
+      Returns
+      -------
+      results : list of integers
+
+
+
+
    .. py:method:: find_symmetry(symprec=1e-05, angle_tolerance=-1.0)
 
       Find the space group symmetry of the unit cell.
@@ -283,7 +318,13 @@ Module Contents
 
       Parameters
       ----------
-      None
+      symprec : float
+          The symmetry precision
+
+      Returns
+      -------
+      map_old_to_new : a list of integers
+      map_new_to_old : a list of integers
 
       Modifies
       --------
@@ -295,7 +336,7 @@ Module Contents
 
 
 
-   .. py:method:: getBoundingBox(units='Angstrom')
+   .. py:method:: getBoundingBox(originXYZ=None, originABC=None, units='Angstrom')
 
       Generate the corners and edges of a bounding box.
 
@@ -303,6 +344,12 @@ Module Contents
 
       Parameters
       ----------
+      originABC : a list of 3 floats
+          Defines the centre about which the box is centred
+          The basis for the coordinates are abc
+      originXYZ : a list of 3 floats
+          Defines the centre about which the box is centred
+          The basis for the coordinates are xyz
       units : str
           An optional unit of length required for output, default is Angstrom
 
@@ -458,8 +505,22 @@ Module Contents
       element_names : list
           A list of strings representing element names to be cleaned and stored.
 
-      Notes
-      -----
+
+
+
+   .. py:method:: get_number_of_atoms()
+
+      Get the number of atoms.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The number of atoms
+
 
 
 
@@ -475,6 +536,23 @@ Module Contents
       -------
       int
           The number of molecules
+
+
+
+
+   .. py:method:: get_species()
+
+      Return a list of the unique species in the cell.
+
+      The unique list needs to maintain the order seen in the original list
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      A list of strings
 
 
 
@@ -506,7 +584,7 @@ Module Contents
 
       Parameters
       ----------
-      symprec float (optional)
+      symprec : float (optional)
           The symmetry precision used in determining the spacegroup
 
       Returns
@@ -656,7 +734,8 @@ Module Contents
 
 
 
-   .. py:method:: set_lattice(lattice)
+
+   .. py:method:: set_lattice(lattice, units='Angstrom')
 
       Set the lattice parameters with a 3x3 matrix.
 
@@ -668,10 +747,14 @@ Module Contents
       lattice : 3x3 list
           The lattice vectors stored a ( a b c )
           where a, b, c are 3 vectors in xyz space.
+      units : str
+          A string indicating the units used in lattice.
+          Internally the units are Angstrom
 
       Returns
       -------
       None
+
 
 
 

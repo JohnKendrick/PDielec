@@ -218,6 +218,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
@@ -526,12 +528,14 @@ defaults to 0,0,0</p>
 <section id="id14">
 <h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>tuple</dt><dd><p>A tuple containing two elements:</p>
+<dt>tuple</dt><dd><p>A tuple containing three elements:</p>
 <ul class="simple">
 <li><p>corners_xyz : list
 A list of corner points in XYZ coordinates specifying the bounding box, shifted to the provided origin.</p></li>
 <li><p>edges : list
 A list of tuples, each representing an edge of the bounding box defined by a pair of XYZ coordinates.</p></li>
+<li><p>labels : list of strings
+A list of strings labelling the bounding box a,b,c,o</p></li>
 </ul>
 </dd>
 </dl>
@@ -704,7 +708,7 @@ A list of tuples, each representing an edge of the bounding box defined by a pai
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=15c97ff8"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
