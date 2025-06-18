@@ -363,7 +363,7 @@ the Primitive_cell/ directory. Copy over files from the following files from the
    phonopy --dim="2 2 1" --qpoints="0 0 0" --writedm --pa auto
    phonopy-pdielec-born > BORN_PDIELEC
 
-| At this point it possible to calculate the absorption using pdgui, in the same way as was done previsouly, but now the primtive cell basis is used.
+| At this point it possible to calculate the absorption using pdgui, in the same way as was done previously, but now the primitive cell basis is used.
 
 Comparison of results
 =====================

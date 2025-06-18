@@ -1,11 +1,20 @@
+# Examples/Phonopy/Al2O3
 # Phonopy calculation of Al2O3
+
+| **Directory**  | **Description**                                               |
+| -------------- | ------------------------------------------------------------- |
+| Primitive_cell | Phonopy calculation using primitive cell                      |
+| Standard_cell  | Phonopy calculation using standard cell                       |
+
+[Back](..)
+
 
 This example is based on the example/Al2O3 given in the Phonopy distribution.  There are some differences as the INCAR, KPOINTS and POTCAR files are not present in the distribution.
 
 The purpose of the calculations is to show the different ways of calculating the vibrations using Phonopy's primitive cell and standard cell.  Also to compare the results with straightforward DFPT calculations.
 
 ```
-Primitive_cell/        Directory with -pa Phonopy calculation on primtive cell
+Primitive_cell/        Directory with -pa Phonopy calculation on primitive cell
 Standard_cell/         Directory with Phonopy calculation on standard cell
 README.md              This file
 ```
@@ -266,7 +275,7 @@ PDGui can be given any yaml file on the command line, the actual files read are 
 
 # Primitive Cell Phonopy Calculations
 
-A primtive cell calculation of the dynamical matrix will be performed in the Primitive_cell directory.
+A primitive cell calculation of the dynamical matrix will be performed in the Primitive_cell directory.
 Copy over files from the Standard_cell directory. 
 ```
 cd Phonopy
@@ -284,3 +293,4 @@ phonopy --dim="2 2 1" --qpoints="0 0 0" --writedm --pa auto
 phonopy-pdielec-born > BORN_PDIELEC
 ```
 
+[Back](..)
