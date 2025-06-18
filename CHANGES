@@ -1,4 +1,4 @@
-version 8.3.0
+version 9.0.0
    Extensive changes to the ViewerTab and the OpenGLWidget
        A colour palette has been introduced for the atom colours
        A surface can be specified and viewed with specific orientations
@@ -21,6 +21,8 @@ version 8.3.0
            The new command uses only Phonopy modules, no PDielec modules
        All the Phonopy examples have been altered to use the new method
        The option for specifiying a qm_program has been removed
+       Added 2 more test cases for primitive and standard cells
+       Added more documentation to show how to use the Phonopy interface
 version 8.2.0
    A -threads or --threads option has been added to pdgui.
    Added QT6 support by including the qtpy module

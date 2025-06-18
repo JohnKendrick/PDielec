@@ -110,6 +110,8 @@ test_pdgui = [
 	"Gulp/calcite",
 	"Mie/MgO",
 	"Mie/MgO_lognormal",
+	"Phonopy/Al2O3/Primitive_cell",
+	"Phonopy/Al2O3/Standard_cell",
 	"Phonopy/ZnO",
 	"Phonopy/Na2SO42",
 	"Phonopy/QE",
