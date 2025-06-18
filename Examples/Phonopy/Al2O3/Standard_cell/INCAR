@@ -1,0 +1,14 @@
+    PREC = Accurate
+    ALGO = Fast
+  IBRION = -1
+  NELMIN = 5
+   ENCUT = 500
+   EDIFF = 1.000000e-08
+  ISMEAR = 0
+   SIGMA = 1.000000e-02
+   LREAL = .FALSE.
+   LWAVE = .FALSE.
+  LCHARG = .FALSE.
+LMAXMIX  = 4
+GGA      = PS
+ADDGRID  = T
