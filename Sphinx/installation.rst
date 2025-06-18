@@ -9,7 +9,7 @@ Installation
 
 .. meta::
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
+   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE
 
 
 Conda
@@ -283,6 +283,8 @@ A summary of the different examples and their purpose is shown below;
    | Mie/MgO                   | Castep           | MgO           | Mie method with varying volume fractions and sphere sizes                                                                                       |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Mie/MgO_lognormal         | Castep           | MgO           | Mie method with varying volume fractions and sphere size distributions                                                                          |
+   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Phonopy/Al2O3             | Phonopy          | Al2O3         | Primitive and standard cell exampl of using Phonopy                                                                                             |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Phonopy/Na2SO42           | Phonopy          | Na2(SO4)2     | Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes, with varying volume fractions                                      |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
