@@ -23,7 +23,7 @@ The attenuated total reflection (ATR) spectrum can be calculated for a powdered 
 
 The calculation of the optical behaviour of a single crystal (thick slab or film) is performed using the pyGTM code available on GitHub :cite:`pygtm`.
 This code implements a generalised transfer matrix method described by Passler et al. :cite:`Passler2020` and builds on previous publications :cite:`Passler2017,Passler2017a`.  
-The agolorithms used by pyGTM have been extended to include the scattering matrix method for light transmission and reflectance :cite:`PyLlama2022`
+The algorithms used by pyGTM have been extended to include the scattering matrix method for light transmission and reflectance :cite:`PyLlama2022`
 
 An interface to the vibAnalysis package of Philipe Teixeira :cite:`TeixeiraVibAnal` is provided through the vibanalysis command.
 The background to the theory of the analysis is given in a paper :cite:`Teixeira2019`.

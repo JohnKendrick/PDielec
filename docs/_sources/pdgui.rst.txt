@@ -36,7 +36,7 @@ or ::
     pdgui phonopy.yaml                                          # A Phonopy calculation
 
 Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
-It is possible to specifiy the DFT program and the QM program used by Phonopy as the examples below; ::
+It is possible to specifiy the DFT program as in the examples below; ::
 
     pdgui -program vasp OUTCAR                                   # A Vasp calculation, only OUTCAR is parsed for information
     pdgui -program phonopy phonopy.yaml                          # A Phonopy calculation
