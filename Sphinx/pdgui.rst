@@ -88,10 +88,10 @@ Several command line options may be useful in running the package.
    +-----------------------+----------------------------------------+
    | -nosplash             | Do not show the splash screen          |
    +-----------------------+----------------------------------------+
-   | -cpus 2               | Using 2 processors for multiprocessing |
-   |                       | or 2 threads if threading              |
+   | -cpus 2               | Sets the number of cpus or threads to 2|
    +-----------------------+----------------------------------------+
-   | -threads              | Using threading for multiprocessing    |
+   | -threads              | Using threading, instead of            |
+   |                       | multiprocessing                        |
    +-----------------------+----------------------------------------+
    | -h                    | Print out help information             |
    +-----------------------+----------------------------------------+
@@ -128,8 +128,8 @@ The *Main Tab* is used to pick the MM/QM package and the output file that will b
    The Main Tab
 
 The QM/MM program can be chosen from the dropdown list.
-The current list of packages supported are Abinit, Castep, Crystal, Experiment, Gulp, Phonopy, Quantum Espresso, Vasp, and PDGui.
-The output file name can be provided in the text box below it, or it can be specified using the `File manager` button.  In addition to input files from QM/MM programs, the program can read Python script files written by PDGui.  These should have a '.py' extension.
+The current list of packages supported is Abinit, Castep, Crystal, Experiment, Gulp, Phonopy, Quantum Espresso, Vasp, and PDGui.
+The output file name can be provided in the text box below it, or it can be specified using the `File manager` button.  In addition to input files from QM/MM programs, the program can read a Python script files written by PDGui.  This should have a '.py' extension.
 The *Experimental* file format allows the user to provide their specification of a dielectric medium, where a code other than that catered for by the program has been used.
 The file format is described in full in the section: :ref:`experimental-file-format`
 The *PDGui* option allows the user to select a scripting file from the interface.
@@ -144,7 +144,7 @@ Once the file has been specified and read, the unit cell is shown and the freque
 Settings Tab
 ============
 
-The *Settings Tab* affects the calculation of the frequencies and their intensities.
+The *Settings Tab* controls the calculation of the frequencies and their intensities.
 
 .. _fig-settingsTab:
 
