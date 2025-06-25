@@ -132,6 +132,7 @@ test_pdgui = [
 	"Vasp/F-Apatite",
 	"Vasp/Na2SO42",
 	"Vasp/Na2SO42_v",
+	"Vasp/Vasp6",
 	"Vasp/Urea",
 	"Vasp/ZnO",
     ]

@@ -1038,6 +1038,11 @@ class VaspOutputReader(GenericOutputReader):
                 # print('self.zerof_optical_dielectric',self.zerof_optical_dielectric,flush=True)
 
             # hessian tensor
+            xml = calcxml.find('dynmat/i[@name="unit"]')
+            if xml is not None:
+                unit=xml
+            else:
+                unit=None
             xml = calcxml.find('dynmat/varray[@name="hessian"]')
             if xml is not None:
                 hessian = []
@@ -1047,12 +1052,14 @@ class VaspOutputReader(GenericOutputReader):
             # dielectric tensor (epsilon_scf)
             xml = calcxml.find('varray[@name="epsilon_scf"]')
             if xml is not None:
-                for vxml in enumerate(xml):
+                dielectric_tensor = []
+                for vxml in xml:
                     dielectric_tensor.append( [ float(f) for f in vxml.text.split()] )
             # dielectric tensor (dielectric_dft)
             xml = calcxml.find('varray[@name="dielectric_dft"]')
             if xml is not None:
-                for vxml in enumerate(xml):
+                dielectric_tensor = []
+                for vxml in xml:
                     dielectric_tensor.append( [ float(f) for f in vxml.text.split()] )
                 # print('dielectric_tensor',dielectric_tensor,flush=True)
             xml = calcxml.find('array[@name="born_charges"]')
@@ -1075,8 +1082,12 @@ class VaspOutputReader(GenericOutputReader):
         #
         evtoj = 1.60217733E-19    # Taken from VASP5.4
         amtokg = 1.6605402E-27    # Taken from VASP5.4
-        # convert to hertz        # Taken from VASP5.4
-        conversion = -evtoj /amtokg / (4*np.pi *np.pi) / 1.0E-10**2 
+        if unit is not None:
+            # Convert to hertz
+            conversion = -1.0E24
+        else:
+            # convert to hertz        # Taken from VASP5.4
+            conversion = -evtoj /amtokg / (4*np.pi *np.pi) / 1.0E-10**2 
         # convert to hertz to au
         conversion *= hertz**2
         if hessian is not None:
