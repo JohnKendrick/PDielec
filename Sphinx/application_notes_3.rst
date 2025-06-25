@@ -20,7 +20,7 @@ Calculations of the phonon spectrum at the :math:`\Gamma` point in the Brillouin
 The only additional requirement for performing calculations using PDielec with Phonopy is the provision of :math:`\epsilon _{\infty}` and the Born charges.
 These are also required by Phonopy if the non-analytical correction is necessary.
 In this case, Phonopy provides a script for several DFT packages which converts the DFT calculation of Born charges to a file BORN, which contains the :math:`\epsilon _{\infty}` and the Born charges.  For VASP, the script is called phonopy-vasp-born.
-The BORN file stores only the symmetry unique charges and PDielec provides a command, phonopy-pdielec-born, which reads the BORN file and generates all of the Born charges.
+The BORN file stores only the symmetry unique charges and PDielec provides a command, phonopy-pdielec-born, which reads the BORN file and phonopy.yaml and generates all of the Born charges.
 The command only uses the Phonopy API, so it is necessary to use it in an environment that has Phonopy installed.
 
 α-Al\ :subscript:`2`\ O\ :subscript:`3`
@@ -140,7 +140,7 @@ was performed.  The inputs and outputs can be found in the distribution.
 
 The optimised results (KPOINTS, INCAR, POSCAR, CONTCAR, POTCAR) have been
 copied to the Standard_cell/Born/ directory making sure that CONTCAR has been copied to POSCAR.
-The KPOINTS file has been edited to increase the number of k-points.
+The KPOINTS file has been edited to increase the number of k-points to allow for the calculation of converged Born Charges.
 
 The INCAR for a single point, with the calculation of epsilon infinity and
 Born charges(LEPSILON) is as follows:
@@ -275,6 +275,8 @@ Submit all the jobs to a batch queue for processing.
    (cd $d; runvasp $d 8 8 )
    done
 
+Where runvasp is a script useds to create and run a job script to the batch queue
+
 Calculate the FORCES_SETS
 .........................
 
@@ -296,7 +298,7 @@ Calculate the full set of Born charges
 ......................................
 
 PDielec needs the Born charges for every atom, not just the symmetry
-unique ones. The full set of charges is generated in file “PDIELEC_BORN”
+unique ones. The full set of charges is generated in file “BORN_PDIELEC”
 by the ``phonopy-pdielec-born`` command provided by PDielec. Note that
 this command only uses the Phonopy API, no feature of the PDielec
 API is used.
@@ -369,7 +371,7 @@ Comparison of results
 =====================
 
 In the following figures the results of the two different Phonopy calculations are compared.
-In addition results are shown for DFTP calculations on the same systems.
+In addition results are shown for DFTP calculations on the same systems using VASP.
 The first figure shows a comparison over the full frequency range.
 The second figure compares the results over a limited frequency range to highlight the small differences between the calculations.
 
