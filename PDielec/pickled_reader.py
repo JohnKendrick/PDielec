@@ -90,7 +90,6 @@ def main():
                 readers.append(pickle.load(f))
         except EOFError:
             pass
-    #
     print(f"Read in {len(readers)} readers")
     #
     # Loop over the readers and print out some information - assign a variable

@@ -1,5 +1,5 @@
-:py:mod:`PDielec.p2cif`
-=======================
+PDielec.p2cif
+=============
 
 .. py:module:: PDielec.p2cif
 
@@ -32,12 +32,8 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -46,6 +42,8 @@ Functions
    PDielec.p2cif.set_affinity_on_worker
 
 
+Module Contents
+---------------
 
 .. py:function:: main()
 
@@ -88,7 +86,6 @@ Functions
        A tuple containing the parameters for the file reading operation. Expected to contain
        - name (str): The name of the file to be read.
        - program (str): The type of program or file format to use for reading.
-       - qmprogram (str): Specific quantum mechanics program details, if applicable.
        - debug (bool): A flag indicating whether debugging is enabled.
 
    Returns

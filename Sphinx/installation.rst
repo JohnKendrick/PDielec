@@ -9,7 +9,7 @@ Installation
 
 .. meta::
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
+   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE
 
 
 Conda
@@ -284,6 +284,8 @@ A summary of the different examples and their purpose is shown below;
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Mie/MgO_lognormal         | Castep           | MgO           | Mie method with varying volume fractions and sphere size distributions                                                                          |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Phonopy/Al2O3             | Phonopy          | Al2O3         | Primitive and standard cell example of using Phonopy                                                                                            |
+   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Phonopy/Na2SO42           | Phonopy          | Na2(SO4)2     | Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes, with varying volume fractions                                      |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Phonopy/ZnO               | Phonopy          | ZnO           | Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes                                                                     |
@@ -319,6 +321,8 @@ A summary of the different examples and their purpose is shown below;
    | Vasp/F-Apatite            | Vasp             | F-Apatite     | Maxwell-Garnett, sphere plates and needles, using Vasp 5.3.5                                                                                    |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Vasp/Na2SO42              | Vasp             | Na2(SO4)2     | Maxwell-Garnett and Bruggeman, needle, plate and needle, using Vasp 5.3.5                                                                       |
+   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Vasp/Vasp6                | Vasp             | Na2(SO4)2     | The DFT calculation were performed using VASP 6.4.2, with thanks to Dr David Santos-Carballal for performing the DFT calculation                |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Vasp/Urea                 | Vasp             | Urea          | Powder and single crystal exampl, using Vasp 5.4.4                                                                                              |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+

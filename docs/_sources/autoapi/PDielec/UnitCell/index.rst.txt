@@ -1,5 +1,5 @@
-:py:mod:`PDielec.UnitCell`
-==========================
+PDielec.UnitCell
+================
 
 .. py:module:: PDielec.UnitCell
 
@@ -9,29 +9,26 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.UnitCell.UnitCell
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    PDielec.UnitCell.convert_length_units
 
 
+Module Contents
+---------------
 
 .. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom')
-
 
    Hold unit cell information and its associated calculated properties.
 
@@ -45,6 +42,7 @@ Functions
        Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
    units : str
        An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
+       The internal unit is always the angstrom
 
    Notes
    -----
@@ -67,22 +65,23 @@ Functions
        cell.print()
 
 
-   .. py:method:: _calculate_reciprocal_lattice(lattice)
+
+   .. py:method:: _calculate_reciprocal_lattice()
 
       Calculate the reciprocal lattice.
 
       Parameters
       ----------
-      lattice : 3x3 list of floats
-          Lattice as [a, b, c] where a/b/c are [x,y,z]
+      None
 
       Returns
       -------
       None
 
-      Returns
-      -------
-      sets the reciprocal lattice vectors
+      Modifies
+      --------
+      Sets the reciprocal lattice vectors from the lattice vectors
+
 
 
 
@@ -126,13 +125,14 @@ Functions
 
 
 
+
    .. py:method:: calculate_molecular_contents(scale=1.1, tolerance=0.1, radii=None)
 
       Find whole molecules in the unit cell.
 
       Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
       A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
-      The routine returns the new unit cell, the number of molecules and the old ordering of the atoms.
+      The routine returns the the number of moleculess.
 
       Parameters
       ----------
@@ -145,12 +145,20 @@ Functions
 
       Returns
       -------
-      new_unit_cell, len(new_molecules), old_order
+      int : the number of molecules
+
+      Modifies
+      --------
+      fractional_coordinates
+      bonds
 
       Notes
       -----
       The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
       `scale * (radi + radj) + tolerance`
+      The routine modifies its current instance
+      The ordering of the atoms is maintained
+
 
 
 
@@ -180,6 +188,7 @@ Functions
 
 
 
+
    .. py:method:: convert_abc_to_xyz(abc)
 
       Convert abc coordinates to xyz coordinates.
@@ -195,6 +204,7 @@ Functions
 
 
 
+
    .. py:method:: convert_hkl_to_xyz(hkl)
 
       Convert hkl miller indices to xyz coordinates.
@@ -202,11 +212,12 @@ Functions
       Parameters
       ----------
       hkl : list 3 ints
-          List if hkls
+          List of hkls
 
       Returns
       -------
       xyz : list of xyz coordinates
+
 
 
 
@@ -227,6 +238,7 @@ Functions
 
 
 
+
    .. py:method:: convert_xyz_to_abc(xyz)
 
       Convert xyz coordinates to abc lattice coordinates.
@@ -240,6 +252,41 @@ Functions
       -------
       abc : list of 3 floats
           List of fractional coordinates
+
+
+
+
+   .. py:method:: convert_xyz_to_integer_abc(xyz)
+
+      Convert xyz coordinates to integer abc indices.
+
+      Parameters
+      ----------
+      xyz : list 3 floats
+          List of xyz
+
+      Returns
+      -------
+      abc : list of abc coordinates
+
+
+
+
+   .. py:method:: find_lcd(numbers)
+
+      Find the approximated lowest common denominator.
+
+      Return the list as integers divided by the lowest common denominator
+
+      Parameters
+      ----------
+      numbers : array of floats
+          List of numbers
+
+      Returns
+      -------
+      results : list of integers
+
 
 
 
@@ -261,7 +308,35 @@ Functions
 
 
 
-   .. py:method:: getBoundingBox(units='Angstrom')
+
+   .. py:method:: fold_cell(symprec=1e-05)
+
+      Fold a cell so that any atoms outside a single cell are moved inside.
+
+      Any molecule or bonding information is removed.  
+      Duplication of atoms is avoided
+
+      Parameters
+      ----------
+      symprec : float
+          The symmetry precision
+
+      Returns
+      -------
+      map_old_to_new : a list of integers
+      map_new_to_old : a list of integers
+
+      Modifies
+      --------
+      fractional_coordinates
+      atom_labels
+      atom_masses
+      element_names
+
+
+
+
+   .. py:method:: getBoundingBox(originXYZ=None, originABC=None, units='Angstrom')
 
       Generate the corners and edges of a bounding box.
 
@@ -269,6 +344,12 @@ Functions
 
       Parameters
       ----------
+      originABC : a list of 3 floats
+          Defines the centre about which the box is centred
+          The basis for the coordinates are abc
+      originXYZ : a list of 3 floats
+          Defines the centre about which the box is centred
+          The basis for the coordinates are xyz
       units : str
           An optional unit of length required for output, default is Angstrom
 
@@ -284,6 +365,7 @@ Functions
       To fetch the bounding box coordinates and edges, simply call: ::
 
           corners_xyz, edges = object.getBoundingBox()
+
 
 
 
@@ -305,6 +387,7 @@ Functions
 
 
 
+
    .. py:method:: getVolume(units='cm')
 
       Calculate the volume.
@@ -317,6 +400,7 @@ Functions
       Returns
       -------
       volume : float
+
 
 
 
@@ -337,6 +421,7 @@ Functions
 
 
 
+
    .. py:method:: get_atomic_masses()
 
       Get the atomic masses for the elements.
@@ -352,6 +437,7 @@ Functions
 
 
 
+
    .. py:method:: get_atomic_numbers()
 
       Get the atomic numbers for the elements.
@@ -364,6 +450,7 @@ Functions
       -------
       list of ints
           The atomic numbers
+
 
 
 
@@ -385,6 +472,7 @@ Functions
 
 
 
+
    .. py:method:: get_bonds()
 
       Return a list of bonds for the unit cell.
@@ -400,6 +488,72 @@ Functions
       (list of bonds, list of bondlengths)
           list of bonds is a list of pairs of integers denoting a bond
           list of bond lengths is a list of floats
+
+
+
+
+   .. py:method:: get_element_names()
+
+      Get the names of elements in the cell.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      element_names : list
+          A list of strings representing element names to be cleaned and stored.
+
+
+
+
+   .. py:method:: get_number_of_atoms()
+
+      Get the number of atoms.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The number of atoms
+
+
+
+
+   .. py:method:: get_number_of_molecules()
+
+      Get the number of molecules.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The number of molecules
+
+
+
+
+   .. py:method:: get_species()
+
+      Return a list of the unique species in the cell.
+
+      The unique list needs to maintain the order seen in the original list
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      A list of strings
+
 
 
 
@@ -421,6 +575,25 @@ Functions
 
 
 
+
+   .. py:method:: guess_primitive_transform(symprec=1e-05)
+
+      Guess the primitive cell on the basis of the centering.
+
+      This routine is based on a similar routine in phonopy get_primitive_matrix_by_centring
+
+      Parameters
+      ----------
+      symprec : float (optional)
+          The symmetry precision used in determining the spacegroup
+
+      Returns
+      -------
+      A guess at the new unit cell
+
+
+
+
    .. py:method:: print()
 
       Print the details of the given unit cell.
@@ -434,6 +607,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -458,6 +632,7 @@ Functions
 
 
 
+
    .. py:method:: set_atomic_masses(masses)
 
       Set the atomic masses for the elements.
@@ -470,6 +645,31 @@ Functions
       Returns
       -------
       None
+
+
+
+
+   .. py:method:: set_atomic_numbers(atomic_numbers)
+
+      Set the element names according to the atomic numbers for a molecule.
+
+      Parameters
+      ----------
+      atomic_numbers
+          A list containing the atomic numbers of the atoms
+
+      Returns
+      -------
+      None
+
+      Modifies
+      --------
+      element_names
+
+      Notes
+      -----
+      This method updates the `atomic numbers` attribute of the molecule
+
 
 
 
@@ -487,6 +687,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -511,6 +712,7 @@ Functions
 
 
 
+
    .. py:method:: set_fractional_coordinates(coords)
 
       Set the fractional coordinates and calculate the xyz coordinates.
@@ -523,6 +725,36 @@ Functions
       Returns
       -------
       None
+
+      Modifies
+      --------
+      fractional_coordinates
+      xyz_coordinates
+      nions
+
+
+
+
+   .. py:method:: set_lattice(lattice, units='Angstrom')
+
+      Set the lattice parameters with a 3x3 matrix.
+
+      The lattice is stored as a numpy array
+      The reciprical vectors are calculated.
+
+      Parameters
+      ----------
+      lattice : 3x3 list
+          The lattice vectors stored a ( a b c )
+          where a, b, c are 3 vectors in xyz space.
+      units : str
+          A string indicating the units used in lattice.
+          Internally the units are Angstrom
+
+      Returns
+      -------
+      None
+
 
 
 
@@ -541,6 +773,7 @@ Functions
 
 
 
+
    .. py:method:: set_xyz_coordinates(coords, units='Angstrom')
 
       Set the xyz coordinates and calculate the fractional coordinates.
@@ -555,6 +788,41 @@ Functions
       Returns
       -------
       None
+
+      Modifies
+      --------
+      xyz_coordinates
+      fractional_coordinates
+      nions
+
+
+
+
+   .. py:method:: trim_cell()
+
+      Trim this cell so that any atoms outside a single cell are removed.
+
+      As well as removing the redundant atoms, a list of the mappings
+      from the original cell and to the old cell are generated
+
+      This routine is used when generating a primitive (the new) cell, from a standard cell
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      map_old_to_new : a list of integers
+      map_new_to_old : a list of integers
+
+      Modifies
+      --------
+      fractional_coordinates
+      atom_labels
+      atom_masses
+      element_names
+
 
 
 
@@ -594,6 +862,66 @@ Functions
 
       >>> cell.write_cif('example.cif')
 
+
+
+
+   .. py:attribute:: atom_labels
+      :value: []
+
+
+
+   .. py:attribute:: atomic_masses
+      :value: []
+
+
+
+   .. py:attribute:: bonds
+      :value: []
+
+
+
+   .. py:attribute:: centres_of_mass
+      :value: []
+
+
+
+   .. py:attribute:: element_names
+      :value: []
+
+
+
+   .. py:attribute:: fractional_coordinates
+      :value: []
+
+
+
+   .. py:attribute:: lattice
+      :value: [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+
+
+
+   .. py:attribute:: molecules
+      :value: []
+
+
+
+   .. py:attribute:: nions
+      :value: 0
+
+
+
+   .. py:attribute:: total_mass
+      :value: 0.0
+
+
+
+   .. py:attribute:: units
+      :value: 'Angstrom'
+
+
+
+   .. py:attribute:: xyz_coordinates
+      :value: []
 
 
 

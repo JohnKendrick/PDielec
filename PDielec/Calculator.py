@@ -30,7 +30,7 @@ from scipy.stats import lognorm
 # The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github
 #
 from PDielec import Mie
-from PDielec.Constants import d2byamuang2
+from PDielec.Constants import d2byamuang2, wavenumber
 
 Mie.crossover = 0.01
 
@@ -1767,8 +1767,7 @@ def solve_effective_medium_equations(
     (v_cm1,crystalPermittivity) = atuple
     # convert the size to a dimensionless number which is 2*pi*size/lambda
     lambda_mu = 1.0E4 / (v_cm1 + 1.0e-12)
-    if size_mu < 1.0e-12:
-        size_mu = 1.0e-12
+    size_mu = max(size_mu, 1.0e-12)
     size = 2.0*np.pi*size_mu / lambda_mu
     data = ""
     # Calculate the permittivity of the matrix as an isotropic tensor at v_cm1
@@ -2055,8 +2054,7 @@ def orthogonalise_projection_operator(ps):
                    # Gramm Schmidt orthogonoalisation
                    dotprod = np.dot(p,q)
                    ps[j] = q - dotprod*p
-                   if max_overlap < dotprod:
-                       max_overlap = dotprod
+                   max_overlap = max(max_overlap, dotprod)
    if cycle >= maxcyc:
        print("WARNING Schmidt Orthogonalisation Failed", max_overlap)
        sys.exit()
@@ -2079,11 +2077,11 @@ def construct_projection_operator(atoms, xyzs, masses, nats):
    Returns
    -------
    type
-       Description of the returned object.
+       The projection operators for this molecule
 
    """
    mass,cm = calculate_centre_of_mass(xyzs,masses)
-   # The projection operator has dimension number_of_constraints*natoms*3
+   # The projection operator has dimension number_of_constraints,natoms*3
    ps = np.zeros( (6,nats*3) )
    x = 0
    y = 1
@@ -2133,21 +2131,21 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
    molecular_projection_operators = []
    molecule_masks = []
    for atoms in molecules:
-       mol_xyzs  = [ xyz[atom] for atom in atoms]
        mol_mask = np.zeros(nats*3)
        for atom in atoms:
            mol_mask[3*atom+0] = 1
            mol_mask[3*atom+1] = 1
            mol_mask[3*atom+2] = 1
+       molecule_masks.append(mol_mask)
+       mol_xyzs  = [ xyz[atom] for atom in atoms]
        mol_masses = [ atomic_masses[atom] for atom in atoms]
        projection_operators = construct_projection_operator(atoms,mol_xyzs,mol_masses,nats)
        projection_operators = orthogonalise_projection_operator(projection_operators)
        molecular_projection_operators.append(projection_operators)
-       #
-       molecule_masks.append(mol_mask)
    # Calculate the contributions to the kinetic energy in each mode
    energies_in_modes = []
    for mode in normal_modes:
+       mode = np.array(mode).flatten()
        mode_cm = mode
        centre_of_mass_energy = 0.0
        rotational_energy = 0.0
@@ -2384,6 +2382,50 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
              debugger.print("get_pool using the multiprocessing package")
      return Pool(ncpus, initializer=initializer, initargs=initargs)
 
+def calculate_normal_modes_and_frequencies(hessian):
+    """"From the mass weighted hessian compute the normal modes and the frequencies.
+
+    Parameters
+    ----------
+    hessian : a symmetric 2d numpy array of 3*natoms, 3*natoms
+        This is the mass-weighted hessian
+
+    Returns
+    -------
+    frequencies : a list of floats
+        The frequencies in cm-1
+    mass_weighted_normal_modes : a 3*natoms, 3*natoms 2D list
+        The eigen vectors of the hessian
+
+    """
+    # diagonalise
+    eig_val, eig_vec = np.linalg.eigh(hessian)
+    nmodes = len(eig_val)
+    natoms = int(nmodes/3+0.0000001)
+    #
+    # If eig_val has negative values then we store the negative frequency
+    # convert to cm-1
+    frequencies_a = np.zeros(nmodes)
+    for i, eig in enumerate(eig_val):
+        if eig < 0:
+            frequencies_a[i] = -math.sqrt(-eig) / wavenumber
+        else:
+            frequencies_a[i] = math.sqrt(eig) / wavenumber
+        # end if
+    # end for
+    mass_weighted_normal_modes = []
+    # Store the mass weighted normal modes
+    for i in range(nmodes):
+        mode = []
+        n = 0
+        for _j in range(natoms):
+            modea = [eig_vec[n][i].item(), eig_vec[n+1][i].item(), eig_vec[n+2][i].item()]
+            n = n + 3
+            mode.append(modea)
+        mass_weighted_normal_modes.append(mode)
+    # end for i
+    return mass_weighted_normal_modes, frequencies_a
+
 def set_no_of_threads(nthreads):
     """Set default number of threads.
 
@@ -2404,8 +2446,40 @@ def set_no_of_threads(nthreads):
     os.environ["BLIS_NUM_THREADS"]       = str(nthreads)
     os.environ["VECLIB_MAXIMUM_THREADS"] = str(nthreads)
 
+def compute_all_sg_permutations(rot,mat):
+    """Similarity transformation by R x M x R^-1.
+
+    This routine was taken from Phonopy.
+
+    Parameters
+    ----------
+    rot : 3x3 floats
+        The rotation matrix
+    mat : 3x3 floats
+        The matrix to be transformed
+
+    """
+    return np.dot(rot, np.dot(mat, np.linalg.inv(rot)))
+
+
+
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs."""
     #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
     #JK Commented out for the time being
     #JK os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
+
+def similarity_transform(rot,mat):
+    """Similarity transformation by R x M x R^-1.
+
+    This routine was taken from Phonopy.
+
+    Parameters
+    ----------
+    rot : 3x3 floats
+        The rotation matrix
+    mat : 3x3 floats
+        The matrix to be transformed
+
+    """
+    return np.dot(rot, np.dot(mat, np.linalg.inv(rot)))

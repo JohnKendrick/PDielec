@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.OpenGLWidget`
-==================================
+PDielec.GUI.OpenGLWidget
+========================
 
 .. py:module:: PDielec.GUI.OpenGLWidget
 
@@ -9,11 +9,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -23,10 +20,10 @@ Classes
    PDielec.GUI.OpenGLWidget.Sphere
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Arrow(colour, radius, direction, scale)
-
 
    A class to represent a 3D arrow for graphical display.
 
@@ -63,8 +60,25 @@ Classes
 
 
 
-.. py:class:: Cylinder(colour, radius, pos1, pos2)
+   .. py:attribute:: angle
 
+
+   .. py:attribute:: colour
+
+
+   .. py:attribute:: direction
+
+
+   .. py:attribute:: height
+
+
+   .. py:attribute:: radius
+
+
+   .. py:attribute:: rotation
+
+
+.. py:class:: Cylinder(colour, radius, pos1, pos2)
 
    A class representing a 3D cylinder.
 
@@ -98,10 +112,31 @@ Classes
 
 
 
+   .. py:attribute:: angle
+
+
+   .. py:attribute:: colour
+
+
+   .. py:attribute:: height
+
+
+   .. py:attribute:: position1
+
+
+   .. py:attribute:: position2
+
+
+   .. py:attribute:: radius
+
+
+   .. py:attribute:: rotation
+
+
 .. py:class:: OpenGLWidget(parent, debug=False)
 
-
    Bases: :py:obj:`qtpy.QtWidgets.QOpenGLWidget`
+
 
    A widget for the Qt framework specialized in OpenGL graphics rendering.
 
@@ -126,6 +161,8 @@ Classes
        A queue that holds sphere objects to be rendered. These can represent atoms or other spherical entities.
    cylinders : deque
        A queue that holds cylinder objects representing bonds or connections between spheres.
+   texts : deque
+       A queue that holds text objects.
    arrows : deque
        A queue that holds arrow objects, useful for indicating directions or forces.
    light_positions : list
@@ -165,7 +202,7 @@ Classes
        Starts or restarts the animation timer.
    paintGL()
        The main rendering function called by the Qt framework to draw the OpenGL scene.
-   drawSpheres(), drawCylinders(), drawArrows()
+   drawSpheres(), drawCylinders(), drawArrows(), drawTexts()
        Functions responsible for drawing the respective geometric objects.
    resizeGL(w, h)
        Adjusts the viewport and projection matrix on widget resize.
@@ -181,7 +218,7 @@ Classes
        Sets the center of rotation for the scene.
    createArrays(nphases)
        Initializes storage for drawable objects across animation phases.
-   deleteSpheres(), deleteCylinders(), deleteArrows()
+   deleteSpheres(), deleteCylinders(), deleteArrows(), deleteTexts()
        Convenience methods for clearing the drawable objects.
    addArrows(colour, radius, direction, length, phase=0)
        Adds an arrow to the scene.
@@ -189,11 +226,10 @@ Classes
        Adds a cylinder to the scene.
    addSphere(colour, radius, pos, phase=0)
        Adds a sphere to the scene.
+   addText(colour, size, pos, phase=0)
+       Adds a text to the scene.
 
 
-   .. py:attribute:: format
-
-      
 
    .. py:method:: addArrows(colour, radius, direction, length, phase=0)
 
@@ -215,6 +251,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -241,6 +278,7 @@ Classes
 
 
 
+
    .. py:method:: addSphere(colour, radius, pos, phase=0)
 
       Add a sphere to a collection within an object.
@@ -262,6 +300,31 @@ Classes
 
 
 
+
+   .. py:method:: addText(string, colour, size, pos, phase=0)
+
+      Add a text object to the specified phase collection of texts.
+
+      Parameters
+      ----------
+      string : str
+          The content of the text.
+      colour : str
+          The color of the text.
+      size : float
+          The size of the text
+      pos : tuple
+          The starting position of the text (x, y, z coordinates).
+      phase : int, optional
+          The phase to which the text should be added. Default is 0.
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: createArrays(nphases)
 
       Create or reinitialize arrays for spheres and cylinders for each phase.
@@ -279,8 +342,9 @@ Classes
 
       Notes
       -----
-      - Assumes `self.spheres` and `self.cylinders` are already defined as lists.
-      - It uses the `clear` method on both `self.spheres` and `self.cylinders`, which is available for lists in Python 3.3 and later.
+      - Assumes `self.spheres`, `self.texts` and `self.cylinders` are already defined as lists.
+      - It uses the `clear` method, which is available for lists in Python 3.3 and later.
+
 
 
 
@@ -312,6 +376,63 @@ Classes
 
 
 
+
+   .. py:method:: define_orientations(cell)
+
+      Set the up orientations for the cell.
+
+                           Points out    Points up  Points across
+
+                 "x" means     x-axis       y-axis         z-axis
+                 "y" means     y-axis       z-axis         x-axis
+                 "z" means     z-axis       x-axis         y-axis
+                 "a" means     a-axis       axb            ax(axb)
+                 "b" means     b-axis       bxc            bx(bxc)
+                 "c" means     c-axis       cxa            cx(cxa)
+                 "a*" means    a*-axis      a*xb*          a*x(a*xb*)
+                 "b*" means    b*-axis      b*xc*          b*x(b*xc*)
+                 "c*" means    c*-axis      c*xa*          c*x(c*xa*)
+
+      A capital letter indicates that the up and out designations are reversed
+
+
+      Parameters
+      ----------
+      cell : unitCell
+          The cell used to define the orientations with respect to a, b, c
+
+      Modifies
+      --------
+      orientation_definitions
+
+
+
+
+   .. py:method:: define_surface_orientations(cell, hkl, uvw)
+
+      Set the up orientations for the surface hkl.
+
+      hkl defines the surface as (hkl)
+      uvw defines a normal to the surface (hkl), [uvw] is made orthogonal to the (hkl) normal
+      if (hkl) is (000) [uvw] is used to define the unique direction
+
+      Parameters
+      ----------
+      cell : unitCell
+          The cell used to define the orientations with respect to a, b, c
+      hkl : a tuple of 3 integers
+          The values of h, k and l
+      uvw : a tuple of 3 integers
+          The values of u, v and w
+
+
+      Modifies
+      --------
+      orientation_definitions
+
+
+
+
    .. py:method:: deleteArrows()
 
       Delete all arrows from a collection.
@@ -325,6 +446,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -350,6 +472,7 @@ Classes
 
 
 
+
    .. py:method:: deleteSpheres()
 
       Delete all spheres from the current context.
@@ -363,6 +486,24 @@ Classes
       Returns
       -------
       None
+
+
+
+
+   .. py:method:: deleteTexts()
+
+      Delete all texts from the current context.
+
+      This method clears the collection of texts.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
 
 
 
@@ -387,6 +528,7 @@ Classes
       - Material properties such as diffuse, ambient, and specular colors are calculated from the arrow's color and applied to the OpenGL material.
       - Arrows consist of a cylindrical shaft and a conical tip, whose dimensions and orientations are based on the properties of each arrow (e.g., direction, length, angle, rotation, colour, and radius).
       - This method depends on the `self.arrows` list and the corresponding `self.spheres` for the current phase stored in `self.current_phase`. It leverages OpenGL functions and assumes that `self.viewerTab.settings['Arrow colour']`, along with other properties like `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`, and `self.glintMaterialFactor` are predefined and correctly configured.
+
 
 
 
@@ -424,6 +566,7 @@ Classes
 
 
 
+
    .. py:method:: drawSpheres()
 
       Draw spheres based on the object's current phase and spheres attributes.
@@ -442,6 +585,43 @@ Classes
       Notes
       -----
       Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`, `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.
+
+
+
+
+   .. py:method:: drawTexts()
+
+      Draw the texts stored in the object.
+
+      This method iterates through the list of text objects for the current phase, 
+      computes the required material colors based on predefined factors, and renders 
+      each text using OpenGL commands.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: drawUVWInfo()
+
+      Draw the uvw info on the screen.
+
+      The uvw information (up, across, out of the screen)
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
 
 
 
@@ -464,6 +644,7 @@ Classes
 
 
 
+
    .. py:method:: initializeGL()
 
       Initialise OpenGL rendering context.
@@ -477,6 +658,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -531,6 +713,7 @@ Classes
 
 
 
+
    .. py:method:: moleculeRotate(scale, x, y, z)
 
       Rotate a molecule object around the specified axes.
@@ -547,7 +730,7 @@ Classes
       y : float
           The degree of rotation around the y-axis (degrees).
       z : float
-          Degree of rotation around the z-axis (degrees) is ignored, the parameter is preserved for interface consistency or future use.
+          Degree of rotation around the z-axis (degrees).
 
       Returns
       -------
@@ -579,6 +762,7 @@ Classes
 
 
 
+
    .. py:method:: mouseMoveEvent(event)
 
       Handle the mouse move events to perform various actions.
@@ -604,6 +788,7 @@ Classes
 
 
 
+
    .. py:method:: mousePressEvent(event)
 
       Handle the mouse press event.
@@ -616,6 +801,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -638,6 +824,7 @@ Classes
 
 
 
+
    .. py:method:: myMakeCurrent()
 
       Make the current OpenGL context active and clear any errors.
@@ -657,12 +844,13 @@ Classes
 
 
 
+
    .. py:method:: paintGL()
 
       Render OpenGL graphics for the current scene.
 
       This method prepares the graphics context, clears the buffer, sets the background color,
-      and draws the current scene which may include spheres, cylinders, and arrows based on the object's state.
+      and draws the current scene which may include spheres, cylinders, texts and arrows based on the object's state.
 
       Parameters
       ----------
@@ -687,6 +875,30 @@ Classes
 
 
 
+
+   .. py:method:: renderText(x, y, z, string, screen_coordinates=False)
+
+      Draw text in the widget.
+
+      Draw the text in string at the position starting x, y, z
+
+      Parameters
+      ----------
+      x, y, z : floats
+          The position at which to start drawning
+      string : str
+          The text
+      screen_coordinates : bool
+          Optional parameter by default the coordinates are model coordinates
+          If true the screen coordinates are used
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: resizeGL(w, h)
 
       Resizes the OpenGL widget to a new width and height.
@@ -705,6 +917,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -733,6 +946,7 @@ Classes
 
 
 
+
    .. py:method:: setImageSize()
 
       Set the maximum image size based on the furthest object from the rotation center.
@@ -753,6 +967,7 @@ Classes
 
 
 
+
    .. py:method:: setProjectionMatrix()
 
       Set the projection matrix for rendering.
@@ -769,7 +984,9 @@ Classes
 
       Notes
       -----
-      This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current. It also updates `self.matrix` with an identity matrix and sets `self.current_phase` based on the total number of phases.
+      This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current.
+      It also updates the rotation with `self.matrix` and sets `self.current_phase` based on the total number of phases.
+
 
 
 
@@ -789,6 +1006,39 @@ Classes
 
 
 
+
+   .. py:method:: set_orientation(orientation)
+
+      Set the molecular orientation.
+
+      The orientation can be one of 'x', 'y', 'z', 'a', 'b', 'c'
+      The orientation is set using gluLookAt to define the modelview matrix
+      The rotation parts of the transformation matrix are maintained
+      The translation part is set to unity.
+
+                           Points out    Points up
+
+                 "x" means     x-axis       y-axis
+                 "y" means     y-axis       z-axis
+                 "z" means     z-axis       x-axis
+                 "a" means     a-axis       aXb
+                 "b" means     b-axis       bXc
+                 "c" means     c-axis       cXa
+
+      The use of a capital letter means the axes are reversed
+
+      Parameters
+      ----------
+      orientation : str
+          The required orientation
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: showArrows(show)
 
       Set the visibility of arrows.
@@ -805,6 +1055,22 @@ Classes
       Notes
       -----
       This function updates the `show_arrows` attribute based on the "show" parameter and prints the current status to the debugger.
+
+
+
+
+   .. py:method:: show_help_dialog()
+
+      Show the help dialogue message.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
 
 
 
@@ -830,6 +1096,7 @@ Classes
       ```
 
       This will grab the current framebuffer content and save it as 'screenshot.png'.
+
 
 
 
@@ -862,6 +1129,7 @@ Classes
 
 
 
+
    .. py:method:: stopAnimation()
 
       Stop the ongoing animation.
@@ -879,6 +1147,7 @@ Classes
       Notes
       -----
       This function assumes that `self.timer` is an instance with a `stop` method, which is called to halt any ongoing animation. If `self.timer` is `None`, indicating no animation is currently active, this method does nothing.
+
 
 
 
@@ -908,6 +1177,7 @@ Classes
 
 
 
+
    .. py:method:: translate(x, y)
 
       Translate an object by modifying its current position.
@@ -931,6 +1201,7 @@ Classes
 
 
 
+
    .. py:method:: wheelEvent(event)
 
       Handle a wheel event to zoom in or out.
@@ -950,6 +1221,7 @@ Classes
       the current context to this object before determining the direction and
       intensity of the zoom based on the vertical angle delta of the wheel event.
       Lastly, it refreshes the display to reflect any changes.
+
 
 
 
@@ -976,8 +1248,206 @@ Classes
 
 
 
-.. py:class:: Sphere(colour, radius, position)
+   .. py:attribute:: ambientLightFactor
+      :value: 0.6
 
+
+
+   .. py:attribute:: ambientMaterialFactor
+      :value: 0.4
+
+
+
+   .. py:attribute:: arrows
+
+
+   .. py:attribute:: background_colour
+      :value: None
+
+
+
+   .. py:attribute:: cell
+      :value: None
+
+
+
+   .. py:attribute:: current_orientation
+      :value: ([1, 0, 0], [0, 1, 0], [0, 0, 1])
+
+
+
+   .. py:attribute:: current_phase
+      :value: 0
+
+
+
+   .. py:attribute:: cylinder_slices
+      :value: 8
+
+
+
+   .. py:attribute:: cylinder_stacks
+      :value: 2
+
+
+
+   .. py:attribute:: cylinders
+
+
+   .. py:attribute:: debug
+      :value: False
+
+
+
+   .. py:attribute:: diffuseLightFactor
+      :value: 0.8
+
+
+
+   .. py:attribute:: diffuseMaterialFactor
+      :value: 0.9
+
+
+
+   .. py:attribute:: format
+
+
+   .. py:attribute:: glintMaterialFactor
+      :value: 100.0
+
+
+
+   .. py:attribute:: hkl
+      :value: (1, 0, 0)
+
+
+
+   .. py:attribute:: image_size
+      :value: 15.0
+
+
+
+   .. py:attribute:: light_positions
+
+
+   .. py:attribute:: light_switches
+      :value: None
+
+
+
+   .. py:attribute:: lightingOn
+      :value: True
+
+
+
+   .. py:attribute:: lights
+
+
+   .. py:attribute:: linearAttenuation
+      :value: True
+
+
+
+   .. py:attribute:: matrix
+
+
+   .. py:attribute:: my_height
+      :value: None
+
+
+
+   .. py:attribute:: my_width
+      :value: None
+
+
+
+   .. py:attribute:: notebook
+
+
+   .. py:attribute:: number_of_phases
+      :value: 1
+
+
+
+   .. py:attribute:: orientation
+      :value: 'z'
+
+
+
+   .. py:attribute:: orientation_definitions
+
+
+   .. py:attribute:: phase_direction
+      :value: 1
+
+
+
+   .. py:attribute:: rotation_centre
+
+
+   .. py:attribute:: show_arrows
+      :value: True
+
+
+
+   .. py:attribute:: show_full_screen
+      :value: False
+
+
+
+   .. py:attribute:: show_orientation
+      :value: False
+
+
+
+   .. py:attribute:: specularLightFactor
+      :value: 1.0
+
+
+
+   .. py:attribute:: specularMaterialFactor
+      :value: 0.7
+
+
+
+   .. py:attribute:: sphere_slices
+      :value: 20
+
+
+
+   .. py:attribute:: sphere_stacks
+      :value: 20
+
+
+
+   .. py:attribute:: spheres
+
+
+   .. py:attribute:: texts
+
+
+   .. py:attribute:: timer
+      :value: None
+
+
+
+   .. py:attribute:: timer_interval
+      :value: 60
+
+
+
+   .. py:attribute:: viewerTab
+
+
+   .. py:attribute:: white
+
+
+   .. py:attribute:: writer
+      :value: None
+
+
+
+.. py:class:: Sphere(colour, radius, position)
 
    A class representing a sphere.
 
@@ -999,5 +1469,14 @@ Classes
    position : ndarray
        The position of the sphere in 3D space as a NumPy array with three elements (x, y, z).
 
+
+
+   .. py:attribute:: colour
+
+
+   .. py:attribute:: position
+
+
+   .. py:attribute:: radius
 
 

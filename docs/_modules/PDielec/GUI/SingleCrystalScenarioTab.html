@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PDielec.GUI.SingleCrystalScenarioTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
     
     
@@ -70,7 +70,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -85,22 +85,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -113,6 +154,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -131,7 +174,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -173,67 +217,70 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -260,7 +307,8 @@
           <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -270,7 +318,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for PDielec.GUI.SingleCrystalScenarioTab</h1><div class="highlight"><pre>
 <span></span><span class="c1">#</span>
 <span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
@@ -287,13 +335,13 @@
 <span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;SingleCrystalScenarioTab module.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">QCoreApplication</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCoreApplication</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">QApplication</span><span class="p">,</span>
     <span class="n">QComboBox</span><span class="p">,</span>
     <span class="n">QDoubleSpinBox</span><span class="p">,</span>
@@ -313,15 +361,15 @@
     <span class="n">QVBoxLayout</span><span class="p">,</span>
     <span class="n">QWidget</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">signal</span>
 
-<span class="kn">import</span> <span class="nn">PDielec.GTMcore</span> <span class="k">as</span> <span class="nn">GTM</span>
-<span class="kn">from</span> <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">Materials</span>
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">speed_light_si</span>
-<span class="kn">from</span> <span class="nn">PDielec.GUI.ScenarioTab</span> <span class="kn">import</span> <span class="n">ScenarioTab</span>
-<span class="kn">from</span> <span class="nn">PDielec.GUI.SingleCrystalLayer</span> <span class="kn">import</span> <span class="n">ShowLayerWindow</span><span class="p">,</span> <span class="n">SingleCrystalLayer</span>
-<span class="kn">from</span> <span class="nn">PDielec.Materials</span> <span class="kn">import</span> <span class="n">MaterialsDataBase</span>
-<span class="kn">from</span> <span class="nn">PDielec.Utilities</span> <span class="kn">import</span> <span class="n">Debug</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">PDielec.GTMcore</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">GTM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Materials</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">speed_light_si</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GUI.ScenarioTab</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScenarioTab</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GUI.SingleCrystalLayer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShowLayerWindow</span><span class="p">,</span> <span class="n">SingleCrystalLayer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialsDataBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">Debug</span>
 
 <span class="n">thickness_conversion_factors</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ang&quot;</span><span class="p">:</span><span class="mf">1.0E-10</span><span class="p">,</span> <span class="s2">&quot;nm&quot;</span><span class="p">:</span><span class="mf">1.0E-9</span><span class="p">,</span> <span class="s2">&quot;um&quot;</span><span class="p">:</span><span class="mf">1.0E-6</span><span class="p">,</span> <span class="s2">&quot;mm&quot;</span><span class="p">:</span><span class="mf">1.0E-3</span><span class="p">,</span> <span class="s2">&quot;cm&quot;</span><span class="p">:</span><span class="mf">1.0E-2</span><span class="p">}</span>
 <span class="n">thickness_units</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">thickness_conversion_factors</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -333,7 +381,9 @@
              <span class="s2">&quot;Incoherent (phase averaging)&quot;</span><span class="p">:</span><span class="n">GTM</span><span class="o">.</span><span class="n">IncoherentAveragePhaseLayer</span><span class="p">,</span>
              <span class="s2">&quot;Incoherent (non-reflective)&quot;</span><span class="p">:</span><span class="n">GTM</span><span class="o">.</span><span class="n">IncoherentThickLayer</span><span class="p">}</span> 
 
-<div class="viewcode-block" id="solve_single_crystal_equations"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations">[docs]</a><span class="k">def</span> <span class="nf">solve_single_crystal_equations</span><span class="p">(</span> 
+<div class="viewcode-block" id="solve_single_crystal_equations">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_single_crystal_equations</span><span class="p">(</span> 
         <span class="n">layers</span>                        <span class="p">,</span>
         <span class="n">mode</span>                          <span class="p">,</span>
         <span class="n">theta</span>                         <span class="p">,</span>
@@ -410,7 +460,10 @@
     <span class="n">errors</span><span class="p">,</span><span class="n">largest_exponent</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">overflowErrors</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">v</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">epsilon</span><span class="p">,</span><span class="n">errors</span><span class="p">,</span><span class="n">largest_exponent</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab">[docs]</a><span class="k">class</span> <span class="nc">SingleCrystalScenarioTab</span><span class="p">(</span><span class="n">ScenarioTab</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SingleCrystalScenarioTab</span><span class="p">(</span><span class="n">ScenarioTab</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A tab class for handling a single crystal scenario.</span>
 
 <span class="sd">    This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.</span>
@@ -546,7 +599,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span> <span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span> <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Single Crystal Scenario Tab.</span>
 
 <span class="sd">        This initializer sets up the GUI components, populates settings with default values, </span>
@@ -749,7 +802,9 @@
         <span class="n">QCoreApplication</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Finished:: initialiser&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.redrawLayerTable"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTable">[docs]</a>    <span class="k">def</span> <span class="nf">redrawLayerTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SingleCrystalScenarioTab.redrawLayerTable">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">redrawLayerTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Redraw the layer table widget.</span>
 
 <span class="sd">        Adds a row for each layer in the gadget.</span>
@@ -774,7 +829,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">layerTable_tw</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">rowCount</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layerTable_tw</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">rowCount</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">newLayer_cb</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.redrawLayerTableRow"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTableRow">[docs]</a>    <span class="k">def</span> <span class="nf">redrawLayerTableRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sequenceNumber</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">rowCount</span><span class="p">,</span><span class="n">firstLayer</span><span class="p">,</span><span class="n">lastLayer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.redrawLayerTableRow">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.redrawLayerTableRow">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">redrawLayerTableRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sequenceNumber</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">rowCount</span><span class="p">,</span><span class="n">firstLayer</span><span class="p">,</span><span class="n">lastLayer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a row of the layer table.</span>
 
 <span class="sd">        Each row has a material name, a thickness (and unit), an h, k, l option and a toolbar</span>
@@ -898,7 +956,10 @@
             <span class="n">thickness_unit_cb</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.drawLayerTable"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.drawLayerTable">[docs]</a>    <span class="k">def</span> <span class="nf">drawLayerTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.drawLayerTable">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.drawLayerTable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">drawLayerTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a table with all the layers in it.</span>
 
 <span class="sd">        Each layer has a row in the table showing, name, thickness, h,k,l, azimuthal angle, options and a toolbar</span>
@@ -947,7 +1008,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">redrawLayerTable</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerTable_tw</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.deleteLayer"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.deleteLayer">[docs]</a>    <span class="k">def</span> <span class="nf">deleteLayer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.deleteLayer">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.deleteLayer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deleteLayer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a delete layer button press.</span>
 
 <span class="sd">        Parameters</span>
@@ -976,7 +1040,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span><span class="o">=</span><span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.moveLayerUp"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerUp">[docs]</a>    <span class="k">def</span> <span class="nf">moveLayerUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.moveLayerUp">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerUp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">moveLayerUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Move a layer up (sequence number gets smaller by 1).</span>
 
 <span class="sd">        Parameters</span>
@@ -1008,7 +1075,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span><span class="o">=</span><span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.moveLayerDown"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerDown">[docs]</a>    <span class="k">def</span> <span class="nf">moveLayerDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.moveLayerDown">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.moveLayerDown">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">moveLayerDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Move a layer down (sequence number gets larger by 1).</span>
 
 <span class="sd">        Parameters</span>
@@ -1041,7 +1111,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span><span class="o">=</span><span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBarMoveUpButton"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveUpButton">[docs]</a>    <span class="k">def</span> <span class="nf">createToolBarMoveUpButton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBarMoveUpButton">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveUpButton">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createToolBarMoveUpButton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the move up button as part of the layer toolbar.</span>
 
 <span class="sd">        Parameters</span>
@@ -1067,7 +1140,10 @@
         <span class="n">moveUpButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Move this layer up the list of layers&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">moveUpButton</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBarMoveDownButton"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveDownButton">[docs]</a>    <span class="k">def</span> <span class="nf">createToolBarMoveDownButton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBarMoveDownButton">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarMoveDownButton">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createToolBarMoveDownButton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the move down button as part of the layer toolbar.</span>
 
 <span class="sd">        Parameters</span>
@@ -1093,7 +1169,10 @@
         <span class="n">moveDownButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Move this layer down the list of layers&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">moveDownButton</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBarDeleteButton"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarDeleteButton">[docs]</a>    <span class="k">def</span> <span class="nf">createToolBarDeleteButton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBarDeleteButton">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBarDeleteButton">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createToolBarDeleteButton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the delete button as part of the layer toolbar.</span>
 
 <span class="sd">        Parameters</span>
@@ -1119,7 +1198,10 @@
         <span class="n">deleteButton</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Delete this layer&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">deleteButton</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBar"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBar">[docs]</a>    <span class="k">def</span> <span class="nf">createToolBar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.createToolBar">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.createToolBar">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createToolBar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">,</span><span class="n">nLayers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the tool bar used for the material layer.</span>
 
 <span class="sd">        Parameters</span>
@@ -1161,8 +1243,11 @@
         <span class="n">frame_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">moveDownButton</span><span class="p">)</span>
         <span class="n">frame_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">deleteButton</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">frame</span></div>
+
         
-<div class="viewcode-block" id="SingleCrystalScenarioTab.newLayerWidget"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.newLayerWidget">[docs]</a>    <span class="k">def</span> <span class="nf">newLayerWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SingleCrystalScenarioTab.newLayerWidget">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.newLayerWidget">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">newLayerWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and return a new layer widget as a QComboBox.</span>
 
 <span class="sd">        Returns a QComboBox widget configured for creating a new layer in a graphical user interface.</span>
@@ -1192,7 +1277,10 @@
         <span class="n">newLayer_cb</span><span class="o">.</span><span class="n">activated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_newLayer_cb_activated</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">newLayer_cb</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_layerTable_itemChanged"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layerTable_itemChanged">[docs]</a>    <span class="k">def</span> <span class="nf">on_layerTable_itemChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_layerTable_itemChanged">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layerTable_itemChanged">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_layerTable_itemChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change to the layer table.</span>
 
 <span class="sd">        An empty routine as changes are handled by other routines</span>
@@ -1210,7 +1298,10 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_layerTable_itemChanged: &quot;</span><span class="p">,</span><span class="n">item</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_newLayer_cb_activated"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_newLayer_cb_activated">[docs]</a>    <span class="k">def</span> <span class="nf">on_newLayer_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_newLayer_cb_activated">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_newLayer_cb_activated">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_newLayer_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a new layer button click.</span>
 
 <span class="sd">        Based on the index chosen a new material is created and added to the list of layers.</span>
@@ -1243,7 +1334,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_print_button_clicked"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked">[docs]</a>    <span class="k">def</span> <span class="nf">on_print_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_print_button_clicked">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_print_button_clicked">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_print_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the permittivity for the layer.</span>
 
 <span class="sd">        The print button is only visible if in debug mode.</span>
@@ -1270,7 +1364,10 @@
         <span class="n">permittivityObject</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">2000.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_option_cb_activated"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_option_cb_activated">[docs]</a>    <span class="k">def</span> <span class="nf">on_option_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_option_cb_activated">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_option_cb_activated">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_option_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Activate the incoherence option combob.</span>
 
 <span class="sd">        - The layer&#39;s incoherent options are changed</span>
@@ -1298,7 +1395,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_film_thickness_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_film_thickness_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_film_thickness_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_film_thickness_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_film_thickness_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_film_thickness_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle film thickness spin box change.</span>
 
 <span class="sd">        - The thickness of the film in this layer is changed</span>
@@ -1323,7 +1423,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_thickness_units_cb_activated"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated">[docs]</a>    <span class="k">def</span> <span class="nf">on_thickness_units_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_thickness_units_cb_activated">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_thickness_units_cb_activated">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_thickness_units_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the activation of a thickness unit option in a combo box.</span>
 
 <span class="sd">        - the thickness unit of this layer is changed</span>
@@ -1349,7 +1452,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_azimuthal_angle_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_azimuthal_angle_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_azimuthal_angle_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle azimuthal spin box change.</span>
 
 <span class="sd">        - The azimuthal angle of a layer is changed to the value given.</span>
@@ -1376,7 +1482,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_hkl_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_hkl_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">hkorl</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_hkl_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_hkl_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_hkl_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">hkorl</span><span class="p">,</span><span class="n">layer</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in h, k, or l.</span>
 
 <span class="sd">        The h, k and l parameters determine the surface of the film</span>
@@ -1408,7 +1517,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.generateLayerSettings"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.generateLayerSettings">[docs]</a>    <span class="k">def</span> <span class="nf">generateLayerSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.generateLayerSettings">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.generateLayerSettings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generateLayerSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the settings dictionary for every layer.</span>
 
 <span class="sd">        Parameters</span>
@@ -1439,7 +1551,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Layer incoherent options&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">getIncoherentOption</span><span class="p">())</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.setMaterialNames"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.setMaterialNames">[docs]</a>    <span class="k">def</span> <span class="nf">setMaterialNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.setMaterialNames">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.setMaterialNames">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setMaterialNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set and append a material name to the list of material names.</span>
 
 <span class="sd">        This function retrieves the current list of material names from the database using</span>
@@ -1460,7 +1575,10 @@
         <span class="n">materialNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Dielectric layer&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">materialNames</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.printLayerSettings"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.printLayerSettings">[docs]</a>    <span class="k">def</span> <span class="nf">printLayerSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">message</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.printLayerSettings">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.printLayerSettings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">printLayerSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">message</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the settings related to the layers.</span>
 
 <span class="sd">        Parameters</span>
@@ -1489,7 +1607,10 @@
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Layer incoherent options&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.settings2Layers"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.settings2Layers">[docs]</a>    <span class="k">def</span> <span class="nf">settings2Layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.settings2Layers">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.settings2Layers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">settings2Layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the layer settings and generate a list of layers.</span>
 
 <span class="sd">        This method reads all the entries in the settings dictionary</span>
@@ -1526,7 +1647,10 @@
                                      <span class="n">incoherentOption</span><span class="o">=</span><span class="n">incoherentOption</span><span class="p">,</span><span class="n">dielectricFlag</span><span class="o">=</span><span class="n">dielectricFlag</span><span class="p">))</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.getMaterialFromDataBase"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getMaterialFromDataBase">[docs]</a>    <span class="k">def</span> <span class="nf">getMaterialFromDataBase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">permittivity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.getMaterialFromDataBase">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getMaterialFromDataBase">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMaterialFromDataBase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">permittivity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the given material from the database.</span>
 
 <span class="sd">        - If name is &#39;DielectricLayer&#39; then a material is defined from the crystal permittivity of the DFT information</span>
@@ -1557,7 +1681,10 @@
             <span class="n">material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DataBase</span><span class="o">.</span><span class="n">getMaterial</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">material</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.getDielectricLayerIndex"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getDielectricLayerIndex">[docs]</a>    <span class="k">def</span> <span class="nf">getDielectricLayerIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.getDielectricLayerIndex">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.getDielectricLayerIndex">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDielectricLayerIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the index of the dielectric layer in the list of layers.</span>
 
 <span class="sd">        - Sorts through the list of layers and reports the index of the first layer that came from the provided DFT calculation</span>
@@ -1579,7 +1706,10 @@
                 <span class="k">return</span> <span class="n">index</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_layer_button_clicked"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layer_button_clicked">[docs]</a>    <span class="k">def</span> <span class="nf">on_layer_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_layer_button_clicked">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_layer_button_clicked">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_layer_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">layerIndex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a click on the show layer widget.</span>
 
 <span class="sd">        A new window is shown with additional information about material in the layer.</span>
@@ -1616,7 +1746,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.globalAzimuthalWidget"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.globalAzimuthalWidget">[docs]</a>    <span class="k">def</span> <span class="nf">globalAzimuthalWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.globalAzimuthalWidget">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.globalAzimuthalWidget">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">globalAzimuthalWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a global azimuthal angle widget.</span>
 
 <span class="sd">        This widget is shown in the main single crystal scenario tab.</span>
@@ -1641,7 +1774,10 @@
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Define the global azimuthal angle for all layers (rotation of the layers about the lab Z-axis).</span><span class="se">\n</span><span class="s2">The orientation of the crystal layers in the laboratory frame is shown in the edit layers window&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">label</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">global_azimuthal_angle_sb</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.angleOfIncidenceWidget"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.angleOfIncidenceWidget">[docs]</a>    <span class="k">def</span> <span class="nf">angleOfIncidenceWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.angleOfIncidenceWidget">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.angleOfIncidenceWidget">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">angleOfIncidenceWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an angle of incidence widget.</span>
 
 <span class="sd">        This widget is used in the layer table widget to control the azimuthal angle of a single layer.</span>
@@ -1665,7 +1801,10 @@
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Define the angle of incidence, (normal incidence is 0 degrees).&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">label</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">angle_of_incidence_sb</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.partialIncoherenceWidget"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget">[docs]</a>    <span class="k">def</span> <span class="nf">partialIncoherenceWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.partialIncoherenceWidget">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partialIncoherenceWidget">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">partialIncoherenceWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a partial incoherence widget.</span>
 
 <span class="sd">        Parameters</span>
@@ -1696,7 +1835,10 @@
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Define the percentage partial incoherence and the number of samples to be used in the calculation of an incoherent spectrum.</span><span class="se">\n</span><span class="s2">The percentage reflects changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence.</span><span class="se">\n</span><span class="s2">For thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees.</span><span class="se">\n</span><span class="s2">A large number of samples will take a long time but will give smoother results.</span><span class="se">\n</span><span class="s2">If the value of the percentage incoherence is zero, no incoherence is calculated&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">label</span><span class="p">,</span><span class="n">hbox</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.smoothingWidget"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget">[docs]</a>    <span class="k">def</span> <span class="nf">smoothingWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.smoothingWidget">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.smoothingWidget">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">smoothingWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a smoothing widget used by the partial incoherence method.</span>
 
 <span class="sd">        Parameters</span>
@@ -1727,7 +1869,10 @@
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Define the kernel size for the smoothing of incoherent spectra (must be an odd number)</span><span class="se">\n</span><span class="s2">If the kernel size is less than 3, no smoothing is done.</span><span class="se">\n</span><span class="s2">The larger the number, the smoother the spectrum but beware of too much smoothing.</span><span class="se">\n</span><span class="s2">Also defines the polynomial size for the fitting of the points in the kernel&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">label</span><span class="p">,</span><span class="n">hbox</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.openDB_button_clicked"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked">[docs]</a>    <span class="k">def</span> <span class="nf">openDB_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.openDB_button_clicked">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.openDB_button_clicked">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">openDB_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Open a new materials&#39; database.</span>
 
 <span class="sd">        After the database is opened a refresh is requested.</span>
@@ -1747,7 +1892,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_partially_incoherent_kernel_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_kernel_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_partially_incoherent_kernel_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the change in the partially incoherent kernel spinbox value.</span>
 
 <span class="sd">        Parameters</span>
@@ -1765,7 +1913,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Filter kernel size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_partially_incoherent_polynomial_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_polynomial_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_partially_incoherent_polynomial_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle changes to the partially incoherent polynomial spinbox value.</span>
 
 <span class="sd">        This method updates the relevant setting based on the new value and marks</span>
@@ -1786,7 +1937,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Filter polynomial size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_partially_incoherent_samples_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_partially_incoherent_samples_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_partially_incoherent_samples_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the change in partially incoherent samples setting.</span>
 
 <span class="sd">        Parameters</span>
@@ -1805,7 +1959,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">noCalculationsRequired</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_percentage_partial_incoherence_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_percentage_partial_incoherence_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_percentage_partial_incoherence_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle changes in percentage partial incoherence spinner box value.</span>
 
 <span class="sd">        This method updates the &#39;Percentage partial incoherence&#39; setting based on the new value provided by the relevant spinner box. It marks that a refresh is required and logs the change using the configured debugger.</span>
@@ -1825,7 +1982,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Percentage partial incoherence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_global_azimuthal_angle_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_global_azimuthal_angle_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_global_azimuthal_angle_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the change in global azimuthal angle setting.</span>
 
 <span class="sd">        This method updates the &#39;Global azimuthal angle&#39; in the settings </span>
@@ -1846,7 +2006,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Global azimuthal angle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_angle_of_incidence_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_angle_of_incidence_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_angle_of_incidence_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the &#39;Angle of incidence&#39; setting and mark a refresh as required upon a change in the angle of incidence spinbox value.</span>
 
 <span class="sd">        A refresh is requested</span>
@@ -1866,7 +2029,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Angle of incidence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.refresh"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.refresh">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.refresh">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Refresh the current state, optionally forcing a refresh.</span>
 
 <span class="sd">        This method updates the current state based on various settings and conditions. It checks</span>
@@ -1955,7 +2121,10 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span><span class="s2">&quot;Finished:: refresh, force =&quot;</span><span class="p">,</span> <span class="n">force</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.set_noCalculationsRequired"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.set_noCalculationsRequired">[docs]</a>    <span class="k">def</span> <span class="nf">set_noCalculationsRequired</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.set_noCalculationsRequired">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.set_noCalculationsRequired">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_noCalculationsRequired</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the number of calculations required.</span>
 
 <span class="sd">        The routine first works out the number of layers needing phase averaging,</span>
@@ -1986,7 +2155,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">noCalculationsRequired</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Partially incoherent samples&quot;</span><span class="p">]</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.on_mode_cb_activated"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_mode_cb_activated">[docs]</a>    <span class="k">def</span> <span class="nf">on_mode_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.on_mode_cb_activated">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.on_mode_cb_activated">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_mode_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the activation of the mode combo box in the GUI.</span>
 
 <span class="sd">        Parameters</span>
@@ -2028,7 +2200,10 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span><span class="s2">&quot;Finished:: on_mode_cb_activated&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.average_incoherent_calculator"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator">[docs]</a>    <span class="k">def</span> <span class="nf">average_incoherent_calculator</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.average_incoherent_calculator">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.average_incoherent_calculator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">average_incoherent_calculator</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
                             <span class="n">layers</span><span class="p">,</span>
                             <span class="n">mode</span><span class="p">,</span>
                             <span class="n">theta</span><span class="p">,</span>
@@ -2119,7 +2294,10 @@
             <span class="n">av_epsilon</span>         <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>         <span class="o">/</span> <span class="n">number_of_samples</span>
         <span class="k">return</span> <span class="p">(</span>  <span class="n">av_p_reflectance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_s_reflectance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_p_transmittance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_s_transmittance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_p_absorbtance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_s_absorbtance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_epsilon</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="p">)</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.partially_incoherent_calculator"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator">[docs]</a>    <span class="k">def</span> <span class="nf">partially_incoherent_calculator</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.partially_incoherent_calculator">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.partially_incoherent_calculator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">partially_incoherent_calculator</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
                             <span class="n">layers</span><span class="p">,</span>
                             <span class="n">mode</span><span class="p">,</span>
                             <span class="n">theta</span><span class="p">,</span>
@@ -2227,7 +2405,10 @@
             <span class="n">av_s_absorbtance</span>   <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">av_s_absorbtance</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span>  <span class="n">av_p_reflectance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_s_reflectance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_p_transmittance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_s_transmittance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_p_absorbtance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_s_absorbtance</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">av_epsilon</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="p">)</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.coherent_calculator"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator">[docs]</a>    <span class="k">def</span> <span class="nf">coherent_calculator</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.coherent_calculator">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.coherent_calculator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">coherent_calculator</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
                             <span class="n">layers</span><span class="p">,</span>
                             <span class="n">mode</span><span class="p">,</span>
                             <span class="n">theta</span><span class="p">,</span>
@@ -2309,7 +2490,10 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span><span class="s2">&quot;Finished the coherent_calculator function&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span> <span class="n">p_reflectance</span><span class="p">,</span> <span class="n">s_reflectance</span><span class="p">,</span> <span class="n">p_transmittance</span><span class="p">,</span> <span class="n">s_transmittance</span><span class="p">,</span> <span class="n">p_absorbtance</span><span class="p">,</span> <span class="n">s_absorbtance</span><span class="p">,</span> <span class="n">epsilon</span> <span class="p">)</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.calculate"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vs_cm1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.calculate">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.calculate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vs_cm1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.</span>
 
 <span class="sd">        Parameters</span>
@@ -2396,7 +2580,10 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span><span class="s2">&quot;Finished:: calculate - number of frequencies&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">vs_cm1</span><span class="p">))</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.get_result"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_result">[docs]</a>    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.get_result">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_result">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a particular result.</span>
 
 <span class="sd">        Parameters</span>
@@ -2428,7 +2615,10 @@
                 <span class="s2">&quot;Crystal Absorbtance (S polarisation)&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_absorbtance</span><span class="p">,</span>
         <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plot_type</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.get_results"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results">[docs]</a>    <span class="k">def</span> <span class="nf">get_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.get_results">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.get_results">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the results of the single crystal calculation.</span>
 
 <span class="sd">        If a refresh has been requested it is performed before the calculate method is called.</span>
@@ -2454,7 +2644,10 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span><span class="s2">&quot;Finished:: get_results&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">vs_cm1</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="SingleCrystalScenarioTab.greyed_out"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.greyed_out">[docs]</a>    <span class="k">def</span> <span class="nf">greyed_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SingleCrystalScenarioTab.greyed_out">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab.greyed_out">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">greyed_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Have a look through the settings and see if we need to grey anything out.</span>
 
 <span class="sd">        Parameters</span>
@@ -2468,7 +2661,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># At the moment it appears there is nothing to do.</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Legend&quot;</span><span class="p">],</span><span class="s2">&quot;Finished:: greyed_out&quot;</span><span class="p">)</span>
-        <span class="k">return</span></div></div>
+        <span class="k">return</span></div>
+</div>
+
 
 </pre></div>
         </article>
@@ -2502,9 +2697,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=37b3a9b0"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
     </body>
 </html>

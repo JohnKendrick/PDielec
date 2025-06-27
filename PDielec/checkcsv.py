@@ -238,7 +238,14 @@ def main():
     max_percentage_error = 0.0
     compare_next_line = False
     with open(file1) as fd1, open(file2) as fd2:
-        for line_number,(line1,line2) in enumerate(zip(fd1,fd2)):
+        lines1 = fd1.readlines()
+        lines2 = fd2.readlines()
+        l1 = len(lines1)
+        l2 = len(lines2)
+        if l1 != l2:
+            max_percentage_error = 100.0
+            nerrors = nerrors +1
+        for line_number,(line1,line2) in enumerate(zip(lines1,lines2)):
             if not compare_next_line:
                 store_error, nerror, percentage_error, keep_word1c, keep_word2c = compare_lines(line1,line2,False)
                 max_percentage_error = max(max_percentage_error,percentage_error)

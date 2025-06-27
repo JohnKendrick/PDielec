@@ -21,6 +21,7 @@ from collections import deque
 import numpy as np
 import OpenGL
 from OpenGL.GL import (
+    GL_ALL_ATTRIB_BITS,
     GL_AMBIENT,
     GL_BACK,
     GL_BLEND,
@@ -51,9 +52,11 @@ from OpenGL.GL import (
     GL_POLYGON_SMOOTH,
     GL_POSITION,
     GL_PROJECTION,
+    GL_PROJECTION_MATRIX,
     GL_SHININESS,
     GL_SMOOTH,
     GL_SPECULAR,
+    GL_VIEWPORT,
     glClear,
     glClearColor,
     glClearDepth,
@@ -61,8 +64,10 @@ from OpenGL.GL import (
     glDepthFunc,
     glDisable,
     glEnable,
+    glGetDoublev,
     glGetError,
     glGetFloatv,
+    glGetIntegerv,
     glLight,
     glLightfv,
     glLoadIdentity,
@@ -71,7 +76,9 @@ from OpenGL.GL import (
     glMatrixMode,
     glMultMatrixf,
     glOrtho,
+    glPopAttrib,
     glPopMatrix,
+    glPushAttrib,
     glPushMatrix,
     glRotated,
     glRotatef,
@@ -84,14 +91,16 @@ from OpenGL.GLU import (
     GLU_FILL,
     GLU_SMOOTH,
     gluCylinder,
+    gluLookAt,
     gluNewQuadric,
+    gluProject,
     gluQuadricDrawStyle,
     gluQuadricNormals,
     gluSphere,
 )
 from qtpy.QtCore import Qt, QTimer
-from qtpy.QtGui import QSurfaceFormat
-from qtpy.QtWidgets import QOpenGLWidget
+from qtpy.QtGui import QFont, QPainter, QSurfaceFormat
+from qtpy.QtWidgets import QMessageBox, QOpenGLWidget
 
 from PDielec.Utilities import Debug
 
@@ -125,6 +134,8 @@ class OpenGLWidget(QOpenGLWidget):
         A queue that holds sphere objects to be rendered. These can represent atoms or other spherical entities.
     cylinders : deque
         A queue that holds cylinder objects representing bonds or connections between spheres.
+    texts : deque
+        A queue that holds text objects.
     arrows : deque
         A queue that holds arrow objects, useful for indicating directions or forces.
     light_positions : list
@@ -164,7 +175,7 @@ class OpenGLWidget(QOpenGLWidget):
         Starts or restarts the animation timer.
     paintGL()
         The main rendering function called by the Qt framework to draw the OpenGL scene.
-    drawSpheres(), drawCylinders(), drawArrows()
+    drawSpheres(), drawCylinders(), drawArrows(), drawTexts()
         Functions responsible for drawing the respective geometric objects.
     resizeGL(w, h)
         Adjusts the viewport and projection matrix on widget resize.
@@ -180,7 +191,7 @@ class OpenGLWidget(QOpenGLWidget):
         Sets the center of rotation for the scene.
     createArrays(nphases)
         Initializes storage for drawable objects across animation phases.
-    deleteSpheres(), deleteCylinders(), deleteArrows()
+    deleteSpheres(), deleteCylinders(), deleteArrows(), deleteTexts()
         Convenience methods for clearing the drawable objects.
     addArrows(colour, radius, direction, length, phase=0)
         Adds an arrow to the scene.
@@ -188,6 +199,8 @@ class OpenGLWidget(QOpenGLWidget):
         Adds a cylinder to the scene.
     addSphere(colour, radius, pos, phase=0)
         Adds a sphere to the scene.
+    addText(colour, size, pos, phase=0)
+        Adds a text to the scene.
 
     """
 
@@ -246,6 +259,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.spheres                = deque()
         self.cylinders              = deque()
         self.arrows                 = deque()
+        self.texts                  = deque()
         self.current_phase          = 0
         self.phase_direction        = 1
         self.number_of_phases       = 1
@@ -255,16 +269,28 @@ class OpenGLWidget(QOpenGLWidget):
         self.cylinder_stacks        = 2
         self.timer                  = None
         self.show_arrows            = True
+        self.show_orientation       = False
         self.timer_interval         = 60
         self.my_width               = None
         self.my_height              = None
         self.background_colour      = None
-
         self.show_full_screen       = False
         self.writer                 = None
-        self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
-        self.matrix =  np.eye( 4, dtype=np.float32)
-        self.light_switches = None
+        self.rotation_centre        = np.array( [0.0, 0.0, 0.0] )
+        self.matrix                 =  np.eye( 4, dtype=np.float32)
+        # The orientation definitions are up, across, out vectors respectively
+        self.orientation_definitions = { "x": ( [0,1,0], [0,0,1], [1,0,0] ),
+                                         "y": ( [0,0,1], [1,0,0], [0,1,0] ),
+                                         "z": ( [1,0,0], [0,1,0], [0,0,1] ),
+                                         "X": ( [1,0,0], [0,1,0], [0,0,1] ),
+                                         "Y": ( [0,1,0], [0,0,1], [1,0,0] ),
+                                         "Z": ( [0,0,1], [1,0,0], [0,1,0] ),
+        }
+        self.orientation             = "z"
+        self.current_orientation     = self.orientation_definitions[self.orientation]
+        self.hkl                     = (1,0,0)
+        self.cell                    = None
+        self.light_switches          = None
         d = 200.0
         self.light_positions = [ [-d, d, d], [ d,-d, d], [-d,-d, d], [ d, d, d], [-d, d,-d], [ d,-d,-d], [-d,-d,-d], [ d, d,-d] ]
         self.lights = [ GL_LIGHT0, GL_LIGHT1, GL_LIGHT2, GL_LIGHT3, GL_LIGHT4, GL_LIGHT5, GL_LIGHT6, GL_LIGHT7 ]
@@ -381,7 +407,7 @@ class OpenGLWidget(QOpenGLWidget):
         y : float
             The degree of rotation around the y-axis (degrees).
         z : float
-            Degree of rotation around the z-axis (degrees) is ignored, the parameter is preserved for interface consistency or future use.
+            Degree of rotation around the z-axis (degrees).
 
         Returns
         -------
@@ -417,12 +443,90 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print("molecule rotation",x,y,z)
         self.myMakeCurrent()
         glMatrixMode(GL_MODELVIEW)
-        glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
-        glLoadIdentity()
-        glRotatef(scale*x, 1.0, 0.0, 0.0)
-        glRotatef(scale*y, 0.0, 1.0, 0.0)
-        glMultMatrixf(self.matrix)
+        self.matrix=glGetFloatv(GL_MODELVIEW_MATRIX)
+        old_matrix = self.matrix[:3,:3]
+        up,across,out = self.current_orientation
+        debugger.print("up",up)
+        debugger.print("across",across)
+        debugger.print("out",out)
+        glRotatef(scale*x, across[0], across[1], across[2])
+        glRotatef(scale*y,     up[0],     up[1],     up[2])
+        glRotatef(scale*z,    out[0],    out[1],    out[2])
+        self.matrix=glGetFloatv(GL_MODELVIEW_MATRIX)
+        new_matrix = self.matrix[:3,:3]
+        new_up     = np.dot(new_matrix,np.dot(old_matrix.T,up))
+        new_across = np.dot(new_matrix,np.dot(old_matrix.T,across))
+        new_out    = np.dot(new_matrix,np.dot(old_matrix.T,out))
+        new_up     = new_up / np.linalg.norm(new_up)
+        new_across = new_across / np.linalg.norm(new_across)
+        new_out    = new_out / np.linalg.norm(new_out)
+        self.current_orientation = (new_up, new_across, new_out)
+        debugger.print("new_up",new_up)
+        debugger.print("new_across",new_across)
+        debugger.print("new_out",new_out)
+        uvw_up     = self.cell.convert_xyz_to_integer_abc(new_up)
+        uvw_across = self.cell.convert_xyz_to_integer_abc(new_across)
+        uvw_out    = self.cell.convert_xyz_to_integer_abc(new_out)
+        self.current_uvw_orientation = (uvw_up, uvw_across, uvw_out)
+        debugger.print("uvw_up",uvw_up)
+        debugger.print("uvw_across",uvw_across)
+        debugger.print("uvw_out",uvw_out)
         self.update()
+
+    def show_help_dialog(self):
+        """Show the help dialogue message.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        help_string = """
+  Key      	Description                                         
+  ------	--------------------------------------------------  
+  ⇒      	: Rotate around screen vertical axis 5 degrees       
+  Shift⇒ 	: Rotate around screen vertical axis  45 degrees     
+  ⇐      	: Rotate around screen vertical axis -5 degrees      
+  Shift⇐ 	: Rotate around screen vertical axis  -45 degrees    
+  ⇑      	: Rotate around screen horizontal axis 5 degrees     
+  Shift⇑ 	: Rotate around screen horizontal axis  45 degrees   
+  ⇓      	: Rotate around screen horizontal axis -5 degrees    
+  Shift⇓ 	: Rotate around screen horizontal axis  -45 degrees  
+  l      	: Rotate cell anticlockwise  5 degrees               
+  L      	: Rotate cell anticlockwise  45 degrees              
+  r      	: Rotate cell clockwise  5 degrees                   
+  R      	: Rotate cell clockwise  45 degrees                 
+  x      	: Show the cell with the x-axis normal to the screen   
+  X      	: Show the cell with the x-axis vertical on the screen          
+  y      	: Show the cell with the y-axis normal to the screen   
+  Y      	: Show the cell with the y-axis vertical on the screen          
+  z      	: Show the cell with the z-axis normal to the screen   
+  Z      	: Show the cell with the Z-axis vertical on the screen          
+  a      	: Show the cell with the a-axis normal to the screen   
+  A      	: Show the cell with the a-axis vertical on the screen          
+  {ctrl}a	: Show the cell with the reciprocal a-axis normal to the screen  
+  {ctrl}A	: Show the cell with the reciprocal a-axis vertical on the screen
+  b      	: Show the cell with the b-axis normal to the screen
+  B      	: Show the cell with the b-axis vertical on the screen 
+  {ctrl}b	: Show the cell with the reciprocal b-axis normal to the screen
+  {ctrl}B	: Show the cell with the reciprocal b-axis vertical on the screen
+  c      	: Show the cell with the c-axis normal to the screen
+  C      	: Show the cell with the c-axis vertical on the screen
+  {ctrl}c	: Show the cell with the reciprocal c-axis normal to the screen
+  {ctrl}C	: Show the cell with the reciprocal c-axis vertical on the screen
+  s      	: Show (hkl) surface normal & [uvw] vertical on the screen
+  S      	: Show (hkl) surface vertical & [uvw] normal on the screen
+"""
+        msg = QMessageBox(self)
+        msg.setWindowTitle("Keyboard Shortcuts Help")
+        msg.setText(help_string)
+        msg.exec()
+      
+   
 
     def keyPressEvent(self, event):
         """Handle keyboard events for specific actions.
@@ -485,17 +589,70 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print("kepressevent",key,modifiers,control,shift)
         amount = 45.0 if modifiers & Qt.ShiftModifier or modifiers & Qt.ControlModifier else 5.0
         if key == Qt.Key_Left:
-            self.moleculeRotate(-amount,0.0,1.0,0.0)
-        elif key == Qt.Key_Right:
             self.moleculeRotate(+amount,0.0,1.0,0.0)
+        elif key == Qt.Key_Right:
+            self.moleculeRotate(-amount,0.0,1.0,0.0)
         elif key == Qt.Key_Up:
             self.moleculeRotate(-amount,1.0,0.0,0.0)
         elif key == Qt.Key_Down:
             self.moleculeRotate(+amount,1.0,0.0,0.0)
+        elif key == Qt.Key_R:
+            self.moleculeRotate(-amount,0.0,0.0,1.0)
+        elif key == Qt.Key_L:
+            self.moleculeRotate(+amount,0.0,0.0,1.0)
+        elif key == Qt.Key_H:
+            self.show_help_dialog()
         elif key == Qt.Key_Plus:
             self.zoom(+1.0)
         elif key == Qt.Key_Minus:
             self.zoom(-1.0)
+        elif key == Qt.Key_A:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("A")
+                if modifiers & Qt.ControlModifier:
+                    self.set_orientation("A*")
+            elif modifiers & Qt.ControlModifier:
+                self.set_orientation("a*")
+            else:
+                self.set_orientation("a")
+        elif key == Qt.Key_B:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("B")
+                if modifiers & Qt.ControlModifier:
+                    self.set_orientation("B*")
+            elif modifiers & Qt.ControlModifier:
+                self.set_orientation("b*")
+            else:
+                self.set_orientation("b")
+        elif key == Qt.Key_C:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("C")
+                if modifiers & Qt.ControlModifier:
+                    self.set_orientation("C*")
+            elif modifiers & Qt.ControlModifier:
+                self.set_orientation("c*")
+            else:
+                self.set_orientation("c")
+        elif key == Qt.Key_X:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("X")
+            else:
+                self.set_orientation("x")
+        elif key == Qt.Key_Y:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("Y")
+            else:
+                self.set_orientation("y")
+        elif key == Qt.Key_Z:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("Z")
+            else:
+                self.set_orientation("z")
+        elif key == Qt.Key_S:
+            if modifiers & Qt.ShiftModifier:
+                self.set_orientation("S")
+            else:
+                self.set_orientation("s")
         elif key == Qt.Key_P:
             self.save_movie("movie.mp4")
         elif key == Qt.Key_F:
@@ -509,8 +666,238 @@ class OpenGLWidget(QOpenGLWidget):
             glLoadIdentity()
             self.matrix =  np.eye( 4, dtype=np.float32)
             self.current_phase = int(self.number_of_phases / 2)
+            self.set_orientation("z")
             debugger.print("Home key", self.current_phase)
             self.update()
+
+    def set_orientation(self,orientation):
+        """Set the molecular orientation.
+
+        The orientation can be one of 'x', 'y', 'z', 'a', 'b', 'c'
+        The orientation is set using gluLookAt to define the modelview matrix
+        The rotation parts of the transformation matrix are maintained
+        The translation part is set to unity.
+
+                             Points out    Points up
+
+                   "x" means     x-axis       y-axis
+                   "y" means     y-axis       z-axis
+                   "z" means     z-axis       x-axis
+                   "a" means     a-axis       aXb
+                   "b" means     b-axis       bXc
+                   "c" means     c-axis       cXa
+
+        The use of a capital letter means the axes are reversed
+
+        Parameters
+        ----------
+        orientation : str
+            The required orientation
+
+        Returns
+        -------
+        None
+
+        """        
+        debugger.print("set_orientation", orientation)
+        up,across,out = self.orientation_definitions[orientation]
+        debugger.print("out   :",out)
+        debugger.print("across:",across)
+        debugger.print("up    :",up)
+        self.orientation = orientation
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+        glPushMatrix()
+        gluLookAt(200*out[0], 200*out[1], 200*out[2], 0, 0, 0, up[0], up[1], up[2])
+        self.matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+        glPopMatrix()
+        self.matrix[0,3] = 0
+        self.matrix[1,3] = 0
+        self.matrix[2,3] = 0
+        self.matrix[3,0] = 0
+        self.matrix[3,1] = 0
+        self.matrix[3,2] = 0
+        self.matrix[3,3] = 1
+        glMultMatrixf(self.matrix)
+        uvw_out    = self.cell.convert_xyz_to_integer_abc(out)
+        uvw_across = self.cell.convert_xyz_to_integer_abc(across)
+        uvw_up     = self.cell.convert_xyz_to_integer_abc(up)
+        debugger.print(f"uvw_out   : {out} to {uvw_out}")
+        debugger.print(f"uvw_across: {across} to {uvw_across}")
+        debugger.print(f"uvw_up    : {up} to {uvw_up}")
+        self.current_uvw_orientation = (uvw_up, uvw_across, uvw_out)
+        self.current_orientation = self.orientation_definitions[self.orientation]
+        self.current_phase = int(self.number_of_phases / 2)
+        self.update()
+
+    def define_surface_orientations(self, cell, hkl, uvw):
+        """Set the up orientations for the surface hkl.
+
+        hkl defines the surface as (hkl)
+        uvw defines a normal to the surface (hkl), [uvw] is made orthogonal to the (hkl) normal
+        if (hkl) is (000) [uvw] is used to define the unique direction
+
+        Parameters
+        ----------
+        cell : unitCell
+            The cell used to define the orientations with respect to a, b, c
+        hkl : a tuple of 3 integers
+            The values of h, k and l
+        uvw : a tuple of 3 integers
+            The values of u, v and w
+
+
+        Modifies
+        --------
+        orientation_definitions
+
+        """        
+        debugger.print("define_surface_orientations", cell,hkl,uvw)
+        if cell is None: 
+            return
+        self.cell = cell
+        hklsum = abs(hkl[0]) + abs(hkl[1]) + abs(hkl[2])
+        if hklsum > 0:
+            #
+            # Choose the out axis, by converting hkl to xyz
+            #
+            s = cell.convert_hkl_to_xyz(hkl)
+            s = s / np.linalg.norm(s)
+            debugger.print("s    :",s)
+            #
+            # Make sure that the [uvw] direction is orthogonal to (hkl)
+            #
+            uvw_xyz = cell.convert_abc_to_xyz(uvw)
+            uvw_xyz = uvw_xyz / np.linalg.norm(uvw_xyz)
+            sdot = np.dot(s, uvw_xyz)
+            if abs(sdot) > 0.999:
+                #
+                # [uvw] and (hkl) are too close to each other
+                # Find the lattice vector that is least like the surface normal
+                #
+                sdot_min = 1.0E12
+                i_min = -1
+                for i,abc in enumerate(cell.lattice):
+                    abc = abc / np.linalg.norm(abc)
+                    sdot = np.dot(s,abc)
+                    debugger.print(f"abc {abc}, sdot {sdot} ")
+                    if abs(sdot) < sdot_min:
+                        sdot_min = sdot
+                        i_min    = i
+                        debugger.print("sdot_min    :",sdot_min)
+                        debugger.print("i_min       :",i_min)
+                    #
+                    # Choose the up axis, by projecting out the surface normal
+                    #
+                    s_up = cell.lattice[i_min] - np.dot(s,cell.lattice[i_min])*s
+            else:
+                s_up = uvw_xyz - np.dot(s,uvw_xyz)*s
+        else:
+            #
+            # hkl has been set to (000) so [uvw] becomes the dominant vector
+            #
+            s = cell.convert_abc_to_xyz(uvw)
+            s = s / np.linalg.norm(s)
+            #
+            # Find the lattice vector that is least like the surface normal
+            #
+            sdot_min = 1.0E12
+            i_min = -1
+            for i,abc in enumerate(cell.lattice):
+                abc = abc / np.linalg.norm(abc)
+                sdot = np.dot(s,abc)
+                debugger.print(f"abc {abc}, sdot {sdot} ")
+                if abs(sdot) < sdot_min:
+                    sdot_min = sdot
+                    i_min    = i
+                    debugger.print("sdot_min    :",sdot_min)
+                    debugger.print("i_min       :",i_min)
+            #
+            # Choose the up axis, by projecting out the dominant vector
+            #
+            s_up = cell.lattice[i_min] - np.dot(s,cell.lattice[i_min])*s
+        #
+        # Choose the across axis by find the normal to s and s_up
+        #
+        s_across = np.cross(s,s_up)
+        s_up     = s_up / np.linalg.norm(s_up)
+        s_across = s_across / np.linalg.norm(s_across)
+        self.orientation_definitions["s"] = (s_up, s_across, s)
+        self.orientation_definitions["S"] = (s, s_across, s_up)
+        debugger.print("s       :",s)
+        debugger.print("s_up    :",s_up)
+        debugger.print("s_across:",s_across)
+        return
+
+    def define_orientations(self, cell):
+        """Set the up orientations for the cell.
+
+                             Points out    Points up  Points across
+
+                   "x" means     x-axis       y-axis         z-axis
+                   "y" means     y-axis       z-axis         x-axis
+                   "z" means     z-axis       x-axis         y-axis
+                   "a" means     a-axis       axb            ax(axb)
+                   "b" means     b-axis       bxc            bx(bxc)
+                   "c" means     c-axis       cxa            cx(cxa)
+                   "a*" means    a*-axis      a*xb*          a*x(a*xb*)
+                   "b*" means    b*-axis      b*xc*          b*x(b*xc*)
+                   "c*" means    c*-axis      c*xa*          c*x(c*xa*)
+
+        A capital letter indicates that the up and out designations are reversed
+
+
+        Parameters
+        ----------
+        cell : unitCell
+            The cell used to define the orientations with respect to a, b, c
+
+        Modifies
+        --------
+        orientation_definitions
+
+        """        
+        debugger.print("define_orientations", cell)
+        a = cell.lattice[0] / np.linalg.norm(cell.lattice[0])
+        b = cell.lattice[1] / np.linalg.norm(cell.lattice[1])
+        c = cell.lattice[2] / np.linalg.norm(cell.lattice[2])
+        a_up = np.cross(a,b)
+        b_up = np.cross(b,c)
+        c_up = np.cross(c,a)
+        a_across = np.cross(a,a_up)
+        b_across = np.cross(b,b_up)
+        c_across = np.cross(c,c_up)
+        astar = cell.reciprocal_lattice.T[0] / np.linalg.norm(cell.reciprocal_lattice.T[0])
+        bstar = cell.reciprocal_lattice.T[1] / np.linalg.norm(cell.reciprocal_lattice.T[1])
+        cstar = cell.reciprocal_lattice.T[2] / np.linalg.norm(cell.reciprocal_lattice.T[2])
+        astar_up = np.cross(astar,bstar)
+        bstar_up = np.cross(bstar,cstar)
+        cstar_up = np.cross(cstar,astar)
+        astar_across = np.cross(astar,astar_up)
+        bstar_across = np.cross(bstar,bstar_up)
+        cstar_across = np.cross(cstar,cstar_up)
+        self.orientation_definitions["a"]  = (a_up, a_across, a)
+        self.orientation_definitions["a*"] = (astar_up, astar_across, astar)
+        self.orientation_definitions["A"]  = (a, a_across, a_up)
+        self.orientation_definitions["A*"] = (astar, astar_across, astar_up)
+        self.orientation_definitions["b"]  = (b_up, b_across, b)
+        self.orientation_definitions["b*"] = (bstar_up, bstar_across, bstar)
+        self.orientation_definitions["B"]  = (b, b_across, b_up)
+        self.orientation_definitions["B*"] = (bstar, bstar_across, bstar_up)
+        self.orientation_definitions["c"]  = (c_up, c_across,c )
+        self.orientation_definitions["c*"] = (cstar_up, cstar_across,cstar )
+        self.orientation_definitions["C"]  = (c, c_across, c_up)
+        self.orientation_definitions["C*"] = (cstar, cstar_across, cstar_up)
+        debugger.print("a       :",a)
+        debugger.print("a_up    :",a_up)
+        debugger.print("a_across:",a_across)
+        debugger.print("b       :",b)
+        debugger.print("b_up    :",b_up)
+        debugger.print("b_across:",b_across)
+        debugger.print("c       :",c)
+        debugger.print("c_up    :",c_up)
+        debugger.print("c_across:",c_across)
+        return
 
     def save_movie(self, filename):
         """Save the current state as a movie file.
@@ -744,14 +1131,16 @@ class OpenGLWidget(QOpenGLWidget):
                 self.zoom(xzoom+yzoom)
             else:
                 # handle ordinary rotation
-                xrotate = (self.xAtMove - self.xAtPress)*1
-                yrotate = (self.yAtMove - self.yAtPress)*1
-                self.moleculeRotate(0.3,yrotate,xrotate,0.0)
+                xrotate =-(self.xAtMove - self.xAtPress)
+                yrotate = (self.yAtMove - self.yAtPress)
+                self.moleculeRotate(0.3,yrotate,xrotate,0)
         elif buttons & Qt.MidButton:
             debugger.print("Mouse event - mid button")
-            xshift =  0.02 * (self.xAtMove - self.xAtPress)
+            xshift = -0.02 * (self.xAtMove - self.xAtPress)
             yshift = -0.02 * (self.yAtMove - self.yAtPress)
-            self.translate(xshift, yshift)
+            up,across,out = self.current_orientation
+            shifted = xshift*np.array(across)+yshift*np.array(up)
+            self.translate(shifted[0], shifted[1])
             self.update()
         debugger.print("Mouse event - xy", self.xAtPress,self.yAtPress)
         self.xAtPress = self.xAtMove
@@ -819,7 +1208,7 @@ class OpenGLWidget(QOpenGLWidget):
         """Render OpenGL graphics for the current scene.
 
         This method prepares the graphics context, clears the buffer, sets the background color,
-        and draws the current scene which may include spheres, cylinders, and arrows based on the object's state.
+        and draws the current scene which may include spheres, cylinders, texts and arrows based on the object's state.
 
         Parameters
         ----------
@@ -852,9 +1241,33 @@ class OpenGLWidget(QOpenGLWidget):
         glTranslatef(-self.rotation_centre[0],-self.rotation_centre[1],-self.rotation_centre[2] )
         self.drawSpheres()
         self.drawCylinders()
+        self.drawTexts()
+        if self.show_orientation:
+            self.drawUVWInfo()
         if self.show_arrows:
             self.drawArrows()
         glPopMatrix()
+
+    def drawUVWInfo(self):
+        """Draw the uvw info on the screen.
+
+        The uvw information (up, across, out of the screen)
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """        
+        debugger.print("drawUVWInfo")
+        uvw_up, uvw_across, uvw_out = self.current_uvw_orientation
+        uvw_string = f"Normal to screen = {uvw_out},  screen vertical = {uvw_up}"
+        self.renderText(10,10,0,uvw_string,screen_coordinates=True)
+        debugger.print("drawUVWInfo", uvw_string)
+        return
 
     def drawSpheres(self):
         """Draw spheres based on the object's current phase and spheres attributes.
@@ -893,6 +1306,71 @@ class OpenGLWidget(QOpenGLWidget):
             glTranslatef( x, y, z )
             gluSphere(self.quadric, rad, self.sphere_slices, self.sphere_stacks)
             glPopMatrix()
+
+    def drawTexts(self):
+        """Draw the texts stored in the object.
+
+        This method iterates through the list of text objects for the current phase, 
+        computes the required material colors based on predefined factors, and renders 
+        each text using OpenGL commands.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """        
+        debugger.print("drawTexts")
+        if len(self.texts) == 0:
+            return
+        for text,_color,_size,pos in self.texts[self.current_phase]:
+            self.renderText(pos[0],pos[1],pos[2],text)
+
+    def renderText(self, x, y, z, string, screen_coordinates=False):
+        """Draw text in the widget.
+
+        Draw the text in string at the position starting x, y, z
+
+        Parameters
+        ----------
+        x, y, z : floats
+            The position at which to start drawning
+        string : str
+            The text
+        screen_coordinates : bool
+            Optional parameter by default the coordinates are model coordinates
+            If true the screen coordinates are used
+
+        Returns
+        -------
+        None
+
+        """        
+        height = self.height()
+
+        model = glGetDoublev(GL_MODELVIEW_MATRIX)
+        proj  = glGetDoublev(GL_PROJECTION_MATRIX)
+        view  = glGetIntegerv(GL_VIEWPORT)
+        if not screen_coordinates:
+            textPosX, textPosY, textPosZ = gluProject(x, y, z, model, proj, view)
+            textPosY = height - textPosY
+        else:
+            textPosX = x
+            textPosY = height-y
+        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        painter = QPainter()
+        painter.begin(self)
+        painter.setPen(Qt.yellow)
+        painter.setFont(QFont("Helvetica", 14))
+        painter.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
+        painter.drawText(int(textPosX), int(textPosY), string)
+        painter.end()
+        glPopAttrib()
+        return
+
 
     def drawCylinders(self):
         """Draw the cylinders stored in the object.
@@ -1084,9 +1562,11 @@ class OpenGLWidget(QOpenGLWidget):
             pos = sphere.position
             vec = pos - self.rotation_centre
             dist = math.sqrt(np.dot(vec,vec))
-            if dist > maxsize:
-                maxsize = dist
-        self.image_size = maxsize
+            maxsize = max(maxsize, dist)
+        if maxsize > 0:
+            self.image_size = maxsize
+        else:
+            self.image_size = 10.0
         self.setProjectionMatrix()
         debugger.print("setImageSize",self.image_size)
 
@@ -1105,7 +1585,8 @@ class OpenGLWidget(QOpenGLWidget):
 
         Notes
         -----
-        This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current. It also updates `self.matrix` with an identity matrix and sets `self.current_phase` based on the total number of phases.
+        This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current.
+        It also updates the rotation with `self.matrix` and sets `self.current_phase` based on the total number of phases.
 
         """        
         if self.image_size is None or self.my_width is None or self.my_height is None:
@@ -1120,7 +1601,7 @@ class OpenGLWidget(QOpenGLWidget):
         glOrtho(-orthox, orthox, -orthoy, orthoy, -orthoz, orthoz)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        self.matrix =  np.eye( 4, dtype=np.float32)
+        glMultMatrixf(self.matrix)
         # reset the current phase to the centre of the phases
         self.current_phase = int(self.number_of_phases / 2)
         debugger.print("set projection matrix ortho", orthox, orthoy, orthoz)
@@ -1204,21 +1685,19 @@ class OpenGLWidget(QOpenGLWidget):
 
         Notes
         -----
-        - Assumes `self.spheres` and `self.cylinders` are already defined as lists.
-        - It uses the `clear` method on both `self.spheres` and `self.cylinders`, which is available for lists in Python 3.3 and later.
+        - Assumes `self.spheres`, `self.texts` and `self.cylinders` are already defined as lists.
+        - It uses the `clear` method, which is available for lists in Python 3.3 and later.
 
         """        
         debugger.print("createArrays")
         #  Create an empty list for each phase
-        # self.spheres    = [ [] for i in range(nphases) ]
-        # self.cylinders  = [ [] for i in range(nphases) ]
-        #self.spheres    = deque( deque() for i in range(nphases) )
-        #self.cylinders  = deque( deque() for i in range(nphases) )
         self.spheres.clear()
         self.cylinders.clear()
+        self.texts.clear()
         for _i in range(nphases):
             self.spheres.append(deque())
             self.cylinders.append(deque())
+            self.texts.append(deque())
         self.number_of_phases = nphases
         self.current_phase = int(self.number_of_phases / 2)
 
@@ -1238,6 +1717,23 @@ class OpenGLWidget(QOpenGLWidget):
         """        
         debugger.print("deleteSpheres")
         self.spheres.clear()
+
+    def deleteTexts(self):
+        """Delete all texts from the current context.
+
+        This method clears the collection of texts.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """        
+        debugger.print("deleteTexts")
+        self.texts.clear()
 
     def deleteCylinders(self):
         """Delete all cylinder objects from the storage.
@@ -1303,6 +1799,29 @@ class OpenGLWidget(QOpenGLWidget):
 
         """        
         self.arrows.append( Arrow(colour, radius, direction, length) )
+
+    def addText(self, string, colour, size, pos, phase=0):
+        """Add a text object to the specified phase collection of texts.
+
+        Parameters
+        ----------
+        string : str
+            The content of the text.
+        colour : str
+            The color of the text.
+        size : float
+            The size of the text
+        pos : tuple
+            The starting position of the text (x, y, z coordinates).
+        phase : int, optional
+            The phase to which the text should be added. Default is 0.
+
+        Returns
+        -------
+        None
+
+        """        
+        self.texts[phase].append( (string,colour,size,pos) )
 
     def addCylinder(self, colour, radius, pos1, pos2, phase=0):
         """Add a Cylinder object to the specified phase collection of cylinders.

@@ -1,17 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="References" href="../../../zreferences.html" /><link rel="prev" title="PDielec.preader" href="../preader/index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PDielec.vibanalysis - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
     
     
@@ -71,7 +71,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -86,22 +86,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -114,6 +155,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -132,7 +175,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -174,67 +218,70 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.vibanalysis</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -258,11 +305,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/PDielec/vibanalysis/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -272,9 +325,9 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="module-PDielec.vibanalysis">
-<span id="pdielec-vibanalysis"></span><h1><a class="reference internal" href="#module-PDielec.vibanalysis" title="PDielec.vibanalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a><a class="headerlink" href="#module-PDielec.vibanalysis" title="Permalink to this heading">#</a></h1>
+<span id="pdielec-vibanalysis"></span><h1>PDielec.vibanalysis<a class="headerlink" href="#module-PDielec.vibanalysis" title="Link to this heading">¶</a></h1>
 <p>vibAnalysis is a Python tool written by Filipe Teixeira the original is available on
 github at <a class="reference external" href="https://github.com/teixeirafilipe/vibAnalysis">https://github.com/teixeirafilipe/vibAnalysis</a>.</p>
 <p>The package uses the Vibrational Mode Decomoposition method to describe the normal modes of a molecule.
@@ -287,10 +340,8 @@ An example of the use of the modified program are give below;</p>
 all the data required by the vibAnalysis.
 All of the options available to the original code are available to this modified version.
 Full details of the options available can be viewed at <a class="reference external" href="https://github.com/teixeirafilipe/vibAnalysis">https://github.com/teixeirafilipe/vibAnalysis</a>.</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -308,7 +359,7 @@ Full details of the options available can be viewed at <a class="reference exter
 </div>
 </section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -378,151 +429,249 @@ Full details of the options available can be viewed at <a class="reference exter
 </tbody>
 </table>
 </div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Atom">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">Atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Atom" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">Atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Atom" title="Link to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Atom.punch">
-<span class="sig-name descname"><span class="pre">punch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Atom.punch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Atom.punch" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">punch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Atom.punch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Atom.punch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Atom.mass">
+<span class="sig-name descname"><span class="pre">mass</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.vibanalysis.Atom.mass" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Atom.r">
+<span class="sig-name descname"><span class="pre">r</span></span><a class="headerlink" href="#PDielec.vibanalysis.Atom.r" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Atom.symbol">
+<span class="sig-name descname"><span class="pre">symbol</span></span><a class="headerlink" href="#PDielec.vibanalysis.Atom.symbol" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">System</span></span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">System</span></span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System" title="Link to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.addAtom">
-<span class="sig-name descname"><span class="pre">addAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addAtom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addAtom" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addAtom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addAtom" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.addDisplacements">
-<span class="sig-name descname"><span class="pre">addDisplacements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addDisplacements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addDisplacements" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addDisplacements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addDisplacements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addDisplacements" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.addVibIntensity">
-<span class="sig-name descname"><span class="pre">addVibIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'IR'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addVibIntensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addVibIntensity" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addVibIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'IR'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addVibIntensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addVibIntensity" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.addVibSymmetry">
-<span class="sig-name descname"><span class="pre">addVibSymmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sym</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addVibSymmetry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addVibSymmetry" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addVibSymmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sym</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addVibSymmetry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addVibSymmetry" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.addVibration">
-<span class="sig-name descname"><span class="pre">addVibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addVibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addVibration" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addVibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.addVibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.addVibration" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.checkADM">
-<span class="sig-name descname"><span class="pre">checkADM</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.checkADM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.checkADM" title="Permalink to this definition">#</a></dt>
-<dd><p>Check orthogonalyty of the ADM</p>
+<span class="sig-name descname"><span class="pre">checkADM</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.checkADM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.checkADM" title="Link to this definition">¶</a></dt>
+<dd><p>Check orthogonality of the ADM</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.makeADM">
-<span class="sig-name descname"><span class="pre">makeADM</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.makeADM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.makeADM" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">makeADM</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.makeADM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.makeADM" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.makeGeo">
-<span class="sig-name descname"><span class="pre">makeGeo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.makeGeo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.makeGeo" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">makeGeo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.makeGeo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.makeGeo" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.massWeightS">
-<span class="sig-name descname"><span class="pre">massWeightS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.massWeightS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.massWeightS" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">massWeightS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.massWeightS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.massWeightS" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.massWeightVibrations">
-<span class="sig-name descname"><span class="pre">massWeightVibrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.massWeightVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.massWeightVibrations" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">massWeightVibrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.massWeightVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.massWeightVibrations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.normalizeS">
-<span class="sig-name descname"><span class="pre">normalizeS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.normalizeS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.normalizeS" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">normalizeS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.normalizeS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.normalizeS" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.normalizeVibrations">
-<span class="sig-name descname"><span class="pre">normalizeVibrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.normalizeVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.normalizeVibrations" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">normalizeVibrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.normalizeVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.normalizeVibrations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.punch">
-<span class="sig-name descname"><span class="pre">punch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.punch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.punch" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">punch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.punch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.punch" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.removeVibrations">
-<span class="sig-name descname"><span class="pre">removeVibrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">list(range(6))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.removeVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.removeVibrations" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">removeVibrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">list(range(6))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.removeVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.removeVibrations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.sortVibrations">
-<span class="sig-name descname"><span class="pre">sortVibrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.sortVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.sortVibrations" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sortVibrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.sortVibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.sortVibrations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.System.tripleMass">
-<span class="sig-name descname"><span class="pre">tripleMass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.tripleMass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.tripleMass" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">tripleMass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#System.tripleMass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.System.tripleMass" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.ADM">
+<span class="sig-name descname"><span class="pre">ADM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.vibanalysis.System.ADM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.S">
+<span class="sig-name descname"><span class="pre">S</span></span><a class="headerlink" href="#PDielec.vibanalysis.System.S" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.atoms">
+<span class="sig-name descname"><span class="pre">atoms</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.vibanalysis.System.atoms" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.geo">
+<span class="sig-name descname"><span class="pre">geo</span></span><a class="headerlink" href="#PDielec.vibanalysis.System.geo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.intcoords">
+<span class="sig-name descname"><span class="pre">intcoords</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.vibanalysis.System.intcoords" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.natoms">
+<span class="sig-name descname"><span class="pre">natoms</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.vibanalysis.System.natoms" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.symbol">
+<span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.vibanalysis.System.symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.System.vibrations">
+<span class="sig-name descname"><span class="pre">vibrations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.vibanalysis.System.vibrations" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">Vibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raman</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sym</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">Vibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raman</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sym</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration" title="Link to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.addVMARD">
-<span class="sig-name descname"><span class="pre">addVMARD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMARD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMARD" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addVMARD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMARD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMARD" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.addVMBLD">
-<span class="sig-name descname"><span class="pre">addVMBLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMBLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMBLD" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addVMBLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMBLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMBLD" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.addVMLD">
-<span class="sig-name descname"><span class="pre">addVMLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMLD" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addVMLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMLD" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.addVMP">
-<span class="sig-name descname"><span class="pre">addVMP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vmp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMP" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">addVMP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vmp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.addVMP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.addVMP" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.editDisplacements">
-<span class="sig-name descname"><span class="pre">editDisplacements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.editDisplacements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.editDisplacements" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">editDisplacements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.editDisplacements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.editDisplacements" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.editIntensity">
-<span class="sig-name descname"><span class="pre">editIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'IR'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.editIntensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.editIntensity" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">editIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'IR'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.editIntensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.editIntensity" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.string">
-<span class="sig-name descname"><span class="pre">string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.string" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#Vibration.string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.Vibration.string" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.VMARD">
+<span class="sig-name descname"><span class="pre">VMARD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.vibanalysis.Vibration.VMARD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.VMLD">
+<span class="sig-name descname"><span class="pre">VMLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.vibanalysis.Vibration.VMLD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.VMP">
+<span class="sig-name descname"><span class="pre">VMP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.vibanalysis.Vibration.VMP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.analysis">
+<span class="sig-name descname"><span class="pre">analysis</span></span><a class="headerlink" href="#PDielec.vibanalysis.Vibration.analysis" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.frequency">
+<span class="sig-name descname"><span class="pre">frequency</span></span><a class="headerlink" href="#PDielec.vibanalysis.Vibration.frequency" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.intIR">
+<span class="sig-name descname"><span class="pre">intIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.vibanalysis.Vibration.intIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.intRaman">
+<span class="sig-name descname"><span class="pre">intRaman</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.vibanalysis.Vibration.intRaman" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.vibanalysis.Vibration.symmetry">
+<span class="sig-name descname"><span class="pre">symmetry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#PDielec.vibanalysis.Vibration.symmetry" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.InitialiseVaOpts">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">InitialiseVaOpts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#InitialiseVaOpts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.InitialiseVaOpts" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">InitialiseVaOpts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#InitialiseVaOpts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.InitialiseVaOpts" title="Link to this definition">¶</a></dt>
 <dd><p>Define default options for the Vibanalysis package</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.VMARD">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMARD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMARD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMARD" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMARD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMARD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMARD" title="Link to this definition">¶</a></dt>
 <dd><p>Performs a Linear Decomposition of the vibrational modes
 using Bayesian regression with Automatic Relevance Determination
 over the internal coordinates stored in the system s.
@@ -533,7 +682,7 @@ Inputs:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.VMBLD">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMBLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMBLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMBLD" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMBLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMBLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMBLD" title="Link to this definition">¶</a></dt>
 <dd><p>Performs a Linear Decomposition of the vibrational modes
 over the internal coordinates stored in the system s using Bayesian
 Ridge Regression.
@@ -544,7 +693,7 @@ Inputs:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.VMLD">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMLD" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMLD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMLD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMLD" title="Link to this definition">¶</a></dt>
 <dd><p>Performs a Linear Decomposition of the vibrational modes
 over the internal coordinates stored in the system s.
 Inputs:
@@ -554,7 +703,7 @@ Inputs:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.VMP">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMP" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">VMP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">of</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#VMP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.VMP" title="Link to this definition">¶</a></dt>
 <dd><p>Performs a simple projection of the normal modes
 over the internal coordinates S stored in system s. Other inputs:
 - of: handle for the output file (for logging)</p>
@@ -562,38 +711,38 @@ over the internal coordinates S stored in system s. Other inputs:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.angleAmp">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">angleAmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">al</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#angleAmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.angleAmp" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">angleAmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">al</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#angleAmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.angleAmp" title="Link to this definition">¶</a></dt>
 <dd><p>Returns amplitude (optnialy in degs) for the valence angle formed by
 the atoms in al, with al[1] being the apex (numbering starts at 0).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.animateIC">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">animateIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#animateIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.animateIC" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">animateIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#animateIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.animateIC" title="Link to this definition">¶</a></dt>
 <dd><p>Displaces geo over internal coordinate m and punches a xyz file tfn</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.animateMode">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">animateMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#animateMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.animateMode" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">animateMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tfn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#animateMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.animateMode" title="Link to this definition">¶</a></dt>
 <dd><p>Displaces geo over vibrational displacement m and punches a xyz file tfn</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.bondLength">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">bondLength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#bondLength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.bondLength" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">bondLength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#bondLength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.bondLength" title="Link to this definition">¶</a></dt>
 <dd><p>Returns distance between atoms bl[1] and bl[0]
 (numbering starts at 0) in geometry geo</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.main">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.main" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.makeIC">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">makeIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#makeIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.makeIC" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">makeIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#makeIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.makeIC" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically identifies internal coordinates using
 connectivity deduced from covalent radii and generates
 Wilson’s S matrix for the specified geometry</p>
@@ -601,33 +750,33 @@ Wilson’s S matrix for the specified geometry</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.modeStr">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">modeStr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#modeStr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.modeStr" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">modeStr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#modeStr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.modeStr" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a formatted string describing mode</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.oopAmp">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">oopAmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">al</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#oopAmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.oopAmp" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">oopAmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">al</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#oopAmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.oopAmp" title="Link to this definition">¶</a></dt>
 <dd><p>Returns amplitude (optnialy in degs) for the out-of-plane angle formed by
 the atoms in al, with al[1] being the central atom (numbering starts at 0).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.printResults">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">printResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#printResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.printResults" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">printResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#printResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.printResults" title="Link to this definition">¶</a></dt>
 <dd><p>Prints the results of the analysis stored in system s onto file o</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.punchIC">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">punchIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#punchIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.punchIC" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">punchIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#punchIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.punchIC" title="Link to this definition">¶</a></dt>
 <dd><p>Punches a list of internal coordinates and their
 meassured values to file o</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.readG09log">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readG09log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readG09log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readG09log" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readG09log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readG09log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readG09log" title="Link to this definition">¶</a></dt>
 <dd><p>Opens Gaussian09 log file ifn and returns a System object with
 information regarding the system and vibrations.
 Depending on Linear and Transition, freqs and modes will be
@@ -636,7 +785,7 @@ pruned out of the translational and rotational components.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.readHess">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readHess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readHess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readHess" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readHess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readHess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readHess" title="Link to this definition">¶</a></dt>
 <dd><p>Opens Orca Hess file ifn and returns A System object.
 Depending on Linear and Transition, freqs and modes will be
 pruned out of the translational and rotational components.</p>
@@ -644,7 +793,7 @@ pruned out of the translational and rotational components.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.readMopac2016">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readMopac2016</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readMopac2016"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readMopac2016" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readMopac2016</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readMopac2016"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readMopac2016" title="Link to this definition">¶</a></dt>
 <dd><p>Opens a MOPAC2016 output file ifn and returns A System object.
 Depending on Linear and Transition, freqs and modes will be
 pruned out of the translational and rotational components.</p>
@@ -652,26 +801,25 @@ pruned out of the translational and rotational components.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.readPDielec">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readPDielec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readPDielec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readPDielec" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readPDielec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readPDielec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readPDielec" title="Link to this definition">¶</a></dt>
 <dd><p>Use PDielec library to read hessian information.
 only the first 3 modes will be pruned; the translational components.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.readUserIC">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readUserIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readUserIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readUserIC" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">readUserIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#readUserIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.readUserIC" title="Link to this definition">¶</a></dt>
 <dd><p>Reads additional internal coordinates defined by the user</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.vibanalysis.torsionAmp">
-<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">torsionAmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">al</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#torsionAmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.torsionAmp" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.vibanalysis.</span></span><span class="sig-name descname"><span class="pre">torsionAmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">al</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/vibanalysis.html#torsionAmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.vibanalysis.torsionAmp" title="Link to this definition">¶</a></dt>
 <dd><p>Returns amplitude (optnialy in degs) for the 0-1-2-3 torsion angle formed by
 the atoms in al, with al[1] and al[2] defining the central bond
 (numbering starts at 0).</p>
 </dd></dl>
 
-</section>
 </section>
 </section>
 
@@ -696,7 +844,7 @@ the atoms in al, with al[1] and al[2] defining the central bond
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></div>
+                <div class="title">PDielec.preader</div>
                 
               </div>
             </a>
@@ -730,12 +878,15 @@ the atoms in al, with al[1] and al[2] defining the central bond
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a><ul>
-<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#">PDielec.vibanalysis</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
-<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.vibanalysis.Atom"><code class="docutils literal notranslate"><span class="pre">Atom</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.vibanalysis.Atom.punch"><code class="docutils literal notranslate"><span class="pre">Atom.punch()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Atom.mass"><code class="docutils literal notranslate"><span class="pre">Atom.mass</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Atom.r"><code class="docutils literal notranslate"><span class="pre">Atom.r</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Atom.symbol"><code class="docutils literal notranslate"><span class="pre">Atom.symbol</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.vibanalysis.System"><code class="docutils literal notranslate"><span class="pre">System</span></code></a><ul>
@@ -755,6 +906,14 @@ the atoms in al, with al[1] and al[2] defining the central bond
 <li><a class="reference internal" href="#PDielec.vibanalysis.System.removeVibrations"><code class="docutils literal notranslate"><span class="pre">System.removeVibrations()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.vibanalysis.System.sortVibrations"><code class="docutils literal notranslate"><span class="pre">System.sortVibrations()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.vibanalysis.System.tripleMass"><code class="docutils literal notranslate"><span class="pre">System.tripleMass()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.ADM"><code class="docutils literal notranslate"><span class="pre">System.ADM</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.S"><code class="docutils literal notranslate"><span class="pre">System.S</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.atoms"><code class="docutils literal notranslate"><span class="pre">System.atoms</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.geo"><code class="docutils literal notranslate"><span class="pre">System.geo</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.intcoords"><code class="docutils literal notranslate"><span class="pre">System.intcoords</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.natoms"><code class="docutils literal notranslate"><span class="pre">System.natoms</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.symbol"><code class="docutils literal notranslate"><span class="pre">System.symbol</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.System.vibrations"><code class="docutils literal notranslate"><span class="pre">System.vibrations</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.vibanalysis.Vibration"><code class="docutils literal notranslate"><span class="pre">Vibration</span></code></a><ul>
@@ -765,6 +924,14 @@ the atoms in al, with al[1] and al[2] defining the central bond
 <li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.editDisplacements"><code class="docutils literal notranslate"><span class="pre">Vibration.editDisplacements()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.editIntensity"><code class="docutils literal notranslate"><span class="pre">Vibration.editIntensity()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.string"><code class="docutils literal notranslate"><span class="pre">Vibration.string()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.VMARD"><code class="docutils literal notranslate"><span class="pre">Vibration.VMARD</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.VMLD"><code class="docutils literal notranslate"><span class="pre">Vibration.VMLD</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.VMP"><code class="docutils literal notranslate"><span class="pre">Vibration.VMP</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.analysis"><code class="docutils literal notranslate"><span class="pre">Vibration.analysis</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.frequency"><code class="docutils literal notranslate"><span class="pre">Vibration.frequency</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.intIR"><code class="docutils literal notranslate"><span class="pre">Vibration.intIR</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.intRaman"><code class="docutils literal notranslate"><span class="pre">Vibration.intRaman</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.vibanalysis.Vibration.symmetry"><code class="docutils literal notranslate"><span class="pre">Vibration.symmetry</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.vibanalysis.InitialiseVaOpts"><code class="docutils literal notranslate"><span class="pre">InitialiseVaOpts()</span></code></a></li>
@@ -793,8 +960,6 @@ the atoms in al, with al[1] and al[2] defining the central bond
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 
           </div>
         </div>
@@ -803,9 +968,9 @@ the atoms in al, with al[1] and al[2] defining the central bond
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=37b3a9b0"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
     </body>
 </html>

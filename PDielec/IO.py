@@ -18,7 +18,6 @@
 This aims to reproduce the python readline() io method, with limited functionality but much faster.
 
 """
-#
 class pdielec_io:
     """A class for reading lines from a file and providing an interface similar to file objects.
 

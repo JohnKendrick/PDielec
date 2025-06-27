@@ -1,5 +1,5 @@
-:py:mod:`PDielec.p1reader`
-==========================
+PDielec.p1reader
+================
 
 .. py:module:: PDielec.p1reader
 
@@ -23,12 +23,16 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.p1reader.version
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -36,14 +40,8 @@ Functions
    PDielec.p1reader.print_help
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.p1reader.version
-
+Module Contents
+---------------
 
 .. py:function:: main()
 
@@ -67,7 +65,6 @@ Attributes
        - If less than one argument is provided.
        - If the `-version` argument is provided.
        - If no program is specified or an unrecognized program is given.
-       - If `phonopy` is chosen but an unrecognized quantum mechanics (QM) program is specified.
        - If the specified file does not exist.
        - When critical configuration issues are encountered.
 
@@ -101,6 +98,4 @@ Attributes
 
 
 .. py:data:: version
-
-   
 

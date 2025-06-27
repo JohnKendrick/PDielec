@@ -1,0 +1,58 @@
+PDielec.PrimitiveCell
+=====================
+
+.. py:module:: PDielec.PrimitiveCell
+
+.. autoapi-nested-parse::
+
+   The PrimitiveCell module.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.PrimitiveCell.PrimitiveCell
+
+
+Module Contents
+---------------
+
+.. py:class:: PrimitiveCell(aUnitCell, transformation=None)
+
+   Bases: :py:obj:`PDielec.UnitCell.UnitCell`
+
+
+   Hold primitive-cell information; the unit cell and the primitive-cell size.
+
+   Inherits from UnitCell, but adds a new variable, the original cell
+   The initialisation is always performed with a unit cell.
+   A transformation of the original cell can be applied using the transformaton matrix
+
+   Parameters
+   ----------
+   aUnitCell : :class:`~PDielec.UnitCell.UnitCell`
+       The unit cell associated with this instance.
+
+   Attributes
+   ----------
+   unitCell : :class:`~PDielec.UnitCell.UnitCell`
+       The primitive cell associated with this instance. (see :class:`~PDielec.UnitCell.UnitCell`)
+   originalCell : :class:`~PDielec.UnitCell.UnitCell`
+       The original cell associated with this instance. (see :class:`~PDielec.UnitCell.UnitCell`)
+   method   : str
+       A string with either "auto" or "given"
+   transformation : 3x3 list
+       A transformation matrix to create the primitive cell
+
+   See Also
+   --------
+   :class:`~PDielec.UnitCell.UnitCell`
+
+
+
+   .. py:attribute:: originalCell
+
+

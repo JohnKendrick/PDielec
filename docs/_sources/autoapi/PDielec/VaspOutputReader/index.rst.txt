@@ -1,5 +1,5 @@
-:py:mod:`PDielec.VaspOutputReader`
-==================================
+PDielec.VaspOutputReader
+========================
 
 .. py:module:: PDielec.VaspOutputReader
 
@@ -9,20 +9,16 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.VaspOutputReader.VaspOutputReader
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -30,11 +26,13 @@ Functions
    PDielec.VaspOutputReader.read_xml_element
 
 
+Module Contents
+---------------
 
 .. py:class:: VaspOutputReader(names)
 
-
    Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
 
    Read the contents of a directory containing VASP input and output files.
 
@@ -61,6 +59,7 @@ Functions
        The value of potim
 
 
+
    .. py:method:: _get_unit_cell_from_xml(structure_xml)
 
       Read the xml and return a unit cell with the dimensions and positions.
@@ -73,6 +72,7 @@ Functions
       Returns
       -------
       cell : a unit_cell
+
 
 
 
@@ -103,6 +103,7 @@ Functions
           The list of masses for each atom type
       self.masses : a list floats
           The list of masses for each atom in the unit cell
+
 
 
 
@@ -140,6 +141,7 @@ Functions
 
 
 
+
    .. py:method:: _handle_kpoints_xml(kpoints_xml)
 
       Process the kpoints xml child.
@@ -155,6 +157,7 @@ Functions
           The Monkorst Pack grid
       self.kpoints : int
           The number of kpoints
+
 
 
 
@@ -176,6 +179,7 @@ Functions
 
 
 
+
    .. py:method:: _handle_structures_xml(structures_xml)
 
       Process the structures xml child.
@@ -193,6 +197,7 @@ Functions
           The volume of the last unit cell read
       self.unit_cells : list of unit_cells
           A list of the unit cells
+
 
 
 
@@ -223,6 +228,7 @@ Functions
 
 
 
+
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the OUTCAR file.
@@ -247,6 +253,7 @@ Functions
 
 
 
+
    .. py:method:: _read_ediff(line)
 
       Read and set the energy difference value from a given line string.
@@ -264,6 +271,7 @@ Functions
 
 
 
+
    .. py:method:: _read_eigenvectors(line)
 
       Read and process eigenvectors from a file.
@@ -278,6 +286,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -312,6 +321,7 @@ Functions
 
 
 
+
    .. py:method:: _read_encut(line)
 
       Parse and set the energy cutoff value from a given line.
@@ -328,6 +338,7 @@ Functions
       Notes
       -----
       This method does not return any value. It sets the value of `energy_cutoff` attribute of the instance based on the input line.
+
 
 
 
@@ -350,6 +361,7 @@ Functions
 
 
 
+
    .. py:method:: _read_external_pressure(line)
 
       Read and parse external pressure from a given line of text, updating instance attributes.
@@ -369,6 +381,7 @@ Functions
 
 
 
+
    .. py:method:: _read_forces(line)
 
       Read force data from a file and update the iterations datasets with maximum and RMS forces.
@@ -383,6 +396,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -408,6 +422,7 @@ Functions
 
 
 
+
    .. py:method:: _read_ibrion(line)
 
       Read and set the IBRION parameter from a given line.
@@ -423,6 +438,7 @@ Functions
       -------
       None
           The line of text containing the IBRION value, expected to be at the third position (index 2) when split by whitespace.
+
 
 
 
@@ -449,6 +465,7 @@ Functions
 
 
 
+
    .. py:method:: _read_ionspertype(line)
 
       Read and store the number of ions per species from a given line.
@@ -463,6 +480,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -485,6 +503,7 @@ Functions
       -----
       - This method modifies the state of the object by setting the `kpoint_grid` attribute.
       - The method reads the next line from `self.file_descriptor`, not from the `line` parameter.
+
 
 
 
@@ -517,6 +536,7 @@ Functions
 
 
 
+
    .. py:method:: _read_magnet(line)
 
       Read magnetization properties from a line and update the object attributes.
@@ -542,6 +562,7 @@ Functions
 
 
 
+
    .. py:method:: _read_masses(line)
 
       Parse and store the mass value from a line of text.
@@ -560,6 +581,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -587,6 +609,7 @@ Functions
 
 
 
+
    .. py:method:: _read_newmasses(line)
 
       Read and process the "newmasses" from a line in the file descriptor.
@@ -605,6 +628,7 @@ Functions
 
 
 
+
    .. py:method:: _read_output_files()
 
       Read the vasp files in the directory.
@@ -619,6 +643,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -643,6 +668,7 @@ Functions
 
 
 
+
    .. py:method:: _read_pspot(line)
 
       Read and store pseudopotential information from a line.
@@ -657,6 +683,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -675,6 +702,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -699,6 +727,7 @@ Functions
 
 
 
+
    .. py:method:: _read_spin(line)
 
       Parse and set the spin from a given line.
@@ -715,6 +744,7 @@ Functions
       Notes
       -----
       This method expects the spin value to be at the third position in the line. The method doesn't return any value but sets the object's `spin` attribute based on the extracted integer value.
+
 
 
 
@@ -740,6 +770,7 @@ Functions
 
 
 
+
    .. py:method:: _read_xml(filename)
 
       Process the VASP xml files.
@@ -753,6 +784,34 @@ Functions
       -----
       The routine only handles the Vasp output file vasprun.xml
 
+
+
+
+   .. py:attribute:: _ediff
+      :value: 0.0
+
+
+
+   .. py:attribute:: _ibrion
+      :value: 0
+
+
+
+   .. py:attribute:: _potim
+      :value: 0.0
+
+
+
+   .. py:attribute:: _pspots
+
+
+   .. py:attribute:: _pulay
+      :value: None
+
+
+
+   .. py:attribute:: type
+      :value: 'Vasp output'
 
 
 

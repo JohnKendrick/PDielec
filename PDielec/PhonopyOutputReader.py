@@ -19,6 +19,7 @@ import numpy as np
 
 from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.UnitCell import UnitCell
 
 
 class PhonopyOutputReader(GenericOutputReader):
@@ -30,83 +31,46 @@ class PhonopyOutputReader(GenericOutputReader):
     ----------
     names : list
         A list of file names to be used.
-    qmreader : object
-        An instance of another class used for reading.
-
-    Notes
-    -----
-    This method sets the type of the output to 'Phonopy output' and 
-    associates a quantum mechanics (QM) reader object with the instance.
 
     """
 
-    def __init__(self, names, qmreader):
+    def __init__(self, names):
         """Initialise a Phonopy output reader.
 
         Parameters
         ----------
         names : list
             A list of file names to be used.
-        qmreader : object
-            An instance of another class used for reading.
 
-        Notes
-        -----
-        This method sets the type of the output to 'Phonopy output' and 
-        associates a quantum mechanics (QM) reader object with the instance.
+        This routine reads files with fixed names:
+                  phonopy.yaml    contains details of the cells used
+                  qpoints.yaml    contains the dynamical matrix
+                  BORN_PDIELEC    generated from the BORN file using phonopy-pdielec-born
 
         """        
         GenericOutputReader.__init__(self, names)
-        # We have to use the qm reader to do the reading of the QM files
         self.type                    = "Phonopy output"
-        self.qmreader                = qmreader
+        self.units                   = { "length"          : "angstrom",
+                                         "mass"            : "AMU",
+                                         "force"           : None,
+                                         "force_constants" : None, }
         return
 
     def _read_output_files(self):
         """Read the Phonopy files in the directory.
 
-        Uses the qmreader to read in the electronic structure information and copies it to the current object.
-        Then it reads the dynamical matrix from phonopy
+        reads the dynamical matrix from phonopy
+        reads the Born charges
         """
-        # Set the qm reader to have all the settings that phonopy reader has
-        self.qmreader.eckart = self.eckart
-        self.qmreader.debug = self.debug
-        # trigger the reading of the qm files
-        self.qmreader.read_output()
-        # We don't call self._read_outputfile as this starts looking for keywords
-        # for f in self._outputfiles:
-        #     self._read_output_file(f)
-        #
-        # Instead copy anything useful from the QM calcs to self
-        self.ncells                  = self.qmreader.ncells
-        self.unit_cells              = self.qmreader.unit_cells
-        self.volume                  = self.qmreader.volume
-        self.spin                    = self.qmreader.spin
-        self.energy_cutoff           = self.qmreader.energy_cutoff
-        self.kpoints                 = self.qmreader.kpoints
-        self.kpoint_grid             = self.qmreader.kpoint_grid
-        self.nbands                  = self.qmreader.nbands
-        self.nions                   = self.qmreader.nions
-        self.ions_per_type           = self.qmreader.ions_per_type
-        self.atom_type_list          = self.qmreader.atom_type_list
-        self.electrons               = self.qmreader.electrons
-        self.magnetization           = self.qmreader.magnetization
-        self.final_energy_without_entropy = self.qmreader.final_energy_without_entropy
-        self.final_free_energy       = self.qmreader.final_free_energy
-        self.pressure                = self.qmreader.pressure
-        self.masses_per_type         = self.qmreader.masses_per_type
-        self.ions_per_type           = self.qmreader.ions_per_type
-        self.masses                  = self.qmreader.masses
-        self.nspecies                = self.qmreader.nspecies
-        self.species                 = self.qmreader.getSpecies()
-        self.born_charges            = self.qmreader.born_charges
-        self.zerof_optical_dielectric= self.qmreader.zerof_optical_dielectric
-        self.zerof_static_dielectric = self.qmreader.zerof_static_dielectric
         # Calculate dynamical matrix
-        self.read_dynamical_matrix()
+        qpoints_filename = self._outputfiles[0]
+        phonopy_filename = self._outputfiles[1]
+        born_filename    = self._outputfiles[2]
+        self.read_dynamical_matrix(phonopy_filename,qpoints_filename)
+        self.read_born_file(self.nions,born_filename)
         return
 
-    def read_dynamical_matrix(self):
+    def read_dynamical_matrix(self,phonopy_filename, qpoints_filename):
         """Read and process the dynamical matrix from output files.
 
         This method reads the dynamical matrix and other relevant data from the specified
@@ -115,8 +79,10 @@ class PhonopyOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        None explicitly, but relies on the instance attributes `_outputfiles` and `nions` 
-        to determine the files to read and number of ions, respectively.
+        phonopy_filename : str
+            The phonopy.yaml file name
+        qpoints_filename : str
+            The qpoints.yaml file name
 
         Returns
         -------
@@ -157,14 +123,72 @@ class PhonopyOutputReader(GenericOutputReader):
             print("WARNING: Yaml CLoader is not avaiable, using fallback")
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
-        with open(self._outputfiles[0]) as fd:
+        with open(qpoints_filename) as fd:
             data_q = yaml.load(fd, Loader=Loader)
         # the second name has to be the phonopy file
-        with open(self._outputfiles[1]) as fd:
+        with open(phonopy_filename) as fd:
             data_p = yaml.load(fd, Loader=Loader)
-        self._old_masses = []
-        for i in range(self.nions):
-            self._old_masses.append(data_p["primitive_cell"]["points"][i]["mass"])
+        #
+        # process phonopy.yaml
+        #
+        try:
+            conversion_factor_to_THz = data_p["phonopy"]["frequency_unit_conversion_factor"]
+        except Exception:
+            conversion_factor_to_THz = 15.633302
+        conversion_factor_to_cm1 = conversion_factor_to_THz * thz2cm1
+        #
+        # Get units
+        #
+        if "physical_unit" in data_p:
+            if "atomic_mass" in data_p["physical_unit"]:
+                self.units["atomic_mass"]     = data_p["physical_unit"]["atomic_mass"]
+            if "length" in data_p["physical_unit"]:
+                self.units["length"]          = data_p["physical_unit"]["length"]
+            if "force" in data_p["physical_unit"]:
+                self.units["force"]           = data_p["physical_unit"]["force"]
+            if "force_constants" in data_p["physical_unit"]:
+                self.units["force_constants"] = data_p["physical_unit"]["force_constants"]
+        #
+        # Determine axes and cells
+        #
+        if "primitive_axes" in data_p["phonopy"]["configuration"]:
+            primitive_axes = data_p["phonopy"]["configuration"]["primitive_axes"]
+        else:
+            primitive_axes = None
+        if "primitive_matrix" in data_p:
+            self.primitive_transformation = data_p["primitive_matrix"]
+        else:
+            self.primitive_transformation = None
+        primitive_cell = self.read_cell(data_p["primitive_cell"]) if "primitive_cell" in data_p else None
+        unit_cell = self.read_cell(data_p["unit_cell"]) if "unit_cell" in data_p else None
+        #
+        # Use the cell that is consistent with the primitive_axes
+        #
+        cell = primitive_cell
+        self._old_masses = cell.get_atomic_masses()
+        self.nions = len(self._old_masses)
+        self.species = cell.get_species()
+        self.nspecies = len(self.species)
+        elements = cell.get_element_names()
+        # Calculate the number of ions / type
+        # Determine the atom type list
+        self.ions_per_type = [ 0 for _species in self.species ]
+        for element in elements:
+            species_index = self.species.index(element)
+            self.ions_per_type[species_index] += 1
+            self.atom_type_list.append(species_index)
+        # Determine the mass of each type
+        self.mass_per_type = []
+        for species in self.species:
+             element_index = elements.index(species)
+             self.masses_per_type.append(self._old_masses[element_index])
+        # Proceed
+        self.unit_cells = [ cell ]
+        self.ncells = 1
+        self.volume = cell.getVolume("Angstrom")
+        #
+        # Process qpoints.yaml
+        #
         dynmat = []
         dynmat_data = data_q["phonon"][0]["dynamical_matrix"]
         for row in dynmat_data:
@@ -174,13 +198,7 @@ class PhonopyOutputReader(GenericOutputReader):
         # Make sure the hessian is real
         hessian = np.real(dynmat)
         # We need to convert to cm-1
-        try:
-            conversion_factor_to_THz = data_p["phonopy"]["frequency_unit_conversion_factor"]
-        except Exception:
-            conversion_factor_to_THz = 15.633302
-        conversion_factor_to_cm1 = conversion_factor_to_THz * thz2cm1
-        conv  = conversion_factor_to_cm1
-        hessian = hessian * conv * conv
+        hessian = hessian * conversion_factor_to_cm1 * conversion_factor_to_cm1
         # Find its eigenvalues and eigen vectors
         eig_val, eig_vec = np.linalg.eigh(hessian)
         self.mass_weighted_normal_modes = []
@@ -200,3 +218,73 @@ class PhonopyOutputReader(GenericOutputReader):
         # end for i
         return
 
+    def read_cell(self, yaml):
+        """Read and process yaml string and extract a unit cell.
+
+        Parameters
+        ----------
+        yaml : str
+            A yaml string containing a phonopy cell
+
+        Returns
+        -------
+        cell : unitCell
+
+        """        
+        lattice = yaml["lattice"]
+        points = yaml["points"]
+        symbols = [ atom["symbol"] for atom in points ]
+        coordinates = [ atom["coordinates"] for atom in points ]
+        masses = [ atom["mass"] for atom in points ]
+        cell = UnitCell(lattice[0], lattice[1], lattice[2], units=self.units["length"])
+        cell.set_fractional_coordinates(coordinates)
+        cell.set_element_names(symbols)
+        cell.set_atomic_masses(masses)
+        return cell
+
+    def read_born_file(self,natoms,filename):
+        """Read the BORN_PDIELEC file in the current directory.
+
+        The BORN_PDIELEC file was created by a phonopy helper routine such as phonopy-pdielec-born
+        It contains the optical permittivity and the Born charges
+
+        Parameters
+        ----------
+        natoms : int
+            The number of atoms
+        filename : str
+            The filename (probably "BORN_PDIELEC")
+
+        Modifies
+        --------
+        zerof_optical_dielectric : the zero frequency optical permittivity
+        born_charges             : the born charges
+
+        """        
+        with open(filename) as fd:
+            #
+            # Skip a line
+            #
+            line = fd.readline()
+            #
+            # Read dielectric constant
+            #
+            line = fd.readline().split()
+            if len(line) != 9:
+                print("BORN file format of line 2 is incorrect")
+                return
+            self.zerof_optical_dielectric = np.reshape([float(x) for x in line], (3, 3))
+            #
+            # Read Born effective charge
+            #
+            self.born_charges = np.zeros((natoms, 3, 3), dtype="double")
+            for i in range(natoms):
+                line = fd.readline().split()
+                if len(line) == 0:
+                    print("Number of lines for Born effect charge is not enough.")
+                    return
+                if len(line) != 9:
+                    print("BORN file format of line %d is incorrect" % (i + 3))
+                    return
+                self.born_charges[i] = np.reshape([float(x) for x in line], (3, 3))
+        return

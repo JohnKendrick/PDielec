@@ -8,7 +8,7 @@
 
 .. meta::
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
+   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE
 
 
 =====
@@ -33,14 +33,13 @@ or ::
     pdgui run1.log                                              # A QE calculation, run1.dynG is also read
     pdgui run2.abo                                              # An Abinit calculation
     pdgui run3.gout                                             # An Gulp calculation
+    pdgui phonopy.yaml                                          # A Phonopy calculation
 
 Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
-It is possible to specifiy the DFT program and the QM program used by Phonopy as the examples below; ::
+It is possible to specifiy the DFT program as in the examples below; ::
 
     pdgui -program vasp OUTCAR                                   # A Vasp calculation, only OUTCAR is parsed for information
-    pdgui -program phonopy -qmprogram vasp OUTCAR                # A Phonopy/Vasp calculation, only OUTCAR is parsed for information
-    pdgui -program phonopy -qmprogram vasp vasprun.xml           # A Phonopy/Vasp calculation, only OUTCAR is parsed for information
-    pdgui -program phonopy -qmprogram qe  pwscf.xml              # A Phonopy/QE calculation
+    pdgui -program phonopy phonopy.yaml                          # A Phonopy calculation
 
 
 If running a script that contains program and output file information, then::
@@ -79,9 +78,6 @@ Several command line options may be useful in running the package.
    +-----------------------+----------------------------------------+
    | -program name         | An alternative way of defining the     |
    |                       | program used to create the output      |
-   +-----------------------+----------------------------------------+
-   | -qmprogram name       | Specifies the qm program used with     |
-   |                       | phonopy                                |
    +-----------------------+----------------------------------------+
    | -version              | Give information of the version no.    |
    +-----------------------+----------------------------------------+
@@ -132,7 +128,7 @@ The *Main Tab* is used to pick the MM/QM package and the output file that will b
    The Main Tab
 
 The QM/MM program can be chosen from the dropdown list.
-The current list of packages supported are Abinit, Castep, Crystal, Experiment, Gulp, Phonopy - Vasp, Quantum Espresso, Vasp, and PDGui.
+The current list of packages supported are Abinit, Castep, Crystal, Experiment, Gulp, Phonopy, Quantum Espresso, Vasp, and PDGui.
 The output file name can be provided in the text box below it, or it can be specified using the `File manager` button.  In addition to input files from QM/MM programs, the program can read Python script files written by PDGui.  These should have a '.py' extension.
 The *Experimental* file format allows the user to provide their specification of a dielectric medium, where a code other than that catered for by the program has been used.
 The file format is described in full in the section: :ref:`experimental-file-format`

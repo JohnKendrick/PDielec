@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.AnalysisTab`
-=================================
+PDielec.GUI.AnalysisTab
+=======================
 
 .. py:module:: PDielec.GUI.AnalysisTab
 
@@ -9,23 +9,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.GUI.AnalysisTab.AnalysisTab
 
 
-
+Module Contents
+---------------
 
 .. py:class:: AnalysisTab(parent, debug=False)
 
-
    Bases: :py:obj:`qtpy.QtWidgets.QWidget`
+
 
    A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.
 
@@ -71,8 +69,6 @@ Classes
        String representing the units used for frequency measurements. Initially set to None.
    cell_of_molecules : object or None
        An object containing information about the cell of molecules, if analysis has been run. Initially set to None.
-   original_atomic_order : list or None
-       List maintaining the original order of atoms as read from the input. Initially set to None.
    frequencies_cm1 : list
        A list holding frequency values in cm-1 units.
    mode_energies : list
@@ -126,6 +122,7 @@ Classes
        Generates a plot based on the decomposition of vibrational energy into internal and external movements.
 
 
+
    .. py:method:: calculate()
 
       Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
@@ -150,8 +147,9 @@ Classes
       - `self.species` and `self.settings['Radii']`: Used for setting up element radii.
       - `self.notebook.settingsTab.settings`, `self.notebook.settingsTab.frequencies_cm1`, and 
       - `self.notebook.settingsTab.mass_weighted_normal_modes`: Access to settings and data specific to the settings tab.
-      - `self.cell_of_molecules`, `self.original_atomic_order`, `self.number_of_molecules`: Modifies and utilizes these attributes
-      - to hold molecular content, order of atoms, and the number of molecules, respectively.
+      - `self.cell_of_molecules`, `self.number_of_molecules`: Modifies and utilizes these attributes
+      - to hold molecular content, and the number of molecules, respectively.
+
 
 
 
@@ -167,6 +165,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -190,6 +189,7 @@ Classes
 
 
 
+
    .. py:method:: on_plottype_cb_changed(index)
 
       Handle a change in plot type selection.
@@ -202,6 +202,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -226,6 +227,7 @@ Classes
 
 
 
+
    .. py:method:: on_title_changed(text)
 
       Handle title change events.
@@ -238,6 +240,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -258,6 +261,7 @@ Classes
 
 
 
+
    .. py:method:: on_vmax_changed()
 
       Handle the change in maximum value for frequency.
@@ -270,6 +274,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -288,6 +293,7 @@ Classes
 
 
 
+
    .. py:method:: on_width_changed(value)
 
       Handle changes to the width property.
@@ -302,6 +308,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -331,6 +338,7 @@ Classes
 
 
 
+
    .. py:method:: plot_internal_external()
 
       Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.
@@ -350,6 +358,7 @@ Classes
       - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.
       - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.
       - The method updates the canvas with the newly plotted data.
+
 
 
 
@@ -386,6 +395,7 @@ Classes
 
 
 
+
    .. py:method:: refresh(force=False)
 
       Refresh the widget state, optionally enforcing refresh.
@@ -400,6 +410,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -419,6 +430,7 @@ Classes
 
 
 
+
    .. py:method:: setCovalentRadius(element, radius)
 
       Set the covalent radius for a given element and update the plot.
@@ -433,6 +445,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -456,6 +469,7 @@ Classes
 
 
 
+
    .. py:method:: writeSpreadsheet()
 
       Write analysis data into a selected worksheet in the notebook's spreadsheet.
@@ -474,5 +488,103 @@ Classes
       None
 
 
+
+
+   .. py:attribute:: canvas
+
+
+   .. py:attribute:: cell_of_molecules
+      :value: None
+
+
+
+   .. py:attribute:: element_radii
+
+
+   .. py:attribute:: element_radii_tw
+
+
+   .. py:attribute:: figure
+
+
+   .. py:attribute:: frequencies_cm1
+      :value: []
+
+
+
+   .. py:attribute:: frequency_units
+      :value: None
+
+
+
+   .. py:attribute:: mode_energies
+      :value: []
+
+
+
+   .. py:attribute:: molecules_le
+
+
+   .. py:attribute:: notebook
+
+
+   .. py:attribute:: number_of_molecules
+      :value: 0
+
+
+
+   .. py:attribute:: plot_type_index
+      :value: 0
+
+
+
+   .. py:attribute:: plot_types
+      :value: ['Internal vs External', 'Molecular Composition']
+
+
+
+   .. py:attribute:: plottype_cb
+
+
+   .. py:attribute:: reader
+
+
+   .. py:attribute:: refreshRequired
+      :value: True
+
+
+
+   .. py:attribute:: scale_sp
+
+
+   .. py:attribute:: settings
+
+
+   .. py:attribute:: species
+      :value: []
+
+
+
+   .. py:attribute:: subplot
+      :value: None
+
+
+
+   .. py:attribute:: title_le
+
+
+   .. py:attribute:: tolerance_sp
+
+
+   .. py:attribute:: toolbar
+
+
+   .. py:attribute:: vmax_sb
+
+
+   .. py:attribute:: vmin_sb
+
+
+   .. py:attribute:: width_sp
 
 

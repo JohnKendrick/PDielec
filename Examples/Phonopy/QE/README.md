@@ -96,7 +96,7 @@ phonopy --dim="1 1 1" --qpoints="0 0 0" --writedm
 ```
 
 To calculate the Born charges it is necessary to run the QE phonon code (ph.x) after a single point calculation of the wavefunction.
-The directory Born/ holds the single ploint calculation using urea.scf.in and the wavefunction is stored in pwscf.save/.   
+The directory Born/ holds the single point calculation using urea.scf.in and the wavefunction is stored in pwscf.save/.   
 In this directory there is an xml file (data-file-schema.xml), the charge density and the wavefunction.
 The xml file is sometimes reproduced as pwscf.xml in the directory where the job was run.
 The file holds copies of the input and output information for the job.
@@ -133,16 +133,17 @@ Born charges
 0.0 0.0 0.0
 ```
 
-This calculates the Born charges and the zero frequency optical permittivity at the gamma point using the combinattion of commands, zeu=.true., trans=.false., and epsil=.true..
+This calculates the Born charges and the zero frequency optical permittivity at the gamma point using the combination of commands, zeu=.true., trans=.false., and epsil=.true..
 The first (zeu=.true.) ensures the Born charges are calculated.
 The second (trans=.false.) stops the calculation of the full dynamical matrix.
 The last (epsil=.true.) causes the calculation of the optical permittivity.
 The only difference between this and a full infrared intensity calculation is the use of (trans=.false.).
-However, unfortunately this does not cause urea.dynG to be written as there is no dynamical matrix, so the information regarding the charges and the permittivity must be obtained elsewhere.
-Whilst the information is available in the standard output file, the precision to which it is written makes it unsuitable to be used.  Even the alat parameter is not written to a sufficient number of decimal places.
-Instead it is necessary to process two xml files, pwscf.xml and tensor.xml.
-The first is a copy of that found in the pwscf.save directory, the second is a copy of the _ph0/_pwscf.phsave/tensor.xml file.  These two files should be in the same directory as the phonopy files.
-Once copies of these files have been made the _ph and pwscf.save directories and there contents can be deleted.
-In this example the files have been copied to the Born/ directory and links have been made in the directory where the Phonopy calculations were performed.
+The Phonopy BORN file is created using the phonopy_qe_born command. 
+This generates a list of symmetry unique atoms and their Born charges.  The generate a full list of Born charges for all atoms
+the PDielec command, phonopy_pdielec_born is used.  Although this is distributed with PDielec, it only uses the Phonopy API.
 
-It should be noted that pdgui only recognises the names pwscf.xml and tensors.xml.
+```
+phonopy-qe-born urea.scf.in urea.born.log > BORN
+phonopy-pdielec-born BORN_PDIELEC
+```
+In this example the files have been copied to the Born/ directory and links have been made in the directory where the Phonopy calculations were performed.

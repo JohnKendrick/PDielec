@@ -84,6 +84,21 @@ def InitialiseVaOpts():
 
     Radii=[ 0.5, 0.3, 1.7, 1.1, 0.9, 0.7, 0.6, 0.6, 0.5, 0.4, 1.9, 1.5, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 2.4, 1.9, 1.8, 1.8, 1.7, 1.7, 1.6, 1.6, 1.5, 1.5, 1.5, 1.4, 1.4, 1.3, 1.1, 1.0, 0.9, 0.9, 2.7, 2.2, 2.1, 2.1, 2.0, 1.9, 1.8, 1.8, 1.7, 1.7, 1.7, 1.6, 1.6, 1.5, 1.3, 1.2, 1.2, 1.1, 3.0, 2.5, 2.0, 2.0, 2.5, 2.1, 2.1, 2.4, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.2, 2.2, 2.2, 2.1, 2.0, 1.9, 1.9, 1.9, 1.8, 1.8, 1.7, 1.7, 1.6, 1.5, 1.4]
 
+    #
+    # Use the PDielec constants instead of the original
+    # =================================================
+    #
+    from PDielec import Constants
+    Symbols = []
+    Masses = []
+    Radii = []
+    for symbol in Constants.isotope_masses:
+        Symbols.append(symbol.lower())
+        Masses.append(Constants.isotope_masses[symbol])
+        Radii.append(Constants.covalent_radii[symbol])
+    # ========================================
+    # End of PDielec changes for the constants
+    #
     #balancing parameters
     sangles=1.0
     souts=1.0
@@ -426,9 +441,9 @@ def readPDielec(ifn):
         from PDielec.Constants import amu, average_masses
         # Use as many defaults as possible
         # First determine the program used to create the output file
-        program,qmprogram = Utilities.find_program_from_name(ifn)
+        program = Utilities.find_program_from_name(ifn)
         # Create the reader
-        reader = Utilities.get_reader(ifn,program,qmprogram)
+        reader = Utilities.get_reader(ifn,program)
         # Assume that projection is going to be used
         reader.eckart = True
         reader.debug = False
@@ -458,26 +473,14 @@ def readPDielec(ifn):
         # We need to see if we can generate whole molecules using translational symmetry
         scale = 1.1      # Scaling factor for covalent radii
         tolerance  = Opts["tol"]  # Tolerance in bonding
-        new_cell,natoms,original_atomic_order = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance)
+        nmols = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance)
         print("Bonding tolerance",tolerance,file=sys.stderr)
-        print("Number of molecules",len(new_cell.molecules),file=sys.stderr)
-        # Reorder the normal mode atoms so that the mass weighted normal modes order 
-        # agrees with the ordering in the cell_of_molecules cell
-        nmodes,nions,temp = np.shape(normal_modes)
-        new_normal_modes = np.zeros( (nmodes,3*nions) )
-        new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
-        masses = new_cell.get_atomic_masses()
-        for imode,mode in enumerate(mass_weighted_normal_modes):
-            for index,old_index in enumerate(original_atomic_order):
-                i = index*3
-                new_normal_modes[imode,i+0] = mode[old_index][0] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+1] = mode[old_index][1] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+2] = mode[old_index][2] / math.sqrt(masses[index])
+        print("Number of molecules",nmols,file=sys.stderr)
         #
         # OK - now we can start the interface to VibAnalysis
         #
         o=System()
-        for el,m,c in zip(new_cell.element_names,new_cell.atomic_masses, new_cell.xyz_coordinates):
+        for el,m,c in zip(cell.element_names,cell.atomic_masses, cell.xyz_coordinates):
             # print('Adding atom ',el.lower(),c,m)
             o.addAtom(el.lower(), c, m)
         # get frequency list
@@ -487,8 +490,8 @@ def readPDielec(ifn):
         # get normal mode displacements
         ndegs = len(frequencies)
         for i in range(ndegs):
-            # print('Adding displacement ',i,new_normal_modes[i])
-            o.addDisplacements(i,new_normal_modes[i])
+            # print('Adding displacement ',i,normal_modes[i])
+            o.addDisplacements(i,normal_modes[i].flatten())
         # get IR intensities
         for i,intens in enumerate(intensities):
             # Not sure of the units expected here

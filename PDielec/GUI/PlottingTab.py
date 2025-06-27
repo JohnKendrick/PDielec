@@ -309,8 +309,6 @@ class PlottingTab(QWidget):
             self.funits_cb.setToolTip("Set the wavelength unit")
             self.frequency_form_label = QLabel("Wavelength min, max and increment", self)
             self.frequency_form_label.setToolTip("Choose minimum, maximum and increment for wavelength")
-        #
-        #
         hbox = QHBoxLayout()
         hbox.addWidget(self.vmin_sb)
         hbox.addWidget(self.vmax_sb)

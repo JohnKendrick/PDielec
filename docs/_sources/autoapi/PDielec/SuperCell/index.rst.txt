@@ -1,5 +1,5 @@
-:py:mod:`PDielec.SuperCell`
-===========================
+PDielec.SuperCell
+=================
 
 .. py:module:: PDielec.SuperCell
 
@@ -9,21 +9,18 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.SuperCell.SuperCell
 
 
-
+Module Contents
+---------------
 
 .. py:class:: SuperCell(aUnitCell, anImageSpecifier)
-
 
    Hold super-cell information; the unit cell and the super-cell size.
 
@@ -54,6 +51,7 @@ Classes
    :class:`~PDielec.UnitCell.UnitCell`
 
 
+
    .. py:method:: calculateBonds()
 
       Calculate the bonding in the supercell.
@@ -74,6 +72,7 @@ Classes
 
 
 
+
    .. py:method:: calculateCentreOfBox()
 
       Calculate the centre of the super-cell in cartesian coordinates.
@@ -88,6 +87,7 @@ Classes
       -------
       vector
           The centre of the images in the box
+
 
 
 
@@ -115,6 +115,7 @@ Classes
 
 
 
+
    .. py:method:: calculateNormalModes(modes)
 
       Calculate and return the normal modes of the supercell.
@@ -125,7 +126,7 @@ Classes
 
       Parameters
       ----------
-      modes : a list of ints
+      modes : a list of floats
           A list of the modes to be used in the calculation
 
       Returns
@@ -135,6 +136,7 @@ Classes
           of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the
           number of ions per mode. The shape may vary as the number of ions increases with the
           number of images.
+
 
 
 
@@ -152,6 +154,7 @@ Classes
       -------
       output : array
           The Cartesian coordinates of the supercell.
+
 
 
 
@@ -173,6 +176,7 @@ Classes
 
 
 
+
    .. py:method:: getBoundingBox(originABC=None)
 
       Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
@@ -190,7 +194,7 @@ Classes
       Returns
       -------
       tuple
-          A tuple containing two elements:
+          A tuple containing three elements:
 
           - corners_xyz : list
             A list of corner points in XYZ coordinates specifying the bounding box, shifted to the provided origin.
@@ -198,9 +202,14 @@ Classes
           - edges : list
             A list of tuples, each representing an edge of the bounding box defined by a pair of XYZ coordinates.
 
+          - labels : list of strings
+            A list of strings labelling the bounding box a,b,c,o
+
+
       Notes
       -----
       The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
+
 
 
 
@@ -216,6 +225,7 @@ Classes
       -------
       list
           The element names of the supercell.
+
 
 
 
@@ -244,5 +254,26 @@ Classes
       ```
 
 
+
+
+   .. py:attribute:: XYZ
+      :value: None
+
+
+
+   .. py:attribute:: bonds
+      :value: []
+
+
+
+   .. py:attribute:: imageList
+      :value: None
+
+
+
+   .. py:attribute:: imageSpecifier
+
+
+   .. py:attribute:: unitCell
 
 

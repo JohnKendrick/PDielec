@@ -1,0 +1,53 @@
+PDielec.phonopy_pdielec_born
+============================
+
+.. py:module:: PDielec.phonopy_pdielec_born
+
+.. autoapi-nested-parse::
+
+   PDielec interface program to Phonopy.
+
+   The program reads the phonopy.yaml file and the BORN file.
+   The BORN file must be created using the standard Phonopy tools
+   The program writes out the static permittivity and the Born charges in a format similar to Phonopy's.   But all atoms in the unit cell are in the file.  Not just the symmetry unique ones.
+
+   phonopy-pdielec-born BORN-PDIELEC
+       This command writes out the permitivity and the Born charges to the file "BORN-PDIELEC"
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.phonopy_pdielec_born.main
+   PDielec.phonopy_pdielec_born.show_usage
+
+
+Module Contents
+---------------
+
+.. py:function:: main()
+
+   Define the main routine for the phonopy-pdielec-born command.
+
+   The routine makes extensive use of Phonopy's API
+   It reads the phonopy.yaml file to determine the primitive cell
+   then it reads the BORN file, before writing out the permitivity and Born charges.
+   The output file is formatted in a similar way to the BORN file, but
+   all the atoms/ions are present, not just the symmetry unique ones.
+
+   Options:
+   -symprec 1.0E-5       Sets the precision used in determing the symmetry (default is 1.0E-5)
+   -input   BORN         Sets the input Born charges file (Defaults is BORN)
+   -output  BORN_PDIELEC Sets the output Born charges file 
+   -yaml    phonopy.yaml Sets the output Born charges file (Defaults is phonopy.yaml)
+   -nosym                Stops symmetry being used in parsing the BORN file
+
+
+.. py:function:: show_usage()
+
+   Show the usage message.
+
+

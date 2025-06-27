@@ -1,5 +1,5 @@
-:py:mod:`PDielec.PhonopyOutputReader`
-=====================================
+PDielec.PhonopyOutputReader
+===========================
 
 .. py:module:: PDielec.PhonopyOutputReader
 
@@ -9,23 +9,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.PhonopyOutputReader.PhonopyOutputReader
 
 
+Module Contents
+---------------
 
-
-.. py:class:: PhonopyOutputReader(names, qmreader)
-
+.. py:class:: PhonopyOutputReader(names)
 
    Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
 
    Read the contents of a directory containing Phonopy input and output files.
 
@@ -35,24 +33,57 @@ Classes
    ----------
    names : list
        A list of file names to be used.
-   qmreader : object
-       An instance of another class used for reading.
 
-   Notes
-   -----
-   This method sets the type of the output to 'Phonopy output' and 
-   associates a quantum mechanics (QM) reader object with the instance.
 
 
    .. py:method:: _read_output_files()
 
       Read the Phonopy files in the directory.
 
-      Uses the qmreader to read in the electronic structure information and copies it to the current object.
-      Then it reads the dynamical matrix from phonopy
+      reads the dynamical matrix from phonopy
+      reads the Born charges
 
 
-   .. py:method:: read_dynamical_matrix()
+
+   .. py:method:: read_born_file(natoms, filename)
+
+      Read the BORN_PDIELEC file in the current directory.
+
+      The BORN_PDIELEC file was created by a phonopy helper routine such as phonopy-pdielec-born
+      It contains the optical permittivity and the Born charges
+
+      Parameters
+      ----------
+      natoms : int
+          The number of atoms
+      filename : str
+          The filename (probably "BORN_PDIELEC")
+
+      Modifies
+      --------
+      zerof_optical_dielectric : the zero frequency optical permittivity
+      born_charges             : the born charges
+
+
+
+
+   .. py:method:: read_cell(yaml)
+
+      Read and process yaml string and extract a unit cell.
+
+      Parameters
+      ----------
+      yaml : str
+          A yaml string containing a phonopy cell
+
+      Returns
+      -------
+      cell : unitCell
+
+
+
+
+   .. py:method:: read_dynamical_matrix(phonopy_filename, qpoints_filename)
 
       Read and process the dynamical matrix from output files.
 
@@ -62,8 +93,10 @@ Classes
 
       Parameters
       ----------
-      None explicitly, but relies on the instance attributes `_outputfiles` and `nions` 
-      to determine the files to read and number of ions, respectively.
+      phonopy_filename : str
+          The phonopy.yaml file name
+      qpoints_filename : str
+          The qpoints.yaml file name
 
       Returns
       -------
@@ -93,5 +126,13 @@ Classes
         frequencies and normal modes are stored in corresponding instance attributes.
 
 
+
+
+   .. py:attribute:: type
+      :value: 'Phonopy output'
+
+
+
+   .. py:attribute:: units
 
 

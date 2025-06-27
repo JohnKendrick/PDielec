@@ -152,28 +152,32 @@ def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_defi
 
     """
     # Let's see if the name is a file name that can be read
-    program,qm_program = Utilities.find_program_from_name(name)
+    program = Utilities.find_program_from_name(name)
     if debug:
-        print(f'getMaterial: program = {program}')
-        print(f'getMaterial: qmprogram = {qm_program}')
+        print(f"getMaterial: program = {program}")
     if len(program) > 1:
-        reader = Utilities.get_reader(name,program,qm_program,debug)
+        reader = Utilities.get_reader(name,program,debug)
         reader.read_output()
         if debug:
-            print(f'getMaterial: reader.print()')
+            print("getMaterial: reader.print()")
             reader.print()
         permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
         if debug:
-            print(f'getMaterial: cell.print()')
+            print("getMaterial: cell.print()")
             cell.print()
         material = External("Dielectric layer",permittivityObject=permittivityObject,cell=cell)
     else:
         dataBase = MaterialsDataBase(dataBaseName)
         sheets = dataBase.getSheetNames()
-        if name not in sheets:
-            print("Material name not valid ",name)
-        material = dataBase.getMaterial(name)
+        if debug:
+            print("getMaterial: sheets",sheets)
+        if name in sheets:
+            material = dataBase.getMaterial(name)
+        else:
+            print("Material name not valid: ",name)
+            print("Available materials:     ",sheets)
+            material = None
     return material
 
 def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method="Scattering matrix"):
@@ -300,8 +304,14 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
     previous_solution_shared = np.eye( 3 )
     crystalPermittivityFunction = dielectric.getPermittivityFunction()
     results = []
+    unitMatrix = np.eye(3)
     for v_cm1 in frequencies_cm1:
         crystalPermittivity = crystalPermittivityFunction(v_cm1)
+        #
+        # Cope with the case that the dielectric is isotropic
+        #
+        if dielectric.isScalar():
+            crystalPermittivity = crystalPermittivity*unitMatrix
         result = Calculator.solve_effective_medium_equations(method,volume_fraction,
                        particle_size_mu,particle_sigma_mu,matrixPermittivityFunction,
                        shape,depolarisation,concentration,
@@ -319,3 +329,23 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)
          sp_atr.append(spatr)
     return np.array(absorptionCoefficient), np.array(permittivity)
+
+def maxwell_garnett(em, ei, f):
+    """Calculate the dielectric constant of a mixture using Maxwell-Garnett.
+
+    Parameters
+    ----------
+    em : float
+        The dielectric constant of the host
+    ei : float
+        The dielectric constant of the inclusion
+    f : float
+        The volume fraction of the inclusion
+
+    Returns
+    -------
+    float
+        The dielectric constant of the mixture
+
+    """
+    return em*( 2*f*(ei-em)+ ei + 2*em) / ( 2*em + ei - f*(ei-em))

@@ -1,17 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.CrystalOutputReader" href="../CrystalOutputReader/index.html" /><link rel="prev" title="PDielec.CastepOutputReader" href="../CastepOutputReader/index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PDielec.Constants - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
     
     
@@ -71,7 +71,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -86,22 +86,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -114,6 +155,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -132,7 +175,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -174,67 +218,70 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -258,11 +305,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/PDielec/Constants/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -272,9 +325,9 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="module-PDielec.Constants">
-<span id="pdielec-constants"></span><h1><a class="reference internal" href="#module-PDielec.Constants" title="PDielec.Constants"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a><a class="headerlink" href="#module-PDielec.Constants" title="Permalink to this heading">#</a></h1>
+<span id="pdielec-constants"></span><h1>PDielec.Constants<a class="headerlink" href="#module-PDielec.Constants" title="Link to this heading">¶</a></h1>
 <p>The Constants module supplies some numerical constants.</p>
 <p>The following are some fundamental definitions.
 The values were supplied from the NIST web site
@@ -395,176 +448,303 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
 <p>elemental_colours is a dictionary of an RGB list for each element</p>
 <p>atomic_number_to_element is a dictionary which has an atomic number key and returns an element string</p>
 <p>element_to_atomic_number a dictionary which an has an element name key and a content of the atomic number</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.amu" title="PDielec.Constants.amu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amu</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.angs2bohr" title="PDielec.Constants.angs2bohr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angs2bohr</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.angstrom" title="PDielec.Constants.angstrom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angstrom</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.atomic_number_to_element" title="PDielec.Constants.atomic_number_to_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_number_to_element</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.au2GPa" title="PDielec.Constants.au2GPa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">au2GPa</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.average_masses" title="PDielec.Constants.average_masses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_masses</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.avogadro_si" title="PDielec.Constants.avogadro_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">avogadro_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.bohr_si" title="PDielec.Constants.bohr_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bohr_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.boltzmann_si" title="PDielec.Constants.boltzmann_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boltzmann_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.coulomb" title="PDielec.Constants.coulomb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coulomb</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.covalent_radii" title="PDielec.Constants.covalent_radii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">covalent_radii</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.d2byamuang2" title="PDielec.Constants.d2byamuang2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d2byamuang2</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.debye" title="PDielec.Constants.debye"><code class="xref py py-obj docutils literal notranslate"><span class="pre">debye</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.electron_mass_si" title="PDielec.Constants.electron_mass_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electron_mass_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.element_to_atomic_number" title="PDielec.Constants.element_to_atomic_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">element_to_atomic_number</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.elemental_colours" title="PDielec.Constants.elemental_colours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">elemental_colours</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.elementary_charge_si" title="PDielec.Constants.elementary_charge_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">elementary_charge_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.epsilon_0_si" title="PDielec.Constants.epsilon_0_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">epsilon_0_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.fine_structure" title="PDielec.Constants.fine_structure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fine_structure</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.hartree" title="PDielec.Constants.hartree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hartree</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.hartree2ev" title="PDielec.Constants.hartree2ev"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hartree2ev</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.hbar_si" title="PDielec.Constants.hbar_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hbar_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.hertz" title="PDielec.Constants.hertz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hertz</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.isotope_masses" title="PDielec.Constants.isotope_masses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isotope_masses</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.isotopic_masses" title="PDielec.Constants.isotopic_masses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isotopic_masses</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.jmol_elemental_colours" title="PDielec.Constants.jmol_elemental_colours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jmol_elemental_colours</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.joule" title="PDielec.Constants.joule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joule</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.metre" title="PDielec.Constants.metre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metre</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.molar_gas_si" title="PDielec.Constants.molar_gas_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molar_gas_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.mu_0_si" title="PDielec.Constants.mu_0_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu_0_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.planck_si" title="PDielec.Constants.planck_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">planck_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.speed_light_si" title="PDielec.Constants.speed_light_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">speed_light_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.strength_conv" title="PDielec.Constants.strength_conv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strength_conv</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.thz2cm1" title="PDielec.Constants.thz2cm1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thz2cm1</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Constants.vesta_elemental_colours" title="PDielec.Constants.vesta_elemental_colours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vesta_elemental_colours</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Constants.wavenumber" title="PDielec.Constants.wavenumber"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavenumber</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.amu">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">amu</span></span><a class="headerlink" href="#PDielec.Constants.amu" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">amu</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1822.8884868472642</span></em><a class="headerlink" href="#PDielec.Constants.amu" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.angs2bohr">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">angs2bohr</span></span><a class="headerlink" href="#PDielec.Constants.angs2bohr" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">angs2bohr</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.8897261246257702</span></em><a class="headerlink" href="#PDielec.Constants.angs2bohr" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.angstrom">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">angstrom</span></span><a class="headerlink" href="#PDielec.Constants.angstrom" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">angstrom</span></span><a class="headerlink" href="#PDielec.Constants.angstrom" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.atomic_number_to_element">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">atomic_number_to_element</span></span><a class="headerlink" href="#PDielec.Constants.atomic_number_to_element" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">atomic_number_to_element</span></span><a class="headerlink" href="#PDielec.Constants.atomic_number_to_element" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.au2GPa">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">au2GPa</span></span><a class="headerlink" href="#PDielec.Constants.au2GPa" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">au2GPa</span></span><a class="headerlink" href="#PDielec.Constants.au2GPa" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.average_masses">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">average_masses</span></span><a class="headerlink" href="#PDielec.Constants.average_masses" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">average_masses</span></span><a class="headerlink" href="#PDielec.Constants.average_masses" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.avogadro_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">avogadro_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.02214076e+23</span></em><a class="headerlink" href="#PDielec.Constants.avogadro_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">avogadro_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.02214076e+23</span></em><a class="headerlink" href="#PDielec.Constants.avogadro_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.bohr_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">bohr_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.29177210903e-11</span></em><a class="headerlink" href="#PDielec.Constants.bohr_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">bohr_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.29177210903e-11</span></em><a class="headerlink" href="#PDielec.Constants.bohr_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.boltzmann_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">boltzmann_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.380649e-23</span></em><a class="headerlink" href="#PDielec.Constants.boltzmann_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">boltzmann_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.380649e-23</span></em><a class="headerlink" href="#PDielec.Constants.boltzmann_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.coulomb">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">coulomb</span></span><a class="headerlink" href="#PDielec.Constants.coulomb" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">coulomb</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.241509074460763e+18</span></em><a class="headerlink" href="#PDielec.Constants.coulomb" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.covalent_radii">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">covalent_radii</span></span><a class="headerlink" href="#PDielec.Constants.covalent_radii" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">covalent_radii</span></span><a class="headerlink" href="#PDielec.Constants.covalent_radii" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.d2byamuang2">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">d2byamuang2</span></span><a class="headerlink" href="#PDielec.Constants.d2byamuang2" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">d2byamuang2</span></span><a class="headerlink" href="#PDielec.Constants.d2byamuang2" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.debye">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">debye</span></span><a class="headerlink" href="#PDielec.Constants.debye" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">debye</span></span><a class="headerlink" href="#PDielec.Constants.debye" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.electron_mass_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">electron_mass_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.1093837015e-31</span></em><a class="headerlink" href="#PDielec.Constants.electron_mass_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">electron_mass_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.1093837015e-31</span></em><a class="headerlink" href="#PDielec.Constants.electron_mass_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.element_to_atomic_number">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">element_to_atomic_number</span></span><a class="headerlink" href="#PDielec.Constants.element_to_atomic_number" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">element_to_atomic_number</span></span><a class="headerlink" href="#PDielec.Constants.element_to_atomic_number" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.elemental_colours">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">elemental_colours</span></span><a class="headerlink" href="#PDielec.Constants.elemental_colours" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">elemental_colours</span></span><a class="headerlink" href="#PDielec.Constants.elemental_colours" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.elementary_charge_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">elementary_charge_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.602176634e-19</span></em><a class="headerlink" href="#PDielec.Constants.elementary_charge_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">elementary_charge_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.602176634e-19</span></em><a class="headerlink" href="#PDielec.Constants.elementary_charge_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.epsilon_0_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">epsilon_0_si</span></span><a class="headerlink" href="#PDielec.Constants.epsilon_0_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">epsilon_0_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8.854187812800385e-12</span></em><a class="headerlink" href="#PDielec.Constants.epsilon_0_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.fine_structure">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">fine_structure</span></span><a class="headerlink" href="#PDielec.Constants.fine_structure" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">fine_structure</span></span><a class="headerlink" href="#PDielec.Constants.fine_structure" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.hartree">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hartree</span></span><a class="headerlink" href="#PDielec.Constants.hartree" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hartree</span></span><a class="headerlink" href="#PDielec.Constants.hartree" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.hartree2ev">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hartree2ev</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">27.211386245988</span></em><a class="headerlink" href="#PDielec.Constants.hartree2ev" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hartree2ev</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">27.211386245988</span></em><a class="headerlink" href="#PDielec.Constants.hartree2ev" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.hbar_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hbar_si</span></span><a class="headerlink" href="#PDielec.Constants.hbar_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hbar_si</span></span><a class="headerlink" href="#PDielec.Constants.hbar_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.hertz">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hertz</span></span><a class="headerlink" href="#PDielec.Constants.hertz" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hertz</span></span><a class="headerlink" href="#PDielec.Constants.hertz" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.isotope_masses">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">isotope_masses</span></span><a class="headerlink" href="#PDielec.Constants.isotope_masses" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">isotope_masses</span></span><a class="headerlink" href="#PDielec.Constants.isotope_masses" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.isotopic_masses">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">isotopic_masses</span></span><a class="headerlink" href="#PDielec.Constants.isotopic_masses" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">isotopic_masses</span></span><a class="headerlink" href="#PDielec.Constants.isotopic_masses" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.Constants.jmol_elemental_colours">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">jmol_elemental_colours</span></span><a class="headerlink" href="#PDielec.Constants.jmol_elemental_colours" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.joule">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">joule</span></span><a class="headerlink" href="#PDielec.Constants.joule" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">joule</span></span><a class="headerlink" href="#PDielec.Constants.joule" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.metre">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">metre</span></span><a class="headerlink" href="#PDielec.Constants.metre" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">metre</span></span><a class="headerlink" href="#PDielec.Constants.metre" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.molar_gas_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">molar_gas_si</span></span><a class="headerlink" href="#PDielec.Constants.molar_gas_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">molar_gas_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8.31446261815324</span></em><a class="headerlink" href="#PDielec.Constants.molar_gas_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.mu_0_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">mu_0_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.25663706212e-06</span></em><a class="headerlink" href="#PDielec.Constants.mu_0_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">mu_0_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.25663706212e-06</span></em><a class="headerlink" href="#PDielec.Constants.mu_0_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.planck_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">planck_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.62607015e-34</span></em><a class="headerlink" href="#PDielec.Constants.planck_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">planck_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.62607015e-34</span></em><a class="headerlink" href="#PDielec.Constants.planck_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.speed_light_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">speed_light_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">299792458.0</span></em><a class="headerlink" href="#PDielec.Constants.speed_light_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">speed_light_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">299792458.0</span></em><a class="headerlink" href="#PDielec.Constants.speed_light_si" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.strength_conv">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">strength_conv</span></span><a class="headerlink" href="#PDielec.Constants.strength_conv" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">strength_conv</span></span><a class="headerlink" href="#PDielec.Constants.strength_conv" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.thz2cm1">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">thz2cm1</span></span><a class="headerlink" href="#PDielec.Constants.thz2cm1" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">thz2cm1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">33.3564095198152</span></em><a class="headerlink" href="#PDielec.Constants.thz2cm1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.Constants.vesta_elemental_colours">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">vesta_elemental_colours</span></span><a class="headerlink" href="#PDielec.Constants.vesta_elemental_colours" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.wavenumber">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">wavenumber</span></span><a class="headerlink" href="#PDielec.Constants.wavenumber" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">wavenumber</span></span><a class="headerlink" href="#PDielec.Constants.wavenumber" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -580,7 +760,7 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></div>
+                <div class="title">PDielec.CrystalOutputReader</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -591,7 +771,7 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></div>
+                <div class="title">PDielec.CastepOutputReader</div>
                 
               </div>
             </a>
@@ -625,7 +805,8 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a><ul>
+<li><a class="reference internal" href="#">PDielec.Constants</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.Constants.amu"><code class="docutils literal notranslate"><span class="pre">amu</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.angs2bohr"><code class="docutils literal notranslate"><span class="pre">angs2bohr</span></code></a></li>
@@ -652,6 +833,7 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
 <li><a class="reference internal" href="#PDielec.Constants.hertz"><code class="docutils literal notranslate"><span class="pre">hertz</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.isotope_masses"><code class="docutils literal notranslate"><span class="pre">isotope_masses</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.isotopic_masses"><code class="docutils literal notranslate"><span class="pre">isotopic_masses</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Constants.jmol_elemental_colours"><code class="docutils literal notranslate"><span class="pre">jmol_elemental_colours</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.joule"><code class="docutils literal notranslate"><span class="pre">joule</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.metre"><code class="docutils literal notranslate"><span class="pre">metre</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.molar_gas_si"><code class="docutils literal notranslate"><span class="pre">molar_gas_si</span></code></a></li>
@@ -660,6 +842,7 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
 <li><a class="reference internal" href="#PDielec.Constants.speed_light_si"><code class="docutils literal notranslate"><span class="pre">speed_light_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.strength_conv"><code class="docutils literal notranslate"><span class="pre">strength_conv</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.thz2cm1"><code class="docutils literal notranslate"><span class="pre">thz2cm1</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Constants.vesta_elemental_colours"><code class="docutils literal notranslate"><span class="pre">vesta_elemental_colours</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.wavenumber"><code class="docutils literal notranslate"><span class="pre">wavenumber</span></code></a></li>
 </ul>
 </li>
@@ -674,9 +857,9 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=37b3a9b0"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
     </body>
 </html>

@@ -51,8 +51,7 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
     start = 0
     for _i in range(nlines):
         end = start + no_per_line
-        if end > len_ints:
-            end = len_ints
+        end = min(end, len_ints)
         print(" " + separator.join(format.format(r) for r in ints[start:end]), file=file)
         start = start + no_per_line
     # end for i
@@ -92,8 +91,7 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
     start = 0
     for _i in range(nlines):
         end = start + no_per_line
-        if end > len_strings:
-            end = len_strings
+        end = min(end, len_strings)
         print(" " + separator.join(format.format(r) for r in strings[start:end]), file=file)
         start = start + no_per_line
     # end for i
@@ -134,8 +132,7 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
     start = 0
     for _i in range(nlines):
         end = start + no_per_line
-        if end > len_reals:
-            end = len_reals
+        end = min(end, len_reals)
         print(" " + separator.join(format.format(r) for r in reals[start:end]), file=file)
         start = start + no_per_line
     # end for i

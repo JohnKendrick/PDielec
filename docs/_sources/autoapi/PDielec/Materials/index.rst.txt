@@ -1,5 +1,5 @@
-:py:mod:`PDielec.Materials`
-===========================
+PDielec.Materials
+=================
 
 .. py:module:: PDielec.Materials
 
@@ -11,11 +11,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -29,12 +26,13 @@ Classes
    PDielec.Materials.Tabulated
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Constant(name, permittivity=None, density=None, cell=None)
 
-
    Bases: :py:obj:`Material`
+
 
    A class representing a material with constant scalar permittivity, inheriting from the `Material` class.
 
@@ -49,10 +47,15 @@ Classes
 
 
 
+   .. py:attribute:: type
+      :value: 'Constant permittivity'
+
+
+
 .. py:class:: DrudeLorentz(name, epsinf, omegas, strengths, gammas, density=None, cell=None)
 
-
    Bases: :py:obj:`Material`
+
 
    A subclass representing a material with a Lorentz-Drude model permittivity.
 
@@ -92,10 +95,15 @@ Classes
 
 
 
+   .. py:attribute:: type
+      :value: 'Drude-Lorentz'
+
+
+
 .. py:class:: External(name, permittivityObject=None, density=None, cell=None)
 
-
    Bases: :py:obj:`Material`
+
 
    A class for representing materials with externally specified permittivity.
 
@@ -104,10 +112,15 @@ Classes
    Permittivity can be a complex value indicating both the real and imaginary parts.
 
 
+   .. py:attribute:: type
+      :value: 'External permittivity'
+
+
+
 .. py:class:: FPSQ(name, epsinf, omega_tos, gamma_tos, omega_los, gamma_los, density=None, cell=None)
 
-
    Bases: :py:obj:`Material`
+
 
    Class representing a material with a FPSQ model for permittivity.
 
@@ -136,8 +149,12 @@ Classes
 
 
 
-.. py:class:: Material(name, density=None, permittivityObject=None, cell=None)
+   .. py:attribute:: type
+      :value: 'FPSQ'
 
+
+
+.. py:class:: Material(name, density=None, permittivityObject=None, cell=None)
 
    A class for representing materials with properties like name, density, permittivity, and unit cell.
 
@@ -234,6 +251,7 @@ Classes
        Sets the permittivityObject for the material.
 
 
+
    .. py:method:: getCell()
 
       Return the cell.
@@ -248,6 +266,7 @@ Classes
 
 
 
+
    .. py:method:: getDensity()
 
       Return the density.
@@ -259,6 +278,7 @@ Classes
       Returns
       -------
       self.density
+
 
 
 
@@ -277,6 +297,7 @@ Classes
 
 
 
+
    .. py:method:: getInformation()
 
       Return information about the material.
@@ -292,6 +313,7 @@ Classes
 
 
 
+
    .. py:method:: getName()
 
       Get the name attribute of the object.
@@ -304,6 +326,7 @@ Classes
       -------
       str
           The name attribute of the object.
+
 
 
 
@@ -324,6 +347,7 @@ Classes
 
 
 
+
    .. py:method:: getPermittivityFunction()
 
       Return the permittivity function.
@@ -336,6 +360,7 @@ Classes
       -------
       permittivityObjectFunction
           Return the permittivity object function
+
 
 
 
@@ -354,6 +379,7 @@ Classes
 
 
 
+
    .. py:method:: getSigmas()
 
       Get the sigma parameters for a Lorentzian permittivity.
@@ -366,6 +392,7 @@ Classes
       -------
       1d array of floats
           Returns the sigma parameters for a Lorentz permittivity function in cm-1
+
 
 
 
@@ -384,6 +411,7 @@ Classes
 
 
 
+
    .. py:method:: isTensor()
 
       Return true if the material returns a tensor permittivity.
@@ -399,6 +427,7 @@ Classes
 
 
 
+
    .. py:method:: print()
 
       Print information about the material.
@@ -410,6 +439,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -428,6 +458,7 @@ Classes
 
 
 
+
    .. py:method:: setDensity(value)
 
       Set the density.
@@ -440,6 +471,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -458,6 +490,7 @@ Classes
 
 
 
+
    .. py:method:: setOscillatorStrengths(strengths)
 
       Set the oscillator strengths for a Lorentzian permittivity.
@@ -473,6 +506,7 @@ Classes
 
 
 
+
    .. py:method:: setPermittivityObject(permittivityObject)
 
       Set the permittivity object.
@@ -485,6 +519,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -504,8 +539,30 @@ Classes
 
 
 
-.. py:class:: MaterialsDataBase(filename, debug=False)
+   .. py:attribute:: cell
+      :value: None
 
+
+
+   .. py:attribute:: density
+      :value: None
+
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: permittivityObject
+      :value: None
+
+
+
+   .. py:attribute:: type
+      :value: 'Base Class'
+
+
+
+.. py:class:: MaterialsDataBase(filename, debug=False)
 
    A class for managing a database of materials' properties.
 
@@ -563,6 +620,8 @@ Classes
        Reads constant permittivity data for a given material from the spreadsheet.
    readTabulatedRefractiveIndex(sheet, worksheet, density)
        Reads tabulated refractive index data for a given material from the spreadsheet.
+   readTabulatedSpectroscopy(sheet, worksheet, density)
+       Reads tabulated n and alpha (in cm-1) data for a given material from the spreadsheet.
    readTabulatedPermittivity(sheet, worksheet, density)
        Reads tabulated permittivity data for a given material from the spreadsheet.
    readLorentzDrude(sheet, worksheet, density, unitCell)
@@ -571,6 +630,7 @@ Classes
        Reads FPSQ model parameters for a given material from the spreadsheet.
    readSellmeier(sheet, worksheet, density, unitCell)
        Reads Sellmeier model parameters for a given material from the spreadsheet.
+
 
 
    .. py:method:: getFileName()
@@ -585,6 +645,7 @@ Classes
       -------
       str
           The filename.
+
 
 
 
@@ -607,6 +668,7 @@ Classes
 
 
 
+
    .. py:method:: getSheetNames()
 
       Return a list of the sheetnames in the database.
@@ -622,6 +684,7 @@ Classes
       -------
       list
           A list of the sheet names present in the database.
+
 
 
 
@@ -644,6 +707,7 @@ Classes
 
 
 
+
    .. py:method:: readConstantRefractiveIndex(sheet, worksheet, density)
 
       Read constant refractive index from the spreadsheet.
@@ -660,6 +724,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -684,6 +749,7 @@ Classes
 
 
 
+
    .. py:method:: readLorentzDrude(sheet, worksheet, density, unitCell)
 
       Read Drude-Lorentz data from the spreadsheet.
@@ -702,6 +768,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -726,6 +793,7 @@ Classes
 
 
 
+
    .. py:method:: readTabulatedPermittivity(sheet, worksheet, density)
 
       Read tabulated permittivity data from the spreadsheet.
@@ -745,6 +813,7 @@ Classes
 
 
 
+
    .. py:method:: readTabulatedRefractiveIndex(sheet, worksheet, density)
 
       Read tabulated refractive index data from the spreadsheet.
@@ -761,6 +830,27 @@ Classes
       Returns
       -------
       None
+
+
+
+
+   .. py:method:: readTabulatedSpectroscopy(sheet, worksheet, density)
+
+      Read tabulated refractive index data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
 
 
 
@@ -784,10 +874,13 @@ Classes
 
 
 
+   .. py:attribute:: cache
+
+
 .. py:class:: Sellmeier(name, Bs, Cs, density=None, cell=None)
 
-
    Bases: :py:obj:`Material`
+
 
    A class to define materials using the Sellmeier model for permittivity.
 
@@ -816,10 +909,15 @@ Classes
 
 
 
+   .. py:attribute:: type
+      :value: 'Sellmeier'
+
+
+
 .. py:class:: Tabulated(name, vs_cm1=None, permittivities=None, density=None, cell=None)
 
-
    Bases: :py:obj:`Material`
+
 
    A class for materials with tabulated permittivities.
 
@@ -852,6 +950,7 @@ Classes
    >>> material2 = Tabulated("Synthetic", vs_cm1=[200, 400, 600], permittivities=[[2.1, 2.3, 2.5], [2.4, 2.6, 2.8], [3.0, 3.2, 3.4]], density=1.5)
 
 
+
    .. py:method:: setEpsilonInfinity(eps)
 
       Set the value of epsilon infinity for the material.
@@ -865,6 +964,11 @@ Classes
       -------
       None
 
+
+
+
+   .. py:attribute:: type
+      :value: 'Tabulated permittivity'
 
 
 

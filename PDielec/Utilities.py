@@ -79,9 +79,8 @@ def find_program_from_name( filename ):
 
     Returns
     -------
-    (str1,str2)
-        A tuple of 2 strings, the first, str1, is the program name that was used to calculate the frequencies.
-        In the case of phonopy, the second string is the QM program that calculates the forces
+    str
+        The program name that was used to calculate the frequencies.
 
     Notes
     -----
@@ -93,92 +92,53 @@ def find_program_from_name( filename ):
 
         program = find_program_from_name('./data/structure.castep')
         print(program)
-        # Output: ("castep","")
+        # Output: "castep"
     
-        program = find_program_from_name('path/to/simulation/OUTCAR')
+        program = find_program_from_name('path/to/simulation/phonopy.yaml')
         print(program)
-        # Output: ("phonopy","vasp")
-        # Depends on the presence of 'phonopy.yaml'
+        # Output: "phonopy"
 
     """    
     head,tail = os.path.split(filename)
     root,ext = os.path.splitext(tail)
     head_root = os.path.join(head,root)
-    if os.path.isfile(os.path.join(head,"pwscf.xml")):
-        if os.path.isfile(os.path.join(head,"phonopy.yaml")):
-            # It is a phonopy calculation because phonopy.yaml is present
-            # It is a quantum espresso calculation because pwscf.xml is present 
-            return "phonopy","quantum espresso"
-        else:
-            # It is q-e but not Phonopy
-            return "quantum espresso",""
     if ext == ".dynG":
-        if os.path.isfile(os.path.join(head,"phonopy.yaml")):
-            return "phonopy","quantum espresso"
-        else:
-            # It is q-e but not Phonopy
-            return "quantum espresso",""
+        return "quantum espresso"
     if tail == "OUTCAR":
-        if os.path.isfile(head+"phonopy.yaml"):
-            return "phonopy","vasp"
-        else:
-            return "vasp",""
-    if os.path.isfile(os.path.join(head,"vasprun.xml")):
-        if os.path.isfile(head+"phonopy.yaml"):
-            return "phonopy","vasp"
-        else:
-            return "vasp",""
+        return "vasp"
+    if ext ==  ".abo":
+            return "abinit"
+    if ext ==  ".exp":
+        return "experiment"
+    if ext ==  ".py":
+        return "pdgui"
+    if ext ==  ".yaml":
+        return "phonopy"
     if ext == ".gout":
-        return "gulp",""
-    if ext == ".born":
-        return "phonopy","vasp"
+        return "gulp"
     if ext == ".castep":
-            if os.path.isfile(head+"phonopy.yaml"):
-                return "phonopy","castep"
-            else:
-                return "castep",""
+        return "castep"
     if ext ==  ".out":
         if os.path.isfile(head_root+".files"):
-            if os.path.isfile(head+"phonopy.yaml"):
-                return "phonopy","abinit"
-            else:
-                return "abinit",""
+            return "abinit"
         elif os.path.isfile(head_root+".dynG"):
-            if os.path.isfile(head+"phonopy.yaml"):
-                return "phonopy","quantum espresso"
-            else:
-                return "quantum espresso",""
-        elif os.path.isfile(head+"phonopy.yaml"):
-            return "phonopy","crystal"
+            return "quantum espresso"
         else:
-            return "crystal",""
+            return "crystal"
     if ext ==  ".log":
         if os.path.isfile(head_root+".files"):
-            if os.path.isfile(head+"phonopy.yaml"):
-                return "phonopy","abinit"
-            else:
-                return "abinit",""
-        elif os.path.isfile(head_root+".dynG"):
-            if os.path.isfile(head+"phonopy.yaml"):
-                return "phonopy","quantum espresso"
-            else:
-                return "quantum espresso",""
-        elif os.path.isfile(head+"phonopy.yaml"):
-            return "phonopy","crystal"
-        else:
-            return "crystal",""
-    if ext ==  ".abo":
-        if os.path.isfile(head+"phonopy.yaml"):
-            return "phonopy","abinit"
-        else:
             return "abinit",""
-    if ext ==  ".exp":
-        return "experiment",""
-    if ext ==  ".py":
-        return "pdgui",""
-    return "",""
+        elif os.path.isfile(head_root+".dynG"):
+            return "quantum espresso",""
+        else:
+            return "crystal"
+    if os.path.isfile(os.path.join(head,"vasprun.xml")):
+        return "vasp"
+    if os.path.isfile(os.path.join(head,"pwscf.xml")):
+        return "quantum espresso"
+    return ""
 
-def get_reader( name, program, qmprogram,debug=False):
+def get_reader( name, program, debug=False):
     """Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
 
     This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.
@@ -189,34 +149,26 @@ def get_reader( name, program, qmprogram,debug=False):
         The primary filepath or name associated with the output file(s).
     program : str
         The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit', 'qe', and 'phonopy'.
-    qmprogram : str
-        The name of the quantum mechanical program used in conjunction with phonopy. Supported values are the same as for `program`, but its relevance is exclusive to when `program` is set to 'phonopy'.
     debug : boolean
         Optional.  If true print debug information.  Default is false
 
     Returns
     -------
     object
-        An instance of the appropriate output reader class based on the input `program` and, if applicable, `qmprogram`.
-
-    Notes
-    -----
-    For phonopy simulations, both phonon and quantum mechanical output files are considered. If the `qmprogram` is not compatible or not specified, the function will exit.
+        An instance of the appropriate output reader class based on the input `program`
 
     Examples
     --------
-    >>> reader = get_reader("output.log", "castep", "")
-    >>> reader = get_reader("output", "phonopy", "vasp")
+    >>> reader = get_reader("output.log", "castep")
+    >>> reader = get_reader("output", "phonopy")
 
     """    
     program = program.lower()
-    qmprogram = qmprogram.lower()
     fulldirname = name
     head,tail = os.path.split(fulldirname)
     root,ext = os.path.splitext(tail)
     if debug:
         print("get_reader:  program = ",program)
-        print("get_reader:  qmprogram = ",qmprogram)
         print("get_reader:  fulldirname = ",fulldirname)
         print("get_reader:  head = ",head)
         print("get_reader:  tail = ",tail)
@@ -276,10 +228,8 @@ def get_reader( name, program, qmprogram,debug=False):
         pnames = []
         pnames.append( os.path.join(head,"qpoints.yaml") )
         pnames.append( os.path.join(head,"phonopy.yaml") )
-        # Which QM program was used by PHONOPY?
-        qmreader = get_reader(name,qmprogram, "",debug=debug)
-        # The QM reader is used to get info about the QM calculation
-        reader = PhonopyOutputReader(pnames,qmreader)
+        pnames.append( os.path.join(head,"BORN_PDIELEC") )
+        reader = PhonopyOutputReader(pnames)
     elif program == "experiment":
         names = [ name ]
         reader = ExperimentOutputReader(names)

@@ -13,6 +13,7 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """ViewerTab module."""
+import copy
 import os
 from collections import deque
 
@@ -22,6 +23,8 @@ from qtpy.QtWidgets import (
     QApplication,
     QColorDialog,
     QComboBox,
+    QDialog,
+    QDialogButtonBox,
     QDoubleSpinBox,
     QFormLayout,
     QHBoxLayout,
@@ -31,15 +34,19 @@ from qtpy.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QSpinBox,
+    QTableWidget,
+    QTableWidgetItem,
     QTabWidget,
     QVBoxLayout,
     QWidget,
 )
 
-from PDielec.Constants import elemental_colours
+from PDielec import Calculator
+from PDielec.Constants import elemental_colours, jmol_elemental_colours, vesta_elemental_colours
 from PDielec.GUI.OpenGLWidget import OpenGLWidget
+from PDielec.PrimitiveCell import PrimitiveCell
 
-# Need the SuperCell class
+# Need the SuperCell & PrimitiveCell classes
 from PDielec.SuperCell import SuperCell
 
 # Import plotting requirements
@@ -80,7 +87,7 @@ class ViewerTab(QWidget):
         The index of the currently selected plot type.
     number_of_molecules : int
         The number of molecules in the visualization.
-    unit_cell, super_cell, cell_edges, cell_corners : Various
+    standard_cell, unit_cell, super_cell, cell_edges, cell_corners : Various
         Attributes related to the molecular/crystalline structure and its visualization.
     element_colours : dict
         A mapping of elements to their colors used in the visualization.
@@ -120,12 +127,16 @@ class ViewerTab(QWidget):
         Handles a click on the coloured button
     on_coloured_element_clicked
         Changes the colour of an element
+    on_edit_button_clicked
+        Edit the transform matrix in the GUI
     on_filename_button_clicked
         Handles a click on the file name button
     on_filename_le_changed
         Handles a change to the file name
     on_filename_le_return
         Handles a return press in the file name widget
+    on_guess_button_clicked
+        Guess the transform to a primitive cell
     on_light_switches_cb_activated
         Activates the light switch combobox
     on_maximum_displacement_changed
@@ -140,6 +151,8 @@ class ViewerTab(QWidget):
         Handles the change in the b supercell parameter
     on_super_cell_changed_c
         Handles the change in the c supercell parameter
+    on_reset_button_clicked
+        Changes the transform back to a unit matrix
     plot
         Plot the 3D view of the molecule
     plot_animation
@@ -181,9 +194,8 @@ class ViewerTab(QWidget):
 
         """        
         super(QWidget, self).__init__(parent)
-        global debugger
-        debugger = Debug(debug,"ViewerTab")
-        debugger.print("Start:: initialisation")
+        self.debugger = Debug(debug,"ViewerTab")
+        self.debugger.print("Start:: initialisation")
         self.debug = debug
         self.refreshRequired = True
         self.setWindowTitle("Viewer")
@@ -196,30 +208,51 @@ class ViewerTab(QWidget):
         self.settings["Bond radius"]           = 0.1
         self.settings["Cell colour"]           = [ 255,   0,   0, 255 ]
         self.settings["Cell radius"]           = 0.1
+        self.settings["Text colour"]           = [ 255, 255,   0, 255 ]
+        self.settings["Text size"]             = "24"
         self.settings["Background colour"]     = [ 120, 120, 120, 255 ]
         self.settings["Arrow colour"]          = [   0, 255,   0, 255 ]
         self.settings["Arrow radius"]          = 0.07
         self.settings["Number of phase steps"] = 41
         self.settings["Super Cell"] =  [ 1, 1, 1 ]
+        self.settings["Transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
+        self.settings["hkl"] =  (0, 0, 1)
+        self.settings["uvw"] =  (1, 0, 0)
+        self.settings["Element colours"] = None
+        self.settings["Element palette"] = "Jmol"
         self.light_switches = [False]*8
         self.light_switches[0] = True
         self.light_switches[1] = True
         self.plot_types = ["Animation","Arrows","No arrows or animation"]
         self.plot_type_index = 1
         self.number_of_molecules = 0
-        self.unit_cell = None
+        self.standard_cell = None
         self.super_cell = None
         self.cell_edges = None
         self.cell_corners = None
         # element_colours is a dictionary
         self.element_colours = elemental_colours
-        self.settings["Element colours"] = None
         self.element_names = []
         self.species       = []
         self.element_coloured_buttons = []
         self.bond_cell_background_arrow_buttons = []
         self.bond_cell_background_arrow_names = ["Background","Cell","Bonds","Arrows"]
         self.image_filename = ""
+        self.transform_tab_entry = None
+        self.transformed_cell = None
+        self.hkl_tab_entry = None
+        self.toggle_names =  ["Show cell labels",
+                              "Show cell",
+                              "Show orientation",
+                              "Show bonds",
+                              "Show atoms",
+                             ]
+        self.settings["Toggle states"] = [ True,
+                               True,
+                               True,
+                               True,
+                               True,
+                             ]
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -250,10 +283,18 @@ class ViewerTab(QWidget):
         label = QLabel("Frequency (cm-1)", self)
         form.addRow(label, self.frequency_le)
         #
-        # The super-cell
+        # The transform window popup
+        #
+        self.transform_tab_entry = self.createTransformTabEntry()
+        #
+        # The hkl tab entry
+        #
+        self.hkl_tab_entry = self.createHKLTabEntry()
+        #
+        # The super-cell widget
         #
         self.super_cell_widget = QWidget(self)
-        self.super_cell_widget.setToolTip("Generate a super-cell")
+        self.super_cell_widget.setToolTip("Generate a super-cell\nThe super-cell is a multiple of the DFT cell, not the transformed cell")
         self.super_cell_hbox = QHBoxLayout()
         self.super_cell_spinBoxes = []
         super_cell_changed = [self.on_super_cell_changed_a, self.on_super_cell_changed_b, self.on_super_cell_changed_c]
@@ -261,7 +302,7 @@ class ViewerTab(QWidget):
         for change_function,tip in zip(super_cell_changed,super_cell_tooltip):
             spinBox = QSpinBox(self)
             spinBox.setToolTip(tip)
-            spinBox.setRange(1,5)
+            spinBox.setRange(1,20)
             spinBox.setSingleStep(1)
             spinBox.valueChanged.connect(change_function)
             self.super_cell_spinBoxes.append(spinBox)
@@ -318,7 +359,7 @@ class ViewerTab(QWidget):
         self.maximum_displacement_sb.setToolTip("Set the size of the maximum displacement")
         self.maximum_displacement_sb.valueChanged.connect(self.on_maximum_displacement_changed)
         #
-        # Add a comb box to select which type of plot
+        # Add a combo box to select which type of plot
         #
         self.plottype_cb = QComboBox(self)
         self.plottype_cb.setToolTip("The plot can either be an animation or the modes can be shown by arrow")
@@ -329,6 +370,15 @@ class ViewerTab(QWidget):
         label = QLabel("Choose the plot type", self)
         label.setToolTip("The plot can either be an animation or the modes can be shown by arrow")
         form.addRow(label, self.plottype_cb)
+        #
+        # Toggle switches
+        #
+        self.toggles_cb = QComboBox(self)
+        self.toggles_cb.setToolTip("The toggles switches")
+        for toggle,state in zip(self.toggle_names,self.settings["Toggle states"]):
+            string = f"{toggle} is on" if state else f"{toggle} is off"
+            self.toggles_cb.addItem(string)
+        self.toggles_cb.activated.connect(self.on_toggles_cb_activated)
         #
         # Light switches
         #
@@ -352,6 +402,7 @@ class ViewerTab(QWidget):
             self.element_coloured_buttons.append(button)
             self.element_coloured_hbox.addWidget(button)
         self.coloured_elements_widget.setLayout(self.element_coloured_hbox)
+        self.coloured_elements_widget.setToolTip("Change the colour of the elements")
         #
         # Colours list of buttons with colours
         #
@@ -366,18 +417,21 @@ class ViewerTab(QWidget):
             button.clicked.connect(self.on_coloured_button_clicked)
             self.bond_cell_background_arrow_buttons.append(button)
             hbox.addWidget(button)
+        self.coloured_buttons_widget.setToolTip("Change the colours of the background, cell, bonds and arrows")
         self.coloured_buttons_widget.setLayout(hbox)
         #
         # Add a tab widget for the settings
         #
         self.settingsTab = QTabWidget(self)
-        #self.settingsTab.currentChanged.connect(self.on_settingsTab_currentChanged)
         self.settingsTab.addTab(self.coloured_elements_widget, "Elements")
         self.settingsTab.addTab(self.coloured_buttons_widget, "Colours")
-        self.settingsTab.addTab(self.atom_scaling_sb, "Atom Scaling")
+        self.settingsTab.addTab(self.atom_scaling_sb, "Atom Size")
         self.settingsTab.addTab(self.super_cell_widget, "Super Cell")
+        self.settingsTab.addTab(self.transform_tab_entry, "Transform")
+        self.settingsTab.addTab(self.hkl_tab_entry, "Surface")
         self.settingsTab.addTab(self.light_switches_cb, "Lighting")
-        self.settingsTab.addTab(self.maximum_displacement_sb, "Maximum Displacement")
+        self.settingsTab.addTab(self.toggles_cb, "Toggles")
+        self.settingsTab.addTab(self.maximum_displacement_sb, "Displacement")
         self.settingsTab.addTab(self.bond_radius_sb, "Bond Radius")
         self.settingsTab.addTab(self.cell_radius_sb, "Cell Radius")
         self.settingsTab.addTab(self.arrow_radius_sb, "Arrow Radius")
@@ -422,8 +476,355 @@ class ViewerTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
-        debugger.print("Finished:: initialisation")
+        self.debugger.print("Finished:: initialisation")
 
+    def convert_transform(self):
+        """Convert the transform stored as strings in settings to an np.array.
+
+        Parameters
+        ----------
+        None
+
+        Modifies
+        --------
+        transform
+
+        """
+        self.debugger.print("convert_transform")
+        transform = []
+        for row in self.settings["Transform"]:
+            new_row = [ eval(col) for col in row ]
+            transform.append(new_row)
+        self.debugger.print("convert_transform", np.array(transform))
+        return np.array(transform)
+       
+    def on_reset_button_clicked(self, item ):
+        """Handle a push of the reset transform button.
+
+        When the button is pushed the transform is set to unity.
+
+        Parameters
+        ----------
+        item : bool
+            ignored
+
+        Returns
+        -------
+        None
+
+        """
+        self.debugger.print("on_reset_button_clicked",item)
+        self.settings["Transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
+        self.debugger.print("on_guess_button_clicked transform",self.settings["Transform"])
+        self.refreshRequired = True
+        self.refresh()
+
+    def on_guess_button_clicked(self, item):
+        """Guess the primitive transform button click.
+
+        The primitive transform is guessed from the spacegroup
+
+        Parameters
+        ----------
+        item : bool
+            ignored
+
+        Returns
+        -------
+        None
+
+        Modifies
+        --------
+        Modifies primitive unit cell
+
+        """
+        self.debugger.print("on_guess_button_clicked",item)
+        transform = self.standard_cell.guess_primitive_transform()
+        new = []
+        for row in transform:
+            new.append( [f"{col:.9f}" for col in row])
+        self.settings["Transform"] = new
+        self.debugger.print("on_guess_button_clicked transform",self.settings["Transform"])
+        self.refreshRequired = True
+        self.refresh()
+
+    def on_edit_button_clicked(self, item):
+        """Edit the transform.
+
+        The transform window dialog is shown and any edits applied
+
+        Parameters
+        ----------
+        item : bool
+            ignored
+
+        Returns
+        -------
+        None
+
+        Modifies
+        --------
+        Modifies primitive unit cell
+
+        """
+        self.debugger.print("on_edit_button_clicked",item)
+        transform_window = TransformWindow(self.settings["Transform"],
+                                           debug=self.debugger.state())
+        if transform_window.exec():
+            # The 'Ok' button was pressed
+            # get the new transform and replace the old one
+            self.settings["Transform"] = transform_window.getTransform()
+            self.debugger.print("on_edit_button_clicked transform",self.settings["Transform"])
+            self.refreshRequired = True
+            self.refresh()
+
+    def on_primitive_button_clicked(self,item):
+        """Handle a push of the primitive transform button.
+
+        When the button is pushed the primitive transform is loaded from phonopy.yaml
+
+        Parameters
+        ----------
+        item : bool
+            ignored
+
+        Returns
+        -------
+        None
+
+        Modifies
+        --------
+        self.settings["Primitive transform"]
+
+        """
+        self.debugger.print("on_primitive_button_clicked",item)
+        if self.reader is not None and self.reader.primitive_transformation is not None:
+            self.settings["Primitive transform"] = self.reader.primitive_transformation
+            self.debugger.print("on_primtive_button_clicked transform",self.settings["Primitive transform"])
+        # change the primitive transform window popup
+        self.refreshRequired = True
+        self.refresh()
+
+    def createHKLTabEntry(self):
+        """Create a one line entry to allow an entry of the hkl for a surface.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        a widget
+
+        """
+        self.debugger.print("CreateHKLTabEntry")
+        # unique direction (hkl)
+        self.h_sb, self.k_sb, self.l_sb = self.hkl_spin_boxes()
+        # unique direction (uvw)
+        self.u_sb, self.v_sb, self.w_sb = self.uvw_spin_boxes()
+        container = QHBoxLayout()
+        form = QFormLayout()
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.h_sb)
+        hbox.addWidget(self.k_sb)
+        hbox.addWidget(self.l_sb)
+        label = QLabel("    hkl:")
+        form.addRow(label, hbox)
+        container.addLayout(form)
+        form = QFormLayout()
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.u_sb)
+        hbox.addWidget(self.v_sb)
+        hbox.addWidget(self.w_sb)
+        label = QLabel("    uvw:")
+        form.addRow(label, hbox)
+        container.addLayout(form)
+        widget = QWidget(self)
+        widget.setToolTip("Define a surface of the transformed cell using (hkl) & [uvw]")
+        widget.setLayout(container)
+        return widget
+
+    def hkl_spin_boxes(self):
+        """Create the spin boxes for hkl.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        a set of spin boxes
+
+        """
+        infostring = "\nThe surface (hkl) is displayed using the keyboard shortcuts 's' or 'S'.\n's' shows the surface in the plane of the screen.\n'S' shows the surface edge on.\n [uvw] defines a perpendicular to the surface normal.\n(hkl) takes precedence unless it is (000).\nIf hkl is (000) 's' shows [uvw] perpendicular to the screen \nand 'S' shows [uvw] vertical on the screen"
+        h,k,l = self.settings["hkl"]
+        h_sb = QSpinBox(self)
+        h_sb.setToolTip("Define the h dimension of the surface"+infostring)
+        h_sb.setRange(-20,20)
+        h_sb.setValue(h)
+        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
+        k_sb = QSpinBox(self)
+        k_sb.setToolTip("Define the k dimension of the surface"+infostring)
+        k_sb.setRange(-20,20)
+        k_sb.setValue(k)
+        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
+        l_sb = QSpinBox(self)
+        l_sb.setToolTip("Define the l dimension of the surface"+infostring)
+        l_sb.setRange(-20,20)
+        l_sb.setValue(l)
+        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
+        return h_sb, k_sb, l_sb
+
+    def uvw_spin_boxes(self):
+        """Create the spin boxes for uvw.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        a set of spin boxes
+
+        """
+        infostring = "\nThe surface (hkl) is displayed using the keyboard shortcuts 's' or 'S'.\n's' shows the surface in the plane of the screen.\n'S' shows the surface edge on.\n [uvw] defines a perpendicular to the surface normal.\n(hkl) takes presidence unless it is (000).\nIn this case 's' shows [uvw] perpendicular to the screen and 'S' show [uvw] vertical on the screen\n "
+        h,k,l = self.settings["uvw"]
+        h_sb = QSpinBox(self)
+        h_sb.setToolTip("Define the u dimension of the surface"+infostring)
+        h_sb.setRange(-20,20)
+        h_sb.setValue(h)
+        h_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,0))
+        k_sb = QSpinBox(self)
+        k_sb.setToolTip("Define the v dimension of the surface"+infostring)
+        k_sb.setRange(-20,20)
+        k_sb.setValue(k)
+        k_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,1))
+        l_sb = QSpinBox(self)
+        l_sb.setToolTip("Define the w dimension of the surface"+infostring)
+        l_sb.setRange(-20,20)
+        l_sb.setValue(l)
+        l_sb.valueChanged.connect(lambda x: self.on_uvw_sb_changed(x,2))
+        return h_sb, k_sb, l_sb
+
+    def on_uvw_sb_changed(self,value,index):
+        """Handle a change in a value of u,v or, w.
+
+        Parameters
+        ----------
+        value : int
+            The value of u,v or w
+
+        index : integer
+          1, 2, or 3 for u, v or w
+
+        Modifies
+        --------
+        settings["uvw"]
+
+        """
+        self.debugger.print("on_uvw_sb_changed", value, index)
+        u,v,w = self.settings["uvw"]
+        if index == 0:
+            u = value
+        elif index == 1:
+            v = value
+        else:
+            w = value
+        #
+        # Do not allow 0,0,0
+        #
+        if abs(u) + abs(v) + abs(w) == 0:
+            u = 1
+            v = 0
+            w = 0
+            self.u_sb.blockSignals(True)
+            self.v_sb.blockSignals(True)
+            self.w_sb.blockSignals(True)
+            self.u_sb.setValue(u)
+            self.v_sb.setValue(v)
+            self.w_sb.setValue(w)
+            self.u_sb.blockSignals(False)
+            self.v_sb.blockSignals(False)
+            self.w_sb.blockSignals(False)
+        self.settings["uvw"] = (u,v,w)
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,
+                                                       self.settings["hkl"],
+                                                       self.settings["uvw"])
+        self.debugger.print("on_uvw_sb_changed uvw=", self.settings["uvw"])
+        return 
+    
+    def on_hkl_sb_changed(self,value,index):
+        """Handle a change in a value of h,k or, l.
+
+        Parameters
+        ----------
+        value : int
+            The value of h,k or l
+
+        index : integer
+          1, 2, or 3 for h, k or l
+
+        Modifies
+        --------
+        settings["hkl"]
+
+        """
+        self.debugger.print("on_hkl_sb_changed", value, index)
+        h,k,l = self.settings["hkl"]
+        if index == 0:
+            h = value
+        elif index == 1:
+            k = value
+        else:
+            l = value
+        self.settings["hkl"] = (h,k,l)
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,
+                                                       self.settings["hkl"],
+                                                       self.settings["uvw"])
+        self.debugger.print("on_hkl_sb_changed hkl=", self.settings["hkl"])
+        return 
+    
+
+    def createTransformTabEntry(self):
+        """Create a one line entry to modify the cell transformation matrix.
+
+        Add buttons to reset, edit and if possible read the transformation matrix
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        a widget
+
+        """
+        self.debugger.print("createTransformTabEntry")
+        hbox = QHBoxLayout()
+        button = QPushButton("Reset transformation matrix")
+        button.setToolTip("Reset the transformation to a unit matrix")
+        button.clicked.connect(self.on_reset_button_clicked)
+        button.clicked.connect(self.on_reset_button_clicked)
+        hbox.addWidget(button)
+        if self.reader is not None and self.reader.primitive_transformation is not None:
+            # Give a button to load the primitive transformation 
+            button = QPushButton("Load transformation from phonopy")
+            button.setToolTip("Set the transformation to the primitive transformation matrix in phonopy.yaml")
+            button.clicked.connect(self.on_primitive_button_clicked)
+            hbox.addWidget(button)
+        button = QPushButton("Guess transformation matrix")
+        button.setToolTip("Guess the transformation and generate a new cell")
+        button.clicked.connect(self.on_guess_button_clicked)
+        hbox.addWidget(button)
+        button = QPushButton("Edit transformation matrix")
+        button.setToolTip("Edit the transformation and generate a new cell")
+        button.clicked.connect(self.on_edit_button_clicked)
+        hbox.addWidget(button)
+        widget = QWidget(self)
+        widget.setLayout(hbox)
+        return widget
+
+        
     def on_filename_le_return(self):
         """Handle the event triggered by the return key press within the filename input field.
 
@@ -438,7 +839,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on filename le return pressed")
+        self.debugger.print("on filename le return pressed")
         self.on_filename_button_clicked(True)
         return
 
@@ -457,7 +858,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on filename le changed", text)
+        self.debugger.print("on filename le changed", text)
         self.image_filename = text
         return
 
@@ -489,7 +890,7 @@ class ViewerTab(QWidget):
         the application's cursor is restored to its default state after the operation completes.
 
         """        
-        debugger.print("on filename button clicked")
+        self.debugger.print("on filename button clicked")
         #button = self.sender()
         #text = button.text()
         #
@@ -498,7 +899,7 @@ class ViewerTab(QWidget):
         filename = self.image_filename
         root,extension = os.path.splitext(filename)
         if filename == "" or extension not in (".mp4", ".avi", ".png", ".gif", ".cif", ".mcif" ):
-            debugger.print("Aborting on filename button clicked", filename)
+            self.debugger.print("Aborting on filename button clicked", filename)
             QMessageBox.about(self,"Image file name", "The file name for the image is not valid "+filename)
             return
         #
@@ -610,7 +1011,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on coloured elements clicked")
+        self.debugger.print("on coloured elements clicked")
         button = self.sender()
         text = button.text()
         colourChooser = QColorDialog()
@@ -619,6 +1020,9 @@ class ViewerTab(QWidget):
         colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         self.element_colours[text] = rgba
+        #
+        # This is a setting based on the element, there is a colour for each element
+        #
         self.settings["Element colours"] = [ self.element_colours[el] for el in self.species ]
         self.refreshRequired = True
         self.refresh()
@@ -639,7 +1043,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on coloured button clicked")
+        self.debugger.print("on coloured button clicked")
         button = self.sender()
         text = button.text()
         colourChooser = QColorDialog()
@@ -659,6 +1063,28 @@ class ViewerTab(QWidget):
         self.refresh()
         return
 
+    def on_toggles_cb_activated(self, index):
+        """Activate or deactivate the various toglles based on the current state and updates the GUI accordingly.
+
+        Parameters
+        ----------
+        index : int
+            Index of the toggle in `self.toggle_name` list
+
+        Returns
+        -------
+        None
+
+        """        
+        self.debugger.print("on_toggles_cb_activated")
+        self.settings["Toggle states"][index] = not self.settings["Toggle states"][index]
+        state = self.settings["Toggle states"][index]
+        string = f"{self.toggle_names[index]} is on" if state else f"{self.toggle_names[index]} is off"
+        self.toggles_cb.setItemText(index,string)
+        self.refreshRequired = True
+        self.refresh()
+        self.plot()
+        return
 
     def on_light_switches_cb_activated(self, index):
         """Activate or deactivate the light switch based on the current state and updates the GUI accordingly.
@@ -673,7 +1099,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on_light_switches_cb_activated")
+        self.debugger.print("on_light_switches_cb_activated")
         self.light_switches[index] = not self.light_switches[index]
         string = f"switch light {index} off" if self.light_switches[index] else f"switch light {index} on"
         self.light_switches_cb.setItemText(index,string)
@@ -683,21 +1109,21 @@ class ViewerTab(QWidget):
         return
 
     def on_maximum_displacement_changed(self,value):
-        """Handle changes to the maximum displacement setting.
+        """Handle changes to the displacement setting.
 
-        This method updates the 'Maximum displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
+        This method updates the 'Displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
 
         Parameters
         ----------
         value : float
-            The new value for the maximum displacement setting.
+            The new value for the displacement setting.
 
         Returns
         -------
         None
 
         """        
-        debugger.print("on maximum_displacement changed ", value)
+        self.debugger.print("on maximum_displacement changed ", value)
         self.settings["Maximum displacement"] = value
         self.calculate()
         self.plot()
@@ -719,7 +1145,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on atom_scaling changed ", value)
+        self.debugger.print("on atom_scaling changed ", value)
         self.settings["Atom scaling"] = value
         self.calculate()
         self.plot()
@@ -740,7 +1166,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on arrow_radius changed ", value)
+        self.debugger.print("on arrow_radius changed ", value)
         self.settings["Arrow radius"] = value
         self.calculate()
         self.plot()
@@ -762,7 +1188,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on cell_radius changed ", value)
+        self.debugger.print("on cell_radius changed ", value)
         self.settings["Cell radius"] = value
         self.calculate()
         self.plot()
@@ -784,7 +1210,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on_bond_radius_changed")
+        self.debugger.print("on_bond_radius_changed")
         self.settings["Bond radius"] = value
         self.calculate()
         self.plot()
@@ -807,13 +1233,13 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on_selected_mode_changed")
+        self.debugger.print("on_selected_mode_changed")
         if self.frequencies_cm1 is None or len(self.frequencies_cm1) < 1:
-           debugger.print("on_selected_mode_changed aborting")
+           self.debugger.print("on_selected_mode_changed aborting")
            return
-        debugger.print("on selected_mode change mode was ", self.settings["Selected mode"])
+        self.debugger.print("on selected_mode change mode was ", self.settings["Selected mode"])
         self.settings["Selected mode"] = self.selected_mode_sb.value()
-        debugger.print("on selected_mode change mode is now ", self.settings["Selected mode"])
+        self.debugger.print("on selected_mode change mode is now ", self.settings["Selected mode"])
         self.frequency_le.setText("{:.5f}".format(self.frequencies_cm1[self.settings["Selected mode"]-1]))
         self.opengl_widget.deleteArrows()
         maxR = np.max( np.abs(np.array(self.UVW[self.settings["Selected mode"]-1])))
@@ -844,14 +1270,17 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("on_plottype_cb_changed")
+        self.debugger.print("on_plottype_cb_changed")
         self.plot_type_index = index
-        debugger.print("Plot type index changed to ", self.plot_type_index)
+        self.debugger.print("Plot type index changed to ", self.plot_type_index)
         self.plot()
         return
 
     def calculate(self):
-        """Perform calculations related to the notebook object, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
+        """Perform calculations related to the ViewerTab instance, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
+
+        In addition, calculate the transformed cell if a transformation is given.
+        The supercell is calculated from the dft cell.
 
         Parameters
         ----------
@@ -862,54 +1291,94 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: calculate")
+        self.debugger.print("Start:: calculate")
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings["Program"]
         filename = self.notebook.mainTab.getFullFileName()
-        debugger.print("calculate program file name",program, filename)
+        self.debugger.print("calculate program file name",program, filename)
         self.reader = self.notebook.reader
         if self.reader is None:
-            debugger.print("Finished:: calculate - reader is None")
+            self.debugger.print("Finished:: calculate - reader is None")
             return
         if program == "":
-            debugger.print("Finished:: calculate - program is blank")
+            self.debugger.print("Finished:: calculate - program is blank")
             return
         if filename == "":
-            debugger.print("Finished:: calculate - filename is blank")
+            self.debugger.print("Finished:: calculate - filename is blank")
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
-        # Get the cell with whole molecules from the analysis tab
-        self.notebook.analysisTab.refresh()
-        self.unit_cell = self.notebook.analysisTab.cell_of_molecules
-        if self.unit_cell is None:
+        #
+        # Define a standard cell as read by the reader
+        #
+        self.standard_cell = copy.copy(self.reader.get_unit_cell())
+        if self.standard_cell is None:
             return
+        #
+        # Transform the standard cell 
+        # this involves folding the cell into itself and applying the transformation
+        # In the process there is a reordering of the atoms which is kept track of in the transformed cell
+        # NOTE: The transformed cell may have fewer atoms than the standard cell
+        #
+        cell = copy.copy(self.standard_cell)
+        transform = self.convert_transform()
+        self.transformed_cell = PrimitiveCell(cell,transformation=transform)
+        self.opengl_widget.define_orientations(self.transformed_cell)
+        self.opengl_widget.define_surface_orientations(self.transformed_cell,
+                                                       self.settings["hkl"],
+                                                       self.settings["uvw"])
+        self.opengl_widget.set_orientation(self.opengl_widget.orientation)
+        #
+        # Calculate the whole molecule content of the DFT cell
+        #
+        tolerance = self.notebook.analysisTab.settings["Bonding tolerance"]
+        scale     = self.notebook.analysisTab.settings["Covalent radius scaling"]
+        radii     = self.notebook.analysisTab.element_radii
+        cell.calculate_molecular_contents( scale=scale,
+                                           tolerance=tolerance,
+                                           radii=radii)
+        atom_masses = cell.get_atomic_masses()
+        mass_weighted_normal_modes = self.reader.mass_weighted_normal_modes
+        normal_modes = Calculator.normal_modes(atom_masses,mass_weighted_normal_modes)
         # Generate a super cell
         imageSpecifier = self.settings["Super Cell"]
-        self.super_cell = SuperCell(self.unit_cell,imageSpecifier)
-        # if self.debug:
-        #     self.unit_cell.printInfo()
-        self.normal_modes = self.super_cell.calculateNormalModes(self.notebook.analysisTab.new_normal_modes)
+        self.super_cell = SuperCell(cell,imageSpecifier)
+        self.normal_modes = self.super_cell.calculateNormalModes(normal_modes)
         self.bonds = self.super_cell.calculateBonds()
         self.snapshot_number = 0
         self.nbonds = len(self.bonds)
-        #
         self.XYZ = self.super_cell.calculateXYZ()
         self.natoms = len(self.XYZ)
         self.number_of_modes = len(self.normal_modes)
         # get the cell edges for the bounding box, shifted to the centre of mass origin
         totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(output=all)
-        self.cell_corners,self.cell_edges = self.super_cell.getBoundingBox(centreOfMassABC)
+        self.cell_corners,self.cell_edges,self.cell_labels = self.transformed_cell.getBoundingBox(originABC=[0.5,0.5,0.5])
+        #
+        # self.element_names is a list of element names for each atom
+        # self.species is just a unique list of species
+        #
         self.element_names = self.super_cell.getElementNames()
         self.species = self.reader.getSpecies()
         covalent_radii = self.notebook.analysisTab.element_radii
+        #
+        # Overwrite the element colours from the settings entry
+        #
+        if self.settings["Element colours"] is not None:
+            self.debugger.print("refresh - processing colours ",self.species)
+            for el,colour in zip(self.species,self.settings["Element colours"]):
+                self.element_colours[el] = colour
+        #
+        # Define the radius and colour for every atom from the element_names
+        #
         self.radii = [self.settings["Atom scaling"]*covalent_radii[el] for el in self.element_names ]
         self.colours = [ self.element_colours[el] for el in self.element_names ]
+        #
         # reorder the displacement info in the normal modes into U,V and W lists
         # Using deque here rather than a simple list as the memory allocation doesn't have to be contiguous
+        #
         self.UVW.clear()
         for displacements in self.normal_modes:
             uvw = deque()
@@ -919,7 +1388,7 @@ class ViewerTab(QWidget):
         # CalculatePhasePositions stores all the sphere and bond information
         self.calculatePhasePositions()
         # Add the arrows
-        debugger.print("calculate: Selected mode",self.settings["Selected mode"])
+        self.debugger.print("calculate: Selected mode",self.settings["Selected mode"])
         maxR = np.max( np.abs(np.array(self.UVW[self.settings["Selected mode"]-1])))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
@@ -931,7 +1400,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.setRotationCentre( centreOfMassXYZ )
         self.opengl_widget.setImageSize()
         QApplication.restoreOverrideCursor()
-        debugger.print("Finished:: calculate")
+        self.debugger.print("Finished:: calculate")
         return
 
     def setColour(self, element, colour):
@@ -957,7 +1426,7 @@ class ViewerTab(QWidget):
         ```
 
         """        
-        debugger.print("setcolour")
+        self.debugger.print("setcolour")
         if element in ( "Background" , "background" ):
             self.settings["Background colour"] = colour
         elif element in ( "Cell" , "cell" ):
@@ -983,7 +1452,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("calculatePhasePositions")
+        self.debugger.print("calculatePhasePositions")
         # we need the number of phase steps to be odd
         if self.settings["Number of phase steps"]%2 == 0:
             self.settings["Number of phase steps"] += 1
@@ -1006,18 +1475,47 @@ class ViewerTab(QWidget):
         self.opengl_widget.deleteSpheres()
         self.opengl_widget.deleteCylinders()
         self.opengl_widget.createArrays(len(phases))
-        debugger.print("calculatePhasePositions - adding spheres and cylinders")
+        self.debugger.print("calculatePhasePositions - adding spheres and cylinders")
+        if self.get_toggle_state("Show debug information"):
+            self.debugger = Debug(True,"ViewerTab")
+            self.debugger.print("Debug is on:: toggle")
+            self.debug = True
+        else:
+            self.debugger.print("Debug is off:: toggle")
+            self.debugger = Debug(False,"ViewerTab")
+            self.debug = False
+        if self.get_toggle_state("Show orientation"):
+            self.opengl_widget.show_orientation = True
+        else:
+            self.opengl_widget.show_orientation = False
         for phase_index in range(len(phases)):
             for col, rad, xyz in zip(self.colours, self.radii, self.newXYZ[phase_index]):
-                self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
-            for p in self.cell_corners:
-                self.opengl_widget.addSphere(self.settings["Cell colour"], self.settings["Cell radius"], p, phase=phase_index )
-            for bond in self.bonds:
-                i,j = bond
-                self.opengl_widget.addCylinder(self.settings["Bond colour"], self.settings["Bond radius"], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
-            for p1,p2 in self.cell_edges:
-                self.opengl_widget.addCylinder(self.settings["Cell colour"], self.settings["Cell radius"], p1, p2, phase=phase_index)
-        debugger.print("calculatePhasePositions - exiting")
+                if self.get_toggle_state("Show atoms"):
+                    self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
+            for p,l in zip(self.cell_corners,self.cell_labels):
+                if self.get_toggle_state("Show cell"):
+                    self.opengl_widget.addSphere(self.settings["Cell colour"],
+                                                 self.settings["Cell radius"],
+                                                 p,
+                                                 phase=phase_index )
+                if self.get_toggle_state("Show cell labels") and self.get_toggle_state("Show cell"):
+                    self.opengl_widget.addText(l, 
+                                               self.settings["Text colour"], 
+                                               self.settings["Text size"], 
+                                               p, 
+                                               phase=phase_index)
+            if self.get_toggle_state("Show bonds"):
+                for bond in self.bonds:
+                    i,j = bond
+                    self.opengl_widget.addCylinder(self.settings["Bond colour"],
+                                                   self.settings["Bond radius"],
+                                                   self.newXYZ[phase_index,i],
+                                                   self.newXYZ[phase_index,j],
+                                                   phase=phase_index)
+            if self.get_toggle_state("Show cell"):
+                for p1,p2 in self.cell_edges:
+                    self.opengl_widget.addCylinder(self.settings["Cell colour"], self.settings["Cell radius"], p1, p2, phase=phase_index)
+        self.debugger.print("calculatePhasePositions - exiting")
         return
 
     def save_as_cif(self,filename):
@@ -1035,7 +1533,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.unit_cell.write_cif(filename=filename)
+        self.standard_cell.write_cif(filename=filename)
 
     def save_mode_as_cif(self,filename):
         #
@@ -1057,11 +1555,11 @@ class ViewerTab(QWidget):
 
         Notes
         -----
-        This method relies on the `self.unit_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
+        This method relies on the `self.standard_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
 
         """        
         import copy
-        unitcell = copy.deepcopy(self.unit_cell)
+        unitcell = copy.deepcopy(self.standard_cell)
         n2 = int(self.settings["Number of phase steps"]/2)
         delta = 1.0 / float(n2)
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
@@ -1087,9 +1585,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: plot")
+        self.debugger.print("Start:: plot")
         if self.reader is None:
-            debugger.print("Finished:: plot reader is None")
+            self.debugger.print("Finished:: plot reader is None")
             return
         if self.plot_type_index == 0:
             self.plot_animation()
@@ -1097,7 +1595,7 @@ class ViewerTab(QWidget):
             self.plot_arrows()
         else:
             self.plot_none()
-        debugger.print("Finished:: plot")
+        self.debugger.print("Finished:: plot")
 
     def plot_none(self):
         """Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
@@ -1113,11 +1611,11 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: plot_animation")
+        self.debugger.print("Start:: plot_animation")
         self.opengl_widget.showArrows(False)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
-        debugger.print("Finished:: plot_animation")
+        self.debugger.print("Finished:: plot_animation")
         return
 
     def plot_animation(self):
@@ -1137,11 +1635,11 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: plot_animation")
+        self.debugger.print("Start:: plot_animation")
         self.opengl_widget.showArrows(False)
         self.opengl_widget.update()
         self.opengl_widget.startAnimation()
-        debugger.print("Finished:: plot_animation")
+        self.debugger.print("Finished:: plot_animation")
         return
 
     def plot_arrows(self):
@@ -1158,11 +1656,11 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: plot_arrows")
+        self.debugger.print("Start:: plot_arrows")
         self.opengl_widget.showArrows(True)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
-        debugger.print("Finished:: plot_arrows")
+        self.debugger.print("Finished:: plot_arrows")
         return
 
     def requestRefresh(self):
@@ -1179,9 +1677,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: requestRefresh")
+        self.debugger.print("Start:: requestRefresh")
         self.refreshRequired = True
-        debugger.print("Finished:: requestRefresh")
+        self.debugger.print("Finished:: requestRefresh")
 
     def refresh(self,force=False):
         """Refresh the state of the object, optionally forcing the refresh.
@@ -1207,12 +1705,19 @@ class ViewerTab(QWidget):
         - Debug statements are interspersed throughout for tracking the refresh process's progress.
 
         """        
-        debugger.print("Start:: refresh")
+        self.debugger.print("Start:: refresh")
         if not self.refreshRequired and not force:
-            debugger.print("Finished:: refresh aborted",self.refreshRequired,force)
+            self.debugger.print("Finished:: refresh aborted",self.refreshRequired,force)
             return
-        debugger.print("refresh widget",force)
+        self.debugger.print("refresh widget",force)
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        if "vesta" in self.settings["Element palette"].lower():
+            self.element_colours = vesta_elemental_colours
+        elif "jmol" in self.settings["Element palette"].lower():
+            self.element_colours = jmol_elemental_colours
+        else:
+            self.element_colours = elemental_colours
+        self.calculate()
         #
         # Block signals during refresh
         #
@@ -1223,7 +1728,18 @@ class ViewerTab(QWidget):
             self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
             self.selected_mode_sb.setValue(self.settings["Selected mode"])
             self.frequency_le.setText("{:.5f}".format(self.frequencies_cm1[self.settings["Selected mode"]-1]))
-        debugger.print("refresh: selected mode is now",self.selected_mode_sb.value())
+        self.debugger.print("refresh: selected mode is now",self.selected_mode_sb.value())
+        for index,(toggle,state) in enumerate(zip(self.toggle_names,self.settings["Toggle states"])):
+            string = f"{toggle} is on" if state else f"{toggle} is off"
+            self.toggles_cb.setItemText(index,string)
+        h,k,l = self.settings["hkl"]
+        self.h_sb.setValue(h)
+        self.k_sb.setValue(k)
+        self.l_sb.setValue(l)
+        u,v,w = self.settings["uvw"]
+        self.u_sb.setValue(u)
+        self.v_sb.setValue(v)
+        self.w_sb.setValue(w)
         self.atom_scaling_sb.setValue(self.settings["Atom scaling"])
         self.bond_radius_sb.setValue(self.settings["Bond radius"])
         self.cell_radius_sb.setValue(self.settings["Cell radius"])
@@ -1237,25 +1753,19 @@ class ViewerTab(QWidget):
         #
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
-            debugger.print("reader is none ")
+            self.debugger.print("reader is none ")
             self.element_names = []
             self.species = []
         else:
-            self.notebook.analysisTab.refresh()
-            self.unit_cell = self.notebook.analysisTab.cell_of_molecules
-            if self.unit_cell is None:
+            if self.standard_cell is None:
                 return
-            self.element_names = self.unit_cell.element_names
+            self.element_names = self.standard_cell.element_names
             self.species = self.reader.getSpecies()
-            debugger.print("refresh - species ",self.species)
-            if self.settings["Element colours"] is not None:
-                debugger.print("refresh - processing colours ",self.species)
-                for el,colour in zip(self.species,self.settings["Element colours"]):
-                    self.element_colours[el] = colour
+            self.debugger.print("refresh - species ",self.species)
             self.settings["Element colours"] = [ self.element_colours[el] for el in self.species ]
         count = self.element_coloured_hbox.count()
         if count == 0:
-            debugger.print("initialising element colours widget")
+            self.debugger.print("initialising element colours widget")
             self.element_coloured_buttons = []
             for el in self.species:
                 r,g,b,a = self.element_colours[el]
@@ -1265,7 +1775,7 @@ class ViewerTab(QWidget):
                 self.element_coloured_buttons.append(button)
                 self.element_coloured_hbox.addWidget(button)
         else:
-            debugger.print("update element colours widget")
+            self.debugger.print("update element colours widget")
             for el,button in zip(self.species,self.element_coloured_buttons):
                 r,g,b,a = self.element_colours[el]
                 button.setStyleSheet(f"background-color:rgba( {r}, {g}, {b}, {a});")
@@ -1284,9 +1794,185 @@ class ViewerTab(QWidget):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
-        self.calculate()
         self.plot()
         self.refreshRequired = False
         QApplication.restoreOverrideCursor()
-        debugger.print("Finished:: refresh")
+        self.debugger.print("Finished:: refresh")
         return
+
+    def get_toggle_state(self,toggle):
+        """Return the state of the given toggle.
+
+        Parameters
+        ----------
+        toggle : str
+            The toggle name
+
+        Returns
+        -------
+        bool
+
+        """
+        self.debugger.print("get_toggle_state: ")
+        if toggle not in self.toggle_names:
+            return False
+        index = self.toggle_names.index(toggle)
+        self.debugger.print("get_toggle_state: {index}")
+        return self.settings["Toggle states"][index]
+
+class TransformWindow(QDialog):
+    """A GUI window for displaying and editing the transform matrix.
+
+    Parameters
+    ----------
+    transform : 3x3 array of floats
+        The current transformation matrix
+    message : str
+        Message to displayed
+    parent : QWidget, optional
+        The parent widget of this window. The default is None.
+    debug : bool, optional
+        Flag to enable or disable debug mode. The default is False.
+
+    Attributes
+    ----------
+    transform : 3x3 array of strs
+        The transform matrix
+    message : str
+        The message displayed at the top of the window.
+    layout : QVBoxLayout
+        The main layout of the window.
+    buttonBox : QDialogButtonBox
+        The dialog box containing Ok and Cancel buttons.
+
+    Methods
+    -------
+    reDrawTransformTable
+        draw the transform table
+    getTransform
+        Return the transform matrix
+    on_transform_table_itemChanged
+        Handles a change in the transform table
+
+    """
+
+    def __init__(self, transform, message = "Cell Transform", parent=None, debug=False ):
+        """Initialize a Transform Window instance.
+
+        Parameters
+        ----------
+        transform : a 3x3 list of strs
+            The transformation matrix
+        message : str, optional
+            Custom message to display in the window. The default is an empty string.
+        parent : QWidget, optional
+            The parent widget of this window. The default is None.
+        debug : bool, optional
+            Flag to enable or disable debug mode. The default is False.
+
+        Notes
+        -----
+        This constructor initializes the showTransformationWindow by setting up the UI elements
+        including buttons and the layout. It also configures the debug mode according
+        to the provided argument.
+
+        """        
+        super().__init__(parent)
+        self.debugger = Debug(debug,"TransformWindow")
+        self.debugger.print("Start:: initialiser")
+        # Set up the buttons of the button box
+        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+        self.buttonBox = QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
+        # Initialize the transform as a 3x3 array of strings
+        self.transform_as_str = transform
+        self.debugger.print("transform:", self.transform_as_str)
+        self.message = message
+        # The dialog will have a vertical layout
+        self.layout = QVBoxLayout(self)
+        # Create the transfom table widget
+        self.transform_table = QTableWidget()
+        self.transform_table.setToolTip("Transformation for a cell")
+        self.transform_table.setShowGrid(True)
+        self.transform_table.setRowCount(3)
+        self.transform_table.setColumnCount(3)
+        self.reDrawTransformTable()
+        self.transform_table.itemChanged.connect(self.on_transform_table_itemChanged)
+        self.layout.addWidget(self.transform_table)
+        # Add the button box
+        self.layout.addWidget(self.buttonBox)
+        self.debugger.print("Finished:: initialiser")
+
+    def on_transform_table_itemChanged(self,item):
+        """Handle a change to the transform table.
+
+        The item which has changed is ignored and the whole table is rebuilt
+
+        Parameters
+        ----------
+        item : the item changed
+            The item which has changed
+
+        Returns
+        -------
+        None
+
+        Modifies
+        --------
+        self.settings["Transform"]
+
+        """
+        self.debugger.print("on_transform_table_itemChanged: ",item)
+        if self.transform_table is None:
+            return
+        for col in range(3):
+            for row in range(3):
+                self.transform_as_str[row][col] = self.transform_table.item(row,col).text()
+        self.debugger.print("New transform", self.transform_as_str)
+        return
+
+    def reDrawTransformTable(self):
+        """Redraw the 3x3 table representing the cell transformation.
+
+        The table is generated from the strings stored in self.transform_as_str
+        If a number is stored it is converted to a string.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        Modifies
+        --------
+        transform_table
+
+        """
+        self.debugger.print("reDrawPrimtiveTable: ")
+        tw = self.transform_table
+        for col in range(3):
+            for row in range(3):
+                tw.setItem(row,col,QTableWidgetItem( self.transform_as_str[row][col] ) )
+        return
+
+    def getTransform(self):
+        """Return the primtive transformation matrix.
+
+        The transformation is stored as a 3x3 list of strings.
+        The strings are treated as python commands to return a value.:w
+
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        3x3 array of floats
+
+        """
+        self.debugger.print("getTransform: ")
+        return self.transform_as_str

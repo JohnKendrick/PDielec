@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>PDielec.PhonopyOutputReader - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=2e0a580d" />
     
     
@@ -70,7 +70,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -85,22 +85,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -113,6 +154,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -131,7 +174,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -173,67 +217,70 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -260,7 +307,8 @@
           <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -270,7 +318,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for PDielec.PhonopyOutputReader</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1">#</span>
@@ -289,13 +337,16 @@
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;Read the contents of a directory containing Phonopy input and output files.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">thz2cm1</span>
-<span class="kn">from</span> <span class="nn">PDielec.GenericOutputReader</span> <span class="kn">import</span> <span class="n">GenericOutputReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">thz2cm1</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GenericOutputReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericOutputReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.UnitCell</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitCell</span>
 
 
-<div class="viewcode-block" id="PhonopyOutputReader"><a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader">[docs]</a><span class="k">class</span> <span class="nc">PhonopyOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
+<div class="viewcode-block" id="PhonopyOutputReader">
+<a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PhonopyOutputReader</span><span class="p">(</span><span class="n">GenericOutputReader</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read the contents of a directory containing Phonopy input and output files.</span>
 
 <span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
@@ -304,83 +355,51 @@
 <span class="sd">    ----------</span>
 <span class="sd">    names : list</span>
 <span class="sd">        A list of file names to be used.</span>
-<span class="sd">    qmreader : object</span>
-<span class="sd">        An instance of another class used for reading.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This method sets the type of the output to &#39;Phonopy output&#39; and </span>
-<span class="sd">    associates a quantum mechanics (QM) reader object with the instance.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">qmreader</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a Phonopy output reader.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        names : list</span>
 <span class="sd">            A list of file names to be used.</span>
-<span class="sd">        qmreader : object</span>
-<span class="sd">            An instance of another class used for reading.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This method sets the type of the output to &#39;Phonopy output&#39; and </span>
-<span class="sd">        associates a quantum mechanics (QM) reader object with the instance.</span>
+<span class="sd">        This routine reads files with fixed names:</span>
+<span class="sd">                  phonopy.yaml    contains details of the cells used</span>
+<span class="sd">                  qpoints.yaml    contains the dynamical matrix</span>
+<span class="sd">                  BORN_PDIELEC    generated from the BORN file using phonopy-pdielec-born</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
-        <span class="c1"># We have to use the qm reader to do the reading of the QM files</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span>                    <span class="o">=</span> <span class="s2">&quot;Phonopy output&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span>                <span class="o">=</span> <span class="n">qmreader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span>                   <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;length&quot;</span>          <span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">,</span>
+                                         <span class="s2">&quot;mass&quot;</span>            <span class="p">:</span> <span class="s2">&quot;AMU&quot;</span><span class="p">,</span>
+                                         <span class="s2">&quot;force&quot;</span>           <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                                         <span class="s2">&quot;force_constants&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">}</span>
         <span class="k">return</span>
 
-<div class="viewcode-block" id="PhonopyOutputReader._read_output_files"><a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files">[docs]</a>    <span class="k">def</span> <span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PhonopyOutputReader._read_output_files">
+<a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_output_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the Phonopy files in the directory.</span>
 
-<span class="sd">        Uses the qmreader to read in the electronic structure information and copies it to the current object.</span>
-<span class="sd">        Then it reads the dynamical matrix from phonopy</span>
+<span class="sd">        reads the dynamical matrix from phonopy</span>
+<span class="sd">        reads the Born charges</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Set the qm reader to have all the settings that phonopy reader has</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">eckart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eckart</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span>
-        <span class="c1"># trigger the reading of the qm files</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">read_output</span><span class="p">()</span>
-        <span class="c1"># We don&#39;t call self._read_outputfile as this starts looking for keywords</span>
-        <span class="c1"># for f in self._outputfiles:</span>
-        <span class="c1">#     self._read_output_file(f)</span>
-        <span class="c1">#</span>
-        <span class="c1"># Instead copy anything useful from the QM calcs to self</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">ncells</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span>              <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">unit_cells</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">volume</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spin</span>                    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">spin</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">energy_cutoff</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">energy_cutoff</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span>                 <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">kpoints</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kpoint_grid</span>             <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">kpoint_grid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nbands</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">nbands</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span>                   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">nions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">ions_per_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">atom_type_list</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">electrons</span>               <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">electrons</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">magnetization</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">final_energy_without_entropy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">final_energy_without_entropy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">final_free_energy</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">final_free_energy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span>                <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">pressure</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span>         <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">masses_per_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">ions_per_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">masses</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">masses</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span>                <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">nspecies</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">species</span>                 <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">getSpecies</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span>            <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">born_charges</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zerof_static_dielectric</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmreader</span><span class="o">.</span><span class="n">zerof_static_dielectric</span>
         <span class="c1"># Calculate dynamical matrix</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">read_dynamical_matrix</span><span class="p">()</span>
+        <span class="n">qpoints_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">phonopy_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">born_filename</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_dynamical_matrix</span><span class="p">(</span><span class="n">phonopy_filename</span><span class="p">,</span><span class="n">qpoints_filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_born_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="n">born_filename</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="PhonopyOutputReader.read_dynamical_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">read_dynamical_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PhonopyOutputReader.read_dynamical_matrix">
+<a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_dynamical_matrix">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_dynamical_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">phonopy_filename</span><span class="p">,</span> <span class="n">qpoints_filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process the dynamical matrix from output files.</span>
 
 <span class="sd">        This method reads the dynamical matrix and other relevant data from the specified</span>
@@ -389,8 +408,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        None explicitly, but relies on the instance attributes `_outputfiles` and `nions` </span>
-<span class="sd">        to determine the files to read and number of ions, respectively.</span>
+<span class="sd">        phonopy_filename : str</span>
+<span class="sd">            The phonopy.yaml file name</span>
+<span class="sd">        qpoints_filename : str</span>
+<span class="sd">            The qpoints.yaml file name</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -424,21 +445,79 @@
         <span class="c1"># Yaml imports of large files are really slow....</span>
         <span class="c1"># Attempt to use the PyYaml C parser, using yaml.CLoader</span>
         <span class="c1">#</span>
-        <span class="kn">import</span> <span class="nn">yaml</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">CLoader</span> <span class="k">as</span> <span class="n">Loader</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLoader</span> <span class="k">as</span> <span class="n">Loader</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Yaml CLoader is not avaiable, using fallback&quot;</span><span class="p">)</span>
-            <span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">Loader</span> <span class="k">as</span> <span class="n">Loader</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loader</span> <span class="k">as</span> <span class="n">Loader</span>
         <span class="c1"># the first name has to be the qpoints file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">qpoints_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
             <span class="n">data_q</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
         <span class="c1"># the second name has to be the phonopy file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">phonopy_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
             <span class="n">data_p</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;primitive_cell&quot;</span><span class="p">][</span><span class="s2">&quot;points&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;mass&quot;</span><span class="p">])</span>
+        <span class="c1">#</span>
+        <span class="c1"># process phonopy.yaml</span>
+        <span class="c1">#</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;frequency_unit_conversion_factor&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="mf">15.633302</span>
+        <span class="n">conversion_factor_to_cm1</span> <span class="o">=</span> <span class="n">conversion_factor_to_THz</span> <span class="o">*</span> <span class="n">thz2cm1</span>
+        <span class="c1">#</span>
+        <span class="c1"># Get units</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="s2">&quot;physical_unit&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;atomic_mass&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;atomic_mass&quot;</span><span class="p">]</span>     <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;atomic_mass&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;length&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">]</span>          <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;length&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;force&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;force&quot;</span><span class="p">]</span>           <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;force&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;force_constants&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;force_constants&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;physical_unit&quot;</span><span class="p">][</span><span class="s2">&quot;force_constants&quot;</span><span class="p">]</span>
+        <span class="c1">#</span>
+        <span class="c1"># Determine axes and cells</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="s2">&quot;primitive_axes&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;configuration&quot;</span><span class="p">]:</span>
+            <span class="n">primitive_axes</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;configuration&quot;</span><span class="p">][</span><span class="s2">&quot;primitive_axes&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">primitive_axes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;primitive_matrix&quot;</span> <span class="ow">in</span> <span class="n">data_p</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">primitive_transformation</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;primitive_matrix&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">primitive_transformation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">primitive_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_cell</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;primitive_cell&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;primitive_cell&quot;</span> <span class="ow">in</span> <span class="n">data_p</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">unit_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_cell</span><span class="p">(</span><span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;unit_cell&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;unit_cell&quot;</span> <span class="ow">in</span> <span class="n">data_p</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="c1">#</span>
+        <span class="c1"># Use the cell that is consistent with the primitive_axes</span>
+        <span class="c1">#</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">primitive_cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_species</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nspecies</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_element_names</span><span class="p">()</span>
+        <span class="c1"># Calculate the number of ions / type</span>
+        <span class="c1"># Determine the atom type list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">_species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="p">]</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="n">species_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ions_per_type</span><span class="p">[</span><span class="n">species_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atom_type_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_index</span><span class="p">)</span>
+        <span class="c1"># Determine the mass of each type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass_per_type</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">:</span>
+             <span class="n">element_index</span> <span class="o">=</span> <span class="n">elements</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">masses_per_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_old_masses</span><span class="p">[</span><span class="n">element_index</span><span class="p">])</span>
+        <span class="c1"># Proceed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span> <span class="o">=</span> <span class="p">[</span> <span class="n">cell</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncells</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Process qpoints.yaml</span>
+        <span class="c1">#</span>
         <span class="n">dynmat</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dynmat_data</span> <span class="o">=</span> <span class="n">data_q</span><span class="p">[</span><span class="s2">&quot;phonon&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;dynamical_matrix&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dynmat_data</span><span class="p">:</span>
@@ -448,13 +527,7 @@
         <span class="c1"># Make sure the hessian is real</span>
         <span class="n">hessian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">dynmat</span><span class="p">)</span>
         <span class="c1"># We need to convert to cm-1</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="n">data_p</span><span class="p">[</span><span class="s2">&quot;phonopy&quot;</span><span class="p">][</span><span class="s2">&quot;frequency_unit_conversion_factor&quot;</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">conversion_factor_to_THz</span> <span class="o">=</span> <span class="mf">15.633302</span>
-        <span class="n">conversion_factor_to_cm1</span> <span class="o">=</span> <span class="n">conversion_factor_to_THz</span> <span class="o">*</span> <span class="n">thz2cm1</span>
-        <span class="n">conv</span>  <span class="o">=</span> <span class="n">conversion_factor_to_cm1</span>
-        <span class="n">hessian</span> <span class="o">=</span> <span class="n">hessian</span> <span class="o">*</span> <span class="n">conv</span> <span class="o">*</span> <span class="n">conv</span>
+        <span class="n">hessian</span> <span class="o">=</span> <span class="n">hessian</span> <span class="o">*</span> <span class="n">conversion_factor_to_cm1</span> <span class="o">*</span> <span class="n">conversion_factor_to_cm1</span>
         <span class="c1"># Find its eigenvalues and eigen vectors</span>
         <span class="n">eig_val</span><span class="p">,</span> <span class="n">eig_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -472,7 +545,85 @@
                 <span class="n">mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modea</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
         <span class="c1"># end for i</span>
-        <span class="k">return</span></div></div>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="PhonopyOutputReader.read_cell">
+<a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_cell">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process yaml string and extract a unit cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        yaml : str</span>
+<span class="sd">            A yaml string containing a phonopy cell</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cell : unitCell</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">lattice</span> <span class="o">=</span> <span class="n">yaml</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">yaml</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">]</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">]</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">]</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">]</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">units</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">])</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">set_atomic_masses</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cell</span></div>
+
+
+<div class="viewcode-block" id="PhonopyOutputReader.read_born_file">
+<a class="viewcode-back" href="../../autoapi/PDielec/PhonopyOutputReader/index.html#PDielec.PhonopyOutputReader.PhonopyOutputReader.read_born_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_born_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">natoms</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the BORN_PDIELEC file in the current directory.</span>
+
+<span class="sd">        The BORN_PDIELEC file was created by a phonopy helper routine such as phonopy-pdielec-born</span>
+<span class="sd">        It contains the optical permittivity and the Born charges</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        natoms : int</span>
+<span class="sd">            The number of atoms</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The filename (probably &quot;BORN_PDIELEC&quot;)</span>
+
+<span class="sd">        Modifies</span>
+<span class="sd">        --------</span>
+<span class="sd">        zerof_optical_dielectric : the zero frequency optical permittivity</span>
+<span class="sd">        born_charges             : the born charges</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># Skip a line</span>
+            <span class="c1">#</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="c1">#</span>
+            <span class="c1"># Read dielectric constant</span>
+            <span class="c1">#</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BORN file format of line 2 is incorrect&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="p">],</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="c1">#</span>
+            <span class="c1"># Read Born effective charge</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">natoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">natoms</span><span class="p">):</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of lines for Born effect charge is not enough.&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BORN file format of line </span><span class="si">%d</span><span class="s2"> is incorrect&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">))</span>
+                    <span class="k">return</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">born_charges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="p">],</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">return</span></div>
+</div>
 
 </pre></div>
         </article>
@@ -506,9 +657,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=37b3a9b0"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     </body>
 </html>

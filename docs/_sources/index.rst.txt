@@ -8,7 +8,7 @@
 
 .. meta::
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
+   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE
 
 =======
 PDielec
@@ -40,6 +40,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 
    application_notes_1
    application_notes_2
+   application_notes_3
 
 .. toctree::
    :caption: API

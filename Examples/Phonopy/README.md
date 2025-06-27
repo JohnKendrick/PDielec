@@ -3,6 +3,7 @@
 
 | **Directory**  | **Description**                                               |
 | -------------- | ------------------------------------------------------------- |
+| [Al2O3/](./Al2O3/README.md) | Phonopy example using primtive and standard cells             |
 | [Crystal/](./Crystal/README.md) | Phonopy-Crystal calculations                                  |
 | [Na2SO42/](./Na2SO42/README.md) | Phonopy-Vasp calculations on Na2(SO4)2                        |
 | [preader/](./preader/README.md) | Test of phonopy output reader                                 |

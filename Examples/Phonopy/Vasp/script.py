@@ -73,7 +73,6 @@ tab.settings['Number of average incoherence samples'] =  10
 #
 #
 tab = self.notebook.analysisTab
-tab.settings['Radii'] =  [0.76, 0.66, 0.71, 0.31]
 tab.settings['Minimum frequency'] =  -1
 tab.settings['Maximum frequency'] =  400
 tab.settings['title'] = 'Analysis'

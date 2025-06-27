@@ -1,5 +1,5 @@
-:py:mod:`PDielec.HelperRoutines`
-================================
+PDielec.HelperRoutines
+======================
 
 .. py:module:: PDielec.HelperRoutines
 
@@ -11,12 +11,8 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -24,8 +20,11 @@ Functions
    PDielec.HelperRoutines.calculatePowderSpectrum
    PDielec.HelperRoutines.calculateSingleCrystalSpectrum
    PDielec.HelperRoutines.getMaterial
+   PDielec.HelperRoutines.maxwell_garnett
 
 
+Module Contents
+---------------
 
 .. py:function:: calculateDFTPermittivityObject(reader, sigma=5.0, eckart=True, mass_definition='Average')
 
@@ -185,6 +184,26 @@ Functions
    material1 = getMaterial("example.dft")
    material2 = getMaterial("gold")
    ```
+
+
+
+.. py:function:: maxwell_garnett(em, ei, f)
+
+   Calculate the dielectric constant of a mixture using Maxwell-Garnett.
+
+   Parameters
+   ----------
+   em : float
+       The dielectric constant of the host
+   ei : float
+       The dielectric constant of the inclusion
+   f : float
+       The volume fraction of the inclusion
+
+   Returns
+   -------
+   float
+       The dielectric constant of the mixture
 
 
 

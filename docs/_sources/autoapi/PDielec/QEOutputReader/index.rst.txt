@@ -1,5 +1,5 @@
-:py:mod:`PDielec.QEOutputReader`
-================================
+PDielec.QEOutputReader
+======================
 
 .. py:module:: PDielec.QEOutputReader
 
@@ -9,23 +9,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.QEOutputReader.QEOutputReader
 
 
-
+Module Contents
+---------------
 
 .. py:class:: QEOutputReader(filenames)
 
-
    Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
 
    Read the contents of a QE output file containing QE dynamical matrix.
 
@@ -40,6 +38,7 @@ Classes
    -----
    This constructor initializes a ``GenericOutputReader`` with the given filenames,
    sets the type attribute to 'QE output', and initializes `_alat` attribute to None.
+
 
 
    .. py:method:: _atomic_species(atomic_species_xml)
@@ -59,6 +58,7 @@ Classes
           A list of the names of the species
       self.masses_per_type
           A list of the masses of the species
+
 
 
 
@@ -84,6 +84,7 @@ Classes
 
 
 
+
    .. py:method:: _band_structure(band_structure_xml)
 
       Process the band_structure element.
@@ -97,6 +98,7 @@ Classes
       ---
       self.electrons : int
           The number of electrons
+
 
 
 
@@ -120,6 +122,7 @@ Classes
 
 
 
+
    .. py:method:: _dielectric_constant(dielectric_constant_xml)
 
       Process the dielectric_constant element(s).
@@ -133,6 +136,7 @@ Classes
       ---
       self.zerof_optical_dielectric
           The zero frequency optical dielectric
+
 
 
 
@@ -162,6 +166,7 @@ Classes
 
 
 
+
    .. py:method:: _kpoints(kpoints_xml)
 
       Process the k_points element.
@@ -175,6 +180,7 @@ Classes
       ---
       self.kpoints
           A list of the number of kpoints to be used in a Monkhorst-Pack grid
+
 
 
 
@@ -193,6 +199,7 @@ Classes
           The pressure in GPa
           The xml file holds the pressure in Hartree/Bohr3
           Conversion to SI units is done by autoGPa from Constants.py
+
 
 
 
@@ -225,6 +232,7 @@ Classes
 
 
 
+
    .. py:method:: _read_alat2(line)
 
       Read and set the lattice parameter from a given line.
@@ -246,6 +254,7 @@ Classes
       Notes
       -----
       This method does not return any value. It updates the `_alat` attribute of the class instance with the value read from the input line, after applying necessary conversions and checks.
+
 
 
 
@@ -276,6 +285,7 @@ Classes
 
 
 
+
    .. py:method:: _read_cell_parameters(line)
 
       Read and parse cell parameters from a given line in the input file.
@@ -299,6 +309,7 @@ Classes
       Each subsequent line read from the input file (after the parameter line) is expected to represent the lattice vectors,
       scaled by the lattice parameter and converted from Angstroms to Bohr radii.
       The method directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+
 
 
 
@@ -326,6 +337,7 @@ Classes
 
 
 
+
    .. py:method:: _read_dyng_basis_vectors()
 
       Read and process lattice vectors from a dynG file, then updates unit cell information.
@@ -348,6 +360,7 @@ Classes
           The total number of unit cells, updated after reading new lattice vectors.
       volume : float
           The volume of the last read unit cell, updated after appending a new `UnitCell`.
+
 
 
 
@@ -387,6 +400,7 @@ Classes
 
 
 
+
    .. py:method:: _read_dyng_dynamical(line)
 
       Read and process the dynamical matrix from the dynG file.
@@ -403,6 +417,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -425,6 +440,7 @@ Classes
       -----
       - This method modifies the instance attribute `zerof_optical_dielectric` directly.
       - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
+
 
 
 
@@ -453,6 +469,7 @@ Classes
 
 
 
+
    .. py:method:: _read_dyng_header()
 
       Read and process the header line from the dynG file.
@@ -472,6 +489,7 @@ Classes
       The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
 
       This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
+
 
 
 
@@ -503,6 +521,7 @@ Classes
 
 
 
+
    .. py:method:: _read_electrons(line)
 
       Read and store the number of electrons from a line.
@@ -526,6 +545,7 @@ Classes
       -----
       This method modifies the state of the object by setting the 
       'electrons' attribute based on the input line.
+
 
 
 
@@ -557,6 +577,7 @@ Classes
 
 
 
+
    .. py:method:: _read_energy_cutoff(line)
 
       Parse and set the energy cutoff from a line of text.
@@ -584,6 +605,7 @@ Classes
 
 
 
+
    .. py:method:: _read_fractional_coordinates(line)
 
       Read the log file and sets the fractional coordinates and element names for the last unit cell in the object.
@@ -604,6 +626,7 @@ Classes
       - The function directly modifies the object's state by setting properties of the last unit cell (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`.
       - Only operates if `self.nions` is greater than 0.
       - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
+
 
 
 
@@ -628,6 +651,7 @@ Classes
 
 
 
+
    .. py:method:: _read_kpoints(line)
 
       Read and store the number of k-points from a given line.
@@ -646,6 +670,7 @@ Classes
       Notes
       -----
       This method modifies the state of the object by setting the `kpoints` attribute.
+
 
 
 
@@ -670,6 +695,7 @@ Classes
 
 
 
+
    .. py:method:: _read_output_files()
 
       Process the QE files.
@@ -677,6 +703,7 @@ Classes
       Notes
       -----
       Defines the search patterns for QE output files
+
 
 
 
@@ -701,6 +728,7 @@ Classes
 
 
 
+
    .. py:method:: _read_xml(filename)
 
       Process the QE xml files.
@@ -716,6 +744,7 @@ Classes
       This file is created when a single point calculation is performed prior to the born calculation
       The routine should also be able to parse an optimisation run.
       In this case there is a 'steps' entry in the xml
+
 
 
 
@@ -739,6 +768,21 @@ Classes
       self.final_free_energy : float
           The final energy in eV
 
+
+
+
+   .. py:attribute:: _alat
+      :value: None
+
+
+
+   .. py:attribute:: _alat_from_xml
+      :value: False
+
+
+
+   .. py:attribute:: type
+      :value: 'QE output'
 
 
 

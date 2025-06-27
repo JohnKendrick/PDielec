@@ -713,7 +713,11 @@ class QEOutputReader(GenericOutputReader):
         - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
 
         """
-        if self.nions <= 0:
+        if self.nions <= 0 or len(self.unit_cells) <=0 :
+            if self.debug:
+                print(f"_read_fractional_coordinates: nions={self.nions}")
+                print(f"_read_fractional_coordinates: number of cells={len(self.unit_cells)}")
+                print("_read_fractional_coordinates: Unable to store fractional coordinates aborting")
             return
         species_list = []
         fractional_coordinates = []
@@ -1008,7 +1012,7 @@ class QEOutputReader(GenericOutputReader):
             self._alat  = float(structure_xml.attrib["alat"])
             self._alat_from_xml = True
             species_list = []
-            fractional_coordinates = []
+            xyz_coordinates = []
             # First find the cell dimensions and volume
             cell_xml = structure_xml.find("cell")
             a1 = [ float(f)/angs2bohr for f in cell_xml[0].text.split() ]
@@ -1023,11 +1027,11 @@ class QEOutputReader(GenericOutputReader):
                 species = atom_xml.attrib["name"]
                 species_index = self.species.index(species)
                 species_list.append( species )
-                coords = [ float(f)/self._alat for f in atom_xml.text.split() ]
-                fractional_coordinates.append(coords)
+                coords = [ float(f)/angs2bohr for f in atom_xml.text.split() ]
+                xyz_coordinates.append(coords)
                 self.atom_type_list.append(species_index)
                 self.ions_per_type[species_index] += 1
-            self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
+            self.unit_cells[-1].set_xyz_coordinates(xyz_coordinates)
             self.unit_cells[-1].set_element_names(species_list)
             # Book keeping
             self.ncells = len(self.unit_cells)

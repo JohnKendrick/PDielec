@@ -1,3 +1,29 @@
+version 9.0.0
+   Extensive changes to the ViewerTab and the OpenGLWidget
+       A colour palette has been introduced for the atom colours
+       A surface can be specified and viewed with specific orientations
+       The cell orientation with the screen can be shown on the screen
+       New keyboard short cuts have been introduced 
+       There is a help popup if the user types "h" in the OpenGLWidget
+       The unit-cell shown is now the unit-cell in the input file.
+       Labels have been added to the cell
+       A primitive cell can be shown instead of the input cell
+       When a supercell is requested the unit-cell is not changed to reflect the supercell
+       Toggles for the display of atoms/bonds/cell/cell labels/orientation are defined
+       Mouse and keyboard rotation is around the x, y and z axes of the screen
+   The routine for calculating the normal modes from a hessian has been moved to Calculator.py
+   The vibanalysis tool now uses Symbols, Radii and Masses from PDGui
+   The normal modes no longer have to be reordered as the creation of whole molecules does not reorder the atoms
+   Changes to the way that Phonopy calculations are handled. These changes will break older scripts.
+       There is no longer any need for a qm_program as all the information will come from Phonopy
+       A new command using the Phonopy API, phonopy-pdielec-born.  
+           The command reads a BORN file and writes out a file BORN_PDIELEC which has all atoms represented
+           The new command uses only Phonopy modules, no PDielec modules
+       All the Phonopy examples have been altered to use the new method
+       The option for specifiying a qm_program has been removed
+       Added 2 more test cases for primitive and standard cells
+       Added more documentation to show how to use the Phonopy interface
+    Now able to read Vasp 6 vasprun.xml files
 version 8.2.0
    A -threads or --threads option has been added to pdgui.
    Added QT6 support by including the qtpy module

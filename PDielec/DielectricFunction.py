@@ -337,8 +337,7 @@ class DielectricFunction:
         dielectric = np.zeros((3, 3), dtype=complex)
         unit = np.eye(3,dtype=complex)
         # Avoid a divide by zero if f is small
-        if f <= 1.0e-8:
-            f = 1.0e-8
+        f = max(1.0e-8, f)
         # Assume that the drude contribution is isotropic
         dielectric = dielectric - unit * frequency*frequency / complex(-f*f, -sigma*f)
         return dielectric * (4.0*np.pi/volume)
@@ -990,12 +989,12 @@ class DrudeLorentz(DielectricFunction):
             self.sigmas_cm1    = [sigmas_cm1, sigmas_cm1, sigmas_cm1]
         return
 
-    def calculate(self, v):
+    def calculate(self, f_cm1):
         """Calculate the permittivity at a given frequency.
 
         Parameters
         ----------
-        v : float
+        f_cm1 : float
             The frequency in cm-1
 
         Returns
@@ -1004,7 +1003,6 @@ class DrudeLorentz(DielectricFunction):
             The permittivity at frequency v as a diagonal 3x3 tensor.
 
         """
-        f_cm1 = v
         eps = np.zeros( (3,3), dtype=complex )
         for xyz, (vs, strengths, sigmas) in enumerate(zip(self.vs_cm1,self.strengths_cm1, self.sigmas_cm1)):
             for v, strength, sigma in zip(vs, strengths,sigmas):
