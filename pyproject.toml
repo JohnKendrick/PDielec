@@ -37,7 +37,7 @@ maintainers = [
 
 description = "PDielec package for the calculation of THz and infrared spectra for powders and single crystals"
 readme = "README.md"
-license = "MIT"
+license = {file = "LICENSE.txt"}
 keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon","Powder","Single Crystal"]
 
 classifiers = [
@@ -70,9 +70,6 @@ pdmake               = "PDielec.pdmake:main"
 
 [project.gui-scripts]
 pdgui = "PDielec.pdgui:main"
-
-[project.entry-points."spam.magical"]
-tomatoes = "spam:main_tomatoes"
 
 [tool.setuptools.packages.find]
 include =  ["PDielec","PDielec.GUI"]
