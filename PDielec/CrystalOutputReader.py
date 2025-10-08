@@ -74,6 +74,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage["masses"]   = (re.compile(" ATOMS ISOTOPIC MASS"), self._read_masses)
         self.manage["lattice"]  = (re.compile(" DIRECT LATTICE VECTORS CARTESIAN COMPONENTS"), self._read_lattice_vectors)
+        self.manage["lattice2"]  = (re.compile(" PRIMITIVE CELL - CENTRING CODE"), self._read_lattice_vectors2)
         self.manage["fractional"]  = (re.compile(" ATOMS IN THE ASYMMETRIC UNIT"), self._read_fractional_coordinates)
         self.manage["bornCharges"]  = (re.compile(" ATOMIC BORN CHARGE TENSOR"), self._read_born_charges)
         self.manage["eigenvectors"]  = (re.compile(" NORMAL MODES NORMALIZ"), self._read_eigenvectors)
@@ -671,3 +672,36 @@ class CrystalOutputReader(GenericOutputReader):
         for species_index in self.atom_type_list:
             self.ions_per_type[species_index] += 1
         return
+
+    def _read_lattice_vectors2(self, line):
+        """Read lattice vectors and fractional coordinates.
+
+        This method is used to read the intermediate coordinates and cell of an optimisation.
+        This method reads the cell as a,b,c,alpha,bet,gamm
+
+        Parameters
+        ----------
+        line : str
+            The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the `line` parameter could be omitted or revised.
+
+        """        
+        line = self.file_descriptor.readline()   # Skip PRIMITIVE CELL - CENTRING
+        line = self.file_descriptor.readline()   # A B C....
+        split_line = line.split()
+        a = float(split_line[0])
+        b = float(split_line[1])
+        c = float(split_line[2])
+        alpha = float(split_line[3])
+        beta  = float(split_line[4])
+        gamma = float(split_line[5])
+        self.unit_cells.append(UnitCell(a=a, b=b, c=c, alpha=alpha, beta=beta, gamma=gamma,units="Angstrom"))
+        line = self.file_descriptor.readline()   # Skip the ******
+        line = self.file_descriptor.readline()   # Skip ATOMS IN THE ASYMMETRIC UNIT
+        self._read_fractional_coordinates(line)
+        self.ncells = len(self.unit_cells)
+        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        # The fractional coordinates are specified before the lattice vectors
+        self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
+        self.unit_cells[-1].set_element_names(self.species_list)
+        return
+
