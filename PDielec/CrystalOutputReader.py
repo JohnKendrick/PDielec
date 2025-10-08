@@ -111,8 +111,11 @@ class CrystalOutputReader(GenericOutputReader):
         There are no return values. Modifications are made directly to the instance attributes.
 
         """        
-        self.final_free_energy = hartree2ev*float(line.split()[3])
-        self.final_energy_without_entropy = hartree2ev*float(line.split()[3])
+        try:
+            self.final_free_energy = hartree2ev*float(line.split()[3])
+        except Exception:
+            self.final_free_energy = 0.0
+        self.final_energy_without_entropy = self.final_free_energy
 
     def _read_energy2(self, line):
         """Read and set the final free energy and final energy without entropy from a line of text.
@@ -132,8 +135,11 @@ class CrystalOutputReader(GenericOutputReader):
         None
 
         """        
-        self.final_free_energy = hartree2ev*float(line.split()[5])
-        self.final_energy_without_entropy = hartree2ev*float(line.split()[5])
+        try:
+            self.final_free_energy = hartree2ev*float(line.split()[5])
+        except Exception:
+            self.final_free_energy = 0.0
+        self.final_energy_without_entropy = self.final_free_energy
 
     def _read_energy3(self, line):
         """Parse energy information from a given line of text and update object properties.
@@ -149,8 +155,11 @@ class CrystalOutputReader(GenericOutputReader):
         None
 
         """        
-        self.final_free_energy = hartree2ev*float(line.split()[2])
-        self.final_energy_without_entropy = hartree2ev*float(line.split()[2])
+        try:
+            self.final_free_energy = hartree2ev*float(line.split()[2])
+        except Exception:
+            self.final_free_energy = 0.0
+        self.final_energy_without_entropy = self.final_free_energy
 
     def _read_electrons(self, line):
         """Parse the number of electrons from a string and assign it to the instance variable.
