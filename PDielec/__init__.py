@@ -23,4 +23,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 # Created by setup.py, whilst creating a new PyPi release
-__version__ = "9.0.0"
+__version__ = "9.0.1"
