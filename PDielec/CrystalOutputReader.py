@@ -82,7 +82,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage["kpoints"]  = (re.compile(" SHRINK\\. FACT\\.\\("), self._read_kpoints)
         self.manage["electrons"]  = (re.compile(" N\\. OF ELECTRONS"), self._read_electrons)
         self.manage["energy"]  = (re.compile(" TOTAL ENERGY\\(DFT\\)"), self._read_energy)
-        self.manage["energy2"]  = (re.compile(" TOTAL ENERGY + DISP"), self._read_energy2)
+        self.manage["energy2"]  = (re.compile(" *TOTAL ENERGY \\+ DISP"), self._read_energy2)
         self.manage["energy3"]  = (re.compile(" *CENTRAL POINT"), self._read_energy3)
         for f in self._outputfiles:
             self._read_output_file(f)
@@ -111,8 +111,12 @@ class CrystalOutputReader(GenericOutputReader):
         There are no return values. Modifications are made directly to the instance attributes.
 
         """        
-        self.final_free_energy = hartree2ev*float(line.split()[3])
-        self.final_energy_without_entropy = hartree2ev*float(line.split()[3])
+        splitline = line.split()
+        if "DE" in splitline[3]:
+            self.final_free_energy = hartree2ev*float(line.split()[2])
+        else:
+            self.final_free_energy = hartree2ev*float(line.split()[3])
+        self.final_energy_without_entropy = self.final_free_energy
 
     def _read_energy2(self, line):
         """Read and set the final free energy and final energy without entropy from a line of text.
@@ -133,7 +137,7 @@ class CrystalOutputReader(GenericOutputReader):
 
         """        
         self.final_free_energy = hartree2ev*float(line.split()[5])
-        self.final_energy_without_entropy = hartree2ev*float(line.split()[5])
+        self.final_energy_without_entropy = self.final_free_energy
 
     def _read_energy3(self, line):
         """Parse energy information from a given line of text and update object properties.
@@ -150,7 +154,7 @@ class CrystalOutputReader(GenericOutputReader):
 
         """        
         self.final_free_energy = hartree2ev*float(line.split()[2])
-        self.final_energy_without_entropy = hartree2ev*float(line.split()[2])
+        self.final_energy_without_entropy = self.final_free_energy
 
     def _read_electrons(self, line):
         """Parse the number of electrons from a string and assign it to the instance variable.
