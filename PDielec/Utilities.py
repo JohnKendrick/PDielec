@@ -27,6 +27,7 @@ from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.ExperimentOutputReader import ExperimentOutputReader
 from PDielec.GulpOutputReader import GulpOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
+from PDielec.AimsOutputReader import AimsOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.VaspOutputReader import VaspOutputReader
 
@@ -132,10 +133,16 @@ def find_program_from_name( filename ):
             return "quantum espresso",""
         else:
             return "crystal"
+    if ext ==  ".dat":
+        return "aims"
     if os.path.isfile(os.path.join(head,"vasprun.xml")):
         return "vasp"
     if os.path.isfile(os.path.join(head,"pwscf.xml")):
         return "quantum espresso"
+    if os.path.isfile(os.path.join(head,"geometry.in")):
+        return "aims"
+    if os.path.isfile(os.path.join(head,"control.in")):
+        return "aims"
     return ""
 
 def get_reader( name, program, debug=False):
@@ -230,6 +237,22 @@ def get_reader( name, program, debug=False):
         pnames.append( os.path.join(head,"phonopy.yaml") )
         pnames.append( os.path.join(head,"BORN_PDIELEC") )
         reader = PhonopyOutputReader(pnames)
+    elif program == "aims":
+        if root.endswith(".dat"):
+            identifier = root.split(".")[1]
+        else:
+            import glob
+            all_files = glob.glob(os.path.join(head,"hessian.*.dat"))
+            identifier = all_files[-1]
+            _head,_tail = os.path.split(identifier)
+            identifier = _tail.split(".")[1]
+        # The order is important
+        pnames = []
+        pnames.append( os.path.join(head,"masses."+identifier+".dat") )
+        pnames.append( os.path.join(head,"geometry.in") )
+        pnames.append( os.path.join(head,"hessian."+identifier+".dat") )
+        pnames.append( os.path.join(head,"BORN_PDIELEC") )
+        reader = AimsOutputReader(pnames)
     elif program == "experiment":
         names = [ name ]
         reader = ExperimentOutputReader(names)

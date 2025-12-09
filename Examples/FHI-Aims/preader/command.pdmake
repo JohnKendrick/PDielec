@@ -1,0 +1,3 @@
+FHI-Aims preader test
+preader -program aims -eckart ../Na2SO42/control.in
+

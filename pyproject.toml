@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdielec"
-version = "9.0.0"
+version = "9.1.0"
 dependencies = [
     "setuptools",
     "scipy",
@@ -64,15 +64,13 @@ preader              = "PDielec.preader:main"
 p2cif                = "PDielec.p2cif:main"
 pdcompare            = "PDielec.pdcompare:main"
 phonopy-pdielec-born = "PDielec.phonopy_pdielec_born:main"
+aims-pdielec-born    = "PDielec.aims_pdielec_born:main"
 pickled_reader       = "PDielec.pickled_reader:main"
 vibanalysis          = "PDielec.vibanalysis:main"
 pdmake               = "PDielec.pdmake:main"
 
 [project.gui-scripts]
 pdgui = "PDielec.pdgui:main"
-
-[project.entry-points."spam.magical"]
-tomatoes = "spam:main_tomatoes"
 
 [tool.setuptools.packages.find]
 include =  ["PDielec","PDielec.GUI"]
