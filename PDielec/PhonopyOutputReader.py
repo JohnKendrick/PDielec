@@ -16,6 +16,7 @@
 """Read the contents of a directory containing Phonopy input and output files."""
 
 import numpy as np
+import sys
 
 from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
@@ -120,7 +121,7 @@ class PhonopyOutputReader(GenericOutputReader):
         try:
             from yaml import CLoader as Loader
         except Exception:
-            print("WARNING: Yaml CLoader is not avaiable, using fallback")
+            print("WARNING: Yaml CLoader is not avaiable, using fallback",file=sys.stderr)
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
         with open(qpoints_filename) as fd:
