@@ -1,0 +1,62 @@
+PDielec.aims_pdielec_born
+=========================
+
+.. py:module:: PDielec.aims_pdielec_born
+
+.. autoapi-nested-parse::
+
+   aims_pdielec_born
+   Read the FHI Aims output after a calculation of intensities using get_vibrations.py
+   Write the BORN charge file in PDielec format
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.aims_pdielec_born.USAGE
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.aims_pdielec_born.find_number_of_atoms
+   PDielec.aims_pdielec_born.main
+   PDielec.aims_pdielec_born.read_aims_output
+
+
+Module Contents
+---------------
+
+.. py:function:: find_number_of_atoms()
+
+.. py:function:: main()
+
+.. py:function:: read_aims_output(folder, aimsoutname, n_atoms)
+
+.. py:data:: USAGE
+   :value: Multiline-String
+
+   .. raw:: html
+
+      <details><summary>Show Value</summary>
+
+   .. code-block:: python
+
+      """%prog [options] <name> 
+      <name> will be used as prefix for all output files.
+      Calculate Born charges and store in BORN_PDIELEC
+      The file structure is set up by get_vibrations.py.
+      The electronic permittivity is calculated in the Dielectric/ directory
+      """
+
+   .. raw:: html
+
+      </details>
+
+
+

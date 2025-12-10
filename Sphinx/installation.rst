@@ -9,7 +9,7 @@ Installation
 
 .. meta::
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE
+   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE
 
 
 Conda
@@ -183,7 +183,7 @@ GitHub - PDielec directory structure
 * PDielec/ - The home directory that contains the `pdgui` and `preader` commands
 * PDielec/PDielec  - Holds the source for the modules used by the pdielec and preader commands
 * PDielec/PDielec/GUI  - Holds the Python code for PDGui
-* PDielec/Examples - A set of examples is available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie, and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post-processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
+* PDielec/Examples - A set of examples is available for Abinit, Crystal14, CASTEP, GULP, FHI-Aims, Phonopy, Mie, and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post-processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
 * PDielec/Sphinx - Holds the documentation as restructured text documents (.rst).  Sphinx can be used to build the documentation in either HTML or PDF format.
 * PDielec/docs - Holds the final HTML documentation.
 
@@ -259,6 +259,8 @@ A summary of the different examples and their purpose is shown below;
    | Crystal/ZnO/Default       | Crystal          | ZnO           | Default Crystal calculation of IR spectrum, Maxwell-Garnett Sphere,   Needle and Plate                                                          |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Crystal/ZnO/NoEckart      | Crystal          | ZnO           | As above, but no Eckart projection in Crystal,  Maxwell-Garnett Sphere, Needle and Plate                                                        |
+   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | FHI-Aims/Na2SO42          | FHI-Aims         | Na2(SO4)2     | Powder calculation for spheres, including a comparison with VASP results                                                                        |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Experiment/Forsterite     | Experiment       | Forsterite    | Single crystal calculations of a thick slab, for a, b and c axis   alignments with polarisation direction.    Uses FPSQ model for permittivity. |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
