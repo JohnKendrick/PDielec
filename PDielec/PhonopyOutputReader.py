@@ -15,8 +15,9 @@
 #
 """Read the contents of a directory containing Phonopy input and output files."""
 
-import numpy as np
 import sys
+
+import numpy as np
 
 from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
@@ -152,16 +153,11 @@ class PhonopyOutputReader(GenericOutputReader):
         #
         # Determine axes and cells
         #
-        if "primitive_axes" in data_p["phonopy"]["configuration"]:
-            primitive_axes = data_p["phonopy"]["configuration"]["primitive_axes"]
-        else:
-            primitive_axes = None
         if "primitive_matrix" in data_p:
             self.primitive_transformation = data_p["primitive_matrix"]
         else:
             self.primitive_transformation = None
         primitive_cell = self.read_cell(data_p["primitive_cell"]) if "primitive_cell" in data_p else None
-        unit_cell = self.read_cell(data_p["unit_cell"]) if "unit_cell" in data_p else None
         #
         # Use the cell that is consistent with the primitive_axes
         #

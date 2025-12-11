@@ -22,12 +22,12 @@ import os
 import sys
 
 from PDielec.AbinitOutputReader import AbinitOutputReader
+from PDielec.AimsOutputReader import AimsOutputReader
 from PDielec.CastepOutputReader import CastepOutputReader
 from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.ExperimentOutputReader import ExperimentOutputReader
 from PDielec.GulpOutputReader import GulpOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
-from PDielec.AimsOutputReader import AimsOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.VaspOutputReader import VaspOutputReader
 

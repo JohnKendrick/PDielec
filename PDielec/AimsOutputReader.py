@@ -15,12 +15,14 @@
 #
 """Read the contents of a directory containing FHI-AIMS input and output files."""
 
+import os
+
 import numpy as np
 
+from PDielec import Constants
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import PDielec.Constants as Constants
-import os
+
 
 class AimsOutputReader(GenericOutputReader):
     """Read the contents of a directory containing Aims input and output files.
@@ -97,7 +99,7 @@ class AimsOutputReader(GenericOutputReader):
 
         """        
         # Read the aims.out file
-        with open(file, 'r') as fd:
+        with open(file) as fd:
             for line in fd:
                 if "  | Total energy of the DFT " in line:
                     self.final_energy_without_entropy = float(line.split()[-2])
@@ -125,11 +127,11 @@ class AimsOutputReader(GenericOutputReader):
         """        
         # Read the masses
         masses = []
-        with open(masses_file, 'r') as fd:
+        with open(masses_file) as fd:
             for line in fd:
                 masses.append(float(line.split()[0]))
         # Read the geometry
-        with open(geometry_file, 'r') as fd:
+        with open(geometry_file) as fd:
             lines = fd.readlines()
         lattice = []
         coordinates = []
