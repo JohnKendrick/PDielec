@@ -20,7 +20,7 @@ import numpy as np
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
 import PDielec.Constants as Constants
-
+import os
 
 class AimsOutputReader(GenericOutputReader):
     """Read the contents of a directory containing Aims input and output files.
@@ -63,13 +63,45 @@ class AimsOutputReader(GenericOutputReader):
         reads the Born charges
         """
         # Calculate dynamical matrix
-        masses_filename = self._outputfiles[0]
-        geometry_filename = self._outputfiles[1]
-        hessian_filename  = self._outputfiles[2]
-        born_filename     = self._outputfiles[3]
-        self.read_geometry(masses_filename,geometry_filename)
-        self.read_dynamical_matrix(hessian_filename)
-        self.read_born_file(self.nions,born_filename)
+        energy_filename = self._outputfiles[0]
+        masses_filename = self._outputfiles[1]
+        geometry_filename = self._outputfiles[2]
+        hessian_filename  = self._outputfiles[3]
+        born_filename     = self._outputfiles[4]
+        if os.path.exists(energy_filename):
+            self.read_energy(energy_filename)
+        if os.path.exists(masses_filename) and os.path.exists(geometry_filename):
+            self.read_geometry(masses_filename,geometry_filename)
+        if os.path.exists(hessian_filename):
+            self.read_dynamical_matrix(hessian_filename)
+        if os.path.exists(born_filename):
+            self.read_born_file(self.nions,born_filename)
+        return
+
+    def read_energy(self, file):
+        """Read and process the aims log file.
+
+        Parameters
+        ----------
+        file : str
+            The aims log file, usually aims.out
+
+        Returns
+        -------
+        None
+
+        Modifies
+        --------
+        self.final_energy_without_entropy float
+        self.final_energies_without_entropy float
+
+        """        
+        # Read the aims.out file
+        with open(file, 'r') as fd:
+            for line in fd:
+                if "  | Total energy of the DFT " in line:
+                    self.final_energy_without_entropy = float(line.split()[-2])
+                    self.final_energies_without_entropy.append(self.final_energy_without_entropy)
         return
 
     def read_geometry(self, masses_file, geometry_file):

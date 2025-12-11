@@ -135,6 +135,8 @@ def find_program_from_name( filename ):
             return "crystal"
     if ext ==  ".dat":
         return "aims"
+    if tail ==  "aims.out":
+        return "aims"
     if os.path.isfile(os.path.join(head,"vasprun.xml")):
         return "vasp"
     if os.path.isfile(os.path.join(head,"pwscf.xml")):
@@ -142,6 +144,8 @@ def find_program_from_name( filename ):
     if os.path.isfile(os.path.join(head,"geometry.in")):
         return "aims"
     if os.path.isfile(os.path.join(head,"control.in")):
+        return "aims"
+    if os.path.isfile(os.path.join(head,"aims.out")):
         return "aims"
     return ""
 
@@ -243,15 +247,25 @@ def get_reader( name, program, debug=False):
         else:
             import glob
             all_files = glob.glob(os.path.join(head,"hessian.*.dat"))
-            identifier = all_files[-1]
-            _head,_tail = os.path.split(identifier)
-            identifier = _tail.split(".")[1]
+            if len(all_files) < 1:
+                identifier="unkown_and_ignore"
+            else:
+                identifier = all_files[-1]
+                _head,_tail = os.path.split(identifier)
+                identifier = _tail.split(".")[1]
         # The order is important
         pnames = []
+        aimsfile = os.path.join(head,"aims.out")
+        if not os.path.exists(aimsfile):
+            aimsfile = aimsfile+"unkown_and_ignore"
+        pnames.append( aimsfile )
         pnames.append( os.path.join(head,"masses."+identifier+".dat") )
         pnames.append( os.path.join(head,"geometry.in") )
         pnames.append( os.path.join(head,"hessian."+identifier+".dat") )
-        pnames.append( os.path.join(head,"BORN_PDIELEC") )
+        bornfile = os.path.join(head,"BORN_PDIELEC")
+        if not os.path.exists(bornfile):
+            bornfile = bornfile+"unkown_and_ignore"
+        pnames.append(bornfile)
         reader = AimsOutputReader(pnames)
     elif program == "experiment":
         names = [ name ]
