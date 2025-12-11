@@ -1,6 +1,7 @@
 version 9.1.0
    Added support for FHI-Aims output
    Fixed bugs in the CRYSTAL reader
+   Changed the default matrix material from air to ptfe 
 version 9.0.0
    Extensive changes to the ViewerTab and the OpenGLWidget
        A colour palette has been introduced for the atom colours

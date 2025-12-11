@@ -207,7 +207,7 @@ class PowderScenarioTab(ScenarioTab):
         self.scenarioType = "Powder"
         self.settings["Scenario type"] = "Powder"
         self.noCalculationsRequired = 1
-        self.settings["Matrix"] = None
+        self.settings["Matrix"] = "ptfe"
         self.settings["Matrix density"] = None
         self.settings["Matrix permittivity"] = None
         self.settings["Bubble radius"] = 30.0
