@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""SingleCrystalScenarioTab module."""
+"""InfraredSingleCrystalScenarioTab module."""
 import copy
 from functools import partial
 from itertools import product
@@ -136,7 +136,7 @@ def solve_single_crystal_equations(
     errors,largest_exponent = system.overflowErrors()
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
-class SingleCrystalScenarioTab(ScenarioTab):
+class InfraredSingleCrystalScenarioTab(ScenarioTab):
     """A tab class for handling a single crystal scenario.
 
     This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
@@ -331,7 +331,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         global debugger
-        debugger = Debug(debug,"SingleCrystalScenarioTab:")
+        debugger = Debug(debug,"InfraredSingleCrystalScenarioTab:")
         debugger.print("Start:: initialiser")
         self.refreshRequired = True
         self.calculationRequired = True

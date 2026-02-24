@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""PowderScenarioTab module."""
+"""InfraredPowderScenarioTab module."""
 import ctypes
 import sys
 from functools import partial
@@ -39,7 +39,7 @@ from PDielec.Materials import MaterialsDataBase
 from PDielec.Utilities import Debug
 
 
-class PowderScenarioTab(ScenarioTab):
+class InfraredPowderScenarioTab(ScenarioTab):
     """A class for managing the Powder Scenario Tab.
 
     It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
@@ -202,7 +202,7 @@ class PowderScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         global debugger
-        debugger = Debug(debug,"PowderScenarioTab:")
+        debugger = Debug(debug,"InfraredPowderScenarioTab:")
         debugger.print("Start:: initialiser")
         self.scenarioType = "Powder"
         self.settings["Scenario type"] = "Powder"

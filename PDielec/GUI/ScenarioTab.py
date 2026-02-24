@@ -28,7 +28,8 @@ class ScenarioTab(QWidget):
 
     This class provides functionalities for managing and interacting with scenarios.
     It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
-    :class:`~PDielec.GUI.PowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
+    :class:`~PDielec.GUI.InfraredPowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.InfraredSingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
+    :class:`~PDielec.GUI.RamanPowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.RamanSingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
 
     Attributes
     ----------
@@ -41,7 +42,7 @@ class ScenarioTab(QWidget):
     notebook : QWidget
         The parent widget, which is expected to be the notebook container for the scenarios.
     scenarioType : type, optional
-        The type of the scenario, e.g., powder, crystal.
+        The type of the scenario, e.g., InfraredPowder, InfraredCrystal, RamanPowder, RamanCrystal.
     vs_cm1 : list
         List containing default values for some settings.
     DataBase : MaterialsDataBase
@@ -60,8 +61,8 @@ class ScenarioTab(QWidget):
         Button to add another scenario.
     deleteScenarioButton : QPushButton
         Button to delete the current scenario.
-    switchScenarioButton : QPushButton
-        Button to switch between scenario types (e.g., powder to crystal).
+    switchScenarioButton : QComboBOx
+        Dropdown menu to switch between scenario types (e.g., Powder Infrared to Cystal Infrared, or Powder Raman or Crystal Raman).
 
     Methods
     -------
@@ -122,6 +123,7 @@ class ScenarioTab(QWidget):
         self.settings["Legend"] = "Unset"
         self.scenarioType = None
         self.settings["Scenario type"] = "Unset"
+        self.scenarioTypes = {"Powder Infrared" : ................}
         self.vs_cm1 = [0, 0]
         # Deal with the Materials Database here as it is used in all Scenarios
         PDielec_Directory = os.path.dirname(PDielec_init_filename)
@@ -307,7 +309,17 @@ class ScenarioTab(QWidget):
         self.deleteScenarioButton = QPushButton("Delete this scenario")
         self.deleteScenarioButton.setToolTip("Delete the current scenario")
         self.deleteScenarioButton.clicked.connect(self.deleteScenarioButtonClicked)
-        hbox.addWidget(self.deleteScenarioButton)
+        self.switchScenarioButton = QCButtonomboBox(self)
+        self.matrix_cb = QComboBox(self)
+        self.matrix_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        self.matrix_cb.setToolTip("Choose a scenario type")
+        self.materialNames = self.DataBase.getSheetNames()
+        self.matrix_cb.addItems(self.materialNames)
+        if self.settings["Matrix"] not in self.materialNames:
+            self.settings["Matrix"] = self.materialNames[0]
+        index = self.matrix_cb.findText(self.settings["Matrix"], Qt.MatchFixedString)
+        if index >=0:
+            self.matrix_cb.setCurrentIndex(index)
         if self.scenarioType == "Powder":
             self.switchScenarioButton = QPushButton("Switch to crystal scenario")
             self.switchScenarioButton.setToolTip("Switch the current scenario to a single crystal scenario")

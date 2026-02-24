@@ -26,9 +26,11 @@ from PDielec.GUI.AnalysisTab import AnalysisTab
 from PDielec.GUI.FitterTab import FitterTab
 from PDielec.GUI.MainTab import MainTab
 from PDielec.GUI.PlottingTab import PlottingTab
-from PDielec.GUI.PowderScenarioTab import PowderScenarioTab
+from PDielec.GUI.InfraredPowderScenarioTab import InfraredPowderScenarioTab
+from PDielec.GUI.InfraredSingleCrystalScenarioTab import InfraredSingleCrystalScenarioTab
+from PDielec.GUI.RamanPowderScenarioTab import RamanPowderScenarioTab
+from PDielec.GUI.RamanSingleCrystalScenarioTab import RamanSingleCrystalScenarioTab
 from PDielec.GUI.SettingsTab import SettingsTab
-from PDielec.GUI.SingleCrystalScenarioTab import SingleCrystalScenarioTab
 from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
 from PDielec.GUI.ViewerTab import ViewerTab
 from PDielec.Utilities import Debug
@@ -169,10 +171,6 @@ class NoteBook(QWidget):
         self.progressbar_maximum = 0
         self.spreadsheet = None
         self.threading = threading
-        if default_scenario == "powder":
-            self.currentScenarioTab = PowderScenarioTab
-        else:
-            self.currentScenarioTab = SingleCrystalScenarioTab
         if ncpus == 0:
             self.ncpus = psutil.cpu_count(logical=False)
         else:
@@ -193,6 +191,13 @@ class NoteBook(QWidget):
         self.viewerTab = None
         self.fitterTab = None
         self.scenarios = None
+        self.availableTabs = { 
+                          "InfraredPowder" : InfraredPowderScenarioTab,
+                          "InfraredSingleCrystal" : InfraredSingleCrystalTab,
+                          "RamanPowder" : RamanPowderScenarioTab,
+                          "RamanSingleCrystal" : RamanSingleCrystalTab,
+                         }
+        self.currentScenarioTab = self.availableTabs[default_scenario]
         #
         # Initialize tab screen
         #
@@ -338,10 +343,7 @@ class NoteBook(QWidget):
                     last = scenario
             # end for
         # Create a new scenario
-        if scenarioType == "Powder":
-            self.currentScenarioTab = PowderScenarioTab
-        else:
-            self.currentScenarioTab = SingleCrystalScenarioTab
+        self.currentScenarioTab = self.availableTabs[default_scenario]
         # Add the scenario to the end of the list
         debugger.print("Appending the new scenario")
         self.scenarios.append(self.currentScenarioTab(self, self.debug))
@@ -557,7 +559,8 @@ class NoteBook(QWidget):
 
         See Also
         --------
-        SingleCrystalScenarioTab, PowderScenarioTab : Classes representing different types of scenario tabs.
+        InfraredSingleCrystalScenarioTab, InfraredPowderScenarioTab : Classes representing different types of scenario tabs.
+        RamanSingleCrystalScenarioTab, RamanPowderScenarioTab : Classes representing different types of scenario tabs.
 
         """        
         debugger.print("Start:: switch for scenario", index+1)
@@ -569,16 +572,9 @@ class NoteBook(QWidget):
         # Otherwise switch type
         #
         if scenarioType is None:
-            if scenario.scenarioType == "Powder":
-                self.currentScenarioTab = SingleCrystalScenarioTab
-            else:
-                self.currentScenarioTab = PowderScenarioTab
-            # end if
-        elif scenarioType == "Powder":
-            self.currentScenarioTab = PowderScenarioTab
+            self.currentScenarioTab = self.availableTabs[scenario.scenarioType]
         else:
-            self.currentScenarioTab = SingleCrystalScenarioTab
-            # end if
+            self.currentScenarioTab = self.availableTabs[scenarioType]
         #end if
         self.scenarios[index] =  self.currentScenarioTab(self, self.debug)
         scenario = self.scenarios[index]
