@@ -128,7 +128,7 @@ class App(QMainWindow):
         itoken = 0
         ncpus = 0
         threading = False
-        default_scenario = "powder"
+        default_scenario = "Powder Infrared"
         # Look at the environment to see if the number of cpus is specified
         token = os.getenv("PDIELEC_NUM_PROCESSORS")
         ncpus = 0 if token is None else int(token)
@@ -177,9 +177,10 @@ class App(QMainWindow):
                 ncpus = int(tokens[itoken])
             elif token in ("-scenario", "--scenario"):
                 itoken += 1
-                default_scenario = tokens[itoken]
-                if default_scenario not in ("powder", "crystal"):
-                    print("Error in default scenario: must be 'powder' or 'crystal'")
+                # Replace an "_" with " "
+                default_scenario = tokens[itoken].replace("_"," ")
+                if default_scenario not in ("Powder Infrared", "Crystal Infrared", "Powder Raman", "Crystal Raman"):
+                    print("Error default scenario not recognised", default_scenario)
                     self.print_usage()
                     sys.exit()
             elif token.startswith("-"):
@@ -292,7 +293,8 @@ class App(QMainWindow):
         - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy', 'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified.
         - `filename`: The name of the output file.
         - `spreadsheet file`: An optional name of a spreadsheet file (must end with .xlsx). If provided, both program and filename must be specified.
-        - `-scenario type`: Changes the default scenario to "type", which can be either "powder" or "crystal".
+        - `-scenario type`: Changes the default scenario to "type",
+                            which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or "Crystal_Raman"
         - `-spreadsheet file`: An alternative way to specify the spreadsheet file.
         - `-program`: An alternative way to specify the program.
         - `-script file`: Specifies that initial commands are read from a script file.
@@ -314,7 +316,7 @@ class App(QMainWindow):
         print("    filename      The name of the output file")
         print(" spreadsheet file The optional name of a spreadsheet (file must end with .xlsx")
         print("                  If this option is used program, filename must also be specified")
-        print('   -scenario type Change the default scenario to "type"; either "powder" to "crystal"')
+        print('   -scenario type Change the default scenario to "type"; either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or "Crystal_Raman"')
         print("-spreadsheet file An alternative way of specifying the spread sheet")
         print("    -program      Specify the program used to generate the output")
         print("     -script file The initial commands are read from a script file")

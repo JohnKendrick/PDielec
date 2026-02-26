@@ -137,9 +137,9 @@ def solve_single_crystal_equations(
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
 class InfraredSingleCrystalScenarioTab(ScenarioTab):
-    """A tab class for handling a single crystal scenario.
+    """A tab class for handling a crystal infrared  scenario.
 
-    This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
+    This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling crystal infrared scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
 
     Parameters
     ----------
@@ -155,7 +155,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
     calculationRequired : bool
         Flag indicating whether a new calculation is required based on changes in parameters or settings.
     scenarioType : str
-        A string representing the type of scenario. For this class, it is set to 'Single crystal'.
+        A string representing the type of scenario. For this class, it is set to 'Crystal Infrared'.
     refreshRequired : bool
         Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or recalculated.
     noCalculationsRequired : int
@@ -173,7 +173,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
 
     Methods
     -------
-    There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the single crystal scenario.
+    There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the crystal infrared scenario.
 
     angleOfIncidenceWidget
         Create a widget to set the angle of incidence
@@ -273,11 +273,11 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
     """
 
     def __init__(self, parent, debug=False ):
-        """Initialize the Single Crystal Scenario Tab.
+        """Initialize the crystal infrared Scenario Tab.
 
         This initializer sets up the GUI components, populates settings with default values, 
         and prepares the tab for interaction. It inherits from a parent scenario, initializes
-        a debug mode if required, and sets various default parameters for the single crystal 
+        a debug mode if required, and sets various default parameters for the crystal infrared 
         scenario, including layer information and calculation modes.
 
         Parameters
@@ -296,7 +296,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         calculationRequired : bool
             Indicates if a new calculation is required based on changed parameters.
         scenarioType : str
-            The type of scenario, hardcoded as 'Single crystal'.
+            The type of scenario, hardcoded as 'Crystal Infrared'.
         noCalculationsRequired : int
             Number of calculations required, initialized to 1.
         settings : dict
@@ -335,9 +335,9 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         debugger.print("Start:: initialiser")
         self.refreshRequired = True
         self.calculationRequired = True
-        self.scenarioType = "Single crystal"
         self.noCalculationsRequired = 1
-        self.settings["Scenario type"] = "Single crystal"
+        self.scenarioType = "Crystal Infrared"
+        self.settings["Scenario type"] = self.scenarioType
         self.settings["Global azimuthal angle"] = 0.0
         self.settings["Angle of incidence"] = 0.0
         self.settings["Mode"] = "Transfer matrix"
@@ -408,7 +408,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         self.mode_cb.setCurrentIndex(index)
         self.mode_cb.activated.connect(self.on_mode_cb_activated)
         label = QLabel("Single crystal methodology", self)
-        label.setToolTip("Set the method for calculating light transmission and reflectanceb;\n Transfer matrix.  This method is fast but can be numerically unstable.\n Scattering matrix. This method is slow but is numerically stable")
+        label.setToolTip("Set the method for calculating light transmission and reflectanceb;\n Transfer matrix.  This method is fast but can be numerically unstable.\n Scattering matrix. This method is slower but is numerically stable")
         self.form.addRow(label, self.mode_cb)
         #
         # Define the global azimuthal angle widget
@@ -1345,7 +1345,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
     def globalAzimuthalWidget(self):
         """Create a global azimuthal angle widget.
 
-        This widget is shown in the main single crystal scenario tab.
+        This widget is shown in the main crystal infrared scenario tab.
         Any change in this angle affects all layers.
 
         Parameters
@@ -2006,7 +2006,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
                                        exponent_threshold)
         results = []
         # About to call
-        debugger.print(self.settings["Legend"],"About to calculate single crystal scenario using pool")
+        debugger.print(self.settings["Legend"],"About to calculate crystal infrared scenario using pool")
         if self.notebook.pool is None:
             self.notebook.startPool()
         for result in self.notebook.pool.imap(partial_function, self.vs_cm1, chunksize=20):
@@ -2021,7 +2021,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         p_absorbtance = []
         s_absorbtance = []
         epsilon = []
-        debugger.print(self.settings["Legend"],"About to extract results for single crystal scenario")
+        debugger.print(self.settings["Legend"],"About to extract results for crystal infrared scenario")
         for v,_r,R,_t,T,eps,errors,largest_exponent in results:
             if self.settings["Mode"] == "Transfer matrix" and errors > 0:
                 print("Warning exponential overflow occured at frequency",v,errors,largest_exponent)
@@ -2155,7 +2155,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         }.get(plot_type)
 
     def get_results(self, vs_cm1):
-        """Return the results of the single crystal calculation.
+        """Return the results of the crystal infrared calculation.
 
         If a refresh has been requested it is performed before the calculate method is called.
 

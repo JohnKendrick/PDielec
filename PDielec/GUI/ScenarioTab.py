@@ -16,7 +16,9 @@
 # -*- coding: utf8 -*-
 import os
 
+from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
+from qtpy.QtWidgets import QComboBox
 
 from PDielec import __file__ as PDielec_init_filename
 from PDielec.Materials import MaterialsDataBase
@@ -42,7 +44,9 @@ class ScenarioTab(QWidget):
     notebook : QWidget
         The parent widget, which is expected to be the notebook container for the scenarios.
     scenarioType : type, optional
-        The type of the scenario, e.g., InfraredPowder, InfraredCrystal, RamanPowder, RamanCrystal.
+        The type of the scenario, e.g., Powder Infrared, Crystal Infrared, Powder Raman, Crystal Raman.
+    scenarioTypes : list of scenario types
+        The list is obtained from the keys of the self.notebook.scenarioTypes dictionary
     vs_cm1 : list
         List containing default values for some settings.
     DataBase : MaterialsDataBase
@@ -61,8 +65,8 @@ class ScenarioTab(QWidget):
         Button to add another scenario.
     deleteScenarioButton : QPushButton
         Button to delete the current scenario.
-    switchScenarioButton : QComboBOx
-        Dropdown menu to switch between scenario types (e.g., Powder Infrared to Cystal Infrared, or Powder Raman or Crystal Raman).
+    switchScenarioCB : QComboBOx
+        Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared, Powder Raman or Crystal Raman).
 
     Methods
     -------
@@ -96,7 +100,7 @@ class ScenarioTab(QWidget):
     deleteScenarioButtonClicked()
         Handle when a delete button has been clicked.
 
-    switchScenarioButtonClicked()
+    switchScenarioCBClicked()
         Handle the scenario when a button has been clicked.
 
     """
@@ -123,7 +127,7 @@ class ScenarioTab(QWidget):
         self.settings["Legend"] = "Unset"
         self.scenarioType = None
         self.settings["Scenario type"] = "Unset"
-        self.scenarioTypes = {"Powder Infrared" : ................}
+        self.scenarioTypes = list(self.notebook.scenarioTypes.keys())
         self.vs_cm1 = [0, 0]
         # Deal with the Materials Database here as it is used in all Scenarios
         PDielec_Directory = os.path.dirname(PDielec_init_filename)
@@ -309,25 +313,21 @@ class ScenarioTab(QWidget):
         self.deleteScenarioButton = QPushButton("Delete this scenario")
         self.deleteScenarioButton.setToolTip("Delete the current scenario")
         self.deleteScenarioButton.clicked.connect(self.deleteScenarioButtonClicked)
-        self.switchScenarioButton = QCButtonomboBox(self)
-        self.matrix_cb = QComboBox(self)
-        self.matrix_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        self.matrix_cb.setToolTip("Choose a scenario type")
-        self.materialNames = self.DataBase.getSheetNames()
-        self.matrix_cb.addItems(self.materialNames)
-        if self.settings["Matrix"] not in self.materialNames:
-            self.settings["Matrix"] = self.materialNames[0]
-        index = self.matrix_cb.findText(self.settings["Matrix"], Qt.MatchFixedString)
+        hbox.addWidget(self.deleteScenarioButton)
+        self.switchScenarioCB = QComboBox(self)
+#jk        self.switchScenarioCB.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        self.switchScenarioCB.setToolTip("Switch to a new scenario type")
+        self.switchScenarioCB.addItems(self.scenarioTypes)
+        index = self.switchScenarioCB.findText(self.scenarioType, Qt.MatchFixedString)
         if index >=0:
-            self.matrix_cb.setCurrentIndex(index)
-        if self.scenarioType == "Powder":
-            self.switchScenarioButton = QPushButton("Switch to crystal scenario")
-            self.switchScenarioButton.setToolTip("Switch the current scenario to a single crystal scenario")
+            self.switchScenarioCB.setCurrentIndex(index)
         else:
-            self.switchScenarioButton = QPushButton("Switch to powder scenario")
-            self.switchScenarioButton.setToolTip("Switch the current scenario to a powder scenario")
-        self.switchScenarioButton.clicked.connect(self.switchScenarioButtonClicked)
-        hbox.addWidget(self.switchScenarioButton)
+            print("Error in scenarioType", self.scenarioType, self.scenarioTypes)
+        self.switchScenarioCB.activated.connect(self.switchScenarioCBActivated)
+        label = QLabel("Switch to a new scenario type:")
+        label.setAlignment(Qt.AlignBottom | Qt.AlignRight)
+        hbox.addWidget(label)
+        hbox.addWidget(self.switchScenarioCB)
         debugger.print(self.settings["Legend"], "add_scenario_buttons finish")
         return hbox
 
@@ -364,22 +364,24 @@ class ScenarioTab(QWidget):
         self.notebook.deleteScenario(self.scenarioIndex)
         return
 
-    def switchScenarioButtonClicked(self):
-        """Handle the switch scenario when a button has been clicked.
+    def switchScenarioCBActivated(self, index):
+        """Handle the switch scenario when combo box has been activated.
 
-        Asks the notebook to change the scenario type (Powder or Crystal) to the other.
+        Asks the notebook to change the scenario type 
 
         Parameters
         ----------
-        None
+        index
+            The index in the list of scenarios
 
         Returns
         -------
         None
 
         """
-        debugger.print(self.settings["Legend"],"switchScenarioButtonClicked")
-        self.notebook.switchScenario(self.scenarioIndex)
+        debugger.print(self.settings["Legend"],"switchScenarioCBActivated", index)
+        self.scenarioType = self.scenarioTypes[index]
+        self.notebook.switchScenario(self.scenarioIndex, self.scenarioType)
         self.requestRefresh()
         self.notebook.plottingTab.refresh(force=True)
         return

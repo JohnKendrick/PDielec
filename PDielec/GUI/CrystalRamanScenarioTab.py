@@ -335,9 +335,9 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
         debugger.print("Start:: initialiser")
         self.refreshRequired = True
         self.calculationRequired = True
-        self.scenarioType = "Single crystal"
         self.noCalculationsRequired = 1
-        self.settings["Scenario type"] = "Single crystal"
+        self.scenarioType = "Crystal Raman"
+        self.settings["Scenario type"] = self.scenarioType
         self.settings["Global azimuthal angle"] = 0.0
         self.settings["Angle of incidence"] = 0.0
         self.settings["Mode"] = "Transfer matrix"

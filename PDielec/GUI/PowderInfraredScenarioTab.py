@@ -40,10 +40,10 @@ from PDielec.Utilities import Debug
 
 
 class InfraredPowderScenarioTab(ScenarioTab):
-    """A class for managing the Powder Scenario Tab.
+    """A class for managing the Infrared Powder Scenario Tab.
 
     It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
-    with additional features and settings pertinent to powder scenarios.
+    with additional features and settings pertinent to powder infrared scenarios.
 
     Parameters
     ----------
@@ -55,7 +55,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
     Attributes
     ----------
     scenarioType : str
-        Defines the type of scenario as 'Powder'.
+        Defines the type of scenario as 'Powder Infrared'.
     settings : dict
         Dictionary holding various settings related to the scenario.
     methods : list
@@ -112,7 +112,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
     on_aoverb_sb_changed(value)
         Handler for changes to the ellipsoid a/b ratio or eccentricity.
     on_legend_le_changed(text)
-        Handler for changes to the legend label of the powder scenario.
+        Handler for changes to the legend label of the scenario.
     on_sigma_sb_changed(value)
         Handler for changes to the particle size distribution sigma.
     on_size_sb_changed(value)
@@ -153,7 +153,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
     """
 
     def __init__(self, parent, debug=False):
-        """Initialize the ScenarioTab subclass for Powder Scenario with UI and connectivity.
+        """Initialize the ScenarioTab subclass for Infrared Powder Scenario with UI and connectivity.
 
         Parameters
         ----------
@@ -165,7 +165,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
         Attributes
         ----------
         scenarioType : str
-            Defines the type of scenario as 'Powder'.
+            Defines the type of scenario as 'Powder Infrared'.
         settings : dict
             Dictionary holding various settings related to the scenario.
         methods : list
@@ -204,8 +204,8 @@ class InfraredPowderScenarioTab(ScenarioTab):
         global debugger
         debugger = Debug(debug,"InfraredPowderScenarioTab:")
         debugger.print("Start:: initialiser")
-        self.scenarioType = "Powder"
-        self.settings["Scenario type"] = "Powder"
+        self.scenarioType = "Powder Infrared"
+        self.settings["Scenario type"] = self.scenarioType
         self.noCalculationsRequired = 1
         self.settings["Matrix"] = "ptfe"
         self.settings["Matrix density"] = None
@@ -512,7 +512,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
         self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
         self.legend_le.setText(self.settings["Legend"])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel("Powder scenario legend",self)
+        label = QLabel("Scenario legend",self)
         label.setToolTip("The legend will be used to describe the results in the plotting tab")
         form.addRow(label, self.legend_le)
 
@@ -611,7 +611,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
         return
 
     def on_shape_cb_activated(self,index):
-        """Handle changes to the shape of the powder particles.
+        """Handle changes to the shape of the particles.
 
         Parameters
         ----------

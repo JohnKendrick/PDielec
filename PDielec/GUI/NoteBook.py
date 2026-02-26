@@ -62,7 +62,7 @@ class NoteBook(QWidget):
     scripting : bool, optional
         Flag to indicate if the notebook is used in scripting mode, by default False.
     default_scenario : str, optional
-        The type of default scenario to load at initiation, by default 'powder'.
+        The type of default scenario to load at initiation, by default 'Powder Infrared'.
     ncpus : int, optional
         The number of CPUs to use, by default 0 which means autodetect.
     threading : bool, optional
@@ -108,10 +108,14 @@ class NoteBook(QWidget):
         Debug mode state.
     overwriting : bool
         State indicating if overwriting files without prompt is enabled.
+    scenarios : list 
+        A list of the scenario tabs
+    scenarioTypes : dict
+        A dictionary of scenario types which index the scenario tab classes they represent
 
     """
 
-    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario="powder",ncpus=0, threading=False):
+    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario="Powder Infrared",ncpus=0, threading=False):
         """Initialise the main NoteBook.
 
         This method initializes the main widget with all necessary components
@@ -141,7 +145,8 @@ class NoteBook(QWidget):
             Defaults to False.
         default_scenario : str, optional
             Specifies the default scenario to be loaded at startup. Possible values
-            might include 'powder', 'single crystal', etc. Defaults to 'powder'.
+            might include 'Powder Infrared', 'Crystal Infrared', 'Powder Raman', 'Crystal Raman'
+            defaults to 'Powder Infrared'
         ncpus : int, optional
             The number of CPUs to be used for multiprocessing. If set to 0, the
             application will try to use all physical cores available. Defaults to 0.
@@ -191,13 +196,13 @@ class NoteBook(QWidget):
         self.viewerTab = None
         self.fitterTab = None
         self.scenarios = None
-        self.availableTabs = { 
-                          "InfraredPowder" : InfraredPowderScenarioTab,
-                          "InfraredSingleCrystal" : InfraredSingleCrystalTab,
-                          "RamanPowder" : RamanPowderScenarioTab,
-                          "RamanSingleCrystal" : RamanSingleCrystalTab,
-                         }
-        self.currentScenarioTab = self.availableTabs[default_scenario]
+        self.scenarioTypes = {
+                              "Powder Infrared" : InfraredPowderScenarioTab,
+                              "Crystal Infrared" : InfraredSingleCrystalScenarioTab,
+                              "Powder Raman" : RamanPowderScenarioTab,
+                              "Crystal Raman" : RamanSingleCrystalScenarioTab
+                              }
+        self.currentScenarioTab = self.scenarioTypes[default_scenario]
         #
         # Initialize tab screen
         #
@@ -313,7 +318,7 @@ class NoteBook(QWidget):
         Parameters
         ----------
         scenarioType : string
-             scenarioType can be one of 'Powder' or 'SingleCrystal'
+             scenarioType can be one of 'Powder Infrared', 'Crystal Infrared', 'Powder Raman' or 'Crystal Raman'
         copyFromIndex : int
              if copyFromIndex is not -2 then use the index to determine the scenario type
              if copyFromIndex is -2 and the scenarioType has not been specified then just use the last scenario type there is
@@ -343,7 +348,7 @@ class NoteBook(QWidget):
                     last = scenario
             # end for
         # Create a new scenario
-        self.currentScenarioTab = self.availableTabs[default_scenario]
+        self.currentScenarioTab = self.scenarioTypes[default_scenario]
         # Add the scenario to the end of the list
         debugger.print("Appending the new scenario")
         self.scenarios.append(self.currentScenarioTab(self, self.debug))
@@ -537,9 +542,9 @@ class NoteBook(QWidget):
         index : int
             The index of the scenario to switch to.
         scenarioType : str, optional
-            The type of scenario to switch to. Can be 'Powder' or None. If None, the
-            scenario type is determined by the current scenario's type.
-            If the scenarioType is anything else a 'SingleCrystal' scenario is switched to.
+            The type of scenario to switch to. Can be: 
+              'Powder Infrared', 'Crystal Infrared', 'Powder Raman', or 'Crystal Raman' or None. 
+            If None, the scenario type is determined by the current scenario's type.
 
         Returns
         -------
@@ -552,14 +557,12 @@ class NoteBook(QWidget):
           provided.
         - The method updates the current scenario tab and refreshes the UI to reflect
           the new scenario.
-        - If `scenarioType` is 'Powder', switch to a Powder scenario tab. Otherwise,
-          switch to a Single Crystal scenario tab.
         - This function also updates all scenario tabs' names based on their index
           and requests a refresh of the currently selected scenario.
 
         See Also
         --------
-        InfraredSingleCrystalScenarioTab, InfraredPowderScenarioTab : Classes representing different types of scenario tabs.
+        InfraredSingleCrystalScenarioTab, InfraredPowderScenarioTab,
         RamanSingleCrystalScenarioTab, RamanPowderScenarioTab : Classes representing different types of scenario tabs.
 
         """        
@@ -572,9 +575,9 @@ class NoteBook(QWidget):
         # Otherwise switch type
         #
         if scenarioType is None:
-            self.currentScenarioTab = self.availableTabs[scenario.scenarioType]
+            self.currentScenarioTab = self.scenarioTypes[scenario.scenarioType]
         else:
-            self.currentScenarioTab = self.availableTabs[scenarioType]
+            self.currentScenarioTab = self.scenarioTypes[scenarioType]
         #end if
         self.scenarios[index] =  self.currentScenarioTab(self, self.debug)
         scenario = self.scenarios[index]

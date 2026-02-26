@@ -40,7 +40,7 @@ from PDielec.Utilities import Debug
 
 
 class RamanPowderScenarioTab(ScenarioTab):
-    """A class for managing the Powder Scenario Tab.
+    """A class for managing the Raman Powder Scenario Tab.
 
     It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
     with additional features and settings pertinent to powder scenarios.
@@ -204,8 +204,8 @@ class RamanPowderScenarioTab(ScenarioTab):
         global debugger
         debugger = Debug(debug,"RamanPowderScenarioTab:")
         debugger.print("Start:: initialiser")
-        self.scenarioType = "Powder"
-        self.settings["Scenario type"] = "Powder"
+        self.scenarioType = "Powder Raman"
+        self.settings["Scenario type"] = self.scenarioType
         self.noCalculationsRequired = 1
         self.settings["Matrix"] = "ptfe"
         self.settings["Matrix density"] = None
