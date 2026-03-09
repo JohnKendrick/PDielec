@@ -30,8 +30,8 @@ class ScenarioTab(QWidget):
 
     This class provides functionalities for managing and interacting with scenarios.
     It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
-    :class:`~PDielec.GUI.InfraredPowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.InfraredSingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
-    :class:`~PDielec.GUI.RamanPowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.RamanSingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
+    :class:`~PDielec.GUI.PowderInfraredScenarioTab`, :class:`~PDielec.GUI.CrystalInfraredScenarioTab`,
+    :class:`~PDielec.GUI.PowderRamanScenarioTab` and :class:`~PDielec.GUI.CrystalRamanScenarioTab` inherit from this class.
 
     Attributes
     ----------

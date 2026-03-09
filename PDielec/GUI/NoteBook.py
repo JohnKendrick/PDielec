@@ -26,10 +26,10 @@ from PDielec.GUI.AnalysisTab import AnalysisTab
 from PDielec.GUI.FitterTab import FitterTab
 from PDielec.GUI.MainTab import MainTab
 from PDielec.GUI.PlottingTab import PlottingTab
-from PDielec.GUI.InfraredPowderScenarioTab import InfraredPowderScenarioTab
-from PDielec.GUI.InfraredSingleCrystalScenarioTab import InfraredSingleCrystalScenarioTab
-from PDielec.GUI.RamanPowderScenarioTab import RamanPowderScenarioTab
-from PDielec.GUI.RamanSingleCrystalScenarioTab import RamanSingleCrystalScenarioTab
+from PDielec.GUI.PowderInfraredScenarioTab import PowderInfraredScenarioTab
+from PDielec.GUI.CrystalInfraredScenarioTab import CrystalInfraredScenarioTab
+from PDielec.GUI.PowderRamanScenarioTab import PowderRamanScenarioTab
+from PDielec.GUI.CrystalRamanScenarioTab import CrystalRamanScenarioTab
 from PDielec.GUI.SettingsTab import SettingsTab
 from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
 from PDielec.GUI.ViewerTab import ViewerTab
@@ -197,10 +197,10 @@ class NoteBook(QWidget):
         self.fitterTab = None
         self.scenarios = None
         self.scenarioTypes = {
-                              "Powder Infrared" : InfraredPowderScenarioTab,
-                              "Crystal Infrared" : InfraredSingleCrystalScenarioTab,
-                              "Powder Raman" : RamanPowderScenarioTab,
-                              "Crystal Raman" : RamanSingleCrystalScenarioTab
+                              "Powder Infrared" : PowderInfraredScenarioTab,
+                              "Crystal Infrared" : CrystalInfraredScenarioTab,
+                              "Powder Raman" : PowderRamanScenarioTab,
+                              "Crystal Raman" : CrystalRamanScenarioTab
                               }
         self.currentScenarioTab = self.scenarioTypes[default_scenario]
         #
@@ -562,8 +562,8 @@ class NoteBook(QWidget):
 
         See Also
         --------
-        InfraredSingleCrystalScenarioTab, InfraredPowderScenarioTab,
-        RamanSingleCrystalScenarioTab, RamanPowderScenarioTab : Classes representing different types of scenario tabs.
+        CrystalInfraredScenarioTab, PowderInfraredScenarioTab,
+        CrystalRamanScenarioTab, PowderRamanScenarioTab : Classes representing different types of scenario tabs.
 
         """        
         debugger.print("Start:: switch for scenario", index+1)

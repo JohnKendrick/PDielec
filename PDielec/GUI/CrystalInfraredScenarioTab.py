@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""InfraredSingleCrystalScenarioTab module."""
+"""CrystalInfraredScenarioTab module."""
 import copy
 from functools import partial
 from itertools import product
@@ -136,7 +136,7 @@ def solve_single_crystal_equations(
     errors,largest_exponent = system.overflowErrors()
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
-class InfraredSingleCrystalScenarioTab(ScenarioTab):
+class CrystalInfraredScenarioTab(ScenarioTab):
     """A tab class for handling a crystal infrared  scenario.
 
     This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling crystal infrared scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
@@ -331,7 +331,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         global debugger
-        debugger = Debug(debug,"InfraredSingleCrystalScenarioTab:")
+        debugger = Debug(debug,"CrystalInfraredScenarioTab:")
         debugger.print("Start:: initialiser")
         self.refreshRequired = True
         self.calculationRequired = True
@@ -387,7 +387,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         # Create the layers - superstrate / dielectric / substrate from the defaults layer settings
         if self.reader is not None:
             self.settings2Layers()
-        # Create last tab - SingleCrystalTab
+        # Create last tab - CrystalInfraredScenarioTab
         vbox = QVBoxLayout()
         self.form = QFormLayout()
         #
@@ -455,7 +455,7 @@ class InfraredSingleCrystalScenarioTab(ScenarioTab):
         self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
         self.legend_le.setText(self.settings["Legend"])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel("Scenario legend")
+        label = QLabel("Crystal IR Scenario legend")
         label.setToolTip("The legend will be used to describe the results in the plot")
         self.form.addRow(label, self.legend_le)
         #

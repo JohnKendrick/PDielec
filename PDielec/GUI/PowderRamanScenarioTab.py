@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""RamanPowderScenarioTab module."""
+"""PowderRamanScenarioTab module."""
 import ctypes
 import sys
 from functools import partial
@@ -39,7 +39,7 @@ from PDielec.Materials import MaterialsDataBase
 from PDielec.Utilities import Debug
 
 
-class RamanPowderScenarioTab(ScenarioTab):
+class PowderRamanScenarioTab(ScenarioTab):
     """A class for managing the Raman Powder Scenario Tab.
 
     It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
@@ -55,7 +55,7 @@ class RamanPowderScenarioTab(ScenarioTab):
     Attributes
     ----------
     scenarioType : str
-        Defines the type of scenario as 'Powder'.
+        Defines the type of scenario as 'Raman Powder'.
     settings : dict
         Dictionary holding various settings related to the scenario.
     methods : list
@@ -86,8 +86,6 @@ class RamanPowderScenarioTab(ScenarioTab):
         List to hold absorption coefficient values.
     molarAbsorptionCoefficient : list
         List to hold molar absorption coefficient values.
-    sp_atr : list
-        List to hold ATR specific calculation results.
 
     Methods
     -------
@@ -133,12 +131,6 @@ class RamanPowderScenarioTab(ScenarioTab):
         Handle changes to the imaginary part of the support matrix permittivity.
     on_permittivity_r_sb_changed(value)
         Handle changes to the real part of the support matrix permittivity.
-    on_atr_index_sb_changed(value)
-        Handle changes to the ATR material refractive index spinbox.
-    on_atr_incident_ang_sb_changed(value)
-        Handle changes to the ATR incident angle spinbox.
-    on_atr_spolfrac_sb_changed(value)
-        Handle changes to the ATR s-polarisation fraction spinbox.
     change_greyed_out()
         Enable or disable elements of the GUI based on the current scenario settings.
     calculate(vs_cm1)
@@ -153,7 +145,7 @@ class RamanPowderScenarioTab(ScenarioTab):
     """
 
     def __init__(self, parent, debug=False):
-        """Initialize the ScenarioTab subclass for Powder Scenario with UI and connectivity.
+        """Initialize the ScenarioTab subclass for Powder Raman Scenario with UI and connectivity.
 
         Parameters
         ----------
@@ -165,7 +157,7 @@ class RamanPowderScenarioTab(ScenarioTab):
         Attributes
         ----------
         scenarioType : str
-            Defines the type of scenario as 'Powder'.
+            Defines the type of scenario as 'Powder Raman'.
         settings : dict
             Dictionary holding various settings related to the scenario.
         methods : list
@@ -196,13 +188,11 @@ class RamanPowderScenarioTab(ScenarioTab):
             List to hold absorption coefficient values.
         molarAbsorptionCoefficient : list
             List to hold molar absorption coefficient values.
-        sp_atr : list
-            List to hold ATR specific calculation results.
 
         """        
         ScenarioTab.__init__(self,parent)
         global debugger
-        debugger = Debug(debug,"RamanPowderScenarioTab:")
+        debugger = Debug(debug,"PowderRamanScenarioTab:")
         debugger.print("Start:: initialiser")
         self.scenarioType = "Powder Raman"
         self.settings["Scenario type"] = self.scenarioType
@@ -221,9 +211,6 @@ class RamanPowderScenarioTab(ScenarioTab):
         self.settings["Unique direction - k"] = 0
         self.settings["Unique direction - l"] = 1
         self.settings["Mass or volume fraction"] = "volume"
-        self.settings["ATR material refractive index"] = 4.0
-        self.settings["ATR theta"] = 45.0
-        self.settings["ATR S polarisation fraction"] = 0.5
         self.settings["Effective medium method"] = "Maxwell-Garnett"
         self.settings["Particle shape"] = "Sphere"
         self.methods = ["Maxwell-Garnett", "Bruggeman", "Averaged Permittivity", "Mie"]
@@ -240,7 +227,6 @@ class RamanPowderScenarioTab(ScenarioTab):
         self.imagPermittivity = []
         self.absorptionCoefficient = []
         self.molarAbsorptionCoefficient = []
-        self.sp_atr = []
         # Create a scenario tab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -471,48 +457,13 @@ class RamanPowderScenarioTab(ScenarioTab):
         label.setToolTip("Define the ellipsoid a/b ratio or eccentricity.  \nOnly applicable for the ellipsoid shapes \na/b < 1: oblate ellipsoid \na/b > 1: prolate ellipsoid")
         form.addRow(label, self.aoverb_sb)
         #
-        # Add ATR options
-        # Refractive Index
-        self.atr_index_sb = QDoubleSpinBox(self)
-        self.atr_index_sb.setRange(0.001, 100.0)
-        self.atr_index_sb.setSingleStep(0.01)
-        self.atr_index_sb.setDecimals(3)
-        self.atr_index_sb.setToolTip("Define the ATR material refractive index")
-        self.atr_index_sb.setValue(self.settings["ATR material refractive index"])
-        self.atr_index_sb.valueChanged.connect(self.on_atr_index_sb_changed)
-        label = QLabel("ATR material refractive index", self)
-        label.setToolTip("Define the ATR material refractive index")
-        form.addRow(label, self.atr_index_sb)
-        # Incident angle in degreees
-        self.atr_incident_ang_sb = QDoubleSpinBox(self)
-        self.atr_incident_ang_sb.setRange(0.0, 180.0)
-        self.atr_incident_ang_sb.setSingleStep(0.1)
-        self.atr_incident_ang_sb.setDecimals(1)
-        self.atr_incident_ang_sb.setToolTip("Define the ATR incident angle")
-        self.atr_incident_ang_sb.setValue(self.settings["ATR theta"])
-        self.atr_incident_ang_sb.valueChanged.connect(self.on_atr_incident_ang_sb_changed)
-        label = QLabel("ATR incident angle", self)
-        label.setToolTip("Define the ATR incident angle")
-        form.addRow(label, self.atr_incident_ang_sb)
-        # S polarisation fraction
-        self.atr_spolfrac_sb = QDoubleSpinBox(self)
-        self.atr_spolfrac_sb.setRange(0.0, 1.0)
-        self.atr_spolfrac_sb.setSingleStep(0.01)
-        self.atr_spolfrac_sb.setDecimals(3)
-        self.atr_spolfrac_sb.setToolTip("Define the ATR S polarisation fraction, the rest is P polarisation")
-        self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
-        self.atr_spolfrac_sb.valueChanged.connect(self.on_atr_spolfrac_sb_changed)
-        label = QLabel("ATR S polarisation fraction", self)
-        label.setToolTip("Define the S polarisation fraction, the rest is P polarisation")
-        form.addRow(label, self.atr_spolfrac_sb)
-        #
         # Add a legend option
         #
         self.legend_le = QLineEdit(self)
         self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
         self.legend_le.setText(self.settings["Legend"])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel("Powder scenario legend",self)
+        label = QLabel("Powder Raman scenario legend",self)
         label.setToolTip("The legend will be used to describe the results in the plotting tab")
         form.addRow(label, self.legend_le)
 
@@ -1014,72 +965,6 @@ class RamanPowderScenarioTab(ScenarioTab):
         self.refreshRequired = True
         return
 
-    def on_atr_index_sb_changed(self,value):
-        """Handle the change in settings for ATR material refractive index.
-
-        Parameters
-        ----------
-        value : float
-            The new value for the ATR material refractive index.
-
-        Returns
-        -------
-        int
-
-        Notes
-        -----
-        - This function updates the 'ATR material refractive index' in the settings dictionary.
-        - Marks the instance as requiring a refresh, possibly to update some UI elements or calculations.
-
-        """        
-        self.settings["ATR material refractive index"] = value
-        debugger.print(self.settings["Legend"],"on atr index line edit changed", value)
-        self.refreshRequired = True
-        return
-
-    def on_atr_incident_ang_sb_changed(self,value):
-        """Handle the update to the ATR incident angle situation.
-
-        This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.
-
-        Parameters
-        ----------
-        value : float or int
-            The new value for the ATR incident angle.
-
-        Returns
-        -------
-        int
-
-        """        
-        self.settings["ATR theta"] = value
-        debugger.print(self.settings["Legend"],"on atr incident angle line edit changed", value)
-        self.refreshRequired = True
-        return
-
-    def on_atr_spolfrac_sb_changed(self,value):
-        """Update the ATR S polarisation fraction setting and request a refresh as required.
-
-        Parameters
-        ----------
-        value : float
-            The new value for the ATR S polarisation fraction. 
-
-        Returns
-        -------
-        int
-
-        Notes
-        -----
-        - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S polarisation fraction'.
-        - The refresh flag `self.refreshRequired` is set to `True` to indicate that some action is needed to reflect the change in the application.
-
-        """        
-        self.settings["ATR S polarisation fraction"] = value
-        debugger.print(self.settings["Legend"],"on atr spolfraction line edit changed", value)
-        self.refreshRequired = True
-        return
-
     def change_greyed_out(self):
         # Have a look through the settings and see if we need to grey anything out
         """Modify UI elements based on the selected effective medium method.
@@ -1231,14 +1116,11 @@ class RamanPowderScenarioTab(ScenarioTab):
         particle_size_mu = self.settings["Particle size(mu)"]
         particle_sigma_mu = self.settings["Particle size distribution sigma(mu)"]
         shape = self.settings["Particle shape"].lower()
-        atr_refractive_index = self.settings["ATR material refractive index"]
-        atr_theta = self.settings["ATR theta"]
-        atr_spolfraction = self.settings["ATR S polarisation fraction"]
         bubble_vf = self.settings["Bubble volume fraction"]
         bubble_radius = self.settings["Bubble radius"]
         # Use the pool of processors already available
         # define a partial function to use with the pool
-        partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,self.matrixPermittivityFunction,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared)
+        partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,self.matrixPermittivityFunction,shape,self.depolarisation,concentration,bubble_vf,bubble_radius,previous_solution_shared)
         if self.notebook.pool is None:
             self.notebook.startPool()
         debugger.print("About to use the pool to calculate effective medium equations")
@@ -1251,15 +1133,13 @@ class RamanPowderScenarioTab(ScenarioTab):
         self.imagPermittivity = []
         self.absorptionCoefficient = []
         self.molarAbsorptionCoefficient = []
-        self.sp_atr = []
         self.vs_cm1 = []
         debugger.print("Extracting results")
-        for v,_method,_size_mu,_size_sigma,_shape,_data,trace,absorption_coefficient,molar_absorption_coefficient,spatr in results:
+        for v,_method,_size_mu,_size_sigma,_shape,_data,trace,absorption_coefficient,molar_absorption_coefficient, in results:
              self.realPermittivity.append(np.real(trace))
              self.imagPermittivity.append(np.imag(trace))
              self.absorptionCoefficient.append(absorption_coefficient)
              self.molarAbsorptionCoefficient.append(molar_absorption_coefficient)
-             self.sp_atr.append(spatr)
              self.vs_cm1.append(v)
         self.calculationRequired = False
         QCoreApplication.processEvents()
@@ -1290,7 +1170,6 @@ class RamanPowderScenarioTab(ScenarioTab):
                  "Powder Absorption"            : self.absorptionCoefficient,
                  "Powder Real Permittivity"     : self.realPermittivity,
                  "Powder Imaginary Permittivity": self.imagPermittivity,
-                 "Powder ATR"                   : self.sp_atr 
                 }.get(plot_type)
 
 
@@ -1406,9 +1285,6 @@ class RamanPowderScenarioTab(ScenarioTab):
         self.aoverb_sb.setValue(self.settings["Ellipsoid a/b"])
         self.legend_le.setText(self.settings["Legend"])
         self.aoverb = self.settings["Ellipsoid a/b"]
-        self.atr_index_sb.setValue(self.settings["ATR material refractive index"])
-        self.atr_incident_ang_sb.setValue(self.settings["ATR theta"])
-        self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
         self.change_greyed_out()
         #
         # Unblock signals after refresh

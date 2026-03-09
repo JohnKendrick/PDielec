@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""InfraredPowderScenarioTab module."""
+"""PowderInfraredScenarioTab module."""
 import ctypes
 import sys
 from functools import partial
@@ -39,8 +39,8 @@ from PDielec.Materials import MaterialsDataBase
 from PDielec.Utilities import Debug
 
 
-class InfraredPowderScenarioTab(ScenarioTab):
-    """A class for managing the Infrared Powder Scenario Tab.
+class PowderInfraredScenarioTab(ScenarioTab):
+    """A class for managing the Powder Infrared Scenario Tab.
 
     It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
     with additional features and settings pertinent to powder infrared scenarios.
@@ -153,7 +153,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
     """
 
     def __init__(self, parent, debug=False):
-        """Initialize the ScenarioTab subclass for Infrared Powder Scenario with UI and connectivity.
+        """Initialize the ScenarioTab subclass for Powder Infrared Scenario with UI and connectivity.
 
         Parameters
         ----------
@@ -202,7 +202,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         global debugger
-        debugger = Debug(debug,"InfraredPowderScenarioTab:")
+        debugger = Debug(debug,"PowderInfraredScenarioTab:")
         debugger.print("Start:: initialiser")
         self.scenarioType = "Powder Infrared"
         self.settings["Scenario type"] = self.scenarioType
@@ -512,7 +512,7 @@ class InfraredPowderScenarioTab(ScenarioTab):
         self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
         self.legend_le.setText(self.settings["Legend"])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel("Scenario legend",self)
+        label = QLabel("Powder IR Scenario legend",self)
         label.setToolTip("The legend will be used to describe the results in the plotting tab")
         form.addRow(label, self.legend_le)
 

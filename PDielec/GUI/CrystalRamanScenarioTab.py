@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""RamanSingleCrystalScenarioTab module."""
+"""CrystalRamanScenarioTab module."""
 import copy
 from functools import partial
 from itertools import product
@@ -136,10 +136,10 @@ def solve_single_crystal_equations(
     errors,largest_exponent = system.overflowErrors()
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
-class RamanSingleCrystalScenarioTab(ScenarioTab):
-    """A tab class for handling a single crystal scenario.
+class CrystalRamanScenarioTab(ScenarioTab):
+    """A tab class for handling a Crystal Raman scenario.
 
-    This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
+    This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling Crystal Raman scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
 
     Parameters
     ----------
@@ -155,7 +155,7 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
     calculationRequired : bool
         Flag indicating whether a new calculation is required based on changes in parameters or settings.
     scenarioType : str
-        A string representing the type of scenario. For this class, it is set to 'Single crystal'.
+        A string representing the type of scenario. For this class, it is set to 'Crystal Raman'.
     refreshRequired : bool
         Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or recalculated.
     noCalculationsRequired : int
@@ -173,7 +173,7 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
 
     Methods
     -------
-    There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the single crystal scenario.
+    There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the Crystal Raman scenario.
 
     angleOfIncidenceWidget
         Create a widget to set the angle of incidence
@@ -273,11 +273,11 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
     """
 
     def __init__(self, parent, debug=False ):
-        """Initialize the Single Crystal Scenario Tab.
+        """Initialize the Crystal Raman Scenario Tab.
 
         This initializer sets up the GUI components, populates settings with default values, 
         and prepares the tab for interaction. It inherits from a parent scenario, initializes
-        a debug mode if required, and sets various default parameters for the single crystal 
+        a debug mode if required, and sets various default parameters for the Crystal Raman 
         scenario, including layer information and calculation modes.
 
         Parameters
@@ -296,7 +296,7 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
         calculationRequired : bool
             Indicates if a new calculation is required based on changed parameters.
         scenarioType : str
-            The type of scenario, hardcoded as 'Single crystal'.
+            The type of scenario, hardcoded as 'Crystal Raman'.
         noCalculationsRequired : int
             Number of calculations required, initialized to 1.
         settings : dict
@@ -331,7 +331,7 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         global debugger
-        debugger = Debug(debug,"RamanSingleCrystalScenarioTab:")
+        debugger = Debug(debug,"CrystalRamanScenarioTab:")
         debugger.print("Start:: initialiser")
         self.refreshRequired = True
         self.calculationRequired = True
@@ -387,7 +387,7 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
         # Create the layers - superstrate / dielectric / substrate from the defaults layer settings
         if self.reader is not None:
             self.settings2Layers()
-        # Create last tab - SingleCrystalTab
+        # Create last tab - Crystal Raman
         vbox = QVBoxLayout()
         self.form = QFormLayout()
         #
@@ -1345,7 +1345,7 @@ class RamanSingleCrystalScenarioTab(ScenarioTab):
     def globalAzimuthalWidget(self):
         """Create a global azimuthal angle widget.
 
-        This widget is shown in the main single crystal scenario tab.
+        This widget is shown in the main Crystal Raman scenario tab.
         Any change in this angle affects all layers.
 
         Parameters
