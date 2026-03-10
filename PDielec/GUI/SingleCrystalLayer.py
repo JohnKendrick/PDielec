@@ -745,9 +745,8 @@ class ShowLayerWindow(QDialog):
 
         """        
         super().__init__(parent)
-        global debugger
-        debugger = Debug(debug,"ShowLayerWindow")
-        debugger.print("Start:: initialiser")
+        self.debugger = Debug(debug,"ShowLayerWindow")
+        self.debugger.print("Start:: initialiser")
         # Set up the buttons of the button box
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
         self.buttonBox = QDialogButtonBox(QBtn)
@@ -764,7 +763,7 @@ class ShowLayerWindow(QDialog):
         self.layout.addWidget(layerWidget)
         # Add the button box
         self.layout.addWidget(self.buttonBox)
-        debugger.print("Finished:: initialiser")
+        self.debugger.print("Finished:: initialiser")
 
     def getLayer(self):
         """Return the edited layer.
@@ -792,7 +791,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        debugger.print("drawLayerWidget")
+        self.debugger.print("drawLayerWidget")
         widget = QWidget()
         form = QFormLayout()
         label = QLabel("Layer type:")
@@ -826,7 +825,7 @@ class ShowLayerWindow(QDialog):
 
         """
         hbox = QHBoxLayout()
-        debugger.print("drawLayerWidgetLine1")
+        self.debugger.print("drawLayerWidgetLine1")
         # Define material thickness
         materialThickness = self.layer.getThickness()
         # Handle thickness
@@ -867,7 +866,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        debugger.print("drawLayerWidgetLine2")
+        self.debugger.print("drawLayerWidgetLine2")
         hbox = QHBoxLayout()
         # define hkl
         h_sb = QSpinBox(self)
@@ -921,7 +920,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        debugger.print("drawLayerWidgetLine3")
+        self.debugger.print("drawLayerWidgetLine3")
         hbox = QHBoxLayout()
         label = QLabel("Lab frame\ninformation", self)
         label.setToolTip("The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y")
@@ -968,7 +967,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        debugger.print("on_film_thickness_sb_changed", value)
+        self.debugger.print("on_film_thickness_sb_changed", value)
         self.layer.setThickness(value)
         return
 
@@ -985,7 +984,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        debugger.print("on_azimuthal_angl_sb_changed", value)
+        self.debugger.print("on_azimuthal_angl_sb_changed", value)
         self.layer.setAzimuthal(value)
         self.layer.changeLabFrameInfo()
         self.changeLabFrameInfo()
@@ -1006,7 +1005,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        debugger.print("on_h_sb_changed", value)
+        self.debugger.print("on_h_sb_changed", value)
         hkl = self.layer.getHKL()
         hkl[hkorl] = value
         self.layer.setHKL(hkl)
@@ -1028,7 +1027,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """        
-        debugger.print("Start:: on_thickness_units_cb_activated",index)
+        self.debugger.print("Start:: on_thickness_units_cb_activated",index)
         units = ["nm","um","mm","cm"]
         unit = units[index]
         self.layer.setThicknessUnit(unit)

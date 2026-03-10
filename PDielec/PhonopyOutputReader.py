@@ -121,7 +121,7 @@ class PhonopyOutputReader(GenericOutputReader):
         import yaml
         try:
             from yaml import CLoader as Loader
-        except Exception:
+        except ImportError:
             print("WARNING: Yaml CLoader is not avaiable, using fallback",file=sys.stderr)
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
@@ -135,7 +135,7 @@ class PhonopyOutputReader(GenericOutputReader):
         #
         try:
             conversion_factor_to_THz = data_p["phonopy"]["frequency_unit_conversion_factor"]
-        except Exception:
+        except KeyError:
             conversion_factor_to_THz = 15.633302
         conversion_factor_to_cm1 = conversion_factor_to_THz * thz2cm1
         #

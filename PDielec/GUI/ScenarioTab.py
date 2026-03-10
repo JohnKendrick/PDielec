@@ -117,9 +117,8 @@ class ScenarioTab(QWidget):
 
         """
         super(QWidget, self).__init__(parent)
-        global debugger
-        debugger = Debug(debug,"ScenarioTab:")
-        debugger.print("Start:: initialiser")
+        self.debugger = Debug(debug,"ScenarioTab:")
+        self.debugger.print("Start:: initialiser")
         self.refreshRequired = True
         self.noCalculationsRequired = 0
         self.settings = {}
@@ -149,7 +148,7 @@ class ScenarioTab(QWidget):
         self.database_le.setReadOnly(True)
         self.database_le_label = QLabel("Current materials' database")
         self.database_le_label.setToolTip("Provides information about the name of the materials' database")
-        debugger.print("Finished:: initialiser")
+        self.debugger.print("Finished:: initialiser")
 
     def openDataBase(self):
         """Open the database and set the material names.
@@ -169,7 +168,7 @@ class ScenarioTab(QWidget):
         if filename == "":
             return
         oldDataBase = self.DataBase
-        self.DataBase = MaterialsDataBase(filename,debug=debugger.state())
+        self.DataBase = MaterialsDataBase(filename,debug=self.debugger.state())
         sheets = self.DataBase.getSheetNames()
         if not self.DataBase.valid():
             self.DataBase = oldDataBase
@@ -194,7 +193,7 @@ class ScenarioTab(QWidget):
 
         """
         result = self.noCalculationsRequired if self.refreshRequired else 0
-        debugger.print(self.settings["Legend"], "getNoCalculationsRequired",result)
+        self.debugger.print(self.settings["Legend"], "getNoCalculationsRequired",result)
         return result
 
     def requestRefresh(self):
@@ -209,7 +208,7 @@ class ScenarioTab(QWidget):
         None
 
         """
-        debugger.print(self.settings["Legend"], "requestRefresh")
+        self.debugger.print(self.settings["Legend"], "requestRefresh")
         self.refreshRequired = True
         return
 
@@ -226,7 +225,7 @@ class ScenarioTab(QWidget):
         None
 
         """
-        debugger.print(self.settings["Legend"], "set_reader")
+        self.debugger.print(self.settings["Legend"], "set_reader")
         self.refreshRequired = True
         self.reader = reader
         return
@@ -244,11 +243,11 @@ class ScenarioTab(QWidget):
         None
 
         """
-        debugger.print(self.settings["Legend"], "setScenarioIndex",index)
+        self.debugger.print(self.settings["Legend"], "setScenarioIndex",index)
         self.scenarioIndex = index
         text = self.settings["Legend"]
         if text.startswith("Unset") or text.startswith("Scenario ") or text.startswith("Powder scenario ") or text.startswith("Crystal scenario "):
-            debugger.print(self.settings["Legend"], "setScenarioIndex changing scenario legend","Scenario "+str(index+1))
+            self.debugger.print(self.settings["Legend"], "setScenarioIndex changing scenario legend","Scenario "+str(index+1))
             self.legend_le.setText("Scenario "+str(index + 1))
             self.settings["Legend"] = "Scenario "+str(index + 1)
         return
@@ -265,7 +264,7 @@ class ScenarioTab(QWidget):
         None
 
         """
-        debugger.print(self.settings["Legend"], "print_settings")
+        self.debugger.print(self.settings["Legend"], "print_settings")
         print("#")
         print("# Scenario tab")
         print("#")
@@ -286,7 +285,7 @@ class ScenarioTab(QWidget):
         None
 
         """
-        debugger.print(self.settings["Legend"], "on_legend_le_changed",text)
+        self.debugger.print(self.settings["Legend"], "on_legend_le_changed",text)
         # self.refreshRequired = True
         self.settings["Legend"] = text
         return
@@ -304,7 +303,7 @@ class ScenarioTab(QWidget):
             The hbox containing the scenario buttons.
 
         """
-        debugger.print(self.settings["Legend"], "add_scenario_buttons start")
+        self.debugger.print(self.settings["Legend"], "add_scenario_buttons start")
         hbox = QHBoxLayout()
         self.addScenarioButton = QPushButton("Add another scenario")
         self.addScenarioButton.setToolTip("Add another scenario the the notebook tabs, \nthe new scenario is added to the end of the current tab list")
@@ -328,7 +327,7 @@ class ScenarioTab(QWidget):
         label.setAlignment(Qt.AlignBottom | Qt.AlignRight)
         hbox.addWidget(label)
         hbox.addWidget(self.switchScenarioCB)
-        debugger.print(self.settings["Legend"], "add_scenario_buttons finish")
+        self.debugger.print(self.settings["Legend"], "add_scenario_buttons finish")
         return hbox
 
     def addScenarioButtonClicked(self):
@@ -344,7 +343,7 @@ class ScenarioTab(QWidget):
 
         """
         # Add another scenario
-        debugger.print(self.settings["Legend"], "addScenarioButtonClicked")
+        self.debugger.print(self.settings["Legend"], "addScenarioButtonClicked")
         self.notebook.addScenario(copyFromIndex=self.scenarioIndex)
         return
 
@@ -360,7 +359,7 @@ class ScenarioTab(QWidget):
         None
 
         """
-        debugger.print(self.settings["Legend"], "deleteScenarioButtonClicked")
+        self.debugger.print(self.settings["Legend"], "deleteScenarioButtonClicked")
         self.notebook.deleteScenario(self.scenarioIndex)
         return
 
@@ -379,7 +378,7 @@ class ScenarioTab(QWidget):
         None
 
         """
-        debugger.print(self.settings["Legend"],"switchScenarioCBActivated", index)
+        self.debugger.print(self.settings["Legend"],"switchScenarioCBActivated", index)
         self.scenarioType = self.scenarioTypes[index]
         self.notebook.switchScenario(self.scenarioIndex, self.scenarioType)
         self.requestRefresh()

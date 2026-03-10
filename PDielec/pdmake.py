@@ -536,7 +536,7 @@ def compareFiles(file1,file2):
                             print("Line 1",line1)
                             print("Line 2",line2)
                         nerrors += 1
-                except Exception:
+                except ValueError:
                     if word1 != word2:
                         if debug:
                             print("Word difference",word1,word2)

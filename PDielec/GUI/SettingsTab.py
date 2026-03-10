@@ -226,9 +226,8 @@ class SettingsTab(QWidget):
 
         """        
         super(QWidget, self).__init__(parent)
-        global debugger
-        debugger = Debug(debug, "SettingsTab:")
-        debugger.print("Start:: initialisation")
+        self.debugger = Debug(debug, "SettingsTab:")
+        self.debugger.print("Start:: initialisation")
         self.notebook = parent
         self.refreshRequired = True
         self.calculationRequired = False
@@ -347,7 +346,7 @@ class SettingsTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: initialisation")
+        self.debugger.print("Finished:: initialisation")
 
     def setElementMass(self,element,mass):
         """Set the mass value of a specific element in the GUI.
@@ -371,7 +370,7 @@ class SettingsTab(QWidget):
         - It triggers a refresh of the GUI and potentially recalculates selected modes based on the new mass settings.
 
         """        
-        debugger.print("Start::  setElementMass",element,mass)
+        self.debugger.print("Start::  setElementMass",element,mass)
         self.settings["Mass definition"] = "gui"
         self.masses_dict[element] = mass
         self.mass_cb.setCurrentIndex(3)
@@ -379,7 +378,7 @@ class SettingsTab(QWidget):
         self.refreshRequired = True
         self.recalculate_selected_modes = True
         self.refresh()
-        debugger.print("Finished::  setElementMass",element,mass)
+        self.debugger.print("Finished::  setElementMass",element,mass)
 
     def createIntensityTable(self):
         """Generate the intensity table for spectroscopy analysis.
@@ -414,11 +413,11 @@ class SettingsTab(QWidget):
         - `Calculator.ionic_permittivity`: For calculating the ionic permittivity based on mode list, oscillator strengths, and frequencies.
 
         """        
-        debugger.print("Start:: createIntensityTable")
+        self.debugger.print("Start:: createIntensityTable")
         self.reader = self.notebook.reader
         # Only calculate if the reader is set
         if self.reader is None:
-            debugger.print("createIntensityTable aborting as now reader available")
+            self.debugger.print("createIntensityTable aborting as now reader available")
             return
         if self.settings["Neutral Born charges"]:
             self.reader.neutralise_born_charges()
@@ -458,7 +457,7 @@ class SettingsTab(QWidget):
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
         # Decide which modes to select
         if self.recalculate_selected_modes and len(self.intensities) > 0 and len(self.frequencies_cm1) > 0:
-            debugger.print("createIntensityTable: recalculating selected modes")
+            self.debugger.print("createIntensityTable: recalculating selected modes")
             self.modes_selected = []
             self.mode_list = []
             for f,intensity in zip(self.frequencies_cm1,self.intensities):
@@ -467,7 +466,7 @@ class SettingsTab(QWidget):
                 else:
                     self.modes_selected.append(False)
             self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
-            debugger.print("Selected modes are;",self.mode_list)
+            self.debugger.print("Selected modes are;",self.mode_list)
             self.recalculate_selected_modes = False
         # end if
         #
@@ -488,7 +487,7 @@ class SettingsTab(QWidget):
             drude_plasma_au = 0
             drude_sigma_au = 0
             sigmas_au = np.array(self.sigmas_cm1)*wavenumber
-            debugger.print("CreateIntensityTable: Calculating dielectric",self.mode_list)
+            self.debugger.print("CreateIntensityTable: Calculating dielectric",self.mode_list)
             self.CrystalPermittivityObject = DielectricFunction.DFT(
                                          self.mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
                                          volume_au, drude, drude_plasma_au, drude_sigma_au )
@@ -506,7 +505,7 @@ class SettingsTab(QWidget):
         # if self.notebook.spreadsheet is not None:
         #     self.writeSpreadsheet()
         QCoreApplication.processEvents()
-        debugger.print("Finished:: createIntensityTable")
+        self.debugger.print("Finished:: createIntensityTable")
         return
 
     def requestRefresh(self):
@@ -523,10 +522,10 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: requestRefresh")
+        self.debugger.print("Start:: requestRefresh")
         self.refreshRequired = True
         # self.refresh()
-        debugger.print("Finished:: requestRefresh")
+        self.debugger.print("Finished:: requestRefresh")
         return
 
     def writeSpreadsheet(self):
@@ -543,12 +542,12 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: writeSpreadsheet")
+        self.debugger.print("Start:: writeSpreadsheet")
         sp = self.notebook.spreadsheet
         if sp is None:
-            debugger.print("Finished:: writeSpreadsheet - Aborting write of spreadsheet")
+            self.debugger.print("Finished:: writeSpreadsheet - Aborting write of spreadsheet")
             return
-        debugger.print("Writing of spreadsheet")
+        self.debugger.print("Writing of spreadsheet")
         sp.selectWorkSheet("Settings")
         sp.delete()
         sp.writeNextRow(["Settings and calculations of frequencies and absorption"], row=0, col=1)
@@ -582,7 +581,7 @@ class SettingsTab(QWidget):
             if selected:
                 yn = "Yes"
             sp.writeNextRow([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi], col=1)
-        debugger.print("Finished:: writeSpreadsheet")
+        self.debugger.print("Finished:: writeSpreadsheet")
 
     def redraw_output_tw(self):
         """Redraws the output table widget with updated values.
@@ -609,7 +608,7 @@ class SettingsTab(QWidget):
         - Uses `Qt` enumeration for setting check state, item flags, and text alignment.
 
         """        
-        debugger.print("Start:: redraw_output_tw")
+        self.debugger.print("Start:: redraw_output_tw")
         # If the frequencies haven't been set yet just don't try to do anything
         self.output_tw.blockSignals(True)
         for i,(f,sigma,intensity) in enumerate(zip(self.frequencies_cm1, self.sigmas_cm1, self.intensities)):
@@ -650,7 +649,7 @@ class SettingsTab(QWidget):
         self.output_tw.resizeColumnsToContents()
         self.output_tw.blockSignals(False)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: redraw_output_tw")
+        self.debugger.print("Finished:: redraw_output_tw")
 
     def on_sigma_changed(self):
         """Update the sigma value in settings and apply it across the frequency range, then refreshes the output.
@@ -668,14 +667,14 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: redraw_output_tw")
+        self.debugger.print("Start:: redraw_output_tw")
         self.settings["Sigma value"] = self.sigma_sb.value()
         self.sigmas_cm1 = [ self.settings["Sigma value"] for i in self.frequencies_cm1 ]
         self.redraw_output_tw()
-        debugger.print("on sigma change ", self.settings["Sigma value"])
+        self.debugger.print("on sigma change ", self.settings["Sigma value"])
         self.refreshRequired = True
         self.refresh()
-        debugger.print("Finished:: on_sigma_changed")
+        self.debugger.print("Finished:: on_sigma_changed")
 
     def on_mass_cb_activated(self,index):
         """Handle activation of a combobox option in a mass-related setting.
@@ -706,7 +705,7 @@ class SettingsTab(QWidget):
         refresh : A method to refresh the UI components.
 
         """        
-        debugger.print("Start:: on_mass_combobox_activated", self.mass_cb.currentText())
+        self.debugger.print("Start:: on_mass_combobox_activated", self.mass_cb.currentText())
         self.settings["Mass definition"] = self.mass_definition_options[index]
         self.current_mass_definition_index = index
         if index < 3:
@@ -717,7 +716,7 @@ class SettingsTab(QWidget):
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
-        debugger.print("Finished:: on_mass_combobox_activated", self.mass_cb.currentText())
+        self.debugger.print("Finished:: on_mass_combobox_activated", self.mass_cb.currentText())
 
     def set_masses_tw(self):
         """Set the element masses in the table widget based on the mass_definition setting.
@@ -733,7 +732,7 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: set_masses_tw")
+        self.debugger.print("Start:: set_masses_tw")
         if self.reader:
             self.element_masses_tw.blockSignals(True)
             species = self.reader.getSpecies()
@@ -762,15 +761,15 @@ class SettingsTab(QWidget):
                     mass = self.masses_dictionary[element]
                     masses.append(mass)
             else:
-                 debugger.print("Error mass_definition not recognised", self.settings["Mass definition"])
+                 self.debugger.print("Error mass_definition not recognised", self.settings["Mass definition"])
             self.element_masses_tw.setColumnCount(len(masses))
             self.element_masses_tw.setHorizontalHeaderLabels(species)
             self.element_masses_tw.setVerticalHeaderLabels([""])
-            debugger.print("masses_dictionary",self.masses_dictionary)
-            debugger.print("masses",masses)
+            self.debugger.print("masses_dictionary",self.masses_dictionary)
+            self.debugger.print("masses",masses)
             # set masses of the elements in the table widget according to the mass definition
             for i,(mass,element) in enumerate(zip(masses,species)):
-                debugger.print("set_masses_tw", self.settings["Mass definition"],i,mass,element)
+                self.debugger.print("set_masses_tw", self.settings["Mass definition"],i,mass,element)
                 qw = QTableWidgetItem()
                 if self.settings["Mass definition"] == "program":
                     self.element_masses_tw.blockSignals(True)
@@ -781,26 +780,26 @@ class SettingsTab(QWidget):
                     self.element_masses_tw.blockSignals(True)
                     qw.setText(f"{average_masses[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
-                    debugger.print("average",average_masses[element])
+                    self.debugger.print("average",average_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings["Mass definition"] == "isotope":
                     self.element_masses_tw.blockSignals(True)
                     qw.setText(f"{isotope_masses[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
-                    debugger.print("isotope",isotope_masses[element])
+                    self.debugger.print("isotope",isotope_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings["Mass definition"] == "gui":
                     self.element_masses_tw.blockSignals(True)
                     qw.setText(f"{self.masses_dictionary[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
-                    debugger.print("gui",self.masses_dictionary[element])
+                    self.debugger.print("gui",self.masses_dictionary[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 else:
                     print("Mass definition not processed", self.settings["Mass definition"])
             # unblock the table signals
             self.element_masses_tw.blockSignals(False)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: set_masses_tw")
+        self.debugger.print("Finished:: set_masses_tw")
 
     def on_output_tw_itemChanged(self, item):
         """Handle item changes in the output table widget.
@@ -830,17 +829,17 @@ class SettingsTab(QWidget):
 
         """        
         self.output_tw.blockSignals(True)
-        debugger.print("Start:: on_output_tw_itemChanged", item.row(), item.column() )
+        self.debugger.print("Start:: on_output_tw_itemChanged", item.row(), item.column() )
         col = item.column()
         row = item.row()
         if col == 0:
             # If this is the first column alter the check status but reset the sigma value
             if item.checkState() == Qt.Checked:
-                debugger.print("on_output_tw_itemChanged setting selected mode to True",row )
+                self.debugger.print("on_output_tw_itemChanged setting selected mode to True",row )
                 self.modes_selected[row] = True
                 self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
             else:
-                debugger.print("on_output_tw_itemChanged setting selected mode to False",row )
+                self.debugger.print("on_output_tw_itemChanged setting selected mode to False",row )
                 self.modes_selected[row] = False
                 self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
             new_value = float(item.text())
@@ -858,11 +857,11 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         else:
             self.redraw_output_tw()
-        debugger.print("on_output_tw_itemChanged selected_modes",self.modes_selected )
+        self.debugger.print("on_output_tw_itemChanged selected_modes",self.modes_selected )
         self.refreshRequired = True
         self.refresh()
         QCoreApplication.processEvents()
-        debugger.print("Finished:: on_output_tw_itemChanged")
+        self.debugger.print("Finished:: on_output_tw_itemChanged")
 
     def on_element_masses_tw_itemClicked(self, item):
         """Handle the item clicked event on the element mass table widget.
@@ -879,9 +878,9 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: on_element_masses_tw_itemClicked)", item.row(),item.column() )
+        self.debugger.print("Start:: on_element_masses_tw_itemClicked)", item.row(),item.column() )
         self.element_masses_tw.blockSignals(False)
-        debugger.print("Finished:: on_element_masses_tw_itemClicked)" )
+        self.debugger.print("Finished:: on_element_masses_tw_itemClicked)" )
 
     def on_element_masses_tw_itemChanged(self, item):
         """Handle item changed event in the mass table widget.
@@ -905,18 +904,18 @@ class SettingsTab(QWidget):
         - `self.refresh()` is a method that refreshes or updates the UI components as needed based on the new changes.
 
         """        
-        debugger.print("Start:: on_element_masses_tw_itemChanged)", item.row(), item.column() )
+        self.debugger.print("Start:: on_element_masses_tw_itemChanged)", item.row(), item.column() )
         elements = self.reader.getSpecies()
         col = item.column()
         self.mass_cb.model().item(3).setEnabled(True)
         self.settings["Mass definition"] = "gui"
         self.mass_cb.setCurrentIndex(3)
         self.masses_dictionary[elements[col]] = float(item.text())
-        debugger.print("masses_dictionary", self.masses_dictionary)
+        self.debugger.print("masses_dictionary", self.masses_dictionary)
         self.refreshRequired = True
         self.recalculate_selected_modes = True
         self.refresh()
-        debugger.print("Finished:: on_element_masses_tw_itemChanged)" )
+        self.debugger.print("Finished:: on_element_masses_tw_itemChanged)" )
 
     def on_optical_tw_itemChanged(self, item):
         """Handle item change events for an optical permittivity table.
@@ -942,7 +941,7 @@ class SettingsTab(QWidget):
         - Processes any pending events with `QCoreApplication.processEvents()` to ensure the UI remains responsive.
 
         """        
-        debugger.print("Start::on_optical_itemChanged)", item.row(), item.column(), item.text() )
+        self.debugger.print("Start::on_optical_itemChanged)", item.row(), item.column(), item.text() )
         self.settings["Optical permittivity"][item.row()][item.column()] = float(item.text())
         self.settings["Optical permittivity"][item.column()][item.row()] = float(item.text())
         self.settings["Optical permittivity edited"] = True
@@ -951,7 +950,7 @@ class SettingsTab(QWidget):
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
-        debugger.print("Finished::on_optical_itemChanged)")
+        self.debugger.print("Finished::on_optical_itemChanged)")
         return
 
     def on_optical_tw_itemClicked(self, item):
@@ -973,10 +972,10 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: on_optical_itemClicked)", item.row(), item.column() )
+        self.debugger.print("Start:: on_optical_itemClicked)", item.row(), item.column() )
         self.optical_tw.blockSignals(False)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: on_optical_itemClicked)")
+        self.debugger.print("Finished:: on_optical_itemClicked)")
         return
 
     def refresh(self, force=False):
@@ -1003,11 +1002,11 @@ class SettingsTab(QWidget):
         - Processes all pending Qt events with `QCoreApplication.processEvents()`.
 
         """        
-        debugger.print("Start:: refresh", force )
+        self.debugger.print("Start:: refresh", force )
         if not self.reader and self.notebook.reader:
             self.refreshRequired = True
         if not self.refreshRequired and not force:
-            debugger.print("Finished:: refresh not required",force)
+            self.debugger.print("Finished:: refresh not required",force)
             return
         #
         # Block signals during refresh
@@ -1052,7 +1051,7 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
         self.refreshRequired = False
         self.calculationRequired = True
-        debugger.print("Finished:: refresh", force )
+        self.debugger.print("Finished:: refresh", force )
         return
 
     def refresh_optical_permittivity_tw(self):
@@ -1080,7 +1079,7 @@ class SettingsTab(QWidget):
             - The `QCoreApplication.processEvents()` call forces the application to process all pending events, ensuring the UI updates in real-time.
 
         """        
-        debugger.print("Start:: refresh_optical_permittivity")
+        self.debugger.print("Start:: refresh_optical_permittivity")
         optical = self.settings["Optical permittivity"]
         self.optical_tw.blockSignals(True)
         for i,row in enumerate(optical):
@@ -1090,7 +1089,7 @@ class SettingsTab(QWidget):
                 self.optical_tw.setItem(i,j,qw)
         self.optical_tw.blockSignals(False)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: refresh_optical_permittivity")
+        self.debugger.print("Finished:: refresh_optical_permittivity")
         return
 
     def set_optical_permittivity_tw(self):
@@ -1107,13 +1106,13 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: set_optical_permittivity_tw")
+        self.debugger.print("Start:: set_optical_permittivity_tw")
         self.settings["Optical permittivity"] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
         self.recalculate_selected_modes = True
         self.refreshRequired = True
         QCoreApplication.processEvents()
-        debugger.print("Finished:: set_optical_permittivity_tw")
+        self.debugger.print("Finished:: set_optical_permittivity_tw")
         return
 
     def on_born_changed(self):
@@ -1130,14 +1129,14 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: on_born_change ", self.born_cb.isChecked())
+        self.debugger.print("Start:: on_born_change ", self.born_cb.isChecked())
         self.settings["Neutral Born charges"] = self.born_cb.isChecked()
-        debugger.print("on born change ", self.settings["Neutral Born charges"])
+        self.debugger.print("on born change ", self.settings["Neutral Born charges"])
         self.refreshRequired = True
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
-        debugger.print("Finished:: on_born_change ", self.born_cb.isChecked())
+        self.debugger.print("Finished:: on_born_change ", self.born_cb.isChecked())
         return
 
     def on_eckart_changed(self):
@@ -1156,14 +1155,14 @@ class SettingsTab(QWidget):
         None
 
         """        
-        debugger.print("Start:: on_eckart_change ", self.eckart_cb.isChecked())
+        self.debugger.print("Start:: on_eckart_change ", self.eckart_cb.isChecked())
         self.settings["Eckart flag"] = self.eckart_cb.isChecked()
-        debugger.print("on eckart change ", self.settings["Eckart flag"])
+        self.debugger.print("on eckart change ", self.settings["Eckart flag"])
         self.refreshRequired = True
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
-        debugger.print("Finished:: on_eckart_change ", self.eckart_cb.isChecked())
+        self.debugger.print("Finished:: on_eckart_change ", self.eckart_cb.isChecked())
         return
 
     def calculate(self,vs_cm1):
@@ -1179,14 +1178,14 @@ class SettingsTab(QWidget):
         None
 
         """
-        debugger.print("Start:: calculate ")
+        self.debugger.print("Start:: calculate ")
         if len(vs_cm1) == 0:
-            debugger.print("Finished:: calculate aborted vs_cm1 has not been set")
+            self.debugger.print("Finished:: calculate aborted vs_cm1 has not been set")
             return
         self.vs_cm1 = vs_cm1.copy()
         dielectricFunction = self.CrystalPermittivityObject.function()
         self.crystal_permittivity = []
-        debugger.print("About to calculate settings crystal dielectric using pool")
+        self.debugger.print("About to calculate settings crystal dielectric using pool")
         # Loop over the frequencies and calculate the crystal dielectric for each frequency
         if self.notebook.pool is None:
             self.notebook.startPool()
@@ -1195,7 +1194,7 @@ class SettingsTab(QWidget):
             self.notebook.progressbars_update()
         QCoreApplication.processEvents()
         self.calculationRequired = False
-        debugger.print("Finished:: calculate ")
+        self.debugger.print("Finished:: calculate ")
         return
 
     def getCrystalPermittivity(self,vs_cm1):
@@ -1212,12 +1211,12 @@ class SettingsTab(QWidget):
             The crystal permittivity (a 3x3 tensor) at each frequency
 
         """
-        debugger.print("Start:: get_crystal_permittivity", self.refreshRequired)
+        self.debugger.print("Start:: get_crystal_permittivity", self.refreshRequired)
         if self.calculationRequired or self.refreshRequired or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
-            debugger.print("get_crystal_permittivity refreshing and recalculating" )
+            self.debugger.print("get_crystal_permittivity refreshing and recalculating" )
             self.refresh()
             self.calculate(vs_cm1)
-        debugger.print("Finished:: get_crystal_permittivity", self.refreshRequired)
+        self.debugger.print("Finished:: get_crystal_permittivity", self.refreshRequired)
         return self.crystal_permittivity
 
 
@@ -1234,11 +1233,11 @@ class SettingsTab(QWidget):
             An instance of dielectric function
 
         """
-        debugger.print("Start:: getCrystalPermittivityObject", self.refreshRequired)
+        self.debugger.print("Start:: getCrystalPermittivityObject", self.refreshRequired)
         if self.calculationRequired or self.refreshRequired:
-            debugger.print("getCrystalPermittivityObject refreshing and recalculating" )
+            self.debugger.print("getCrystalPermittivityObject refreshing and recalculating" )
             self.refresh()
             self.calculate(self.vs_cm1)
-        debugger.print("Finished:: getCrystalPermittivityObject", self.refreshRequired)
+        self.debugger.print("Finished:: getCrystalPermittivityObject", self.refreshRequired)
         return self.CrystalPermittivityObject
 

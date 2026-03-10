@@ -111,14 +111,13 @@ class MaterialsDataBase:
             Set to true for additional debugging information
 
         """
-        global debugger
-        debugger = Debug(debug,"MaterialsDataBase")
-        debugger.print("Start:: initialise")
+        self.debugger = Debug(debug,"MaterialsDataBase")
+        self.debugger.print("Start:: initialise")
         if len(filename)> 5 and (filename.endswith("xlsx") or filename.endswith("XLSX")) and os.path.isfile(filename):
             self.filename = os.path.relpath(filename)
             self.workbook = xl.load_workbook(self.filename,data_only=True)
             self.sheetNames = self.workbook.sheetnames
-            debugger.print("Sheet names:: ",self.sheetNames)
+            self.debugger.print("Sheet names:: ",self.sheetNames)
             # Close the work book while it is not in use
             # workbook.close()
         else:
@@ -130,7 +129,7 @@ class MaterialsDataBase:
                 self.filename = filename
                 self.workbook = xl.load_workbook(self.filename,data_only=True)
                 self.sheetNames = self.workbook.sheetnames
-                debugger.print("Sheet names from default database ",self.sheetNames)
+                self.debugger.print("Sheet names from default database ",self.sheetNames)
                 # Close the work book while it is not in use
                 # workbook.close()
             else:
@@ -138,7 +137,7 @@ class MaterialsDataBase:
                 self.sheetNames = None
                 print("  Error: MaterialsDataBase filename not valid",filename)
         self.cache = {}
-        debugger.print("Finished:: initialise")
+        self.debugger.print("Finished:: initialise")
         return
 
     def getFileName(self):
@@ -214,7 +213,7 @@ class MaterialsDataBase:
             fullList.append("kbr")
         if "nujol" not in fullList:
             fullList.append("nujol")
-        debugger.print("getSheetNames:: ",fullList)
+        self.debugger.print("getSheetNames:: ",fullList)
         return sorted(fullList, key=lambda s: s.casefold())
 
     def getMaterial(self,sheet):
@@ -234,10 +233,10 @@ class MaterialsDataBase:
             The material object created from the excel sheet data.
 
         """
-        debugger.print("getMaterial:: ",sheet)
+        self.debugger.print("getMaterial:: ",sheet)
         # Lets see if the material is in the cache
         if sheet in self.cache:
-            debugger.print("getMaterial:: using the cache")
+            self.debugger.print("getMaterial:: using the cache")
             return self.cache[sheet]
         # Define a set of back-up materials that the program can use even if the sheet name is not in the spreadsheet
         if self.sheetNames is None or sheet not in self.sheetNames:
@@ -342,7 +341,7 @@ class MaterialsDataBase:
         k = float(worksheet["D2"].value)
         nk = complex(n, k)
         permittivity = Calculator.calculate_permittivity(nk)
-        debugger.print("Constant refractive:: ",nk,permittivity,density)
+        self.debugger.print("Constant refractive:: ",nk,permittivity,density)
         return Constant(sheet,permittivity=permittivity,density=density)
 
     def readConstantPermittivity(self,sheet,worksheet,density):
@@ -366,7 +365,7 @@ class MaterialsDataBase:
         eps_r = float(worksheet["C2"].value)
         eps_i = float(worksheet["D2"].value)
         permittivity = complex(eps_r, eps_i)
-        debugger.print("Constant permittivity:: ",permittivity,density)
+        self.debugger.print("Constant permittivity:: ",permittivity,density)
         return Constant(sheet,permittivity=permittivity,density=density)
 
     def readTabulatedRefractiveIndex(self,sheet,worksheet,density):
@@ -400,7 +399,7 @@ class MaterialsDataBase:
                permittivity = Calculator.calculate_permittivity(nk)
                permittivities.append(permittivity)
                vs_cm1.append(v)
-            except Exception:
+            except (ValueError, TypeError):
                 print("Error in Tabulated: ",a.value,c.value,d.value)
         return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
 
@@ -436,7 +435,7 @@ class MaterialsDataBase:
                permittivity = Calculator.calculate_permittivity(nk)
                permittivities.append(permittivity)
                vs_cm1.append(v)
-            except Exception:
+            except (ValueError, TypeError):
                 print("Error in Tabulated: ",a.value,c.value,d.value)
         #return permittivities, vs_cm1
         return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)        
@@ -511,7 +510,7 @@ class MaterialsDataBase:
                     strengths[index].append(float(d.value))
                 if e.value is not None:
                     gammas[index].append(float(e.value))
-            except Exception:
+            except (ValueError, TypeError):
                 print("Error in Lorentz-Drude: ",a.value,b.value,c.value,d.value,e.value)
                 return None
         return DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
@@ -556,7 +555,7 @@ class MaterialsDataBase:
                     omega_los[index].append(float(e.value))
                 if f.value is not None:
                     gamma_los[index].append(float(f.value))
-            except Exception:
+            except (ValueError, TypeError):
                 print("Error in FPSQ: ",a.value,b.value,c.value,d.value,e.value,f.value)
                 return None
         return FPSQ(sheet,epsilon_infinity,omega_tos,gamma_tos,omega_los,gamma_los,density=density,cell=unitCell)
@@ -589,7 +588,7 @@ class MaterialsDataBase:
                     Bs.append(float(b.value))
                 if c.value is not None:
                     Cs.append(float(c.value))
-            except Exception:
+            except (ValueError, TypeError):
                 print("Error in Sellmeier: ",b.value,c.value)
                 return None
         return Sellmeier(sheet,Bs,Cs,density=density,cell=unitCell)

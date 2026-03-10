@@ -34,24 +34,21 @@ from PDielec.Constants import d2byamuang2, wavenumber
 
 Mie.crossover = 0.01
 
-def initialise_unit_tensor():
-    """Initialise a 3x3 tensor to a unit tensor.
+def initialise_diagonal_tensor(reals):
+    """Initialise a real 3x3 tensor with the given diagonal components.
 
     Parameters
     ----------
-    None
+    reals : list
+        A list of 3 real numbers for the diagonals.
 
     Returns
     -------
     array
-        The returned tensor is a 3x3 array.
+        The returned tensor is a real 3x3 array.
 
     """
-    x = np.zeros((3, 3), dtype=float)
-    x[0, 0] = 1.0
-    x[1, 1] = 1.0
-    x[2, 2] = 1.0
-    return x
+    return np.diag(np.array(reals, dtype=float))
 
 def initialise_complex_diagonal_tensor(reals):
     """Initialise a complex 3x3 tensor with the given diagonal components.
@@ -67,31 +64,22 @@ def initialise_complex_diagonal_tensor(reals):
         The returned tensor is a complex 3x3 array.
 
     """
-    x = np.zeros((3, 3), dtype=complex)
-    x[0, 0] = reals[0]
-    x[1, 1] = reals[1]
-    x[2, 2] = reals[2]
-    return x
+    return np.diag(np.array(reals, dtype=complex))
 
-def initialise_diagonal_tensor(reals):
-    """Initialise a real 3x3 tensor with the given diagonal components.
+def initialise_unit_tensor():
+    """Initialise a 3x3 tensor to a unit tensor.
 
     Parameters
     ----------
-    reals : list
-        A list of 3 real numbers for the diagonals.
+    None
 
     Returns
     -------
     array
-        The returned tensor is a real 3x3 array.
+        The returned tensor is a 3x3 array.
 
     """
-    x = np.zeros((3, 3), dtype=float)
-    x[0, 0] = reals[0]
-    x[1, 1] = reals[1]
-    x[2, 2] = reals[2]
-    return x
+    return initialise_diagonal_tensor([1.0, 1.0, 1.0])
 
 def calculate_distance(a,b):
     """Calculate the distance between a and b.
@@ -2208,7 +2196,7 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
         # Problems with overflow if lambda is large
         try:
             Z = W + pow(10,lambda_value) * (D.dot(D.transpose()))
-        except Exception:
+        except OverflowError:
             print("Warning overflow in Hodrick Prescott filter")
         z = sparse.linalg.spsolve(Z, w*y)
         w = damping*(y>z) + (1-damping)*(y<z)

@@ -128,9 +128,9 @@ def find_program_from_name( filename ):
             return "crystal"
     if ext ==  ".log":
         if os.path.isfile(head_root+".files"):
-            return "abinit",""
+            return "abinit"
         elif os.path.isfile(head_root+".dynG"):
-            return "quantum espresso",""
+            return "quantum espresso"
         else:
             return "crystal"
     if ext ==  ".dat":

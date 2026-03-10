@@ -1056,7 +1056,7 @@ class UnitCell:
             Atom_box_id.append(abc)
             try:
                 BoxAtoms[abc].append(i)
-            except Exception:
+            except KeyError:
                 BoxAtoms[abc] = [i]
         # Calculate the neighbouring boxes for each occupied box
         for abc in BoxAtoms:

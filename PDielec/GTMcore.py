@@ -121,7 +121,7 @@ def vacuum_eps(f):
     """
     try:
         return np.ones(len(f))
-    except Exception:
+    except TypeError:
         return 1.0 + 0.0j
     
 def exact_inv_2x2(M):
@@ -208,7 +208,7 @@ def exact_inv_4x4(M):
         try:
             print("Warning 4x4 inversion problem 1")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
-        except Exception:
+        except (ValueError, np.linalg.LinAlgError):
             print("Warning 4x4 inversion problem 2")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
         return result

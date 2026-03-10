@@ -330,9 +330,8 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         ScenarioTab.__init__(self,parent)
-        global debugger
-        debugger = Debug(debug,"CrystalRamanScenarioTab:")
-        debugger.print("Start:: initialiser")
+        self.debugger = Debug(debug,"CrystalRamanScenarioTab:")
+        self.debugger.print("Start:: initialiser")
         self.refreshRequired = True
         self.calculationRequired = True
         self.noCalculationsRequired = 1
@@ -381,7 +380,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         # Set the exponent threshold to be used by GTM
         self.exponent_threshold = 11000    
         # Open the database and get the material names
-        self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=debugger.state())
+        self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=self.debugger.state())
         self.settings["Materials database"] = self.DataBase.getFileName()
         self.materialNames = self.setMaterialNames()
         # Create the layers - superstrate / dielectric / substrate from the defaults layer settings
@@ -473,7 +472,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: initialiser")
+        self.debugger.print("Finished:: initialiser")
 
     def redrawLayerTable(self):
         """Redraw the layer table widget.
@@ -609,7 +608,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         toolbar = self.createToolBar(layer,sequenceNumber,len(self.layers))
         self.layerTable_tw.setCellWidget(sequenceNumber,8,toolbar)
         # Add a Print option if debug is on
-        if debugger.state():
+        if self.debugger.state():
             printButton = QPushButton("Print")
             printButton.setToolTip("Print the permittivity")
             printButton.clicked.connect(lambda x: self.on_print_button_clicked(x,layer))
@@ -645,7 +644,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         self.layerTable_tw.verticalHeader().setVisible(False)
         self.layerTable_tw.setShowGrid(False)
         headers = ["Material", "Thickness", "Units", "H", "K", "L", "Azimuthal", "Options", "Move"]
-        if debugger.state():
+        if self.debugger.state():
             headers.append("Print")
         self.layerTable_tw.setRowCount(1)
         self.layerTable_tw.setColumnCount(len(headers))
@@ -1016,7 +1015,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        debugger.print("on_incoherence_cb_activated", index,layer.getName())
+        self.debugger.print("on_incoherence_cb_activated", index,layer.getName())
         option = incoherentOptions[index]
         layer.setIncoherentOption(option)
         self.set_noCalculationsRequired()
@@ -1043,7 +1042,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        debugger.print("on_film_thickness_sb_changed", value, layer.getName())
+        self.debugger.print("on_film_thickness_sb_changed", value, layer.getName())
         layer.setThickness(value)
         self.generateLayerSettings()
         self.refreshRequired = True
@@ -1068,7 +1067,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print("Start:: on_thickness_units_cb_activated",index,layer.getName())
+        self.debugger.print("Start:: on_thickness_units_cb_activated",index,layer.getName())
         unit = thickness_units[index]
         layer.setThicknessUnit(unit)
         self.generateLayerSettings()
@@ -1095,7 +1094,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        debugger.print("on_azimuthal_angl_sb_changed", value, layer.getName())
+        self.debugger.print("on_azimuthal_angl_sb_changed", value, layer.getName())
         layer.setAzimuthal(value)
         layer.changeLabFrameInfo()
         self.generateLayerSettings()
@@ -1125,7 +1124,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        debugger.print("on_hkl_sb_changed", value)
+        self.debugger.print("on_hkl_sb_changed", value)
         hkl = layer.getHKL()
         hkl[hkorl] = value
         layer.setHKL(hkl)
@@ -1147,7 +1146,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             A list of dictionary settings for each layer.
 
         """
-        debugger.print(self.settings["Legend"],"generateLayerSettings")
+        self.debugger.print(self.settings["Legend"],"generateLayerSettings")
         self.settings["Layer material names"]  = []
         self.settings["Layer hkls"]            = []
         self.settings["Layer azimuthals"]      = []
@@ -1231,7 +1230,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             A list of layers generated from the layer settings.
 
         """
-        debugger.print(self.settings["Legend"],"settings2Layers")
+        self.debugger.print(self.settings["Legend"],"settings2Layers")
         self.layers = []
         self.materialNames = self.setMaterialNames()
         # Process the settings information and append each layer to the list
@@ -1332,7 +1331,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             message = "Substrate layer"
         else:
             message = "Device layer " + str(layerIndex)
-        showLayerWindow = ShowLayerWindow(copy.copy(layer),message=message,debug=debugger.state())
+        showLayerWindow = ShowLayerWindow(copy.copy(layer),message=message,debug=self.debugger.state())
         if showLayerWindow.exec():
             # The 'Ok' button was pressed
             # get the new Layer and replace the old one
@@ -1467,7 +1466,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        debugger.print("Start:: openDB_button_clicked")
+        self.debugger.print("Start:: openDB_button_clicked")
         self.openDataBase()
         self.refresh(force=True)
         self.refreshRequired = True
@@ -1486,7 +1485,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print(self.settings["Legend"],"on_partially_incoherent_kernel_sb_changed", value)
+        self.debugger.print(self.settings["Legend"],"on_partially_incoherent_kernel_sb_changed", value)
         self.refreshRequired = True
         self.settings["Filter kernel size"] = value
         return
@@ -1507,7 +1506,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print(self.settings["Legend"],"on_partially_incoherent_polynomial_sb_changed", value)
+        self.debugger.print(self.settings["Legend"],"on_partially_incoherent_polynomial_sb_changed", value)
         self.refreshRequired = True
         self.settings["Filter polynomial size"] = value
         return
@@ -1525,7 +1524,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print(self.settings["Legend"],"on_partially_incoherent_samples_sb_changed", value)
+        self.debugger.print(self.settings["Legend"],"on_partially_incoherent_samples_sb_changed", value)
         self.refreshRequired = True
         self.settings["Partially incoherent samples"] = value
         self.noCalculationsRequired = value
@@ -1546,7 +1545,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print(self.settings["Legend"],"on_percentage_partial_incoherence_sb_changed", value)
+        self.debugger.print(self.settings["Legend"],"on_percentage_partial_incoherence_sb_changed", value)
         self.refreshRequired = True
         self.settings["Percentage partial incoherence"] = value
         return
@@ -1567,7 +1566,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print(self.settings["Legend"],"on_global_azimuthal_angl_sb_changed", value)
+        self.debugger.print(self.settings["Legend"],"on_global_azimuthal_angl_sb_changed", value)
         self.refreshRequired = True
         self.settings["Global azimuthal angle"] = value
         return
@@ -1587,7 +1586,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print(self.settings["Legend"],"on_angle_of_incidence_sb_changed", value)
+        self.debugger.print(self.settings["Legend"],"on_angle_of_incidence_sb_changed", value)
         self.refreshRequired = True
         self.settings["Angle of incidence"] = value
         return
@@ -1611,9 +1610,9 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        debugger.print(self.settings["Legend"],"Start:: refresh, force =", force)
+        self.debugger.print(self.settings["Legend"],"Start:: refresh, force =", force)
         if not self.refreshRequired and not force :
-            debugger.print(self.settings["Legend"],"Finished:: refreshing widget aborted", self.refreshRequired,force)
+            self.debugger.print(self.settings["Legend"],"Finished:: refreshing widget aborted", self.refreshRequired,force)
             return
         # Check to see if there is a new reader, if there is set up the cell
         self.reader = self.notebook.reader
@@ -1637,7 +1636,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         self.cell = self.reader.get_unit_cell()
         # Open database and get materials
         if self.settings["Materials database"] != self.DataBase.getFileName():
-            self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=debugger.state())
+            self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=self.debugger.state())
             self.settings["Materials database"] = self.DataBase.getFileName()
             self.database_le.setText(self.settings["Materials database"])
             # Update the possible  material names from the database
@@ -1678,7 +1677,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         for _i in range(20):
             QCoreApplication.processEvents()
         self.refreshRequired = False
-        debugger.print(self.settings["Legend"],"Finished:: refresh, force =", force)
+        self.debugger.print(self.settings["Legend"],"Finished:: refresh, force =", force)
         return
 
     def set_noCalculationsRequired(self):
@@ -1736,7 +1735,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         - Sets a flag indicating that a refresh is required.
 
         """        
-        debugger.print(self.settings["Legend"],"Start:: on_mode_cb_activated")
+        self.debugger.print(self.settings["Legend"],"Start:: on_mode_cb_activated")
         if index == 0:
             self.settings["Mode"] = "Transfer matrix"
         elif index == 1:
@@ -1750,8 +1749,8 @@ class CrystalRamanScenarioTab(ScenarioTab):
         self.generateLayerSettings()
         self.refresh(force=True)
         self.refreshRequired = True
-        debugger.print(self.settings["Legend"],"Mode changed to ", self.settings["Mode"])
-        debugger.print(self.settings["Legend"],"Finished:: on_mode_cb_activated")
+        self.debugger.print(self.settings["Legend"],"Mode changed to ", self.settings["Mode"])
+        self.debugger.print(self.settings["Legend"],"Finished:: on_mode_cb_activated")
         return
 
     def average_incoherent_calculator( self,
@@ -1793,7 +1792,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             - epsilon
 
         """
-        debugger.print(self.settings["Legend"],"Start:: partially_incoherent_calculator")
+        self.debugger.print(self.settings["Legend"],"Start:: partially_incoherent_calculator")
         #
         # Zero the arrays we will need
         #
@@ -1884,7 +1883,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             - epsilon
 
         """
-        debugger.print(self.settings["Legend"],"Start:: partially_incoherent_calculator")
+        self.debugger.print(self.settings["Legend"],"Start:: partially_incoherent_calculator")
         #
         # Zero the arrays we will need
         #
@@ -1992,7 +1991,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             - epsilon
 
         """
-        debugger.print(self.settings["Legend"],"Entering the coherent_calculator function")
+        self.debugger.print(self.settings["Legend"],"Entering the coherent_calculator function")
         #
         # Initialise the partial function to pass through to the pool
         #
@@ -2006,7 +2005,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
                                        exponent_threshold)
         results = []
         # About to call
-        debugger.print(self.settings["Legend"],"About to calculate single crystal scenario using pool")
+        self.debugger.print(self.settings["Legend"],"About to calculate single crystal scenario using pool")
         if self.notebook.pool is None:
             self.notebook.startPool()
         for result in self.notebook.pool.imap(partial_function, self.vs_cm1, chunksize=20):
@@ -2021,7 +2020,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         p_absorbtance = []
         s_absorbtance = []
         epsilon = []
-        debugger.print(self.settings["Legend"],"About to extract results for single crystal scenario")
+        self.debugger.print(self.settings["Legend"],"About to extract results for single crystal scenario")
         for v,_r,R,_t,T,eps,errors,largest_exponent in results:
             if self.settings["Mode"] == "Transfer matrix" and errors > 0:
                 print("Warning exponential overflow occured at frequency",v,errors,largest_exponent)
@@ -2032,7 +2031,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             p_absorbtance.append(1.0 - R[0]-R[2]-T[0])
             s_absorbtance.append(1.0 - R[1]-R[3]-T[1])
             epsilon.append(eps)
-        debugger.print(self.settings["Legend"],"Finished the coherent_calculator function")
+        self.debugger.print(self.settings["Legend"],"Finished the coherent_calculator function")
         return ( p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance, epsilon )
 
     def calculate(self,vs_cm1):
@@ -2052,9 +2051,9 @@ class CrystalRamanScenarioTab(ScenarioTab):
         This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
 
         """        
-        debugger.print(self.settings["Legend"],"Start:: calculate - number of frequencies",len(vs_cm1))
+        self.debugger.print(self.settings["Legend"],"Start:: calculate - number of frequencies",len(vs_cm1))
         if not self.calculationRequired:
-            debugger.print(self.settings["Legend"],"Finished:: calculate aborted because calculationRequired false")
+            self.debugger.print(self.settings["Legend"],"Finished:: calculate aborted because calculationRequired false")
             return
         QCoreApplication.processEvents()
         self.vs_cm1 = vs_cm1
@@ -2063,13 +2062,13 @@ class CrystalRamanScenarioTab(ScenarioTab):
         program = settings["Program"]
         filename = self.notebook.mainTab.getFullFileName()
         if self.reader is None:
-            debugger.print(self.settings["Legend"],"Finished:: Calculate aborting - no reader")
+            self.debugger.print(self.settings["Legend"],"Finished:: Calculate aborting - no reader")
             return
         if program == "":
-            debugger.print(self.settings["Legend"],"Finished:: Calculate aborting - no program")
+            self.debugger.print(self.settings["Legend"],"Finished:: Calculate aborting - no program")
             return
         if filename == "":
-            debugger.print(self.settings["Legend"],"Finished:: Calculate aborting - no file")
+            self.debugger.print(self.settings["Legend"],"Finished:: Calculate aborting - no file")
             return
         # Make sure the filter kernel size is odd, if not make it so and update the GUI
         if self.settings["Filter kernel size"] % 2 == 0:
@@ -2119,7 +2118,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
                                     psi,
                                     angleOfIncidence,
                                     exponent_threshold)
-        debugger.print(self.settings["Legend"],"Finished:: calculate - number of frequencies",len(vs_cm1))
+        self.debugger.print(self.settings["Legend"],"Finished:: calculate - number of frequencies",len(vs_cm1))
         return
 
     def get_result(self, vs_cm1, plot_type):
@@ -2143,9 +2142,9 @@ class CrystalRamanScenarioTab(ScenarioTab):
             The results to be plotted
 
         """
-        debugger.print(self.settings["Legend"],"Start:: get_result",len(vs_cm1),plot_type)
+        self.debugger.print(self.settings["Legend"],"Start:: get_result",len(vs_cm1),plot_type)
         self.get_results(vs_cm1)
-        debugger.print(self.settings["Legend"],"Finished:: get_result",len(vs_cm1),plot_type)
+        self.debugger.print(self.settings["Legend"],"Finished:: get_result",len(vs_cm1),plot_type)
         return{ "Crystal Reflectance (P polarisation)"  : self.p_reflectance,
                 "Crystal Reflectance (S polarisation)"  : self.s_reflectance,
                 "Crystal Transmittance (P polarisation)": self.p_transmittance,
@@ -2169,15 +2168,15 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        debugger.print(self.settings["Legend"],"Start:: get_results",len(vs_cm1),self.refreshRequired)
+        self.debugger.print(self.settings["Legend"],"Start:: get_results",len(vs_cm1),self.refreshRequired)
         if len(vs_cm1)>0 and (self.refreshRequired or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
-            debugger.print(self.settings["Legend"],"get_results recalculating")
+            self.debugger.print(self.settings["Legend"],"get_results recalculating")
             self.refresh()
             self.calculate(vs_cm1)
         else:
-            debugger.print(self.settings["Legend"],"get_results no need for recalculation")
+            self.debugger.print(self.settings["Legend"],"get_results no need for recalculation")
             #self.notebook.progressbars_update(increment=len(vs_cm1))
-        debugger.print(self.settings["Legend"],"Finished:: get_results",len(vs_cm1),self.refreshRequired)
+        self.debugger.print(self.settings["Legend"],"Finished:: get_results",len(vs_cm1),self.refreshRequired)
         return
 
     def greyed_out(self):
@@ -2193,6 +2192,6 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """
         # At the moment it appears there is nothing to do.
-        debugger.print(self.settings["Legend"],"Finished:: greyed_out")
+        self.debugger.print(self.settings["Legend"],"Finished:: greyed_out")
         return
 

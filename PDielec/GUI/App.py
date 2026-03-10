@@ -224,17 +224,16 @@ class App(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         QCoreApplication.processEvents()
-        global debugger
-        debugger = Debug(self.debug, "App:")
-        debugger.print("Start:: Initialising")
-        debugger.print("About to open the notebook")
-        debugger.print("Program is", program)
-        debugger.print("Filename is", filename)
-        debugger.print("Spreadsheet is", spreadsheet_name)
-        debugger.print("Script is", self.scriptname)
-        debugger.print("The default scenario is", default_scenario)
-        debugger.print("No. of cpus is", ncpus)
-        debugger.print("Threading is", threading)
+        self.debugger = Debug(self.debug, "App:")
+        self.debugger.print("Start:: Initialising")
+        self.debugger.print("About to open the notebook")
+        self.debugger.print("Program is", program)
+        self.debugger.print("Filename is", filename)
+        self.debugger.print("Spreadsheet is", spreadsheet_name)
+        self.debugger.print("Script is", self.scriptname)
+        self.debugger.print("The default scenario is", default_scenario)
+        self.debugger.print("No. of cpus is", ncpus)
+        self.debugger.print("Threading is", threading)
         # Set the number of threads before NUMPY is loaded
         if threading:
             # Threading is used instead of cpu multiprocessing
@@ -255,22 +254,22 @@ class App(QMainWindow):
             threading=threading,
             default_scenario=default_scenario,
         )
-        debugger.print("About to call setCentralWidget")
+        self.debugger.print("About to call setCentralWidget")
         self.setCentralWidget(self.notebook)
-        debugger.print("Finished call setCentralWidget")
+        self.debugger.print("Finished call setCentralWidget")
         if self.scripting:
-            debugger.print("Processing script", self.scriptname)
+            self.debugger.print("Processing script", self.scriptname)
             self.readScript(self.scriptname, spreadsheet_name=spreadsheet_name)
         if self.program_exit:
             if spreadsheet_name != "":
-                debugger.print("Writing spreadsheeet on exit", spreadsheet_name)
+                self.debugger.print("Writing spreadsheeet on exit", spreadsheet_name)
                 self.notebook.writeSpreadsheet()
                 self.notebook.spreadsheet.close()
-            debugger.print("Exiting with sys.exit call")
+            self.debugger.print("Exiting with sys.exit call")
             self.notebook.pool.close()
             self.notebook.pool.join()
             self.notebook.pool = None
-        debugger.print("Finished:: Initialising")
+        self.debugger.print("Finished:: Initialising")
         return
 
     def print_usage(self):
@@ -374,7 +373,7 @@ class App(QMainWindow):
         After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with `QCoreApplication.processEvents()`.
 
         """
-        debugger.print("Start:: readScript")
+        self.debugger.print("Start:: readScript")
         self.notebook.scripting = True
         directory = os.path.dirname(scriptname)
         # chdir to the directory that the script is in
@@ -390,22 +389,22 @@ class App(QMainWindow):
             # line_no = 0
             # for line in lines:
             #    line_no += 1
-            #    debugger.print('line: ',line_no,line)
+            #    self.debugger.print('line: ',line_no,line)
             #    exec(line)
-        debugger.print("readScript finished reading script")
+        self.debugger.print("readScript finished reading script")
         self.notebook.scripting = False
-        debugger.print("readScript notebook scripting set to False")
+        self.debugger.print("readScript notebook scripting set to False")
         if not self.program_exit:
             self.notebook.overwriting = False
-            debugger.print("readScript notebook overwriting set to False")
+            self.debugger.print("readScript notebook overwriting set to False")
         # The command line excel file overrides that in the script
         if spreadsheet_name != "":
-            debugger.print("readScript overwriting spread sheet name:", spreadsheet_name)
+            self.debugger.print("readScript overwriting spread sheet name:", spreadsheet_name)
             self.notebook.mainTab.settings["Excel file name"] = spreadsheet_name
-        debugger.print("readScript notebook refresh")
+        self.debugger.print("readScript notebook refresh")
         self.notebook.refresh(force=True)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: readScript")
+        self.debugger.print("Finished:: readScript")
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
@@ -440,7 +439,7 @@ class App(QMainWindow):
         of multiprocessing resources and performs any additional base class close event handling.
 
         """
-        debugger.print("Close event has been captured")
+        self.debugger.print("Close event has been captured")
         self.notebook.pool.close()
         self.notebook.pool.join()
         super().closeEvent(event)
