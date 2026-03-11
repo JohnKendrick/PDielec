@@ -28,45 +28,46 @@ from PDielec.Utilities import Debug
 class ScenarioTab(QWidget):
     """A class representing a tab for scenario configurations within a user interface.
 
-    This class provides functionalities for managing and interacting with scenarios.
-    It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
+    This class provides functionalities for managing and interacting with scenarios. It allows users to create, delete,
+    and switch between different scenarios, as well as open and manipulate a materials database.
     :class:`~PDielec.GUI.PowderInfraredScenarioTab`, :class:`~PDielec.GUI.CrystalInfraredScenarioTab`,
-    :class:`~PDielec.GUI.PowderRamanScenarioTab` and :class:`~PDielec.GUI.CrystalRamanScenarioTab` inherit from this class.
+    :class:`~PDielec.GUI.PowderRamanScenarioTab` and :class:`~PDielec.GUI.CrystalRamanScenarioTab` inherit from this
+    class.
 
     Attributes
     ----------
-    refresh_required : bool
-        Indicates whether a refresh is required.
-    noCalculationsRequired : int
-        The number of calculations that need to be performed.
-    settings : dict
-        A dictionary of settings for the scenario.
-    notebook : QWidget
-        The parent widget, which is expected to be the notebook container for the scenarios.
-    scenarioType : type, optional
-        The type of the scenario, e.g., Powder Infrared, Crystal Infrared, Powder Raman, Crystal Raman.
-    scenarioTypes : list of scenario types
-        The list is obtained from the keys of the self.notebook.scenarioTypes dictionary
-    vs_cm1 : list
-        List containing default values for some settings.
-    DataBase : MaterialsDataBase
-        An instance of a class for interacting with a materials database.
-    openDB_button : QPushButton
-        Button to open the materials database.
-    openDB_label : QLabel
-        Label associated with the openDB_button.
-    database_le : QLineEdit
-        Line edit showing the path/name of the current materials database.
-    database_le_label : QLabel
-        Label associated with the database_le.
-    legend_le : QLineEdit
-        Line edit for specifying a custom legend for the scenario.
-    addScenarioButton : QPushButton
-        Button to add another scenario.
-    deleteScenarioButton : QPushButton
-        Button to delete the current scenario.
-    switchScenarioCB : QComboBOx
-        Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared, Powder Raman or Crystal Raman).
+    refresh_required : bool Indicates whether a refresh is required. noCalculationsRequired : int The number of
+    calculations that need to be performed. settings : dict A dictionary of settings for the scenario. notebook :
+    QWidget The parent widget, which is expected to be the notebook container for the scenarios. scenarioType : type,
+    optional The type of the scenario, e.g., Powder Infrared, Crystal Infrared, Powder Raman, Crystal Raman.
+    scenarioTypes : list of scenario types The list is obtained from the keys of the self.notebook.scenarioTypes
+    dictionary vs_cm1 : list List containing default values for some settings. DataBase : MaterialsDataBase An instance
+    of a class for interacting with a materials database. openDB_button : QPushButton Button to open the materials
+    database. openDB_label : QLabel Label associated with the openDB_button. database_le : QLineEdit Line edit showing
+    the path/name of the current materials database. database_le_label : QLabel Label associated with the database_le.
+    legend_le : QLineEdit Line edit for specifying a custom legend for the scenario. addScenarioButton : QPushButton
+    Button to add another scenario. deleteScenarioButton : QPushButton Button to delete the current scenario.
+    switchScenarioCB : QComboBOx Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared,
+    Powder Raman or Crystal Raman).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Methods
     -------
@@ -137,7 +138,7 @@ class ScenarioTab(QWidget):
         self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=debug)
         # Set up the open database button
         self.openDB_button = QPushButton("Open materials' database")
-        self.openDB_button.clicked.connect(self.openDB_button_clicked)
+        self.openDB_button.clicked.connect(self.open_db_button_clicked)
         self.openDB_button.setToolTip("Open a new materials' database (.xlsx file)")
         self.openDB_label = QLabel("Open materials' database")
         self.openDB_label.setToolTip("Open a new materials' database (.xlsx file)")

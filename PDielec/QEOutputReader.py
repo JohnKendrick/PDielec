@@ -140,7 +140,8 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object's `debug` attribute is set to True.
+        This function updates the pressure attribute of the object it is called on and optionally prints the updated
+        pressure value if the object's `debug` attribute is set to True.
 
         """
         self.pressure = float(line.split()[5])/10.0
@@ -154,12 +155,15 @@ class QEOutputReader(GenericOutputReader):
         #
         """Process and update the class attribute _alat based on a line from a file.
 
-        This function is intended to read and process a line that contains a unit of length. It updates the class attribute `_alat` after converting the value properly and checks for conformity within a tolerance. If `debug` is set to True in the class, it also prints the updated `_alat` value.
+        This function is intended to read and process a line that contains a unit of length. It updates the class
+        attribute `_alat` after converting the value properly and checks for conformity within a tolerance. If `debug`
+        is set to True in the class, it also prints the updated `_alat` value.
 
         Parameters
         ----------
-        line : str
-            The line read from a file which contains the value to be processed. It's expected that the relevant value is the third element of the line when split by whitespace, and it may contain a comma which should be ignored.
+        line : str The line read from a file which contains the value to be processed. It's expected that the relevant
+        value is the third element of the line when split by whitespace, and it may contain a comma which should be
+        ignored.
 
         Returns
         -------
@@ -167,10 +171,11 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - Presumes the existence of a class attribute `_alat` which is updated by this function.
-        - Assumes `angs2bohr` is a predefined constant available within the scope of this method for conversion or comparison purposes.
-        - Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it precisely sets `_alat` to `angs2bohr`.
-        - The `debug` attribute of the class controls whether an update operation is printed or not.
+        - Presumes the existence of a class attribute `_alat` which is updated by this function. - Assumes `angs2bohr`
+          is a predefined constant available within the scope of this method for conversion or comparison purposes. -
+          Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it
+          precisely sets `_alat` to `angs2bohr`. - The `debug` attribute of the class controls whether an update
+          operation is printed or not.
 
         """
         string = line.split()[2]
@@ -235,8 +240,8 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str
-            The line from which the lattice parameter is read. It is assumed that the lattice parameter can be found at the third whitespace-separated value in the line.
+        line : str The line from which the lattice parameter is read. It is assumed that the lattice parameter can be
+        found at the third whitespace-separated value in the line.
 
         Returns
         -------
@@ -244,12 +249,13 @@ class QEOutputReader(GenericOutputReader):
 
         Attributes Modified
         -------------------
-        _alat
-            The lattice parameter is set or adjusted within this instance based on the value read from `line`. It is adjusted to `angs2bohr` if the absolute difference between the read value and `angs2bohr` is less than 0.0001.
+        _alat The lattice parameter is set or adjusted within this instance based on the value read from `line`. It is
+        adjusted to `angs2bohr` if the absolute difference between the read value and `angs2bohr` is less than 0.0001.
 
         Notes
         -----
-        This method does not return any value. It updates the `_alat` attribute of the class instance with the value read from the input line, after applying necessary conversions and checks.
+        This method does not return any value. It updates the `_alat` attribute of the class instance with the value
+        read from the input line, after applying necessary conversions and checks.
 
         """
         t = float(line.split()[2])
@@ -301,12 +307,14 @@ class QEOutputReader(GenericOutputReader):
         #
         """Parse the energy values from a given line and set them to the instance variables.
 
-        This function extracts energy-related values from a provided line of text, then calculates and assigns these values (in electron volts) to instance attributes for final energy without entropy and final free energy, while considering conversion factors. If debugging is enabled, it prints the final free energy.
+        This function extracts energy-related values from a provided line of text, then calculates and assigns these
+        values (in electron volts) to instance attributes for final energy without entropy and final free energy, while
+        considering conversion factors. If debugging is enabled, it prints the final free energy.
 
         Parameters
         ----------
-        line : str
-            A string containing energy-related information, expected to follow a pre-determined format where the relevant energy value is the fourth element in a whitespace-separated list.
+        line : str A string containing energy-related information, expected to follow a pre-determined format where the
+        relevant energy value is the fourth element in a whitespace-separated list.
 
         Returns
         -------
@@ -318,10 +326,11 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - Assumes that 'hartree2ev' is a predefined conversion constant available in the scope where this function is defined.
-        - Utilizes the fourth element in the whitespace-separated list from the input string, after splitting, for the relevant energy-related value.
-        - The energy value is converted to electron volts, halved, and then assigned to both 'final_energy_without_entropy' and 'final_free_energy' attributes of the object.
-        - If the 'debug' attribute of the object is True, the final free energy is printed.
+        - Assumes that 'hartree2ev' is a predefined conversion constant available in the scope where this function is
+          defined. - Utilizes the fourth element in the whitespace-separated list from the input string, after
+          splitting, for the relevant energy-related value. - The energy value is converted to electron volts, halved,
+          and then assigned to both 'final_energy_without_entropy' and 'final_free_energy' attributes of the object. -
+          If the 'debug' attribute of the object is True, the final free energy is printed.
 
         """
         self.final_energy_without_entropy = float(line.split()[3]) * hartree2ev / 2.0
@@ -369,12 +378,14 @@ class QEOutputReader(GenericOutputReader):
         #
         """Read and store the number of k-points from a given line.
 
-        This is an internal method that extracts the number of k-points from a provided line (assumed to contain this information in a predefined format) and stores it in the class instance. Optionally, it prints debug information if the debug mode is activated.
+        This is an internal method that extracts the number of k-points from a provided line (assumed to contain this
+        information in a predefined format) and stores it in the class instance. Optionally, it prints debug information
+        if the debug mode is activated.
 
         Parameters
         ----------
-        line : str
-            The line from which the number of k-points is extracted. The line should contain the number of k-points at the 5th position (index 4 when split by whitespace).
+        line : str The line from which the number of k-points is extracted. The line should contain the number of
+        k-points at the 5th position (index 4 when split by whitespace).
 
         Returns
         -------
@@ -396,12 +407,14 @@ class QEOutputReader(GenericOutputReader):
         #
         """Read and set the k-point grid from a line in a file.
 
-        This method reads a line from the file associated with the file_descriptor attribute, parses the first three elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set to True, it prints the k-point grid.
+        This method reads a line from the file associated with the file_descriptor attribute, parses the first three
+        elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set
+        to True, it prints the k-point grid.
 
         Parameters
         ----------
-        line : str
-            The line from which to read the k-point grid. Note that while this parameter is named 'line', it is not used directly in the function as the function reads the next line from the file itself.
+        line : str The line from which to read the k-point grid. Note that while this parameter is named 'line', it is
+        not used directly in the function as the function reads the next line from the file itself.
 
         Returns
         -------
@@ -409,7 +422,8 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid values.
+        This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid
+        values.
 
         """
         line = self.file_descriptor.readline()
@@ -421,7 +435,9 @@ class QEOutputReader(GenericOutputReader):
     def _read_dyng_header(self):
         """Read and process the header line from the dynG file.
 
-        This method updates the object's state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.
+        This method updates the object's state by reading the header line from the set file descriptor and parsing it to
+        extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after
+        converting it to Bohr units if it is within a tolerance range of the conversion factor.
 
         Parameters
         ----------
@@ -433,9 +449,16 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
+        The function assumes that the file has been opened and that the file descriptor is stored in
+        `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the
+        first, second, and fourth values being integers representing the number of species, the number of ions, and a
+        float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined
+        elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the
+        `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or
+        identification.
 
-        This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
+        This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents
+        of the header line.
 
         """
         # Skip a couple of lines
@@ -456,7 +479,10 @@ class QEOutputReader(GenericOutputReader):
     def _read_dyng_epsilon(self, line):
         """Read and process zero frequency optical permittivity data from the dynG file.
 
-        This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
+        This method reads the next four lines from a file, processes them to extract optical dielectric constant data,
+        and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first
+        line, then reads three lines of numeric values, where each line contains at least three numeric values which are
+        converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
 
         Parameters
         ----------
@@ -470,7 +496,8 @@ class QEOutputReader(GenericOutputReader):
         Notes
         -----
         - This method modifies the instance attribute `zerof_optical_dielectric` directly.
-        - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
+        - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute
+          after it is updated.
 
         """
         self.file_descriptor.readline()
@@ -488,7 +515,11 @@ class QEOutputReader(GenericOutputReader):
     def _read_dyng_masses(self):
         """Read the masses of species from an dynG file and populate mass and species lists.
 
-        This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
+        This method parses lines from an already opened file object (`file_descriptor`), extracting species names and
+        their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit
+        (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their
+        respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls
+        `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
 
         Parameters
         ----------
@@ -507,8 +538,8 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - The atomic mass unit (`amu`) is defined elsewhere
-        - It's assumed that `_read_dyng_coordinates` is a method within the same class that takes a single string argument.
+        - The atomic mass unit (`amu`) is defined elsewhere - It's assumed that `_read_dyng_coordinates` is a method
+          within the same class that takes a single string argument.
 
         """
         self.masses_per_type = []
@@ -573,7 +604,8 @@ class QEOutputReader(GenericOutputReader):
     def _read_born_charges(self, line):
         """Read and parse Born charges from a file.
 
-        This internal method reads the Born charges of `nions` ions from the file specified by `file_descriptor` and updates the `born_charges` attribute of the class instance.
+        This internal method reads the Born charges of `nions` ions from the file specified by `file_descriptor` and
+        updates the `born_charges` attribute of the class instance.
 
         Parameters
         ----------
@@ -588,9 +620,12 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates (x, y, z). It expects each line to contain three space-separated values, which represent the components of the Born charge tensor for that direction.
+        This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates
+        (x, y, z). It expects each line to contain three space-separated values, which represent the components of the
+        Born charge tensor for that direction.
 
-        This method directly modifies the `born_charges` attribute of the class instance, appending a 3x3 list (representing the Born charge tensor) for each ion.
+        This method directly modifies the `born_charges` attribute of the class instance, appending a 3x3 list
+        (representing the Born charge tensor) for each ion.
 
         If `self.debug` is True, it prints a debug message upon completion.
 
@@ -629,10 +664,11 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        The function expects the `line` input to contain the lattice parameter as its third value after removing parentheses.
-        Each subsequent line read from the input file (after the parameter line) is expected to represent the lattice vectors,
-        scaled by the lattice parameter and converted from Angstroms to Bohr radii.
-        The method directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+        The function expects the `line` input to contain the lattice parameter as its third value after removing
+        parentheses. Each subsequent line read from the input file (after the parameter line) is expected to represent
+        the lattice vectors, scaled by the lattice parameter and converted from Angstroms to Bohr radii. The method
+        directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+
 
         """
         line = line.replace( "(", " ")
@@ -657,7 +693,11 @@ class QEOutputReader(GenericOutputReader):
     def _read_dyng_basis_vectors(self):
         """Read and process lattice vectors from a dynG file, then updates unit cell information.
 
-        This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
+        This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a
+        unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from
+        Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these
+        vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit
+        cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
 
         Parameters
         ----------
@@ -669,12 +709,12 @@ class QEOutputReader(GenericOutputReader):
 
         Attributes Updated
         ------------------
-        unit_cells : list
-            A list of `UnitCell` objects representing the unit cells read from the file. Updated by appending a new `UnitCell`.
-        ncells : int
-            The total number of unit cells, updated after reading new lattice vectors.
-        volume : float
-            The volume of the last read unit cell, updated after appending a new `UnitCell`.
+        unit_cells : list A list of `UnitCell` objects representing the unit cells read from the file. Updated by
+        appending a new `UnitCell`. ncells : int The total number of unit cells, updated after reading new lattice
+        vectors. volume : float The volume of the last read unit cell, updated after appending a new `UnitCell`.
+
+
+
 
         """
         linea = self.file_descriptor.readline().split()
@@ -695,12 +735,16 @@ class QEOutputReader(GenericOutputReader):
     def _read_fractional_coordinates(self,line):
         """Read the log file and sets the fractional coordinates and element names for the last unit cell in the object.
 
-        This function iterates over a specified number of lines (defined by `self.nions`) from the object's file descriptor, parsing each line into species names and their fractional coordinates. These species names and coordinates are then used to set the corresponding properties for the last unit cell managed by the object. Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
+        This function iterates over a specified number of lines (defined by `self.nions`) from the object's file
+        descriptor, parsing each line into species names and their fractional coordinates. These species names and
+        coordinates are then used to set the corresponding properties for the last unit cell managed by the object.
+        Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the
+        last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
 
         Parameters
         ----------
-        line : str
-            The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading. 
+        line : str The initial line from which to start reading the fractional coordinates. The actual parameter is not
+        used within the function but symbolically represents the starting point for reading.
 
         Returns
         -------
@@ -708,9 +752,10 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - The function directly modifies the object's state by setting properties of the last unit cell (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`.
-        - Only operates if `self.nions` is greater than 0.
-        - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
+        - The function directly modifies the object's state by setting properties of the last unit cell
+          (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`. - Only operates if `self.nions` is
+          greater than 0. - The function is intended to be called in a context where `self.file_descriptor` is already
+          open and positioned correctly.
 
         """
         if self.nions <= 0 or len(self.unit_cells) <=0 :
@@ -736,7 +781,9 @@ class QEOutputReader(GenericOutputReader):
     def _read_dyng_coordinates(self):
         """Read dynamic coordinates from a dynG file and update related properties.
 
-        This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the corresponding `unit_cells` properties.
+        This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species
+        list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the
+        corresponding `unit_cells` properties.
 
         Parameters
         ----------
@@ -748,18 +795,18 @@ class QEOutputReader(GenericOutputReader):
 
         Attributes Updated
         ------------------
-        self.masses : list
-            Updated list of masses based on the atomic positions read.
-        self.atom_type_list : list
-            Updated list of atom types corresponding to each atom based on the read positions.
-        self.ions_per_type : list
-            Updated list with the count of ions per type.
-        self.unit_cells : list
-            List of unit cells, where the last one is updated with new xyz coordinates and element names based on read data.
-        self.ncells : int
-            Updated count of unit cells.
-        self.volume : float
-            Updated volume of the last unit cell in the list.
+        self.masses : list Updated list of masses based on the atomic positions read. self.atom_type_list : list Updated
+        list of atom types corresponding to each atom based on the read positions. self.ions_per_type : list Updated
+        list with the count of ions per type. self.unit_cells : list List of unit cells, where the last one is updated
+        with new xyz coordinates and element names based on read data. self.ncells : int Updated count of unit cells.
+        self.volume : float Updated volume of the last unit cell in the list.
+
+
+
+
+
+
+
     
         See Also
         --------

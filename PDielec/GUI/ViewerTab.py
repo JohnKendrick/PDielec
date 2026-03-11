@@ -106,10 +106,10 @@ class ViewerTab(QWidget):
 
     Methods
     -------
-    There are multiple methods for event handling (e.g., on_filename_le_return, on_super_cell_changed_a),
-    methods for recalculating visualization parameters (e.g., calculate, calculate_phase_positions),
-    and methods for changing visualization settings interactively and programatically (e.g., set_colour, refresh).
-    Each method typically adjusts the ViewerTab's state or visualization output accordingly based on user interaction or programmatic changes.
+    There are multiple methods for event handling (e.g., on_filename_le_return, on_super_cell_changed_a), methods for
+    recalculating visualization parameters (e.g., calculate, calculate_phase_positions), and methods for changing
+    visualization settings interactively and programatically (e.g., set_colour, refresh). Each method typically adjusts
+    the ViewerTab's state or visualization output accordingly based on user interaction or programmatic changes.
 
     calculate
         Obtains frequencies, normal modes, unit cell of whole molecules and supercell
@@ -828,7 +828,9 @@ class ViewerTab(QWidget):
     def on_filename_le_return(self):
         """Handle the event triggered by the return key press within the filename input field.
 
-        This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It primarily invokes the filename button click event handler, simulating a click operation on the associated button.
+        This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It
+        primarily invokes the filename button click event handler, simulating a click operation on the associated
+        button.
 
         Parameters
         ----------
@@ -846,7 +848,8 @@ class ViewerTab(QWidget):
     def on_filename_le_changed(self,text):
         """Handle changes to the filename line edit.
 
-        This method is triggered when the text in the filename line edit changes. It updates the internal state to reflect the new filename.
+        This method is triggered when the text in the filename line edit changes. It updates the internal state to
+        reflect the new filename.
 
         Parameters
         ----------
@@ -880,8 +883,8 @@ class ViewerTab(QWidget):
 
         Raises
         ------
-        QMessageBox
-            Shows an alert if the filename is empty or has an invalid extension, indicating that the file name for the image is not valid.
+        QMessageBox Shows an alert if the filename is empty or has an invalid extension, indicating that the file name
+        for the image is not valid.
 
         Notes
         -----
@@ -1031,7 +1034,9 @@ class ViewerTab(QWidget):
     def on_coloured_button_clicked(self,boolean):
         """Handle the event when a coloured button is clicked.
 
-        This function triggers a color dialog upon the click of a designated button. It captures the selected color and applies it to a specific setting based on the button's label (e.g., Background, Cell, Bonds, Arrows). The settings are modified to include the chosen color, and a refresh is triggered to apply the changes.
+        This function triggers a color dialog upon the click of a designated button. It captures the selected color and
+        applies it to a specific setting based on the button's label (e.g., Background, Cell, Bonds, Arrows). The
+        settings are modified to include the chosen color, and a refresh is triggered to apply the changes.
 
         Parameters
         ----------
@@ -1111,7 +1116,8 @@ class ViewerTab(QWidget):
     def on_maximum_displacement_changed(self,value):
         """Handle changes to the displacement setting.
 
-        This method updates the 'Displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
+        This method updates the 'Displacement' setting, recalculates based on the new value, and then replots the
+        relevant data or figures.
 
         Parameters
         ----------
@@ -1408,10 +1414,10 @@ class ViewerTab(QWidget):
 
         Parameters
         ----------
-        element : str
-            The element whose colour is to be set. Can be 'Background', 'Cell', 'Arrow', or any other custom element defined in `element_colours`.
-        colour : str
-            The new colour to be set for the element. This should be a string describing the colour.
+        element : str The element whose colour is to be set. Can be 'Background', 'Cell', 'Arrow', or any other custom
+        element defined in `element_colours`. colour : str The new colour to be set for the element. This should be a
+        string describing the colour.
+
 
         Returns
         -------
@@ -1441,7 +1447,11 @@ class ViewerTab(QWidget):
     def calculate_phase_positions(self):
         """Calculate and update the phase positions for the normal mode of a molecular structure visualization.
 
-        This function calculates the phase positions for all atoms in a molecular structure over a range of phase steps. It updates the visualization by adding spheres and cylinders to represent atoms and bonds in different phase positions. The phase steps are adjusted to be odd in number, ensuring symmetry around zero phase. The function directly modifies the OpenGL widget used for visualization by deleting existing graphical representations and creating new ones based on the calculated positions.
+        This function calculates the phase positions for all atoms in a molecular structure over a range of phase steps.
+        It updates the visualization by adding spheres and cylinders to represent atoms and bonds in different phase
+        positions. The phase steps are adjusted to be odd in number, ensuring symmetry around zero phase. The function
+        directly modifies the OpenGL widget used for visualization by deleting existing graphical representations and
+        creating new ones based on the calculated positions.
 
         Parameters
         ----------
@@ -1555,7 +1565,12 @@ class ViewerTab(QWidget):
 
         Notes
         -----
-        This method relies on the `self.standard_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
+        This method relies on the `self.standard_cell` object, which should have a method `set_xyz_coordinates` and
+        `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF
+        generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each
+        phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable
+        object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes
+        the mode and phase.
 
         """
         unitcell = copy.deepcopy(self.standard_cell)
@@ -1599,7 +1614,8 @@ class ViewerTab(QWidget):
     def plot_none(self):
         """Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
 
-        This method is intended to reset or clear the current state of the Open GL widget by disabling any arrow visuals, stopping any animations that might be running, and then updating the widget to reflect these changes.
+        This method is intended to reset or clear the current state of the Open GL widget by disabling any arrow
+        visuals, stopping any animations that might be running, and then updating the widget to reflect these changes.
 
         Parameters
         ----------
@@ -1644,7 +1660,8 @@ class ViewerTab(QWidget):
     def plot_arrows(self):
         """Plot arrows showing the vibrational mode of a molecule.
 
-        This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.
+        This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and
+        triggers a refresh of the widget to ensure the changes are visualized.
 
         Parameters
         ----------
@@ -1683,12 +1700,15 @@ class ViewerTab(QWidget):
     def refresh(self,force=False):
         """Refresh the state of the object, optionally forcing the refresh.
 
-        This method updates the object's state by recalculating and refreshing its components. It checks whether a refresh is necessary or if it has been forced. It iterates through child widgets to block signals, updates settings from a notebook, adjusts visual elements based on these settings, and ultimately recalculates and replots data.
+        This method updates the object's state by recalculating and refreshing its components. It checks whether a
+        refresh is necessary or if it has been forced. It iterates through child widgets to block signals, updates
+        settings from a notebook, adjusts visual elements based on these settings, and ultimately recalculates and
+        replots data.
 
         Parameters
         ----------
-        force : bool, optional
-            If True, the refresh proceeds regardless of whether it is deemed necessary based on the object state. Default is False.
+        force : bool, optional If True, the refresh proceeds regardless of whether it is deemed necessary based on the
+        object state. Default is False.
 
         Returns
         -------
@@ -1696,12 +1716,13 @@ class ViewerTab(QWidget):
 
         Notes
         -----
-        - The function begins by checking if a refresh is required or has been forced. If neither condition is met, it aborts the refresh.
-        - It temporarily changes the cursor to a waiting cursor to indicate processing.
-        - It blocks signals from all child widgets to prevent any unintended interaction during the refresh process.
-        - It updates various widget properties and settings based on attributes of the notebook associated with the object.
-        - The function finally recalculates and re-plots based on the latest data and settings, then restores the standard cursor and marks the refresh as complete.
-        - Debug statements are interspersed throughout for tracking the refresh process's progress.
+        - The function begins by checking if a refresh is required or has been forced. If neither condition is met, it
+          aborts the refresh. - It temporarily changes the cursor to a waiting cursor to indicate processing. - It
+          blocks signals from all child widgets to prevent any unintended interaction during the refresh process. - It
+          updates various widget properties and settings based on attributes of the notebook associated with the object.
+          - The function finally recalculates and re-plots based on the latest data and settings, then restores the
+          standard cursor and marks the refresh as complete. - Debug statements are interspersed throughout for tracking
+          the refresh process's progress.
 
         """        
         self.debugger.print("Start:: refresh")

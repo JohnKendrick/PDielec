@@ -71,7 +71,9 @@ class SpreadSheetManager:
         # Manage a spread sheet for PDielec / PDGui
         """Initialize the instance with the given filename.
 
-        This constructor initializes an Excel workbook with predefined tab names and settings. It prepares the workbook for data entry and analysis across various predefined categories related to powder and crystal property analysis.
+        This constructor initializes an Excel workbook with predefined tab names and settings. It prepares the workbook
+        for data entry and analysis across various predefined categories related to powder and crystal property
+        analysis.
 
         Parameters
         ----------
@@ -195,14 +197,14 @@ class SpreadSheetManager:
 
         Parameters
         ----------
-        items : list
-            A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item is written in subsequent columns.
-        row : int, optional
-            The row index to start writing from. If not specified, uses the current row position of the object.
-        col : int, optional
-            The column index to start writing from. If not specified, uses the current column position of the object.
-        check : str, optional
-            A check string written to the beginning of the row specified. Defaults to an empty string if not specified.
+        items : list A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item
+        is written in subsequent columns. row : int, optional The row index to start writing from. If not specified,
+        uses the current row position of the object. col : int, optional The column index to start writing from. If not
+        specified, uses the current column position of the object. check : str, optional A check string written to the
+        beginning of the row specified. Defaults to an empty string if not specified.
+
+
+
 
         Returns
         -------
@@ -210,10 +212,10 @@ class SpreadSheetManager:
 
         Notes
         -----
-        - If `col` is 0, a warning message is printed.
-        - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
-        - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
-        - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
+        - If `col` is 0, a warning message is printed. - The `row` and `col` are updated as items are written, and `row`
+          is incremented after writing all items. - For items that are lists, each element is written in subsequent
+          columns. This is applied recursively for nested lists. - `self.positions` is a dictionary holding the current
+          positions (row, column) for different names, and `self.name` accesses the current object's name.
 
         """        
         oldRow,oldCol = self.positions[self.name]
@@ -280,8 +282,8 @@ class SpreadSheetManager:
     def delete(self):
         """Delete all the data in the current worksheet.
 
-        Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string.
-        After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
+        Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string. After
+        clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
 
         Parameters
         ----------
@@ -302,7 +304,8 @@ class SpreadSheetManager:
     def close(self):
         """Close the workbook if it hasn't been closed already.
 
-        Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.
+        Closes the workbook associated with an instance and sets its status as closed to prevent multiple close
+        operations.
 
         Parameters
         ----------

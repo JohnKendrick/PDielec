@@ -32,7 +32,9 @@ version = PDielec.__init__.__version__
 class App(QMainWindow):
     """A class representing the main application window.
 
-    This class initializes the main application window with various configurations based on command line arguments and environment variables. It includes functionalities to read scripts, handle command line inputs, set up multiprocessing or threading as needed, and manage application events.
+    This class initializes the main application window with various configurations based on command line arguments and
+    environment variables. It includes functionalities to read scripts, handle command line inputs, set up
+    multiprocessing or threading as needed, and manage application events.
 
     Parameters
     ----------
@@ -275,7 +277,8 @@ class App(QMainWindow):
     def print_usage(self):
         """Print usage information for the PDielec package's graphical user interface.
 
-        This function prints the general usage information, available commands, and options for the graphical user interface to the PDielec package.
+        This function prints the general usage information, available commands, and options for the graphical user
+        interface to the PDielec package.
 
         Parameters
         ----------
@@ -289,21 +292,21 @@ class App(QMainWindow):
         -----
         The usage information includes:
 
-        - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy', 'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified.
-        - `filename`: The name of the output file.
-        - `spreadsheet file`: An optional name of a spreadsheet file (must end with .xlsx). If provided, both program and filename must be specified.
-        - `-scenario type`: Changes the default scenario to "type",
-                            which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or "Crystal_Raman"
-        - `-spreadsheet file`: An alternative way to specify the spreadsheet file.
-        - `-program`: An alternative way to specify the program.
-        - `-script file`: Specifies that initial commands are read from a script file.
-        - `-nosplash`: No splash screen is presented, which is useful for batch running.
-        - `-threading`: Use threads instead of multiprocessing.
-        - `-threads 1`: Specify the number of threads to use for each cpu
-        - `-cpus 0`: Specify the number of processors or tasks; 0 uses all available.
-        - `-version`: Prints the version of the code.
-        - `-exit`: Exit the program after executing any script.
-        - `-help`: Prints out help information.
+        - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy',
+          'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified. - `filename`:
+          The name of the output file. - `spreadsheet file`: An optional name of a spreadsheet file (must end with
+          .xlsx). If provided, both program and filename must be specified. - `-scenario type`: Changes the default
+          scenario to "type", which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or
+          "Crystal_Raman" - `-spreadsheet file`: An alternative way to specify the spreadsheet file. - `-program`: An
+          alternative way to specify the program. - `-script file`: Specifies that initial commands are read from a
+          script file. - `-nosplash`: No splash screen is presented, which is useful for batch running. - `-threading`:
+          Use threads instead of multiprocessing. - `-threads 1`: Specify the number of threads to use for each cpu -
+          `-cpus 0`: Specify the number of processors or tasks; 0 uses all available. - `-version`: Prints the version
+          of the code. - `-exit`: Exit the program after executing any script. - `-help`: Prints out help information.
+
+
+
+
         - `-debug`: Switches on debugging information.
 
         """
@@ -344,7 +347,8 @@ class App(QMainWindow):
 
         Notes
         -----
-        This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
+        This function modifies the window title attribute of the instance and then updates the actual window title to
+        reflect this change. The version of the PDGui is prefixed to the given title.
 
         """
         self.title = f"PDGui {self.version}  - " + title
@@ -363,14 +367,18 @@ class App(QMainWindow):
 
         Returns
         -------
-        None
-            The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no spreadsheet name will be set.
+        None The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no
+        spreadsheet name will be set.
 
         Notes
         -----
-        This function changes the current working directory to the directory of the script if its directory part is non-empty. It executes the script in the current Python environment using `exec()`. It also sets various notebook flags such as `scripting` and `overwriting`.
+        This function changes the current working directory to the directory of the script if its directory part is
+        non-empty. It executes the script in the current Python environment using `exec()`. It also sets various
+        notebook flags such as `scripting` and `overwriting`.
 
-        After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with `QCoreApplication.processEvents()`.
+        After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a
+        non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with
+        `QCoreApplication.processEvents()`.
 
         """
         self.debugger.print("Start:: read_script")

@@ -45,14 +45,18 @@ class AbinitOutputReader(GenericOutputReader):
 
     Notes
     -----
-    This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be defined or processed.
+    This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for
+    any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it
+    will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be
+    defined or processed.
 
     """
 
     def __init__(self, filenames):
         """Initialize the AbinitOutputReader with given filenames.
 
-        This method initializes an instance of the class, setting up preliminary attributes and conditions for further operations on Abinit output files.
+        This method initializes an instance of the class, setting up preliminary attributes and conditions for further
+        operations on Abinit output files.
 
         Parameters
         ----------
@@ -110,8 +114,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str
-            A string containing energy information, expected to have a numeric value at the 5th position (index 4) which represents energy in Hartrees.
+        line : str A string containing energy information, expected to have a numeric value at the 5th position (index
+        4) which represents energy in Hartrees.
 
         Returns
         -------
@@ -181,12 +185,14 @@ class AbinitOutputReader(GenericOutputReader):
     def _read_occupancy(self, line):
         """Read and calculate the total occupancy from a line or lines in a file.
 
-        This method reads occupancies from a given line, and if necessary, continues reading the next lines from the file until it gathers occupancies equal to the number of bands (`self.nbands`). It then calculates the sum of these occupancies and updates the total number of electrons.
+        This method reads occupancies from a given line, and if necessary, continues reading the next lines from the
+        file until it gathers occupancies equal to the number of bands (`self.nbands`). It then calculates the sum of
+        these occupancies and updates the total number of electrons.
 
         Parameters
         ----------
-        line : str
-            A string containing the occupancies for one or multiple bands. Each occupancy is expected to be separated by a space. The first item, if present, is ignored as it is not an occupancy value.
+        line : str A string containing the occupancies for one or multiple bands. Each occupancy is expected to be
+        separated by a space. The first item, if present, is ignored as it is not an occupancy value.
 
         Returns
         -------
@@ -194,8 +200,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Attributes Modified
         -------------------
-        self.electrons : int
-            Sets the `self.electrons` attribute to the integer value closest to the total sum of the occupancies read. The total is slightly adjusted before conversion to ensure correct rounding.
+        self.electrons : int Sets the `self.electrons` attribute to the integer value closest to the total sum of the
+        occupancies read. The total is slightly adjusted before conversion to ensure correct rounding.
 
         Raises
         ------
@@ -224,8 +230,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str
-            A line of text containing pressure data. The pressure value is expected to be the eighth element (index 7) in a space-separated list.
+        line : str A line of text containing pressure data. The pressure value is expected to be the eighth element
+        (index 7) in a space-separated list.
 
         Returns
         -------
@@ -233,7 +239,9 @@ class AbinitOutputReader(GenericOutputReader):
 
         Notes
         -----
-        The function expects `line` to be a well-formatted string containing at least 8 space-separated values. The eighth value is converted to a float and stored in the `pressure` attribute of the class instance. This function does not return any value.
+        The function expects `line` to be a well-formatted string containing at least 8 space-separated values. The
+        eighth value is converted to a float and stored in the `pressure` attribute of the class instance. This function
+        does not return any value.
 
         """        
         self.pressure = float(line.split()[7])
@@ -242,12 +250,14 @@ class AbinitOutputReader(GenericOutputReader):
     def _read_electrons(self, line):
         """Read and set the number of electrons from a given line.
 
-        This method sets the number of electrons for the object based on the string input. It expects the string to be formatted in a specific way where the seventh item (index 6, as indexing is zero-based) when split by whitespace, is convertible to float and represents the number of electrons.
+        This method sets the number of electrons for the object based on the string input. It expects the string to be
+        formatted in a specific way where the seventh item (index 6, as indexing is zero-based) when split by
+        whitespace, is convertible to float and represents the number of electrons.
 
         Parameters
         ----------
-        line : str
-            The input string containing electron information. It's expected that the seventh item in this string, when split by whitespace, can be converted to a float.
+        line : str The input string containing electron information. It's expected that the seventh item in this string,
+        when split by whitespace, can be converted to a float.
 
         Returns
         -------
@@ -313,12 +323,13 @@ class AbinitOutputReader(GenericOutputReader):
     def _read_energy_cutoff(self, line):
         """Process and update the energy cutoff value from a given line.
 
-        This function reads a line containing energy information, converts the energy value from Hartree to electron volts (eV), and updates the object's energy_cutoff attribute accordingly.
+        This function reads a line containing energy information, converts the energy value from Hartree to electron
+        volts (eV), and updates the object's energy_cutoff attribute accordingly.
 
         Parameters
         ----------
-        line : str
-            A string containing the energy cutoff information. It is expected that the energy value is in Hartree units and is the second token in the string when split by whitespace.
+        line : str A string containing the energy cutoff information. It is expected that the energy value is in Hartree
+        units and is the second token in the string when split by whitespace.
 
         Returns
         -------
@@ -333,8 +344,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str
-            A string containing the cell parameters in Ångström units separated by spaces. This string should start with an identifier followed by three numerical values corresponding to the cell parameters.
+        line : str A string containing the cell parameters in Ångström units separated by spaces. This string should
+        start with an identifier followed by three numerical values corresponding to the cell parameters.
 
         Returns
         -------
@@ -452,7 +463,9 @@ class AbinitOutputReader(GenericOutputReader):
     def _read_natom(self, line):
         """Read and process the number of atoms from a given line.
 
-        This method reads the number of atoms from a given line of text, sets the object's 'nions' attribute to this number, and initializes the '_charges' attribute to a zero array with shape `(nions, 3, 3)`. This method does not return any value.
+        This method reads the number of atoms from a given line of text, sets the object's 'nions' attribute to this
+        number, and initializes the '_charges' attribute to a zero array with shape `(nions, 3, 3)`. This method does
+        not return any value.
 
         Parameters
         ----------
@@ -505,12 +518,13 @@ class AbinitOutputReader(GenericOutputReader):
         # Read the dynamical matrix
         """Read and populate the Hessian matrix from a file.
 
-        This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the Hessian matrix from these data. 
+        This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the
+        Hessian matrix from these data.
 
         Parameters
         ----------
-        line : str
-            The current line being read from the file. This parameter is not directly used in the function but indicates the starting point in the file from where to read the dynamical matrix data.
+        line : str The current line being read from the file. This parameter is not directly used in the function but
+        indicates the starting point in the file from where to read the dynamical matrix data.
 
         Returns
         -------
@@ -518,8 +532,9 @@ class AbinitOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method assumes the file format is structured in a specific way, where each line after the first four lines (which are skipped) contains the indices and value needed to populate the Hessian matrix.
-        The Hessian matrix is used in molecular dynamics and vibrational analysis to describe the second-order interaction between atoms.
+        This method assumes the file format is structured in a specific way, where each line after the first four lines
+        (which are skipped) contains the indices and value needed to populate the Hessian matrix. The Hessian matrix is
+        used in molecular dynamics and vibrational analysis to describe the second-order interaction between atoms.
 
         See Also
         --------
@@ -567,8 +582,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Returns
         -------
-        numpy.ndarray
-            A 2D array where each row represents a field direction and each column represents an atomic displacement in the x, y, and z directions.
+        numpy.ndarray A 2D array where each row represents a field direction and each column represents an atomic
+        displacement in the x, y, and z directions.
 
         """
         for _i in range(5):
@@ -613,18 +628,19 @@ class AbinitOutputReader(GenericOutputReader):
         Notes
         -----
         - This method assumes that the current context includes attributes for 'nions' (the number of ions),
-          'file_descriptor' (a file object for reading), 'unit_cells' (a list of unit cell objects),
-          and 'species' (a list of element species names) along with 'atom_type_list' (a list of indices for species).
-        - It is further assumed that the 'unit_cells' list has at least one unit cell object that supports
-          'set_fractional_coordinates' and 'set_element_names' methods for updating its state.
-        - The method reads a line, splits it to extract fractional coordinates, and then reads additional lines
-          corresponding to the remaining ions ('nions' - 1).
-        - The extracted fractional coordinates are stored in a nested list, which is passed to the last unit cell's
-          'set_fractional_coordinates' method.
-        - If the 'species' attribute is provided along with a coherent 'atom_type_list', the method will also set element names for the 
-          last unit cell using these mappings.
+          'file_descriptor' (a file object for reading), 'unit_cells' (a list of unit cell objects), and 'species' (a
+          list of element species names) along with 'atom_type_list' (a list of indices for species). - It is further
+          assumed that the 'unit_cells' list has at least one unit cell object that supports
+          'set_fractional_coordinates' and 'set_element_names' methods for updating its state. - The method reads a
+          line, splits it to extract fractional coordinates, and then reads additional lines corresponding to the
+          remaining ions ('nions' - 1). - The extracted fractional coordinates are stored in a nested list, which is
+          passed to the last unit cell's 'set_fractional_coordinates' method. - If the 'species' attribute is provided
+          along with a coherent 'atom_type_list', the method will also set element names for the  last unit cell using
+          these mappings.
 
-        No direct returns but updates the state of the last unit cell in the 'unit_cells' list by setting its fractional coordinates and optionally, element names.
+
+        No direct returns but updates the state of the last unit cell in the 'unit_cells' list by setting its fractional
+        coordinates and optionally, element names.
 
         """        
         linea = line.split()[1:]
@@ -644,7 +660,9 @@ class AbinitOutputReader(GenericOutputReader):
     def _read_lattice_vectors(self, line):
         """Read lattice vectors from a line of a file and update the object state.
 
-        Reads three lines starting from the given line from the file associated with the object's file descriptor, interprets them as lattice vectors, scales them according to the object's _acell attribute, and updates the object by appending a new `UnitCell` to its `unit_cells` list and updating the `ncells` and `volume` attributes.
+        Reads three lines starting from the given line from the file associated with the object's file descriptor,
+        interprets them as lattice vectors, scales them according to the object's _acell attribute, and updates the
+        object by appending a new `UnitCell` to its `unit_cells` list and updating the `ncells` and `volume` attributes.
 
         Parameters
         ----------
@@ -657,15 +675,21 @@ class AbinitOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method modifies the internal state of the object by adding a new `UnitCell` to `unit_cells`, updating `ncells` to the new total number of unit cells, and updating `volume` to the volume of the most recently added `UnitCell`.
+        This method modifies the internal state of the object by adding a new `UnitCell` to `unit_cells`, updating
+        `ncells` to the new total number of unit cells, and updating `volume` to the volume of the most recently added
+        `UnitCell`.
 
-        This method assumes that `line` is formatted correctly, with lattice vector components being float-convertible strings separated by spaces. It also assumes that `self.file_descriptor` is an open file object positioned appropriately to read the subsequent lines for the b and c vectors.
+        This method assumes that `line` is formatted correctly, with lattice vector components being float-convertible
+        strings separated by spaces. It also assumes that `self.file_descriptor` is an open file object positioned
+        appropriately to read the subsequent lines for the b and c vectors.
 
-        This method requires that `self._acell` is already set to an iterable of three scaling factors corresponding to each of the a, b, and c lattice vectors.
+        This method requires that `self._acell` is already set to an iterable of three scaling factors corresponding to
+        each of the a, b, and c lattice vectors.
 
         See Also
         --------
-        UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its constructor.
+        UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its
+        constructor.
 
         """        
         linea = line.split()

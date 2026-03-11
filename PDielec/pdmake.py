@@ -15,7 +15,8 @@
 #
 """A Makefile style system for testing and installing PDGui and PDielec.
 
-This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
+This script accepts various command-line arguments to perform different actions such as running tests, benchmarks,
+cleaning build directories, and installing scripts.
 
 Command line options
 --------------------
@@ -195,7 +196,8 @@ benchmarks = [
 def usage():
     """Print usage instructions for the command line tool.
 
-    This function outputs instructions to `sys.stderr` for using the command line tool, including available commands and options. It also handles platform-specific instructions for Linux systems.
+    This function outputs instructions to `sys.stderr` for using the command line tool, including available commands and
+    options. It also handles platform-specific instructions for Linux systems.
 
     SystemExit
         This function will terminate the program after displaying the usage message.
@@ -546,7 +548,7 @@ def compare_files(file1,file2):
     return nerrors
 
 
-def runP2CifTest(title, instructions, regenerate):
+def run_p2cif_test(title, instructions, regenerate):
     """Run a test on p2cif.
 
     Parameters
@@ -851,10 +853,10 @@ def read_pd_makefile(directory,filename):
 
     Returns
     -------
-    tuple
-        A tuple returning a dictionary of instructions
-        - title (str): The title for the makefile, determined based on the `settings['title']` value or the directory name, or the current working directory.
-        - instructions (dict): A dictionary where each key is an instruction extracted from the makefile, and the value is a list of arguments for that instruction.
+    tuple A tuple returning a dictionary of instructions - title (str): The title for the makefile, determined based on
+    the `settings['title']` value or the directory name, or the current working directory. - instructions (dict): A
+    dictionary where each key is an instruction extracted from the makefile, and the value is a list of arguments for
+    that instruction.
 
     Raises
     ------
@@ -965,7 +967,7 @@ def run_pd_makefile(directory,pdmakefile,regenerate,benchmarks=False):
         elif key == "vibanalysis":
             run_vib_analysis(title,parameters,regenerate)
         elif key == "p2cif":
-            runP2CifTest(title,parameters,regenerate)
+            run_p2cif_test(title,parameters,regenerate)
         elif key == "pdgui":
             if viewing:
                 parameters.extend(["-script", "script.py"])
@@ -981,14 +983,17 @@ def run_pd_makefile(directory,pdmakefile,regenerate,benchmarks=False):
 def run_clean():
     """Clean old results from the Examples directory.
 
-    This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.
+    This function navigates to the root directory and removes specific file types related to old results. Supported file
+    types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms
+    and will return immediately if attempted.
 
     Notes
     -----
-    - The function checks the operating system and will not execute on Windows systems (`os.name == 'nt'`).
-    - It navigates to a directory specified by a global variable `rootDirectory`.
-    - Uses `subprocess.run` with `shell=True` to execute shell commands for deleting files. This operation involves running `find` commands to locate and remove files with specified extensions.
-    - It assumes that the `rootDirectory` global variable and necessary imports (`os`, `subprocess`) are correctly defined elsewhere.
+    - The function checks the operating system and will not execute on Windows systems (`os.name == 'nt'`). - It
+      navigates to a directory specified by a global variable `rootDirectory`. - Uses `subprocess.run` with `shell=True`
+      to execute shell commands for deleting files. This operation involves running `find` commands to locate and remove
+      files with specified extensions. - It assumes that the `rootDirectory` global variable and necessary imports
+      (`os`, `subprocess`) are correctly defined elsewhere.
 
     Raises
     ------
@@ -1073,7 +1078,8 @@ def find_root_directory(start):
 def main():
     """Process command line arguments and execute actions (main routine).
 
-    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
+    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks,
+    cleaning build directories, and installing scripts.
 
     Command line options
     --------------------
@@ -1099,14 +1105,14 @@ def main():
 
     Raises
     ------
-    SystemExit
-        If an invalid command line argument is provided or certain conditions are not met (e.g., invalid root directory, command not executed in the PDielec home directory).
+    SystemExit If an invalid command line argument is provided or certain conditions are not met (e.g., invalid root
+    directory, command not executed in the PDielec home directory).
 
     Notes
     -----
-    - It uses global variables for configuration options like `debug`, `viewing`, `settings`, `rootDirectory`, and `useLocal`.
-    - Requires the `os`, `sys`, and specific project function imports to function.
-    - The script changes the current working directory multiple times, which affects relative path usage.
+    - It uses global variables for configuration options like `debug`, `viewing`, `settings`, `rootDirectory`, and
+      `useLocal`. - Requires the `os`, `sys`, and specific project function imports to function. - The script changes
+      the current working directory multiple times, which affects relative path usage.
 
     """    
     global debug

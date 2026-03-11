@@ -62,87 +62,87 @@ class SingleCrystalLayer:
 
     Attributes
     ----------
-    material : Material
-        The material of the layer. (See :class:`~PDielec.Materials.Material`)
-    hkl : list of int
-        The Miller indices of the plane of interest in the crystal.
-    incoherentOption : str
-        The incoherent option for the layer.
-    azimuthal : float
-        The azimuthal angle of rotation of the crystal about the z-axis, in degrees.
-    thickness : float
-        The thickness of the layer in the specified units.
-    thicknessUnit : str
-        The units used for the thickness measurement.
-    dielectricFlag : bool
-        A flag indicating if the layer material is the dielectric material.
-    euler : ndarray
-        The Euler rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with `dtype=np.longdouble`.
-    euler_inverse : ndarray
-        The inverse of the Euler rotation matrix, stored as a 3x3 numpy array with `dtype=np.longdouble`.
-    labframe_w : 
-        Placeholder attribute for GUI interactions, not initialized within the class definition.
-    labframe : ndarray
-        The lattice vectors of the crystal in the laboratory frame, stored as a numpy array.
-    phaseShift : float
-        The phase shift for the layer.
+    material : Material The material of the layer. (See :class:`~PDielec.Materials.Material`) hkl : list of int The
+    Miller indices of the plane of interest in the crystal. incoherentOption : str The incoherent option for the layer.
+    azimuthal : float The azimuthal angle of rotation of the crystal about the z-axis, in degrees. thickness : float The
+    thickness of the layer in the specified units. thicknessUnit : str The units used for the thickness measurement.
+    dielectricFlag : bool A flag indicating if the layer material is the dielectric material. euler : ndarray The Euler
+    rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with
+    `dtype=np.longdouble`. euler_inverse : ndarray The inverse of the Euler rotation matrix, stored as a 3x3 numpy array
+    with `dtype=np.longdouble`. labframe_w :  Placeholder attribute for GUI interactions, not initialized within the
+    class definition. labframe : ndarray The lattice vectors of the crystal in the laboratory frame, stored as a numpy
+    array. phaseShift : float The phase shift for the layer.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Methods
     -------
-    print()
-        Prints the main attributes of the layer.
-    get_phase_shift()
-        Returns the phase shift for the layer.
-    set_phase_shift(phaseShift)
-        Sets the phase shift for the layer.
-    set_azimuthal(angle)
-        Sets the azimuthal angle of the layer and recalculates the Euler matrix.
-    is_coherent()
-        Returns True if the layer is coherent, False otherwise.
-    get_incoherent_option()
-        Returns the incoherent interaction option for the layer.
-    set_incoherent_option(option)
-        Sets the incoherent interaction option for the layer.
-    get_azimuthal()
-        Returns the azimuthal angle.
-    set_thickness(thickness)
-        Sets the thickness of the layer.
-    get_thickness()
-        Returns the thickness of the layer.
-    get_thickness_in_metres()
-        Converts and returns the thickness of the layer in meters.
-    set_thickness_unit(thicknessUnit)
-        Sets the unit of thickness measurement.
-    get_thickness_unit()
-        Returns the unit of thickness measurement.
-    set_hkl(hkl)
-        Sets the Miller indices for the plane of interest in the crystal.
-    get_hkl()
-        Returns the Miller indices of the plane of interest.
-    get_name()
-        Returns the name of the material.
-    get_material()
-        Returns the material object associated with the layer.
-    get_permittivity_function()
-        Returns the permittivity tensor for the crystal at the surface and azimuthal angle specified.
-    is_tensor()
-        Returns True if the material of the layer is a tensor material, False otherwise.
-    is_scalar()
-        Returns True if the material of the layer is a scalar material, False otherwise.
-    is_dielectric()
-        Returns True if the material of the layer is the dielectric being studied.
-    calculate_euler_matrix()
-        Calculates the Euler angles for the crystal to lab frame transformation.
-    azimuthal_rotation_matrix(angle)
-        Calculates a rotation matrix for the azimuthal angle.
-    change_lab_frame_info()
-        Changes the Lab Frame Information, used with GUI interactions.
-    get_lab_frame()
-        Returns the information of the crystal axes in the laboratory frame.
-    calculate_lab_frame_epsilon(v)
-        Computes the permittivity tensor for the material at a given frequency and transforms it to the laboratory frame.
-    invert(m)
-        Calculates the inverse of a given 3x3 complex matrix.
+    print() Prints the main attributes of the layer. get_phase_shift() Returns the phase shift for the layer.
+    set_phase_shift(phaseShift) Sets the phase shift for the layer. set_azimuthal(angle) Sets the azimuthal angle of the
+    layer and recalculates the Euler matrix. is_coherent() Returns True if the layer is coherent, False otherwise.
+    get_incoherent_option() Returns the incoherent interaction option for the layer. set_incoherent_option(option) Sets
+    the incoherent interaction option for the layer. get_azimuthal() Returns the azimuthal angle.
+    set_thickness(thickness) Sets the thickness of the layer. get_thickness() Returns the thickness of the layer.
+    get_thickness_in_metres() Converts and returns the thickness of the layer in meters.
+    set_thickness_unit(thicknessUnit) Sets the unit of thickness measurement. get_thickness_unit() Returns the unit of
+    thickness measurement. set_hkl(hkl) Sets the Miller indices for the plane of interest in the crystal. get_hkl()
+    Returns the Miller indices of the plane of interest. get_name() Returns the name of the material. get_material()
+    Returns the material object associated with the layer. get_permittivity_function() Returns the permittivity tensor
+    for the crystal at the surface and azimuthal angle specified. is_tensor() Returns True if the material of the layer
+    is a tensor material, False otherwise. is_scalar() Returns True if the material of the layer is a scalar material,
+    False otherwise. is_dielectric() Returns True if the material of the layer is the dielectric being studied.
+    calculate_euler_matrix() Calculates the Euler angles for the crystal to lab frame transformation.
+    azimuthal_rotation_matrix(angle) Calculates a rotation matrix for the azimuthal angle. change_lab_frame_info()
+    Changes the Lab Frame Information, used with GUI interactions. get_lab_frame() Returns the information of the
+    crystal axes in the laboratory frame. calculate_lab_frame_epsilon(v) Computes the permittivity tensor for the
+    material at a given frequency and transforms it to the laboratory frame. invert(m) Calculates the inverse of a given
+    3x3 complex matrix.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Notes
     -----
@@ -704,11 +704,11 @@ class ShowLayerWindow(QDialog):
         Return the :class:`SingleCrystalLayer` instance being edited or displayed.
     draw_layer_widget()
         Create a QWidget displaying all information about the layer.
-    drawLayerWidgetLine1()
+    draw_layer_widget_line1()
         Add widgets to display the first line of layer properties.
-    drawLayerWidgetLine2()
+    draw_layer_widget_line2()
         Add widgets to display the second line of layer properties related to the crystallographic direction (hkl).
-    drawLayerWidgetLine3()
+    draw_layer_widget_line3()
         Add widgets for displaying the third line of layer properties related to lab frame information.
     change_lab_frame_info()
         Update the displayed lab frame information based on the layer's current state.
@@ -800,17 +800,17 @@ class ShowLayerWindow(QDialog):
         material = self.layer.get_material()
         materialName = material.get_name()
         form.addRow(label,QLabel(materialName))
-        label,layout = self.drawLayerWidgetLine1()
+        label,layout = self.draw_layer_widget_line1()
         form.addRow(label,layout)
         if self.layer.get_material().is_tensor():
-            label,layout = self.drawLayerWidgetLine2()
+            label,layout = self.draw_layer_widget_line2()
             form.addRow(label,layout)
-            label,layout = self.drawLayerWidgetLine3()
+            label,layout = self.draw_layer_widget_line3()
             form.addRow(label,layout)
         widget.setLayout(form)
         return widget
 
-    def drawLayerWidgetLine1(self):
+    def draw_layer_widget_line1(self):
         """Add the first line of the layer description.
 
         Shows the material name and the film thickness and units. 
@@ -825,7 +825,7 @@ class ShowLayerWindow(QDialog):
 
         """
         hbox = QHBoxLayout()
-        self.debugger.print("drawLayerWidgetLine1")
+        self.debugger.print("draw_layer_widget_line1")
         # Define material thickness
         materialThickness = self.layer.get_thickness()
         # Handle thickness
@@ -852,7 +852,7 @@ class ShowLayerWindow(QDialog):
         hbox.addWidget(thickness_units_cb)
         return thicknessLabel,hbox
 
-    def drawLayerWidgetLine2(self):
+    def draw_layer_widget_line2(self):
         """Add the second line of the layer description.
 
         Shows the hkl specification and the azimuthal angle
@@ -866,7 +866,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("drawLayerWidgetLine2")
+        self.debugger.print("draw_layer_widget_line2")
         hbox = QHBoxLayout()
         # define hkl
         h_sb = QSpinBox(self)
@@ -906,7 +906,7 @@ class ShowLayerWindow(QDialog):
         hbox.addWidget(azimuthal_angle_sb)
         return hklLabel,hbox
 
-    def drawLayerWidgetLine3(self):
+    def draw_layer_widget_line3(self):
         """Add the third line of the layer description.
 
         Shows the relationship between crystal and labframe coordinate systems
@@ -920,7 +920,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("drawLayerWidgetLine3")
+        self.debugger.print("draw_layer_widget_line3")
         hbox = QHBoxLayout()
         label = QLabel("Lab frame\ninformation", self)
         label.setToolTip("The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y")

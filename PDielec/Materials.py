@@ -33,10 +33,12 @@ from PDielec.Utilities import Debug
 class MaterialsDataBase:
     """A class for managing a database of materials' properties.
 
-    This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others.
-    Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).
-    The get_material() method returns a material with a dielectric function of the appropriate type.
-    There are routines which read (process) the data stored for the following dielectric functions:
+    This database is initialized from an Excel spreadsheet which contains various material properties including names,
+    densities, refractive indices, and permittivities, among others. Additional functionalities include validation
+    checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g.,
+    constant permittivity, tabulated refractive index). The get_material() method returns a material with a dielectric
+    function of the appropriate type. There are routines which read (process) the data stored for the following
+    dielectric functions:
 
     - constant refractive index
     - constant permittivity
@@ -596,12 +598,12 @@ class MaterialsDataBase:
 class Material:
     """A class for representing materials with properties like name, density, permittivity, and unit cell.
 
-    The Material class also contains the permittivity object for the material.  
-    The permittivity object is an instance of :class:`~PDielec.DielectricFunction.DielectricFunction` or one its children.
-    The permittivity object is responsible for calculating the permittivity at the given frequency.
-    The subclasses which inherit from the Material class are: Constant, External, DrudeLorentz, FPSQ, Sellmeier, and Tabulated.
-    Each subclass has an initialisation routine which instantiates the permittivity object of the appropriate type for the material.
-    The relationship between the Material subclass and the DielectricFunction subclass of the permittivity object is shown below.
+    The Material class also contains the permittivity object for the material.   The permittivity object is an instance
+    of :class:`~PDielec.DielectricFunction.DielectricFunction` or one its children. The permittivity object is
+    responsible for calculating the permittivity at the given frequency. The subclasses which inherit from the Material
+    class are: Constant, External, DrudeLorentz, FPSQ, Sellmeier, and Tabulated. Each subclass has an initialisation
+    routine which instantiates the permittivity object of the appropriate type for the material. The relationship
+    between the Material subclass and the DielectricFunction subclass of the permittivity object is shown below.
 
     +---------------------------+-------------------------------------------------------------+
     + Material subclass         + DielectricFunction subclass                                 +
@@ -625,14 +627,14 @@ class Material:
 
     Parameters
     ----------
-    name : str
-        The name of the material.
-    density : float, optional
-        The density of the material. If not provided and a cell is given, it will be calculated based on the cell.
-    permittivityObject : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional
-        An object representing the dielectric function of the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
-    cell : :class:`~PDielec.UnitCell.UnitCell`, optional
-        An object representing the unit cell of the material. If provided without a density, the density will be calculated from this cell. (See :class:`~PDielec.UnitCell.UnitCell`)
+    name : str The name of the material. density : float, optional The density of the material. If not provided and a
+    cell is given, it will be calculated based on the cell. permittivityObject :
+    :class:`~PDielec.DielectricFunction.DielectricFunction`, optional An object representing the dielectric function of
+    the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for
+    calculating scalar/tensor permittivity. (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its
+    sub-classes) cell : :class:`~PDielec.UnitCell.UnitCell`, optional An object representing the unit cell of the
+    material. If provided without a density, the density will be calculated from this cell. (See
+    :class:`~PDielec.UnitCell.UnitCell`)
 
     Attributes
     ----------
@@ -695,18 +697,20 @@ class Material:
 
         Parameters
         ----------
-        name : str
-            The name of the material.
-        density : float, optional
-            The density of the material. If not provided and a cell is given, it will be calculated based on the cell.
-        permittivityObject : DielectricFunction, optional
-            An object representing the dielectric function of the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity.
-        cell : unitCell, optional
-            An object representing the unit cell of the material. If provided without a density, the density will be calculated from this cell.
+        name : str The name of the material. density : float, optional The density of the material. If not provided and
+        a cell is given, it will be calculated based on the cell. permittivityObject : DielectricFunction, optional An
+        object representing the dielectric function of the material. This is intended to be passed by classes that
+        inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. cell :
+        unitCell, optional An object representing the unit cell of the material. If provided without a density, the
+        density will be calculated from this cell.
+
+
 
         Notes
         -----
-        The material object is created from the name, density, and unit cell. The permittivity object is specifically created by the children of Material, indicating it's a derived property or capability not initialized directly by the Material's constructor but through some other process or method within the child classes.
+        The material object is created from the name, density, and unit cell. The permittivity object is specifically
+        created by the children of Material, indicating it's a derived property or capability not initialized directly
+        by the Material's constructor but through some other process or method within the child classes.
 
         """
         self.density            = density
@@ -1151,26 +1155,27 @@ class FPSQ(Material):
 
     Parameters
     ----------
-    name : str
-        The name of the material.
-    epsinf : array_like
-        Epsilon infinity (eps0), either a 3x3 list or a 3x3 array representing the dielectric constant at infinite frequency.
-    omega_tos : list
-        The transverse optical (TO) frequencies.
-    gamma_tos : list
-        The TO absorption widths.
-    omega_los : list
-        The longitudinal optical (LO) frequencies.
-    gamma_los : list
-        The LO absorption widths.
-    density : float, optional
-        The density of the material in grams per milliliter (g/ml).
-    cell : unitCell, optional
-        The unit cell of the material.
+    name : str The name of the material. epsinf : array_like Epsilon infinity (eps0), either a 3x3 list or a 3x3 array
+    representing the dielectric constant at infinite frequency. omega_tos : list The transverse optical (TO)
+    frequencies. gamma_tos : list The TO absorption widths. omega_los : list The longitudinal optical (LO) frequencies.
+    gamma_los : list The LO absorption widths. density : float, optional The density of the material in grams per
+    milliliter (g/ml). cell : unitCell, optional The unit cell of the material.
+
+
+
+
+
+
+
+
+
+
+
 
     Notes
     -----
-    The FPSQ (fitted phonon simple quantum) model is used to describe the permittivity of the material. This model is based on the harmonic oscillator model and describes the permittivity as a function of frequency.
+    The FPSQ (fitted phonon simple quantum) model is used to describe the permittivity of the material. This model is
+    based on the harmonic oscillator model and describes the permittivity as a function of frequency.
 
     """
 
@@ -1275,12 +1280,12 @@ class Tabulated(Material):
 
     Notes
     -----
-    - This class is designed to handle materials with a constant permittivity as well as those
-      requiring more complex permittivity tensors.
-    - The permittivity can be defined using either a scalar for simple materials or tensors for materials
-      that require a support matrix.
-    - The constructor converts the input lists of frequencies (`vs_cm1`) and permittivities into numpy arrays,
-      and then generates the appropriate permittivity object depending on the complexity of the material's permittivities.
+    - This class is designed to handle materials with a constant permittivity as well as those requiring more complex
+      permittivity tensors. - The permittivity can be defined using either a scalar for simple materials or tensors for
+      materials that require a support matrix. - The constructor converts the input lists of frequencies (`vs_cm1`) and
+      permittivities into numpy arrays, and then generates the appropriate permittivity object depending on the
+      complexity of the material's permittivities.
+
 
     Examples
     --------

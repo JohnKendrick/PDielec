@@ -31,8 +31,8 @@ class ExperimentOutputReader(GenericOutputReader):
 
     Parameters
     ----------
-    names : Various types
-        Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
+    names : Various types Initial parameter used for construction, typically a string or list of identifiers that this
+    instance will process or hold.
 
     Attributes
     ----------
@@ -56,8 +56,8 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        names : Various types
-            Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
+        names : Various types Initial parameter used for construction, typically a string or list of identifiers that
+        this instance will process or hold.
 
         Attributes
         ----------
@@ -467,15 +467,16 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method reads the 'nfreq' (number of frequencies) from the initial given line. Then, for each frequency, it reads
-        the corresponding line to extract the frequency and its oscillator strength. These values are stored in the object's
-        'frequencies' and 'oscillator_strengths' lists, respectively. Each oscillator strength is initialized as a diagonal
-        tensor with identical values across the diagonal.
+        This method reads the 'nfreq' (number of frequencies) from the initial given line. Then, for each frequency, it
+        reads the corresponding line to extract the frequency and its oscillator strength. These values are stored in
+        the object's 'frequencies' and 'oscillator_strengths' lists, respectively. Each oscillator strength is
+        initialized as a diagonal tensor with identical values across the diagonal.
 
-        The method assumes 'line' is in a specific format, where the first entry in a line after splitting is the frequency
-        and the second entry is the oscillator strength. It also uses '_read_line' method, which is not defined in the snippet,
-        to read each subsequent line for the frequencies and their oscillator strengths. Furthermore, 'initialise_diagonal_tensor'
-        is used to convert the scalar strength values into tensor form, which is not detailed here.
+        The method assumes 'line' is in a specific format, where the first entry in a line after splitting is the
+        frequency and the second entry is the oscillator strength. It also uses '_read_line' method, which is not
+        defined in the snippet, to read each subsequent line for the frequencies and their oscillator strengths.
+        Furthermore, 'initialise_diagonal_tensor' is used to convert the scalar strength values into tensor form, which
+        is not detailed here.
 
         """        
         nfreq = int(line.split()[1])
@@ -502,7 +503,11 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.
+        This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the
+        information read from the input line(s). Initially, it reads the total number of species from the first line.
+        Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists,
+        respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The
+        `nspecies` attribute is updated with the current number of species after each iteration.
 
         """        
         nspecies = int(line.split()[1])
@@ -562,8 +567,9 @@ class ExperimentOutputReader(GenericOutputReader):
     def _read_lattice_vectors(self, line):
         """Read and process lattice vectors from an input line, then updates internal structures with the new unit cell.
 
-        This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
-        The lattice vectors are assumed to be in Angstrom
+        This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and
+        update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal
+        permittivity. The lattice vectors are assumed to be in Angstrom
 
         Parameters
         ----------
@@ -674,12 +680,15 @@ class ExperimentOutputReader(GenericOutputReader):
     def _read_fractional_coordinates(self, line):
         """Read and process fractional coordinates from a string line.
 
-        This method reads a string representing a line containing the number of ions followed by the fractional coordinates and species of each ion. It updates the instance variables associated with the ions' type, position, mass, and further initializes oscillator strengths and frequencies arrays if they haven't been initialized yet.
+        This method reads a string representing a line containing the number of ions followed by the fractional
+        coordinates and species of each ion. It updates the instance variables associated with the ions' type, position,
+        mass, and further initializes oscillator strengths and frequencies arrays if they haven't been initialized yet.
 
         Parameters
         ----------
-        line : str
-            The line from which the number of ions and their fractional coordinates will be extracted. The line format is expected to be 'num_ions species x y z' for each ion, where 'num_ions' is the total number of ions, 'species' is the species identifier, and 'x y z' are the fractional coordinates.
+        line : str The line from which the number of ions and their fractional coordinates will be extracted. The line
+        format is expected to be 'num_ions species x y z' for each ion, where 'num_ions' is the total number of ions,
+        'species' is the species identifier, and 'x y z' are the fractional coordinates.
 
         Returns
         -------
@@ -687,15 +696,16 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method updates several instance variables:
-        - `nions`: The total number of ions as determined from `line`.
-        - `ions_per_type`: A list that tracks the number of ions per species.
-        - `masses`: A list of masses for each ion, ordered accordingly.
-        - `atom_type_list`: A list mapping each ion to its species index.
-        - `unit_cells[-1]`: The coordinates and element names for ions in the most recent unit cell are set based on the processed line.
-        - Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays if they haven't been already.
+        This method updates several instance variables: - `nions`: The total number of ions as determined from `line`. -
+        `ions_per_type`: A list that tracks the number of ions per species. - `masses`: A list of masses for each ion,
+        ordered accordingly. - `atom_type_list`: A list mapping each ion to its species index. - `unit_cells[-1]`: The
+        coordinates and element names for ions in the most recent unit cell are set based on the processed line. -
+        Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays
+        if they haven't been already.
 
-        Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
+
+        Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled
+        outside of its scope.
 
         """        
         ions = []

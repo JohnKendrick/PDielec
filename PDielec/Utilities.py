@@ -86,7 +86,9 @@ def find_program_from_name( filename ):
 
     Notes
     -----
-    This function examines the file extension and, in some cases, the presence of specific files in the same directory, to determine the associated simulation program. It recognizes files from several popular materials simulation programs, such as 'phonopy', 'gulp', 'vasp', and others.
+    This function examines the file extension and, in some cases, the presence of specific files in the same directory,
+    to determine the associated simulation program. It recognizes files from several popular materials simulation
+    programs, such as 'phonopy', 'gulp', 'vasp', and others.
 
     Examples
     --------
@@ -153,16 +155,18 @@ def find_program_from_name( filename ):
 def get_reader( name, program, debug=False):
     """Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
 
-    This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.
+    This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP,
+    etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the
+    specified quantum mechanical program.
 
     Parameters
     ----------
-    name : str
-        The primary filepath or name associated with the output file(s).
-    program : str
-        The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit', 'qe', and 'phonopy'.
-    debug : boolean
-        Optional.  If true print debug information.  Default is false
+    name : str The primary filepath or name associated with the output file(s). program : str The name of the simulation
+    program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit', 'qe', and 'phonopy'. debug : boolean
+    Optional.  If true print debug information.  Default is false
+
+
+
 
     Returns
     -------
@@ -287,7 +291,8 @@ class Debug:
 
     Notes
     -----
-    The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+    The `print` method provides a flexible way to include additional information along with the base debug message,
+    allowing for a detailed and adjustable debugging output.
 
     """
 

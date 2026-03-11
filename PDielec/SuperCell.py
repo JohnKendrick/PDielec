@@ -308,7 +308,8 @@ class SuperCell:
 
         Notes
         -----
-        The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
+        The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then
+        builds edges between these corners in XYZ space.
 
         """
         if originABC is None:

@@ -183,22 +183,23 @@ def get_material(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_def
 def calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method="Scattering matrix"):
     """Calculate a single crystal spectrum.
 
-    Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle
-    the global azimuthal angle and optional specification of the method of calculation.
-    Information about the layer class can be found here (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
+    Calculate a single crystal spectrum from the frequencies, a list of layers
+    (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle the global azimuthal angle and
+    optional specification of the method of calculation. Information about the layer class can be found here
+    (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
 
     Parameters
     ----------
-    frequencies_cm1 : list
-        A list of frequencies in cm-1.
-    layers : list
-        A list of layers ( :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
-    incident_angle : float
-        The incident angle in degrees.
-    global_azimuthal_angle : float
-        The global azimuthal angle in degrees.
-    method : str
-        The method for solving Maxwell's equation either 'Scattering matrix' (the default) or 'Transfer matrix. See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more information.
+    frequencies_cm1 : list A list of frequencies in cm-1. layers : list A list of layers (
+    :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`) incident_angle : float The incident angle in degrees.
+    global_azimuthal_angle : float The global azimuthal angle in degrees. method : str The method for solving Maxwell's
+    equation either 'Scattering matrix' (the default) or 'Transfer matrix. See
+    (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more
+    information.
+
+
+
+
 
     Returns
     -------

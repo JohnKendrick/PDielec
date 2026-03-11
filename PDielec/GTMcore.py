@@ -58,8 +58,8 @@ The optical system is assembled using the :py:class:`System` class.
     
     *15-10-2021*:
         
-        - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary parts of the wavevectors
-        - Corrected a sign error in gamma32 that lead to field discontinuities
+        - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary
+          parts of the wavevectors - Corrected a sign error in gamma32 that lead to field discontinuities
 
     *23 June 2021*:
         - integrated the code into pdielec and pdgui
@@ -282,18 +282,18 @@ class Layer:
 
         Parameters
         ----------
-        thickness : float, optional
-            Thickness of the material layer, specified in meters. Default is 1e-06.
-        epsilon : np.ndarray or None, optional
-            The dielectric tensor of the material. If `None`, an identity tensor is used. Default is None.
-        theta : float, optional
-            The Euler angle theta (rotation around z-axis) in radians. Default is 0.
-        phi : float, optional
-            The Euler angle phi (rotation around x-axis) in radians. Default is 0.
-        psi : float, optional
-            The Euler angle psi (rotation around z-axis again) in radians. Defaults to 0.
-        exponent_threshold : float, optional
-            The threshold for the exponent under which the calculations are considered safe from overflow errors. Default is 700.
+        thickness : float, optional Thickness of the material layer, specified in meters. Default is 1e-06. epsilon :
+        np.ndarray or None, optional The dielectric tensor of the material. If `None`, an identity tensor is used.
+        Default is None. theta : float, optional The Euler angle theta (rotation around z-axis) in radians. Default is
+        0. phi : float, optional The Euler angle phi (rotation around x-axis) in radians. Default is 0. psi : float,
+        optional The Euler angle psi (rotation around z-axis again) in radians. Defaults to 0. exponent_threshold :
+        float, optional The threshold for the exponent under which the calculations are considered safe from overflow
+        errors. Default is 700.
+
+
+
+
+
 
         Attributes
         ----------
@@ -1384,7 +1384,10 @@ class System:
     -----
     Layers can be added and removed (not inserted).
 
-    The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.
+    The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls
+    :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they
+    require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of
+    an incident plane wave using :py:func:`calculate_Efield`.
 
     """
 
@@ -1657,9 +1660,14 @@ class System:
         -----
         **IMPORTANT**
 
-        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions. The new definition of this function **BREAKS compatibility** with the previous one.
+        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined
+          mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.
+          The new definition of this function **BREAKS compatibility** with the previous one.
 
-        - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well defined. The intensity reflection coefficient is also correct. However, the intensity transmission coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity coefficients.
+        - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well
+          defined. The intensity reflection coefficient is also correct. However, the intensity transmission
+          coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity
+          coefficients.
 
         Note also the different ordering of the coefficients, for consistency with Passler's matlab code.
 
@@ -1891,7 +1899,8 @@ class ScatteringMatrixSystem(System):
     def calculate_r_t(self, zeta_sys):
         """Calculate the reflectance and transmittance coefficients using scattering matrix information.
 
-        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
+        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector
+        of transmitted field.
 
         Parameters
         ----------
@@ -2039,7 +2048,9 @@ class SMatrix:
     def unit_matrix(self):
         """Reset the scattering parameters to form a unit matrix.
 
-        Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11 and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the scattering parameters through `calculate_s`.
+        Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11
+        and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the
+        scattering parameters through `calculate_s`.
 
         Parameters
         ----------
@@ -2051,7 +2062,8 @@ class SMatrix:
 
         Notes
         -----
-        This method is typically used to initialize or reset the scattering parameters in a two-port network representation to a known state before performing further operations or calculations.
+        This method is typically used to initialize or reset the scattering parameters in a two-port network
+        representation to a known state before performing further operations or calculations.
 
         """        
         self.S11 = np.zeros( (2,2) )
@@ -2094,7 +2106,8 @@ class SMatrix:
     def calculate_s(self):
         """Calculate and assign the scattering parameter matrix, S.
 
-        Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
+        Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering
+        parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
 
         - `S11` is placed in the top-left quadrant.
         - `S22` is placed in the bottom-right quadrant.
@@ -2112,7 +2125,8 @@ class SMatrix:
 
         Notes
         -----
-        The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before calling this method.
+        The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before
+        calling this method.
 
         """        
         self.S = np.zeros( (4,4),dtype=np.cdouble )

@@ -24,6 +24,7 @@ import sys
 import numpy as np
 import scipy.optimize as sc
 from scipy.stats import lognorm
+from scipy       import sparse
 
 #
 # Modify the crossover used in the PyMieScatt Mie routines
@@ -309,9 +310,9 @@ def initialise_ellipsoid_depolarisation_matrix(unique, aoverb):
 def fibonacci_sphere(samples=1,randomize=True):
     """Generate points on a sphere using the Fibonacci lattice method.
 
-    This method generates points on the surface of a sphere in a way that they are evenly distributed. The distribution follows
-    the Fibonacci Sphere algorithm, which is useful for creating well-distributed points across the surface of a sphere.
-    Optionally, the points can be randomized slightly to avoid patterns.
+    This method generates points on the surface of a sphere in a way that they are evenly distributed. The distribution
+    follows the Fibonacci Sphere algorithm, which is useful for creating well-distributed points across the surface of a
+    sphere. Optionally, the points can be randomized slightly to avoid patterns.
 
     Parameters
     ----------
@@ -328,8 +329,8 @@ def fibonacci_sphere(samples=1,randomize=True):
 
     Notes
     -----
-    - The algorithm works by placing points at equal distances along a spiral around the sphere.
-    - The `randomize` option applies a random offset to the spiral, which can help in reducing visual patterns in the distribution.
+    - The algorithm works by placing points at equal distances along a spiral around the sphere. - The `randomize`
+      option applies a random offset to the spiral, which can help in reducing visual patterns in the distribution.
 
     Examples
     --------
@@ -614,8 +615,8 @@ def rodridgues_rotations(efield):
 
     Parameters
     ----------
-    efield : array_like
-        The field directions, where each direction is used to calculate a random rotation about that axis. Assumes the field is real.
+    efield : array_like The field directions, where each direction is used to calculate a random rotation about that
+    axis. Assumes the field is real.
 
     Returns
     -------
@@ -1288,7 +1289,8 @@ def bruggeman_minimise( eps1, eps2, shape, L, f2, size, epsbr):
 
     Notes
     -----
-    This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+    This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of
+    Tom G. Mackay and Akhlesh Lakhtakia.
 
     """
     f1 = 1.0 - f2
@@ -1333,7 +1335,8 @@ def bruggeman_iter( eps1, eps2, shape, L, f2, size, epsbr):
 
     Notes
     -----
-    This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+    This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of
+    Tom G. Mackay and Akhlesh Lakhtakia.
 
     """
     f1 = 1.0 - f2
@@ -1705,36 +1708,36 @@ def solve_effective_medium_equations(
 
     Parameters
     ----------
-    method : str
-        The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity, maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie.
-    vf : float
-        The volume fraction of dielectric.
-    size_mu : float
-        The particle size in micron
-    size_distribution_sigma : float
-        The width of the size distribution.
-    matrix_permittivity_function : function
-        Function returning the matrix permittivity at a frequency.
-    shape : str
-        The shape of the particles.
-    L : array
-        The depolarisation matrix.
-    concentration : float
-        The concentration of particles.
-    atr_permittivity : float
-        The permittivity of the ATR substrate.
-    atr_theta : float
-        The ATR angle of incidence.
-    atr_s_pol : str
-        The ATR polarisation.
-    bubble_vf : float
-        Volume fraction of bubbles.
-    bubble_radius : float
-        The radius of bubbles.
-    previous_solution_shared : bool
-        Use the previous solution to speed up iterations in the case of Bruggeman and coherent methods.
-    atuple : tuple
-        A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of the permittivity of the crystal at a given frequency (crystalPermittivity).
+    method : str The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity,
+    maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie. vf : float The volume fraction of dielectric.
+    size_mu : float The particle size in micron size_distribution_sigma : float The width of the size distribution.
+    matrix_permittivity_function : function Function returning the matrix permittivity at a frequency. shape : str The
+    shape of the particles. L : array The depolarisation matrix. concentration : float The concentration of particles.
+    atr_permittivity : float The permittivity of the ATR substrate. atr_theta : float The ATR angle of incidence.
+    atr_s_pol : str The ATR polarisation. bubble_vf : float Volume fraction of bubbles. bubble_radius : float The radius
+    of bubbles. previous_solution_shared : bool Use the previous solution to speed up iterations in the case of
+    Bruggeman and coherent methods. atuple : tuple A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of
+    the permittivity of the crystal at a given frequency (crystalPermittivity).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Returns
     -------
@@ -1848,7 +1851,10 @@ def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
 
     Notes
     -----
-    This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive index.
+    This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex
+    refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of
+    bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive
+    index.
 
     """
     #
@@ -2182,7 +2188,6 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
     Based on ideas in the thesis of Mayank Kaushik (University Adelaide).
 
     """
-    from scipy import sparse
     #
     # Create a sparse 3rd order difference operator
     #

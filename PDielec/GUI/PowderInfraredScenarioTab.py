@@ -93,7 +93,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
     -------
     crystal_density()
         Compute and return the density of the crystal based on its volume and mass.
-    openDB_button_clicked()
+    open_db_button_clicked()
         Handler for the event where the database open button is clicked.
     on_h_sb_changed(value)
         Handler for changes in the 'h' dimension parameter of the crystal's unique direction.
@@ -542,7 +542,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             return 1.0
         return self.reader.get_crystal_density()
 
-    def openDB_button_clicked(self):
+    def open_db_button_clicked(self):
         """Open a new materials' database.
 
         Returns
@@ -550,7 +550,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print("Start:: openDB_button_clicked")
+        self.debugger.print("Start:: open_db_button_clicked")
         self.open_data_base()
         if self.settings["Matrix"] not in self.materialNames:
             self.settings["Matrix"] = self.materialNames[0]
@@ -971,9 +971,10 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         Notes
         -----
-        - Updates the imaginary part of the `Matrix permittivity` in the settings dictionary with the new value, keeping the real part unchanged.
-        - Replaces the permittivity object of the matrix material with a new constant scalar permittivity object created using the updated `Matrix permittivity`.
-        - Marks the matrix material as manually defined and triggers a required refresh to update any dependent calculations or displays.
+        - Updates the imaginary part of the `Matrix permittivity` in the settings dictionary with the new value, keeping
+          the real part unchanged. - Replaces the permittivity object of the matrix material with a new constant scalar
+          permittivity object created using the updated `Matrix permittivity`. - Marks the matrix material as manually
+          defined and triggers a required refresh to update any dependent calculations or displays.
 
         """        
         self.refresh_required = True
@@ -1039,7 +1040,8 @@ class PowderInfraredScenarioTab(ScenarioTab):
     def on_atr_incident_ang_sb_changed(self,value):
         """Handle the update to the ATR incident angle situation.
 
-        This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.
+        This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update
+        to ensure the new settings are reflected across the application.
 
         Parameters
         ----------
@@ -1070,8 +1072,9 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         Notes
         -----
-        - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S polarisation fraction'.
-        - The refresh flag `self.refresh_required` is set to `True` to indicate that some action is needed to reflect the change in the application.
+        - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S
+          polarisation fraction'. - The refresh flag `self.refresh_required` is set to `True` to indicate that some
+          action is needed to reflect the change in the application.
 
         """        
         self.settings["ATR S polarisation fraction"] = value
@@ -1083,7 +1086,9 @@ class PowderInfraredScenarioTab(ScenarioTab):
         # Have a look through the settings and see if we need to grey anything out
         """Modify UI elements based on the selected effective medium method.
 
-        This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the currently selected effective medium method in the settings. It also updates the particle shape setting if necessary and adjusts the UI to reflect any changes.
+        This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the
+        currently selected effective medium method in the settings. It also updates the particle shape setting if
+        necessary and adjusts the UI to reflect any changes.
 
         Parameters
         ----------
@@ -1095,11 +1100,13 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         Notes
         -----
-        - The method checks the 'Effective medium method' and 'Particle shape' in the settings.
-        - For 'Mie' and 'Anisotropic-Mie' methods, it enables size and sigma spinboxes and sets the particle shape to 'Sphere', disabling all other shapes.
-        - For 'Averaged Permittivity', it disables size and sigma spinboxes and sets the particle shape to 'Sphere'.
-        - For 'Maxwell-Garnett' and 'Bruggeman', it enables the size spinbox and disables the sigma spinbox, allowing all shapes to be selected.
-        - If the particle shape is set to 'Ellipsoid', 'Plate', or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere', it disables these spinboxes.
+        - The method checks the 'Effective medium method' and 'Particle shape' in the settings. - For 'Mie' and
+          'Anisotropic-Mie' methods, it enables size and sigma spinboxes and sets the particle shape to 'Sphere',
+          disabling all other shapes. - For 'Averaged Permittivity', it disables size and sigma spinboxes and sets the
+          particle shape to 'Sphere'. - For 'Maxwell-Garnett' and 'Bruggeman', it enables the size spinbox and disables
+          the sigma spinbox, allowing all shapes to be selected. - If the particle shape is set to 'Ellipsoid', 'Plate',
+          or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere',
+          it disables these spinboxes.
 
         """        
         self.debugger.print(self.settings["Legend"],"Start:: change_greyed_out")
@@ -1270,11 +1277,11 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        vs_cm1 : list
-            A list of frequencies in cm-1
-        plot_type : str
-            A string indicating the type of result to return.
-            One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR'
+        vs_cm1 : list A list of frequencies in cm-1 plot_type : str A string indicating the type of result to return.
+        One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary
+        Permittivity', 'Powder ATR'
+
+
 
         Returns
         -------

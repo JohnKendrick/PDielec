@@ -22,7 +22,9 @@ class MainWindow(QMainWindow):
     """
     A class for creating the main window of an application.
 
-    This class inherits from QMainWindow and sets up the main window with a specific layout and widgets. The layout consists of a QFormLayout with multiple rows, each containing labels and either custom `Color` widgets or `QPushButton` widgets. An additional nested `QFormLayout` is also demonstrated. The window title is set to 'My App'.
+    This class inherits from QMainWindow and sets up the main window with a specific layout and widgets. The layout
+    consists of a QFormLayout with multiple rows, each containing labels and either custom `Color` widgets or
+    `QPushButton` widgets. An additional nested `QFormLayout` is also demonstrated. The window title is set to 'My App'.
 
     Attributes
     ----------
@@ -35,7 +37,8 @@ class MainWindow(QMainWindow):
 
     Notes
     -----
-    The `Color` class is referenced but not defined within this code block, implying it is a custom widget defined elsewhere.
+    The `Color` class is referenced but not defined within this code block, implying it is a custom widget defined
+    elsewhere.
 
     Examples
     --------
@@ -45,7 +48,9 @@ class MainWindow(QMainWindow):
         """
         Initialize the main window interface.
 
-        This method sets up the main window with a specific layout containing several widgets. The layout initially includes rows for 'red', 'green', and an inner layout with 'label 1' and 'label 2'. Then, it adds a 'blue' row but removes the previously added inner layout.
+        This method sets up the main window with a specific layout containing several widgets. The layout initially
+        includes rows for 'red', 'green', and an inner layout with 'label 1' and 'label 2'. Then, it adds a 'blue' row
+        but removes the previously added inner layout.
 
         Parameters
         ----------

@@ -23,8 +23,8 @@ from openpyxl import load_workbook
 def main():
     """Driver routine for graphdatagenerator.
 
-    This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates the results.
-    It is a utility programme and not part of the main PDielec or PDGui packages
+    This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates
+    the results. It is a utility programme and not part of the main PDielec or PDGui packages
 
     ::
 

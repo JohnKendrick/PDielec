@@ -127,7 +127,8 @@ class GulpOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This constructor inherits from `GenericOutputReader` and is designed specifically for reading and parsing Gulp output files.
+        This constructor inherits from `GenericOutputReader` and is designed specifically for reading and parsing Gulp
+        output files.
 
         """        
         GenericOutputReader.__init__(self, names)

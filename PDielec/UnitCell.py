@@ -54,7 +54,8 @@ def convert_length_units(value, units_in, units_out):
 
     Notes
     -----
-    The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
+    The input can be either a scalar value, a list or a numpy array of values. The function will return the converted
+    value(s) in the output units specified.
 
     """
     # the conversion dictionary has a value that converts the key unit to angstroms
@@ -98,17 +99,21 @@ class UnitCell:
 
     Parameters
     ----------
-    a, b, c : float or array, optional
-        Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.
-    alpha, beta, gamma : float, optional
-        Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
-    units : str
-        An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
-        The internal unit is always the angstrom
+    a, b, c : float or array, optional Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0,
+    0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively. alpha, beta, gamma : float, optional Lattice angles (in
+    degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is
+    used. units : str An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is
+    Angstrom. The internal unit is always the angstrom
+
+
 
     Notes
     -----
-    This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
+    This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element
+    names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total
+    mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a,
+    b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors.
+    Finally, it calculates and sets the reciprocal lattice for the instance.
 
     Examples
     --------
@@ -133,17 +138,21 @@ class UnitCell:
 
         Parameters
         ----------
-        a, b, c : float or array, optional
-            Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.
-        alpha, beta, gamma : float, optional
-            Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
-        units : str
-            An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
-            The internal unit is always the angstrom
+        a, b, c : float or array, optional Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0,
+        0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively. alpha, beta, gamma : float, optional Lattice angles
+        (in degrees). These are only used if all three angles are specified, otherwise, the default lattice
+        (orthorhombic) is used. units : str An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'
+        The default is Angstrom. The internal unit is always the angstrom
+
+
 
         Notes
         -----
-        This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
+        This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element
+        names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total
+        mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters
+        (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice
+        vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
 
         Examples
         --------
@@ -287,7 +296,8 @@ class UnitCell:
     def get_bounding_box(self, originXYZ = None, originABC = None, units="Angstrom"):
         """Generate the corners and edges of a bounding box.
 
-        This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
+        This method calculates the corners and edges of a bounding box based on predefined coordinates. These
+        coordinates are transformed using a conversion method before being paired into edges.
 
         Parameters
         ----------
@@ -302,10 +312,10 @@ class UnitCell:
 
         Returns
         -------
-        tuple of list
-            A tuple containing two elements:
-            - The first element is a list of corners' coordinates after conversion (`list` of `np.ndarray`).
-            - The second element is a list of tuples, each consisting of a pair of corners representing an edge (`list` of `tuple`).
+        tuple of list A tuple containing two elements: - The first element is a list of corners' coordinates after
+        conversion (`list` of `np.ndarray`). - The second element is a list of tuples, each consisting of a pair of
+        corners representing an edge (`list` of `tuple`).
+
 
         Example
         -------
@@ -392,7 +402,9 @@ class UnitCell:
     def print(self):
         """Print the details of the given unit cell.
 
-        This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.
+        This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha,
+        beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular
+        information if any molecules are defined within the unit cell.
 
         Parameters
         ----------
@@ -447,12 +459,12 @@ class UnitCell:
 
         Returns
         -------
-        numpy.ndarray or float or tuple
-            The centre of mass as requested by output:
-            - If 'xyz', returns a numpy array with the x, y, z coordinates of the centre of mass.
-            - If 'mass', returns a float representing the total mass of the specified atoms.
-            - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
-            - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
+        numpy.ndarray or float or tuple The centre of mass as requested by output: - If 'xyz', returns a numpy array
+        with the x, y, z coordinates of the centre of mass. - If 'mass', returns a float representing the total mass of
+        the specified atoms. - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of
+        mass. - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and
+        fractional coordinates of the centre of mass is returned.
+
 
         See Also
         --------
@@ -988,18 +1000,18 @@ class UnitCell:
     def calculate_molecular_contents(self, scale=1.1, tolerance=0.1, radii=None):
         """Find whole molecules in the unit cell.
 
-        Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
-        A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
-        The routine returns the the number of moleculess.
+        Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the
+        adjacent cell A new unit cell is created containing whole molecules, the order of the atoms in the new cell is
+        different. The routine returns the the number of moleculess.
 
         Parameters
         ----------
-        scale : float, optional
-            The scale factor applied to the covalent radii. Default is 1.1
-        tolerance : float, optional. Default is 0.1
-            The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.
-        radii : a dictionary, optional
-            A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants
+        scale : float, optional The scale factor applied to the covalent radii. Default is 1.1 tolerance : float,
+        optional. Default is 0.1 The tolerance added to the scaled sum of radii to determine the maximum allowable
+        distance between atoms i and j for them to be considered bonded. radii : a dictionary, optional A dictionary of
+        covalent radii for the atoms, key is the element name.  If not given then the package radii are used from
+        PDielec.Constants
+
 
         Returns
         -------

@@ -64,8 +64,10 @@ class GenericOutputReader:
     ncells, nsteps, electrons, spin, nbands, volume, nions, nspecies, geomsteps : int
         Attributes initialized as 0, representing various numerical properties.
 
-    unit_cells, volumes, species, energiesDFT, energiesDFT_disp, final_free_energies, final_energies_without_entropy, volumes, pressures, born_charges, frequencies, mass_weighted_normal_modes, ions_per_type, atom_type_list, masses, masses_per_type, elastic_constants, zerof_optical_dielectric, zerof_static_dielectric : list
-        Various lists to store computational results related to the object. Initialized as empty lists.
+    unit_cells, volumes, species, energiesDFT, energiesDFT_disp, final_free_energies, final_energies_without_entropy,
+    volumes, pressures, born_charges, frequencies, mass_weighted_normal_modes, ions_per_type, atom_type_list, masses,
+    masses_per_type, elastic_constants, zerof_optical_dielectric, zerof_static_dielectric : list Various lists to store
+    computational results related to the object. Initialized as empty lists.
     
     final_free_energy, final_energy_without_entropy, magnetization, energy_cutoff, pressure : float
         Floating point attributes initialized to represent different scalar quantities. Defaults to 0 or 0.0.
@@ -275,11 +277,15 @@ class GenericOutputReader:
 
         Notes
         -----
-        The function uses a helper function `cleanup_symbol` to clean up the species symbols before using them as keys in the dictionary. If the instance's `debug` attribute is set to True, the function will print the newly created mass dictionary.
+        The function uses a helper function `cleanup_symbol` to clean up the species symbols before using them as keys
+        in the dictionary. If the instance's `debug` attribute is set to True, the function will print the newly created
+        mass dictionary.
 
         Examples
         --------
-        Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
+        Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug
+        attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return
+        this dictionary.
 
         """        
         dictionary = {}
@@ -305,7 +311,9 @@ class GenericOutputReader:
 
         Notes
         -----
-        The method updates the `edited_masses` attribute only if the length of the input list matches the length of the `masses` attribute of the object. If they do not match, an error message is printed, and `edited_masses` is set to `None`.
+        The method updates the `edited_masses` attribute only if the length of the input list matches the length of the
+        `masses` attribute of the object. If they do not match, an error message is printed, and `edited_masses` is set
+        to `None`.
 
         Returns
         -------
@@ -322,14 +330,18 @@ class GenericOutputReader:
     def change_masses(self, new_masses, mass_dictionary):
         """Change the masses of elements in a output reader.
 
-        This function updates the masses of the elements within the reader according to the new masses provided. If the object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the simulation's internal mass dictionary based on the provided `new_masses` and an optional external `mass_dictionary` for overrides. If debugging is enabled, various diagnostic messages will be printed during the function's execution.
+        This function updates the masses of the elements within the reader according to the new masses provided. If the
+        object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the
+        simulation's internal mass dictionary based on the provided `new_masses` and an optional external
+        `mass_dictionary` for overrides. If debugging is enabled, various diagnostic messages will be printed during the
+        function's execution.
 
         Parameters
         ----------
-        new_masses : dict
-            A dictionary where keys are element symbols as strings and values are the new masses for these elements.
-        mass_dictionary : dict, optional
-            An additional dictionary provided for mass overrides. If any element present in `new_masses` also exists in `mass_dictionary`, the mass from `mass_dictionary` will be used.
+        new_masses : dict A dictionary where keys are element symbols as strings and values are the new masses for these
+        elements. mass_dictionary : dict, optional An additional dictionary provided for mass overrides. If any element
+        present in `new_masses` also exists in `mass_dictionary`, the mass from `mass_dictionary` will be used.
+
 
         Returns
         -------
@@ -337,11 +349,12 @@ class GenericOutputReader:
 
         Notes
         -----
-        - It assumes that `cleanup_symbol()` is a function used to standardize or validate the element symbols in `self.species`.
-        - It alters `self.masses` and `self.masses_per_type` to reflect changes in masses as per `new_masses` and `mass_dictionary`.
-        - If `self.edited_masses` is already set to a truthy value, it bypasses the update process and uses these values instead.
-        - `self.species` and `self.atom_type_list` are expected to be iterable attributes of the object containing symbols for elements and types of atoms, respectively.
-        - Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
+        - It assumes that `cleanup_symbol()` is a function used to standardize or validate the element symbols in
+          `self.species`. - It alters `self.masses` and `self.masses_per_type` to reflect changes in masses as per
+          `new_masses` and `mass_dictionary`. - If `self.edited_masses` is already set to a truthy value, it bypasses
+          the update process and uses these values instead. - `self.species` and `self.atom_type_list` are expected to
+          be iterable attributes of the object containing symbols for elements and types of atoms, respectively. -
+          Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
 
         """        
         if self.edited_masses:
@@ -740,7 +753,9 @@ class GenericOutputReader:
     def _dynamical_matrix(self, hessian):
         """Process the dynamical matrix.
 
-        Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally storing the frequencies and normal modes.
+        Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of
+        mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally
+        storing the frequencies and normal modes.
 
         Parameters
         ----------
@@ -795,7 +810,8 @@ class GenericOutputReader:
     def reset_born_charges(self):
         """Reset the born charges to their original values if they are not currently being used.
 
-        This method restores the `born_charges` attribute of the instance to the value stored in `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
+        This method restores the `born_charges` attribute of the instance to the value stored in
+        `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
 
         Parameters
         ----------
@@ -807,7 +823,8 @@ class GenericOutputReader:
 
         Notes
         -----
-        This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
+        This method changes the state of the reader by modifying its `born_charges` attribute to match
+        `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
 
         """        
         if not self.original_born_charges_are_being_used:
@@ -872,14 +889,15 @@ class GenericOutputReader:
     def _modify_mass_weighting(self,hessian,new):
         """Modify the Hessian matrix based on new mass weighting.
 
-        This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the square root of the product of elements from a new weighting (`new`). 
+        This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the
+        square root of the product of elements from a new weighting (`new`).
 
         Parameters
         ----------
-        hessian : numpy.ndarray
-            The original Hessian matrix whose elements are to be modified. It is assumed to be a square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.
-        new : numpy.ndarray or list
-            An array or list of new weighting factors, one per ion. Its length should be equal to `nions`. These factors are applied in the modification of the Hessian matrix elements.
+        hessian : numpy.ndarray The original Hessian matrix whose elements are to be modified. It is assumed to be a
+        square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.
+        new : numpy.ndarray or list An array or list of new weighting factors, one per ion. Its length should be equal
+        to `nions`. These factors are applied in the modification of the Hessian matrix elements.
 
         Returns
         -------

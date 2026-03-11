@@ -280,9 +280,10 @@ class NoteBook(QWidget):
 
         Notes
         -----
-        - The `Calculator.get_pool` method is expected to be a class method or static method of the class `Calculator` that initializes a pool of worker processes or threads.
-        - The pool is stored in the instance's `pool` attribute.
-        - The number of CPUs (`ncpus`) and the threading model (`threading`) are not parameters of this method, but are expected to be attributes of the instance (`self`).
+        - The `Calculator.get_pool` method is expected to be a class method or static method of the class `Calculator`
+          that initializes a pool of worker processes or threads. - The pool is stored in the instance's `pool`
+          attribute. - The number of CPUs (`ncpus`) and the threading model (`threading`) are not parameters of this
+          method, but are expected to be attributes of the instance (`self`).
 
         """
         self.pool = Calculator.get_pool(self.ncpus,self.threading, debugger = self.debugger)
@@ -314,12 +315,12 @@ class NoteBook(QWidget):
 
         Parameters
         ----------
-        scenarioType : string
-             scenarioType can be one of 'Powder Infrared', 'Crystal Infrared', 'Powder Raman' or 'Crystal Raman'
-        copyFromIndex : int
-             if copyFromIndex is not -2 then use the index to determine the scenario type
-             if copyFromIndex is -2 and the scenarioType has not been specified then just use the last scenario type there is
-             Otherwise just find the last scenario type to copy
+        scenarioType : string scenarioType can be one of 'Powder Infrared', 'Crystal Infrared', 'Powder Raman' or
+        'Crystal Raman' copyFromIndex : int if copyFromIndex is not -2 then use the index to determine the scenario type
+        if copyFromIndex is -2 and the scenarioType has not been specified then just use the last scenario type there is
+        Otherwise just find the last scenario type to copy
+
+
 
         Returns
         -------
@@ -476,7 +477,8 @@ class NoteBook(QWidget):
     def delete_all_scenarios(self):
         """Delete all scenarios except the first one.
 
-        This method sequentially deletes each scenario from the end of the collection until only one scenario is left. It also removes the corresponding tabs.
+        This method sequentially deletes each scenario from the end of the collection until only one scenario is left.
+        It also removes the corresponding tabs.
 
         Parameters
         ----------
@@ -605,7 +607,10 @@ class NoteBook(QWidget):
 
         Notes
         -----
-        This method initiates a refresh process on various components such as the main settings, scenarios, and several tabs including plotting, analysis, viewer, and fitter. It adjusts the active tab based on the current number of scenarios. If 'force' is set to True, the refresh process is executed disregarding any active scripting conditions.
+        This method initiates a refresh process on various components such as the main settings, scenarios, and several
+        tabs including plotting, analysis, viewer, and fitter. It adjusts the active tab based on the current number of
+        scenarios. If 'force' is set to True, the refresh process is executed disregarding any active scripting
+        conditions.
 
         """        
         self.debugger.print("Started:: newrefresh",force)
@@ -644,7 +649,10 @@ class NoteBook(QWidget):
 
         Notes
         -----
-        This function assumes that the Excel spreadsheet is an attribute of the object this method belongs to. It attempts to write data to various tabs within the spreadsheet, namely 'mainTab', 'settingsTab', 'analysisTab', and 'plottingTab'. The method opens the spreadsheet, writes data to these tabs if the spreadsheet is not `None`, and then closes the spreadsheet. 
+        This function assumes that the Excel spreadsheet is an attribute of the object this method belongs to. It
+        attempts to write data to various tabs within the spreadsheet, namely 'mainTab', 'settingsTab', 'analysisTab',
+        and 'plottingTab'. The method opens the spreadsheet, writes data to these tabs if the spreadsheet is not `None`,
+        and then closes the spreadsheet.
 
         """        
         self.debugger.print("Start:: Write spreadsheet")
@@ -660,7 +668,9 @@ class NoteBook(QWidget):
     def open_excel_spreadsheet(self):
         """Open an Excel spreadsheet based on the filename set in settings.
 
-        This method tries to open an Excel spreadsheet file (.xlsx) whose name is provided in the 'Excel file name' setting of the 'mainTab' attribute. It checks for the validity of the filename (i.e., whether it ends in '.xlsx') and existence in the specified directory. On failure, it alerts the user accordingly.
+        This method tries to open an Excel spreadsheet file (.xlsx) whose name is provided in the 'Excel file name'
+        setting of the 'mainTab' attribute. It checks for the validity of the filename (i.e., whether it ends in
+        '.xlsx') and existence in the specified directory. On failure, it alerts the user accordingly.
 
         Parameters
         ----------
@@ -695,7 +705,10 @@ class NoteBook(QWidget):
     def open_spread_sheet(self,filename):
         """Open or create a spreadsheet file.
 
-        This function checks whether the specified spreadsheet (.xlsx) file exists. If the file exists and overwriting is allowed or confirmed by the user, it opens and overwrites the file. If the file does not exist, it creates a new spreadsheet file. The function also closes any previously opened spreadsheet before attempting to open or create a new one.
+        This function checks whether the specified spreadsheet (.xlsx) file exists. If the file exists and overwriting
+        is allowed or confirmed by the user, it opens and overwrites the file. If the file does not exist, it creates a
+        new spreadsheet file. The function also closes any previously opened spreadsheet before attempting to open or
+        create a new one.
 
         Parameters
         ----------
@@ -709,8 +722,8 @@ class NoteBook(QWidget):
 
         Notes
         -----
-        - The function relies on the 'SpreadSheetManager' class for handling spreadsheet operations.
-        - The function raises no exceptions, but will print a message if the provided filename does not have a '.xlsx' extension.
+        - The function relies on the 'SpreadSheetManager' class for handling spreadsheet operations. - The function
+          raises no exceptions, but will print a message if the provided filename does not have a '.xlsx' extension.
 
         """        
         self.debugger.print("Start:: open_spread_sheet", filename)
@@ -738,7 +751,9 @@ class NoteBook(QWidget):
     def on_tabs_currentChanged(self, tabindex):
         """Handle tab change events and refresh content accordingly.
 
-        This function responds to changes in the current tab index within a tabbed interface. It refreshes the content of the new current tab based on the index of the tab. This includes refreshing content in tabs corresponding to settings, plotting, analysis, viewing, fitting, or specific scenarios.
+        This function responds to changes in the current tab index within a tabbed interface. It refreshes the content
+        of the new current tab based on the index of the tab. This includes refreshing content in tabs corresponding to
+        settings, plotting, analysis, viewing, fitting, or specific scenarios.
 
         Parameters
         ----------
@@ -751,11 +766,13 @@ class NoteBook(QWidget):
 
         Notes
         -----
-        - The function first checks if scripting is currently active; if so, it exits early without refreshing to avoid conflicts.
-        - The `ntabs` variable calculates the total number of tabs dynamically based on the number of scenarios present.
-        - The function determines which tab has been selected based on the `tabindex` and calls the appropriate refresh function for the content of that tab.
-        - For predefined tabs (such as settings, plotting, analysis, viewing, and fitting tabs), direct refresh calls are made.
-        - For scenario-specific tabs, which are dynamically added based on the number of scenarios, the function calculates the appropriate scenario index and triggers a refresh for the selected scenario.
+        - The function first checks if scripting is currently active; if so, it exits early without refreshing to avoid
+          conflicts. - The `ntabs` variable calculates the total number of tabs dynamically based on the number of
+          scenarios present. - The function determines which tab has been selected based on the `tabindex` and calls the
+          appropriate refresh function for the content of that tab. - For predefined tabs (such as settings, plotting,
+          analysis, viewing, and fitting tabs), direct refresh calls are made. - For scenario-specific tabs, which are
+          dynamically added based on the number of scenarios, the function calculates the appropriate scenario index and
+          triggers a refresh for the selected scenario.
 
         """        
         self.debugger.print("Start:: on_tabs_currentChanged", tabindex)
@@ -811,9 +828,9 @@ class NoteBook(QWidget):
 
         Notes
         -----
-        This function checks for specific key combinations (Control + S, and Control + C) and performs actions accordingly:
-        - Control + S: Calls the `print_settings` method.
-        - Control + C: Prints a message and exits the program.
+        This function checks for specific key combinations (Control + S, and Control + C) and performs actions
+        accordingly: - Control + S: Calls the `print_settings` method. - Control + C: Prints a message and exits the
+        program.
 
         """        
         self.debugger.print("Start:: keyPressEvent")
@@ -841,7 +858,8 @@ class NoteBook(QWidget):
     
         Notes
         -----
-        This method sets the maximum value of all progress bars stored in the object's `progressbars` attribute. It also resets the progress to 0. 
+        This method sets the maximum value of all progress bars stored in the object's `progressbars` attribute. It also
+        resets the progress to 0.
 
         """        
         self.debugger.print("Start:: progressbars_set_maximum",maximum)
@@ -865,7 +883,9 @@ class NoteBook(QWidget):
         -------
         None
 
-        This method increments the progress bar status stored in `progressbar_status` by the specified `increment` amount. It then sets this updated value as the new value for all progress bars stored in the `progressbars` list attribute of the instance.
+        This method increments the progress bar status stored in `progressbar_status` by the specified `increment`
+        amount. It then sets this updated value as the new value for all progress bars stored in the `progressbars` list
+        attribute of the instance.
 
         """        
         self.progressbar_status += increment

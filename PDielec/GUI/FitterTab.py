@@ -262,7 +262,9 @@ def calculate_cross_correlation(xaxis, calculated_spectrum, experimental_spectru
 
     Notes
     -----
-    The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum's x-axis is performed using cubic interpolation.
+    The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the
+    normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental
+    spectrum's x-axis is performed using cubic interpolation.
 
     """        
     if debug:
@@ -356,8 +358,10 @@ def calculate_spectral_difference(xaxis,calculated_spectrum,experimental_spectru
 class FitterTab(QWidget):
     """Initialize the main FitterTab with its components and connect signals to slots.
 
-    A class for managing and displaying a spectroscopic fitting interface within a QWidget.
-    This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.
+    A class for managing and displaying a spectroscopic fitting interface within a QWidget. This constructor sets up the
+    UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and
+    plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis
+    settings and data.
 
     Parameters
     ----------
@@ -368,16 +372,21 @@ class FitterTab(QWidget):
 
     Attributes
     ----------
-    parent : QWidget
-        The parent QWidget within which this `FitterTab` is contained.
-    debug : bool, optional
-        A flag to activate debug mode which provides additional output for development and troubleshooting. Defaults to False.
+    parent : QWidget The parent QWidget within which this `FitterTab` is contained. debug : bool, optional A flag to
+    activate debug mode which provides additional output for development and troubleshooting. Defaults to False.
+
+
 
     Notes
     -----
-    This class is designed to provide a user interface for spectral fitting tasks, allowing for adjustments of various fitting parameters and visualization of fitting results. It leverages Qt widgets for the graphical user interface components and matplotlib for plotting.
+    This class is designed to provide a user interface for spectral fitting tasks, allowing for adjustments of various
+    fitting parameters and visualization of fitting results. It leverages Qt widgets for the graphical user interface
+    components and matplotlib for plotting.
 
-    The class initializes with customizable settings related to spectral fitting including file names, fitting types, iterations, scaling factors, and baseline correction options. It supports reading experimental data from .xlsx or .csv files, setting fitting parameters through a dynamically generated form, and presenting the fitting results graphically with options to adjust the view.
+    The class initializes with customizable settings related to spectral fitting including file names, fitting types,
+    iterations, scaling factors, and baseline correction options. It supports reading experimental data from .xlsx or
+    .csv files, setting fitting parameters through a dynamically generated form, and presenting the fitting results
+    graphically with options to adjust the view.
 
     Methods
     -------
@@ -401,9 +410,9 @@ class FitterTab(QWidget):
         Handle changes to the spectral difference threshold spinbox value.
     on_frequency_scaling_factor_sb_changed(self, value)
         Handle changes to the frequency scaling factor spinbox value.
-    replotButton1Clicked(self)
+    replot_button1_clicked(self)
         Handle the event when the first replot button is clicked.
-    replotButton2Clicked(self)
+    replot_button2_clicked(self)
         Handle the event when the second replot button with frequency shift is clicked.
     plot(self, experiment, xs, ys, legends, label)
         Plots the fitting results with optional experiment data overlay.
@@ -439,7 +448,9 @@ class FitterTab(QWidget):
     def __init__(self, parent, debug=False):
         """Initialize the main widget with its components and connect signals to slots.
 
-        This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.
+        This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as
+        buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various
+        attributes related to the spectral analysis settings and data.
 
         Parameters
         ----------
@@ -450,7 +461,10 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        The function initializes a complex UI for spectral analysis, handling settings such as file names for experimental data, fitting types, frequency scaling, and more. It also prepares the UI for user interactions, setting up signals and slots for UI components like buttons, line edits, and combo boxes. Additionally, it initializes data structures for storing spectral data and analysis results.
+        The function initializes a complex UI for spectral analysis, handling settings such as file names for
+        experimental data, fitting types, frequency scaling, and more. It also prepares the UI for user interactions,
+        setting up signals and slots for UI components like buttons, line edits, and combo boxes. Additionally, it
+        initializes data structures for storing spectral data and analysis results.
 
         """        
         super(QWidget, self).__init__(parent)
@@ -475,7 +489,7 @@ class FitterTab(QWidget):
         self.settings["Baseline removal"] = False
         self.settings["Scenario index"] = len(self.notebook.scenarios) - 1
         self.scenario_legends = [ scenario.settings["Legend"] for scenario in self.notebook.scenarios ]
-        self.lastButtonPressed = self.replotButton1Clicked
+        self.lastButtonPressed = self.replot_button1_clicked
         self.plot_frequency_shift = False
         self.xcorr0=0.0
         self.xcorr1=0.0
@@ -620,11 +634,11 @@ class FitterTab(QWidget):
         hbox = QHBoxLayout()
         self.replotButton1 = QPushButton("Replot")
         self.replotButton1.setToolTip("Recalculate the spectrum with the new sigma values")
-        self.replotButton1.clicked.connect(self.replotButton1Clicked)
+        self.replotButton1.clicked.connect(self.replot_button1_clicked)
         hbox.addWidget(self.replotButton1)
         self.replotButton2 = QPushButton("Replot with frequency shift")
         self.replotButton2.setToolTip("Recalculate the spectrum with the new sigma values, including a shft in the frequencies to maximise the cross-correlation")
-        self.replotButton2.clicked.connect(self.replotButton2Clicked)
+        self.replotButton2.clicked.connect(self.replot_button2_clicked)
         hbox.addWidget(self.replotButton2)
         # Add a fitting button
         self.fittingButton = QPushButton("Perform fitting")
@@ -676,7 +690,8 @@ class FitterTab(QWidget):
     def on_iterations_sb_changed(self):
         """Handle changes in the iterations spin box value.
 
-        This method is called when the iterations spin box value is changed. It updates the 'Number of iterations' setting with the new value and flags that a refresh is required.
+        This method is called when the iterations spin box value is changed. It updates the 'Number of iterations'
+        setting with the new value and flags that a refresh is required.
 
         Parameters
         ----------
@@ -706,7 +721,9 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refresh_required' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
+        This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings
+        dictionary with the new state of the 'Independent y-axes' option and sets the 'refresh_required' flag to True,
+        indicating that a refresh is needed to reflect the changes in the UI or data visualization.
 
         """        
         self.debugger.print("independent_yaxes_cb_changed",value)
@@ -717,12 +734,13 @@ class FitterTab(QWidget):
     def on_optimise_frequency_scaling_cb_changed(self,value):
         """Handle changes in the frequency scaling optimization option.
 
-        This method updates the 'Optimise frequency scaling' setting based on the state of a checkbox and marks that a refresh is required based on the new setting.
+        This method updates the 'Optimise frequency scaling' setting based on the state of a checkbox and marks that a
+        refresh is required based on the new setting.
 
         Parameters
         ----------
-        value : bool
-            The value or state that triggered the change. This parameter is logged but not directly used to set the 'Optimise frequency scaling' option.
+        value : bool The value or state that triggered the change. This parameter is logged but not directly used to set
+        the 'Optimise frequency scaling' option.
 
         Returns
         -------
@@ -737,12 +755,13 @@ class FitterTab(QWidget):
     def on_spectrum_scaling_cb_changed(self,value):
         """Handle the change event of the spectrum scaling checkbox.
 
-        This method is triggered whenever the spectrum scaling checkbox's state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.
+        This method is triggered whenever the spectrum scaling checkbox's state changes. It updates the settings to
+        reflect the current state of the checkbox and flags that a refresh is required.
 
         Parameters
         ----------
-        value : bool
-            The new value of the spectrum scaling checkbox. The specific type and significance can vary depending on the implementation details of the checkbox and its handlers.
+        value : bool The new value of the spectrum scaling checkbox. The specific type and significance can vary
+        depending on the implementation details of the checkbox and its handlers.
 
         Returns
         -------
@@ -789,7 +808,8 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.
+        This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to
+        float. If the conversion fails, a message is printed indicating the failure.
 
         """        
         self.debugger.print("on_spectrum_scaling_factor_cb_changed",value)
@@ -803,12 +823,13 @@ class FitterTab(QWidget):
     def on_baseline_cb_changed(self,value):
         """Handle the change event of the baseline checkbox.
 
-        This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and marks refresh as required.
+        This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and
+        marks refresh as required.
 
         Parameters
         ----------
-        value : str
-            The new value or state of the baseline checkbox. The actual data type and use of this parameter depend on the specific implementation and could vary.
+        value : str The new value or state of the baseline checkbox. The actual data type and use of this parameter
+        depend on the specific implementation and could vary.
 
         Returns
         -------
@@ -828,8 +849,8 @@ class FitterTab(QWidget):
 
         Parameters
         ----------
-        value : str
-            The new value for the 'Spectral difference threshold' setting. The function attempts to convert this to a float.
+        value : str The new value for the 'Spectral difference threshold' setting. The function attempts to convert this
+        to a float.
 
         Returns
         -------
@@ -847,7 +868,8 @@ class FitterTab(QWidget):
     def on_frequency_scaling_factor_sb_changed(self,value):
         """Handle changes in the frequency scaling factor setting.
 
-        This function changes the frequency scaling factor setting. It updates the setting with the new value and marks a refresh as necessary. It also handles conversion errors gracefully.
+        This function changes the frequency scaling factor setting. It updates the setting with the new value and marks
+        a refresh as necessary. It also handles conversion errors gracefully.
 
         Parameters
         ----------
@@ -871,10 +893,11 @@ class FitterTab(QWidget):
             print("Failed to convert to float", value)
         return
 
-    def replotButton1Clicked(self):
+    def replot_button1_clicked(self):
         """Handle the click event on the replot button.
 
-        This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot operation and invokes the refresh method to update the plot.
+        This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot
+        operation and invokes the refresh method to update the plot.
 
         Parameters
         ----------
@@ -886,18 +909,20 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and it bookmarks the last button pressed as 'replotButton1Clicked'. It also calls the `self.refresh` method to initiate the replotting process.
+        This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and
+        it bookmarks the last button pressed as 'replot_button1_clicked'. It also calls the `self.refresh` method to
+        initiate the replotting process.
 
         """        
-        self.debugger.print("Start:: replotButton1Clicked")
+        self.debugger.print("Start:: replot_button1_clicked")
         self.refresh_required = True
         self.plot_frequency_shift = False
-        self.lastButtonPressed = self.replotButton1Clicked
+        self.lastButtonPressed = self.replot_button1_clicked
         self.refresh()
-        self.debugger.print("Finished:: replotButton1Clicked")
+        self.debugger.print("Finished:: replot_button1_clicked")
         return
 
-    def replotButton2Clicked(self):
+    def replot_button2_clicked(self):
         """Handle the event when the second replot button is clicked.
 
         This method updates various attributes to indicate that a refresh of the plot is required,
@@ -913,12 +938,12 @@ class FitterTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: replotButton2Clicked")
+        self.debugger.print("Start:: replot_button2_clicked")
         self.refresh_required = True
         self.plot_frequency_shift = True
-        self.lastButtonPressed = self.replotButton2Clicked
+        self.lastButtonPressed = self.replot_button2_clicked
         self.refresh()
-        self.debugger.print("Finished:: replotButton2Clicked")
+        self.debugger.print("Finished:: replot_button2_clicked")
         return
 
     def plot(self,experiment,xs,ys,legends,label):
@@ -1028,7 +1053,7 @@ class FitterTab(QWidget):
         else:
             self.fittingButton.setText("Interupt fitting")
             self.calculationInProgress = True
-        self.debugger.print("replotButton2Clicked",self.refresh_required)
+        self.debugger.print("replot_button2_clicked",self.refresh_required)
         self.refresh()
         self.replot()
         self.optimise_fit()
@@ -1060,11 +1085,11 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        The function uses several attributes of the class instance it belongs to:
-        - `modes_fitted` to determine which modes are fitted.
-        - `sigmas_cm1` as initial sigma points for optimization.
-        - `settings` to check if frequency scaling should be optimised and to determine the number of iterations for the optimization.
-        - `optimise_function` as the function to be minimized.
+        The function uses several attributes of the class instance it belongs to: - `modes_fitted` to determine which
+        modes are fitted. - `sigmas_cm1` as initial sigma points for optimization. - `settings` to check if frequency
+        scaling should be optimised and to determine the number of iterations for the optimization. -
+        `optimise_function` as the function to be minimized.
+
 
         It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
         `fit_list` to store the indexes of modes that are being fitted.
@@ -1180,9 +1205,9 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        - `sigmas_cm1`, `frequencies_cm1`, and `intensities` are lists that store sigma, frequency, and intensity data, respectively.
-        - `modes_selected` and `modes_fitted` are lists that store boolean values indicating whether a mode is selected and
-          whether it is fitted, respectively.
+        - `sigmas_cm1`, `frequencies_cm1`, and `intensities` are lists that store sigma, frequency, and intensity data,
+          respectively. - `modes_selected` and `modes_fitted` are lists that store boolean values indicating whether a
+          mode is selected and whether it is fitted, respectively.
 
         """        
         self.debugger.print("Start:: redraw_sigmas_tw")
@@ -1229,7 +1254,8 @@ class FitterTab(QWidget):
         # Change in fitting type
         """Handle the activation of a fitting type option.
 
-        This method updates the current settings to reflect the selected fitting type based on the provided index. It also marks the state as requiring a refresh.
+        This method updates the current settings to reflect the selected fitting type based on the provided index. It
+        also marks the state as requiring a refresh.
 
         Parameters
         ----------
@@ -1249,7 +1275,8 @@ class FitterTab(QWidget):
         # Change in Scenario to be used for fitting
         """Handle scenario combobox activation.
 
-        This function is triggered when a scenario combobox option is selected. It logs the activation with the selected index, marks that a refresh is required, and updates the settings to reflect the new scenario.
+        This function is triggered when a scenario combobox option is selected. It logs the activation with the selected
+        index, marks that a refresh is required, and updates the settings to reflect the new scenario.
 
         Parameters
         ----------
@@ -1269,7 +1296,9 @@ class FitterTab(QWidget):
         # Handle a return in the experimental file name line editor
         """Handle file selection for experimental spectra.
 
-        This method is executed when an action associated with the `spectrafile_le` widget is performed. It prompts the user to select a file if the currently specified file does not exist or cannot be found. It updates the application's settings with the new file name, if a file is selected.
+        This method is executed when an action associated with the `spectrafile_le` widget is performed. It prompts the
+        user to select a file if the currently specified file does not exist or cannot be found. It updates the
+        application's settings with the new file name, if a file is selected.
 
         Parameters
         ----------
@@ -1281,7 +1310,11 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        The method first checks if the file specified in the `spectrafile_le` widget exists. If it does not, a file dialog is opened for the user to select a file. If a file is selected, the method updates the application's settings and the text of the `spectrafile_le` widget to reflect the new file name. Additionally, it sets a flag indicating that a refresh is required and that the experimental file needs to be read again. Finally, it triggers the last button pressed action.
+        The method first checks if the file specified in the `spectrafile_le` widget exists. If it does not, a file
+        dialog is opened for the user to select a file. If a file is selected, the method updates the application's
+        settings and the text of the `spectrafile_le` widget to reflect the new file name. Additionally, it sets a flag
+        indicating that a refresh is required and that the experimental file needs to be read again. Finally, it
+        triggers the last button pressed action.
 
         This method utilizes `os.path.isfile` to check file existence, `QFileDialog` for file selection. 
 
@@ -1308,7 +1341,9 @@ class FitterTab(QWidget):
     def on_spectrafile_le_changed(self,text):
         """Handle changes to the spectra file input field.
 
-        This method is triggered when the text of the spectrum file input field changes. It updates the 'Experimental file name' setting with the new text, marks the current experimental file as unread, and indicates that a refresh is required.
+        This method is triggered when the text of the spectrum file input field changes. It updates the 'Experimental
+        file name' setting with the new text, marks the current experimental file as unread, and indicates that a
+        refresh is required.
 
         Parameters
         ----------
@@ -1321,7 +1356,8 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text` argument.
+        The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text`
+        argument.
 
         """        
         self.debugger.print("on_spectrafile_le_changed", text)
@@ -1395,7 +1431,8 @@ class FitterTab(QWidget):
         -------
         None
 
-        Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
+        Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger`
+        print method.
 
         """        
         self.debugger.print("print_settings")
@@ -1406,7 +1443,9 @@ class FitterTab(QWidget):
     def replot(self):
         """Replots the experimental spectrum along with calculated frequencies and spectra.
 
-        This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related information such as legends and labels.
+        This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the
+        spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related
+        information such as legends and labels.
 
         Parameters
         ----------
@@ -1435,8 +1474,8 @@ class FitterTab(QWidget):
 
         Parameters
         ----------
-        force : bool, optional
-            If True, the refresh proceeds regardless of whether it is deemed necessary based on the internal state. Defaults to False.
+        force : bool, optional If True, the refresh proceeds regardless of whether it is deemed necessary based on the
+        internal state. Defaults to False.
 
         Returns
         -------
@@ -1444,9 +1483,15 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        The refresh process involves several key steps including checking if a refresh is required, updating plotting data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no frequencies, it returns early. Additionally, if `force` is True, it ignores the check for whether a refresh is required and proceeds with the refresh.
+        The refresh process involves several key steps including checking if a refresh is required, updating plotting
+        data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and
+        recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no
+        frequencies, it returns early. Additionally, if `force` is True, it ignores the check for whether a refresh is
+        required and proceeds with the refresh.
 
-        After updating relevant class attributes and GUI components, the function recalculates cross-correlation, root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these metrics.
+        After updating relevant class attributes and GUI components, the function recalculates cross-correlation,
+        root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these
+        metrics.
 
         """        
         self.debugger.print("Start:: refresh", force)

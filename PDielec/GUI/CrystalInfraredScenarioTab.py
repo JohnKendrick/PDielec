@@ -139,7 +139,11 @@ def solve_single_crystal_equations(
 class CrystalInfraredScenarioTab(ScenarioTab):
     """A tab class for handling a crystal infrared  scenario.
 
-    This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling crystal infrared scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
+    This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities
+    specific to handling crystal infrared scenarios, including setting up the scenario environment, defining the crystal
+    orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It
+    supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation
+    parameters such as incidence angles, layer materials, thicknesses, and orientations.
 
     Parameters
     ----------
@@ -150,30 +154,33 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
     Attributes
     ----------
-    refresh_required : bool
-        Flag indicating whether the widget's data needs to be refreshed.
-    calculation_required : bool
-        Flag indicating whether a new calculation is required based on changes in parameters or settings.
-    scenarioType : str
-        A string representing the type of scenario. For this class, it is set to 'Crystal Infrared'.
-    refresh_required : bool
-        Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or recalculated.
-    noCalculationsRequired : int
-        The number of calculations required for the simulation. This value may change depending on the specifics of the scenario configuration (e.g., the inclusion of incoherent effects requiring multiple sample calculations).
-    settings : dict
-        A dictionary holding various scenario parameters and their values, which include settings for the type of analysis, material layers, angles, and method-specific parameters.
-    materialNames : list
-        A list of names for materials that can be used in the scenario layers.
-    p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list
-        Lists holding computed values for reflectance, transmittance, and absorbance for both P and S polarization modes.
-    epsilon : list
-        A list of dielectric function values computed during simulation.
-    layers : list
-        A list of layer configurations used in the simulation, each containing information about the material, thickness, orientation, and other layer-specific properties.
+    refresh_required : bool Flag indicating whether the widget's data needs to be refreshed. calculation_required : bool
+    Flag indicating whether a new calculation is required based on changes in parameters or settings. scenarioType : str
+    A string representing the type of scenario. For this class, it is set to 'Crystal Infrared'. refresh_required : bool
+    Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or
+    recalculated. noCalculationsRequired : int The number of calculations required for the simulation. This value may
+    change depending on the specifics of the scenario configuration (e.g., the inclusion of incoherent effects requiring
+    multiple sample calculations). settings : dict A dictionary holding various scenario parameters and their values,
+    which include settings for the type of analysis, material layers, angles, and method-specific parameters.
+    materialNames : list A list of names for materials that can be used in the scenario layers. p_reflectance,
+    s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list Lists holding computed values
+    for reflectance, transmittance, and absorbance for both P and S polarization modes. epsilon : list A list of
+    dielectric function values computed during simulation. layers : list A list of layer configurations used in the
+    simulation, each containing information about the material, thickness, orientation, and other layer-specific
+    properties.
+
+
+
+
+
+
 
     Methods
     -------
-    There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the crystal infrared scenario.
+    There are several methods within the class for handling events (e.g., button clicks, combo box activations),
+    performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting,
+    or altering layers; opening material databases; changing simulation settings; calculating and displaying results;
+    and initializing the user interface components relevant to the crystal infrared scenario.
 
     angle_of_incidence_widget
         Create a widget to set the angle of incidence
@@ -247,7 +254,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
          Handle a print button click
     on_thickness_units_cb_activated
          Activate the thickness units combobox
-    openDB_button_clicked
+    open_db_button_clicked
          Handle a click on the opend database button
     partial_incoherence_widget
          Create a partialIncoherence widget
@@ -897,13 +904,14 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Returns
         -------
-        QComboBox
-            A QComboBox widget configured with an initial item for creating a new layer and any additional existing material layer names.
+        QComboBox A QComboBox widget configured with an initial item for creating a new layer and any additional
+        existing material layer names.
 
         Notes
         -----
-        - The first item in the combo box is a placeholder for creating a new layer, indicated by "New layer...".
-        - The combo box is connected to the `on_newLayer_cb_activated` method, which should handle the action performed upon selecting an item from the combo box.
+        - The first item in the combo box is a placeholder for creating a new layer, indicated by "New layer...". - The
+          combo box is connected to the `on_newLayer_cb_activated` method, which should handle the action performed upon
+          selecting an item from the combo box.
 
         """        
         newLayer_cb = QComboBox()
@@ -1197,9 +1205,13 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Notes
         -----
-        This function prints the settings associated with layers, including material names, HKL values (Miller indices for the crystallographic planes), azimuthal angles, thicknesses with their units, flags indicating whether the layer is dielectric, and options for incoherent scattering, if applicable.
+        This function prints the settings associated with layers, including material names, HKL values (Miller indices
+        for the crystallographic planes), azimuthal angles, thicknesses with their units, flags indicating whether the
+        layer is dielectric, and options for incoherent scattering, if applicable.
 
-        This function does not return any value. It is primarily used for debugging or informative purposes to quickly display the current configuration of layer settings within a class that has `settings` as an attribute storing these properties.
+        This function does not return any value. It is primarily used for debugging or informative purposes to quickly
+        display the current configuration of layer settings within a class that has `settings` as an attribute storing
+        these properties.
 
         """        
         print(message)
@@ -1283,8 +1295,8 @@ class CrystalInfraredScenarioTab(ScenarioTab):
     def get_dielectric_layer_index(self):
         """Return the index of the dielectric layer in the list of layers.
 
-        - Sorts through the list of layers and reports the index of the first layer that came from the provided DFT calculation
-        - If there is no such layer then the value None is returned
+        - Sorts through the list of layers and reports the index of the first layer that came from the provided DFT
+          calculation - If there is no such layer then the value None is returned
 
         Parameters
         ----------
@@ -1305,8 +1317,8 @@ class CrystalInfraredScenarioTab(ScenarioTab):
     def on_layer_button_clicked(self,x,layer,layerIndex):
         """Handle a click on the show layer widget.
 
-        A new window is shown with additional information about material in the layer.
-        For materials with a 3x3 tensor permittivity the window shows the relationship between the laboratory and crystal coordinates.
+        A new window is shown with additional information about material in the layer. For materials with a 3x3 tensor
+        permittivity the window shows the relationship between the laboratory and crystal coordinates.
 
         Parameters
         ----------
@@ -1450,7 +1462,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
         label.setToolTip("Define the kernel size for the smoothing of incoherent spectra (must be an odd number)\nIf the kernel size is less than 3, no smoothing is done.\nThe larger the number, the smoother the spectrum but beware of too much smoothing.\nAlso defines the polynomial size for the fitting of the points in the kernel")
         return label,hbox
 
-    def openDB_button_clicked(self):
+    def open_db_button_clicked(self):
         """Open a new materials' database.
 
         After the database is opened a refresh is requested.
@@ -1464,7 +1476,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print("Start:: openDB_button_clicked")
+        self.debugger.print("Start:: open_db_button_clicked")
         self.open_data_base()
         self.refresh(force=True)
         self.refresh_required = True
@@ -1531,7 +1543,8 @@ class CrystalInfraredScenarioTab(ScenarioTab):
     def on_percentage_partial_incoherence_sb_changed(self,value):
         """Handle changes in percentage partial incoherence spinner box value.
 
-        This method updates the 'Percentage partial incoherence' setting based on the new value provided by the relevant spinner box. It marks that a refresh is required and logs the change using the configured debugger.
+        This method updates the 'Percentage partial incoherence' setting based on the new value provided by the relevant
+        spinner box. It marks that a refresh is required and logs the change using the configured debugger.
 
         Parameters
         ----------
@@ -1714,9 +1727,9 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        index : int
-            The index of the selected mode in the combo box. This controls what mode the system will use. 
-            Index 0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
+        index : int The index of the selected mode in the combo box. This controls what mode the system will use.  Index
+        0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
+
 
         Returns
         -------
@@ -1724,13 +1737,13 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Notes
         -----
-        This function performs several operations based on the selected mode:
-        - Sets the mode in the settings to either 'Transfer matrix' or 'Scattering matrix'.
-        - If 'Scattering matrix' mode is selected (index 1), it goes through all layers and changes any layer with the incoherent option set to 'Incoherent (intensity)' to be 'Coherent'.
-        - Invokes set_noCalculationsRequired to indicate that new calculations are necessary based on the changed settings.
-        - Calls generate_layer_settings to update the layer settings according to the new mode.
-        - Forces a refresh of the display to reflect any changes.
-        - Sets a flag indicating that a refresh is required.
+        This function performs several operations based on the selected mode: - Sets the mode in the settings to either
+        'Transfer matrix' or 'Scattering matrix'. - If 'Scattering matrix' mode is selected (index 1), it goes through
+        all layers and changes any layer with the incoherent option set to 'Incoherent (intensity)' to be 'Coherent'. -
+        Invokes set_noCalculationsRequired to indicate that new calculations are necessary based on the changed
+        settings. - Calls generate_layer_settings to update the layer settings according to the new mode. - Forces a
+        refresh of the display to reflect any changes. - Sets a flag indicating that a refresh is required.
+
 
         """        
         self.debugger.print(self.settings["Legend"],"Start:: on_mode_cb_activated")
@@ -2046,7 +2059,12 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Notes
         -----
-        This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
+        This method updates the object's state by calculating and setting various optical properties (reflectance,
+        transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the
+        angle of incidence. It requires that settings, frequencies, and other parameters be previously defined and
+        valid. The method also makes use of different calculator objects depending on the coherence conditions and
+        partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings
+        by aborting the calculations and logging appropriate messages through a `debugger`.
 
         """        
         self.debugger.print(self.settings["Legend"],"Start:: calculate - number of frequencies",len(vs_cm1))

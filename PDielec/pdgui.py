@@ -17,16 +17,18 @@
 
 Process command line arguments and start a GUI application with optional splash screen.
 
-No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
+No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to
+configure application behavior. The command line arguments can control displaying a splash screen, application
+debugging, forcibly exiting, or showing the application version.
 
 Notes
 -----
-    - The -nosplash flag disables the splash screen.
-    - The -v, -version, or --version flags print the program version and exit.
-    - The -exit or --exit flag forces the program to exit immediately after processing arguments.
-    - The -d, -debug, or --debug flags enable debug messages.
-    - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
-    - If the splash screen is shown, it also includes a progress bar.
+    - The -nosplash flag disables the splash screen. - The -v, -version, or --version flags print the program version
+      and exit. - The -exit or --exit flag forces the program to exit immediately after processing arguments. - The -d,
+      -debug, or --debug flags enable debug messages. - The function looks for a splash image file in several locations,
+      starting with the executable's directory, and displays it if found unless the splash screen is disabled. - If the
+      splash screen is shown, it also includes a progress bar.
+
 
 """
 import os
@@ -45,16 +47,18 @@ version = PDielec.__init__.__version__
 def main():
     """Process command line arguments and start a GUI application with optional splash screen.
 
-    No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
+    No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to
+    configure application behavior. The command line arguments can control displaying a splash screen, application
+    debugging, forcibly exiting, or showing the application version.
 
     Notes
     -----
-    - The -nosplash flag disables the splash screen.
-    - The -v, -version, or --version flags print the program version and exit.
-    - The -exit or --exit flag forces the program to exit immediately after processing arguments.
-    - The -d, -debug, or --debug flags enable debug messages.
-    - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
-    - If the splash screen is shown, it also includes a progress bar.
+    - The -nosplash flag disables the splash screen. - The -v, -version, or --version flags print the program version
+      and exit. - The -exit or --exit flag forces the program to exit immediately after processing arguments. - The -d,
+      -debug, or --debug flags enable debug messages. - The function looks for a splash image file in several locations,
+      starting with the executable's directory, and displays it if found unless the splash screen is disabled. - If the
+      splash screen is shown, it also includes a progress bar.
+
 
     Side Effects
     ------------

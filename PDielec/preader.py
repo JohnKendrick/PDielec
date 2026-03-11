@@ -75,11 +75,11 @@ def read_a_file( calling_parameters):
 
     Returns
     -------
-    tuple
-        A tuple containing:
-        - reader : object (An object capable of reading and processing the data from the specified file.)
-        - name : str (Name of the file that was processed.)
-        - results_string : list (A list of strings that represent the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies, intensities, and optionally calculated molar absorption rates.)
+    tuple A tuple containing: - reader : object (An object capable of reading and processing the data from the specified
+    file.) - name : str (Name of the file that was processed.) - results_string : list (A list of strings that represent
+    the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies,
+    intensities, and optionally calculated molar absorption rates.)
+
 
     """    
     name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, debug = calling_parameters
@@ -270,7 +270,8 @@ def print_help():
 
     Notes
     -----
-    The function internally directs its output to `sys.stderr` instead of the default `sys.stdout`, to separate the help message from other outputs. It also exits the program after displaying the help message by calling `exit()`. 
+    The function internally directs its output to `sys.stderr` instead of the default `sys.stdout`, to separate the help
+    message from other outputs. It also exits the program after displaying the help message by calling `exit()`.
 
     Examples
     --------

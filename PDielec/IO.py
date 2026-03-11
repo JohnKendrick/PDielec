@@ -111,7 +111,9 @@ class pdielec_io:
 
         Notes
         -----
-        This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.
+        This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by
+        deleting attributes. Calling this method on an object may render it unusable for certain operations that depend
+        on the deleted attributes.
 
         """        
         self.index = 0

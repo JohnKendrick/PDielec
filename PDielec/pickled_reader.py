@@ -25,13 +25,17 @@ version = PDielec.__init__.__version__
 def print_help():
     """Print help information to standard error and exit the program.
 
-    This function prints out instructions for using a command-line tool that reads in a pickled file. The file should have been created with a specific flag ('-pickle') using the 'preader' command. It also outputs the version of the program.
+    This function prints out instructions for using a command-line tool that reads in a pickled file. The file should
+    have been created with a specific flag ('-pickle') using the 'preader' command. It also outputs the version of the
+    program.
 
     No parameters are accepted or required by this function.
 
-    The function uses `sys.stderr` to print messages, ensuring that they are output to the standard error stream rather than the standard output. This is useful for separating actual program output from error or help messages.
+    The function uses `sys.stderr` to print messages, ensuring that they are output to the standard error stream rather
+    than the standard output. This is useful for separating actual program output from error or help messages.
 
-    The function explicitly calls `exit()`, which terminates the program execution. This is used here to halt further execution after displaying the help information.
+    The function explicitly calls `exit()`, which terminates the program execution. This is used here to halt further
+    execution after displaying the help information.
     """    
     print("pickled_reader filenames", file=sys.stderr)
     print("  Read in a pickled (actually using dill to pickle the object) reader            ", file=sys.stderr)
@@ -42,9 +46,13 @@ def print_help():
 def main():
     """Enter point for main program.
 
-     his function reads a serialized object from a pickle file specified as the first command line argument. It deserializes objects from the file until it reaches the end of the file and then iterates through these objects, printing their details and the details of their last unit cell.
+     his function reads a serialized object from a pickle file specified as the first command line argument. It
+     deserializes objects from the file until it reaches the end of the file and then iterates through these objects,
+     printing their details and the details of their last unit cell.
 
-    The expected structure for the serialized objects (readers) should have attributes `type`, `names`, and `unit_cells`, and must have a `print()` method. The `unit_cells` attribute is expected to be a list, where each element has a `print()` method as well.
+    The expected structure for the serialized objects (readers) should have attributes `type`, `names`, and
+    `unit_cells`, and must have a `print()` method. The `unit_cells` attribute is expected to be a list, where each
+    element has a `print()` method as well.
 
     Parameters
     ----------
@@ -60,7 +68,8 @@ def main():
     EOFError
         If there is an issue with reading the file to its end. This exception is caught and handled within the function.
 
-    Any exception related to deserialization issues with `pickle.load()` is also caught and should be handled as per the application's needs.
+    Any exception related to deserialization issues with `pickle.load()` is also caught and should be handled as per the
+    application's needs.
 
     Note
     ----
