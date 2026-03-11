@@ -322,7 +322,7 @@ class GulpOutputReader(GenericOutputReader):
         cell.set_fractional_coordinates(self._fractional_coordinates)
         cell.set_element_names(self._atom_types)
         self.unit_cells.append(cell)
-        self.volume = cell.getVolume("Angstrom")
+        self.volume = cell.get_volume("Angstrom")
         self.ncells = len(self.unit_cells)
 
     def _read_cellcontents(self, line):

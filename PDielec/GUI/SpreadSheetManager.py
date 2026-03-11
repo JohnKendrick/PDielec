@@ -52,11 +52,11 @@ class SpreadSheetManager:
 
     Methods
     -------
-    openWorkSheet(tab)
+    open_work_sheet(tab)
         Opens a new worksheet for the given tab if not already opened.
-    selectWorkSheet(name)
+    select_work_sheet(name)
         Selects the specified worksheet for further operations.
-    writeNextRow(items, row=None, col=None, check='')
+    write_next_row(items, row=None, col=None, check='')
         Writes a series of items to the next row of the currently selected worksheet.
     write(row, col, item)
         Writes an item to the specified location in the currently selected worksheet.
@@ -137,9 +137,9 @@ class SpreadSheetManager:
         for tab in self.tab_names:
             self.opened[tab] = False
         self.name = "Main"
-        self.openWorkSheet(self.name)
+        self.open_work_sheet(self.name)
 
-    def openWorkSheet(self,tab):
+    def open_work_sheet(self,tab):
         """Open a new worksheet in a workbook.
 
         Parameters
@@ -167,7 +167,7 @@ class SpreadSheetManager:
         self.max_row[tab] = 0
         self.opened[tab] = True
 
-    def selectWorkSheet(self,name):
+    def select_work_sheet(self,name):
         """Select or opens a worksheet by name.
 
         Parameters
@@ -182,15 +182,15 @@ class SpreadSheetManager:
         Notes
         -----
         This method selects a worksheet if it is already opened. If the worksheet is not
-        currently open, it attempts to open the worksheet by calling `openWorkSheet` with
+        currently open, it attempts to open the worksheet by calling `open_work_sheet` with
         the worksheet name.
 
         """        
         self.name = name
         if not self.opened[name]:
-            self.openWorkSheet(self.name)
+            self.open_work_sheet(self.name)
 
-    def writeNextRow(self,items, row=None, col=None, check=""):
+    def write_next_row(self,items, row=None, col=None, check=""):
         """Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
 
         Parameters

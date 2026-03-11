@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Single crystal")
 #
 #
 #
@@ -46,7 +46,7 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = '0.24 um 6H-SiC on 0.56um AlN'
 tab.settings['Scenario type'] = 'Single crystal'

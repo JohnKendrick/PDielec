@@ -1684,18 +1684,18 @@ def direction_from_shape(data, reader):
     direction = cell.convert_hkl_to_xyz(hkl) if surface else cell.convert_abc_to_xyz(hkl)
     return direction / np.linalg.norm(direction)
 
-def solve_effective_medium_equations( 
+def solve_effective_medium_equations(
         method                     ,
         vf                         ,
         size_mu                    ,
         size_distribution_sigma    ,
-        matrixPermittivityFunction ,
+        matrix_permittivity_function ,
         shape                      ,
         L                          ,
         concentration              ,
-        atrPermittivity            ,
-        atrTheta                   ,
-        atrSPol                    ,
+        atr_permittivity           ,
+        atr_theta                  ,
+        atr_s_pol                  ,
         bubble_vf                  ,
         bubble_radius              ,
         previous_solution_shared   ,
@@ -1713,7 +1713,7 @@ def solve_effective_medium_equations(
         The particle size in micron
     size_distribution_sigma : float
         The width of the size distribution.
-    matrixPermittivityFunction : function
+    matrix_permittivity_function : function
         Function returning the matrix permittivity at a frequency.
     shape : str
         The shape of the particles.
@@ -1721,11 +1721,11 @@ def solve_effective_medium_equations(
         The depolarisation matrix.
     concentration : float
         The concentration of particles.
-    atrPermittivity : float
+    atr_permittivity : float
         The permittivity of the ATR substrate.
-    atrTheta : float
+    atr_theta : float
         The ATR angle of incidence.
-    atrSPol : str
+    atr_s_pol : str
         The ATR polarisation.
     bubble_vf : float
         Volume fraction of bubbles.
@@ -1759,7 +1759,7 @@ def solve_effective_medium_equations(
     size = 2.0*np.pi*size_mu / lambda_mu
     data = ""
     # Calculate the permittivity of the matrix as an isotropic tensor at v_cm1
-    dielectric_medium = matrixPermittivityFunction(v_cm1) * np.eye(3)
+    dielectric_medium = matrix_permittivity_function(v_cm1) * np.eye(3)
     # Calculate the crystal permittivity at this frequency
     crystal_permittivity= crystalPermittivity
     # Calculate the effect of bubbles in the matrix by embedding in dielectric medium
@@ -1822,7 +1822,7 @@ def solve_effective_medium_equations(
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
     # calculate the ATR reflectance
-    spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
+    spatr = reflectance_atr(refractive_index,atr_permittivity,atr_theta,atr_s_pol)
     return v_cm1,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
 
 def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
@@ -2202,7 +2202,7 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
         w = damping*(y>z) + (1-damping)*(y<z)
     return y-z
 
-def reflectance_atr(ns,n0,theta,atrSPolFraction):
+def reflectance_atr(ns,n0,theta,s_pol_fraction):
     """Calculate the atr s and p reflectance.
 
     Parameters
@@ -2213,8 +2213,8 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
         The permittivity of atr material.
     theta : float
         The angle of incidence in degrees.
-    atrSPolFraction : float
-        The fraction of S wave to be considered. The amount of P wave is 1 - atrSPolFraction.
+    s_pol_fraction : float
+        The fraction of S wave to be considered. The amount of P wave is 1 - s_pol_fraction.
 
     Returns
     -------
@@ -2238,7 +2238,7 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     # Calculate the reflectance from the amplitudes - store as a real
     RS = np.real(rs * rs.conjugate())
     RP = np.real(rp * rp.conjugate())
-    RSP = atrSPolFraction*RS + (1.0-atrSPolFraction)*RP
+    RSP = s_pol_fraction*RS + (1.0-s_pol_fraction)*RP
     # Now return the extinction
     return -math.log10(RSP)
 
@@ -2262,7 +2262,7 @@ def cleanup_symbol(s):
         s = s.replace(i,"")
     return s
 
-def determineEulerAngles(R):
+def determine_euler_angles(R):
      """Determine the euler angles of a rotation matrix.
 
      Parameters
@@ -2453,9 +2453,6 @@ def compute_all_sg_permutations(rot,mat):
 
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs."""
-    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
-    #JK Commented out for the time being
-    #JK os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def similarity_transform(rot,mat):
     """Similarity transformation by R x M x R^-1.

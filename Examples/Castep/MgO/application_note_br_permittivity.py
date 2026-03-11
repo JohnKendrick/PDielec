@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder")
 #
 #
 #
@@ -46,7 +46,7 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Eps=2'
 tab.settings['Scenario type'] = 'Powder'
@@ -71,7 +71,7 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Eps=3'
 tab.settings['Scenario type'] = 'Powder'
@@ -96,7 +96,7 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'Eps=5'
 tab.settings['Scenario type'] = 'Powder'
@@ -121,7 +121,7 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'Eps=10'
 tab.settings['Scenario type'] = 'Powder'
@@ -146,7 +146,7 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'Eps=50'
 tab.settings['Scenario type'] = 'Powder'

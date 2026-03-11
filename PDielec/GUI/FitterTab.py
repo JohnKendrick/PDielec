@@ -13,12 +13,16 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """FitterTab module."""
+import csv
 import os.path
+import warnings
 
+import numpy as np
+from openpyxl import load_workbook
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
-import numpy as np
+import matplotlib.pyplot
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 from qtpy.QtCore import QCoreApplication, Qt
@@ -90,7 +94,6 @@ def find_delimiter(filename):
     the given file by analyzing the first 5000 bytes of the file.
 
     """        
-    import csv
     sniffer = csv.Sniffer()
     with open(filename) as fp:
         return sniffer.sniff(fp.read(5000)).delimiter
@@ -133,7 +136,6 @@ def read_experimental_file(file_name,frequency_column=1, spectrum_column=2, shee
         return experimental_frequencies, experimental_spectrum
     if file_name.endswith(".csv"):
         # Read in a csv file, discard alphanumerics
-        import csv
         delimiter = find_delimiter(file_name)
         with open(file_name) as fd:
             if debug:
@@ -146,9 +148,6 @@ def read_experimental_file(file_name,frequency_column=1, spectrum_column=2, shee
                    experimental_spectrum.append(float(row[spectrum_column-1]))
     else:
         # Read in a xlsx file, discard alphanumerics
-        import warnings
-
-        from openpyxl import load_workbook
         if debug:
             print("FitterTab: Reading xlsx file::")
         with warnings.catch_warnings():
@@ -233,7 +232,7 @@ def resample_experimental_spectrum(calculated_frequencies,
         print("Finished:: Resample_experimental_spectrum")
     return resampled_experimental_spectrum
 
-def calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum,
+def calculate_cross_correlation(xaxis, calculated_spectrum, experimental_spectrum,
                               scaling_factor=1.0, debug=False):
     """Calculate the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
 
@@ -267,18 +266,18 @@ def calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum,
 
     """        
     if debug:
-        print("Start:: calculateCrossCorrelation",scaling_factor)
+        print("Start:: calculate_cross_correlation",scaling_factor)
     # Calculate the cross correlation coefficient between the experimental and the first scenario
     if len(experimental_spectrum) == 0 or len(calculated_spectrum) == 0 or len(xaxis) == 0:
         if debug:
             print("The experimental spectrum has not been specified")
             if len(experimental_spectrum) == 0:
-                print("calculateCrossCorrelation experimental_spectrum is not defined")
+                print("calculate_cross_correlation experimental_spectrum is not defined")
             if len(calculated_spectrum) == 0:
-                print("calculateCrossCorrelation experimental_spectrum is not defined")
+                print("calculate_cross_correlation experimental_spectrum is not defined")
             if len(xaxis) == 0:
-                print("calculateCrossCorrelation the x-axis frequencies are not defined")
-            print("Finshed:: calculateCrossCorrelation",scaling_factor)
+                print("calculate_cross_correlation the x-axis frequencies are not defined")
+            print("Finshed:: calculate_cross_correlation",scaling_factor)
         return (0.0,0.0,0.0)
     # col1 contains the experimental spectrum
     col1 = np.array(experimental_spectrum)
@@ -294,10 +293,10 @@ def calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum,
     lag = (xaxis[1] - xaxis[0]) * lag
     if debug:
         print("lag , max(corr), index", lag,np.max(correlation),correlation[int((len(correlation)-1)/2)])
-        print("Finshed:: calculateCrossCorrelation",scaling_factor)
+        print("Finshed:: calculate_cross_correlation",scaling_factor)
     return (lag,np.max(correlation),correlation[int((len(correlation)-1)/2)])
 
-def calculateSpectralDifference(xaxis,calculated_spectrum,experimental_spectrum,
+def calculate_spectral_difference(xaxis,calculated_spectrum,experimental_spectrum,
                             spectral_threshold=0.05, scaling_factor=1.0, debug=False):
     """Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.
 
@@ -330,7 +329,7 @@ def calculateSpectralDifference(xaxis,calculated_spectrum,experimental_spectrum,
 
     """        
     if debug:
-        print("FitterTab: calculateSpectralDifference",scaling_factor)
+        print("FitterTab: calculate_spectral_difference",scaling_factor)
     # Calculate the spectral difference  between the experimental and the first scenario
     if len(experimental_spectrum) == 0:
         return 0.0
@@ -351,7 +350,7 @@ def calculateSpectralDifference(xaxis,calculated_spectrum,experimental_spectrum,
     rmse = np.sqrt(np.dot(diff,diff)/len(col2))
     if debug:
         print("FitterTab: rmse",rmse)
-        print("FitterTab: Finished:: optimiseFunction")
+        print("FitterTab: Finished:: optimise_function")
     return rmse
 
 class FitterTab(QWidget):
@@ -408,11 +407,11 @@ class FitterTab(QWidget):
         Handle the event when the second replot button with frequency shift is clicked.
     plot(self, experiment, xs, ys, legends, label)
         Plots the fitting results with optional experiment data overlay.
-    fittingButtonClicked(self)
+    fitting_button_clicked(self)
         Initiates the fitting process when the fitting button is clicked.
-    optimiseFit(self)
+    optimise_fit(self)
         Optimises the fitting parameters.
-    optimiseFunction(self, variables)
+    optimise_function(self, variables)
         Function to be optimised during the fitting process.
     redraw_sigmas_tw(self)
         Redraws the table widget for sigma values based on current settings.
@@ -432,7 +431,7 @@ class FitterTab(QWidget):
         Handle the replotting of spectra.
     refresh(self, force=False)
         Refreshes the interface based on current settings and data.
-    requestRefresh(self)
+    request_refresh(self)
         Requests a refresh of the interface.
 
     """
@@ -457,7 +456,7 @@ class FitterTab(QWidget):
         super(QWidget, self).__init__(parent)
         self.debugger = Debug(debug,"FitterTab:")
         self.debugger.print("Start:: Initialising")
-        self.refreshRequired = True
+        self.refresh_required = True
         self.calculationInProgress = False
         self.settings = {}
         self.notebook = parent
@@ -630,7 +629,7 @@ class FitterTab(QWidget):
         # Add a fitting button
         self.fittingButton = QPushButton("Perform fitting")
         self.fittingButton.setToolTip("Attempt to fit the calculated spectrum to the experimental one")
-        self.fittingButton.clicked.connect(self.fittingButtonClicked)
+        self.fittingButton.clicked.connect(self.fitting_button_clicked)
         hbox.addWidget(self.fittingButton)
         form.addRow(hbox)
         # Add a progress bar
@@ -671,7 +670,7 @@ class FitterTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.debugger.print("Finished:: Initialising")
 
     def on_iterations_sb_changed(self):
@@ -690,7 +689,7 @@ class FitterTab(QWidget):
         """        
         self.debugger.print("on_iterations_sb_changed")
         self.settings["Number of iterations"] = self.iterations_sb.value()
-        self.refreshRequired = True
+        self.refresh_required = True
         return
 
     def on_independent_yaxes_cb_changed(self,value):
@@ -707,12 +706,12 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refreshRequired' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
+        This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refresh_required' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
 
         """        
         self.debugger.print("independent_yaxes_cb_changed",value)
         self.settings["Independent y-axes"] = self.independent_yaxes_cb.isChecked()
-        self.refreshRequired = True
+        self.refresh_required = True
         return
 
     def on_optimise_frequency_scaling_cb_changed(self,value):
@@ -732,7 +731,7 @@ class FitterTab(QWidget):
         """        
         self.debugger.print("optimise_frequency_scaling_cb_changed",value)
         self.settings["Optimise frequency scaling"] = self.optimise_frequency_scaling_cb.isChecked()
-        self.refreshRequired = True
+        self.refresh_required = True
         return
 
     def on_spectrum_scaling_cb_changed(self,value):
@@ -752,7 +751,7 @@ class FitterTab(QWidget):
         """        
         self.debugger.print("on_spectrum_scaling_cb_changed",value)
         self.settings["Spectrum scaling"] = self.spectrum_scaling_cb.isChecked()
-        self.refreshRequired = True
+        self.refresh_required = True
         return
 
     def on_hpfilter_lambda_sb_changed(self,value):
@@ -769,7 +768,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("hpfilter_lambda_sb_changed",value)
-        self.refreshRequired = True
+        self.refresh_required = True
         try:
             self.settings["HPFilter lambda"] = float(value)
         except ValueError:
@@ -794,7 +793,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("on_spectrum_scaling_factor_cb_changed",value)
-        self.refreshRequired = True
+        self.refresh_required = True
         try:
             self.settings["Spectrum scaling factor"] = float(value)
         except ValueError:
@@ -817,7 +816,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("on_baseline_cb_changed",value)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Baseline removal"] = self.baseline_cb.isChecked()
         return
 
@@ -838,7 +837,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("on_spectral_difference_threshold_sb_changed",value)
-        self.refreshRequired = True
+        self.refresh_required = True
         try:
             self.settings["Spectral difference threshold"] = float(value)
         except ValueError:
@@ -861,11 +860,11 @@ class FitterTab(QWidget):
 
         Notes
         -----
-        - The `self.refreshRequired` flag is set to True regardless of whether the conversion succeeds.
+        - The `self.refresh_required` flag is set to True regardless of whether the conversion succeeds.
 
         """        
         self.debugger.print("on_frequency_scaling_factor_cb_changed",value)
-        self.refreshRequired = True
+        self.refresh_required = True
         try:
             self.settings["Frequency scaling factor"] = float(value)
         except ValueError:
@@ -891,7 +890,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("Start:: replotButton1Clicked")
-        self.refreshRequired = True
+        self.refresh_required = True
         self.plot_frequency_shift = False
         self.lastButtonPressed = self.replotButton1Clicked
         self.refresh()
@@ -915,7 +914,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("Start:: replotButton2Clicked")
-        self.refreshRequired = True
+        self.refresh_required = True
         self.plot_frequency_shift = True
         self.lastButtonPressed = self.replotButton2Clicked
         self.refresh()
@@ -957,8 +956,7 @@ class FitterTab(QWidget):
         self.debugger.print("Start:: plot")
         self.subplot1 = None
         self.figure.clf()
-        import matplotlib.pyplot as plt
-        cmap = plt.get_cmap("tab10")
+        cmap = matplotlib.pyplot.get_cmap("tab10")
         if self.frequency_units == "wavenumber":
             xlabel = r"Frequency $\mathdefault{(cm^{-1})}$"
             scale = 1.0
@@ -1003,7 +1001,7 @@ class FitterTab(QWidget):
         self.canvas.draw_idle()
         self.debugger.print("Finished:: plot")
 
-    def fittingButtonClicked(self):
+    def fitting_button_clicked(self):
         """Handle the click event on the fitting button.
 
         This method toggles the fitting process on and off. When clicked,
@@ -1022,24 +1020,24 @@ class FitterTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: fittingButtonClicked")
-        self.refreshRequired = True
+        self.debugger.print("Start:: fitting_button_clicked")
+        self.refresh_required = True
         if self.calculationInProgress:
             self.fittingButton.setText("Perform fitting")
             self.calculationInProgress = False
         else:
             self.fittingButton.setText("Interupt fitting")
             self.calculationInProgress = True
-        self.debugger.print("replotButton2Clicked",self.refreshRequired)
+        self.debugger.print("replotButton2Clicked",self.refresh_required)
         self.refresh()
         self.replot()
-        self.optimiseFit()
+        self.optimise_fit()
         self.fittingButton.setText("Perform fitting")
         self.calculationInProgress = False
-        self.debugger.print("Finished:: fittingButtonClicked")
+        self.debugger.print("Finished:: fitting_button_clicked")
         return
 
-    def optimiseFit(self):
+    def optimise_fit(self):
         # Optimise the fit of the first scenario to the experimental data
         # First determine who many variables we have
         """Optimise the fit based on the initial and adjusted sigmas and potential frequency scaling.
@@ -1066,13 +1064,13 @@ class FitterTab(QWidget):
         - `modes_fitted` to determine which modes are fitted.
         - `sigmas_cm1` as initial sigma points for optimization.
         - `settings` to check if frequency scaling should be optimised and to determine the number of iterations for the optimization.
-        - `optimiseFunction` as the function to be minimized.
+        - `optimise_function` as the function to be minimized.
 
         It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
         `fit_list` to store the indexes of modes that are being fitted.
 
         """        
-        self.debugger.print("Start:: optimiseFit")
+        self.debugger.print("Start:: optimise_fit")
         self.functionCalls = 0
         self.fit_list = []
         for mode,fitted in enumerate(self.modes_fitted):
@@ -1084,14 +1082,14 @@ class FitterTab(QWidget):
             initial_point.append(self.settings["Frequency scaling factor"])
         nvariables = len(initial_point)
         if nvariables > 0:
-            final_point = minimize(self.optimiseFunction, initial_point, method="nelder-mead", options={"xatol":0.01, "disp":True, "maxfev":nvariables+nvariables*self.settings["Number of iterations"]} )
+            final_point = minimize(self.optimise_function, initial_point, method="nelder-mead", options={"xatol":0.01, "disp":True, "maxfev":nvariables+nvariables*self.settings["Number of iterations"]} )
         else: 
             print("No sigmas have been selected for optimisation")
             final_point = []
-        self.debugger.print("Finished:: optimiseFit")
+        self.debugger.print("Finished:: optimise_fit")
         return final_point
 
-    def optimiseFunction(self,variables) :
+    def optimise_function(self,variables) :
         """Optimise the fitting function based on given variables.
 
         This method adjusts internal settings based on an array of variables to
@@ -1134,7 +1132,7 @@ class FitterTab(QWidget):
         """        
         if not self.calculationInProgress:
             return -9.9E99
-        self.debugger.print("Start:: optimiseFunction",variables)
+        self.debugger.print("Start:: optimise_function",variables)
         self.functionCalls += 1
         nvariables = len(variables)
         self.fittingButton.setText("Interrupt fitting ({}/{})".format(self.functionCalls,nvariables+1+nvariables*self.settings["Number of iterations"]))
@@ -1150,7 +1148,7 @@ class FitterTab(QWidget):
             self.redraw_sigmas_tw()
             self.notebook.settingsTab.sigmas_cm1[index] = sigma
             self.notebook.settingsTab.redraw_output_tw()
-            self.notebook.settingsTab.requestRefresh()
+            self.notebook.settingsTab.request_refresh()
         self.refresh(force=True)
         self.replot()
         # Returning the best correlation but made negative because we need to minimise
@@ -1158,8 +1156,8 @@ class FitterTab(QWidget):
             function_value = -1.0*self.xcorr0
         elif self.settings["Fitting type"] == "Minimise spectral difference":
             function_value = self.rmse
-        self.debugger.print("optimiseFunction - xcorr0,rmse",self.xcorr0,self.rmse)
-        self.debugger.print("Finished:: optimiseFunction",function_value)
+        self.debugger.print("optimise_function - xcorr0,rmse",self.xcorr0,self.rmse)
+        self.debugger.print("Finished:: optimise_function",function_value)
         return function_value
 
 
@@ -1244,7 +1242,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("on_fitting_type_cb_activated", index)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Fitting type"] = self.fitting_type_definitions[index]
 
     def on_scenario_cb_activated(self,index):
@@ -1264,7 +1262,7 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("on_scenario_cb_activated", index)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Scenario index"] = index
 
     def on_spectrafile_le_return(self):
@@ -1300,7 +1298,7 @@ class FitterTab(QWidget):
         self.settings["Experimental file name"] = file_name
         self.spectrafile_le.setText(self.settings["Experimental file name"])
         self.debugger.print("new file name", self.settings["Experimental file name"])
-        self.refreshRequired = True
+        self.refresh_required = True
         self.experimental_file_has_been_read = False
         # redo the plot if a return is pressed
         self.lastButtonPressed()
@@ -1328,7 +1326,7 @@ class FitterTab(QWidget):
         """        
         self.debugger.print("on_spectrafile_le_changed", text)
         text = self.spectrafile_le.text()
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Experimental file name"] = text
         self.experimental_file_has_been_read = False
 
@@ -1372,7 +1370,7 @@ class FitterTab(QWidget):
                 self.sigmas_cm1[row] = new_value
                 self.redraw_sigmas_tw()
                 self.notebook.settingsTab.sigmas_cm1[row] = new_value
-                self.notebook.settingsTab.requestRefresh()
+                self.notebook.settingsTab.request_refresh()
                 self.notebook.settingsTab.redraw_output_tw()
             except ValueError:
                  print("Failed to convert to float",item.text())
@@ -1380,7 +1378,7 @@ class FitterTab(QWidget):
             self.redraw_sigmas_tw()
         else:
             self.redraw_sigmas_tw()
-        self.refreshRequired = True
+        self.refresh_required = True
         QCoreApplication.processEvents()
         self.debugger.print("Finished:: on_sigmas_tw_itemChanged", item)
         return
@@ -1452,8 +1450,8 @@ class FitterTab(QWidget):
 
         """        
         self.debugger.print("Start:: refresh", force)
-        if not self.refreshRequired and not force:
-            self.debugger.print("refresh aborted", self.refreshRequired,force)
+        if not self.refresh_required and not force:
+            self.debugger.print("refresh aborted", self.refresh_required,force)
             self.debugger.print("Finished:: refresh", force)
             return
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
@@ -1465,8 +1463,8 @@ class FitterTab(QWidget):
         # Flag all the scenarios as needing an update
         #
         for scenario in self.notebook.scenarios:
-            scenario.requestRefresh()
-        self.notebook.settingsTab.requestRefresh()
+            scenario.request_refresh()
+        self.notebook.settingsTab.request_refresh()
         #
         # Now refresh the plotting tab 
         #
@@ -1529,12 +1527,12 @@ class FitterTab(QWidget):
                                                        debug=self.debugger.state())
             scaling_factor = self.settings["Frequency scaling factor"]
             spectral_threshold=self.settings["Spectral difference threshold"],
-            self.lag,self.xcorr0,self.xcorr1 = calculateCrossCorrelation(self.xaxis,
+            self.lag,self.xcorr0,self.xcorr1 = calculate_cross_correlation(self.xaxis,
                                                                      self.calculated_spectrum,
                                                                      self.resampled_experimental_spectrum,
                                                                      scaling_factor=scaling_factor,
                                                                      debug=self.debugger.state())
-            self.rmse = calculateSpectralDifference(self.xaxis,
+            self.rmse = calculate_spectral_difference(self.xaxis,
                                                 self.calculated_spectrum,
                                                 self.resampled_experimental_spectrum,
                                                 scaling_factor=scaling_factor,
@@ -1550,11 +1548,11 @@ class FitterTab(QWidget):
         # 
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
-        self.refreshRequired = False
+        self.refresh_required = False
         self.debugger.print("Finished:: refresh", force)
         return
 
-    def requestRefresh(self):
+    def request_refresh(self):
         """Request a refresh of the interface.
 
         Parameters
@@ -1566,7 +1564,7 @@ class FitterTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: requestRefresh")
-        self.refreshRequired = True
-        self.debugger.print("Finished:: requestRefresh")
+        self.debugger.print("Start:: request_refresh")
+        self.refresh_required = True
+        self.debugger.print("Finished:: request_refresh")
 

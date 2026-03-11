@@ -111,7 +111,7 @@ def solve_single_crystal_equations(
     gtmLayers = []
     # Create layers from all the layers between first and last
     for layer in selectedLayers:
-        incoherentOption = layer.getIncoherentOption()
+        incoherentOption = layer.get_incoherent_option()
         gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
     # Creat the system with the layers 
     if mode == "Scattering matrix":
@@ -133,7 +133,7 @@ def solve_single_crystal_equations(
     system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
     epsilon = system.layers[0].epsilon if len(system.layers) > 0 else system.substrate.epsilon
-    errors,largest_exponent = system.overflowErrors()
+    errors,largest_exponent = system.overflow_errors()
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
 class CrystalRamanScenarioTab(ScenarioTab):
@@ -150,13 +150,13 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
     Attributes
     ----------
-    refreshRequired : bool
+    refresh_required : bool
         Flag indicating whether the widget's data needs to be refreshed.
-    calculationRequired : bool
+    calculation_required : bool
         Flag indicating whether a new calculation is required based on changes in parameters or settings.
     scenarioType : str
         A string representing the type of scenario. For this class, it is set to 'Crystal Raman'.
-    refreshRequired : bool
+    refresh_required : bool
         Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or recalculated.
     noCalculationsRequired : int
         The number of calculations required for the simulation. This value may change depending on the specifics of the scenario configuration (e.g., the inclusion of incoherent effects requiring multiple sample calculations).
@@ -175,7 +175,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
     -------
     There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the Crystal Raman scenario.
 
-    angleOfIncidenceWidget
+    angle_of_incidence_widget
         Create a widget to set the angle of incidence
     average_incoherent_calculator
         Calculates the incoherent light reflectance and transmittance
@@ -183,37 +183,37 @@ class CrystalRamanScenarioTab(ScenarioTab):
         Perform the calculations as define in the GUI
     coherent_calculator
         Calculate the coherent light reflectance and transmittance
-    createToolBar
+    create_tool_bar
          Create the tool bar used for the material layer
-    createToolBarDeleteButton
+    create_tool_bar_delete_button
          Create the delete button in the tool bar
-    createToolBarMoveDownButton
+    create_tool_bar_move_down_button
          Create the move down button in the tool bar
-    createToolBarMoveUpButton
+    create_tool_bar_move_up_button
          Create the move up button in the tool bar
-    deleteLayer
+    delete_layer
          Delete a layer from the list of layers
-    drawLayerTable
+    draw_layer_table
          Draw the layer table widget, each layer has a line in the table
-    generateLayerSettings
+    generate_layer_settings
          Generate the settings dictionary with an item for each layer
-    getDielectricLayerIndex
+    get_dielectric_layer_index
          Get the index of the dielectric layer
-    getMaterialFromDataBase
+    get_material_from_data_base
          Get a material from the database, or define the material from the given permittivity
     get_result
          Return the request information
     get_results
          Calculate all the reflectance, transmittance and absorptance information
-    globalAzimuthalWidget
+    global_azimuthal_widget
          Set the global azimuthal angle
     greyed_out
          Grey out menu items according to the GUI settings
-    moveLayerDown
+    move_layer_down
          Move a layer up the layer table
-    moveLayerUp
+    move_layer_up
          Move a layer down the layer table
-    newLayerWidget
+    new_layer_widget
          Create a combox widget for adding a new layer
     on_angle_of_incidence_sb_changed
          Handle a change to the angle of incidence spin box
@@ -249,25 +249,25 @@ class CrystalRamanScenarioTab(ScenarioTab):
          Activate the thickness units combobox
     openDB_button_clicked
          Handle a click on the opend database button
-    partialIncoherenceWidget
+    partial_incoherence_widget
          Create a partialIncoherence widget
     partially_incoherent_calculator
          Calculate incoherent light scattering using a partially incoherent method
-    printLayerSettings
+    print_layer_settings
          Print out the layer settings dictionary
-    redrawLayerTable
+    redraw_layer_table
          Redraw the layer table
-    redrawLayerTableRow
+    redraw_layer_table_row
          Redraw a row of the layer table
     refresh
          Perform a refresh of the GUI
-    setMaterialNames
+    set_material_names
          Read the material names from the database
     set_noCalculationsRequired
          Calculate the number of calculations required
     settings2Layers
          Read the settings dictionary and create the necessary layers
-    smoothingWidget
+    smoothing_widget
          A widget to handle the smoothing information
 
     """
@@ -291,9 +291,9 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         Attributes
         ----------
-        refreshRequired : bool
+        refresh_required : bool
             Indicates if the view needs refreshing.
-        calculationRequired : bool
+        calculation_required : bool
             Indicates if a new calculation is required based on changed parameters.
         scenarioType : str
             The type of scenario, hardcoded as 'Crystal Raman'.
@@ -332,8 +332,8 @@ class CrystalRamanScenarioTab(ScenarioTab):
         ScenarioTab.__init__(self,parent)
         self.debugger = Debug(debug,"CrystalRamanScenarioTab:")
         self.debugger.print("Start:: initialiser")
-        self.refreshRequired = True
-        self.calculationRequired = True
+        self.refresh_required = True
+        self.calculation_required = True
         self.noCalculationsRequired = 1
         self.scenarioType = "Crystal Raman"
         self.settings["Scenario type"] = self.scenarioType
@@ -381,8 +381,8 @@ class CrystalRamanScenarioTab(ScenarioTab):
         self.exponent_threshold = 11000    
         # Open the database and get the material names
         self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=self.debugger.state())
-        self.settings["Materials database"] = self.DataBase.getFileName()
-        self.materialNames = self.setMaterialNames()
+        self.settings["Materials database"] = self.DataBase.get_file_name()
+        self.materialNames = self.set_material_names()
         # Create the layers - superstrate / dielectric / substrate from the defaults layer settings
         if self.reader is not None:
             self.settings2Layers()
@@ -412,12 +412,12 @@ class CrystalRamanScenarioTab(ScenarioTab):
         #
         # Define the global azimuthal angle widget
         #
-        label,layout = self.globalAzimuthalWidget()
+        label,layout = self.global_azimuthal_widget()
         self.form.addRow(label, layout)
         #
         # Define the angle of incidence widget
         #
-        label, layout = self.angleOfIncidenceWidget()
+        label, layout = self.angle_of_incidence_widget()
         self.form.addRow(label,layout)
         #
         # Layer information widget
@@ -429,7 +429,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         hbox.addWidget(line)
         hbox.setAlignment(Qt.AlignVCenter)
         self.form.addRow(label,hbox)
-        self.form.addRow(self.drawLayerTable())
+        self.form.addRow(self.draw_layer_table())
         label = QLabel("    ")
         line  = QFrame()
         line.setFrameShape(QFrame.HLine)
@@ -440,13 +440,11 @@ class CrystalRamanScenarioTab(ScenarioTab):
         #
         # Partial incoherence widget
         #
-        label,layout = self.partialIncoherenceWidget()
-        #jk self.form.addRow(label, layout)
+        label,layout = self.partial_incoherence_widget()
         #
         # Smoothing widget
         #
-        label,layout = self.smoothingWidget()
-        #jk self.form.addRow(label, layout)
+        label,layout = self.smoothing_widget()
         #
         # Add a legend option
         #
@@ -474,11 +472,11 @@ class CrystalRamanScenarioTab(ScenarioTab):
         QCoreApplication.processEvents()
         self.debugger.print("Finished:: initialiser")
 
-    def redrawLayerTable(self):
+    def redraw_layer_table(self):
         """Redraw the layer table widget.
 
         Adds a row for each layer in the gadget.
-        The row is drawn using redrawLayerTableRow()
+        The row is drawn using redraw_layer_table_row()
         """
         self.layerTable_tw.setRowCount(1)
         rowCount = 0
@@ -491,15 +489,15 @@ class CrystalRamanScenarioTab(ScenarioTab):
             elif layer == self.layers[-1]:
                 lastLayer = True
             self.layerTable_tw.setRowCount(rowCount)
-            self.redrawLayerTableRow(sequenceNumber,layer,rowCount,firstLayer,lastLayer)
+            self.redraw_layer_table_row(sequenceNumber,layer,rowCount,firstLayer,lastLayer)
         # Add a 'create new layer' button
         rowCount += 1
-        newLayer_cb = self.newLayerWidget()
+        newLayer_cb = self.new_layer_widget()
         newLayer_cb.setStyleSheet("Text-align:left")
         self.layerTable_tw.setRowCount(rowCount)
         self.layerTable_tw.setCellWidget(rowCount-1,0,newLayer_cb)
 
-    def redrawLayerTableRow(self,sequenceNumber,layer,rowCount,firstLayer,lastLayer):
+    def redraw_layer_table_row(self,sequenceNumber,layer,rowCount,firstLayer,lastLayer):
         """Draw a row of the layer table.
 
         Each row has a material name, a thickness (and unit), an h, k, l option and a toolbar
@@ -525,16 +523,16 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """
         # Create a layer button
-        material = layer.getMaterial()
-        materialName = material.getName()
+        material = layer.get_material()
+        materialName = material.get_name()
         layer_button = QPushButton(materialName)
         layer_button.setToolTip("Show the material properties in a new window")
         layer_button.setStyleSheet("Text-align:left")
         layer_button.clicked.connect(lambda x: self.on_layer_button_clicked(x,layer,sequenceNumber))
         self.layerTable_tw.setCellWidget(sequenceNumber,0,layer_button)
         # Handle thickness 
-        materialThickness = layer.getThickness()
-        thicknessUnit = layer.getThicknessUnit()
+        materialThickness = layer.get_thickness()
+        thicknessUnit = layer.get_thickness_unit()
         film_thickness_sb = QDoubleSpinBox(self)
         film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         film_thickness_sb.setToolTip("Define the thin film thickness in the defined thickness units")
@@ -558,28 +556,28 @@ class CrystalRamanScenarioTab(ScenarioTab):
         h_sb.setToolTip("Define the h dimension of the unique direction")
         h_sb.setRange(-20,20)
         h_sb.setSingleStep(1)
-        h_sb.setValue(layer.getHKL()[0])
+        h_sb.setValue(layer.get_hkl()[0])
         h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0,layer))
         h_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         k_sb = QSpinBox(self)
         k_sb.setToolTip("Define the k dimension of the unique direction")
         k_sb.setRange(-20,20)
         k_sb.setSingleStep(1)
-        k_sb.setValue(layer.getHKL()[1])
+        k_sb.setValue(layer.get_hkl()[1])
         k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1,layer))
         k_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         l_sb = QSpinBox(self)
         l_sb.setToolTip("Define the l dimension of the unique direction")
         l_sb.setRange(-20,20)
         l_sb.setSingleStep(1)
-        l_sb.setValue(layer.getHKL()[2])
+        l_sb.setValue(layer.get_hkl()[2])
         l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2,layer))
         l_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.layerTable_tw.setCellWidget(sequenceNumber,3,h_sb)
         self.layerTable_tw.setCellWidget(sequenceNumber,4,k_sb)
         self.layerTable_tw.setCellWidget(sequenceNumber,5,l_sb)
         # define azimuthal angle
-        azimuthal = layer.getAzimuthal()
+        azimuthal = layer.get_azimuthal()
         azimuthal_angle_sb = QDoubleSpinBox(self)
         azimuthal_angle_sb.setToolTip("Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below")
         azimuthal_angle_sb.setRange(-180,360)
@@ -593,9 +591,9 @@ class CrystalRamanScenarioTab(ScenarioTab):
         option_cb.setToolTip("Change optional settings for the layer")
         option_cb.addItems( incoherentOptions )
         # We can't use incoherent intensity method with the scattering matrix method
-        if self.settings["Mode"] == "Scattering matrix" and layer.getIncoherentOption() == "Incoherent (intensity)":
-            layer.setIncoherentOption("Coherent")
-        index = option_cb.findText(layer.getIncoherentOption(), Qt.MatchFixedString)
+        if self.settings["Mode"] == "Scattering matrix" and layer.get_incoherent_option() == "Incoherent (intensity)":
+            layer.set_incoherent_option("Coherent")
+        index = option_cb.findText(layer.get_incoherent_option(), Qt.MatchFixedString)
         option_cb.setCurrentIndex(index)
         option_cb.activated.connect(lambda x: self.on_option_cb_activated(x,layer))
         option_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
@@ -605,7 +603,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             option_cb.model().item(index).setEnabled(False)
         self.layerTable_tw.setCellWidget(sequenceNumber,7,option_cb)
         # Create a toolbar for up down delete
-        toolbar = self.createToolBar(layer,sequenceNumber,len(self.layers))
+        toolbar = self.create_tool_bar(layer,sequenceNumber,len(self.layers))
         self.layerTable_tw.setCellWidget(sequenceNumber,8,toolbar)
         # Add a Print option if debug is on
         if self.debugger.state():
@@ -613,7 +611,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             printButton.setToolTip("Print the permittivity")
             printButton.clicked.connect(lambda x: self.on_print_button_clicked(x,layer))
             self.layerTable_tw.setCellWidget(sequenceNumber,9,printButton)
-        if layer.isScalar():
+        if layer.is_scalar():
             h_sb.setEnabled(False)
             k_sb.setEnabled(False)
             l_sb.setEnabled(False)
@@ -623,7 +621,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             thickness_unit_cb.setEnabled(False)
         return
 
-    def drawLayerTable(self):
+    def draw_layer_table(self):
         """Draw a table with all the layers in it.
 
         Each layer has a row in the table showing, name, thickness, h,k,l, azimuthal angle, options and a toolbar
@@ -669,10 +667,10 @@ class CrystalRamanScenarioTab(ScenarioTab):
             # Print
             header.setSectionResizeMode(9,QHeaderView.ResizeToContents)
         if self.reader is not None:
-            self.redrawLayerTable()
+            self.redraw_layer_table()
         return self.layerTable_tw
 
-    def deleteLayer(self,x,layer,layerIndex):
+    def delete_layer(self,x,layer,layerIndex):
         """Handle a delete layer button press.
 
         Parameters
@@ -690,18 +688,18 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """
         new = layerIndex + 1
-        if layerIndex == 0 and layer[new].isTensor():
+        if layerIndex == 0 and layer[new].is_tensor():
             #  Only allow scalar materials as the superstrate
             print("New superstrate material must be a scalar dielectric")
             return
         # Delete the layer
         del self.layers[layerIndex]
-        self.generateLayerSettings()
+        self.generate_layer_settings()
         self.refresh(force=True)
-        self.refreshRequired=True
+        self.refresh_required=True
         return
 
-    def moveLayerUp(self,x,layer,layerIndex):
+    def move_layer_up(self,x,layer,layerIndex):
         """Move a layer up (sequence number gets smaller by 1).
 
         Parameters
@@ -720,7 +718,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         """
         if layerIndex < 1:
             return
-        if layerIndex == 1 and layer.isTensor():
+        if layerIndex == 1 and layer.is_tensor():
             #  Only allow scalar materials as the superstrate
             print("New superstrate material must be a scalar dielectric")
             return
@@ -728,12 +726,12 @@ class CrystalRamanScenarioTab(ScenarioTab):
         item = self.layers[layerIndex]
         self.layers.pop(layerIndex)
         self.layers.insert(new, item)
-        self.generateLayerSettings()
+        self.generate_layer_settings()
         self.refresh(force=True)
-        self.refreshRequired=True
+        self.refresh_required=True
         return
 
-    def moveLayerDown(self,x,layer,layerIndex):
+    def move_layer_down(self,x,layer,layerIndex):
         """Move a layer down (sequence number gets larger by 1).
 
         Parameters
@@ -754,19 +752,19 @@ class CrystalRamanScenarioTab(ScenarioTab):
         if layerIndex >= last:
             return
         new = layerIndex + 1
-        if layerIndex == 0 and self.layers[new].isTensor():
+        if layerIndex == 0 and self.layers[new].is_tensor():
             #  Only allow scalar materials as the superstrate
             print("New superstrate material must be a scalar dielectric")
             return
         item = self.layers[layerIndex]
         self.layers.pop(layerIndex)
         self.layers.insert(new, item)
-        self.generateLayerSettings()
+        self.generate_layer_settings()
         self.refresh(force=True)
-        self.refreshRequired=True
+        self.refresh_required=True
         return
 
-    def createToolBarMoveUpButton(self,layer,layerIndex,nLayers):
+    def create_tool_bar_move_up_button(self,layer,layerIndex,nLayers):
         """Create the move up button as part of the layer toolbar.
 
         Parameters
@@ -785,14 +783,14 @@ class CrystalRamanScenarioTab(ScenarioTab):
         """
         moveUpButton = QPushButton()
         moveUpButton.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowUp))
-        moveUpButton.clicked.connect(lambda x: self.moveLayerUp(x,layer,layerIndex))
+        moveUpButton.clicked.connect(lambda x: self.move_layer_up(x,layer,layerIndex))
         moveUpButton.setFixedSize(20,20)
         moveUpButton.setIconSize(QSize(20,20))
         moveUpButton.setStyleSheet("border: none;")
         moveUpButton.setToolTip("Move this layer up the list of layers")
         return moveUpButton
 
-    def createToolBarMoveDownButton(self,layer,layerIndex,nLayers):
+    def create_tool_bar_move_down_button(self,layer,layerIndex,nLayers):
         """Create the move down button as part of the layer toolbar.
 
         Parameters
@@ -811,14 +809,14 @@ class CrystalRamanScenarioTab(ScenarioTab):
         """
         moveDownButton = QPushButton()
         moveDownButton.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowDown))
-        moveDownButton.clicked.connect(lambda x: self.moveLayerDown(x,layer,layerIndex))
+        moveDownButton.clicked.connect(lambda x: self.move_layer_down(x,layer,layerIndex))
         moveDownButton.setFixedSize(20,20)
         moveDownButton.setIconSize(QSize(20,20))
         moveDownButton.setStyleSheet("border: none;")
         moveDownButton.setToolTip("Move this layer down the list of layers")
         return moveDownButton
 
-    def createToolBarDeleteButton(self,layer,layerIndex,nLayers):
+    def create_tool_bar_delete_button(self,layer,layerIndex,nLayers):
         """Create the delete button as part of the layer toolbar.
 
         Parameters
@@ -837,14 +835,14 @@ class CrystalRamanScenarioTab(ScenarioTab):
         """
         deleteButton = QPushButton()
         deleteButton.setIcon(QApplication.style().standardIcon(QStyle.SP_DialogCloseButton))
-        deleteButton.clicked.connect(lambda x: self.deleteLayer(x,layer,layerIndex))
+        deleteButton.clicked.connect(lambda x: self.delete_layer(x,layer,layerIndex))
         deleteButton.setFixedSize(20,20)
         deleteButton.setIconSize(QSize(20,20))
         deleteButton.setStyleSheet("border: none;")
         deleteButton.setToolTip("Delete this layer")
         return deleteButton
 
-    def createToolBar(self,layer,layerIndex,nLayers):
+    def create_tool_bar(self,layer,layerIndex,nLayers):
         """Create the tool bar used for the material layer.
 
         Parameters
@@ -867,19 +865,19 @@ class CrystalRamanScenarioTab(ScenarioTab):
         frame_layout = QHBoxLayout()
         frame.setLayout(frame_layout)
         # Create the buttons in different routines because of the lambda function usage
-        moveUpButton   =  self.createToolBarMoveUpButton(layer,layerIndex,nLayers)
-        moveDownButton =  self.createToolBarMoveDownButton(layer,layerIndex,nLayers)
-        deleteButton   =  self.createToolBarDeleteButton(layer,layerIndex,nLayers)
+        moveUpButton   =  self.create_tool_bar_move_up_button(layer,layerIndex,nLayers)
+        moveDownButton =  self.create_tool_bar_move_down_button(layer,layerIndex,nLayers)
+        deleteButton   =  self.create_tool_bar_delete_button(layer,layerIndex,nLayers)
         nextIndex = layerIndex+1
         # disable any buttons that are irrelevant to the layer
         if layerIndex == 0:
             moveUpButton.setEnabled(False)
         if layerIndex == nLayers-1:
             moveDownButton.setEnabled(False)
-        if layerIndex == 0 and self.layers[nextIndex].isTensor():
+        if layerIndex == 0 and self.layers[nextIndex].is_tensor():
             moveDownButton.setEnabled(False)
             deleteButton.setEnabled(False)
-        if layerIndex == 1 and layer.isTensor():
+        if layerIndex == 1 and layer.is_tensor():
             moveUpButton.setEnabled(False)
         # Add the buttons to the frame and return the frame
         frame_layout.addWidget(moveUpButton)
@@ -887,7 +885,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         frame_layout.addWidget(deleteButton)
         return frame
         
-    def newLayerWidget(self):
+    def new_layer_widget(self):
         """Create and return a new layer widget as a QComboBox.
 
         Returns a QComboBox widget configured for creating a new layer in a graphical user interface.
@@ -957,15 +955,15 @@ class CrystalRamanScenarioTab(ScenarioTab):
         newMaterialName = self.materialNames[index-1]
         if "manual" in newMaterialName:
             return
-        newMaterial = self.getMaterialFromDataBase(newMaterialName)
+        newMaterial = self.get_material_from_data_base(newMaterialName)
         hkl = [0,0,0]
-        if newMaterial.isTensor():
+        if newMaterial.is_tensor():
             hkl = [0,0,1]
         new_layer = SingleCrystalLayer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thicknessUnit="um")
         self.layers.append(new_layer)
-        self.generateLayerSettings()
+        self.generate_layer_settings()
         self.refresh(force=True)
-        self.refreshRequired = True
+        self.refresh_required = True
         return
 
     def on_print_button_clicked(self,x,layer):
@@ -986,9 +984,9 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        material = layer.getMaterial()
-        permittivityObject = material.getPermittivityObject()
-        name = material.getName()
+        material = layer.get_material()
+        permittivityObject = material.get_permittivity_object()
+        name = material.get_name()
         name = name.replace(" ","_")
         name += "_permittivity.csv"
         print("Printing permittivity information to",name)
@@ -1015,12 +1013,12 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print("on_incoherence_cb_activated", index,layer.getName())
+        self.debugger.print("on_incoherence_cb_activated", index,layer.get_name())
         option = incoherentOptions[index]
-        layer.setIncoherentOption(option)
+        layer.set_incoherent_option(option)
         self.set_noCalculationsRequired()
-        self.generateLayerSettings()
-        self.refreshRequired = True
+        self.generate_layer_settings()
+        self.refresh_required = True
         return
 
     def on_film_thickness_sb_changed(self,value,layer):
@@ -1042,10 +1040,10 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print("on_film_thickness_sb_changed", value, layer.getName())
-        layer.setThickness(value)
-        self.generateLayerSettings()
-        self.refreshRequired = True
+        self.debugger.print("on_film_thickness_sb_changed", value, layer.get_name())
+        layer.set_thickness(value)
+        self.generate_layer_settings()
+        self.refresh_required = True
         return
 
     def on_thickness_units_cb_activated(self, index, layer):
@@ -1067,11 +1065,11 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """        
-        self.debugger.print("Start:: on_thickness_units_cb_activated",index,layer.getName())
+        self.debugger.print("Start:: on_thickness_units_cb_activated",index,layer.get_name())
         unit = thickness_units[index]
-        layer.setThicknessUnit(unit)
-        self.generateLayerSettings()
-        self.refreshRequired = True
+        layer.set_thickness_unit(unit)
+        self.generate_layer_settings()
+        self.refresh_required = True
         return
 
     def on_azimuthal_angle_sb_changed(self,value,layer):
@@ -1094,11 +1092,11 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print("on_azimuthal_angl_sb_changed", value, layer.getName())
-        layer.setAzimuthal(value)
-        layer.changeLabFrameInfo()
-        self.generateLayerSettings()
-        self.refreshRequired = True
+        self.debugger.print("on_azimuthal_angl_sb_changed", value, layer.get_name())
+        layer.set_azimuthal(value)
+        layer.change_lab_frame_info()
+        self.generate_layer_settings()
+        self.refresh_required = True
         return
 
     def on_hkl_sb_changed(self,value,hkorl,layer):
@@ -1125,15 +1123,15 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """
         self.debugger.print("on_hkl_sb_changed", value)
-        hkl = layer.getHKL()
+        hkl = layer.get_hkl()
         hkl[hkorl] = value
-        layer.setHKL(hkl)
-        layer.changeLabFrameInfo()
-        self.generateLayerSettings()
-        self.refreshRequired = True
+        layer.set_hkl(hkl)
+        layer.change_lab_frame_info()
+        self.generate_layer_settings()
+        self.refresh_required = True
         return
 
-    def generateLayerSettings(self):
+    def generate_layer_settings(self):
         """Generate the settings dictionary for every layer.
 
         Parameters
@@ -1146,7 +1144,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             A list of dictionary settings for each layer.
 
         """
-        self.debugger.print(self.settings["Legend"],"generateLayerSettings")
+        self.debugger.print(self.settings["Legend"],"generate_layer_settings")
         self.settings["Layer material names"]  = []
         self.settings["Layer hkls"]            = []
         self.settings["Layer azimuthals"]      = []
@@ -1155,20 +1153,20 @@ class CrystalRamanScenarioTab(ScenarioTab):
         self.settings["Layer dielectric flags"] = []
         self.settings["Layer incoherent options"] = []
         for layer in self.layers:
-            self.settings["Layer material names"].append(layer.getMaterial().getName())
-            self.settings["Layer hkls"].append(layer.getHKL())
-            self.settings["Layer azimuthals"].append(layer.getAzimuthal())
-            self.settings["Layer thicknesses"].append(layer.getThickness())
-            self.settings["Layer thickness units"].append(layer.getThicknessUnit())
-            self.settings["Layer dielectric flags"].append(layer.isDielectric())
-            self.settings["Layer incoherent options"].append(layer.getIncoherentOption())
+            self.settings["Layer material names"].append(layer.get_material().get_name())
+            self.settings["Layer hkls"].append(layer.get_hkl())
+            self.settings["Layer azimuthals"].append(layer.get_azimuthal())
+            self.settings["Layer thicknesses"].append(layer.get_thickness())
+            self.settings["Layer thickness units"].append(layer.get_thickness_unit())
+            self.settings["Layer dielectric flags"].append(layer.is_dielectric())
+            self.settings["Layer incoherent options"].append(layer.get_incoherent_option())
         return
 
-    def setMaterialNames(self):
+    def set_material_names(self):
         """Set and append a material name to the list of material names.
 
         This function retrieves the current list of material names from the database using
-        `self.DataBase.getSheetNames()`, appends 'Dielectric layer' to the list, and returns the updated list.
+        `self.DataBase.get_sheet_names()`, appends 'Dielectric layer' to the list, and returns the updated list.
 
         Parameters
         ----------
@@ -1181,11 +1179,11 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         # Get the list of material names from the database
-        materialNames = self.DataBase.getSheetNames()
+        materialNames = self.DataBase.get_sheet_names()
         materialNames.append("Dielectric layer")
         return materialNames
 
-    def printLayerSettings(self,message):
+    def print_layer_settings(self,message):
         """Print the settings related to the layers.
 
         Parameters
@@ -1232,7 +1230,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         """
         self.debugger.print(self.settings["Legend"],"settings2Layers")
         self.layers = []
-        self.materialNames = self.setMaterialNames()
+        self.materialNames = self.set_material_names()
         # Process the settings information and append each layer to the list
         for  name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag, incoherentOption in zip(
                           self.settings["Layer material names"],
@@ -1245,13 +1243,13 @@ class CrystalRamanScenarioTab(ScenarioTab):
             if name not in self.materialNames:
                 print("Error material ", name, " not available ", self.materialNames)
                 name = "air"
-            material = self.getMaterialFromDataBase(name)
+            material = self.get_material_from_data_base(name)
             self.layers.append(SingleCrystalLayer(material,hkl=hkl,azimuthal=azimuthal,
                                      thickness=thickness,thicknessUnit=thicknessUnit,
                                      incoherentOption=incoherentOption,dielectricFlag=dielectricFlag))
         return
 
-    def getMaterialFromDataBase(self,name,permittivity=None):
+    def get_material_from_data_base(self,name,permittivity=None):
         """Get the given material from the database.
 
         - If name is 'DielectricLayer' then a material is defined from the crystal permittivity of the DFT information
@@ -1272,17 +1270,17 @@ class CrystalRamanScenarioTab(ScenarioTab):
         """
         if name == "Dielectric layer":
             # Create the dielectric material
-            crystalPermittivityObject = self.notebook.settingsTab.getCrystalPermittivityObject()
+            crystalPermittivityObject = self.notebook.settingsTab.get_crystal_permittivity_object()
             material = Materials.External(name,permittivityObject=crystalPermittivityObject,cell=self.cell)
         elif name == "Material defined manually":
             material = Materials.Constant("Material defined manually",permittivity=permittivity)
         else:
             # Get the material from the data base
             # set the units for frequency to Hz for all materials
-            material = self.DataBase.getMaterial(name)
+            material = self.DataBase.get_material(name)
         return material
 
-    def getDielectricLayerIndex(self):
+    def get_dielectric_layer_index(self):
         """Return the index of the dielectric layer in the list of layers.
 
         - Sorts through the list of layers and reports the index of the first layer that came from the provided DFT calculation
@@ -1299,7 +1297,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """
         for index,layer in enumerate(self.layers):
-            if layer.isDielectric():
+            if layer.is_dielectric():
                 self.dielectricLayer = layer
                 return index
         return None
@@ -1335,13 +1333,13 @@ class CrystalRamanScenarioTab(ScenarioTab):
         if showLayerWindow.exec():
             # The 'Ok' button was pressed
             # get the new Layer and replace the old one
-            self.layers[layerIndex] = showLayerWindow.getLayer()
-            self.generateLayerSettings()
+            self.layers[layerIndex] = showLayerWindow.get_layer()
+            self.generate_layer_settings()
             self.refresh(force=True)
-            self.refreshRequired = True
+            self.refresh_required = True
         return
 
-    def globalAzimuthalWidget(self):
+    def global_azimuthal_widget(self):
         """Create a global azimuthal angle widget.
 
         This widget is shown in the main Crystal Raman scenario tab.
@@ -1366,7 +1364,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         label.setToolTip("Define the global azimuthal angle for all layers (rotation of the layers about the lab Z-axis).\nThe orientation of the crystal layers in the laboratory frame is shown in the edit layers window")
         return label,self.global_azimuthal_angle_sb
 
-    def angleOfIncidenceWidget(self):
+    def angle_of_incidence_widget(self):
         """Create an angle of incidence widget.
 
         This widget is used in the layer table widget to control the azimuthal angle of a single layer.
@@ -1390,7 +1388,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         label.setToolTip("Define the angle of incidence, (normal incidence is 0 degrees).")
         return label,self.angle_of_incidence_sb
 
-    def partialIncoherenceWidget(self):
+    def partial_incoherence_widget(self):
         """Create a partial incoherence widget.
 
         Parameters
@@ -1421,7 +1419,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         label.setToolTip("Define the percentage partial incoherence and the number of samples to be used in the calculation of an incoherent spectrum.\nThe percentage reflects changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence.\nFor thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees.\nA large number of samples will take a long time but will give smoother results.\nIf the value of the percentage incoherence is zero, no incoherence is calculated")
         return label,hbox
 
-    def smoothingWidget(self):
+    def smoothing_widget(self):
         """Create a smoothing widget used by the partial incoherence method.
 
         Parameters
@@ -1467,9 +1465,9 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """
         self.debugger.print("Start:: openDB_button_clicked")
-        self.openDataBase()
+        self.open_data_base()
         self.refresh(force=True)
-        self.refreshRequired = True
+        self.refresh_required = True
         return
 
     def on_partially_incoherent_kernel_sb_changed(self,value):
@@ -1486,7 +1484,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"on_partially_incoherent_kernel_sb_changed", value)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Filter kernel size"] = value
         return
 
@@ -1507,7 +1505,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"on_partially_incoherent_polynomial_sb_changed", value)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Filter polynomial size"] = value
         return
 
@@ -1525,7 +1523,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"on_partially_incoherent_samples_sb_changed", value)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Partially incoherent samples"] = value
         self.noCalculationsRequired = value
         return
@@ -1546,7 +1544,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"on_percentage_partial_incoherence_sb_changed", value)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Percentage partial incoherence"] = value
         return
 
@@ -1567,7 +1565,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"on_global_azimuthal_angl_sb_changed", value)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Global azimuthal angle"] = value
         return
 
@@ -1587,7 +1585,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"on_angle_of_incidence_sb_changed", value)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.settings["Angle of incidence"] = value
         return
 
@@ -1611,8 +1609,8 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"Start:: refresh, force =", force)
-        if not self.refreshRequired and not force :
-            self.debugger.print(self.settings["Legend"],"Finished:: refreshing widget aborted", self.refreshRequired,force)
+        if not self.refresh_required and not force :
+            self.debugger.print(self.settings["Legend"],"Finished:: refreshing widget aborted", self.refresh_required,force)
             return
         # Check to see if there is a new reader, if there is set up the cell
         self.reader = self.notebook.reader
@@ -1635,17 +1633,17 @@ class CrystalRamanScenarioTab(ScenarioTab):
         # Initialise the cell
         self.cell = self.reader.get_unit_cell()
         # Open database and get materials
-        if self.settings["Materials database"] != self.DataBase.getFileName():
+        if self.settings["Materials database"] != self.DataBase.get_file_name():
             self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=self.debugger.state())
-            self.settings["Materials database"] = self.DataBase.getFileName()
+            self.settings["Materials database"] = self.DataBase.get_file_name()
             self.database_le.setText(self.settings["Materials database"])
             # Update the possible  material names from the database
-            self.materialNames = self.setMaterialNames()
+            self.materialNames = self.set_material_names()
         # Generate the layers from the settings
         self.settings2Layers()
-        self.generateLayerSettings()
+        self.generate_layer_settings()
         # Force recalculation
-        self.calculationRequired = True
+        self.calculation_required = True
         # Change any greyed out items
         self.greyed_out()
         #
@@ -1673,10 +1671,10 @@ class CrystalRamanScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         # Redraw the layer information widget
-        self.redrawLayerTable()
+        self.redraw_layer_table()
         for _i in range(20):
             QCoreApplication.processEvents()
-        self.refreshRequired = False
+        self.refresh_required = False
         self.debugger.print(self.settings["Legend"],"Finished:: refresh, force =", force)
         return
 
@@ -1698,7 +1696,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         # First see how many layers are using phase averaging
         self.number_of_average_incoherent_layers = 0
         for layer in self.layers:
-            if layer.getIncoherentOption() == "Incoherent (phase averaging)":
+            if layer.get_incoherent_option() == "Incoherent (phase averaging)":
                 self.number_of_average_incoherent_layers += 1
         # First see how many layers are using phase averaging
         if self.number_of_average_incoherent_layers > 0:
@@ -1730,7 +1728,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         - Sets the mode in the settings to either 'Transfer matrix' or 'Scattering matrix'.
         - If 'Scattering matrix' mode is selected (index 1), it goes through all layers and changes any layer with the incoherent option set to 'Incoherent (intensity)' to be 'Coherent'.
         - Invokes set_noCalculationsRequired to indicate that new calculations are necessary based on the changed settings.
-        - Calls generateLayerSettings to update the layer settings according to the new mode.
+        - Calls generate_layer_settings to update the layer settings according to the new mode.
         - Forces a refresh of the display to reflect any changes.
         - Sets a flag indicating that a refresh is required.
 
@@ -1742,13 +1740,13 @@ class CrystalRamanScenarioTab(ScenarioTab):
             self.settings["Mode"] = "Scattering matrix"
             # If any layers are using intensity incoherence move them to coherent
             for layer in self.layers:
-                incoherentOption = layer.getIncoherentOption()
+                incoherentOption = layer.get_incoherent_option()
                 if incoherentOption == "Incoherent (intensity)":
-                    layer.setIncoherentOption("Coherent")
+                    layer.set_incoherent_option("Coherent")
         self.set_noCalculationsRequired()
-        self.generateLayerSettings()
+        self.generate_layer_settings()
         self.refresh(force=True)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.debugger.print(self.settings["Legend"],"Mode changed to ", self.settings["Mode"])
         self.debugger.print(self.settings["Legend"],"Finished:: on_mode_cb_activated")
         return
@@ -1807,7 +1805,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         # Work out which of the layers is the crystal dielectric
         averageList = []
         for layer in layers:
-            if layer.getIncoherentOption() == "Incoherent (phase averaging)":
+            if layer.get_incoherent_option() == "Incoherent (phase averaging)":
                 averageList.append(layer)
         #
         # Calculate the list of phase shift combinations from the number of samples
@@ -1820,7 +1818,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         for beta in betas:
             # set the phase shift for each layer
             for index,layer in enumerate(averageList):
-                layer.setPhaseShift(beta[index])
+                layer.set_phase_shift(beta[index])
             ( p_reflectance, 
             s_reflectance, 
             p_transmittance, 
@@ -1898,12 +1896,12 @@ class CrystalRamanScenarioTab(ScenarioTab):
         # Work out which of the layers is the crystal dielectric
         crystalLayer = None
         for layer in layers:
-            if layer.isDielectric():
+            if layer.is_dielectric():
                 crystalLayer = layer
         #
         # Loop over the number of samples requred
         #
-        crystalDepth = crystalLayer.getThickness()
+        crystalDepth = crystalLayer.get_thickness()
         keepCrystalDepth = crystalDepth
         d = crystalDepth
         t = theta
@@ -1913,7 +1911,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         fractionalIncoherence = self.settings["Percentage partial incoherence"]/100.0
         for _s in range(self.settings["Partially incoherent samples"]):
             crystalDepth = d + d*( -1 + 2*np.random.rand())*fractionalIncoherence
-            crystalLayer.setThickness(crystalDepth)
+            crystalLayer.set_thickness(crystalDepth)
             theta = t + np.pi/2.0*( -1 +2*np.random.rand())*fractionalIncoherence
             phi   = p + np.pi/2.0*( -1 +2*np.random.rand())*fractionalIncoherence
             psi = q + np.pi/2.0*( -1 +2*np.random.rand())*fractionalIncoherence
@@ -1939,7 +1937,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
             av_s_absorbtance   += np.array(p_absorbtance) / self.settings["Partially incoherent samples"]
             av_p_absorbtance   += np.array(s_absorbtance) / self.settings["Partially incoherent samples"]
             av_epsilon         += np.array(epsilon) / self.settings["Partially incoherent samples"]
-        crystalLayer.setThickness(keepCrystalDepth)
+        crystalLayer.set_thickness(keepCrystalDepth)
         # Only apply the smoothing filter if the kernel is larger than 2
         k = self.settings["Filter kernel size"]
         if k > 2:
@@ -2007,7 +2005,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
         # About to call
         self.debugger.print(self.settings["Legend"],"About to calculate single crystal scenario using pool")
         if self.notebook.pool is None:
-            self.notebook.startPool()
+            self.notebook.start_pool()
         for result in self.notebook.pool.imap(partial_function, self.vs_cm1, chunksize=20):
             self.notebook.progressbars_update()
             results.append(result)
@@ -2052,15 +2050,15 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         """        
         self.debugger.print(self.settings["Legend"],"Start:: calculate - number of frequencies",len(vs_cm1))
-        if not self.calculationRequired:
-            self.debugger.print(self.settings["Legend"],"Finished:: calculate aborted because calculationRequired false")
+        if not self.calculation_required:
+            self.debugger.print(self.settings["Legend"],"Finished:: calculate aborted because calculation_required false")
             return
         QCoreApplication.processEvents()
         self.vs_cm1 = vs_cm1
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings["Program"]
-        filename = self.notebook.mainTab.getFullFileName()
+        filename = self.notebook.mainTab.get_full_file_name()
         if self.reader is None:
             self.debugger.print(self.settings["Legend"],"Finished:: Calculate aborting - no reader")
             return
@@ -2086,8 +2084,8 @@ class CrystalRamanScenarioTab(ScenarioTab):
         angleOfIncidence = np.radians(self.settings["Angle of incidence"])
         # Tell each layer to calculate the euler matrix for rotation to the lab frame
         for layer in self.layers:
-            if layer.isTensor():
-                hkl = layer.getHKL()
+            if layer.is_tensor():
+                hkl = layer.get_hkl()
                 if hkl[0] == 0 and hkl[1] == 0 and hkl[2] == 0:
                     QMessageBox.about(self,"",f"Unable to calculate surface for scenario {self.settings['Legend']}, hkl=[0,0,0]")
                     return
@@ -2168,15 +2166,15 @@ class CrystalRamanScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print(self.settings["Legend"],"Start:: get_results",len(vs_cm1),self.refreshRequired)
-        if len(vs_cm1)>0 and (self.refreshRequired or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
+        self.debugger.print(self.settings["Legend"],"Start:: get_results",len(vs_cm1),self.refresh_required)
+        if len(vs_cm1) > 0 and (self.refresh_required or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
             self.debugger.print(self.settings["Legend"],"get_results recalculating")
             self.refresh()
             self.calculate(vs_cm1)
         else:
             self.debugger.print(self.settings["Legend"],"get_results no need for recalculation")
             #self.notebook.progressbars_update(increment=len(vs_cm1))
-        self.debugger.print(self.settings["Legend"],"Finished:: get_results",len(vs_cm1),self.refreshRequired)
+        self.debugger.print(self.settings["Legend"],"Finished:: get_results",len(vs_cm1),self.refresh_required)
         return
 
     def greyed_out(self):

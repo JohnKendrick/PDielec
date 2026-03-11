@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Single crystal")
 #
 #
 #
@@ -46,7 +46,7 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Partially incoherent 0.1um'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -70,7 +70,7 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Partially incoherent 1um'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -94,7 +94,7 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'Partially incoherent 10um'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -118,7 +118,7 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'Partially incoherent 100um'
 tab.settings['Scenario type'] = 'Single crystal'

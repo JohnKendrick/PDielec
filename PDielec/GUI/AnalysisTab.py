@@ -77,7 +77,7 @@ class AnalysisTab(QWidget):
         The tolerance level used in bonding calculations, determining what is considered a bond. Defaults to 0.1.
     settings['Bar width'] : float
         Determines the width of bars in bar plots. Defaults to 0.5.
-    refreshRequired : bool
+    refresh_required : bool
         A flag indicating whether the widget needs to be refreshed to update the visuals or calculations. Defaults to True.
     plot_types : list
         A list of available plot types the user can select from.
@@ -110,9 +110,9 @@ class AnalysisTab(QWidget):
         Handler for changes in the table widget items related to element radii.
     set_radii_tw(self)
         Updates the radii table widget based on current settings or data.
-    setCovalentRadius(self, element, radius)
+    set_covalent_radius(self, element, radius)
         Sets the covalent radius for a given element and updates the analysis.
-    writeSpreadsheet(self)
+    write_spreadsheet(self)
         Writes the analysis results to a spreadsheet hosted by the parent structure.
     on_width_changed(self, value)
         Handler for changes in the bar width setting.
@@ -126,7 +126,7 @@ class AnalysisTab(QWidget):
         Handler for changes in the minimum frequency setting.
     on_vmax_changed(self)
         Handler for changes in the maximum frequency setting.
-    requestRefresh(self)
+    request_refresh(self)
         Requests a refresh of the analysis and visualization.
     refresh(self, force=False)
         Refreshes the widget based on current settings, optionally forcing a refresh.
@@ -166,7 +166,7 @@ class AnalysisTab(QWidget):
         self.settings["Covalent radius scaling"] = 1.1
         self.settings["Bonding tolerance"] = 0.1
         self.settings["Bar width"] = 0.5
-        self.refreshRequired = True
+        self.refresh_required = True
         self.plot_types = ["Internal vs External","Molecular Composition"]
         self.plot_type_index = 0
         self.number_of_molecules = 0
@@ -295,7 +295,7 @@ class AnalysisTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         #if self.notebook.spreadsheet is not None:
-        #    self.writeSpreadsheet()
+        #    self.write_spreadsheet()
         #QCoreApplication.processEvents()
 
     def on_element_radii_tw_itemClicked(self,item):
@@ -340,7 +340,7 @@ class AnalysisTab(QWidget):
             self.calculate()
             self.plot()
             if self.notebook.viewerTab is not None:
-                self.notebook.viewerTab.requestRefresh()
+                self.notebook.viewerTab.request_refresh()
         except ValueError:
             self.debugger.print("Failed Changing the element radius",col,item.text())
             pass
@@ -365,7 +365,7 @@ class AnalysisTab(QWidget):
         """        
         self.reader = self.notebook.mainTab.reader
         program = self.notebook.mainTab.settings["Program"]
-        filename = self.notebook.mainTab.getFullFileName()
+        filename = self.notebook.mainTab.get_full_file_name()
         if self.reader is None:
             self.debugger.print("set_radii_tw aborting - no reader")
             return
@@ -377,7 +377,7 @@ class AnalysisTab(QWidget):
             return
         self.debugger.print("set_radii_tw starting")
         self.element_radii_tw.blockSignals(True)
-        self.species = self.reader.getSpecies()
+        self.species = self.reader.get_species()
         if self.settings["Radii"] is None:
             radii = [ self.element_radii[el] for el in self.species ]
         else:
@@ -397,7 +397,7 @@ class AnalysisTab(QWidget):
         self.debugger.print("set_radii_tw finishing")
         return
 
-    def setCovalentRadius(self,element,radius):
+    def set_covalent_radius(self,element,radius):
         """Set the covalent radius for a given element and update the plot.
 
         Parameters
@@ -417,7 +417,7 @@ class AnalysisTab(QWidget):
         self.calculate()
         self.plot()
 
-    def writeSpreadsheet(self):
+    def write_spreadsheet(self):
         """Write analysis data into a selected worksheet in the notebook's spreadsheet.
 
         This method assumes the existence of a spreadsheet object within the notebook
@@ -437,20 +437,20 @@ class AnalysisTab(QWidget):
         if self.notebook.spreadsheet is None:
             return
         sp = self.notebook.spreadsheet
-        sp.selectWorkSheet("Analysis")
+        sp.select_work_sheet("Analysis")
         sp.delete()
-        sp.writeNextRow(["Analysis of the vibrational modes into percentage contributions for molecules and internal/external modes"], row=0,col=1)
+        sp.write_next_row(["Analysis of the vibrational modes into percentage contributions for molecules and internal/external modes"], row=0,col=1)
         headers = ["Mode","Frequency (cm-1)", "Centre of mass %","Rotational %", "Vibrational %"]
         for mol in range(self.number_of_molecules):
             headers.append("Molecule "+str(mol)+" %")
-        sp.writeNextRow(headers,col=1)
+        sp.write_next_row(headers,col=1)
         for imode,(freq,energies) in enumerate(zip(self.frequencies_cm1,self.mode_energies)):
            tote,cme,rote,vibe, molecular_energies = energies
            tote = max(tote,1.0E-8)
            output = [ imode+1, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
            for e in molecular_energies:
                output.append(100*e/tote)
-           sp.writeNextRow(output,col=1,check=1)
+           sp.write_next_row(output,col=1,check=1)
 
 
     def on_width_changed(self,value):
@@ -493,7 +493,7 @@ class AnalysisTab(QWidget):
         """        
         self.debugger.print("on scale_le changed ", value)
         self.settings["Covalent radius scaling"] = value
-        self.refreshRequired = True
+        self.refresh_required = True
         self.calculate()
         self.plot()
 
@@ -514,7 +514,7 @@ class AnalysisTab(QWidget):
         """        
         self.debugger.print("on_tolerance_le changed ", value)
         self.settings["Bonding tolerance"] = value
-        self.refreshRequired = True
+        self.refresh_required = True
         self.calculate()
         self.plot()
 
@@ -591,10 +591,10 @@ class AnalysisTab(QWidget):
         self.vmin_sb.blockSignals(False)
         return
 
-    def requestRefresh(self):
+    def request_refresh(self):
         """Mark the instance as requiring a refresh.
 
-        Sets the instance attribute `refreshRequired` to True, indicating that a refresh is necessary.
+        Sets the instance attribute `refresh_required` to True, indicating that a refresh is necessary.
 
         Parameters
         ----------
@@ -605,7 +605,7 @@ class AnalysisTab(QWidget):
         None
 
         """        
-        self.refreshRequired = True
+        self.refresh_required = True
 
     def refresh(self, force=False):
         """Refresh the widget state, optionally enforcing refresh.
@@ -622,8 +622,8 @@ class AnalysisTab(QWidget):
         None
 
         """        
-        if not self.refreshRequired and not force:
-            self.debugger.print("return with no refresh", self.refreshRequired, force)
+        if not self.refresh_required and not force:
+            self.debugger.print("return with no refresh", self.refresh_required, force)
             return
         self.debugger.print("Refreshing widget")
         #
@@ -697,7 +697,7 @@ class AnalysisTab(QWidget):
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings["Program"]
-        filename = self.notebook.mainTab.getFullFileName()
+        filename = self.notebook.mainTab.get_full_file_name()
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
             return
@@ -725,7 +725,7 @@ class AnalysisTab(QWidget):
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         if self.number_of_molecules != self.cell_of_molecules.get_number_of_molecules():
             if self.notebook.viewerTab is not None:
-                self.notebook.viewerTab.requestRefresh()
+                self.notebook.viewerTab.request_refresh()
             self.number_of_molecules = nmols
         self.molecules_le.setText(f"{self.number_of_molecules}")
         # Calulate the distribution in energy for the normal modes
@@ -757,7 +757,7 @@ class AnalysisTab(QWidget):
                 sums[4] = sume
             self.mode_energies.append(sums)
         # Flag that a recalculation is not needed
-        self.refreshRequired = False
+        self.refresh_required = False
         QApplication.restoreOverrideCursor()
 
     def plot(self):

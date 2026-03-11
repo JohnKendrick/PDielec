@@ -18,6 +18,7 @@
 import sys
 
 import numpy as np
+import yaml
 
 from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
@@ -115,10 +116,7 @@ class PhonopyOutputReader(GenericOutputReader):
 
         """        
         #
-        # Yaml imports of large files are really slow....
         # Attempt to use the PyYaml C parser, using yaml.CLoader
-        #
-        import yaml
         try:
             from yaml import CLoader as Loader
         except ImportError:
@@ -182,7 +180,7 @@ class PhonopyOutputReader(GenericOutputReader):
         # Proceed
         self.unit_cells = [ cell ]
         self.ncells = 1
-        self.volume = cell.getVolume("Angstrom")
+        self.volume = cell.get_volume("Angstrom")
         #
         # Process qpoints.yaml
         #

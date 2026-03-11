@@ -246,7 +246,7 @@ def usage():
         print("           the default is ~/bin                       " , file=sys.stderr)
     sys.exit()
 
-def checkLocalExecutables():
+def check_local_executables():
     """Check to see if the rootDirectory has the executables we need.
 
     Parameters
@@ -385,7 +385,7 @@ def redirect(file):
         if not debug:
             sys.stderr = sys.__stderr__
 
-def readNmaFile(file):
+def read_nma_file(file):
     """Read and extract data from an NMA file.
 
     Parameters
@@ -442,7 +442,7 @@ def readNmaFile(file):
     e = np.array(explained[3:])
     return np.sum(f),np.sum(r),np.sum(e)
 
-def compareNmaFiles(file1,file2):
+def compare_nma_files(file1,file2):
     """Compare two NMA files for differences within a tolerance.
 
     Parameters
@@ -460,14 +460,14 @@ def compareNmaFiles(file1,file2):
 
     Notes
     -----
-    This function reads two NMA files using the `readNmaFile` function, 
+    This function reads two NMA files using the `read_nma_file` function, 
     which returns the frequency (f), redox (r), and energy (e) values 
     for each file. The comparison is done based on a tolerance of 1e-06, 
     and the total number of differences in these values are counted and returned.
 
     """    
-    f1,r1,e1 = readNmaFile(file1)
-    f2,r2,e2 = readNmaFile(file2)
+    f1,r1,e1 = read_nma_file(file1)
+    f2,r2,e2 = read_nma_file(file2)
     nerrors = 0
     if abs(f1 - f2) > 1.0e-6:
         nerrors += 1
@@ -477,7 +477,7 @@ def compareNmaFiles(file1,file2):
         nerrors += 1
     return nerrors
 
-def compareFiles(file1,file2):
+def compare_files(file1,file2):
     """Compare two text files for differences.
 
     This function opens and reads two text files line by line and then compares them word by word,
@@ -582,7 +582,7 @@ def runP2CifTest(title, instructions, regenerate):
     # end with open
     # If not doing a regeneration perform a check
     if not regenerate:
-        nerrors = compareFiles("all.cif", "all.ref.cif")
+        nerrors = compare_files("all.cif", "all.ref.cif")
         if nerrors > 0:
             print(f" {nerrors} ERRORS:")
         else:
@@ -593,7 +593,7 @@ def runP2CifTest(title, instructions, regenerate):
     # end if
     return
 
-def runVibAnalysis(title, instructions, regenerate):
+def run_vib_analysis(title, instructions, regenerate):
     """Run a vibanalysis test.
 
     Parameters
@@ -622,7 +622,7 @@ def runVibAnalysis(title, instructions, regenerate):
         # end if
     # end for
     if filename is None:
-        print("Error in runVibAnalysis: there is no filename specified")
+        print("Error in run_vib_analysis: there is no filename specified")
     header = os.path.splitext(filename)[0]
     nmafile = header+".nma"
     reffile = header+".nma.ref"
@@ -632,7 +632,7 @@ def runVibAnalysis(title, instructions, regenerate):
         subprocess.run(sys.argv,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     # If not doing a regeneration perform a check
     if not regenerate:
-        nerrors = compareNmaFiles(nmafile, reffile)
+        nerrors = compare_nma_files(nmafile, reffile)
         if nerrors > 0:
             print(f" {nerrors} ERRORS:")
         else:
@@ -644,7 +644,7 @@ def runVibAnalysis(title, instructions, regenerate):
     # end if
     return
 
-def runPreaderTest(title, instructions, regenerate):
+def run_preader_test(title, instructions, regenerate):
     """Run a preader test.
 
     Parameters
@@ -662,7 +662,7 @@ def runPreaderTest(title, instructions, regenerate):
     global useLocal
     global debug
     if debug:
-        print("runPreaderTest:",title,instructions)
+        print("run_preader_test:",title,instructions)
     print(title,end="",flush=True)
     if useLocal:
         sys.argv = ["python"]
@@ -697,7 +697,7 @@ def runPreaderTest(title, instructions, regenerate):
     # end if
     return
 
-def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
+def run_pdgui_test(title, instructions, regenerate, benchmarks=False):
     """Run a pdgui test.
 
     Parameters
@@ -760,7 +760,7 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     #end if not viewing
     return
 
-def changePadding(all):
+def change_padding(all):
     """Change the padding based on the maximum length of elements in a list or the predefined setting.
 
     Parameters
@@ -787,7 +787,7 @@ def changePadding(all):
         maxlen = max(maxlen,len(d))
     return max(maxlen, settings["padding"])
 
-def runTests(testlist, testType, regenerate):
+def run_tests(testlist, testType, regenerate):
     """Run the tests given in the directories stored in testlist.
 
     Parameters
@@ -828,15 +828,15 @@ def runTests(testlist, testType, regenerate):
             print(f"       required directory is {directory}")
             sys.exit()
         if testType == "benchmarks":
-            runPdMakefile(directory,pdmakefile,regenerate,benchmarks=True)
+            run_pd_makefile(directory,pdmakefile,regenerate,benchmarks=True)
         else:
-            runPdMakefile(directory,pdmakefile,regenerate)
+            run_pd_makefile(directory,pdmakefile,regenerate)
     # end for
     elapsed_time = time.time() - test_start_time
     print("--------------------------------------------------")
     print(convertTestType[testType],f"completed in {elapsed_time:.3f}s")
 
-def readPdMakefile(directory,filename):
+def read_pd_makefile(directory,filename):
     # The first word is the dictionary key, the rest is its value
     """Read a custom makefile and return the title and instructions.
 
@@ -927,7 +927,7 @@ def mychdir(directory):
     # end if
     return
 
-def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
+def run_pd_makefile(directory,pdmakefile,regenerate,benchmarks=False):
     """Run a specific pdMakefile.
 
     Parameters
@@ -954,16 +954,16 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
         print("RunPdMakefile: pdmakefile =",pdmakefile)
         print("RunPdMakefile: cwd =",homedir)
     mychdir(directory)
-    title,instructions = readPdMakefile(directory,pdmakefile)
+    title,instructions = read_pd_makefile(directory,pdmakefile)
     if debug:
         print("RunPdMakefile: title =",title)
         print("RunPdMakefile: instructions =",instructions)
     for key in instructions:
         parameters = instructions[key]
         if key == "preader":
-            runPreaderTest(title,parameters,regenerate)
+            run_preader_test(title,parameters,regenerate)
         elif key == "vibanalysis":
-            runVibAnalysis(title,parameters,regenerate)
+            run_vib_analysis(title,parameters,regenerate)
         elif key == "p2cif":
             runP2CifTest(title,parameters,regenerate)
         elif key == "pdgui":
@@ -975,10 +975,10 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
                 parameters.extend(["-nosplash", "results.xlsx", "-exit", "-script", "script.py"])
             if debug:
                 parameters.append("-d")
-            runPDGuiTest(title,parameters,regenerate,benchmarks=benchmarks)
+            run_pdgui_test(title,parameters,regenerate,benchmarks=benchmarks)
     mychdir(homedir)
 
-def runClean():
+def run_clean():
     """Clean old results from the Examples directory.
 
     This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.
@@ -1008,7 +1008,7 @@ def runClean():
     subprocess.run("find . -name \\*.pyc -exec rm -f {} \\;",shell=True)
     print("Cleaning complete")
 
-def runPyPi():
+def run_pypi():
     """Create PyPi distribution files, restricted by OS.
 
     This function changes the current working directory to `rootDirectory` 
@@ -1025,7 +1025,7 @@ def runPyPi():
     # pip install setuptools
     subprocess.run("rm -rf build dist PDielec.egg-info; python -m build ",shell=True)
 
-def testForRootDirectory(path):
+def test_for_root_directory(path):
     """Test if a given path contains a subdirectory named 'Examples'.
 
     This function checks if the given path has a direct subdirectory
@@ -1046,7 +1046,7 @@ def testForRootDirectory(path):
     test = os.path.join(path,"Examples")
     return os.path.isdir(test)
 
-def findRootDirectory(start):
+def find_root_directory(start):
     """Find the root directory starting from start.
 
     Parameters
@@ -1065,7 +1065,7 @@ def findRootDirectory(start):
     while path != lastpath:
         lastpath = path
         path,tail=os.path.split(path)
-        if testForRootDirectory(path):
+        if test_for_root_directory(path):
             return path
     print("Unable to locate root directory")
     sys.exit()
@@ -1124,7 +1124,7 @@ def main():
     regenerate = False
     scriptsDirectory="~/bin"
     rootDirectory = originalDirectory
-    rootDirectory = findRootDirectory(rootDirectory)
+    rootDirectory = find_root_directory(rootDirectory)
     actions = []
     pdmakefiles = []
     pdgui_tokens = []
@@ -1201,7 +1201,7 @@ def main():
     # If the are then use them
     # 
     if useLocal:
-        useLocal = checkLocalExecutables()
+        useLocal = check_local_executables()
     # Change directory to the Examples directory
     if not os.path.isdir("Examples"):
         print("Error: command needs to be executed in the PDielec home directory")
@@ -1211,7 +1211,7 @@ def main():
     #
     for pdmakefile in pdmakefiles:
         directory = originalDirectory
-        runPdMakefile(directory,pdmakefile,regenerate)
+        run_pd_makefile(directory,pdmakefile,regenerate)
     #
     # Now loop over the actions
     #
@@ -1222,29 +1222,29 @@ def main():
         test_all.extend(test_preader)
         test_all.extend(test_pdgui)
         test_all.extend(test_vibanalysis)
-        settings["padding"] = changePadding(test_all)
+        settings["padding"] = change_padding(test_all)
     for action in actions:
         if action == "test all":
-            runTests(test_p2cif      ,"p2cif"      ,regenerate)
-            runTests(test_preader    ,"preader"    ,regenerate)
-            runTests(test_pdgui      ,"pdgui"      ,regenerate)
-            runTests(test_vibanalysis,"vibanalysis",regenerate)
+            run_tests(test_p2cif      ,"p2cif"      ,regenerate)
+            run_tests(test_preader    ,"preader"    ,regenerate)
+            run_tests(test_pdgui      ,"pdgui"      ,regenerate)
+            run_tests(test_vibanalysis,"vibanalysis",regenerate)
         elif action == "test preader":
-            runTests(test_preader    ,"preader"    ,regenerate)
+            run_tests(test_preader    ,"preader"    ,regenerate)
         elif action == "test p2cif":
-            runTests(test_p2cif      ,"p2cif"      ,regenerate)
+            run_tests(test_p2cif      ,"p2cif"      ,regenerate)
         elif action == "test pdgui":
-            runTests(test_pdgui      ,"pdgui"      ,regenerate)
+            run_tests(test_pdgui      ,"pdgui"      ,regenerate)
         elif action == "test singlecrystal":
-            runTests(test_singlecrystal      ,"singlecrystal"      ,regenerate)
+            run_tests(test_singlecrystal      ,"singlecrystal"      ,regenerate)
         elif action == "test vibanalysis":
-            runTests(test_vibanalysis,"vibanalysis",regenerate)
+            run_tests(test_vibanalysis,"vibanalysis",regenerate)
         elif action == "run benchmarks":
-            runTests(benchmarks,"benchmarks",regenerate)
+            run_tests(benchmarks,"benchmarks",regenerate)
         elif action == "run pypi":
-            runPyPi()
+            run_pypi()
         elif action == "run clean":
-            runClean()
+            run_clean()
         elif action == "install":
             install(scriptsDirectory)
         else:

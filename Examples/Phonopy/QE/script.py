@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder")
 #
 #
 #
@@ -47,7 +47,7 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Scenario 2'
 tab.settings['Scenario type'] = 'Single crystal'

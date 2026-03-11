@@ -1,3 +1,16 @@
+version 9.2.0
+   Code quality improvements across the codebase:
+   Renamed camelCase methods and functions to snake_case throughout all modules:
+       Calculator.py, DielectricFunction.py, Materials.py, GTMcore.py, UnitCell.py,
+       SuperCell.py, GenericOutputReader.py, HelperRoutines.py, pdmake.py,
+       and all GUI tabs (SettingsTab, ScenarioTab, NoteBook, SingleCrystalLayer,
+       CrystalInfraredScenarioTab, CrystalRamanScenarioTab, OpenGLWidget, ViewerTab,
+       MainTab, App, AnalysisTab, PlottingTab, FitterTab, SpreadSheetManager).
+   All Example Python scripts updated to use the new snake_case API names.
+   Removed development debug comments (#JK/#jk) from all source files.
+   Moved stdlib imports (glob, csv, warnings, yaml) from inside functions to module level.
+   Wrapped long docstring prose lines to the 120-character line length limit.
+   NOTE: Scripts written before this version that call renamed methods will not be compatible.
 version 9.1.0
    Added support for FHI-Aims output
    Fixed bugs in the CRYSTAL reader

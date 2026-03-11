@@ -216,7 +216,7 @@ class AimsOutputReader(GenericOutputReader):
         # Proceed
         self.unit_cells = [ cell ]
         self.ncells = 1
-        self.volume = cell.getVolume("Angstrom")
+        self.volume = cell.get_volume("Angstrom")
         # Values of units in SI
         ev = 1.0/Constants.hartree2ev
         amu = Constants.amu

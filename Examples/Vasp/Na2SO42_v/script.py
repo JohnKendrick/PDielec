@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder")
 #
 #
 #
@@ -47,7 +47,7 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Manual (rho=2.2,eps=3+0.1j) - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
@@ -73,7 +73,7 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Water (25C) - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
@@ -99,7 +99,7 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'Water (19C) - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
@@ -125,7 +125,7 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'PVC - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
@@ -151,7 +151,7 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'Test - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'

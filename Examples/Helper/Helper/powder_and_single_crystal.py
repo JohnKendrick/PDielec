@@ -20,21 +20,21 @@ examples_directory = os.path.join(home_directory,'Examples')
 sys.path.insert(0,home_directory)
 import numpy                      as np
 # Helper routines
-from PDielec.HelperRoutines   import getMaterial
-from PDielec.HelperRoutines   import calculatePowderSpectrum
-from PDielec.HelperRoutines   import calculateSingleCrystalSpectrum
+from PDielec.HelperRoutines   import get_material
+from PDielec.HelperRoutines   import calculate_powder_spectrum
+from PDielec.HelperRoutines   import calculate_single_crystal_spectrum
 # Utility routines
 from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer
 
 def powderTest():
     '''Test powder calculation'''
     frequencies_cm1 = np.arange( 0, 200, 0.2 )
-    matrix = getMaterial('ptfe')
-    dielectric = getMaterial('Sapphire')
+    matrix = get_material('ptfe')
+    dielectric = get_material('Sapphire')
     method = 'Maxwell-Garnett' 
     shape = 'Sphere'
     volume_fraction = 0.1
-    absorption,permittivity = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+    absorption,permittivity = calculate_powder_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
     print('')
     print('Powder absorption results')
     print('      freq', ' absorption (cm-1)')
@@ -44,9 +44,9 @@ def powderTest():
 def singleCrystalTest():
     '''Test single crystal calculation'''
     # Define the materials
-    air = getMaterial('air')
-    ptfe = getMaterial('ptfe')
-    Sapphire = getMaterial('Sapphire')
+    air = get_material('air')
+    ptfe = get_material('ptfe')
+    Sapphire = get_material('Sapphire')
     # Prepare the layers
     layers = []
     # Add a substrate
@@ -59,7 +59,7 @@ def singleCrystalTest():
     frequencies_cm1 = np.arange( 0, 200, 0.2 )
     incident_angle = 80.0
     global_azimuthal_angle = 0.0
-    (reflectance, transmittance, absorptance) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
+    (reflectance, transmittance, absorptance) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
     rps = reflectance[0]
     rss = reflectance[1]
     tps = transmittance[0]

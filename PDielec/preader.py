@@ -55,8 +55,6 @@ version = PDielec.__init__.__version__
 
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs."""
-    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
-    #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
@@ -179,7 +177,7 @@ def read_a_file( calling_parameters):
             # end loop over modes to be ignored
         # end of if ignore_modes
         crystalPermittivity = DielectricFunction.DFT(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0) 
-        crystalPermittivity.setEpsilonInfinity(epsinf)
+        crystalPermittivity.set_epsilon_infinity(epsinf)
         ionicv = crystalPermittivity.calculate(0.0) - epsinf
     # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file

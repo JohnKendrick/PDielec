@@ -7,7 +7,7 @@ tab.settings['Output file name'] = 'fpsq.exp'
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Single crystal")
 #
 #
 #
@@ -42,7 +42,7 @@ tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'c | x theta = 30'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -56,7 +56,7 @@ tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'c | y theta = 60'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -70,7 +70,7 @@ tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'c | x theta = 60'
 tab.settings['Scenario type'] = 'Single crystal'

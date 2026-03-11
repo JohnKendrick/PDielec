@@ -171,9 +171,9 @@ class ExperimentOutputReader(GenericOutputReader):
             odc = np.real(odc)
         self.CrystalPermittivity = DielectricFunction.ConstantScalar(odc)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_interpolate1_model(self, line):
@@ -211,9 +211,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.Tabulate1(omegas,eps)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_interpolate3_model(self, line):
@@ -259,9 +259,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.Tabulate3(omegas,epsxx,epsyy,epszz)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_interpolate6_model(self, line):
@@ -319,9 +319,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.Tablulate6(omegas,epsxx,epsyy,epszz,epsxy,epsxz,epsyz)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_drude_lorentz_model(self, line):
@@ -373,9 +373,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.DrudeLorentz(omegas_all,strengths_all,gammas_all)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_fpsq_model(self, line):
@@ -448,9 +448,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.FPSQ(omega_tos_all,gamma_tos_all,omega_los_all,gamma_los_all)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_frequencies(self, line):
@@ -554,9 +554,9 @@ class ExperimentOutputReader(GenericOutputReader):
         cell = UnitCell(a,b,c,alpha,beta,gamma,units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume(units="Angstrom")
+        self.volume = cell.get_volume(units="Angstrom")
         if self.CrystalPermittivity:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_lattice_vectors(self, line):
@@ -590,9 +590,9 @@ class ExperimentOutputReader(GenericOutputReader):
         cell = UnitCell(avector, bvector, cvector, units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume("Angstrom")
+        self.volume = cell.get_volume("Angstrom")
         if self.CrystalPermittivity:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_cpk_coords(self, line):
@@ -764,7 +764,7 @@ class ExperimentOutputReader(GenericOutputReader):
             odc = np.real(odc)
         self.zerof_optical_dielectric = odc.tolist()
         if self.CrystalPermittivity:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         return
 
     def calculate_mass_weighted_normal_modes(self):

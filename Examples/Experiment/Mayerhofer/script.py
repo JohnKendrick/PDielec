@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Single crystal")
 #
 #
 #
@@ -52,7 +52,7 @@ tab.settings['Azimuthal angle'] =  0.0
 tab.settings['Film thickness'] =  100.0
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'b-axis along X'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -81,7 +81,7 @@ tab.settings['Azimuthal angle'] =  90.0
 tab.settings['Film thickness'] =  100.0
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'c-axis along X'
 tab.settings['Scenario type'] = 'Single crystal'

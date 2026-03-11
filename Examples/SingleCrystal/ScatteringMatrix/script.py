@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Single crystal")
 #
 #
 #
@@ -48,7 +48,7 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'b-axis field for S Polarisation (coherent)'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -74,7 +74,7 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'c-axis field for S Polarisation (coherent)'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -100,7 +100,7 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'a-axis field for S Polarisation (Incoherent phase average)'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -126,7 +126,7 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'b-axis field for S Polarisation (Incoherent phase average)'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -152,7 +152,7 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'c-axis field for S Polarisation (Incoherent phase average)'
 tab.settings['Scenario type'] = 'Single crystal'

@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Single crystal")
 #
 #
 #
@@ -40,7 +40,7 @@ tab.settings['Mode'] = 'Scattering matrix'
 tab.settings['Frequency units'] = 'wavenumber'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'c-axis field for S-polarisation'
 tab.settings['Scenario type'] = 'Single crystal'
@@ -59,7 +59,7 @@ tab.settings['Mode'] = 'Scattering matrix'
 tab.settings['Frequency units'] = 'wavenumber'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'b-axis field for S polarisation'
 tab.settings['Scenario type'] = 'Single crystal'

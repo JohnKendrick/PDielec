@@ -350,7 +350,7 @@ class AbinitOutputReader(GenericOutputReader):
         # Append the cell to the list of cells
         self.unit_cells.append(UnitCell(a,b,c,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         return
 
     def _read_ntypat(self, line):
@@ -680,5 +680,5 @@ class AbinitOutputReader(GenericOutputReader):
         # Overwrite the unit cell created by the acell directive
         self.unit_cells[-1] = UnitCell(avector, bvector, cvector,units="Angstrom")
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         return

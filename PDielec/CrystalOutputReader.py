@@ -605,7 +605,7 @@ class CrystalOutputReader(GenericOutputReader):
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         # The fractional coordinates are specified before the lattice vectors
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
         self.unit_cells[-1].set_element_names(self.species_list)

@@ -18,6 +18,7 @@
 A set of utility functions that may be used anywhere in the package.
 """
 
+import glob
 import os
 import sys
 
@@ -245,7 +246,6 @@ def get_reader( name, program, debug=False):
         if root.endswith(".dat"):
             identifier = root.split(".")[1]
         else:
-            import glob
             all_files = glob.glob(os.path.join(head,"hessian.*.dat"))
             if len(all_files) < 1:
                 identifier="unkown_and_ignore"

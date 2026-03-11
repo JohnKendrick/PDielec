@@ -649,7 +649,7 @@ class QEOutputReader(GenericOutputReader):
         cvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
             print(f"_read_cell_parameters: volume={self.volume}")
         return
@@ -687,7 +687,7 @@ class QEOutputReader(GenericOutputReader):
         cvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
             print(f"_read_lattic_vectors: volume={self.volume}")
         return
@@ -728,7 +728,7 @@ class QEOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
         self.unit_cells[-1].set_element_names(species_list)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
             print(f"_read_fractional_coordinates: volume={self.volume}")
         return
@@ -785,7 +785,7 @@ class QEOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_xyz_coordinates(xyz_coordinates,units="Angstrom")
         self.unit_cells[-1].set_element_names(species_list)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
             print(f"_read_dyng_coordinates: volume={self.volume}")
         return
@@ -1035,7 +1035,7 @@ class QEOutputReader(GenericOutputReader):
             self.unit_cells[-1].set_element_names(species_list)
             # Book keeping
             self.ncells = len(self.unit_cells)
-            self.volume = self.unit_cells[-1].getVolume("Angstrom")
+            self.volume = self.unit_cells[-1].get_volume("Angstrom")
             if self.debug:
                 print(f"_atomic_structure: volume={self.volume}")
         return

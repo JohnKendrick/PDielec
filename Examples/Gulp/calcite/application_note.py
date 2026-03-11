@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder")
 #
 #
 #
@@ -46,7 +46,7 @@ tab.settings['Effective medium method'] = 'Averaged Permittivity'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Plate (211)'
 tab.settings['Scenario type'] = 'Powder'
@@ -71,7 +71,7 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Plate'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Sphere'
 tab.settings['Scenario type'] = 'Powder'

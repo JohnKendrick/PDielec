@@ -128,9 +128,9 @@ class SettingsTab(QWidget):
     ----------
     notebook : parent
         The notebook widget that contains this settings tab.
-    refreshRequired : bool
+    refresh_required : bool
         A flag indicating whether the displayed information needs to be refreshed.
-    calculationRequired : bool
+    calculation_required : bool
         A flag indicating whether new calculations are needed based on the current settings.
     settings : dict
         A dictionary of settings related to calculations. Includes flags for Eckart conditions, Born charge neutrality, mass definition, and sigma values.
@@ -165,13 +165,13 @@ class SettingsTab(QWidget):
 
     Methods
     -------
-    setElementMass(element, mass)
+    set_element_mass(element, mass)
         Sets the mass for a specified element.
-    createIntensityTable()
+    create_intensity_table()
         Creates a table displaying calculated intensities for selected vibrational modes.
-    requestRefresh()
+    request_refresh()
         Requests a refresh of displayed data.
-    writeSpreadsheet()
+    write_spreadsheet()
         Writes the current settings and calculated values to a spreadsheet.
     redraw_output_tw()
         Redraws the output table widget with updated values.
@@ -203,9 +203,9 @@ class SettingsTab(QWidget):
         Handles changes to the Eckart condition setting.
     calculate(vs_cm1)
         Calculates the permittivity of the crystal over the specified range of frequencies.
-    getCrystalPermittivity(vs_cm1)
+    get_crystal_permittivity(vs_cm1)
         Returns the crystal permittivity for the specified frequencies.
-    getCrystalPermittivityObject()
+    get_crystal_permittivity_object()
         Returns the crystal permittivity object used for calculations.
 
     """
@@ -229,8 +229,8 @@ class SettingsTab(QWidget):
         self.debugger = Debug(debug, "SettingsTab:")
         self.debugger.print("Start:: initialisation")
         self.notebook = parent
-        self.refreshRequired = True
-        self.calculationRequired = False
+        self.refresh_required = True
+        self.calculation_required = False
         self.settings = {}
         self.settings["Eckart flag"] = True
         self.settings["Neutral Born charges"] = False
@@ -348,7 +348,7 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
         self.debugger.print("Finished:: initialisation")
 
-    def setElementMass(self,element,mass):
+    def set_element_mass(self,element,mass):
         """Set the mass value of a specific element in the GUI.
 
         This method updates the mass value for a specified element in the graphical user interface (GUI). It also triggers various updates in the GUI to reflect this change, including updating the mass selection and recalculating modes if required.
@@ -370,17 +370,17 @@ class SettingsTab(QWidget):
         - It triggers a refresh of the GUI and potentially recalculates selected modes based on the new mass settings.
 
         """        
-        self.debugger.print("Start::  setElementMass",element,mass)
+        self.debugger.print("Start::  set_element_mass",element,mass)
         self.settings["Mass definition"] = "gui"
         self.masses_dict[element] = mass
         self.mass_cb.setCurrentIndex(3)
         self.set_masses_tw()
-        self.refreshRequired = True
+        self.refresh_required = True
         self.recalculate_selected_modes = True
         self.refresh()
-        self.debugger.print("Finished::  setElementMass",element,mass)
+        self.debugger.print("Finished::  set_element_mass",element,mass)
 
-    def createIntensityTable(self):
+    def create_intensity_table(self):
         """Generate the intensity table for spectroscopy analysis.
 
         This method is responsible for creating a table that includes calculated intensities, frequencies, oscillator strengths, 
@@ -413,11 +413,11 @@ class SettingsTab(QWidget):
         - `Calculator.ionic_permittivity`: For calculating the ionic permittivity based on mode list, oscillator strengths, and frequencies.
 
         """        
-        self.debugger.print("Start:: createIntensityTable")
+        self.debugger.print("Start:: create_intensity_table")
         self.reader = self.notebook.reader
         # Only calculate if the reader is set
         if self.reader is None:
-            self.debugger.print("createIntensityTable aborting as now reader available")
+            self.debugger.print("create_intensity_table aborting as now reader available")
             return
         if self.settings["Neutral Born charges"]:
             self.reader.neutralise_born_charges()
@@ -457,7 +457,7 @@ class SettingsTab(QWidget):
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
         # Decide which modes to select
         if self.recalculate_selected_modes and len(self.intensities) > 0 and len(self.frequencies_cm1) > 0:
-            self.debugger.print("createIntensityTable: recalculating selected modes")
+            self.debugger.print("create_intensity_table: recalculating selected modes")
             self.modes_selected = []
             self.mode_list = []
             for f,intensity in zip(self.frequencies_cm1,self.intensities):
@@ -492,7 +492,7 @@ class SettingsTab(QWidget):
                                          self.mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
                                          volume_au, drude, drude_plasma_au, drude_sigma_au )
         # Add the optical permittivity to the dielctric function
-        self.CrystalPermittivityObject.setEpsilonInfinity(epsilon_inf)
+        self.CrystalPermittivityObject.set_epsilon_infinity(epsilon_inf)
         #
         # Prepare to finish
         #
@@ -503,12 +503,12 @@ class SettingsTab(QWidget):
         self.redraw_output_tw()
         QCoreApplication.processEvents()
         # if self.notebook.spreadsheet is not None:
-        #     self.writeSpreadsheet()
+        #     self.write_spreadsheet()
         QCoreApplication.processEvents()
-        self.debugger.print("Finished:: createIntensityTable")
+        self.debugger.print("Finished:: create_intensity_table")
         return
 
-    def requestRefresh(self):
+    def request_refresh(self):
         """Request to refresh the environment or state.
 
         This method sets a flag to indicate that a refresh is required, logging the start and end of its execution.
@@ -522,13 +522,13 @@ class SettingsTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: requestRefresh")
-        self.refreshRequired = True
+        self.debugger.print("Start:: request_refresh")
+        self.refresh_required = True
         # self.refresh()
-        self.debugger.print("Finished:: requestRefresh")
+        self.debugger.print("Finished:: request_refresh")
         return
 
-    def writeSpreadsheet(self):
+    def write_spreadsheet(self):
         """Write the configuration and calculation results to the associated spreadsheet.
 
         This function iterates through various settings and results stored within the object, such as optical permittivity, mass definitions, and vibrational mode calculations. For each setting or result, it writes the relevant information to a new row in the spreadsheet. The spreadsheet is expected to have a 'Settings' worksheet, which this function selects and updates with the provided values.
@@ -542,46 +542,46 @@ class SettingsTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: writeSpreadsheet")
+        self.debugger.print("Start:: write_spreadsheet")
         sp = self.notebook.spreadsheet
         if sp is None:
-            self.debugger.print("Finished:: writeSpreadsheet - Aborting write of spreadsheet")
+            self.debugger.print("Finished:: write_spreadsheet - Aborting write of spreadsheet")
             return
         self.debugger.print("Writing of spreadsheet")
-        sp.selectWorkSheet("Settings")
+        sp.select_work_sheet("Settings")
         sp.delete()
-        sp.writeNextRow(["Settings and calculations of frequencies and absorption"], row=0, col=1)
+        sp.write_next_row(["Settings and calculations of frequencies and absorption"], row=0, col=1)
         for item in sorted(self.settings):
             if item == "Optical permittivity" and self.settings[item] is not None:
-               sp.writeNextRow([item], col=1)
-               sp.writeNextRow(self.settings[item][0], col=2, check=1)
-               sp.writeNextRow(self.settings[item][1], col=2, check=1)
-               sp.writeNextRow(self.settings[item][2], col=2, check=1)
+               sp.write_next_row([item], col=1)
+               sp.write_next_row(self.settings[item][0], col=2, check=1)
+               sp.write_next_row(self.settings[item][1], col=2, check=1)
+               sp.write_next_row(self.settings[item][2], col=2, check=1)
                eps = self.epsilon_ionic.tolist()
-               sp.writeNextRow(["Ionic Contribution to permittivity at zero frequency"], col=1)
-               sp.writeNextRow(eps[0], col=2, check=1)
-               sp.writeNextRow(eps[1], col=2, check=1)
-               sp.writeNextRow(eps[2], col=2, check=1)
+               sp.write_next_row(["Ionic Contribution to permittivity at zero frequency"], col=1)
+               sp.write_next_row(eps[0], col=2, check=1)
+               sp.write_next_row(eps[1], col=2, check=1)
+               sp.write_next_row(eps[2], col=2, check=1)
                eps = self.epsilon_ionic + np.array(self.settings[item])
                eps = eps.tolist()
-               sp.writeNextRow(["Total Contribution to permittivity at zero frequency"], col=1)
-               sp.writeNextRow(eps[0], col=2, check=1)
-               sp.writeNextRow(eps[1], col=2, check=1)
-               sp.writeNextRow(eps[2], col=2, check=1)
+               sp.write_next_row(["Total Contribution to permittivity at zero frequency"], col=1)
+               sp.write_next_row(eps[0], col=2, check=1)
+               sp.write_next_row(eps[1], col=2, check=1)
+               sp.write_next_row(eps[2], col=2, check=1)
             elif item == "Mass definition":
-               sp.writeNextRow([item,self.settings[item]], col=1, check=1)
+               sp.write_next_row([item,self.settings[item]], col=1, check=1)
                for c in self.masses_dictionary:
-                   sp.writeNextRow([c,self.masses_dictionary[c]],col=3,check=1)
+                   sp.write_next_row([c,self.masses_dictionary[c]],col=3,check=1)
             else:
-               sp.writeNextRow([item,self.settings[item]], col=1, check=1)
-        sp.writeNextRow([""], col=1)
-        sp.writeNextRow(["Mode","Include?","Sigma(cm-1)","Frequency(cm-1)","Intensity(Debye2/Angs2/amu","Integrated Molar Absorption(/L/mole/cm2","Absorption maximum (L/mole/cm)"], col=1)
+               sp.write_next_row([item,self.settings[item]], col=1, check=1)
+        sp.write_next_row([""], col=1)
+        sp.write_next_row(["Mode","Include?","Sigma(cm-1)","Frequency(cm-1)","Intensity(Debye2/Angs2/amu","Integrated Molar Absorption(/L/mole/cm2","Absorption maximum (L/mole/cm)"], col=1)
         for mode,(f,intensity,sigma,selected) in enumerate(zip(self.frequencies_cm1, self.intensities, self.sigmas_cm1,self.modes_selected)):
             yn = "No"
             if selected:
                 yn = "Yes"
-            sp.writeNextRow([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi], col=1)
-        self.debugger.print("Finished:: writeSpreadsheet")
+            sp.write_next_row([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi], col=1)
+        self.debugger.print("Finished:: write_spreadsheet")
 
     def redraw_output_tw(self):
         """Redraws the output table widget with updated values.
@@ -672,7 +672,7 @@ class SettingsTab(QWidget):
         self.sigmas_cm1 = [ self.settings["Sigma value"] for i in self.frequencies_cm1 ]
         self.redraw_output_tw()
         self.debugger.print("on sigma change ", self.settings["Sigma value"])
-        self.refreshRequired = True
+        self.refresh_required = True
         self.refresh()
         self.debugger.print("Finished:: on_sigma_changed")
 
@@ -712,7 +712,7 @@ class SettingsTab(QWidget):
             self.mass_cb.model().item(3).setEnabled(False)
         # Modify the element masses
         self.set_masses_tw()
-        self.refreshRequired = True
+        self.refresh_required = True
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
@@ -735,7 +735,7 @@ class SettingsTab(QWidget):
         self.debugger.print("Start:: set_masses_tw")
         if self.reader:
             self.element_masses_tw.blockSignals(True)
-            species = self.reader.getSpecies()
+            species = self.reader.get_species()
             # set the initial dictionary according to the mass_definition
             masses = []
             if self.settings["Mass definition"] == "average":
@@ -858,7 +858,7 @@ class SettingsTab(QWidget):
         else:
             self.redraw_output_tw()
         self.debugger.print("on_output_tw_itemChanged selected_modes",self.modes_selected )
-        self.refreshRequired = True
+        self.refresh_required = True
         self.refresh()
         QCoreApplication.processEvents()
         self.debugger.print("Finished:: on_output_tw_itemChanged")
@@ -898,21 +898,21 @@ class SettingsTab(QWidget):
 
         Notes
         -----
-        - `self.reader.getSpecies()` returns a list of elements corresponding to table columns.
+        - `self.reader.get_species()` returns a list of elements corresponding to table columns.
         - `self.masses_dictionary` is a dict where keys are element symbols and values are their masses.
-        - `self.refreshRequired` and `self.recalculate_selected_modes` are boolean flags used to indicate that a refresh and a recalculation are necessary.
+        - `self.refresh_required` and `self.recalculate_selected_modes` are boolean flags used to indicate that a refresh and a recalculation are necessary.
         - `self.refresh()` is a method that refreshes or updates the UI components as needed based on the new changes.
 
         """        
         self.debugger.print("Start:: on_element_masses_tw_itemChanged)", item.row(), item.column() )
-        elements = self.reader.getSpecies()
+        elements = self.reader.get_species()
         col = item.column()
         self.mass_cb.model().item(3).setEnabled(True)
         self.settings["Mass definition"] = "gui"
         self.mass_cb.setCurrentIndex(3)
         self.masses_dictionary[elements[col]] = float(item.text())
         self.debugger.print("masses_dictionary", self.masses_dictionary)
-        self.refreshRequired = True
+        self.refresh_required = True
         self.recalculate_selected_modes = True
         self.refresh()
         self.debugger.print("Finished:: on_element_masses_tw_itemChanged)" )
@@ -937,7 +937,7 @@ class SettingsTab(QWidget):
         - Enforces symmetry by setting the [column][row] element equal to the [row][column] element.
         - Marks the 'Optical permittivity edited' flag as True.
         - Calls `refresh_optical_permittivity_tw` to refresh the optical permittivity table widget.
-        - Flags `refreshRequired`, `recalculate_selected_modes`, and `refresh` methods/attributes for further actions.
+        - Flags `refresh_required`, `recalculate_selected_modes`, and `refresh` methods/attributes for further actions.
         - Processes any pending events with `QCoreApplication.processEvents()` to ensure the UI remains responsive.
 
         """        
@@ -946,7 +946,7 @@ class SettingsTab(QWidget):
         self.settings["Optical permittivity"][item.column()][item.row()] = float(item.text())
         self.settings["Optical permittivity edited"] = True
         self.refresh_optical_permittivity_tw()
-        self.refreshRequired = True
+        self.refresh_required = True
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
@@ -1004,8 +1004,8 @@ class SettingsTab(QWidget):
         """        
         self.debugger.print("Start:: refresh", force )
         if not self.reader and self.notebook.reader:
-            self.refreshRequired = True
-        if not self.refreshRequired and not force:
+            self.refresh_required = True
+        if not self.refresh_required and not force:
             self.debugger.print("Finished:: refresh not required",force)
             return
         #
@@ -1036,21 +1036,21 @@ class SettingsTab(QWidget):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
-        self.createIntensityTable()
-        self.refreshRequired = False
+        self.create_intensity_table()
+        self.refresh_required = False
         # Refresh the scenarios that depend on this dielectric
         if self.notebook.scenarios is not None:
             for scenario in self.notebook.scenarios:
-                scenario.requestRefresh()
+                scenario.request_refresh()
         if self.notebook.plottingTab is not None:
-            self.notebook.plottingTab.requestRefresh()
+            self.notebook.plottingTab.request_refresh()
         if self.notebook.analysisTab is not None:
-            self.notebook.analysisTab.requestRefresh()
+            self.notebook.analysisTab.request_refresh()
         if self.notebook.fitterTab is not None:
-            self.notebook.fitterTab.requestRefresh()
+            self.notebook.fitterTab.request_refresh()
         QCoreApplication.processEvents()
-        self.refreshRequired = False
-        self.calculationRequired = True
+        self.refresh_required = False
+        self.calculation_required = True
         self.debugger.print("Finished:: refresh", force )
         return
 
@@ -1110,7 +1110,7 @@ class SettingsTab(QWidget):
         self.settings["Optical permittivity"] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
         self.recalculate_selected_modes = True
-        self.refreshRequired = True
+        self.refresh_required = True
         QCoreApplication.processEvents()
         self.debugger.print("Finished:: set_optical_permittivity_tw")
         return
@@ -1132,7 +1132,7 @@ class SettingsTab(QWidget):
         self.debugger.print("Start:: on_born_change ", self.born_cb.isChecked())
         self.settings["Neutral Born charges"] = self.born_cb.isChecked()
         self.debugger.print("on born change ", self.settings["Neutral Born charges"])
-        self.refreshRequired = True
+        self.refresh_required = True
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
@@ -1158,7 +1158,7 @@ class SettingsTab(QWidget):
         self.debugger.print("Start:: on_eckart_change ", self.eckart_cb.isChecked())
         self.settings["Eckart flag"] = self.eckart_cb.isChecked()
         self.debugger.print("on eckart change ", self.settings["Eckart flag"])
-        self.refreshRequired = True
+        self.refresh_required = True
         self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
@@ -1188,16 +1188,16 @@ class SettingsTab(QWidget):
         self.debugger.print("About to calculate settings crystal dielectric using pool")
         # Loop over the frequencies and calculate the crystal dielectric for each frequency
         if self.notebook.pool is None:
-            self.notebook.startPool()
+            self.notebook.start_pool()
         for dielecv in self.notebook.pool.imap(dielectricFunction, vs_cm1, chunksize=20):
             self.crystal_permittivity.append(dielecv)
             self.notebook.progressbars_update()
         QCoreApplication.processEvents()
-        self.calculationRequired = False
+        self.calculation_required = False
         self.debugger.print("Finished:: calculate ")
         return
 
-    def getCrystalPermittivity(self,vs_cm1):
+    def get_crystal_permittivity(self,vs_cm1):
         """Return the crystal permittivity.
 
         Parameters
@@ -1211,16 +1211,16 @@ class SettingsTab(QWidget):
             The crystal permittivity (a 3x3 tensor) at each frequency
 
         """
-        self.debugger.print("Start:: get_crystal_permittivity", self.refreshRequired)
-        if self.calculationRequired or self.refreshRequired or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
+        self.debugger.print("Start:: get_crystal_permittivity", self.refresh_required)
+        if self.calculation_required or self.refresh_required or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
             self.debugger.print("get_crystal_permittivity refreshing and recalculating" )
             self.refresh()
             self.calculate(vs_cm1)
-        self.debugger.print("Finished:: get_crystal_permittivity", self.refreshRequired)
+        self.debugger.print("Finished:: get_crystal_permittivity", self.refresh_required)
         return self.crystal_permittivity
 
 
-    def getCrystalPermittivityObject(self):
+    def get_crystal_permittivity_object(self):
         """Return the crystal permittivity object.
 
         Parameters
@@ -1233,11 +1233,11 @@ class SettingsTab(QWidget):
             An instance of dielectric function
 
         """
-        self.debugger.print("Start:: getCrystalPermittivityObject", self.refreshRequired)
-        if self.calculationRequired or self.refreshRequired:
-            self.debugger.print("getCrystalPermittivityObject refreshing and recalculating" )
+        self.debugger.print("Start:: get_crystal_permittivity_object", self.refresh_required)
+        if self.calculation_required or self.refresh_required:
+            self.debugger.print("get_crystal_permittivity_object refreshing and recalculating" )
             self.refresh()
             self.calculate(self.vs_cm1)
-        self.debugger.print("Finished:: getCrystalPermittivityObject", self.refreshRequired)
+        self.debugger.print("Finished:: get_crystal_permittivity_object", self.refresh_required)
         return self.CrystalPermittivityObject
 

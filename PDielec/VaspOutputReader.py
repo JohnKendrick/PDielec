@@ -1113,7 +1113,7 @@ class VaspOutputReader(GenericOutputReader):
         self.unit_cells.append(self._get_unit_cell_from_xml(structures["initialpos"]))
         # Book keeping
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
             print(f"_handle_structure_xml: volume={self.volume}",flush=True)
         return

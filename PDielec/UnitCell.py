@@ -253,7 +253,7 @@ class UnitCell:
 
         """        
         abc = [self.a, self.b, self.c]
-        volume = self.getVolume("Angstrom")
+        volume = self.get_volume("Angstrom")
         spg_symbol, spg_number = self.find_symmetry()
         # Open the filename if it is given
         with open(filename,"w") if filename else nullcontext(filedescriptor) as file_:
@@ -284,7 +284,7 @@ class UnitCell:
             print(" ",                                               file=file_)
         return
 
-    def getBoundingBox(self, originXYZ = None, originABC = None, units="Angstrom"):
+    def get_bounding_box(self, originXYZ = None, originABC = None, units="Angstrom"):
         """Generate the corners and edges of a bounding box.
 
         This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
@@ -311,7 +311,7 @@ class UnitCell:
         -------
         To fetch the bounding box coordinates and edges, simply call: ::
 
-            corners_xyz, edges = object.getBoundingBox()
+            corners_xyz, edges = object.get_bounding_box()
 
         """        
         if originABC is None and originXYZ is None:
@@ -365,7 +365,7 @@ class UnitCell:
         edges   = convert_length_units(edges  ,self.units,units)
         return corners_xyz,edges,labels
 
-    def getDensity(self, units="cm"):
+    def get_density(self, units="cm"):
         """Calculate the density of the crystal.
   
         Returns the density in g/cc.  If the mass is not known, then returns 1.0
@@ -381,7 +381,7 @@ class UnitCell:
             The density in gms/cc
 
         """
-        volume = self.getVolume(units=units)
+        volume = self.get_volume(units=units)
         mass = sum(self.atomic_masses) / avogadro_si
         if mass == 0:
             self.density = 1.0
@@ -423,14 +423,14 @@ class UnitCell:
                 print_reals("",xyz, format="{:12.6f}")
             if self.molecules:
                 for molid,atoms in enumerate(self.molecules):
-                    mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atom_list=atoms,output="all")
+                    mass, cm_xyz, cm_frac = self.calculate_centre_of_mass(atom_list=atoms,output="all")
                     molstring = "Molecule "+str(molid)+":"
                     print_ints("Atoms in "+molstring,atoms)
                     print_reals("Mass of "+molstring,[ mass ], format="{:12.6f}")
                     print_reals("Centre of Mass  (xyz) of "+molstring, cm_xyz, format="{:12.6f}")
                     print_reals("Centre of Mass (frac) of "+molstring, cm_frac,format="{:12.6f}")
 
-    def calculateCentreOfMass(self,atom_list=None, output="xyz"):
+    def calculate_centre_of_mass(self,atom_list=None, output="xyz"):
         """Calculate the centre of mass for a given set of atoms.
 
         Parameters
@@ -460,11 +460,11 @@ class UnitCell:
 
         Examples
         --------
-        >>> calculateCentreOfMass(atom_list=[1, 2, 3], output='xyz')
+        >>> calculate_centre_of_mass(atom_list=[1, 2, 3], output='xyz')
         array([0.1, 0.2, 0.3])
-        >>> calculateCentreOfMass(output='mass')
+        >>> calculate_centre_of_mass(output='mass')
         50.2
-        >>> calculateCentreOfMass(output='abc')
+        >>> calculate_centre_of_mass(output='abc')
         array([0.4, 0.5, 0.6])
 
         """        
@@ -642,7 +642,7 @@ class UnitCell:
         self.a, self.b, self.c, self.alpha, self.beta, self.gamma = self.convert_unitcell_to_abc()
         self.reciprocal_lattice = np.linalg.inv(self.lattice)
 
-    def getVolume(self, units="cm"):
+    def get_volume(self, units="cm"):
         """Calculate the volume.
 
         Parameters

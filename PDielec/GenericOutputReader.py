@@ -243,7 +243,7 @@ class GenericOutputReader:
         if self.program_mass_dictionary:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
-    def getSpecies(self):
+    def get_species(self):
         """Return a list of cleaned species symbols.
 
         This method applies a specified cleanup function to each element of 
@@ -426,7 +426,6 @@ class GenericOutputReader:
             title = f"Born Charges for Atom {i:d}"
             print3x3(title, charges)
         print3x3("Epsilon inf: ", self.zerof_optical_dielectric)
-        #jk print3x3("Unit cell: ", self.unit_cells[-1].lattice)
         self.unit_cells[-1].print()
         print(" ")
         print(f"Volume of cell: {self.volume:f}")

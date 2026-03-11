@@ -56,8 +56,6 @@ def set_affinity_on_worker():
     None.
 
     """
-    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
-    #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
