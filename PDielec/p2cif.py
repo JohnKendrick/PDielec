@@ -195,6 +195,7 @@ def main():
         cell.write_cif()
     p.close()
     p.join()
+    p.terminate()
     return
 # end of def main
 

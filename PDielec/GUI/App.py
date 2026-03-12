@@ -271,6 +271,7 @@ class App(QMainWindow):
             logger.debug("Exiting with sys.exit call")
             self.notebook.pool.close()
             self.notebook.pool.join()
+            self.notebook.pool.terminate()
             self.notebook.pool = None
         logger.debug("Finished:: Initialising")
         return
@@ -449,8 +450,11 @@ class App(QMainWindow):
 
         """
         logger.debug("Close event has been captured")
-        self.notebook.pool.close()
-        self.notebook.pool.join()
+        if self.notebook.pool is not None:
+            self.notebook.pool.close()
+            self.notebook.pool.join()
+            self.notebook.pool.terminate()
+            self.notebook.pool = None
         super().closeEvent(event)
 
 

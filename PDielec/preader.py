@@ -473,6 +473,7 @@ def main():
     #
     p.close()
     p.join()
+    p.terminate()
 # end of def main
 
 if __name__ == "__main__":
