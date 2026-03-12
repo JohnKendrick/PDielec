@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switch_scenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Crystal Infrared")
 #
 #
 #
@@ -25,7 +25,7 @@ tab.sigmas_cm1 = [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'a-axis field for S Polarisation (coherent)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  0.0
@@ -48,10 +48,10 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.add_scenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'b-axis field for S Polarisation (coherent)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  0.0
@@ -74,10 +74,10 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.add_scenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'c-axis field for S Polarisation (coherent)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  0.0
@@ -100,10 +100,10 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.add_scenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'a-axis field for S Polarisation (Incoherent phase average)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  0.0
@@ -126,10 +126,10 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.add_scenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'b-axis field for S Polarisation (Incoherent phase average)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  0.0
@@ -152,10 +152,10 @@ tab.settings['Percentage average incoherence'] =  100
 tab.settings['Number of average incoherence samples'] =  10
 #
 #
-self.notebook.add_scenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'c-axis field for S Polarisation (Incoherent phase average)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  0.0

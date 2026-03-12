@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switch_scenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder Infrared")
 #
 #
 #
@@ -24,7 +24,7 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Scenario 1'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
@@ -47,10 +47,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.add_scenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Scenario 2'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  0.0

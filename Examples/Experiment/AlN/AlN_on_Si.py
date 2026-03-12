@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switch_scenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Crystal Infrared")
 #
 #
 #
@@ -25,7 +25,7 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Scenario 1'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  7.2
