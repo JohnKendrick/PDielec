@@ -187,9 +187,8 @@ class CrystalOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string from which k-point grid dimensions and the total number of k-points are extracted. The line
-        is expected to have specific data at predefined positions: the k-point grid dimensions at indices 2, 3, and 4,
-        and the total number of k-points at index 12, according to the split by whitespace.
+        line : str
+            A string from which k-point grid dimensions and the total number of k-points are extracted. The line is expected to have specific data at predefined positions: the k-point grid dimensions at indices 2, 3, and 4, and the total number of k-points at index 12, according to the split by whitespace.
 
         Returns
         -------
@@ -396,9 +395,8 @@ class CrystalOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The current line in the file from which to start reading eigenvectors. This parameter is not
-        explicitly used in the processing inside the function but hints at expecting a certain positioning within the
-        file content.
+        line : str
+            The current line in the file from which to start reading eigenvectors. This parameter is not explicitly used in the processing inside the function but hints at expecting a certain positioning within the file content.
 
         Returns
         -------
@@ -620,9 +618,8 @@ class CrystalOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The current line from the file where the method starts reading. This parameter is actually not used
-        as the method immediately reads new lines from the file, implying a design choice where the `line` parameter
-        could be omitted or revised.
+        line : str
+            The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the `line` parameter could be omitted or revised.
 
         """        
         line = self.file_descriptor.readline()

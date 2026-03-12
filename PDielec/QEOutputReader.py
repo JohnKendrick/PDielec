@@ -165,9 +165,8 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The line read from a file which contains the value to be processed. It's expected that the relevant
-        value is the third element of the line when split by whitespace, and it may contain a comma which should be
-        ignored.
+        line : str
+            The line read from a file which contains the value to be processed. It's expected that the relevant value is the third element of the line when split by whitespace, and it may contain a comma which should be ignored.
 
         Returns
         -------
@@ -244,8 +243,8 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The line from which the lattice parameter is read. It is assumed that the lattice parameter can be
-        found at the third whitespace-separated value in the line.
+        line : str
+            The line from which the lattice parameter is read. It is assumed that the lattice parameter can be found at the third whitespace-separated value in the line.
 
         Returns
         -------
@@ -317,8 +316,8 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing energy-related information, expected to follow a pre-determined format where the
-        relevant energy value is the fourth element in a whitespace-separated list.
+        line : str
+            A string containing energy-related information, expected to follow a pre-determined format where the relevant energy value is the fourth element in a whitespace-separated list.
 
         Returns
         -------
@@ -388,8 +387,8 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The line from which the number of k-points is extracted. The line should contain the number of
-        k-points at the 5th position (index 4 when split by whitespace).
+        line : str
+            The line from which the number of k-points is extracted. The line should contain the number of k-points at the 5th position (index 4 when split by whitespace).
 
         Returns
         -------
@@ -417,8 +416,8 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The line from which to read the k-point grid. Note that while this parameter is named 'line', it is
-        not used directly in the function as the function reads the next line from the file itself.
+        line : str
+            The line from which to read the k-point grid. Note that while this parameter is named 'line', it is not used directly in the function as the function reads the next line from the file itself.
 
         Returns
         -------
@@ -747,8 +746,8 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The initial line from which to start reading the fractional coordinates. The actual parameter is not
-        used within the function but symbolically represents the starting point for reading.
+        line : str
+            The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading.
 
         Returns
         -------
@@ -992,7 +991,7 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        total_energy_xml : a list of xml element
+        total_energy_xml : list
             A list of total_energy elements
 
         Set
@@ -1043,7 +1042,7 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        atomic_structure_xml : a list of xml elements
+        atomic_structure_xml : list
             A list of atomic structure elements
 
         Set

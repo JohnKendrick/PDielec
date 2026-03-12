@@ -138,11 +138,15 @@ class UnitCell:
 
         Parameters
         ----------
-        a, b, c : float or array, optional Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0,
-        0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively. alpha, beta, gamma : float, optional Lattice angles
-        (in degrees). These are only used if all three angles are specified, otherwise, the default lattice
-        (orthorhombic) is used. units : str An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'
-        The default is Angstrom. The internal unit is always the angstrom
+        a, b, c : float or array, optional
+            Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0],
+            and [0.0, 0.0, 1.0], respectively.
+        alpha, beta, gamma : float, optional
+            Lattice angles in degrees. These are only used if all three angles are specified, otherwise the default
+            orthorhombic lattice is used.
+        units : str, optional
+            Unit for lattice vectors, one of 'a.u.', 'au', 'bohr', 'angs', 'angstrom', 'Angs', 'Angstrom', or 'nm'.
+            The default is 'Angstrom'. Internally all values are stored in Angstrom.
 
 
         Notes
@@ -1005,11 +1009,14 @@ class UnitCell:
 
         Parameters
         ----------
-        scale : float, optional The scale factor applied to the covalent radii. Default is 1.1 tolerance : float,
-        optional. Default is 0.1 The tolerance added to the scaled sum of radii to determine the maximum allowable
-        distance between atoms i and j for them to be considered bonded. radii : a dictionary, optional A dictionary of
-        covalent radii for the atoms, key is the element name.  If not given then the package radii are used from
-        PDielec.Constants
+        scale : float, optional
+            The scale factor applied to the covalent radii. Default is 1.1.
+        tolerance : float, optional
+            The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms
+            i and j for them to be considered bonded. Default is 0.1.
+        radii : dict, optional
+            A dictionary of covalent radii for the atoms, keyed by element name. If not given the package radii from
+            PDielec.Constants are used.
 
 
         Returns

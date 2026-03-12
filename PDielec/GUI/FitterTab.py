@@ -725,8 +725,8 @@ class FitterTab(QWidget):
 
         Parameters
         ----------
-        value : bool The value or state that triggered the change. This parameter is logged but not directly used to set
-        the 'Optimise frequency scaling' option.
+        value : bool
+            The value or state that triggered the change. This parameter is logged but not directly used to set the 'Optimise frequency scaling' option.
 
         Returns
         -------
@@ -746,8 +746,8 @@ class FitterTab(QWidget):
 
         Parameters
         ----------
-        value : bool The new value of the spectrum scaling checkbox. The specific type and significance can vary
-        depending on the implementation details of the checkbox and its handlers.
+        value : bool
+            The new value of the spectrum scaling checkbox. The specific type and significance can vary depending on the implementation details of the checkbox and its handlers.
 
         Returns
         -------
@@ -814,8 +814,8 @@ class FitterTab(QWidget):
 
         Parameters
         ----------
-        value : str The new value or state of the baseline checkbox. The actual data type and use of this parameter
-        depend on the specific implementation and could vary.
+        value : str
+            The new value or state of the baseline checkbox. The actual data type and use of this parameter depend on the specific implementation and could vary.
 
         Returns
         -------
@@ -835,8 +835,8 @@ class FitterTab(QWidget):
 
         Parameters
         ----------
-        value : str The new value for the 'Spectral difference threshold' setting. The function attempts to convert this
-        to a float.
+        value : str
+            The new value for the 'Spectral difference threshold' setting. The function attempts to convert this to a float.
 
         Returns
         -------
@@ -1459,8 +1459,9 @@ class FitterTab(QWidget):
 
         Parameters
         ----------
-        force : bool, optional If True, the refresh proceeds regardless of whether it is deemed necessary based on the
-        internal state. Defaults to False.
+        force : bool, optional 
+            If True, the refresh proceeds regardless of whether it is deemed necessary based on the
+            internal state. Defaults to False.
 
         Returns
         -------

@@ -341,9 +341,11 @@ class GenericOutputReader:
 
         Parameters
         ----------
-        new_masses : dict A dictionary where keys are element symbols as strings and values are the new masses for these
-        elements. mass_dictionary : dict, optional An additional dictionary provided for mass overrides. If any element
-        present in `new_masses` also exists in `mass_dictionary`, the mass from `mass_dictionary` will be used.
+        new_masses : dict
+            A dictionary where keys are element symbols as strings and values are the new masses for these elements.
+        mass_dictionary : dict, optional
+            An additional dictionary provided for mass overrides. If any element present in `new_masses` also exists
+            in `mass_dictionary`, the mass from `mass_dictionary` will be used.
 
 
         Returns
@@ -762,7 +764,8 @@ class GenericOutputReader:
 
         Parameters
         ----------
-        hessian : nxn array of floats
+        hessian : nxn
+            array of floats
             The second derivative matrix
 
         Returns
@@ -897,10 +900,10 @@ class GenericOutputReader:
 
         Parameters
         ----------
-        hessian : numpy.ndarray The original Hessian matrix whose elements are to be modified. It is assumed to be a
-        square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.
-        new : numpy.ndarray or list An array or list of new weighting factors, one per ion. Its length should be equal
-        to `nions`. These factors are applied in the modification of the Hessian matrix elements.
+        hessian : numpy.ndarray
+            The original Hessian matrix whose elements are to be modified. It is assumed to be a square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.
+        new : numpy.ndarray
+            or list An array or list of new weighting factors, one per ion. Its length should be equal to `nions`. These factors are applied in the modification of the Hessian matrix elements.
 
         Returns
         -------
@@ -933,7 +936,7 @@ class GenericOutputReader:
             The Hessian matrix to be un-weighted, typically a square, 2D array where
             the dimension correlates with 3 times the number of ions (nions*3) since
             it includes the x, y, and z coordinates for each ion.
-        old : ndarray or list
+        old : ndarray
             An array or list of mass weights for each ion.
 
         Returns

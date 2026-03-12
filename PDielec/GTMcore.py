@@ -286,18 +286,18 @@ class Layer:
 
         Parameters
         ----------
-        thickness : float, optional Thickness of the material layer, specified in meters. Default is 1e-06. epsilon :
-        np.ndarray or None, optional The dielectric tensor of the material. If `None`, an identity tensor is used.
-        Default is None. theta : float, optional The Euler angle theta (rotation around z-axis) in radians. Default is
-        0. phi : float, optional The Euler angle phi (rotation around x-axis) in radians. Default is 0. psi : float,
-        optional The Euler angle psi (rotation around z-axis again) in radians. Defaults to 0. exponent_threshold :
-        float, optional The threshold for the exponent under which the calculations are considered safe from overflow
-        errors. Default is 700.
-
-
-
-
-
+        thickness : float, optional
+            Thickness of the material layer, specified in meters. Default is 1e-06.
+        epsilon : np.ndarray or None, optional
+            The dielectric tensor of the material. If `None`, an identity tensor is used. Default is None.
+        theta : float, optional
+            The Euler angle theta (rotation around z-axis) in radians. Default is 0.
+        phi : float, optional
+            The Euler angle phi (rotation around x-axis) in radians. Default is 0.
+        psi : float, optional
+            The Euler angle psi (rotation around z-axis again) in radians. Defaults to 0.
+        exponent_threshold : float, optional
+            The threshold for the exponent under which the calculations are considered safe from overflow errors. Default is 700.
 
         Attributes
         ----------
@@ -414,7 +414,8 @@ class Layer:
 
         Parameters
         ----------
-        epsilon_function : complex function
+        epsilon_function : complex
+            function
             A function representing the complex dielectric function.
 
         Returns

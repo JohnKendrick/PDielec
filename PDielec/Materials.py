@@ -628,14 +628,14 @@ class Material:
 
     Parameters
     ----------
-    name : str The name of the material. density : float, optional The density of the material. If not provided and a
-    cell is given, it will be calculated based on the cell. permittivityObject :
-    :class:`~PDielec.DielectricFunction.DielectricFunction`, optional An object representing the dielectric function of
-    the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for
-    calculating scalar/tensor permittivity. (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its
-    sub-classes) cell : :class:`~PDielec.UnitCell.UnitCell`, optional An object representing the unit cell of the
-    material. If provided without a density, the density will be calculated from this cell. (See
-    :class:`~PDielec.UnitCell.UnitCell`)
+    name : str
+        The name of the material. 
+    density : float, optional 
+        The density of the material. If not provided and a cell is given, it will be calculated based on the cell. 
+    permittivityObject : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional 
+        An object representing the dielectric function of the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes) 
+    cell : :class:`~PDielec.UnitCell.UnitCell`, optional
+        An object representing the unit cell of the material. If provided without a density, the density will be calculated from this cell. (See :class:`~PDielec.UnitCell.UnitCell`)
 
     Attributes
     ----------
@@ -698,14 +698,16 @@ class Material:
 
         Parameters
         ----------
-        name : str The name of the material. density : float, optional The density of the material. If not provided and
-        a cell is given, it will be calculated based on the cell. permittivityObject : DielectricFunction, optional An
-        object representing the dielectric function of the material. This is intended to be passed by classes that
-        inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. cell :
-        unitCell, optional An object representing the unit cell of the material. If provided without a density, the
-        density will be calculated from this cell.
-
-
+        name : str
+            The name of the material.
+        density : float, optional
+            The density of the material. If not provided and a cell is given, it will be calculated based on the cell.
+        permittivityObject : DielectricFunction, optional
+            An object representing the dielectric function of the material. This is intended to be passed by classes
+            that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity.
+        cell : unitCell, optional
+            An object representing the unit cell of the material. If provided without a density, the density will
+            be calculated from this cell.
 
         Notes
         -----
@@ -1156,22 +1158,16 @@ class FPSQ(Material):
 
     Parameters
     ----------
-    name : str The name of the material. epsinf : array_like Epsilon infinity (eps0), either a 3x3 list or a 3x3 array
-    representing the dielectric constant at infinite frequency. omega_tos : list The transverse optical (TO)
-    frequencies. gamma_tos : list The TO absorption widths. omega_los : list The longitudinal optical (LO) frequencies.
-    gamma_los : list The LO absorption widths. density : float, optional The density of the material in grams per
-    milliliter (g/ml). cell : unitCell, optional The unit cell of the material.
-
-
-
-
-
-
-
-
-
-
-
+    name : str
+        The name of the material. 
+    epsinf : array_like 
+        Epsilon infinity (eps0), either a 3x3 list or a 3x3 array representing the dielectric constant at infinite frequency. 
+    omega_tos : list
+        The transverse optical (TO) frequencies. 
+    gamma_tos : list 
+        The TO absorption widths. omega_los : list The longitudinal optical (LO) frequencies.
+    gamma_los : list
+        The LO absorption widths. density : float, optional The density of the material in grams per milliliter (g/ml). cell : unitCell, optional The unit cell of the material.
 
     Notes
     -----

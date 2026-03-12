@@ -925,7 +925,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        item : the item changed
+        item : tem
             The item which has changed
 
         Returns
@@ -1721,8 +1721,8 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        index : int The index of the selected mode in the combo box. This controls what mode the system will use.  Index
-        0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
+        index : int
+            The index of the selected mode in the combo box. This controls what mode the system will use.  Index 0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
 
 
         Returns
@@ -1770,7 +1770,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        layers : a list of layers
+        layers : list
             A list of layers
         mode : str
             Specifies either 'Transfer matrix' or 'Scattering matrix'
@@ -1861,7 +1861,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        layers : a list of layers
+        layers : list
             A list of layers
         mode : str
             Specifies either 'Transfer matrix' or 'Scattering matrix'
@@ -1969,7 +1969,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        layers : a list of layers
+        layers : list
             A list of layers
         mode : str
             Specifies either 'Transfer matrix' or 'Scattering matrix'
@@ -2136,7 +2136,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        vs_cm1 : a list of floats
+        vs_cm1 : list
             The frequencies
         plot_type : str
             The data needed for plotting one of:
@@ -2170,7 +2170,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        vs_cm1 : a list of floats
+        vs_cm1 : list
             The frequencies in cm-1
 
         Returns

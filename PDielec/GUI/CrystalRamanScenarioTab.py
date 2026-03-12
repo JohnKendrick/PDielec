@@ -1721,8 +1721,8 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        index : int The index of the selected mode in the combo box. This controls what mode the system will use.  Index
-        0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
+        index : int
+            The index of the selected mode in the combo box. This controls what mode the system will use.  Index 0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
 
 
         Returns
@@ -2136,7 +2136,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        vs_cm1 : a list of floats
+        vs_cm1 : list
             The frequencies
         plot_type : str
             The data needed for plotting one of:
@@ -2170,7 +2170,7 @@ class CrystalRamanScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        vs_cm1 : a list of floats
+        vs_cm1 : list
             The frequencies in cm-1
 
         Returns

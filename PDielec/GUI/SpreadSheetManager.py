@@ -202,11 +202,15 @@ class SpreadSheetManager:
 
         Parameters
         ----------
-        items : list A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item
-        is written in subsequent columns. row : int, optional The row index to start writing from. If not specified,
-        uses the current row position of the object. col : int, optional The column index to start writing from. If not
-        specified, uses the current column position of the object. check : str, optional A check string written to the
-        beginning of the row specified. Defaults to an empty string if not specified.
+        items : list
+            A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item
+            is written in subsequent columns.
+        row : int, optional
+            The row index to start writing from. If not specified, uses the current row position of the object.
+        col : int, optional
+            The column index to start writing from. If not specified, uses the current column position of the object.
+        check : str, optional
+            A check string written to the beginning of the row. Defaults to an empty string if not specified.
 
 
 

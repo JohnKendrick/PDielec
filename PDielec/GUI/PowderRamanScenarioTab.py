@@ -1154,9 +1154,11 @@ class PowderRamanScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        vs_cm1 : list A list of frequencies in cm-1 plot_type : str A string indicating the type of result to return.
-        One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary
-        Permittivity', 'Powder ATR'
+        vs_cm1 : list
+            A list of frequencies in cm-1.
+        plot_type : str
+            A string indicating the type of result to return. One of: 'Powder Molar Absorption', 'Powder Absorption',
+            'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR'.
 
 
         Returns

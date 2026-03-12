@@ -52,8 +52,8 @@ class AnalysisTab(QWidget):
 
     Parameters
     ----------
-    parent : QObject The parent widget or object, typically the main application or main window in which this widget
-    will be embedded. debug : bool, optional Indicates if debugging is enabled for this widget. The default is False.
+    parent : QObject
+        The parent widget or object, typically the main application or main window in which this widget will be embedded. debug : bool, optional Indicates if debugging is enabled for this widget. The default is False.
 
 
     Attributes
@@ -126,9 +126,10 @@ class AnalysisTab(QWidget):
 
         Parameters
         ----------
-        parent : QObject The parent widget or object, typically the main application or main window in which this widget
-        will be embedded. debug : bool, optional Indicates if debugging is enabled for this widget. The default is
-        False.
+        parent : QObject
+            The parent widget or object, typically the main application or main window in which this widget will be embedded.
+        debug : bool, optional
+            Indicates if debugging is enabled for this widget. The default is False.
 
 
         """        
@@ -300,8 +301,8 @@ class AnalysisTab(QWidget):
 
         Parameters
         ----------
-        item : QTableWidgetItem The table widget item that was changed. This item contains the new radius value as its
-        text, and its column indicates which element's radius was modified.
+        item : QTableWidgetItem
+            The table widget item that was changed. This item contains the new radius value as its text, and its column indicates which element's radius was modified.
 
         Returns
         -------

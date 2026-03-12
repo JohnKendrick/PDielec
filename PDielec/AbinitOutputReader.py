@@ -35,8 +35,8 @@ class AbinitOutputReader(GenericOutputReader):
 
     Parameters
     ----------
-    filenames : list or str
-        A list of filenames or a single filename string corresponding to the Abinit output files to be processed.
+    filenames : list
+        A list of filename strings or a single filename string corresponding to the Abinit output files to be processed.
 
     Attributes
     ----------
@@ -64,8 +64,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        filenames : list or str
-            A list of filenames or a single filename string corresponding to the Abinit output files to be processed.
+        filenames : list
+            A list of filename strings or a single filename string corresponding to the Abinit output files to be processed.
 
         """        
         GenericOutputReader.__init__(self, filenames)
@@ -118,8 +118,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing energy information, expected to have a numeric value at the 5th position (index
-        4) which represents energy in Hartrees.
+        line : str
+            A string containing energy information, expected to have a numeric value at the 5th position (index 4) which represents energy in Hartrees.
 
         Returns
         -------
@@ -195,8 +195,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing the occupancies for one or multiple bands. Each occupancy is expected to be
-        separated by a space. The first item, if present, is ignored as it is not an occupancy value.
+        line : str
+            A string containing the occupancies for one or multiple bands. Each occupancy is expected to be separated by a space. The first item, if present, is ignored as it is not an occupancy value.
 
         Returns
         -------
@@ -234,8 +234,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A line of text containing pressure data. The pressure value is expected to be the eighth element
-        (index 7) in a space-separated list.
+        line : str
+            A line of text containing pressure data. The pressure value is expected to be the eighth element (index 7) in a space-separated list.
 
         Returns
         -------
@@ -260,8 +260,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The input string containing electron information. It's expected that the seventh item in this string,
-        when split by whitespace, can be converted to a float.
+        line : str
+            The input string containing electron information. It's expected that the seventh item in this string, when split by whitespace, can be converted to a float.
 
         Returns
         -------
@@ -332,8 +332,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing the energy cutoff information. It is expected that the energy value is in Hartree
-        units and is the second token in the string when split by whitespace.
+        line : str
+            A string containing the energy cutoff information. It is expected that the energy value is in Hartree units and is the second token in the string when split by whitespace.
 
         Returns
         -------
@@ -348,8 +348,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing the cell parameters in Ångström units separated by spaces. This string should
-        start with an identifier followed by three numerical values corresponding to the cell parameters.
+        line : str
+            A string containing the cell parameters in Ångström units separated by spaces. This string should start with an identifier followed by three numerical values corresponding to the cell parameters.
 
         Returns
         -------
@@ -527,8 +527,8 @@ class AbinitOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The current line being read from the file. This parameter is not directly used in the function but
-        indicates the starting point in the file from where to read the dynamical matrix data.
+        line : str
+            The current line being read from the file. This parameter is not directly used in the function but indicates the starting point in the file from where to read the dynamical matrix data.
 
         Returns
         -------

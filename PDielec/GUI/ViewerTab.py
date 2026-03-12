@@ -1413,9 +1413,11 @@ class ViewerTab(QWidget):
 
         Parameters
         ----------
-        element : str The element whose colour is to be set. Can be 'Background', 'Cell', 'Arrow', or any other custom
-        element defined in `element_colours`. colour : str The new colour to be set for the element. This should be a
-        string describing the colour.
+        element : str
+            The element whose colour is to be set. Can be 'Background', 'Cell', 'Arrow', or any other custom element
+            defined in `element_colours`.
+        colour : str
+            The new colour to be set for the element. This should be a string describing the colour.
 
 
         Returns
@@ -1704,8 +1706,9 @@ class ViewerTab(QWidget):
 
         Parameters
         ----------
-        force : bool, optional If True, the refresh proceeds regardless of whether it is deemed necessary based on the
-        object state. Default is False.
+        force : bool, optional 
+            If True, the refresh proceeds regardless of whether it is deemed necessary based on the
+            object state. Default is False.
 
         Returns
         -------
@@ -1927,7 +1930,7 @@ class TransformWindow(QDialog):
 
         Parameters
         ----------
-        item : the item changed
+        item : item
             The item which has changed
 
         Returns

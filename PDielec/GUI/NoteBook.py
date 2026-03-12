@@ -317,10 +317,12 @@ class NoteBook(QWidget):
 
         Parameters
         ----------
-        scenarioType : string scenarioType can be one of 'Powder Infrared', 'Crystal Infrared', 'Powder Raman' or
-        'Crystal Raman' copyFromIndex : int if copyFromIndex is not -2 then use the index to determine the scenario type
-        if copyFromIndex is -2 and the scenarioType has not been specified then just use the last scenario type there is
-        Otherwise just find the last scenario type to copy
+        scenarioType : string
+            scenarioType can be one of 'Powder Infrared', 'Crystal Infrared', 'Powder Raman' or 'Crystal Raman'.
+        copyFromIndex : int
+            If copyFromIndex is not -2 then use the index to determine the scenario type. If copyFromIndex is -2
+            and the scenarioType has not been specified then just use the last scenario type. Otherwise find the
+            last scenario of the given type to copy.
 
 
 

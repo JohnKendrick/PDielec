@@ -35,8 +35,8 @@ class CastepOutputReader(GenericOutputReader):
 
     Parameters
     ----------
-    filenames : list A list of filenames (strings) intended for initialization. The first filename in the list is used
-    to determine the seedname and the types of files to be created (.castep and .phonon).
+    filenames : list
+        A list of filenames (strings) intended for initialization. The first filename in the list is used to determine the seedname and the types of files to be created (.castep and .phonon).
 
     Notes
     -----
@@ -57,8 +57,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        filenames : list A list of filenames (strings) intended for initialization. The first filename in the list is
-        used to determine the seedname and the types of files to be created (.castep and .phonon).
+        filenames : list
+            A list of filenames (strings) intended for initialization. The first filename in the list is used to determine the seedname and the types of files to be created (.castep and .phonon).
 
         Notes
         -----
@@ -267,8 +267,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The line from which the number of bands is to be extracted. It is expected that the fifth element
-        (index 4) when splitting the line by spaces is an integer representing the number of bands.
+        line : str
+            The line from which the number of bands is to be extracted. It is expected that the fifth element (index 4) when splitting the line by spaces is an integer representing the number of bands.
 
         Returns
         -------
@@ -394,9 +394,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The initial line from which to start reading in the file. This parameter is part of the method
-        signature for demonstration but is immediately overwritten by the next line read from the file, hence not
-        directly used.
+        line : str
+            The initial line from which to start reading in the file. This parameter is part of the method signature for demonstration but is immediately overwritten by the next line read from the file, hence not directly used.
 
         Returns
         -------
@@ -435,9 +434,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The initial line from which to start reading in the file. This parameter is part of the method
-        signature for demonstration but is immediately overwritten by the next line read from the file, hence not
-        directly used.
+        line : str
+            The initial line from which to start reading in the file. This parameter is part of the method signature for demonstration but is immediately overwritten by the next line read from the file, hence not directly used.
 
         Returns
         -------
@@ -468,9 +466,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The initial line from which to start reading. Note: this parameter is actually unused in the
-        function's current implementation, and reading starts from the next line of the file descriptor's current
-        position.
+        line : str
+            The initial line from which to start reading. Note: this parameter is actually unused in the function's current implementation, and reading starts from the next line of the file descriptor's current position.
 
         Returns
         -------
@@ -531,9 +528,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing the pressure value to parse and set. The expected format is unspecified in this
-        context, but the pressure value should be at the third position (index 2) when the string is split by
-        whitespace.
+        line : str
+            A string containing the pressure value to parse and set. The expected format is unspecified in this context, but the pressure value should be at the third position (index 2) when the string is split by whitespace.
 
         Returns
         -------
@@ -579,8 +575,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The input line from which the spin is extracted. Expected to have at least six space-separated
-        elements, with the sixth element being a string representation of the spin value.
+        line : str
+            The input line from which the spin is extracted. Expected to have at least six space-separated elements, with the sixth element being a string representation of the spin value.
 
         Returns
         -------
@@ -638,8 +634,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string (typically a line from a file) that contains the number of electrons among other text,
-        expected to be found at the fifth position (index 4) when the string is split.
+        line : str
+            A string (typically a line from a file) that contains the number of electrons among other text, expected to be found at the fifth position (index 4) when the string is split.
 
         Returns
         -------

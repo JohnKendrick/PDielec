@@ -90,7 +90,7 @@ class VaspOutputReader(GenericOutputReader):
 
     Parameters
     ----------
-    names : list of str
+    names : list
         A list of file names to be used in processing the DFT output files
 
     Attributes
@@ -115,7 +115,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        names : list of str
+        names : list
             A list of file names to be used in processing the DFT output files
 
         Attributes
@@ -270,8 +270,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The current line of the file to read from. This parameter is not used, and the actual line reading
-        happens from `self.file_descriptor`.
+        line : str
+            The current line of the file to read from. This parameter is not used, and the actual line reading happens from `self.file_descriptor`.
 
         Returns
         -------
@@ -295,8 +295,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The line from which the ions per type information will be extracted. The relevant data is expected to
-        start from the fifth element when splitting the line by spaces.
+        line : str
+            The line from which the ions per type information will be extracted. The relevant data is expected to start from the fifth element when splitting the line by spaces.
 
         Returns
         -------
@@ -382,8 +382,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str This method operates on the instance's file_descriptor and nions attributes, assuming they are
-        correctly initialized.
+        line : str
+            This method operates on the instance's file_descriptor and nions attributes, assuming they are correctly initialized.
 
         Returns
         -------
@@ -512,9 +512,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The initial line from which to start reading the ionic dielectric constants. This parameter is not
-        directly used as the method starts by reading a new line from the file, but it's implicitly assumed to represent
-        the current position in the file.
+        line : str
+            The initial line from which to start reading the ionic dielectric constants. This parameter is not directly used as the method starts by reading a new line from the file, but it's implicitly assumed to represent the current position in the file.
 
         Returns
         -------
@@ -644,8 +643,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing the pseudopotential information to be parsed and stored. Expected format:
-        "any_text value label any_other_text", where "value" and "label" are the parts of interest for storage.
+        line : str
+            A string containing the pseudopotential information to be parsed and stored. Expected format: "any_text value label any_other_text", where "value" and "label" are the parts of interest for storage.
 
         Returns
         -------
@@ -785,8 +784,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str A string containing the energy cutoff value. The energy cutoff value is the third element in the
-        string when split by whitespace.
+        line : str
+            A string containing the energy cutoff value. The energy cutoff value is the third element in the string when split by whitespace.
 
         Returns
         -------
@@ -919,8 +918,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The current line in the file from which to start reading. This parameter is not used in the function
-        as the function reads new lines itself.
+        line : str
+            The current line in the file from which to start reading. This parameter is not used in the function as the function reads new lines itself.
 
         Returns
         -------
@@ -1123,7 +1122,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        structures_xml : a list of xml element
+        structures_xml : list
             A list of structurexml elements
 
         Set
@@ -1238,7 +1237,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        parameters_xml : a list of xml element
+        parameters_xml : list
             A list of parameters xml elements
 
         Set
@@ -1269,7 +1268,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        kpoints_xml : a list of xml element
+        kpoints_xml : list
             A list of kpoint xml elements
 
         Set

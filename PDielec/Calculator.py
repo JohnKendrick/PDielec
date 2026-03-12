@@ -619,8 +619,9 @@ def rodridgues_rotations(efield):
 
     Parameters
     ----------
-    efield : array_like The field directions, where each direction is used to calculate a random rotation about that
-    axis. Assumes the field is real.
+    efield : array_like
+        The field directions, where each direction is used to calculate a random rotation about that axis.
+        Assumes the field is real.
 
     Returns
     -------
@@ -1726,9 +1727,13 @@ def solve_effective_medium_equations(
     shape : str
         The shape of the particles.
     L : array
-        The depolarisation matrix. concentration : float The concentration of particles.
+        The depolarisation matrix.
+    concentration : float
+        The concentration of particles.
     atr_permittivity : float
-        The permittivity of the ATR substrate. atr_theta : float The ATR angle of incidence.
+        The permittivity of the ATR substrate.
+    atr_theta : float
+        The ATR angle of incidence.
     atr_s_pol : str
         The ATR polarisation. 
     bubble_vf : float

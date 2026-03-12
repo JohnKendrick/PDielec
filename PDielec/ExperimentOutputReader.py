@@ -35,8 +35,8 @@ class ExperimentOutputReader(GenericOutputReader):
 
     Parameters
     ----------
-    names : Various types Initial parameter used for construction, typically a string or list of identifiers that this
-    instance will process or hold.
+    names : Various
+        Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
 
     Attributes
     ----------
@@ -60,8 +60,8 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        names : Various types Initial parameter used for construction, typically a string or list of identifiers that
-        this instance will process or hold.
+        names : Various
+            Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
 
         Attributes
         ----------
@@ -690,9 +690,8 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        line : str The line from which the number of ions and their fractional coordinates will be extracted. The line
-        format is expected to be 'num_ions species x y z' for each ion, where 'num_ions' is the total number of ions,
-        'species' is the species identifier, and 'x y z' are the fractional coordinates.
+        line : str
+            The line from which the number of ions and their fractional coordinates will be extracted. The line format is expected to be 'num_ions species x y z' for each ion, where 'num_ions' is the total number of ions, 'species' is the species identifier, and 'x y z' are the fractional coordinates.
 
         Returns
         -------
