@@ -14,15 +14,15 @@
 #
 """ScenarioTab module."""
 # -*- coding: utf8 -*-
+import logging
 import os
 
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
-from qtpy.QtWidgets import QComboBox
+from qtpy.QtWidgets import QComboBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
 
 from PDielec import __file__ as PDielec_init_filename
 from PDielec.Materials import MaterialsDataBase
-import logging
+
 logger = logging.getLogger(__name__)
 
 

@@ -18,13 +18,15 @@
 These routines are a useful starting point for investigating the way the code operates
 """
 
+import logging
+
 import numpy as np
 
 from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
 from PDielec.GUI.SingleCrystalScenarioTab import solve_single_crystal_equations
 from PDielec.Materials import External, MaterialsDataBase
-import logging
+
 logger = logging.getLogger(__name__)
 
 

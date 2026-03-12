@@ -14,8 +14,6 @@
 #
 """MainTab module."""
 import logging
-logger = logging.getLogger(__name__)
-
 import os.path
 import platform
 
@@ -37,7 +35,7 @@ from qtpy.QtWidgets import (
 
 from PDielec.Utilities import find_program_from_name, get_reader
 
-
+logger = logging.getLogger(__name__)
 class MainTab(QWidget):
     """MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application.
 

@@ -13,21 +13,19 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """FitterTab module."""
-import logging
-logger = logging.getLogger(__name__)
-
 import csv
+import logging
 import os.path
 import warnings
 
-import numpy as np
-from openpyxl import load_workbook
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
 import matplotlib.pyplot
+import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
+from openpyxl import load_workbook
 from qtpy.QtCore import QCoreApplication, Qt
 from qtpy.QtWidgets import (
     QCheckBox,
@@ -53,7 +51,7 @@ from scipy.optimize import minimize
 from PDielec import Calculator
 from PDielec.GUI.SettingsTab import FixedQTableWidget
 
-
+logger = logging.getLogger(__name__)
 def is_float(element):
     """Test to see if element is a float.
 
@@ -364,7 +362,6 @@ class FitterTab(QWidget):
     ----------
     parent : QWidget The parent QWidget within which this `FitterTab` is contained. debug : bool, optional A flag to
     activate debug mode which provides additional output for development and troubleshooting. Defaults to False.
-
 
 
     Notes

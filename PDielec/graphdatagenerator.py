@@ -14,11 +14,12 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """graphdatagenerator command."""
+import logging
 import sys
 
 import numpy as np
 from openpyxl import load_workbook
-import logging
+
 logger = logging.getLogger(__name__)
 
 

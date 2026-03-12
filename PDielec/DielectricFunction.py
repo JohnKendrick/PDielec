@@ -31,6 +31,7 @@ Provides an interface to different mechanisms for providing dielectric informati
     - Subclass :class:`Sellmeier`
 """
 
+import logging
 import sys
 from contextlib import nullcontext
 
@@ -38,7 +39,7 @@ import numpy as np
 from scipy import interpolate
 
 from PDielec.Constants import angstrom, wavenumber
-import logging
+
 logger = logging.getLogger(__name__)
 
 

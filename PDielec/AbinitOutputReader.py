@@ -14,6 +14,7 @@
 #
 """AbinitOutputReader module."""
 
+import logging
 import math
 import re
 
@@ -22,7 +23,7 @@ import numpy as np
 from PDielec.Constants import amu, angs2bohr, atomic_number_to_element, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

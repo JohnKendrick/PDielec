@@ -14,6 +14,7 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """A module to read contents of a directory containing Crystal input and output files."""
+import logging
 import math
 import os
 import re
@@ -24,7 +25,7 @@ from PDielec.Constants import amu, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.IO import pdielec_io
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

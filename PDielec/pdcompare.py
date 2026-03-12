@@ -29,11 +29,12 @@ H Mie/3.0
 -sheet [molar/absorption/real/imaginary/atr]
 -excel filename
 """
+import logging
 import sys
 
 import numpy as np
 from openpyxl import load_workbook
-import logging
+
 logger = logging.getLogger(__name__)
 
 

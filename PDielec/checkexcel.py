@@ -18,11 +18,12 @@
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 
 """
+import logging
 import sys
 
 from openpyxl import load_workbook
 from termcolor import colored
-import logging
+
 logger = logging.getLogger(__name__)
 
 

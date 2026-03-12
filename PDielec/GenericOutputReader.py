@@ -14,9 +14,9 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """Generic reader of output files. An actual reader should inherit from this class."""
+import logging
 import math
 import os
-import sys
 
 import numpy as np
 
@@ -24,7 +24,7 @@ from PDielec.Calculator import calculate_normal_modes_and_frequencies, cleanup_s
 from PDielec.Constants import amu, avogadro_si, wavenumber
 from PDielec.IO import pdielec_io
 from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
-import logging
+
 logger = logging.getLogger(__name__)
 
 

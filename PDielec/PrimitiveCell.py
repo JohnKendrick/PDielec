@@ -15,11 +15,13 @@
 #
 """The PrimitiveCell module."""
 
+import logging
+
 import numpy as np
 import spglib
 
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

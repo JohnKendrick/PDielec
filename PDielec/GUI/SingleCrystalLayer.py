@@ -15,8 +15,6 @@
 """SingleCrystalLayer module."""
 # -*- coding: utf8 -*-
 import logging
-logger = logging.getLogger(__name__)
-
 import sys
 
 import numpy as np
@@ -36,8 +34,7 @@ from qtpy.QtWidgets import (
     QWidget,
 )
 
-
-
+logger = logging.getLogger(__name__)
 class SingleCrystalLayer:
     """A class representing a single crystal layer.
 
@@ -76,19 +73,6 @@ class SingleCrystalLayer:
     array. phaseShift : float The phase shift for the layer.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     Methods
     -------
     print() Prints the main attributes of the layer. get_phase_shift() Returns the phase shift for the layer.
@@ -111,39 +95,6 @@ class SingleCrystalLayer:
     crystal axes in the laboratory frame. calculate_lab_frame_epsilon(v) Computes the permittivity tensor for the
     material at a given frequency and transforms it to the laboratory frame. invert(m) Calculates the inverse of a given
     3x3 complex matrix.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Notes

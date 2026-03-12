@@ -16,7 +16,6 @@
 # -*- coding: utf8 -*-
 
 import logging
-logger = logging.getLogger(__name__)
 
 import numpy as np
 from qtpy.QtCore import QCoreApplication, QSize, Qt
@@ -36,7 +35,7 @@ from qtpy.QtWidgets import (
 from PDielec import Calculator, DielectricFunction
 from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
 
-
+logger = logging.getLogger(__name__)
 class FixedQTableWidget(QTableWidget):
     """A custom QTableWidget with fixed number of rows and columns.
 
@@ -151,25 +150,6 @@ class SettingsTab(QWidget):
     crystal_permittivity : list A list of calculated crystal permittivity values. recalculate_selected_modes : bool A
     flag indicating whether selected modes should be recalculated. reader : object A reader object from the parent
     notebook, used for accessing and manipulating input data.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Methods

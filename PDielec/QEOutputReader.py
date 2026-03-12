@@ -14,6 +14,7 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """QEOutputReader: Read the contents of a QE output file containing QE dynamical matrix."""
+import logging
 import math
 import re
 import xml.etree.ElementTree as ET
@@ -23,7 +24,7 @@ import numpy as np
 from PDielec.Constants import amu, angs2bohr, au2GPa, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

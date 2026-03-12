@@ -15,8 +15,6 @@
 """OpenGLWidget module."""
 
 import logging
-logger = logging.getLogger(__name__)
-
 import math
 import os
 from collections import deque
@@ -105,7 +103,7 @@ from qtpy.QtCore import Qt, QTimer
 from qtpy.QtGui import QFont, QPainter, QSurfaceFormat
 from qtpy.QtWidgets import QMessageBox, QOpenGLWidget
 
-
+logger = logging.getLogger(__name__)
 # The following lines seem to fix a problem when running on low end machines
 OpenGL.USE_ACCELERATE = False
 OpenGL.ERROR_CHECKING = False
@@ -537,7 +535,6 @@ class OpenGLWidget(QOpenGLWidget):
         msg.exec()
       
    
-
     def keyPressEvent(self, event):
         """Handle keyboard events for specific actions.
 
@@ -1967,9 +1964,6 @@ class Cylinder:
     array) of the other end of the cylinder's central axis.
 
 
-
-
-
     Attributes
     ----------
     colour : ndarray The normalized colour of the cylinder (R, G, B) with values ranging from 0.0 to 1.0. radius : float
@@ -1978,13 +1972,6 @@ class Cylinder:
     between the cylinder's central axis and the z-axis. height : float The height of the cylinder, determined as the
     distance between `pos1` and `pos2`. rotation : ndarray The 3D vector representing the axis of rotation to align the
     cylinder with the z-axis (used together with `angle` for setting the cylinder's orientation in 3D space).
-
-
-
-
-
-
-
 
 
     """

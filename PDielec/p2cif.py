@@ -43,6 +43,7 @@ Command-line usage examples:
     ```
 
 """
+import logging
 import os
 import sys
 from multiprocessing import Pool
@@ -50,7 +51,7 @@ from multiprocessing import Pool
 import psutil
 
 from PDielec import Utilities
-import logging
+
 logger = logging.getLogger(__name__)
 
 

@@ -16,8 +16,6 @@
 """Hold unit cell information and its associated calculated properties."""
 
 import logging
-logger = logging.getLogger(__name__)
-
 import math
 import sys
 from contextlib import nullcontext
@@ -34,7 +32,7 @@ from PDielec.Calculator import (
 from PDielec.Constants import atomic_number_to_element, avogadro_si, covalent_radii, element_to_atomic_number
 from PDielec.Plotter import print_ints, print_reals, print_strings
 
-
+logger = logging.getLogger(__name__)
 def convert_length_units(value, units_in, units_out):
     """"Convert between different length units.
 
@@ -109,7 +107,6 @@ class UnitCell:
     Angstrom. The internal unit is always the angstrom
 
 
-
     Notes
     -----
     This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element
@@ -146,7 +143,6 @@ class UnitCell:
         (in degrees). These are only used if all three angles are specified, otherwise, the default lattice
         (orthorhombic) is used. units : str An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'
         The default is Angstrom. The internal unit is always the angstrom
-
 
 
         Notes

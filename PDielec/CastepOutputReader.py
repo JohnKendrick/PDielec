@@ -15,6 +15,7 @@
 #
 """CastepOutputReader module."""
 
+import logging
 import os
 import re
 
@@ -22,7 +23,7 @@ import numpy as np
 
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

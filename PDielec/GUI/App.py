@@ -14,6 +14,7 @@
 #
 """App Module."""
 
+import logging
 import os.path
 import sys
 
@@ -24,7 +25,7 @@ import PDielec.__init__
 from PDielec import Utilities
 from PDielec.Calculator import set_no_of_threads
 from PDielec.GUI.NoteBook import NoteBook
-import logging
+
 logger = logging.getLogger(__name__)
 
 

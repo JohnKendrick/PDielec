@@ -13,10 +13,8 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """ViewerTab module."""
-import logging
-logger = logging.getLogger(__name__)
-
 import copy
+import logging
 import os
 from collections import deque
 
@@ -52,6 +50,7 @@ from PDielec.PrimitiveCell import PrimitiveCell
 # Need the SuperCell & PrimitiveCell classes
 from PDielec.SuperCell import SuperCell
 
+logger = logging.getLogger(__name__)
 # Import plotting requirements
 
 

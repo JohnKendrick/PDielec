@@ -15,10 +15,8 @@
 """AnalysisTab Module."""
 
 # Import plotting requirements
-import logging
-logger = logging.getLogger(__name__)
-
 import copy
+import logging
 
 import matplotlib
 import matplotlib.figure
@@ -45,7 +43,7 @@ from PDielec import Calculator
 from PDielec.Constants import covalent_radii
 from PDielec.GUI.SettingsTab import FixedQTableWidget
 
-
+logger = logging.getLogger(__name__)
 class AnalysisTab(QWidget):
     """A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.
 
@@ -56,7 +54,6 @@ class AnalysisTab(QWidget):
     ----------
     parent : QObject The parent widget or object, typically the main application or main window in which this widget
     will be embedded. debug : bool, optional Indicates if debugging is enabled for this widget. The default is False.
-
 
 
     Attributes
@@ -81,27 +78,6 @@ class AnalysisTab(QWidget):
     species : list A list of species involved in the current analysis. notebook : object A reference to the parent
     notebook-like structure which hosts this widget. reader : object An object responsible for reading and interpreting
     molecular data files.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Methods

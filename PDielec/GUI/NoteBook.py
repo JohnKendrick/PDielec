@@ -14,6 +14,7 @@
 #
 """NoteBook module."""
 import copy
+import logging
 import os
 import sys
 
@@ -23,17 +24,17 @@ from qtpy.QtWidgets import QApplication, QFileDialog, QMessageBox, QTabWidget, Q
 
 from PDielec import Calculator
 from PDielec.GUI.AnalysisTab import AnalysisTab
+from PDielec.GUI.CrystalInfraredScenarioTab import CrystalInfraredScenarioTab
+from PDielec.GUI.CrystalRamanScenarioTab import CrystalRamanScenarioTab
 from PDielec.GUI.FitterTab import FitterTab
 from PDielec.GUI.MainTab import MainTab
 from PDielec.GUI.PlottingTab import PlottingTab
 from PDielec.GUI.PowderInfraredScenarioTab import PowderInfraredScenarioTab
-from PDielec.GUI.CrystalInfraredScenarioTab import CrystalInfraredScenarioTab
 from PDielec.GUI.PowderRamanScenarioTab import PowderRamanScenarioTab
-from PDielec.GUI.CrystalRamanScenarioTab import CrystalRamanScenarioTab
 from PDielec.GUI.SettingsTab import SettingsTab
 from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
 from PDielec.GUI.ViewerTab import ViewerTab
-import logging
+
 logger = logging.getLogger(__name__)
 
 

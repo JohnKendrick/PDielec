@@ -15,6 +15,7 @@
 #
 """Module to read the contents of a Gulp output file."""
 
+import logging
 import os
 import re
 import sys
@@ -23,7 +24,7 @@ import numpy as np
 
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

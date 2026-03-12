@@ -13,9 +13,11 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """SpreadSheetMamager module."""
+import logging
+
 import numpy as np
 import xlsxwriter as xlsx
-import logging
+
 logger = logging.getLogger(__name__)
 
 

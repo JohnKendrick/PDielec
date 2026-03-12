@@ -43,6 +43,7 @@ Command line options
 
 import contextlib
 import functools
+import logging
 import os
 import subprocess
 import sys
@@ -53,7 +54,7 @@ import numpy as np
 
 from PDielec.checkcsv import main as main_checkcsv
 from PDielec.checkexcel import main as main_checkexcel
-import logging
+
 logger = logging.getLogger(__name__)
 
 

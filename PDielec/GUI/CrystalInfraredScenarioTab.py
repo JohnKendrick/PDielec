@@ -13,10 +13,8 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """CrystalInfraredScenarioTab module."""
-import logging
-logger = logging.getLogger(__name__)
-
 import copy
+import logging
 from functools import partial
 from itertools import product
 
@@ -51,6 +49,7 @@ from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
 from PDielec.Materials import MaterialsDataBase
 
+logger = logging.getLogger(__name__)
 thickness_conversion_factors = {"ang":1.0E-10, "nm":1.0E-9, "um":1.0E-6, "mm":1.0E-3, "cm":1.0E-2}
 thickness_units = list(thickness_conversion_factors.keys())
 # incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Incoherent (phase averaging)','Incoherent (non-reflective)'] 
@@ -170,11 +169,6 @@ class CrystalInfraredScenarioTab(ScenarioTab):
     dielectric function values computed during simulation. layers : list A list of layer configurations used in the
     simulation, each containing information about the material, thickness, orientation, and other layer-specific
     properties.
-
-
-
-
-
 
 
     Methods

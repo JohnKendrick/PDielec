@@ -100,8 +100,10 @@ atomic_number_to_element is a dictionary which has an atomic number key and retu
 element_to_atomic_number a dictionary which an has an element name key and a content of the atomic number 
 """
 
-import numpy as np
 import logging
+
+import numpy as np
+
 logger = logging.getLogger(__name__)
 
 

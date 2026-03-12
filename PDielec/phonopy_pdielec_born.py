@@ -24,13 +24,14 @@ phonopy-pdielec-born BORN-PDIELEC
 
 """
 
+import logging
 import os
 import sys
 from contextlib import nullcontext
 
 import phonopy
 from phonopy.file_IO import parse_BORN
-import logging
+
 logger = logging.getLogger(__name__)
 
 

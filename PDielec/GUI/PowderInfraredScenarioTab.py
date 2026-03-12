@@ -13,10 +13,8 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """PowderInfraredScenarioTab module."""
-import logging
-logger = logging.getLogger(__name__)
-
 import ctypes
+import logging
 import sys
 from functools import partial
 from multiprocessing import Array
@@ -40,7 +38,7 @@ from PDielec import Calculator, DielectricFunction, Materials
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
 
-
+logger = logging.getLogger(__name__)
 class PowderInfraredScenarioTab(ScenarioTab):
     """A class for managing the Powder Infrared Scenario Tab.
 
@@ -1281,7 +1279,6 @@ class PowderInfraredScenarioTab(ScenarioTab):
         vs_cm1 : list A list of frequencies in cm-1 plot_type : str A string indicating the type of result to return.
         One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary
         Permittivity', 'Powder ATR'
-
 
 
         Returns

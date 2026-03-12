@@ -17,9 +17,9 @@
 An interface to the spreadsheet which holds materials data
 """
 
+import logging
 import math
 import os
-import sys
 
 import numpy as np
 import openpyxl as xl
@@ -27,7 +27,7 @@ import openpyxl as xl
 from PDielec import Calculator, DielectricFunction
 from PDielec import __file__ as PDielec_init_filename
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

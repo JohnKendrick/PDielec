@@ -15,6 +15,7 @@
 #
 """Calculator module."""
 import cmath
+import logging
 import math
 import os
 import random
@@ -23,8 +24,8 @@ import sys
 
 import numpy as np
 import scipy.optimize as sc
+from scipy import sparse
 from scipy.stats import lognorm
-from scipy       import sparse
 
 #
 # Modify the crossover used in the PyMieScatt Mie routines
@@ -32,7 +33,7 @@ from scipy       import sparse
 #
 from PDielec import Mie
 from PDielec.Constants import d2byamuang2, wavenumber
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -1711,36 +1712,34 @@ def solve_effective_medium_equations(
 
     Parameters
     ----------
-    method : str The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity,
-    maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie. vf : float The volume fraction of dielectric.
-    size_mu : float The particle size in micron size_distribution_sigma : float The width of the size distribution.
-    matrix_permittivity_function : function Function returning the matrix permittivity at a frequency. shape : str The
-    shape of the particles. L : array The depolarisation matrix. concentration : float The concentration of particles.
-    atr_permittivity : float The permittivity of the ATR substrate. atr_theta : float The ATR angle of incidence.
-    atr_s_pol : str The ATR polarisation. bubble_vf : float Volume fraction of bubbles. bubble_radius : float The radius
-    of bubbles. previous_solution_shared : bool Use the previous solution to speed up iterations in the case of
-    Bruggeman and coherent methods. atuple : tuple A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of
-    the permittivity of the crystal at a given frequency (crystalPermittivity).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    method : str
+        The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity,
+        maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie.
+    vf : float
+        The volume fraction of dielectric.
+    size_mu : float
+        The particle size in micron
+    size_distribution_sigma : float
+        The width of the size distribution.
+    matrix_permittivity_function : function
+        Function returning the matrix permittivity at a frequency.
+    shape : str
+        The shape of the particles.
+    L : array
+        The depolarisation matrix. concentration : float The concentration of particles.
+    atr_permittivity : float
+        The permittivity of the ATR substrate. atr_theta : float The ATR angle of incidence.
+    atr_s_pol : str
+        The ATR polarisation. 
+    bubble_vf : float
+        Volume fraction of bubbles.
+    bubble_radius : float
+        The radius of bubbles.
+    previous_solution_shared : bool
+        Use the previous solution to speed up iterations in the case of Bruggeman and coherent methods.
+    atuple : tuple
+        A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of the permittivity of the crystal
+        at a given frequency (crystalPermittivity).
 
     Returns
     -------

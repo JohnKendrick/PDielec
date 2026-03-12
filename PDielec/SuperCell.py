@@ -15,10 +15,12 @@
 #
 """The SuperCell module."""
 
+import logging
+
 import numpy as np
 
 from PDielec.Plotter import print_ints, print_reals
-import logging
+
 logger = logging.getLogger(__name__)
 
 

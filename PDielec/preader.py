@@ -38,6 +38,7 @@
                If the file exists it is not overwritten
       -version print the version of PDielec library being used
 """
+import logging
 import os
 import sys
 from multiprocessing.dummy import Pool
@@ -50,7 +51,7 @@ import PDielec.__init__
 from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
 from PDielec.Utilities import find_program_from_name
-import logging
+
 logger = logging.getLogger(__name__)
 
 

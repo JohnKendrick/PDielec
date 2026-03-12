@@ -90,13 +90,14 @@ The optical system is assembled using the :py:class:`System` class.
 ######## general utilities
 
 import copy
+import logging
 import sys
 
 import numpy as np
 import scipy.linalg as lag
 
 from PDielec.Constants import epsilon_0_si, speed_light_si
-import logging
+
 logger = logging.getLogger(__name__)
 
 

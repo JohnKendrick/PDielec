@@ -14,12 +14,13 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """Read the contents of a directory containing DFT output and create a pickled file."""
+import logging
 import sys
 
 import dill as pickle
 
 import PDielec.__init__
-import logging
+
 logger = logging.getLogger(__name__)
 
 

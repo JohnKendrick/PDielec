@@ -27,7 +27,6 @@ Parameters
 This function does not accept parameters directly through its definition. Instead, it uses command-line arguments parsed
 from `sys.argv`:
 import logging
-logger = logging.getLogger(__name__)
 
 
 - `-debug` : Enable debug mode. - `-help` : Print help message and exit. - `-version` : Print software version and exit.
@@ -35,15 +34,16 @@ logger = logging.getLogger(__name__)
   argument is required. - Any other argument is considered as the filename for analysis.
 
 
-
 """
 
+import logging
 import os
 import sys
 
 import PDielec.__init__
 from PDielec import Utilities
 
+logger = logging.getLogger(__name__)
 version = PDielec.__init__.__version__
 
 def print_help():
@@ -99,8 +99,6 @@ def main():
     `SystemExit` in various scenarios: - If less than one argument is provided. - If the `-version` argument is
     provided. - If no program is specified or an unrecognized program is given. - If the specified file does not exist.
     - When critical configuration issues are encountered.
-
-
 
 
     Notes

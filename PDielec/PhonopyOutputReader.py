@@ -15,7 +15,8 @@
 #
 """Read the contents of a directory containing Phonopy input and output files."""
 
-import sys
+
+import logging
 
 import numpy as np
 import yaml
@@ -23,7 +24,7 @@ import yaml
 from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

@@ -16,7 +16,6 @@
 
 # Import plotting requirements
 import logging
-logger = logging.getLogger(__name__)
 
 import matplotlib
 import matplotlib.figure
@@ -41,6 +40,7 @@ from qtpy.QtWidgets import (
 
 from PDielec.Constants import avogadro_si
 
+logger = logging.getLogger(__name__)
 possible_frequency_units = ["wavenumber","THz","GHz","ang","nm","um","mm","cm","m"]
 
 def is_this_a_frequency_unit(unit):
@@ -979,9 +979,7 @@ class PlottingTab(QWidget):
                 A_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[9] ) )
                 A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
                 crystal_legends.append(scenario.settings["Legend"])
-            elif scenario.scenarioType == "Powder Raman":
-                pass
-            elif scenario.scenarioType == "Crystal Raman":
+            elif scenario.scenarioType == "Powder Raman" or scenario.scenarioType == "Crystal Raman":
                 pass
             else:
                 logger.error(f"Error in plotting tab: scenario not recognised {scenario.scenarioType}")

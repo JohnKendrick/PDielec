@@ -15,6 +15,7 @@
 #
 """Read the contents of a directory containing FHI-AIMS input and output files."""
 
+import logging
 import os
 
 import numpy as np
@@ -22,7 +23,7 @@ import numpy as np
 from PDielec import Constants
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

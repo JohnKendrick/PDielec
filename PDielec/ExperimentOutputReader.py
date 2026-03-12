@@ -14,6 +14,7 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """Read the contents of a directory containing Experiment input and output files."""
+import logging
 import re
 
 import numpy as np
@@ -22,7 +23,7 @@ from PDielec import DielectricFunction
 from PDielec.Calculator import initialise_diagonal_tensor
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

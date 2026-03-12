@@ -15,6 +15,7 @@
 #
 """VASP output reader."""
 
+import logging
 import re
 import xml.etree.ElementTree as ET
 
@@ -24,7 +25,7 @@ from PDielec.Calculator import calculate_normal_modes_and_frequencies
 from PDielec.Constants import atomic_number_to_element, hertz
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
-import logging
+
 logger = logging.getLogger(__name__)
 
 

@@ -3,12 +3,13 @@
 
 Write the BORN charge file in PDielec format
 """
+import logging
 import optparse
 import sys
 
 import numpy as np
 from scipy.constants import value
-import logging
+
 logger = logging.getLogger(__name__)
 
 

@@ -19,6 +19,7 @@ A set of utility functions that may be used anywhere in the package.
 """
 
 import glob
+import logging
 import os
 import sys
 
@@ -31,7 +32,7 @@ from PDielec.GulpOutputReader import GulpOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.VaspOutputReader import VaspOutputReader
-import logging
+
 logger = logging.getLogger(__name__)
 
 
