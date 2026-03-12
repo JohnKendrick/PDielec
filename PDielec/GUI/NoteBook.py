@@ -33,7 +33,9 @@ from PDielec.GUI.CrystalRamanScenarioTab import CrystalRamanScenarioTab
 from PDielec.GUI.SettingsTab import SettingsTab
 from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
 from PDielec.GUI.ViewerTab import ViewerTab
-from PDielec.Utilities import Debug
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class NoteBook(QWidget):
@@ -164,8 +166,7 @@ class NoteBook(QWidget):
 
         """        
         super(QWidget, self).__init__(parent)
-        self.debugger = Debug(debug,"NoteBook:")
-        self.debugger.print("Start:: Initialising")
+        logger.debug("Start:: Initialising")
         self.app = parent
         self.reader = None
         self.progressbars=[progressbar]
@@ -210,45 +211,45 @@ class NoteBook(QWidget):
         self.mainTab = MainTab(self, program, filename, spreadsheet, debug=debug)
         self.settingsTab = SettingsTab(self, debug=debug)
         if filename != "" and not self.scripting:
-            self.debugger.print("Refreshing settingsTab in notebook initialisation - filename",filename)
+            logger.debug(f"Refreshing settingsTab in notebook initialisation - filename {filename}")
             self.settingsTab.refresh()
         #
         # Open more windows
         #
-        self.debugger.print("Initialising the first scenario")
+        logger.debug("Initialising the first scenario")
         self.scenarios = []
         self.scenarios.append( self.currentScenarioTab(self, debug=debug ) )
         self.scenarios[0].set_scenario_index(0)
         self.scenarios[0].settings["Legend"] = "Scenario 1"
-        self.debugger.print("Finished adding the first scenario")
+        logger.debug("Finished adding the first scenario")
         #
         # Open the plotting tab
         #
         self.plottingTab = PlottingTab(self, debug=debug)
         if filename != "" and not self.scripting:
-            self.debugger.print("Refreshing plotting because filename is set")
+            logger.debug("Refreshing plotting because filename is set")
             self.plottingTab.refresh()
         #
         # Open the Analysis tab
         #
         self.analysisTab = AnalysisTab(self, debug=debug)
         if filename != "" and not self.scripting:
-            self.debugger.print("Refreshing analysis because filename is set")
+            logger.debug("Refreshing analysis because filename is set")
             self.analysisTab.refresh()
         #
         # Open the Viewer tab
         #
-        self.debugger.print("Initialising the viewer tab")
+        logger.debug("Initialising the viewer tab")
         self.viewerTab = ViewerTab(self, debug=debug)
         #
         # Open the Fitter tab
         #
-        self.debugger.print("Initialising the fitter tab")
+        logger.debug("Initialising the fitter tab")
         self.fitterTab = FitterTab(self, debug=debug)
         #
         # Add tabs
         #
-        self.debugger.print("Adding all tabs to the notebook")
+        logger.debug("Adding all tabs to the notebook")
         self.tabs.addTab(self.mainTab,"Main")
         self.tabs.addTab(self.settingsTab,"Settings")
         for i,tab in enumerate(self.scenarios):
@@ -262,7 +263,7 @@ class NoteBook(QWidget):
         # Add the tab widget
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
-        self.debugger.print("Finished:: Initialising")
+        logger.debug("Finished:: Initialising")
         return
 
     def start_pool(self):
@@ -286,7 +287,7 @@ class NoteBook(QWidget):
           method, but are expected to be attributes of the instance (`self`).
 
         """
-        self.pool = Calculator.get_pool(self.ncpus,self.threading, debugger = self.debugger)
+        self.pool = Calculator.get_pool(self.ncpus,self.threading)
         return
 
     def request_refresh(self):
@@ -303,9 +304,9 @@ class NoteBook(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: request_refresh")
+        logger.debug("Start:: request_refresh")
         self.refresh_required = True
-        self.debugger.print("Finished:: request_refresh")
+        logger.debug("Finished:: request_refresh")
         return
 
     def add_scenario(self,scenarioType=None,copyFromIndex=-2):
@@ -327,17 +328,17 @@ class NoteBook(QWidget):
         None
 
         """
-        self.debugger.print("Start:: add_scenario for scenarioType", scenarioType,copyFromIndex)
+        logger.debug(f"Start:: add_scenario for scenarioType {scenarioType} {copyFromIndex}")
         if copyFromIndex != -2:
             # If the copyFromIndex is not -2 then we override the scenarioType
             last = self.scenarios[copyFromIndex]
             scenarioType = last.scenarioType
-            self.debugger.print("scenario type has been set from copyFromIndex",scenarioType)
+            logger.debug(f"scenario type has been set from copyFromIndex {scenarioType}")
         elif scenarioType is None:
             # The default behaviour with no parameters in the call, use the last scenario in the list
             last = self.scenarios[-1]
             scenarioType = last.scenarioType
-            self.debugger.print("scenario type has been set from the last scenario",scenarioType)
+            logger.debug(f"scenario type has been set from the last scenario {scenarioType}")
         else:
             # copyFromIndex is default so we find the last scenario of scenarioType in the list
             last = None
@@ -348,12 +349,12 @@ class NoteBook(QWidget):
         # Create a new scenario
         self.currentScenarioTab = self.scenarioTypes[scenarioType]
         # Add the scenario to the end of the list
-        self.debugger.print("Appending the new scenario")
+        logger.debug("Appending the new scenario")
         self.scenarios.append(self.currentScenarioTab(self, self.debug))
         # If we have found a previous scenario of the same time set the settings to it
-        self.debugger.print("Checking the value of last",last)
+        logger.debug(f"Checking the value of last {last}")
         if last is not None:
-            self.debugger.print("Copying settings from old to new scenario")
+            logger.debug("Copying settings from old to new scenario")
             self.scenarios[-1].settings = copy.deepcopy(last.settings)
         self.scenarios[-1].request_refresh()
         self.scenarios[-1].refresh()
@@ -363,7 +364,7 @@ class NoteBook(QWidget):
         for i,scenario in enumerate(self.scenarios):
             scenario.set_scenario_index(i)
             self.tabs.setTabText(self.tabOffSet+i,"Scenario "+str(i+1))
-        self.debugger.print("Finished:: add_scenario for scenarioType", scenarioType,copyFromIndex)
+        logger.debug(f"Finished:: add_scenario for scenarioType {scenarioType} {copyFromIndex}")
         return
 
     def print_settings(self, filename=None):
@@ -384,17 +385,17 @@ class NoteBook(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: print_settings, filename=",filename)
+        logger.debug(f"Start:: print_settings, filename= {filename}")
         qf = QFileDialog()
         qf.setWindowTitle("Save the program settings to a file")
-        self.debugger.print("print_settings, directory=",self.mainTab.directory)
+        logger.debug(f"print_settings, directory= {self.mainTab.directory}")
         qf.setDirectory(self.mainTab.directory)
         if filename is None:
             filename,selection = qf.getSaveFileName()
         if filename == "":
-            self.debugger.print("Start:: print_settings, filename is blank")
+            logger.debug("Start:: print_settings, filename is blank")
             return
-        print("Current settings will be saved to "+filename)
+        logger.info(f"Current settings will be saved to {filename}")
         with open(filename,"w") as fd:
             # Handle the special case of the first scenario
             print("#",file=fd)
@@ -421,7 +422,7 @@ class NoteBook(QWidget):
             self.print_tab_settings(self.fitterTab, "fitterTab",fd)
             # print plotting tab settings
             self.print_tab_settings(self.plottingTab, "plottingTab",fd)
-        self.debugger.print("Finished:: print_settings, filename=",filename)
+        logger.debug(f"Finished:: print_settings, filename= {filename}")
         return
 
     def print_tab_settings(self,tab,title,fd,new_scenario = False):
@@ -451,7 +452,7 @@ class NoteBook(QWidget):
         and formats string values and others appropriately for printing.
 
         """        
-        self.debugger.print("Start:: print_tab_settings")
+        logger.debug("Start:: print_tab_settings")
         print("#",file=fd)
         print("#",file=fd)
         if new_scenario:
@@ -472,7 +473,7 @@ class NoteBook(QWidget):
                     print("tab.settings['"+item+f"'] = '{tab.settings[item]}'",file=fd)
                 else:
                     print("tab.settings['"+item+"'] = ", tab.settings[item],file=fd)
-        self.debugger.print("Finished:: print_tab_settings")
+        logger.debug("Finished:: print_tab_settings")
 
     def delete_all_scenarios(self):
         """Delete all scenarios except the first one.
@@ -489,14 +490,14 @@ class NoteBook(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: delete_all_scenarios")
+        logger.debug("Start:: delete_all_scenarios")
         # Don't delete the last scenario
         index = len(self.scenarios)-1
         while len(self.scenarios) > 1:
             self.tabs.removeTab(self.tabOffSet+index)
             del self.scenarios[index]
             index -= 1
-        self.debugger.print("Finished:: delete_all_scenarios")
+        logger.debug("Finished:: delete_all_scenarios")
         return
 
     def delete_scenario(self,index):
@@ -519,7 +520,7 @@ class NoteBook(QWidget):
         moves to the next available scenario. Otherwise, it selects the previous scenario.
 
         """        
-        self.debugger.print("Start:: delete_scenario",index)
+        logger.debug(f"Start:: delete_scenario {index}")
         # Don't delete the last scenario
         if len(self.scenarios) > 1:
             self.tabs.removeTab(self.tabOffSet+index)
@@ -530,7 +531,7 @@ class NoteBook(QWidget):
             if index-1 < 0:
                 index += 1
             self.tabs.setCurrentIndex(self.tabOffSet+index-1)
-        self.debugger.print("Finished:: delete_scenario",index)
+        logger.debug(f"Finished:: delete_scenario {index}")
         return
 
     def switch_scenario(self,index,scenarioType=None):
@@ -565,10 +566,10 @@ class NoteBook(QWidget):
         CrystalRamanScenarioTab, PowderRamanScenarioTab : Classes representing different types of scenario tabs.
 
         """        
-        self.debugger.print("Start:: switch for scenario", index+1)
+        logger.debug(f"Start:: switch for scenario {index+1}")
         # Replace the scenario with the other scenario type
         scenario = self.scenarios[index]
-        self.debugger.print("Current scenario type", scenario.scenarioType, scenarioType)
+        logger.debug(f"Current scenario type {scenario.scenarioType} {scenarioType}")
         #
         # If scenarioType is specified in the call then force that type
         # Otherwise switch type
@@ -580,7 +581,7 @@ class NoteBook(QWidget):
         #end if
         self.scenarios[index] =  self.currentScenarioTab(self, self.debug)
         scenario = self.scenarios[index]
-        self.debugger.print("Current scenario type now", scenario.scenarioType)
+        logger.debug(f"Current scenario type now {scenario.scenarioType}")
         self.tabs.removeTab(self.tabOffSet+index)
         self.tabs.insertTab(self.tabOffSet+index,scenario,"Scenario "+str(index+1) )
         for i,scenario in enumerate(self.scenarios):
@@ -590,7 +591,7 @@ class NoteBook(QWidget):
         if not self.scripting:
             self.scenarios[index].refresh()
         self.tabs.setCurrentIndex(self.tabOffSet+index)
-        self.debugger.print("Finished:: switch for scenario", index+1)
+        logger.debug(f"Finished:: switch for scenario {index+1}")
         return
 
     def refresh(self,force=False):
@@ -613,9 +614,9 @@ class NoteBook(QWidget):
         conditions.
 
         """        
-        self.debugger.print("Started:: newrefresh",force)
+        logger.debug(f"Started:: newrefresh {force}")
         if not force and self.scripting:
-            self.debugger.print("Finished:: newrefresh Notebook aborting refresh because of scripting")
+            logger.debug("Finished:: newrefresh Notebook aborting refresh because of scripting")
             return
         ntabs = 2 + len(self.scenarios) + 4
         # Do a refresh on the mainTab and the settingsTab
@@ -634,8 +635,7 @@ class NoteBook(QWidget):
         # So do it here, leave the GUI after a script showing the plotter tab
         self.tabs.setCurrentIndex(ntabs-3)
         self.tabs.setCurrentIndex(ntabs-4)
-        self.debugger.print("Finished:: newrefresh",force)
-
+        logger.debug(f"Finished:: newrefresh {force}")
     def write_spreadsheet(self):
         """Write data to an Excel spreadsheet.
 
@@ -655,7 +655,7 @@ class NoteBook(QWidget):
         and then closes the spreadsheet.
 
         """        
-        self.debugger.print("Start:: Write spreadsheet")
+        logger.debug("Start:: Write spreadsheet")
         self.open_excel_spreadsheet()
         if self.spreadsheet is not None:
             self.mainTab.write_spreadsheet()
@@ -663,7 +663,7 @@ class NoteBook(QWidget):
             self.analysisTab.write_spreadsheet()
             self.plottingTab.write_spreadsheet()
             self.spreadsheet.close()
-        self.debugger.print("Finished:: Write spreadsheet")
+        logger.debug("Finished:: Write spreadsheet")
 
     def open_excel_spreadsheet(self):
         """Open an Excel spreadsheet based on the filename set in settings.
@@ -688,18 +688,18 @@ class NoteBook(QWidget):
             - If the spreadsheet name is empty.
 
         """        
-        self.debugger.print("Start:: open_spreadsheet clicked")
+        logger.debug("Start:: open_spreadsheet clicked")
         if len(self.mainTab.settings["Excel file name"]) > 5 and self.mainTab.settings["Excel file name"][-5:] == ".xlsx":
             self.directory = self.mainTab.directory
             # open the file name with the directory of the output file name
             self.open_spread_sheet(os.path.join(self.directory,self.mainTab.settings["Excel file name"]))
         elif len(self.mainTab.settings["Excel file name"]) > 1 and self.mainTab.settings["Excel file name"][-5:] != ".xlsx":
             # The file isn't valid so tell the user there is a problem
-            self.debugger.print("open_spreadsheet spreadsheet name is not valid",self.mainTab.settings["Excel file name"])
+            logger.debug(f"open_spreadsheet spreadsheet name is not valid {self.mainTab.settings['Excel file name']}")
             QMessageBox.about(self,"Spreadsheet name","File name of spreadsheet must end in  .xlsx")
         else:
-            self.debugger.print("open_spreadsheet spreadsheet name is empty")
-        self.debugger.print("Finished:: open_spreadsheet clicked")
+            logger.debug("open_spreadsheet spreadsheet name is empty")
+        logger.debug("Finished:: open_spreadsheet clicked")
         return
 
     def open_spread_sheet(self,filename):
@@ -726,26 +726,26 @@ class NoteBook(QWidget):
           raises no exceptions, but will print a message if the provided filename does not have a '.xlsx' extension.
 
         """        
-        self.debugger.print("Start:: open_spread_sheet", filename)
+        logger.debug(f"Start:: open_spread_sheet {filename}")
         if self.spreadsheet is not None:
             self.spreadsheet.close()
         if filename[-5:] == ".xlsx":
             if os.path.exists(filename):
-                self.debugger.print("Spreadsheet file already exists",self.directory)
+                logger.debug(f"Spreadsheet file already exists {self.directory}")
                 if self.overwriting:
-                    self.debugger.print("Overwriting existing spreadsheet anyway",filename)
+                    logger.debug(f"Overwriting existing spreadsheet anyway {filename}")
                     self.spreadsheet = SpreadSheetManager(filename)
                 else:
                     answer = QMessageBox.question(self,"","Spreadsheet already exists.  Continue?", QMessageBox.Yes | QMessageBox.No)
                     if answer == QMessageBox.Yes:
-                        self.debugger.print("Overwriting existing spreadsheet",filename)
+                        logger.debug(f"Overwriting existing spreadsheet {filename}")
                         self.spreadsheet = SpreadSheetManager(filename)
             else:
-                self.debugger.print("Creating a new spreadsheet",filename)
+                logger.debug(f"Creating a new spreadsheet {filename}")
                 self.spreadsheet = SpreadSheetManager(filename)
         else:
-           print("spreadsheet name not valid", filename)
-        self.debugger.print("Finished:: open_spread_sheet", filename)
+           logger.warning(f"spreadsheet name not valid {filename}")
+        logger.debug(f"Finished:: open_spread_sheet {filename}")
         return
 
     def on_tabs_currentChanged(self, tabindex):
@@ -775,43 +775,43 @@ class NoteBook(QWidget):
           triggers a refresh for the selected scenario.
 
         """        
-        self.debugger.print("Start:: on_tabs_currentChanged", tabindex)
+        logger.debug(f"Start:: on_tabs_currentChanged {tabindex}")
         # 
         # If scripting do not refresh tabs
         #
         if self.scripting:
-            self.debugger.print("Finished:: Exiting on_tabs_currentChanged without refreshing")
+            logger.debug("Finished:: Exiting on_tabs_currentChanged without refreshing")
             return
         #       Number of tabs
         ntabs = 2 + len(self.scenarios) + 4
-        self.debugger.print("Number of tabs",ntabs)
+        logger.debug(f"Number of tabs {ntabs}")
         if tabindex == ntabs-1:
             # fitter tab
-            self.debugger.print("Calling fitterTab refresh")
+            logger.debug("Calling fitterTab refresh")
             self.fitterTab.refresh()
         elif tabindex == ntabs-2:
             # viewer tab
-            self.debugger.print("Calling viewerTab refresh")
+            logger.debug("Calling viewerTab refresh")
             self.viewerTab.refresh()
         elif tabindex == ntabs-3:
             # analysis tab
-            self.debugger.print("Calling analysisTab refresh")
+            logger.debug("Calling analysisTab refresh")
             self.analysisTab.refresh()
         elif tabindex == ntabs-4:
             # plottings tab
-            self.debugger.print("Calling plottingTab refresh")
+            logger.debug("Calling plottingTab refresh")
             self.plottingTab.refresh()
         elif tabindex == 1:
             # settings tab
-            self.debugger.print("Calling settingsTab refresh")
+            logger.debug("Calling settingsTab refresh")
             self.settingsTab.refresh()
         else :
             #  Refresh scenario tabs
             scenarioTabIndex = tabindex-2
             if scenarioTabIndex >= 0 and scenarioTabIndex < len(self.scenarios):
                 self.scenarios[scenarioTabIndex].refresh()
-        self.debugger.print("Exiting on_tabs_currentChanged()")
-        self.debugger.print("Finished:: on_tabs_currentChanged", tabindex)
+        logger.debug("Exiting on_tabs_currentChanged()")
+        logger.debug(f"Finished:: on_tabs_currentChanged {tabindex}")
         return
 
     def keyPressEvent(self, e):
@@ -833,15 +833,15 @@ class NoteBook(QWidget):
         program.
 
         """        
-        self.debugger.print("Start:: keyPressEvent")
+        logger.debug("Start:: keyPressEvent")
         if (e.key() == Qt.Key_S)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
-            print("Control S has been pressed")
+            logger.debug("Control S has been pressed")
             self.print_settings()
         elif (e.key() == Qt.Key_C)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
-            print("Control C has been pressed")
-            print("The program will close down")
+            logger.debug("Control C has been pressed")
+            logger.debug("The program will close down")
             sys.exit()
-        self.debugger.print("Finished:: keyPressEvent")
+        logger.debug("Finished:: keyPressEvent")
         return
 
     def progressbars_set_maximum( self, maximum ):
@@ -862,13 +862,13 @@ class NoteBook(QWidget):
         resets the progress to 0.
 
         """        
-        self.debugger.print("Start:: progressbars_set_maximum",maximum)
+        logger.debug(f"Start:: progressbars_set_maximum {maximum}")
         self.progressbar_status = 0
         self.progressbar_maximum = maximum
         for bar in self.progressbars:
             bar.setMaximum(maximum)
             bar.setValue(self.progressbar_status)
-        self.debugger.print("Finished:: progressbars_set_maximum",maximum)
+        logger.debug(f"Finished:: progressbars_set_maximum {maximum}")
         return
 
     def progressbars_update( self, increment=1 ):

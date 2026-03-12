@@ -15,6 +15,9 @@
 """SpreadSheetMamager module."""
 import numpy as np
 import xlsxwriter as xlsx
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class SpreadSheetManager:
@@ -224,7 +227,7 @@ class SpreadSheetManager:
         if row is None:
             row = oldRow
         if col == 0:
-            print("We have a problem, col is 0")
+            logger.error("We have a problem, col is 0")
         self.write(row,0,check)
         for item in items:
             if isinstance(item,list):

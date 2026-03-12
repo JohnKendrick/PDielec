@@ -15,6 +15,9 @@
 #
 """Hold unit cell information and its associated calculated properties."""
 
+import logging
+logger = logging.getLogger(__name__)
+
 import math
 import sys
 from contextlib import nullcontext
@@ -808,7 +811,7 @@ class UnitCell:
         normal = np.cross(p12, p13)
         norm = np.linalg.norm(normal)
         if norm < 1.0e-8:
-            print("Error in unit cell, calculation of normal to miller index failed")
+            logger.error("Error in unit cell, calculation of normal to miller index failed")
             sys.exit(1)
         return normal / norm
 
@@ -1554,6 +1557,6 @@ class UnitCell:
             )
         else:
             pmat = np.eye(3)
-            print("Centring is not recognised",centring)
+            logger.debug(f"Centring is not recognised {centring}")
         return np.dot(np.linalg.inv(tmat), pmat)
 

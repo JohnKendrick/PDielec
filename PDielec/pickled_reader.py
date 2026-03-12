@@ -19,6 +19,9 @@ import sys
 import dill as pickle
 
 import PDielec.__init__
+import logging
+logger = logging.getLogger(__name__)
+
 
 version = PDielec.__init__.__version__
 

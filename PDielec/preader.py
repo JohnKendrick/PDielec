@@ -50,6 +50,9 @@ import PDielec.__init__
 from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
 from PDielec.Utilities import find_program_from_name
+import logging
+logger = logging.getLogger(__name__)
+
 
 version = PDielec.__init__.__version__
 
@@ -83,6 +86,8 @@ def read_a_file( calling_parameters):
 
     """    
     name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, debug = calling_parameters
+    if debug:
+        logging.basicConfig(level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s")
     reader = Utilities.get_reader(name,program)
     # The order that the settings are applied is important
     # Eckart and neutral are applied after the file has been read, this way the original frequencies are those before any calculations

@@ -50,6 +50,9 @@ from multiprocessing import Pool
 import psutil
 
 from PDielec import Utilities
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 def set_affinity_on_worker():

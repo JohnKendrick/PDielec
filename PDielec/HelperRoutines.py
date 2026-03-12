@@ -24,6 +24,9 @@ from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
 from PDielec.GUI.SingleCrystalScenarioTab import solve_single_crystal_equations
 from PDielec.Materials import External, MaterialsDataBase
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 def calculate_dft_permittivity_object(reader,sigma=5.0,eckart=True,mass_definition="Average"):
@@ -72,7 +75,7 @@ def calculate_dft_permittivity_object(reader,sigma=5.0,eckart=True,mass_definiti
         elif mass_definition == "isotope":
             reader.change_masses(isotope_masses, mass_dictionary)
         else:
-            print("Helper: Error unkown mass definition", mass_definition )
+            logger.error(f"Helper: Error unkown mass definition {mass_definition}")
     masses = np.array(reader.masses)*amu
     # The reader uses the internal masses to calculate the massweighted normal modes
     mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
@@ -154,29 +157,29 @@ def get_material(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_def
     # Let's see if the name is a file name that can be read
     program = Utilities.find_program_from_name(name)
     if debug:
-        print(f"get_material: program = {program}")
+        logger.debug(f"get_material: program = {program}")
     if len(program) > 1:
-        reader = Utilities.get_reader(name,program,debug)
+        reader = Utilities.get_reader(name,program)
         reader.read_output()
         if debug:
-            print("get_material: reader.print()")
+            logger.debug("get_material: reader.print()")
             reader.print()
         permittivityObject=calculate_dft_permittivity_object(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
         if debug:
-            print("get_material: cell.print()")
+            logger.debug("get_material: cell.print()")
             cell.print()
         material = External("Dielectric layer",permittivityObject=permittivityObject,cell=cell)
     else:
         dataBase = MaterialsDataBase(dataBaseName)
         sheets = dataBase.get_sheet_names()
         if debug:
-            print("get_material: sheets",sheets)
+            logger.debug(f"get_material: sheets {sheets}")
         if name in sheets:
             material = dataBase.get_material(name)
         else:
-            print("Material name not valid: ",name)
-            print("Available materials:     ",sheets)
+            logger.debug(f"Material name not valid: {name}")
+            logger.warning(f"Available materials: {sheets}")
             material = None
     return material
 

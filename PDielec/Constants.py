@@ -101,6 +101,9 @@ element_to_atomic_number a dictionary which an has an element name key and a con
 """
 
 import numpy as np
+import logging
+logger = logging.getLogger(__name__)
+
 
 # define some useful basic constants
 hartree2ev           = 27.211386245988   # convert Hartree to eV

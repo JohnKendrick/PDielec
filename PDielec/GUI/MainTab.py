@@ -13,6 +13,9 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """MainTab module."""
+import logging
+logger = logging.getLogger(__name__)
+
 import os.path
 import platform
 
@@ -32,7 +35,7 @@ from qtpy.QtWidgets import (
     QWidget,
 )
 
-from PDielec.Utilities import Debug, find_program_from_name, get_reader
+from PDielec.Utilities import find_program_from_name, get_reader
 
 
 class MainTab(QWidget):
@@ -140,8 +143,7 @@ class MainTab(QWidget):
 
         """
         super(QWidget, self).__init__(parent)
-        self.debugger = Debug(debug, "MainTab")
-        self.debugger.print("Start:: initialising ",program, filename, excelfile)
+        logger.debug(f"Start:: initialising {program} {filename} {excelfile}")
         self.debug = debug
         self.settings = {}
         # Deal with the case that "qe" is used
@@ -274,10 +276,10 @@ class MainTab(QWidget):
         QCoreApplication.processEvents()
         # If the filename was given then force it to be read and processed
         if filename != "":
-            self.debugger.print("Reading output file in maintab initialisation")
+            logger.debug("Reading output file in maintab initialisation")
             self.on_calculation_button_clicked()
         QCoreApplication.processEvents()
-        self.debugger.print("Finished:: initialising ")
+        logger.debug("Finished:: initialising ")
         return
 
     def on_script_button_clicked(self):
@@ -297,23 +299,23 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: on_script_button clicked")
-        self.debugger.print("on_script_button clicked, directory=",self.directory)
+        logger.debug("Start:: on_script_button clicked")
+        logger.debug(f"on_script_button clicked, directory= {self.directory}")
         filename=os.path.join(self.directory,self.settings["Script file name"])
         if os.path.exists(filename):
-            self.debugger.print("Script file already exists",self.directory)
+            logger.debug(f"Script file already exists {self.directory}")
             if self.notebook.overwriting:
-                self.debugger.print("Overwriting existing script anyway",filename)
+                logger.debug(f"Overwriting existing script anyway {filename}")
                 self.notebook.print_settings(filename=filename)
             else:
                 answer = QMessageBox.question(self,"","Script file already exists.  Continue?", QMessageBox.Yes | QMessageBox.No)
                 if answer == QMessageBox.Yes:
-                    self.debugger.print("Overwriting existing script",filename)
+                    logger.debug(f"Overwriting existing script {filename}")
                     self.notebook.print_settings(filename=filename)
         else:
-            self.debugger.print("Creating a new script",filename)
+            logger.debug(f"Creating a new script {filename}")
             self.notebook.print_settings(filename=filename)
-        self.debugger.print("Finished:: on_script_button clicked")
+        logger.debug("Finished:: on_script_button clicked")
         return
 
     def on_excel_button_clicked(self):
@@ -335,9 +337,9 @@ class MainTab(QWidget):
         notebook.write_spreadsheet : The method called to write data to the spreadsheet.
 
         """
-        self.debugger.print("Start:: on_excel_button clicked")
+        logger.debug("Start:: on_excel_button clicked")
         self.notebook.write_spreadsheet()
-        self.debugger.print("Finished:: on_excel_button clicked")
+        logger.debug("Finished:: on_excel_button clicked")
         return
 
     def on_calculation_button_clicked(self):
@@ -356,7 +358,7 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: on_calculation_button_clicked")
+        logger.debug("Start:: on_calculation_button_clicked")
         #
         # Read the output file
         #
@@ -364,7 +366,7 @@ class MainTab(QWidget):
         if self.notebook.settingsTab is not None:
             self.notebook.settingsTab.refresh(force=True)
         self.calculation_required = False
-        self.debugger.print("Finished:: on_calculation_button_clicked")
+        logger.debug("Finished:: on_calculation_button_clicked")
 
     def write_spreadsheet(self):
         """Write data to the configured spreadsheet.
@@ -384,14 +386,14 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: write_spreadsheet")
+        logger.debug("Start:: write_spreadsheet")
         sp = self.notebook.spreadsheet
         if sp is None:
-            self.debugger.print("Finished:: write_spreadsheet sp is None")
+            logger.debug("Finished:: write_spreadsheet sp is None")
             return
         sp.select_work_sheet("Main")
         sp.delete()
-        self.debugger.print("write_spreadsheet",self.settings)
+        logger.debug(f"write_spreadsheet {self.settings}")
         sp.write_next_row( ["Main Tab Settings"], col=1 )
         sp.write_next_row( ["Directory",self.directory], col=1 )
         for item in sorted(self.settings):
@@ -401,7 +403,7 @@ class MainTab(QWidget):
             sp.write_next_row( ["Frequencies (cm1) as read from the output file"], col=1 )
             for ifreq in enumerate(self.frequencies_cm1):
                 sp.write_next_row(ifreq, col=1, check=1)
-        self.debugger.print("Finished:: write_spreadsheet")
+        logger.debug("Finished:: write_spreadsheet")
         return
 
     def read_output_file(self):
@@ -422,31 +424,30 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: read_output_file")
-        self.debugger.print("Program =", self.settings["Program"])
+        logger.debug("Start:: read_output_file")
+        logger.debug(f"Program = {self.settings['Program']}")
         if self.settings["Output file name"] == "":
-            self.debugger.print("Finished:: read_output_file output file is blank")
+            logger.debug("Finished:: read_output_file output file is blank")
             return
         filename = os.path.join(self.directory,self.settings["Output file name"])
         if not os.path.isfile(filename):
             QMessageBox.about(self,"Processing output file","The filename for the output file to be processed is not correct: "+filename)
-            self.debugger.print("Finished:: read_output_file output file does not exist")
+            logger.debug("Finished:: read_output_file output file does not exist")
             return
-        self.debugger.print("Read output file - clear list widgets")
-        self.debugger.print(self.settings["Program"],[ filename ])
+        logger.debug("Read output file - clear list widgets")
+        logger.debug(f"{self.settings['Program']} {[ filename ]}")
         self.cell_window_w.clear()
         self.cell_window_l.setText("Unit-cell (Angstrom) from "+self.settings["Output file name"])
         self.frequencies_window.clear()
         self.frequencies_window_l.setText("Frequencies from "+self.settings["Output file name"])
         self.reader = get_reader(filename,
-                                 self.settings["Program"],
-                                 debug=self.debug)
+                                 self.settings["Program"])
         if self.reader is None:
-            print("Error in reading files - program  is ",self.settings["Program"])
-            print("Error in reading files - filename is ",filename)
-            print("Need to choose the file and program properly")
+            logger.error(f"Error in reading files - program is {self.settings['Program']}")
+            logger.error(f"Error in reading files - filename is {filename}")
+            logger.error("Need to choose the file and program properly")
             QMessageBox.about(self,"Processing output file","A reader has not been created for this filename: "+filename)
-            self.debugger.print("Finished:: read_output_file reader is none")
+            logger.debug("Finished:: read_output_file reader is none")
             return
         #switch on debugging in the reader
         self.reader.debug = self.debug
@@ -456,20 +457,20 @@ class MainTab(QWidget):
             try:
                 self.reader.read_output()
             except Exception as e:
-                print("Error in reading output files - program  is ",self.settings["Program"])
-                print("Error in reading output files - filename is ",filename)
-                print("Need to choose the file and program properly")
+                logger.error(f"Error in reading output files - program is {self.settings['Program']}")
+                logger.error(f"Error in reading output files - filename is {filename}")
+                logger.error("Need to choose the file and program properly")
                 QMessageBox.about(self,"Processing output file","Error on reading the output file using read_output(): "+filename+"\n"+str(e))
-                self.debugger.print("Finished:: read_output_file error on reading")
+                logger.debug("Finished:: read_output_file error on reading")
                 return
             # end try
         # end if debug
         if len(self.reader.unit_cells) == 0:
-            print("Error in reading output files - program  is ",self.settings["Program"])
-            print("Error in reading output files - filename is ",filename)
-            print("Need to choose the file and program properly")
+            logger.error(f"Error in reading output files - program is {self.settings['Program']}")
+            logger.error(f"Error in reading output files - filename is {filename}")
+            logger.error("Need to choose the file and program properly")
             QMessageBox.about(self,"Processing output file","The output file has no unit cells in it: "+filename)
-            self.debugger.print("Finished:: read_output_file output file has no unit cell")
+            logger.debug("Finished:: read_output_file output file has no unit cell")
             return
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
@@ -488,42 +489,42 @@ class MainTab(QWidget):
         for f in self.frequencies_cm1:
             self.frequencies_window.addItem(f"{f:.3f}")
         # tell the settings tab to update the widgets that depend on the contents of the reader
-        self.debugger.print("processing a return in reading the output file")
+        logger.debug("processing a return in reading the output file")
         # Update any scenarios
         if self.notebook.scenarios is not None:
-            self.debugger.print("about to refresh scenarios")
-            self.debugger.print(f"notebook has {len(self.notebook.scenarios)} scenarios")
+            logger.debug("about to refresh scenarios")
+            logger.debug(f"notebook has {len(self.notebook.scenarios)} scenarios")
             for tab in self.notebook.scenarios:
                 tab.request_refresh()
         else:
-            self.debugger.print("notebook has no scenarios yet")
+            logger.debug("notebook has no scenarios yet")
         # Update the plotting tab
         if self.notebook.plottingTab is not None:
-            self.debugger.print("about to refresh plottingtab")
+            logger.debug("about to refresh plottingtab")
             self.notebook.plottingTab.request_refresh()
         else:
-            self.debugger.print("notebook has no plotting tab yet")
+            logger.debug("notebook has no plotting tab yet")
         # Update the analysis tab
         if self.notebook.analysisTab is not None:
-            self.debugger.print("about to refresh analysisTab")
+            logger.debug("about to refresh analysisTab")
             self.notebook.analysisTab.request_refresh()
         else:
-            self.debugger.print("notebook has no analysis tab yet")
+            logger.debug("notebook has no analysis tab yet")
         # Update the viewer tab
         if self.notebook.viewerTab is not None:
-            self.debugger.print("about to refresh viewerTab")
+            logger.debug("about to refresh viewerTab")
             self.notebook.viewerTab.request_refresh()
         else:
-            self.debugger.print("notebook has no viewer tab yet")
+            logger.debug("notebook has no viewer tab yet")
         # Update the fitter tab
         if self.notebook.fitterTab is not None:
             # There is a subtle problem with the modes that are to be fitted, they need resetting
             self.notebook.fitterTab.modes_fitted = []
-            self.debugger.print("about to refresh fitterTab")
+            logger.debug("about to refresh fitterTab")
             self.notebook.fitterTab.request_refresh()
         else:
-            self.debugger.print("notebook has no fitter tab yet")
-        self.debugger.print("Finished:: read_output_file")
+            logger.debug("notebook has no fitter tab yet")
+        logger.debug("Finished:: read_output_file")
 
     def on_scriptsfile_le_changed(self, text):
         """Respond to changes in the scripts file input field.
@@ -541,11 +542,10 @@ class MainTab(QWidget):
             as the function retrieves the text from the QLineEdit widget directly.
 
         """
-        self.debugger.print("Start:: on_scriptsfile_changed", text)
+        logger.debug(f"Start:: on_scriptsfile_changed {text}")
         text = self.scriptsfile_le.text()
         self.settings["Script file name"] = text
-        self.debugger.print("Finished:: on_scriptsfile_changed", text)
-
+        logger.debug(f"Finished:: on_scriptsfile_changed {text}")
     def on_resultsfile_le_changed(self, text):
         """Handle changes to the results file text input field.
 
@@ -559,11 +559,10 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: on_resultsfile_changed", text)
+        logger.debug(f"Start:: on_resultsfile_changed {text}")
         text = self.resultsfile_le.text()
         self.settings["Excel file name"] = text
-        self.debugger.print("Finished:: on_resultsfile_changed", text)
-
+        logger.debug(f"Finished:: on_resultsfile_changed {text}")
     def on_file_button_clicked(self):
         """Handle the "Open file" button click event in the GUI.
 
@@ -584,7 +583,7 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: on_file_button_clicked ", self.file_le.text())
+        logger.debug(f"Start:: on_file_button_clicked {self.file_le.text()}")
         # Open a file chooser
         #options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
@@ -615,16 +614,16 @@ class MainTab(QWidget):
         if filename != "":
             program = find_program_from_name(filename)
             if program == "":
-                self.debugger.print("Program not found from filename",filename)
-                self.debugger.print("Proceeding with defaults",self.settings["Program"])
+                logger.debug(f"Program not found from filename {filename}")
+                logger.debug(f"Proceeding with defaults {self.settings['Program']}")
             else:
-                self.debugger.print("Program found from filename",program,filename)
+                logger.debug(f"Program found from filename {program} {filename}")
                 self.settings["Program"] = program.capitalize()
             self.directory = os.path.dirname(filename)
             self.notebook.app.set_my_window_title(self.directory)
             self.settings["Output file name"] = os.path.basename(filename)
             self.file_le.setText(self.settings["Output file name"])
-            self.debugger.print("new file name", self.directory, self.settings["Output file name"])
+            logger.debug(f"new file name {self.directory} {self.settings['Output file name']}")
             self.notebook.delete_all_scenarios()
             if self.settings["Program"].lower() == "pdgui":
                 #
@@ -649,7 +648,7 @@ class MainTab(QWidget):
                 self.refresh_required = True
                 self.calculation_required = True
                 self.refresh()
-        self.debugger.print("Finished:: on_file_button_clicked ", self.file_le.text())
+        logger.debug(f"Finished:: on_file_button_clicked {self.file_le.text()}")
         return
 
     def get_full_file_name(self):
@@ -713,18 +712,18 @@ class MainTab(QWidget):
         settings, is contingent on the broader application logic and requirements.
 
         """
-        self.debugger.print("Start:: on_file_le_return ", self.file_le.text())
+        logger.debug(f"Start:: on_file_le_return {self.file_le.text()}")
         filename = self.file_le.text()
         if filename != "":
             program = find_program_from_name(filename)
             if program == "":
-                self.debugger.print("Finished:: on_file_le_return ")
+                logger.debug("Finished:: on_file_le_return ")
                 return
             self.settings["Program"] = program
             self.directory = os.path.dirname(os.path.abspath(filename))
             self.notebook.app.set_my_window_title(self.directory)
             self.settings["Output file name"] = os.path.basename(filename)
-            self.debugger.print("new file name", self.settings["Output file name"])
+            logger.debug(f"new file name {self.settings['Output file name']}")
             self.notebook.delete_all_scenarios()
             if self.settings["Program"].lower() == "pdgui":
                 #
@@ -747,7 +746,7 @@ class MainTab(QWidget):
                 self.refresh_required = True
                 self.calculation_required = True
                 self.refresh()
-        self.debugger.print("Finished:: on_file_le_return ", self.file_le.text())
+        logger.debug(f"Finished:: on_file_le_return {self.file_le.text()}")
         return
 
     def on_file_le_changed(self, text):
@@ -765,11 +764,10 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: on_file_changed", text)
+        logger.debug(f"Start:: on_file_changed {text}")
         self.settings["Output file name"] = text
         self.calculation_required = True
-        self.debugger.print("Finished:: on_file_changed", text)
-
+        logger.debug(f"Finished:: on_file_changed {text}")
     def on_program_cb_activated(self,index):
         """Handle program selection change in a combobox and update settings accordingly.
 
@@ -792,13 +790,12 @@ class MainTab(QWidget):
         - Sets `calculation_required` attribute to `True`.
 
         """
-        self.debugger.print("Start:: on_program_combobox_activated", index)
-        self.debugger.print("on_program_combobox_activated", self.program_cb.currentText())
+        logger.debug(f"Start:: on_program_combobox_activated {index}")
+        logger.debug(f"on_program_combobox_activated {self.program_cb.currentText()}")
         self.settings["Program"] = self.program_cb.currentText()
-        self.debugger.print("Program is now  ", self.settings["Program"])
+        logger.debug(f"Program is now {self.settings['Program']}")
         self.calculation_required = True
-        self.debugger.print("Finished:: on_program_combobox_activated", index)
-
+        logger.debug(f"Finished:: on_program_combobox_activated {index}")
     def request_refresh(self):
         """Request to refresh.
 
@@ -813,9 +810,9 @@ class MainTab(QWidget):
         None
 
         """
-        self.debugger.print("Start:: request_refresh")
+        logger.debug("Start:: request_refresh")
         self.refresh_required = True
-        self.debugger.print("Finished:: request_refresh")
+        logger.debug("Finished:: request_refresh")
 
     def refresh(self,force=False):
         """Refresh the current interface or force it to refresh, applying settings changes.
@@ -839,7 +836,7 @@ class MainTab(QWidget):
         - Unblocks signals for all child widgets after refresh.
 
         """
-        self.debugger.print("Start:: refresh", force)
+        logger.debug(f"Start:: refresh {force}")
         if not self.refresh_required and not force:
             return
         #
@@ -859,7 +856,7 @@ class MainTab(QWidget):
         self.file_le.setText(self.settings["Output file name"])
         self.resultsfile_le.setText(self.settings["Excel file name"])
         if self.calculation_required:
-            self.debugger.print("on_calculation_button_clicked called from MainTab.refresh()")
+            logger.debug("on_calculation_button_clicked called from MainTab.refresh()")
             self.on_calculation_button_clicked()
         self.refresh_required = False
         #
@@ -867,5 +864,5 @@ class MainTab(QWidget):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
-        self.debugger.print("Finished:: refresh", force)
+        logger.debug(f"Finished:: refresh {force}")
         return

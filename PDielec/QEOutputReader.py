@@ -23,6 +23,9 @@ import numpy as np
 from PDielec.Constants import amu, angs2bohr, au2GPa, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class QEOutputReader(GenericOutputReader):
@@ -121,7 +124,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.nions = int(line.split()[4])
         if self.debug:
-            print(f"_read_nions: nions={self.nions}" )
+            logger.debug(f"_read_nions: nions={self.nions}")
         return
 
     def _read_pressure(self, line):
@@ -146,7 +149,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.pressure = float(line.split()[5])/10.0
         if self.debug:
-            print(f"_read_pressure: pressure={self.pressure}" )
+            logger.debug(f"_read_pressure: pressure={self.pressure}")
         return
 
     def _read_celldm1(self, line):
@@ -188,7 +191,7 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
-            print(f"_read_celldm1: _alat={self._alat}" )
+            logger.debug(f"_read_celldm1: _alat={self._alat}")
         return
 
     def _read_alat(self, line):
@@ -229,7 +232,7 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
-            print(f"_read_alat: _alat={self._alat}" )
+            logger.debug(f"_read_alat: _alat={self._alat}")
         return
 
     def _read_alat2(self, line):
@@ -266,7 +269,7 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
-            print(f"_read_alat2: _alat={self._alat}" )
+            logger.debug(f"_read_alat2: _alat={self._alat}")
         return
 
     def _read_electrons(self, line):
@@ -298,7 +301,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.electrons = float(line.split()[4])
         if self.debug:
-            print(f"_read_electrons: electrons={self.electrons}" )
+            logger.debug(f"_read_electrons: electrons={self.electrons}")
         return
 
     def _read_energy(self, line):
@@ -336,7 +339,7 @@ class QEOutputReader(GenericOutputReader):
         self.final_energy_without_entropy = float(line.split()[3]) * hartree2ev / 2.0
         self.final_free_energy = float(line.split()[3]) * hartree2ev / 2.0
         if self.debug:
-            print(f"_read_energy: energy={self.final_free_energy}" )
+            logger.debug(f"_read_energy: energy={self.final_free_energy}")
         return
 
     def _read_energy_cutoff(self, line):
@@ -369,7 +372,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.energy_cutoff = float(line.split()[3]) * hartree2ev / 2.0
         if self.debug:
-            print(f"_read_energy_cutoff: energy_cutoff={self.energy_cutoff}" )
+            logger.debug(f"_read_energy_cutoff: energy_cutoff={self.energy_cutoff}")
         return
 
     def _read_kpoints(self, line):
@@ -398,7 +401,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.kpoints = int(line.split()[4])
         if self.debug:
-            print(f"_read_kpoints: kpoints={self.kpoints}" )
+            logger.debug(f"_read_kpoints: kpoints={self.kpoints}")
         return
 
     def _read_kpoint_grid(self, line):
@@ -429,7 +432,7 @@ class QEOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         self.kpoint_grid = [ int(f) for f in line.split()[0:3] ]
         if self.debug:
-            print(f"_read_kpoint_grid kpoint_grid={self.kpoint_grid}" )
+            logger.debug(f"_read_kpoint_grid kpoint_grid={self.kpoint_grid}")
         return
 
     def _read_dyng_header(self):
@@ -473,7 +476,7 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml:
              self._alat = t
         if self.debug:
-            print(f"_read_dyng_header alat={self._alat}" )
+            logger.debug(f"_read_dyng_header alat={self._alat}")
         return
 
     def _read_dyng_epsilon(self, line):
@@ -509,7 +512,7 @@ class QEOutputReader(GenericOutputReader):
         linea = self.file_descriptor.readline().split()
         self.zerof_optical_dielectric.append([float(f) for f in linea[0:3]])
         if self.debug:
-            print(f"_read_espilon zerof_optical_dielectric={self.zerof_optical_dielectric}" )
+            logger.debug(f"_read_espilon zerof_optical_dielectric={self.zerof_optical_dielectric}")
         return
 
     def _read_dyng_masses(self):
@@ -550,8 +553,8 @@ class QEOutputReader(GenericOutputReader):
             # The factor of two is because au in pwscf are half mass of electron
             self.masses_per_type.append(float(linea[2])*2/amu)
         if self.debug:
-            print(f"_read_dyng_masses masses={self.masses_per_type}" )
-            print(f"_read_dyng_masses species={self.species}" )
+            logger.debug(f"_read_dyng_masses masses={self.masses_per_type}")
+            logger.debug(f"_read_dyng_masses species={self.species}")
         return
 
     def _read_dyng_dynamical(self,line):
@@ -598,7 +601,7 @@ class QEOutputReader(GenericOutputReader):
         # end for a
         self._dynamical_matrix(hessian)
         if self.debug:
-            print("_read_dyng_dynamical")
+            logger.debug("_read_dyng_dynamical")
         return
 
     def _read_born_charges(self, line):
@@ -643,7 +646,7 @@ class QEOutputReader(GenericOutputReader):
             b.append([float(line.split()[0]), float(line.split()[1]), float(line.split()[2])])
             self.born_charges.append(b)
         if self.debug:
-            print("_read_born_charges")
+            logger.debug("_read_born_charges")
         return
 
     def _read_cell_parameters(self, line):
@@ -687,7 +690,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_cell_parameters: volume={self.volume}")
+            logger.debug(f"_read_cell_parameters: volume={self.volume}")
         return
 
     def _read_dyng_basis_vectors(self):
@@ -729,7 +732,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_lattic_vectors: volume={self.volume}")
+            logger.debug(f"_read_lattic_vectors: volume={self.volume}")
         return
 
     def _read_fractional_coordinates(self,line):
@@ -760,9 +763,9 @@ class QEOutputReader(GenericOutputReader):
         """
         if self.nions <= 0 or len(self.unit_cells) <=0 :
             if self.debug:
-                print(f"_read_fractional_coordinates: nions={self.nions}")
-                print(f"_read_fractional_coordinates: number of cells={len(self.unit_cells)}")
-                print("_read_fractional_coordinates: Unable to store fractional coordinates aborting")
+                logger.debug(f"_read_fractional_coordinates: nions={self.nions}")
+                logger.debug(f"_read_fractional_coordinates: number of cells={len(self.unit_cells)}")
+                logger.error("_read_fractional_coordinates: Unable to store fractional coordinates aborting")
             return
         species_list = []
         fractional_coordinates = []
@@ -775,7 +778,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_fractional_coordinates: volume={self.volume}")
+            logger.debug(f"_read_fractional_coordinates: volume={self.volume}")
         return
 
     def _read_dyng_coordinates(self):
@@ -834,7 +837,7 @@ class QEOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_dyng_coordinates: volume={self.volume}")
+            logger.debug(f"_read_dyng_coordinates: volume={self.volume}")
         return
 
     def _read_xml(self, filename):
@@ -857,9 +860,9 @@ class QEOutputReader(GenericOutputReader):
         tree = ET.parse(filename)
         root = tree.getroot()
         if self.debug:
-            print("QEOutputReader _read_xml: filename = ",filename)
-            print("QEOutputReader _read_xml: tree = ",tree)
-            print("QEOutputReader _read_xml: root = ",root)
+            logger.debug(f"QEOutputReader _read_xml: filename = {filename}")
+            logger.debug(f"QEOutputReader _read_xml: tree = {tree}")
+            logger.debug(f"QEOutputReader _read_xml: root = {root}")
         inputxml = root.find("input")
         outputxml = root.find("output")
         stepsxml = None
@@ -869,11 +872,11 @@ class QEOutputReader(GenericOutputReader):
         use_this_xml = stepsxml if stepsxml is not None else outputxml
         tensorsxml = root.find("EF_TENSORS")
         if self.debug:
-            print("QEOutputReader _read_xml: inputxml = ",inputxml)
-            print("QEOutputReader _read_xml: outputxml = ",outputxml)
-            print("QEOutputReader _read_xml: stepsxml = ",stepsxml)
-            print("QEOutputReader _read_xml: use_this_xml = ",use_this_xml)
-            print("QEOutputReader _read_xml: tensorsxml = ",tensorsxml)
+            logger.debug(f"QEOutputReader _read_xml: inputxml = {inputxml}")
+            logger.debug(f"QEOutputReader _read_xml: outputxml = {outputxml}")
+            logger.debug(f"QEOutputReader _read_xml: stepsxml = {stepsxml}")
+            logger.debug(f"QEOutputReader _read_xml: use_this_xml = {use_this_xml}")
+            logger.debug(f"QEOutputReader _read_xml: tensorsxml = {tensorsxml}")
         # Handle input
         if inputxml is not None:
             self._basis(inputxml.findall("basis")[-1])
@@ -929,7 +932,7 @@ class QEOutputReader(GenericOutputReader):
             index = index + 9
             self.born_charges.append(b)
         if self.debug:
-            print(f"_basis: born_charges={self.born_charges}")
+            logger.debug(f"_basis: born_charges={self.born_charges}")
         return
 
     def _dielectric_constant(self,dielectric_constant_xml):
@@ -951,7 +954,7 @@ class QEOutputReader(GenericOutputReader):
         eps = np.array(eps).reshape(3,3)
         self.zerof_optical_dielectric = eps.tolist()
         if self.debug:
-            print(f"_basis: zerof_optical_dielectric={self.zerof_optical_dielectric}")
+            logger.debug(f"_basis: zerof_optical_dielectric={self.zerof_optical_dielectric}")
         return
 
     def _basis(self,basis_xml):
@@ -977,8 +980,8 @@ class QEOutputReader(GenericOutputReader):
         self.energy_cutoff = float( ecutwfc_xml.text )
         self.rho_cutoff    = float( ecutrho_xml.text )
         if self.debug:
-            print(f"_basis: energy_cutoff={self.energy_cutoff}")
-            print(f"_basis: rho_cutoff={self.rho_cutoff}")
+            logger.debug(f"_basis: energy_cutoff={self.energy_cutoff}")
+            logger.debug(f"_basis: rho_cutoff={self.rho_cutoff}")
         return
 
     def _total_energy(self,total_energy_xml):
@@ -1009,9 +1012,9 @@ class QEOutputReader(GenericOutputReader):
             self.final_free_energies.append(self.final_free_energy)
             self.final_energies_without_entropy.append(self.final_free_energy)
         if self.debug:
-            print(f"_total_energy: final_energy_without_entropy={self.final_energy_without_entropy}")
-            print(f"_total_energy: final_free_energy={self.final_free_energy}")
-            print(f"_total_energy: energies={self.energies}")
+            logger.debug(f"_total_energy: final_energy_without_entropy={self.final_energy_without_entropy}")
+            logger.debug(f"_total_energy: final_free_energy={self.final_free_energy}")
+            logger.debug(f"_total_energy: energies={self.energies}")
         return
 
     def _band_structure(self,band_structure_xml):
@@ -1031,7 +1034,7 @@ class QEOutputReader(GenericOutputReader):
         nelec_xml = band_structure_xml.find("nelec")
         self.electrons = int(float(nelec_xml.text)+0.00000001)
         if self.debug:
-            print(f"_band_structure: electrons={self.electrons}")
+            logger.debug(f"_band_structure: electrons={self.electrons}")
         return
 
     def _atomic_structure(self,atomic_structure_xml):
@@ -1084,7 +1087,7 @@ class QEOutputReader(GenericOutputReader):
             self.ncells = len(self.unit_cells)
             self.volume = self.unit_cells[-1].get_volume("Angstrom")
             if self.debug:
-                print(f"_atomic_structure: volume={self.volume}")
+                logger.debug(f"_atomic_structure: volume={self.volume}")
         return
             
     def _atomic_species(self,atomic_species_xml):
@@ -1112,9 +1115,9 @@ class QEOutputReader(GenericOutputReader):
             self.species.append( child.attrib["name"] )
             self.masses_per_type.append ( float(child.find("mass").text) )
         if self.debug:
-            print(f"_atomic_species: nspecies={self.nspecies}")
-            print(f"_atomic_species: species={self.species}")
-            print(f"_atomic_species: masses_per_type={self.masses_per_type}")
+            logger.debug(f"_atomic_species: nspecies={self.nspecies}")
+            logger.debug(f"_atomic_species: species={self.species}")
+            logger.debug(f"_atomic_species: masses_per_type={self.masses_per_type}")
         return
             
 
@@ -1137,7 +1140,7 @@ class QEOutputReader(GenericOutputReader):
         self.kpoint_grid[1] = int(kpt_dict["nk2"])
         self.kpoint_grid[2] = int(kpt_dict["nk3"])
         if self.debug:
-            print(f"_read_kpoints: kpoint_grid={self.kpoint_grid}" )
+            logger.debug(f"_read_kpoints: kpoint_grid={self.kpoint_grid}")
         return
 
     def _pressure(self,pressure_xml):
@@ -1160,7 +1163,7 @@ class QEOutputReader(GenericOutputReader):
         # Take the trace of the (flat) matrix and convert from atomic units to GPa
         self.pressure = au2GPa * (stress[0] + stress[4] + stress[8]) / 3.0 
         if self.debug:
-            print(f"_pressure: pressure={self.pressure}" )
+            logger.debug(f"_pressure: pressure={self.pressure}")
         return
 
     def _read_dyng_file(self,line):
@@ -1187,7 +1190,7 @@ class QEOutputReader(GenericOutputReader):
 
         """
         if self.debug:
-            print("_read_dyng:" )
+            logger.debug("_read_dyng:")
         # Read the header
         self._read_dyng_header()
         # Read the basis vectors

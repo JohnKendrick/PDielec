@@ -23,6 +23,9 @@ import numpy as np
 
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class GulpOutputReader(GenericOutputReader):
@@ -198,8 +201,8 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
         self.elastic_constant_tensor = np.array(elastic)
         if self.debug:
-            print("Elastic constant tensor")
-            print(self.elastic_constant_tensor)
+            logger.debug("Elastic constant tensor")
+            logger.debug(self.elastic_constant_tensor)
         return
 
     def _read_frequencies(self, line):
@@ -313,7 +316,7 @@ class GulpOutputReader(GenericOutputReader):
         # Convert fractional coordinates to cartesians
         if len(self._cartesian_coordinates) == 0:
             if len(self._fractional_coordinates) == 0:
-                print("Error no coordinates fraction or cartesian found")
+                logger.error("Error no coordinates fraction or cartesian found")
                 sys.exit()
             for atom_frac in self._fractional_coordinates:
                 atom_cart = cell.convert_abc_to_xyz(atom_frac)

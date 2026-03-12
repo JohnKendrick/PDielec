@@ -18,6 +18,9 @@ import sys
 
 import numpy as np
 from openpyxl import load_workbook
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 def main():

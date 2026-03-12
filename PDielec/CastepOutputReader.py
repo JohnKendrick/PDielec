@@ -22,6 +22,9 @@ import numpy as np
 
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class CastepOutputReader(GenericOutputReader):

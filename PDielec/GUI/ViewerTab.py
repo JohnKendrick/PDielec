@@ -13,6 +13,9 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """ViewerTab module."""
+import logging
+logger = logging.getLogger(__name__)
+
 import copy
 import os
 from collections import deque
@@ -50,7 +53,6 @@ from PDielec.PrimitiveCell import PrimitiveCell
 from PDielec.SuperCell import SuperCell
 
 # Import plotting requirements
-from PDielec.Utilities import Debug
 
 
 class ViewerTab(QWidget):
@@ -194,8 +196,7 @@ class ViewerTab(QWidget):
 
         """        
         super(QWidget, self).__init__(parent)
-        self.debugger = Debug(debug,"ViewerTab")
-        self.debugger.print("Start:: initialisation")
+        logger.debug("Start:: initialisation")
         self.debug = debug
         self.refresh_required = True
         self.setWindowTitle("Viewer")
@@ -476,7 +477,7 @@ class ViewerTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
-        self.debugger.print("Finished:: initialisation")
+        logger.debug("Finished:: initialisation")
 
     def convert_transform(self):
         """Convert the transform stored as strings in settings to an np.array.
@@ -490,12 +491,12 @@ class ViewerTab(QWidget):
         transform
 
         """
-        self.debugger.print("convert_transform")
+        logger.debug("convert_transform")
         transform = []
         for row in self.settings["Transform"]:
             new_row = [ eval(col) for col in row ]
             transform.append(new_row)
-        self.debugger.print("convert_transform", np.array(transform))
+        logger.debug(f"convert_transform {np.array(transform)}")
         return np.array(transform)
        
     def on_reset_button_clicked(self, item ):
@@ -513,9 +514,9 @@ class ViewerTab(QWidget):
         None
 
         """
-        self.debugger.print("on_reset_button_clicked",item)
+        logger.debug(f"on_reset_button_clicked {item}")
         self.settings["Transform"] =  [ [ "1","0","0" ], [ "0","1","0" ], ["0","0","1"] ]
-        self.debugger.print("on_guess_button_clicked transform",self.settings["Transform"])
+        logger.debug(f"on_guess_button_clicked transform {self.settings['Transform']}")
         self.refresh_required = True
         self.refresh()
 
@@ -538,13 +539,13 @@ class ViewerTab(QWidget):
         Modifies primitive unit cell
 
         """
-        self.debugger.print("on_guess_button_clicked",item)
+        logger.debug(f"on_guess_button_clicked {item}")
         transform = self.standard_cell.guess_primitive_transform()
         new = []
         for row in transform:
             new.append( [f"{col:.9f}" for col in row])
         self.settings["Transform"] = new
-        self.debugger.print("on_guess_button_clicked transform",self.settings["Transform"])
+        logger.debug(f"on_guess_button_clicked transform {self.settings['Transform']}")
         self.refresh_required = True
         self.refresh()
 
@@ -567,14 +568,13 @@ class ViewerTab(QWidget):
         Modifies primitive unit cell
 
         """
-        self.debugger.print("on_edit_button_clicked",item)
-        transform_window = TransformWindow(self.settings["Transform"],
-                                           debug=self.debugger.state())
+        logger.debug(f"on_edit_button_clicked {item}")
+        transform_window = TransformWindow(self.settings["Transform"])
         if transform_window.exec():
             # The 'Ok' button was pressed
             # get the new transform and replace the old one
             self.settings["Transform"] = transform_window.get_transform()
-            self.debugger.print("on_edit_button_clicked transform",self.settings["Transform"])
+            logger.debug(f"on_edit_button_clicked transform {self.settings['Transform']}")
             self.refresh_required = True
             self.refresh()
 
@@ -597,10 +597,10 @@ class ViewerTab(QWidget):
         self.settings["Primitive transform"]
 
         """
-        self.debugger.print("on_primitive_button_clicked",item)
+        logger.debug(f"on_primitive_button_clicked {item}")
         if self.reader is not None and self.reader.primitive_transformation is not None:
             self.settings["Primitive transform"] = self.reader.primitive_transformation
-            self.debugger.print("on_primtive_button_clicked transform",self.settings["Primitive transform"])
+            logger.debug(f"on_primtive_button_clicked transform {self.settings['Primitive transform']}")
         # change the primitive transform window popup
         self.refresh_required = True
         self.refresh()
@@ -617,7 +617,7 @@ class ViewerTab(QWidget):
         a widget
 
         """
-        self.debugger.print("CreateHKLTabEntry")
+        logger.debug("CreateHKLTabEntry")
         # unique direction (hkl)
         self.h_sb, self.k_sb, self.l_sb = self.hkl_spin_boxes()
         # unique direction (uvw)
@@ -722,7 +722,7 @@ class ViewerTab(QWidget):
         settings["uvw"]
 
         """
-        self.debugger.print("on_uvw_sb_changed", value, index)
+        logger.debug(f"on_uvw_sb_changed {value} {index}")
         u,v,w = self.settings["uvw"]
         if index == 0:
             u = value
@@ -750,7 +750,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.define_surface_orientations(self.transformed_cell,
                                                        self.settings["hkl"],
                                                        self.settings["uvw"])
-        self.debugger.print("on_uvw_sb_changed uvw=", self.settings["uvw"])
+        logger.debug(f"on_uvw_sb_changed uvw= {self.settings['uvw']}")
         return 
     
     def on_hkl_sb_changed(self,value,index):
@@ -769,7 +769,7 @@ class ViewerTab(QWidget):
         settings["hkl"]
 
         """
-        self.debugger.print("on_hkl_sb_changed", value, index)
+        logger.debug(f"on_hkl_sb_changed {value} {index}")
         h,k,l = self.settings["hkl"]
         if index == 0:
             h = value
@@ -781,7 +781,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.define_surface_orientations(self.transformed_cell,
                                                        self.settings["hkl"],
                                                        self.settings["uvw"])
-        self.debugger.print("on_hkl_sb_changed hkl=", self.settings["hkl"])
+        logger.debug(f"on_hkl_sb_changed hkl= {self.settings['hkl']}")
         return 
     
 
@@ -799,7 +799,7 @@ class ViewerTab(QWidget):
         a widget
 
         """
-        self.debugger.print("create_transform_tab_entry")
+        logger.debug("create_transform_tab_entry")
         hbox = QHBoxLayout()
         button = QPushButton("Reset transformation matrix")
         button.setToolTip("Reset the transformation to a unit matrix")
@@ -841,7 +841,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on filename le return pressed")
+        logger.debug("on filename le return pressed")
         self.on_filename_button_clicked(True)
         return
 
@@ -861,7 +861,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on filename le changed", text)
+        logger.debug(f"on filename le changed {text}")
         self.image_filename = text
         return
 
@@ -893,7 +893,7 @@ class ViewerTab(QWidget):
         the application's cursor is restored to its default state after the operation completes.
 
         """        
-        self.debugger.print("on filename button clicked")
+        logger.debug("on filename button clicked")
         #button = self.sender()
         #text = button.text()
         #
@@ -902,7 +902,7 @@ class ViewerTab(QWidget):
         filename = self.image_filename
         root,extension = os.path.splitext(filename)
         if filename == "" or extension not in (".mp4", ".avi", ".png", ".gif", ".cif", ".mcif" ):
-            self.debugger.print("Aborting on filename button clicked", filename)
+            logger.debug(f"Aborting on filename button clicked {filename}")
             QMessageBox.about(self,"Image file name", "The file name for the image is not valid "+filename)
             return
         #
@@ -1014,7 +1014,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on coloured elements clicked")
+        logger.debug("on coloured elements clicked")
         button = self.sender()
         text = button.text()
         colourChooser = QColorDialog()
@@ -1048,7 +1048,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on coloured button clicked")
+        logger.debug("on coloured button clicked")
         button = self.sender()
         text = button.text()
         colourChooser = QColorDialog()
@@ -1081,7 +1081,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on_toggles_cb_activated")
+        logger.debug("on_toggles_cb_activated")
         self.settings["Toggle states"][index] = not self.settings["Toggle states"][index]
         state = self.settings["Toggle states"][index]
         string = f"{self.toggle_names[index]} is on" if state else f"{self.toggle_names[index]} is off"
@@ -1104,7 +1104,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on_light_switches_cb_activated")
+        logger.debug("on_light_switches_cb_activated")
         self.light_switches[index] = not self.light_switches[index]
         string = f"switch light {index} off" if self.light_switches[index] else f"switch light {index} on"
         self.light_switches_cb.setItemText(index,string)
@@ -1129,7 +1129,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on maximum_displacement changed ", value)
+        logger.debug(f"on maximum_displacement changed {value}")
         self.settings["Maximum displacement"] = value
         self.calculate()
         self.plot()
@@ -1151,7 +1151,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on atom_scaling changed ", value)
+        logger.debug(f"on atom_scaling changed {value}")
         self.settings["Atom scaling"] = value
         self.calculate()
         self.plot()
@@ -1172,7 +1172,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on arrow_radius changed ", value)
+        logger.debug(f"on arrow_radius changed {value}")
         self.settings["Arrow radius"] = value
         self.calculate()
         self.plot()
@@ -1194,7 +1194,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on cell_radius changed ", value)
+        logger.debug(f"on cell_radius changed {value}")
         self.settings["Cell radius"] = value
         self.calculate()
         self.plot()
@@ -1216,7 +1216,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on_bond_radius_changed")
+        logger.debug("on_bond_radius_changed")
         self.settings["Bond radius"] = value
         self.calculate()
         self.plot()
@@ -1239,13 +1239,13 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on_selected_mode_changed")
+        logger.debug("on_selected_mode_changed")
         if self.frequencies_cm1 is None or len(self.frequencies_cm1) < 1:
-           self.debugger.print("on_selected_mode_changed aborting")
+           logger.debug("on_selected_mode_changed aborting")
            return
-        self.debugger.print("on selected_mode change mode was ", self.settings["Selected mode"])
+        logger.debug(f"on selected_mode change mode was {self.settings['Selected mode']}")
         self.settings["Selected mode"] = self.selected_mode_sb.value()
-        self.debugger.print("on selected_mode change mode is now ", self.settings["Selected mode"])
+        logger.debug(f"on selected_mode change mode is now {self.settings['Selected mode']}")
         self.frequency_le.setText("{:.5f}".format(self.frequencies_cm1[self.settings["Selected mode"]-1]))
         self.opengl_widget.delete_arrows()
         maxR = np.max( np.abs(np.array(self.UVW[self.settings["Selected mode"]-1])))
@@ -1276,9 +1276,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("on_plottype_cb_changed")
+        logger.debug("on_plottype_cb_changed")
         self.plot_type_index = index
-        self.debugger.print("Plot type index changed to ", self.plot_type_index)
+        logger.debug(f"Plot type index changed to {self.plot_type_index}")
         self.plot()
         return
 
@@ -1297,21 +1297,21 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: calculate")
+        logger.debug("Start:: calculate")
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings["Program"]
         filename = self.notebook.mainTab.get_full_file_name()
-        self.debugger.print("calculate program file name",program, filename)
+        logger.debug(f"calculate program file name {program} {filename}")
         self.reader = self.notebook.reader
         if self.reader is None:
-            self.debugger.print("Finished:: calculate - reader is None")
+            logger.debug("Finished:: calculate - reader is None")
             return
         if program == "":
-            self.debugger.print("Finished:: calculate - program is blank")
+            logger.debug("Finished:: calculate - program is blank")
             return
         if filename == "":
-            self.debugger.print("Finished:: calculate - filename is blank")
+            logger.debug("Finished:: calculate - filename is blank")
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
@@ -1373,7 +1373,7 @@ class ViewerTab(QWidget):
         # Overwrite the element colours from the settings entry
         #
         if self.settings["Element colours"] is not None:
-            self.debugger.print("refresh - processing colours ",self.species)
+            logger.debug(f"refresh - processing colours {self.species}")
             for el,colour in zip(self.species,self.settings["Element colours"]):
                 self.element_colours[el] = colour
         #
@@ -1394,7 +1394,7 @@ class ViewerTab(QWidget):
         # CalculatePhasePositions stores all the sphere and bond information
         self.calculate_phase_positions()
         # Add the arrows
-        self.debugger.print("calculate: Selected mode",self.settings["Selected mode"])
+        logger.debug(f"calculate: Selected mode {self.settings['Selected mode']}")
         maxR = np.max( np.abs(np.array(self.UVW[self.settings["Selected mode"]-1])))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
@@ -1406,7 +1406,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.set_rotation_centre( centreOfMassXYZ )
         self.opengl_widget.set_image_size()
         QApplication.restoreOverrideCursor()
-        self.debugger.print("Finished:: calculate")
+        logger.debug("Finished:: calculate")
         return
 
     def set_colour(self, element, colour):
@@ -1432,7 +1432,7 @@ class ViewerTab(QWidget):
         ```
 
         """        
-        self.debugger.print("setcolour")
+        logger.debug("setcolour")
         if element in ( "Background" , "background" ):
             self.settings["Background colour"] = colour
         elif element in ( "Cell" , "cell" ):
@@ -1462,7 +1462,7 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("calculate_phase_positions")
+        logger.debug("calculate_phase_positions")
         # we need the number of phase steps to be odd
         if self.settings["Number of phase steps"]%2 == 0:
             self.settings["Number of phase steps"] += 1
@@ -1485,14 +1485,12 @@ class ViewerTab(QWidget):
         self.opengl_widget.delete_spheres()
         self.opengl_widget.delete_cylinders()
         self.opengl_widget.create_arrays(len(phases))
-        self.debugger.print("calculate_phase_positions - adding spheres and cylinders")
+        logger.debug("calculate_phase_positions - adding spheres and cylinders")
         if self.get_toggle_state("Show debug information"):
-            self.debugger = Debug(True,"ViewerTab")
-            self.debugger.print("Debug is on:: toggle")
+            logger.debug("Debug is on:: toggle")
             self.debug = True
         else:
-            self.debugger.print("Debug is off:: toggle")
-            self.debugger = Debug(False,"ViewerTab")
+            logger.debug("Debug is off:: toggle")
             self.debug = False
         if self.get_toggle_state("Show orientation"):
             self.opengl_widget.show_orientation = True
@@ -1525,7 +1523,7 @@ class ViewerTab(QWidget):
             if self.get_toggle_state("Show cell"):
                 for p1,p2 in self.cell_edges:
                     self.opengl_widget.add_cylinder(self.settings["Cell colour"], self.settings["Cell radius"], p1, p2, phase=phase_index)
-        self.debugger.print("calculate_phase_positions - exiting")
+        logger.debug("calculate_phase_positions - exiting")
         return
 
     def save_as_cif(self,filename):
@@ -1599,9 +1597,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: plot")
+        logger.debug("Start:: plot")
         if self.reader is None:
-            self.debugger.print("Finished:: plot reader is None")
+            logger.debug("Finished:: plot reader is None")
             return
         if self.plot_type_index == 0:
             self.plot_animation()
@@ -1609,7 +1607,7 @@ class ViewerTab(QWidget):
             self.plot_arrows()
         else:
             self.plot_none()
-        self.debugger.print("Finished:: plot")
+        logger.debug("Finished:: plot")
 
     def plot_none(self):
         """Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
@@ -1626,11 +1624,11 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: plot_animation")
+        logger.debug("Start:: plot_animation")
         self.opengl_widget.show_arrows(False)
         self.opengl_widget.stop_animation()
         self.opengl_widget.update()
-        self.debugger.print("Finished:: plot_animation")
+        logger.debug("Finished:: plot_animation")
         return
 
     def plot_animation(self):
@@ -1650,11 +1648,11 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: plot_animation")
+        logger.debug("Start:: plot_animation")
         self.opengl_widget.show_arrows(False)
         self.opengl_widget.update()
         self.opengl_widget.start_animation()
-        self.debugger.print("Finished:: plot_animation")
+        logger.debug("Finished:: plot_animation")
         return
 
     def plot_arrows(self):
@@ -1672,11 +1670,11 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: plot_arrows")
+        logger.debug("Start:: plot_arrows")
         self.opengl_widget.show_arrows(True)
         self.opengl_widget.stop_animation()
         self.opengl_widget.update()
-        self.debugger.print("Finished:: plot_arrows")
+        logger.debug("Finished:: plot_arrows")
         return
 
     def request_refresh(self):
@@ -1693,9 +1691,9 @@ class ViewerTab(QWidget):
         None
 
         """        
-        self.debugger.print("Start:: request_refresh")
+        logger.debug("Start:: request_refresh")
         self.refresh_required = True
-        self.debugger.print("Finished:: request_refresh")
+        logger.debug("Finished:: request_refresh")
 
     def refresh(self,force=False):
         """Refresh the state of the object, optionally forcing the refresh.
@@ -1725,11 +1723,11 @@ class ViewerTab(QWidget):
           the refresh process's progress.
 
         """        
-        self.debugger.print("Start:: refresh")
+        logger.debug("Start:: refresh")
         if not self.refresh_required and not force:
-            self.debugger.print("Finished:: refresh aborted",self.refresh_required,force)
+            logger.debug(f"Finished:: refresh aborted {self.refresh_required} {force}")
             return
-        self.debugger.print("refresh widget",force)
+        logger.debug(f"refresh widget {force}")
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if "vesta" in self.settings["Element palette"].lower():
             self.element_colours = vesta_elemental_colours
@@ -1748,7 +1746,7 @@ class ViewerTab(QWidget):
             self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
             self.selected_mode_sb.setValue(self.settings["Selected mode"])
             self.frequency_le.setText("{:.5f}".format(self.frequencies_cm1[self.settings["Selected mode"]-1]))
-        self.debugger.print("refresh: selected mode is now",self.selected_mode_sb.value())
+        logger.debug(f"refresh: selected mode is now {self.selected_mode_sb.value()}")
         for index,(toggle,state) in enumerate(zip(self.toggle_names,self.settings["Toggle states"])):
             string = f"{toggle} is on" if state else f"{toggle} is off"
             self.toggles_cb.setItemText(index,string)
@@ -1773,7 +1771,7 @@ class ViewerTab(QWidget):
         #
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
-            self.debugger.print("reader is none ")
+            logger.debug("reader is none ")
             self.element_names = []
             self.species = []
         else:
@@ -1781,11 +1779,11 @@ class ViewerTab(QWidget):
                 return
             self.element_names = self.standard_cell.element_names
             self.species = self.reader.get_species()
-            self.debugger.print("refresh - species ",self.species)
+            logger.debug(f"refresh - species {self.species}")
             self.settings["Element colours"] = [ self.element_colours[el] for el in self.species ]
         count = self.element_coloured_hbox.count()
         if count == 0:
-            self.debugger.print("initialising element colours widget")
+            logger.debug("initialising element colours widget")
             self.element_coloured_buttons = []
             for el in self.species:
                 r,g,b,a = self.element_colours[el]
@@ -1795,7 +1793,7 @@ class ViewerTab(QWidget):
                 self.element_coloured_buttons.append(button)
                 self.element_coloured_hbox.addWidget(button)
         else:
-            self.debugger.print("update element colours widget")
+            logger.debug("update element colours widget")
             for el,button in zip(self.species,self.element_coloured_buttons):
                 r,g,b,a = self.element_colours[el]
                 button.setStyleSheet(f"background-color:rgba( {r}, {g}, {b}, {a});")
@@ -1817,7 +1815,7 @@ class ViewerTab(QWidget):
         self.plot()
         self.refresh_required = False
         QApplication.restoreOverrideCursor()
-        self.debugger.print("Finished:: refresh")
+        logger.debug("Finished:: refresh")
         return
 
     def get_toggle_state(self,toggle):
@@ -1833,11 +1831,11 @@ class ViewerTab(QWidget):
         bool
 
         """
-        self.debugger.print("get_toggle_state: ")
+        logger.debug("get_toggle_state: ")
         if toggle not in self.toggle_names:
             return False
         index = self.toggle_names.index(toggle)
-        self.debugger.print("get_toggle_state: {index}")
+        logger.debug("get_toggle_state: {index}")
         return self.settings["Toggle states"][index]
 
 class TransformWindow(QDialog):
@@ -1898,8 +1896,7 @@ class TransformWindow(QDialog):
 
         """        
         super().__init__(parent)
-        self.debugger = Debug(debug,"TransformWindow")
-        self.debugger.print("Start:: initialiser")
+        logger.debug("Start:: initialiser")
         # Set up the buttons of the button box
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
         self.buttonBox = QDialogButtonBox(QBtn)
@@ -1907,7 +1904,7 @@ class TransformWindow(QDialog):
         self.buttonBox.rejected.connect(self.reject)
         # Initialize the transform as a 3x3 array of strings
         self.transform_as_str = transform
-        self.debugger.print("transform:", self.transform_as_str)
+        logger.debug(f"transform: {self.transform_as_str}")
         self.message = message
         # The dialog will have a vertical layout
         self.layout = QVBoxLayout(self)
@@ -1922,7 +1919,7 @@ class TransformWindow(QDialog):
         self.layout.addWidget(self.transform_table)
         # Add the button box
         self.layout.addWidget(self.buttonBox)
-        self.debugger.print("Finished:: initialiser")
+        logger.debug("Finished:: initialiser")
 
     def on_transform_table_itemChanged(self,item):
         """Handle a change to the transform table.
@@ -1943,13 +1940,13 @@ class TransformWindow(QDialog):
         self.settings["Transform"]
 
         """
-        self.debugger.print("on_transform_table_itemChanged: ",item)
+        logger.debug(f"on_transform_table_itemChanged: {item}")
         if self.transform_table is None:
             return
         for col in range(3):
             for row in range(3):
                 self.transform_as_str[row][col] = self.transform_table.item(row,col).text()
-        self.debugger.print("New transform", self.transform_as_str)
+        logger.debug(f"New transform {self.transform_as_str}")
         return
 
     def re_draw_transform_table(self):
@@ -1971,7 +1968,7 @@ class TransformWindow(QDialog):
         transform_table
 
         """
-        self.debugger.print("reDrawPrimtiveTable: ")
+        logger.debug("reDrawPrimtiveTable: ")
         tw = self.transform_table
         for col in range(3):
             for row in range(3):
@@ -1994,5 +1991,5 @@ class TransformWindow(QDialog):
         3x3 array of floats
 
         """
-        self.debugger.print("get_transform: ")
+        logger.debug("get_transform: ")
         return self.transform_as_str

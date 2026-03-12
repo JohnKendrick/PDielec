@@ -23,6 +23,9 @@ import yaml
 from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class PhonopyOutputReader(GenericOutputReader):
@@ -120,7 +123,7 @@ class PhonopyOutputReader(GenericOutputReader):
         try:
             from yaml import CLoader as Loader
         except ImportError:
-            print("WARNING: Yaml CLoader is not avaiable, using fallback",file=sys.stderr)
+            logger.warning("WARNING: Yaml CLoader is not avaiable, using fallback")
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
         with open(qpoints_filename) as fd:
@@ -266,7 +269,7 @@ class PhonopyOutputReader(GenericOutputReader):
             #
             line = fd.readline().split()
             if len(line) != 9:
-                print("BORN file format of line 2 is incorrect")
+                logger.error("BORN file format of line 2 is incorrect")
                 return
             self.zerof_optical_dielectric = np.reshape([float(x) for x in line], (3, 3))
             #
@@ -276,10 +279,10 @@ class PhonopyOutputReader(GenericOutputReader):
             for i in range(natoms):
                 line = fd.readline().split()
                 if len(line) == 0:
-                    print("Number of lines for Born effect charge is not enough.")
+                    logger.error("Number of lines for Born effect charge is not enough.")
                     return
                 if len(line) != 9:
-                    print("BORN file format of line %d is incorrect" % (i + 3))
+                    logger.error("BORN file format of line %d is incorrect" % (i + 3))
                     return
                 self.born_charges[i] = np.reshape([float(x) for x in line], (3, 3))
         return

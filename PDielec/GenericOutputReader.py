@@ -24,6 +24,9 @@ from PDielec.Calculator import calculate_normal_modes_and_frequencies, cleanup_s
 from PDielec.Constants import amu, avogadro_si, wavenumber
 from PDielec.IO import pdielec_io
 from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class GenericOutputReader:
@@ -126,8 +129,8 @@ class GenericOutputReader:
         # Test to see if all the files needed are there
         # the test on "ignore" is present because of the FHI-Aims interface
         if not all( [ os.path.isfile(f) for f in filenames if "ignore" not in f ] ):
-            print("Error in calling the generic output reader some files are not present")
-            print(filenames)
+            logger.error("Error in calling the generic output reader some files are not present")
+            logger.debug(filenames)
             return
         self._outputfiles               = filenames
         self.names                      = [os.path.abspath(f) for f in filenames]
@@ -241,7 +244,7 @@ class GenericOutputReader:
         """        
         mass_dictionary = {}
         if self.debug:
-            print("Re setting mass dictionary to the program values")
+            logger.debug("Re setting mass dictionary to the program values")
         if self.program_mass_dictionary:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
@@ -294,7 +297,7 @@ class GenericOutputReader:
             element = cleanup_symbol(symbol)
             dictionary[element] = mass
         if self.debug:
-            print("new mass_dictionary", dictionary)
+            logger.debug(f"new mass_dictionary {dictionary}")
         return dictionary
 
     def set_edited_masses(self,masses):
@@ -323,7 +326,7 @@ class GenericOutputReader:
         if len(masses) == len(self.masses):
             self.edited_masses = masses
         else:
-            print("Error unable to edited_masses")
+            logger.error("Error unable to edited_masses")
             self.edited_masses = None
         return
 
@@ -362,18 +365,18 @@ class GenericOutputReader:
             # only use the masses stored in the edit_masses list
             # Once this variable has been set then only these masses are used
             if self.debug:
-                print("Using the edited masses")
+                logger.debug("Using the edited masses")
             self.masses = self.edited_masses
             return
         if not self.program_mass_dictionary:
             # We only want to do this once - remember the program masses as a dictionary
             if self.debug:
-                print("Setting program mass dictionary")
+                logger.debug("Setting program mass dictionary")
             for symbol,mass in zip(self.species,self.masses_per_type):
                 element = cleanup_symbol(symbol)
                 self.program_mass_dictionary[element] = mass
         if self.debug:
-            print("changing masses", self.program_mass_dictionary)
+            logger.debug(f"changing masses {self.program_mass_dictionary}")
         self.masses = []
         self.masses_per_type = []
         for symbol in self.species:
@@ -386,7 +389,7 @@ class GenericOutputReader:
         # end for symbol
         self.masses = [ self.masses_per_type[atype] for atype in self.atom_type_list ]
         if self.debug:
-            print("new masses", self.masses)
+            logger.debug(f"new masses {self.masses}")
         return
 
     def print(self):
@@ -512,7 +515,7 @@ class GenericOutputReader:
 
         """
         # Define the search keys to be looked for in the files
-        print("Error _read_output_files must be defined by the actual file reader")
+        logger.error("Error _read_output_files must be defined by the actual file reader")
         return
 
     def _read_output_file(self, name):
@@ -534,7 +537,7 @@ class GenericOutputReader:
         """
         # Check to see if the file exists....
         if not os.path.isfile(name):
-            print("Warning file is not present: ", name, file=sys.stderr)
+            logger.warning(f"Warning file is not present: {name}")
             return
         # Open file and store file name and directory
         self.file_descriptor = pdielec_io(name, "r")
@@ -549,7 +552,7 @@ class GenericOutputReader:
                 if self.manage[k][0].match(line):
                     method   = self.manage[k][1]
                     if self.debug:
-                        print(f"_read_output_file({name}): Match found {k}")
+                        logger.debug(f"_read_output_file({name}): Match found {k}")
                     method(line)
                     break
                 # end if
@@ -584,7 +587,7 @@ class GenericOutputReader:
             Ak = np.dot((unity + Kk), Ak)
             error  = np.sum(np.abs(error))
             if self.debug:
-                print("Orthogonalisation iteration: ", error)
+                logger.error(f"Orthogonalisation iteration: {error}")
         # end for k
         return Ak
 
@@ -616,18 +619,18 @@ class GenericOutputReader:
         # D = (UT)-1 f^2 U-1 = U f UT
         # Construct UT from the normal modes
         if self.debug:
-            print("calculate mass weighted normal modes")
+            logger.debug("calculate mass weighted normal modes")
         n = np.size(self.mass_weighted_normal_modes, 0)
         m = np.size(self.mass_weighted_normal_modes, 1)*3
         UT = np.zeros((n, m))
         frequencies_a = np.array(self.frequencies) * wavenumber
         if self.debug:
-            print("frequencies_a",frequencies_a)
+            logger.debug(f"frequencies_a {frequencies_a}")
         masses = np.array(self.masses)*amu
         # if the non mass-weighted hasn't been set, set it
         if not self.nomass_hessian_has_been_set:
             if self.debug:
-                print("hessian was not set")
+                logger.debug("hessian was not set")
             self.nomass_hessian_has_been_set = True
             for imode, mode in enumerate(self.mass_weighted_normal_modes):
                 n = 0
@@ -656,12 +659,12 @@ class GenericOutputReader:
             # they are calculated using the program masses
             current_mass_dictionary = self.mass_dictionary()
             if self.debug:
-                print("current mass dictionary", current_mass_dictionary)
+                logger.debug(f"current mass dictionary {current_mass_dictionary}")
             # There is a chance that the program_mass_dictionary hasn't been set - if it hasn't use the current masses
             if not self.program_mass_dictionary:
                 self.program_mass_dictionary = current_mass_dictionary
             if self.debug:
-                print("program mass dictionary", self.program_mass_dictionary)
+                logger.debug(f"program mass dictionary {self.program_mass_dictionary}")
             self.change_masses(self.program_mass_dictionary, {})
             masses = np.array(self.masses)*amu
             # remove the mass weighting from the hessian and store
@@ -669,25 +672,25 @@ class GenericOutputReader:
             # finally replace the masses with those set before we did this
             self.change_masses(current_mass_dictionary, {})
             if self.debug:
-                print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+                logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         # If the masses have been changed then alter the mass weighted hessian here
         masses = np.array(self.masses)*amu
         if self.debug:
-            print("masses", masses)
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"masses {masses}")
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         self.hessian = self._modify_mass_weighting(self.nomass_hessian, masses)
         if self.debug:
-            print("mass weighted hessian", self.hessian[0:4][0])
+            logger.debug(f"mass weighted hessian {self.hessian[0:4][0]}")
         # Project out the translational modes if requested
         if self.eckart:
             self.hessian = self.project(self.hessian)
             if self.debug:
-                print("projected hessian", self.hessian[0:4][0])
+                logger.debug(f"projected hessian {self.hessian[0:4][0]}")
         # Find its eigenvalues and eigen vectors
         self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(self.hessian)
         if self.debug:
-            print("calculated frequencies", self.frequencies)
-            print("mass-weighted normal modes", self.mass_weighted_normal_modes)
+            logger.debug(f"calculated frequencies {self.frequencies}")
+            logger.debug(f"mass-weighted normal modes {self.mass_weighted_normal_modes}")
         # end for i
         return self.mass_weighted_normal_modes
 
@@ -776,11 +779,11 @@ class GenericOutputReader:
 
         """
         if self.debug:
-            print("_dynamical_matrix")
-            print("hessian", hessian[0:4][0])
+            logger.debug("_dynamical_matrix")
+            logger.debug(f"hessian {hessian[0:4][0]}")
         masses = np.array(self.masses)*amu
         if self.debug:
-            print("masses", self.masses, masses)
+            logger.debug(f"masses {self.masses} {masses}")
         if not self.nomass_hessian_has_been_set:
             # symmetrise the hessian and store it for later use
             if self.hessian_symmetrisation == "symm":
@@ -791,20 +794,20 @@ class GenericOutputReader:
             self.nomass_hessian_has_been_set = True
             self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
         if self.debug:
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         hessian = self._modify_mass_weighting(self.nomass_hessian,masses)
         if self.debug:
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         if self.debug:
-            print("mass weighted hessian", hessian[0:4][0])
+            logger.debug(f"mass weighted hessian {hessian[0:4][0]}")
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
         if self.debug:
-            print("projected hessian", hessian[0:4][0])
+            logger.debug(f"projected hessian {hessian[0:4][0]}")
         self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(hessian)
         if self.debug:
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         return
 
     def reset_born_charges(self):
@@ -881,7 +884,7 @@ class GenericOutputReader:
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
         if self.debug:
-            print("born charge sum", total)
+            logger.debug(f"born charge sum {total}")
         new_born_charges = born_charges - total
         self.born_charges = new_born_charges.tolist()
         return

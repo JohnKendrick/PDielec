@@ -22,6 +22,9 @@ import sys
 
 from openpyxl import load_workbook
 from termcolor import colored
+import logging
+logger = logging.getLogger(__name__)
+
 
 global threshold
 

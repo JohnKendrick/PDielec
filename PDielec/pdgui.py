@@ -40,6 +40,9 @@ from qtpy.QtWidgets import QApplication, QProgressBar, QSplashScreen
 
 import PDielec.__init__
 from PDielec.GUI.App import App
+import logging
+logger = logging.getLogger(__name__)
+
 
 version = PDielec.__init__.__version__
 
@@ -103,6 +106,9 @@ def main():
             debug = True
         elif token in ( "-style" ):
             apply_default_style = False
+
+    if debug:
+        logging.basicConfig(level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s")
 
     if apply_default_style:
         sys.argv.append("-style")

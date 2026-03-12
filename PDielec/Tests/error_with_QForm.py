@@ -16,6 +16,9 @@ import sys
 from qtpy.QtWidgets import QApplication, QMainWindow, QWidget
 from qtpy.QtWidgets import QFormLayout, QLabel, QPushButton
 from qtpy.QtGui import QPalette, QColor
+import logging
+logger = logging.getLogger(__name__)
+
 
 class MainWindow(QMainWindow):
 

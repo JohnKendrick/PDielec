@@ -38,6 +38,9 @@ import numpy as np
 from scipy import interpolate
 
 from PDielec.Constants import angstrom, wavenumber
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class DielectricFunction:
@@ -114,7 +117,7 @@ class DielectricFunction:
         None
 
         """
-        print("Error is DielectricFunction.set_frequencies: unable to set frequencies of a non-Lorentzian function")
+        logger.error("Error is DielectricFunction.set_frequencies: unable to set frequencies of a non-Lorentzian function")
         return 
 
 
@@ -150,7 +153,7 @@ class DielectricFunction:
         None
 
         """
-        print("Error is DielectricFunction.set_oscillator_strengths: unable to set oscillator strengths of a non-Lorentzian function")
+        logger.error("Error is DielectricFunction.set_oscillator_strengths: unable to set oscillator strengths of a non-Lorentzian function")
         return 
 
 
@@ -185,7 +188,7 @@ class DielectricFunction:
         None
 
         """
-        print("Error is DielectricFunction.set_sigmas: unable to set sigmas of a non-Lorentzian function")
+        logger.error("Error is DielectricFunction.set_sigmas: unable to set sigmas of a non-Lorentzian function")
         return 
 
 

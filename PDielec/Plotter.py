@@ -15,6 +15,9 @@
 #
 """Do some pretty printing for the dielectric functions."""
 import sys
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" "):

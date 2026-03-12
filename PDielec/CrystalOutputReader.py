@@ -24,6 +24,9 @@ from PDielec.Constants import amu, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.IO import pdielec_io
 from PDielec.UnitCell import UnitCell
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class CrystalOutputReader(GenericOutputReader):

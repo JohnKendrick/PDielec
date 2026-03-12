@@ -30,6 +30,9 @@ import matplotlib.gridspec as gridspec
 import GTMcore as GTM
 import Permittivities as mat
 from matplotlib import rcParams, rcParamsDefault
+import logging
+logger = logging.getLogger(__name__)
+
 
 c_const = 299792458.0 # m/s
 

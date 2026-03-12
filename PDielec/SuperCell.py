@@ -18,6 +18,9 @@
 import numpy as np
 
 from PDielec.Plotter import print_ints, print_reals
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class SuperCell:
@@ -148,7 +151,7 @@ class SuperCell:
         """
         ia,jb,kc = anImageSpecifier
         if ia < 1 or jb < 1 or kc < 1 :
-            print("Error in createSuperCell: parameters must be 1 or more")
+            logger.error("Error in createSuperCell: parameters must be 1 or more")
             return
         self.imageSpecifier = anImageSpecifier
         self.imageList = []

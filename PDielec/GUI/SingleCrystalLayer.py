@@ -14,6 +14,9 @@
 #
 """SingleCrystalLayer module."""
 # -*- coding: utf8 -*-
+import logging
+logger = logging.getLogger(__name__)
+
 import sys
 
 import numpy as np
@@ -33,7 +36,6 @@ from qtpy.QtWidgets import (
     QWidget,
 )
 
-from PDielec.Utilities import Debug
 
 
 class SingleCrystalLayer:
@@ -574,7 +576,7 @@ class SingleCrystalLayer:
         self.labframe = np.matmul(self.euler,self.material.cell.lattice.T).T
         normal_to_plane_lab = np.matmul(self.euler,plane[z])
         if normal_to_plane_lab[2] < 0.9999 and normal_to_plane_lab[2] > -0.9999:
-            print("Error in Euler rotations - surface normal is not along Z-axis", normal_to_plane_lab)
+            logger.error(f"Error in Euler rotations - surface normal is not along Z-axis {normal_to_plane_lab}")
             sys.exit()
         return 
 
@@ -745,8 +747,7 @@ class ShowLayerWindow(QDialog):
 
         """        
         super().__init__(parent)
-        self.debugger = Debug(debug,"ShowLayerWindow")
-        self.debugger.print("Start:: initialiser")
+        logger.debug("Start:: initialiser")
         # Set up the buttons of the button box
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
         self.buttonBox = QDialogButtonBox(QBtn)
@@ -763,7 +764,7 @@ class ShowLayerWindow(QDialog):
         self.layout.addWidget(layerWidget)
         # Add the button box
         self.layout.addWidget(self.buttonBox)
-        self.debugger.print("Finished:: initialiser")
+        logger.debug("Finished:: initialiser")
 
     def get_layer(self):
         """Return the edited layer.
@@ -791,7 +792,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("draw_layer_widget")
+        logger.debug("draw_layer_widget")
         widget = QWidget()
         form = QFormLayout()
         label = QLabel("Layer type:")
@@ -825,7 +826,7 @@ class ShowLayerWindow(QDialog):
 
         """
         hbox = QHBoxLayout()
-        self.debugger.print("draw_layer_widget_line1")
+        logger.debug("draw_layer_widget_line1")
         # Define material thickness
         materialThickness = self.layer.get_thickness()
         # Handle thickness
@@ -866,7 +867,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("draw_layer_widget_line2")
+        logger.debug("draw_layer_widget_line2")
         hbox = QHBoxLayout()
         # define hkl
         h_sb = QSpinBox(self)
@@ -920,7 +921,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("draw_layer_widget_line3")
+        logger.debug("draw_layer_widget_line3")
         hbox = QHBoxLayout()
         label = QLabel("Lab frame\ninformation", self)
         label.setToolTip("The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y")
@@ -967,7 +968,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("on_film_thickness_sb_changed", value)
+        logger.debug(f"on_film_thickness_sb_changed {value}")
         self.layer.set_thickness(value)
         return
 
@@ -984,7 +985,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("on_azimuthal_angl_sb_changed", value)
+        logger.debug(f"on_azimuthal_angl_sb_changed {value}")
         self.layer.set_azimuthal(value)
         self.layer.change_lab_frame_info()
         self.change_lab_frame_info()
@@ -1005,7 +1006,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """
-        self.debugger.print("on_h_sb_changed", value)
+        logger.debug(f"on_h_sb_changed {value}")
         hkl = self.layer.get_hkl()
         hkl[hkorl] = value
         self.layer.set_hkl(hkl)
@@ -1027,7 +1028,7 @@ class ShowLayerWindow(QDialog):
         None
 
         """        
-        self.debugger.print("Start:: on_thickness_units_cb_activated",index)
+        logger.debug(f"Start:: on_thickness_units_cb_activated {index}")
         units = ["nm","um","mm","cm"]
         unit = units[index]
         self.layer.set_thickness_unit(unit)

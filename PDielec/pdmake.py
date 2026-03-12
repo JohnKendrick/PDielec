@@ -53,6 +53,9 @@ import numpy as np
 
 from PDielec.checkcsv import main as main_checkcsv
 from PDielec.checkexcel import main as main_checkexcel
+import logging
+logger = logging.getLogger(__name__)
+
 
 # Force a flush on print, needed for Windows
 print = functools.partial(print, flush=True)

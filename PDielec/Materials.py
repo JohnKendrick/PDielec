@@ -27,7 +27,9 @@ import openpyxl as xl
 from PDielec import Calculator, DielectricFunction
 from PDielec import __file__ as PDielec_init_filename
 from PDielec.UnitCell import UnitCell
-from PDielec.Utilities import Debug
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class MaterialsDataBase:
@@ -113,13 +115,12 @@ class MaterialsDataBase:
             Set to true for additional debugging information
 
         """
-        self.debugger = Debug(debug,"MaterialsDataBase")
-        self.debugger.print("Start:: initialise")
+        logger.debug("Start:: initialise")
         if len(filename)> 5 and (filename.endswith("xlsx") or filename.endswith("XLSX")) and os.path.isfile(filename):
             self.filename = os.path.relpath(filename)
             self.workbook = xl.load_workbook(self.filename,data_only=True)
             self.sheetNames = self.workbook.sheetnames
-            self.debugger.print("Sheet names:: ",self.sheetNames)
+            logger.debug(f"Sheet names:: {self.sheetNames}")
             # Close the work book while it is not in use
             # workbook.close()
         else:
@@ -131,15 +132,15 @@ class MaterialsDataBase:
                 self.filename = filename
                 self.workbook = xl.load_workbook(self.filename,data_only=True)
                 self.sheetNames = self.workbook.sheetnames
-                self.debugger.print("Sheet names from default database ",self.sheetNames)
+                logger.debug(f"Sheet names from default database {self.sheetNames}")
                 # Close the work book while it is not in use
                 # workbook.close()
             else:
                 self.filename = None
                 self.sheetNames = None
-                print("  Error: MaterialsDataBase filename not valid",filename)
+                logger.error(f"Error: MaterialsDataBase filename not valid {filename}")
         self.cache = {}
-        self.debugger.print("Finished:: initialise")
+        logger.debug("Finished:: initialise")
         return
 
     def get_file_name(self):
@@ -215,7 +216,7 @@ class MaterialsDataBase:
             fullList.append("kbr")
         if "nujol" not in fullList:
             fullList.append("nujol")
-        self.debugger.print("get_sheet_names:: ",fullList)
+        logger.debug(f"get_sheet_names:: {fullList}")
         return sorted(fullList, key=lambda s: s.casefold())
 
     def get_material(self,sheet):
@@ -235,10 +236,10 @@ class MaterialsDataBase:
             The material object created from the excel sheet data.
 
         """
-        self.debugger.print("get_material:: ",sheet)
+        logger.debug(f"get_material:: {sheet}")
         # Lets see if the material is in the cache
         if sheet in self.cache:
-            self.debugger.print("get_material:: using the cache")
+            logger.debug("get_material:: using the cache")
             return self.cache[sheet]
         # Define a set of back-up materials that the program can use even if the sheet name is not in the spreadsheet
         if self.sheetNames is None or sheet not in self.sheetNames:
@@ -257,7 +258,7 @@ class MaterialsDataBase:
             elif sheet == "nujol":
                 material = Constant("nujol",permittivity=2.155,density=0.838)
             else:
-                print("Error in get_material sheet ",sheet," not in self.sheetNames",self.sheetNames,file=sys.stderr)
+                logger.error(f"Error in get_material sheet {sheet} not in self.sheetNames {self.sheetNames}")
                 material = Constant("vacuum",permittivity=1.0,density=0.0)
             return material
         # Carry on with the spreadsheet
@@ -343,7 +344,7 @@ class MaterialsDataBase:
         k = float(worksheet["D2"].value)
         nk = complex(n, k)
         permittivity = Calculator.calculate_permittivity(nk)
-        self.debugger.print("Constant refractive:: ",nk,permittivity,density)
+        logger.debug(f"Constant refractive:: {nk} {permittivity} {density}")
         return Constant(sheet,permittivity=permittivity,density=density)
 
     def read_constant_permittivity(self,sheet,worksheet,density):
@@ -367,7 +368,7 @@ class MaterialsDataBase:
         eps_r = float(worksheet["C2"].value)
         eps_i = float(worksheet["D2"].value)
         permittivity = complex(eps_r, eps_i)
-        self.debugger.print("Constant permittivity:: ",permittivity,density)
+        logger.debug(f"Constant permittivity:: {permittivity} {density}")
         return Constant(sheet,permittivity=permittivity,density=density)
 
     def read_tabulated_refractive_index(self,sheet,worksheet,density):
@@ -402,7 +403,7 @@ class MaterialsDataBase:
                permittivities.append(permittivity)
                vs_cm1.append(v)
             except (ValueError, TypeError):
-                print("Error in Tabulated: ",a.value,c.value,d.value)
+                logger.error(f"Error in Tabulated: {a.value} {c.value} {d.value}")
         return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
 
     def read_tabulated_spectroscopy(self,sheet,worksheet,density):
@@ -438,7 +439,7 @@ class MaterialsDataBase:
                permittivities.append(permittivity)
                vs_cm1.append(v)
             except (ValueError, TypeError):
-                print("Error in Tabulated: ",a.value,c.value,d.value)
+                logger.error(f"Error in Tabulated: {a.value} {c.value} {d.value}")
         #return permittivities, vs_cm1
         return Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)        
         
@@ -513,7 +514,7 @@ class MaterialsDataBase:
                 if e.value is not None:
                     gammas[index].append(float(e.value))
             except (ValueError, TypeError):
-                print("Error in Lorentz-Drude: ",a.value,b.value,c.value,d.value,e.value)
+                logger.error(f"Error in Lorentz-Drude: {a.value} {b.value} {c.value} {d.value} {e.value}")
                 return None
         return DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
 
@@ -558,7 +559,7 @@ class MaterialsDataBase:
                 if f.value is not None:
                     gamma_los[index].append(float(f.value))
             except (ValueError, TypeError):
-                print("Error in FPSQ: ",a.value,b.value,c.value,d.value,e.value,f.value)
+                logger.error(f"Error in FPSQ: {a.value} {b.value} {c.value} {d.value} {e.value} {f.value}")
                 return None
         return FPSQ(sheet,epsilon_infinity,omega_tos,gamma_tos,omega_los,gamma_los,density=density,cell=unitCell)
 
@@ -591,7 +592,7 @@ class MaterialsDataBase:
                 if c.value is not None:
                     Cs.append(float(c.value))
             except (ValueError, TypeError):
-                print("Error in Sellmeier: ",b.value,c.value)
+                logger.error(f"Error in Sellmeier: {b.value} {c.value}")
                 return None
         return Sellmeier(sheet,Bs,Cs,density=density,cell=unitCell)
         
@@ -1320,7 +1321,7 @@ class Tabulated(Material):
             elif m== 6:
                 permittivityObject = DielectricFunction.Tabulate6(vs,eps[0], eps[1], eps[2], eps[3], eps[4], eps[5])
             else:
-                print("Error in Tabulated, shape of parameters is wrong")
+                logger.error("Error in Tabulated, shape of parameters is wrong")
         else:
             permittivityObject = DielectricFunction.TabulateScalar(vs,eps)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)

@@ -26,6 +26,9 @@ Parameters
 ----------
 This function does not accept parameters directly through its definition. Instead, it uses command-line arguments parsed
 from `sys.argv`:
+import logging
+logger = logging.getLogger(__name__)
+
 
 - `-debug` : Enable debug mode. - `-help` : Print help message and exit. - `-version` : Print software version and exit.
   - `-program` : Specify the program to use for analysis. When set to 'phonopy', an additional quantum mechanics program

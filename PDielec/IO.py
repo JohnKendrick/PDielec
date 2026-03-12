@@ -15,6 +15,9 @@
 #
 """Simple IO interface.
 
+import logging
+logger = logging.getLogger(__name__)
+
 This aims to reproduce the python readline() io method, with limited functionality but much faster.
 
 """

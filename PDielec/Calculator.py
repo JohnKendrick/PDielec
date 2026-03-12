@@ -32,6 +32,9 @@ from scipy       import sparse
 #
 from PDielec import Mie
 from PDielec.Constants import d2byamuang2, wavenumber
+import logging
+logger = logging.getLogger(__name__)
+
 
 Mie.crossover = 0.01
 
@@ -866,8 +869,8 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
             #v_cm1 = 1.0E4/lambda_vacuum_mu
             #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
             if np.abs(normal - 1.0) > 1.0E-2:
-                print("Warning integration of log-normal distribution in error", normal)
-                print("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
+                logger.warning(f"Warning integration of log-normal distribution in error {normal}")
+                logger.debug("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
                 return np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
         else:
             # Calculate the scattering factors at 0 degrees
@@ -975,8 +978,8 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
         #v_cm1 = 1.0E4/lambda_vacuum_mu
         #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
         if np.abs(normal - 1.0) > 1.0E-2:
-            print("Warning integration of log-normal distribution in error", normal)
-            print("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
+            logger.warning(f"Warning integration of log-normal distribution in error {normal}")
+            logger.debug("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
             return np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
     else:
         # Calculate the scattering factors at 0 degrees
@@ -1080,8 +1083,8 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
             #v_cm1 = 1.0E4/lambda_vacuum_mu
             #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
             if np.abs(normal - 1.0) > 1.0E-2:
-                print("Warning integration of log-normal distribution in error", normal)
-                print("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
+                logger.warning(f"Warning integration of log-normal distribution in error {normal}")
+                logger.debug("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
                 return np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
         else:
             # Calculate the scattering factors at 0 degrees
@@ -1302,7 +1305,7 @@ def bruggeman_minimise( eps1, eps2, shape, L, f2, size, epsbr):
                "ftol": 1.0E-4}
     sol = sc.minimize(_brug_minimise_tensor, variables, method="Powell", args=(eps1, eps2, shape, L, f1, size), options=options)
     if not sol.success:
-        print("A Bruggeman solution was not found at this frequency")
+        logger.error("A Bruggeman solution was not found at this frequency")
     variables = sol.x
     # transform the imaginary variable back
     trace = complex(variables[0], np.exp(variables[1])-1.0)
@@ -1349,7 +1352,7 @@ def bruggeman_iter( eps1, eps2, shape, L, f2, size, epsbr):
         if abs(error) < 1.0E-8:
             converged = True
         if niters > 3000:
-            print("Bruggeman iterations failed, error=", error)
+            logger.error(f"Bruggeman iterations failed, error= {error}")
             converged = True
     return average_tensor(epsbr)
 
@@ -1620,12 +1623,12 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
     else:
        solution = solution2
     if np.abs(solution*solution-dielectric_scalar)/(1+np.abs(dielectric_scalar)) > 1.0E-8 or debug:
-        print("There is an error in refractive index")
-        print("Dielectric = ", dielectric_scalar)
-        print("solution*solution = ", solution*solution, np.abs(solution*solution-dielectric_scalar))
-        print("solution    = ", solution, solution*solution)
-        print("solution1   = ", solution1, solution1*solution1)
-        print("solution2   = ", solution2, solution2*solution2)
+        logger.error("There is an error in refractive index")
+        logger.debug(f"Dielectric = {dielectric_scalar}")
+        logger.debug(f"solution*solution = {solution*solution} {np.abs(solution*solution-dielectric_scalar)}")
+        logger.debug(f"solution    = {solution} {solution*solution}")
+        logger.debug(f"solution1   = {solution1} {solution1*solution1}")
+        logger.debug(f"solution2   = {solution2} {solution2*solution2}")
     return solution
 
 def direction_from_shape(data, reader):
@@ -1664,7 +1667,7 @@ def direction_from_shape(data, reader):
         data = data.replace("[", "")
         data = data.replace("]", "")
     else:
-        print("Error encountered in interpretting the miller surface / vector", data)
+        logger.error(f"Error encountered in interpretting the miller surface / vector {data}")
         sys.exit(1)
     if commas:
         data = data.replace(",", " ")
@@ -1681,7 +1684,7 @@ def direction_from_shape(data, reader):
             i += 1
     # end of handling no commas
     if len(hkl) != 3:
-        print("Error encountered in interpretting the miller surface / vector", data)
+        logger.error(f"Error encountered in interpretting the miller surface / vector {data}")
         sys.exit(1)
     cell = reader.get_unit_cell()
     direction = cell.convert_hkl_to_xyz(hkl) if surface else cell.convert_abc_to_xyz(hkl)
@@ -1771,7 +1774,7 @@ def solve_effective_medium_equations(
         refractive_index = refractive_index.conjugate()
     if bubble_vf > 0.0:
         if np.abs(refractive_index.imag) > 1.0e-12:
-            print("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering",file=sys.stderr)
+            logger.warning("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering")
         effdielec,refractive_index = calculate_bubble_refractive_index(v_cm1, refractive_index.real, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
     # Choose which method to apply, the effective dielectric determined with bubbles will be used
@@ -1803,14 +1806,14 @@ def solve_effective_medium_equations(
         previous_solution_shared = effdielec
     elif method == "anisotropic-mie":
         if np.abs(refractive_index.imag) > 1.0E-6:
-            print("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering",file=sys.stderr)
+            logger.warning("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering")
         effdielec = anisotropic_mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     elif method == "mie":
         if np.abs(refractive_index.imag) > 1.0E-6:
-            print("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering",file=sys.stderr)
+            logger.warning("Warning: only the real part of the support matrix permittivity will be used for Mie Scattering")
         effdielec = mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     else:
-        print(f"Unkown dielectric method: {method}")
+        logger.debug(f"Unkown dielectric method: {method}")
         sys.exit(1)
     # Average over all directions by taking the trace
     trace = (effdielec[0, 0] + effdielec[1, 1] + effdielec[2, 2]) / 3.0
@@ -2050,7 +2053,7 @@ def orthogonalise_projection_operator(ps):
                    ps[j] = q - dotprod*p
                    max_overlap = max(max_overlap, dotprod)
    if cycle >= maxcyc:
-       print("WARNING Schmidt Orthogonalisation Failed", max_overlap)
+       logger.warning(f"WARNING Schmidt Orthogonalisation Failed {max_overlap}")
        sys.exit()
    return ps
 
@@ -2202,7 +2205,7 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
         try:
             Z = W + pow(10,lambda_value) * (D.dot(D.transpose()))
         except OverflowError:
-            print("Warning overflow in Hodrick Prescott filter")
+            logger.warning("Warning overflow in Hodrick Prescott filter")
         z = sparse.linalg.spsolve(Z, w*y)
         w = damping*(y>z) + (1-damping)*(y<z)
     return y-z

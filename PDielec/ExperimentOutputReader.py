@@ -22,6 +22,9 @@ from PDielec import DielectricFunction
 from PDielec.Calculator import initialise_diagonal_tensor
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 class ExperimentOutputReader(GenericOutputReader):

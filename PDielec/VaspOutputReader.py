@@ -24,6 +24,9 @@ from PDielec.Calculator import calculate_normal_modes_and_frequencies
 from PDielec.Constants import atomic_number_to_element, hertz
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+import logging
+logger = logging.getLogger(__name__)
+
 
 
 def read_xml_element(ele):
@@ -957,9 +960,9 @@ class VaspOutputReader(GenericOutputReader):
         tree = ET.parse(filename)
         root = tree.getroot()
         if self.debug:
-            print(f"_read_xml filename = {filename}",flush=True)
-            print(f"_read_xml tree = {tree}",flush=True)
-            print(f"_read_xml root = {root}",flush=True)
+            logger.debug(f"_read_xml filename = {filename}")
+            logger.debug(f"_read_xml tree = {tree}")
+            logger.debug(f"_read_xml root = {root}")
         self._handle_kpoints_xml(root.findall("kpoints"))
         self._handle_parameters_xml(root.findall("parameters"))
         self._handle_atominfo_xml(root.findall("atominfo"))
@@ -1143,7 +1146,7 @@ class VaspOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_handle_structure_xml: volume={self.volume}",flush=True)
+            logger.debug(f"_handle_structure_xml: volume={self.volume}")
         return
 
     def _get_unit_cell_from_xml(self,structure_xml):
@@ -1219,14 +1222,14 @@ class VaspOutputReader(GenericOutputReader):
         for atom_type in self.atom_type_list:
             self.masses.append(self.masses_per_type[atom_type])
         if self.debug:
-            print("_handle_atomicinfo_xml: nspecies", self.nspecies,flush=True)
-            print("_handle_atomicinfo_xml: nions", self.nions,flush=True)
-            print("_handle_atomicinfo_xml: ions_per_type", self.ions_per_type,flush=True)
-            print("_handle_atomicinfo_xml: atom_type_list", self.atom_type_list,flush=True)
-            print("_handle_atomicinfo_xml: species", self.species,flush=True)
-            print("_handle_atomicinfo_xml: species_list", self.species_list,flush=True)
-            print("_handle_atomicinfo_xml: masses", self.masses,flush=True)
-            print("_handle_atomicinfo_xml: masses_per_type", self.masses_per_type,flush=True)
+            logger.debug(f"_handle_atomicinfo_xml: nspecies {self.nspecies}")
+            logger.debug(f"_handle_atomicinfo_xml: nions {self.nions}")
+            logger.debug(f"_handle_atomicinfo_xml: ions_per_type {self.ions_per_type}")
+            logger.debug(f"_handle_atomicinfo_xml: atom_type_list {self.atom_type_list}")
+            logger.debug(f"_handle_atomicinfo_xml: species {self.species}")
+            logger.debug(f"_handle_atomicinfo_xml: species_list {self.species_list}")
+            logger.debug(f"_handle_atomicinfo_xml: masses {self.masses}")
+            logger.debug(f"_handle_atomicinfo_xml: masses_per_type {self.masses_per_type}")
         return
 
     def _handle_parameters_xml(self,parameters_xml):
@@ -1256,8 +1259,8 @@ class VaspOutputReader(GenericOutputReader):
         self.spin = parameters["ISPIN"]
         # self.masses_per_type = parameters["POMASS"] 
         if self.debug:
-            print("_handle_parameters_xml: nelect", self.electrons,flush=True)
-            print("_handle_parameters_xml: spin", self.spin,flush=True)
+            logger.debug(f"_handle_parameters_xml: nelect {self.electrons}")
+            logger.debug(f"_handle_parameters_xml: spin {self.spin}")
         return
 
     def _handle_kpoints_xml(self,kpoints_xml):
@@ -1281,11 +1284,11 @@ class VaspOutputReader(GenericOutputReader):
         xml = kpoints_xml.find("generation").find("v/[@name='divisions']")
         self.kpoint_grid = [ int(f) for f in xml.text.split() ]
         if self.debug:
-            print("_handle_kpoints_xml: kpoint_grid", self.kpoint_grid ,flush=True)
+            logger.debug(f"_handle_kpoints_xml: kpoint_grid {self.kpoint_grid}")
         # Number of kpoints
         xml = kpoints_xml.find("varray/[@name='kpointlist']")
         vs = xml.findall("v")
         self.kpoints = len(vs)
         if self.debug:
-            print("_handle_kpoints_xml: kpoints", self.kpoints,flush=True)
+            logger.debug(f"_handle_kpoints_xml: kpoints {self.kpoints}")
         return

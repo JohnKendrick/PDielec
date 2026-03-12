@@ -15,6 +15,9 @@
 """AnalysisTab Module."""
 
 # Import plotting requirements
+import logging
+logger = logging.getLogger(__name__)
+
 import copy
 
 import matplotlib
@@ -41,7 +44,6 @@ from qtpy.QtWidgets import (
 from PDielec import Calculator
 from PDielec.Constants import covalent_radii
 from PDielec.GUI.SettingsTab import FixedQTableWidget
-from PDielec.Utilities import Debug
 
 
 class AnalysisTab(QWidget):
@@ -155,7 +157,6 @@ class AnalysisTab(QWidget):
 
         """        
         super(QWidget, self).__init__(parent)
-        self.debugger = Debug(debug,"AnalysisTab")
         self.settings = {}
         self.subplot = None
         self.setWindowTitle("Analysis")
@@ -335,14 +336,14 @@ class AnalysisTab(QWidget):
             return
         col = item.column()
         try:
-            self.debugger.print("Changing the element radius",col,item.text())
+            logger.debug(f"Changing the element radius {col} {item.text()}")
             self.settings["Radii"][col] = float(item.text())
             self.calculate()
             self.plot()
             if self.notebook.viewerTab is not None:
                 self.notebook.viewerTab.request_refresh()
         except ValueError:
-            self.debugger.print("Failed Changing the element radius",col,item.text())
+            logger.debug(f"Failed Changing the element radius {col} {item.text()}")
             pass
 
     def set_radii_tw(self):
@@ -367,15 +368,15 @@ class AnalysisTab(QWidget):
         program = self.notebook.mainTab.settings["Program"]
         filename = self.notebook.mainTab.get_full_file_name()
         if self.reader is None:
-            self.debugger.print("set_radii_tw aborting - no reader")
+            logger.debug("set_radii_tw aborting - no reader")
             return
         if program == "":
-            self.debugger.print("set_radii_tw aborting - no program")
+            logger.debug("set_radii_tw aborting - no program")
             return
         if filename == "":
-            self.debugger.print("set_radii_tw aborting - no filename")
+            logger.debug("set_radii_tw aborting - no filename")
             return
-        self.debugger.print("set_radii_tw starting")
+        logger.debug("set_radii_tw starting")
         self.element_radii_tw.blockSignals(True)
         self.species = self.reader.get_species()
         if self.settings["Radii"] is None:
@@ -394,7 +395,7 @@ class AnalysisTab(QWidget):
             self.element_radii_tw.setItem(0,i, qw )
         self.element_radii_tw.blockSignals(False)
         self.settings["Radii"] = radii
-        self.debugger.print("set_radii_tw finishing")
+        logger.debug("set_radii_tw finishing")
         return
 
     def set_covalent_radius(self,element,radius):
@@ -469,7 +470,7 @@ class AnalysisTab(QWidget):
         None
 
         """        
-        self.debugger.print("on width changed ", value)
+        logger.debug(f"on width changed {value}")
         self.settings["Bar width"] = value
         self.plot()
 
@@ -492,7 +493,7 @@ class AnalysisTab(QWidget):
         None
 
         """        
-        self.debugger.print("on scale_le changed ", value)
+        logger.debug(f"on scale_le changed {value}")
         self.settings["Covalent radius scaling"] = value
         self.refresh_required = True
         self.calculate()
@@ -514,7 +515,7 @@ class AnalysisTab(QWidget):
         None
 
         """        
-        self.debugger.print("on_tolerance_le changed ", value)
+        logger.debug(f"on_tolerance_le changed {value}")
         self.settings["Bonding tolerance"] = value
         self.refresh_required = True
         self.calculate()
@@ -537,8 +538,7 @@ class AnalysisTab(QWidget):
         if self.subplot is not None:
             self.subplot.set_title(self.settings["title"])
             self.canvas.draw_idle()
-        self.debugger.print("on title change ", self.settings["title"])
-
+        logger.debug(f"on title change {self.settings['title']}")
     def on_vmin_changed(self):
         """Handle the change in minimum value of frequency.
 
@@ -557,11 +557,11 @@ class AnalysisTab(QWidget):
         vmax = self.vmax_sb.value()
         if vmin < vmax:
             self.settings["Minimum frequency"] = vmin
-            self.debugger.print("on_vmin_changed new value", self.settings["Minimum frequency"])
+            logger.debug(f"on_vmin_changed new value {self.settings['Minimum frequency']}")
         else:
             self.vmin_sb.setValue(self.settings["Maximum frequency"]-1)
             self.settings["Minimum frequency"] = self.settings["Maximum frequency"]-1
-            self.debugger.print("on_vmin_changed restricting value to", self.settings["Minimum frequency"])
+            logger.debug(f"on_vmin_changed restricting value to {self.settings['Minimum frequency']}")
         self.plot()
         self.vmin_sb.blockSignals(False)
         return
@@ -584,11 +584,11 @@ class AnalysisTab(QWidget):
         vmax = self.vmax_sb.value()
         if vmax > vmin:
             self.settings["Maximum frequency"] = vmax
-            self.debugger.print("on_vmax_changed new value", self.settings["Maximum frequency"])
+            logger.debug(f"on_vmax_changed new value {self.settings['Maximum frequency']}")
         else:
             self.vmin_sb.setValue(self.settings["Minimum frequency"]+1)
             self.settings["Maximum frequency"] = self.settings["Minimum frequency"]+1
-            self.debugger.print("on_vmax_changed restricting value to", self.settings["Maximum frequency"])
+            logger.debug(f"on_vmax_changed restricting value to {self.settings['Maximum frequency']}")
         self.plot()
         self.vmin_sb.blockSignals(False)
         return
@@ -629,9 +629,9 @@ class AnalysisTab(QWidget):
 
         """        
         if not self.refresh_required and not force:
-            self.debugger.print("return with no refresh", self.refresh_required, force)
+            logger.debug(f"return with no refresh {self.refresh_required} {force}")
             return
-        self.debugger.print("Refreshing widget")
+        logger.debug("Refreshing widget")
         #
         # Block signals during refresh
         #
@@ -669,7 +669,7 @@ class AnalysisTab(QWidget):
 
         """        
         self.plot_type_index = index
-        self.debugger.print("Plot type index changed to ", self.plot_type_index)
+        logger.debug(f"Plot type index changed to {self.plot_type_index}")
         self.plot()
 
     def calculate(self):
@@ -700,7 +700,7 @@ class AnalysisTab(QWidget):
         of molecules, respectively.
 
         """        
-        self.debugger.print("calculate")
+        logger.debug("calculate")
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings["Program"]

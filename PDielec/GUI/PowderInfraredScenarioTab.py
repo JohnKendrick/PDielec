@@ -13,6 +13,9 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """PowderInfraredScenarioTab module."""
+import logging
+logger = logging.getLogger(__name__)
+
 import ctypes
 import sys
 from functools import partial
@@ -36,7 +39,6 @@ from qtpy.QtWidgets import (
 from PDielec import Calculator, DielectricFunction, Materials
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
-from PDielec.Utilities import Debug
 
 
 class PowderInfraredScenarioTab(ScenarioTab):
@@ -201,8 +203,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         """        
         ScenarioTab.__init__(self,parent)
-        self.debugger = Debug(debug,"PowderInfraredScenarioTab:")
-        self.debugger.print("Start:: initialiser")
+        logger.debug("Start:: initialiser")
         self.scenarioType = "Powder Infrared"
         self.settings["Scenario type"] = self.scenarioType
         self.noCalculationsRequired = 1
@@ -384,7 +385,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         if index >=0:
             self.methods_cb.setCurrentIndex(index)
         else:
-            print("Method index was not 0",self.settings["Effective medium method"])
+            logger.error(f"Method index was not 0 {self.settings['Effective medium method']}")
         self.methods_cb.activated.connect(self.on_methods_cb_activated)
         label = QLabel("Method",self)
         label.setToolTip("Choose the calculation method for the effective medium theory")
@@ -425,7 +426,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         if index >=0:
             self.shape_cb.setCurrentIndex(index)
         else:
-            print("Method index was not 0",self.settings["Particle shape"])
+            logger.error(f"Method index was not 0 {self.settings['Particle shape']}")
         self.shape_cb.activated.connect(self.on_shape_cb_activated)
         label = QLabel("Particle shape",self)
         label.setToolTip("Choose a particle shape. \nFor the Mie methods only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction")
@@ -525,7 +526,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         self.setLayout(vbox)
         # sort out greying of boxes
         self.change_greyed_out()
-        self.debugger.print("Finished:: initialiser")
+        logger.debug("Finished:: initialiser")
         return
 
     def crystal_density(self):
@@ -538,7 +539,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         """
         if not self.reader:
-            self.debugger.print("Finished:: crystal_density - no reader")
+            logger.debug("Finished:: crystal_density - no reader")
             return 1.0
         return self.reader.get_crystal_density()
 
@@ -550,14 +551,14 @@ class PowderInfraredScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print("Start:: open_db_button_clicked")
+        logger.debug("Start:: open_db_button_clicked")
         self.open_data_base()
         if self.settings["Matrix"] not in self.materialNames:
             self.settings["Matrix"] = self.materialNames[0]
         self.matrixMaterial = self.DataBase.get_material(self.settings["Matrix"])
         # Check to see that the matrix return a scalar permittivity
         if self.matrixMaterial.is_tensor():
-            print("Error: matrix must have a scalar permittivity using ptfe")
+            logger.error("Error: matrix must have a scalar permittivity using ptfe")
             self.settings["Matrix"] = "ptfe"
             self.matrixMaterial = self.DataBase.get_material(self.settings["Matrix"])
         materialPermittivityFunction = self.matrixMaterial.get_permittivity_function()
@@ -576,7 +577,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The h, k or l value
 
         """
-        self.debugger.print(self.settings["Legend"],"on_h_sb_changed", value)
+        logger.debug(f"{self.settings['Legend']} on_h_sb_changed {value}")
         self.refresh_required = True
         self.settings["Unique direction - h"] = value
         return
@@ -590,7 +591,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The h, k or l value
 
         """
-        self.debugger.print(self.settings["Legend"],"on_k_sb_changed", value)
+        logger.debug(f"{self.settings['Legend']} on_k_sb_changed {value}")
         self.refresh_required = True
         self.settings["Unique direction - k"] = value
         return
@@ -604,7 +605,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The h, k or l value
 
         """
-        self.debugger.print(self.settings["Legend"],"on_l_sb_changed", value)
+        logger.debug(f"{self.settings['Legend']} on_l_sb_changed {value}")
         self.refresh_required = True
         self.settings["Unique direction - l"] = value
         return
@@ -618,7 +619,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The index in the list of shapes
 
         """
-        self.debugger.print(self.settings["Legend"],"on shape cb activated", index)
+        logger.debug(f"{self.settings['Legend']} on shape cb activated {index}")
         self.refresh_required = True
         self.settings["Particle shape"] = self.shapes[index]
         if self.settings["Particle shape"] == "Sphere":
@@ -637,7 +638,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The index in the list of methods
 
         """
-        self.debugger.print(self.settings["Legend"],"on methods cb activated", index)
+        logger.debug(f"{self.settings['Legend']} on methods cb activated {index}")
         self.refresh_required = True
         self.settings["Effective medium method"] = self.methods[index]
         if self.settings["Effective medium method"] == "Mie" or self.settings["Effective medium method"] == "Anisotropic-Mie":
@@ -661,7 +662,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The mass fraction
 
         """
-        self.debugger.print(self.settings["Legend"],"on mass fraction line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on mass fraction line edit changed {value}")
         self.refresh_required = True
         self.settings["Mass or volume fraction"] = "mass"
         self.settings["Mass fraction"] =  value/100.0
@@ -693,10 +694,10 @@ class PowderInfraredScenarioTab(ScenarioTab):
         self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings["Volume fraction"]))
         self.vf_sb.setRange(0.0, 100.0*(1.0-self.settings["Bubble volume fraction"]))
         self.vf_sb.blockSignals(blocking_state)
-        self.debugger.print(self.settings["Legend"],"Update_vf_sb")
-        self.debugger.print(self.settings["Legend"],"rho 1", rho1)
-        self.debugger.print(self.settings["Legend"],"rho 2", rho2)
-        self.debugger.print(self.settings["Legend"],"vf 1 ", vf1)
+        logger.debug(f"{self.settings['Legend']} Update_vf_sb")
+        logger.debug(f"{self.settings['Legend']} rho 1 {rho1}")
+        logger.debug(f"{self.settings['Legend']} rho 2 {rho2}")
+        logger.debug(f"{self.settings['Legend']} vf 1 {vf1}")
         return
 
     def on_aoverb_sb_changed(self,value):
@@ -708,7 +709,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The a/b ratio of the elllipsoid
 
         """
-        self.debugger.print(self.settings["Legend"],"on_aoverb_le_changed",value)
+        logger.debug(f"{self.settings['Legend']} on_aoverb_le_changed {value}")
         self.refresh_required = True
         self.settings["Ellipsoid a/b"] = value
         return
@@ -722,7 +723,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The legend
 
         """
-        self.debugger.print(self.settings["Legend"],"on legend change", text)
+        logger.debug(f"{self.settings['Legend']} on legend change {text}")
         self.refresh_required = True
         self.settings["Legend"] = text
         return
@@ -736,7 +737,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The particle size distribution width in microns
 
         """
-        self.debugger.print(self.settings["Legend"],"on sigma line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on sigma line edit changed {value}")
         self.refresh_required = True
         self.settings["Particle size distribution sigma(mu)"] = value
         return
@@ -750,7 +751,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The particle size in microns
 
         """
-        self.debugger.print(self.settings["Legend"],"on size line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on size line edit changed {value}")
         self.refresh_required = True
         self.settings["Particle size(mu)"] = value
         return
@@ -764,12 +765,12 @@ class PowderInfraredScenarioTab(ScenarioTab):
             The volume fraction
 
         """
-        self.debugger.print(self.settings["Legend"],"Start:: on_vf_sb_changed", value)
+        logger.debug(f"{self.settings['Legend']} Start:: on_vf_sb_changed {value}")
         self.refresh_required = True
         self.settings["Mass or volume fraction"] = "volume"
         self.settings["Volume fraction"] = value/100.0
         self.update_mf_sb()
-        self.debugger.print(self.settings["Legend"],"Finished:: on_vf_sb_changed", value)
+        logger.debug(f"{self.settings['Legend']} Finished:: on_vf_sb_changed {value}")
         return
 
     def update_mf_sb(self):
@@ -780,7 +781,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print(self.settings["Legend"],"Start:: update_mf_sb")
+        logger.debug(f"{self.settings['Legend']} Start:: update_mf_sb")
         vf1 = self.settings["Volume fraction"]
         vf2 = 1.0 - vf1 - self.settings["Bubble volume fraction"]
         rho1 = self.crystal_density()
@@ -791,11 +792,11 @@ class PowderInfraredScenarioTab(ScenarioTab):
         self.mf_sb.blockSignals(True)
         self.mf_sb.setValue(100.0*mf1)
         self.mf_sb.blockSignals(blocking_state)
-        self.debugger.print(self.settings["Legend"],"Update_mf_sb")
-        self.debugger.print(self.settings["Legend"],"rho 1", rho1)
-        self.debugger.print(self.settings["Legend"],"rho 2", rho2)
-        self.debugger.print(self.settings["Legend"],"mf 1 ", mf1)
-        self.debugger.print(self.settings["Legend"],"Finished:: update_mf_sb")
+        logger.debug(f"{self.settings['Legend']} Update_mf_sb")
+        logger.debug(f"{self.settings['Legend']} rho 1 {rho1}")
+        logger.debug(f"{self.settings['Legend']} rho 2 {rho2}")
+        logger.debug(f"{self.settings['Legend']} mf 1 {mf1}")
+        logger.debug(f"{self.settings['Legend']} Finished:: update_mf_sb")
         return
 
     def on_matrix_cb_activated(self,index):
@@ -816,8 +817,8 @@ class PowderInfraredScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print(self.settings["Legend"],"on matrix combobox activated", index)
-        self.debugger.print(self.settings["Legend"],"on matrix combobox activated", self.matrix_cb.currentText())
+        logger.debug(f"{self.settings['Legend']} on matrix combobox activated {index}")
+        logger.debug(f"{self.settings['Legend']} on matrix combobox activated {self.matrix_cb.currentText()}")
         # We will need to recalculate everything for a new support matrix
         self.refresh_required = True
         # matrix is the name of the sheet in the database
@@ -852,7 +853,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
                 # Store the new matrix material name
                 self.settings["Matrix"] = matrix
             else:
-                print("Error: matrix material must have a scalar permittivity")
+                logger.error("Error: matrix material must have a scalar permittivity")
         # The permittivity may be frequency dependent, show the value at 0 cm-1
         self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
         self.settings["Matrix permittivity"] = self.matrixPermittivityFunction(0.0)
@@ -909,7 +910,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         else:
             self.update_vf_sb()
             self.update_mf_sb()
-        self.debugger.print(self.settings["Legend"],"on density line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on density line edit changed {value}")
         self.refresh_required = True
         self.refresh()
         self.refresh_required = True
@@ -933,7 +934,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             self.update_mf_sb()
         else:
             self.update_vf_sb()
-        self.debugger.print(self.settings["Legend"],"on bubble volume fraction changed", value)
+        logger.debug(f"{self.settings['Legend']} on bubble volume fraction changed {value}")
         self.refresh_required = True
         return
 
@@ -953,7 +954,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         """        
         self.settings["Bubble radius"] = value
-        self.debugger.print(self.settings["Legend"],"on bubble raduys line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on bubble raduys line edit changed {value}")
         self.refresh_required = True
         return
 
@@ -984,7 +985,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         self.matrixMaterial.set_permittivity_object(newPermittivityObject)
         self.settings["Matrix"] = "Material defined manually"
         self.materialDefinedManually = True
-        self.debugger.print(self.settings["Legend"],"on imaginary permittivity line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on imaginary permittivity line edit changed {value}")
         self.refresh()
         self.refresh_required = True
         return
@@ -1009,7 +1010,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         self.matrixMaterial.set_permittivity_object(newPermittivityObject)
         self.settings["Matrix"] = "Material defined manually"
         self.materialDefinedManually = True
-        self.debugger.print(self.settings["Legend"],"on permittivity line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on permittivity line edit changed {value}")
         self.refresh()
         self.refresh_required = True
         return
@@ -1033,7 +1034,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         """        
         self.settings["ATR material refractive index"] = value
-        self.debugger.print(self.settings["Legend"],"on atr index line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on atr index line edit changed {value}")
         self.refresh_required = True
         return
 
@@ -1054,7 +1055,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         """        
         self.settings["ATR theta"] = value
-        self.debugger.print(self.settings["Legend"],"on atr incident angle line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on atr incident angle line edit changed {value}")
         self.refresh_required = True
         return
 
@@ -1078,7 +1079,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         """        
         self.settings["ATR S polarisation fraction"] = value
-        self.debugger.print(self.settings["Legend"],"on atr spolfraction line edit changed", value)
+        logger.debug(f"{self.settings['Legend']} on atr spolfraction line edit changed {value}")
         self.refresh_required = True
         return
 
@@ -1109,7 +1110,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
           it disables these spinboxes.
 
         """        
-        self.debugger.print(self.settings["Legend"],"Start:: change_greyed_out")
+        logger.debug(f"{self.settings['Legend']} Start:: change_greyed_out")
         method = self.settings["Effective medium method"]
         if method in ( "Mie",  "Anisotropic-Mie" ):
             self.size_sb.setEnabled(True)
@@ -1123,7 +1124,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
                 self.shape_cb.model().item(index).setEnabled(True)
                 self.shape_cb.setCurrentIndex(index)
             else:
-                print("Method index was not 0",self.settings["Particle shape"])
+                logger.error(f"Method index was not 0 {self.settings['Particle shape']}")
         elif method == "Averaged Permittivity":
             self.size_sb.setEnabled(False)
             self.sigma_sb.setEnabled(False)
@@ -1172,8 +1173,8 @@ class PowderInfraredScenarioTab(ScenarioTab):
             self.l_sb.setEnabled(False)
             self.aoverb_sb.setEnabled(False)
         else:
-            print("ScenarioTab: Shape not recognised", self.settings["Particle shape"])
-        self.debugger.print(self.settings["Legend"],"Finished:: change_greyed_out")
+            logger.warning(f"ScenarioTab: Shape not recognised {self.settings['Particle shape']}")
+        logger.debug(f"{self.settings['Legend']} Finished:: change_greyed_out")
         return
 
     def calculate(self, vs_cm1):
@@ -1191,17 +1192,17 @@ class PowderInfraredScenarioTab(ScenarioTab):
 
         """
         # Only allow a calculation if the plottingTab is defined
-        self.debugger.print(self.settings["Legend"],"Start:: calculate")
+        logger.debug(f"{self.settings['Legend']} Start:: calculate")
         if not self.calculation_required:
-            self.debugger.print(self.settings["Legend"],"Finished:: calculate - immediate return because calculation_required false")
+            logger.debug(f"{self.settings['Legend']} Finished:: calculate - immediate return because calculation_required false")
             return
         if self.notebook.plottingTab is None:
-            self.debugger.print(self.settings["Legend"],"Finished:: calculate - immediate return because plottingTab unavailable")
+            logger.debug(f"{self.settings['Legend']} Finished:: calculate - immediate return because plottingTab unavailable")
             return
         if self.reader is None:
-            self.debugger.print(self.settings["Legend"],"Finished:: calculate - immediate return because reader unavailable")
+            logger.debug(f"{self.settings['Legend']} Finished:: calculate - immediate return because reader unavailable")
             return
-        self.debugger.print(self.settings["Legend"],"calculate - number of frequencies",len(vs_cm1))
+        logger.debug(f"{self.settings['Legend']} calculate - number of frequencies {len(vs_cm1)}")
         cell = self.reader.get_unit_cell()
         shape = self.settings["Particle shape"]
         hkl = [self.settings["Unique direction - h"], self.settings["Unique direction - k"], self.settings["Unique direction - l"]]
@@ -1247,7 +1248,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,self.matrixPermittivityFunction,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared)
         if self.notebook.pool is None:
             self.notebook.start_pool()
-        self.debugger.print("About to use the pool to calculate effective medium equations")
+        logger.debug("About to use the pool to calculate effective medium equations")
         results = []
         for result in self.notebook.pool.imap(partial_function, zip(vs_cm1,crystalPermittivity), chunksize=20):
             results.append(result)
@@ -1259,7 +1260,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         self.molarAbsorptionCoefficient = []
         self.sp_atr = []
         self.vs_cm1 = []
-        self.debugger.print("Extracting results")
+        logger.debug("Extracting results")
         for v,_method,_size_mu,_size_sigma,_shape,_data,trace,absorption_coefficient,molar_absorption_coefficient,spatr in results:
              self.realPermittivity.append(np.real(trace))
              self.imagPermittivity.append(np.imag(trace))
@@ -1269,7 +1270,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
              self.vs_cm1.append(v)
         self.calculation_required = False
         QCoreApplication.processEvents()
-        self.debugger.print(self.settings["Legend"],"Finished:: calculate")
+        logger.debug(f"{self.settings['Legend']} Finished:: calculate")
         return
 
     def get_result(self, vs_cm1, plot_type):
@@ -1289,9 +1290,9 @@ class PowderInfraredScenarioTab(ScenarioTab):
             A list of the required results.
 
         """
-        self.debugger.print(self.settings["Legend"],"Start:: get_result")
+        logger.debug(f"{self.settings['Legend']} Start:: get_result")
         self.get_results(vs_cm1)
-        self.debugger.print(self.settings["Legend"],"Finished:: get_result")
+        logger.debug(f"{self.settings['Legend']} Finished:: get_result")
         return { "Powder Molar Absorption"      : self.molarAbsorptionCoefficient,
                  "Powder Absorption"            : self.absorptionCoefficient,
                  "Powder Real Permittivity"     : self.realPermittivity,
@@ -1316,15 +1317,15 @@ class PowderInfraredScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print(self.settings["Legend"],"Start:: get_results", len(vs_cm1))
+        logger.debug(f"{self.settings['Legend']} Start:: get_results {len(vs_cm1)}")
         if len(vs_cm1) > 0 and ( self.refresh_required or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1] ) :
-            self.debugger.print(self.settings["Legend"],"get_results recalculating")
+            logger.debug(f"{self.settings['Legend']} get_results recalculating")
             self.refresh()
             self.calculate(vs_cm1)
         else:
-            self.debugger.print(self.settings["Legend"],"get_results no need for recalculation")
+            logger.debug(f"{self.settings['Legend']} get_results no need for recalculation")
             self.notebook.progressbars_update(increment=len(vs_cm1))
-        self.debugger.print(self.settings["Legend"],"Finished:: get_results", len(vs_cm1))
+        logger.debug(f"{self.settings['Legend']} Finished:: get_results {len(vs_cm1)}")
         return
 
 
@@ -1341,9 +1342,9 @@ class PowderInfraredScenarioTab(ScenarioTab):
         None
 
         """
-        self.debugger.print(self.settings["Legend"],"Start:: refresh, force =", force)
+        logger.debug(f"{self.settings['Legend']} Start:: refresh, force = {force}")
         if not self.refresh_required and not force:
-            self.debugger.print(self.settings["Legend"],"Finished:: refresh aborted", self.refresh_required,force)
+            logger.debug(f"{self.settings['Legend']} Finished:: refresh aborted {self.refresh_required} {force}")
             return
         # Force a recalculation
         self.calculation_required = True
@@ -1356,7 +1357,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             w.blockSignals(True)
         # Update the database 
         if self.settings["Materials database"] != self.DataBase.get_file_name():
-            self.DataBase = MaterialsDataBase(self.settings["Materials database"],debug=self.debugger.state())
+            self.DataBase = MaterialsDataBase(self.settings["Materials database"])
             self.settings["Materials database"] = self.DataBase.get_file_name()
             self.database_le.setText(self.settings["Materials database"])
             # Update the possible  material names from the database
@@ -1374,8 +1375,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
             self.settings["Matrix permittivity"] = self.matrixPermittivityFunction(0.0)
             self.settings["Matrix density"] = self.matrixMaterial.get_density()
         else:
-            print("Error: matrix ",self.settings["Matrix"]," not available in database")
-            print("       available materials are:", self.materialNames)
+            logger.error(f"Error: matrix {self.settings['Matrix']} not available in database; available materials are: {self.materialNames}")
             sys.exit()
         # Reset the matrix combo box with new names
         self.matrix_cb.clear()
@@ -1422,5 +1422,5 @@ class PowderInfraredScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         self.refresh_required = False
-        self.debugger.print(self.settings["Legend"],"Finished:: refresh, force =", force)
+        logger.debug(f"{self.settings['Legend']} Finished:: refresh, force = {force}")
         return

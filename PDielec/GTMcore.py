@@ -96,6 +96,9 @@ import numpy as np
 import scipy.linalg as lag
 
 from PDielec.Constants import epsilon_0_si, speed_light_si
+import logging
+logger = logging.getLogger(__name__)
+
 
 #
 # JK using PDielec constants
@@ -204,10 +207,10 @@ def exact_inv_4x4(M):
 
     if detA == 0:
         try:
-            print("Warning 4x4 inversion problem 1")
+            logger.warning("Warning 4x4 inversion problem 1")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
         except (ValueError, np.linalg.LinAlgError):
-            print("Warning 4x4 inversion problem 2")
+            logger.warning("Warning 4x4 inversion problem 2")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
         return result
 
@@ -1552,7 +1555,7 @@ class System:
         if pos >= 0 and pos < len(self.layers):
             self.layers.pop(pos)
         else:
-            print("Wrong position given. No layer deleted")
+            logger.error("Wrong position given. No layer deleted")
 
     def initialize_sys(self, f):
         """Set the values of epsilon at the given frequency in all the layers.

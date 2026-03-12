@@ -21,6 +21,9 @@ import sys
 from os.path import splitext
 
 from termcolor import colored
+import logging
+logger = logging.getLogger(__name__)
+
 
 global separator
 global threshold
