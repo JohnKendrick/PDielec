@@ -309,7 +309,7 @@ class App(QMainWindow):
         print("pdgui - graphical user interface to the PDielec package")
         print("pdgui [program] filename [spreadsheet] [options]")
         print("     program      The name of the program which created the outputfile")
-        print("                  Should be one of; vasp, phonopy, gulp, castep, abinit or qe")
+        print("                  Should be one of; vasp, aims, phonopy, gulp, castep, abinit or qe")
         print("                  If the program is not given a best guess is made from the output filename")
         print("    filename      The name of the output file")
         print(" spreadsheet file The optional name of a spreadsheet (file must end with .xlsx")

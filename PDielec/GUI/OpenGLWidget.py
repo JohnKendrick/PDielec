@@ -1535,7 +1535,7 @@ class OpenGLWidget(QOpenGLWidget):
         #glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
         glEnable(GL_BLEND)
         self.defineLights()
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        # causes a crash on MACs glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.background_colour = np.array(self.viewerTab.settings["Background colour"])/255.0
         glClearColor(*self.background_colour)
 

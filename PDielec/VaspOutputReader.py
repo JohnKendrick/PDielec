@@ -1039,10 +1039,7 @@ class VaspOutputReader(GenericOutputReader):
 
             # hessian tensor
             xml = calcxml.find('dynmat/i[@name="unit"]')
-            if xml is not None:
-                unit=xml
-            else:
-                unit=None
+            unit = xml if xml is not None else None
             xml = calcxml.find('dynmat/varray[@name="hessian"]')
             if xml is not None:
                 hessian = []
@@ -1082,13 +1079,7 @@ class VaspOutputReader(GenericOutputReader):
         #
         evtoj = 1.60217733E-19    # Taken from VASP5.4
         amtokg = 1.6605402E-27    # Taken from VASP5.4
-        if unit is not None:
-            # Convert to hertz
-            conversion = -1.0E24
-        else:
-            # convert to hertz        # Taken from VASP5.4
-            conversion = -evtoj /amtokg / (4*np.pi *np.pi) / 1.0E-10**2 
-        # convert to hertz to au
+        conversion = -1e+24 if unit is not None else -evtoj / amtokg / (4 * np.pi * np.pi) / 1e-10 ** 2
         conversion *= hertz**2
         if hessian is not None:
             hessian = conversion * np.array(hessian)

@@ -14,7 +14,10 @@ pip install sphinxcontrib.bibtex
 pip install cloud_sptheme
 pip install furo
 
-To fix the cloud_sptheme.
+To fix the cloud_sptheme using micromamba.
+cp cloud_sptheme-ext-index_styling.py.new /home/john/micromamba/envs/develop/lib/python3.14/site-packages/cloud_sptheme/ext/index_styling.py
+
+To fix the cloud_sptheme using Conda
 # Store the current sphinx directory in a variable
 t=`pwd`
 # cd to the cloud_sptheme library

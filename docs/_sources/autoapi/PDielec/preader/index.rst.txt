@@ -10,7 +10,7 @@ PDielec.preader
    ::
 
        preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
-         "program" must be one of "abinit", "castep", "crystal", "gulp"
+         "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
                   "phonopy", "qe", "vasp", "experiment", "auto"
                   The default is auto, so the program tries to guess the package from
                   the contents of the directory.  However this is not fool-proof!
@@ -61,7 +61,7 @@ Module Contents
    ::
 
        preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
-         "program" must be one of "abinit", "castep", "crystal", "gulp"
+         "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
                   "phonopy", "qe", "vasp", "experiment", "auto"
                   The default is auto, so the program tries to guess the package from
                   the contents of the directory.  However this is not fool-proof!

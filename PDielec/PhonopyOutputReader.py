@@ -15,6 +15,8 @@
 #
 """Read the contents of a directory containing Phonopy input and output files."""
 
+import sys
+
 import numpy as np
 
 from PDielec.Constants import thz2cm1
@@ -120,7 +122,7 @@ class PhonopyOutputReader(GenericOutputReader):
         try:
             from yaml import CLoader as Loader
         except Exception:
-            print("WARNING: Yaml CLoader is not avaiable, using fallback")
+            print("WARNING: Yaml CLoader is not avaiable, using fallback",file=sys.stderr)
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
         with open(qpoints_filename) as fd:
@@ -151,16 +153,11 @@ class PhonopyOutputReader(GenericOutputReader):
         #
         # Determine axes and cells
         #
-        if "primitive_axes" in data_p["phonopy"]["configuration"]:
-            primitive_axes = data_p["phonopy"]["configuration"]["primitive_axes"]
-        else:
-            primitive_axes = None
         if "primitive_matrix" in data_p:
             self.primitive_transformation = data_p["primitive_matrix"]
         else:
             self.primitive_transformation = None
         primitive_cell = self.read_cell(data_p["primitive_cell"]) if "primitive_cell" in data_p else None
-        unit_cell = self.read_cell(data_p["unit_cell"]) if "unit_cell" in data_p else None
         #
         # Use the cell that is consistent with the primitive_axes
         #

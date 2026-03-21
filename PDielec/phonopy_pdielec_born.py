@@ -26,8 +26,9 @@ phonopy-pdielec-born BORN-PDIELEC
 
 import os
 import sys
-import phonopy
 from contextlib import nullcontext
+
+import phonopy
 from phonopy.file_IO import parse_BORN
 
 

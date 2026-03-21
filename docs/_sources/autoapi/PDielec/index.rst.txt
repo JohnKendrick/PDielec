@@ -38,6 +38,7 @@ Submodules
    :maxdepth: 1
 
    /autoapi/PDielec/AbinitOutputReader/index
+   /autoapi/PDielec/AimsOutputReader/index
    /autoapi/PDielec/Calculator/index
    /autoapi/PDielec/CastepOutputReader/index
    /autoapi/PDielec/Constants/index
@@ -60,6 +61,7 @@ Submodules
    /autoapi/PDielec/UnitCell/index
    /autoapi/PDielec/Utilities/index
    /autoapi/PDielec/VaspOutputReader/index
+   /autoapi/PDielec/aims_pdielec_born/index
    /autoapi/PDielec/checkcsv/index
    /autoapi/PDielec/checkexcel/index
    /autoapi/PDielec/graphdatagenerator/index

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdielec"
-version = "9.0.1"
+version = "9.1.0"
 dependencies = [
     "setuptools",
     "scipy",
@@ -25,7 +25,7 @@ dependencies = [
     "imageio",
     "imageio-ffmpeg",
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 authors = [
   {name = "John Kendrick", email = "john@kendrick.me.uk"},
   {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
@@ -43,12 +43,13 @@ keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Sp
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Operating System :: OS Independent",
 ]
 
@@ -64,6 +65,7 @@ preader              = "PDielec.preader:main"
 p2cif                = "PDielec.p2cif:main"
 pdcompare            = "PDielec.pdcompare:main"
 phonopy-pdielec-born = "PDielec.phonopy_pdielec_born:main"
+aims-pdielec-born    = "PDielec.aims_pdielec_born:main"
 pickled_reader       = "PDielec.pickled_reader:main"
 vibanalysis          = "PDielec.vibanalysis:main"
 pdmake               = "PDielec.pdmake:main"

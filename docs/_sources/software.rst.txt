@@ -8,17 +8,17 @@
 
 .. meta::
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, Phonopy, QE
+   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE
 
 
 =========================
 Other Software Components
 =========================
 
-PReader
+preader
 =======
 
-preader is a 'helper' program that uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  
+preader is a 'helper' program that uses the underlying modules of PDielec to read output files and summarise the results of several MM/QM packages.  The program can be used to perform some straightforward calculations.  
 For instance, projection of any remaining centre-of-mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also, the masses used in the calculation of the dynamical matrix can be altered.
 Unlike PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases, preader will read geometry optimisation runs.
 
@@ -124,7 +124,7 @@ Examples of the use of the command are;::
 MM/QM Interfaces
 ================
 
-The packages have interfaces to five solid-state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009` and Phonopy :cite:`Togo2015`.  In addition, an interface is available for GULP :cite:`Gale2003` which is a force field based solid-state code. Finally, an interface has been written to an 'experiment' file format which allows the preparation of a user-defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
+The packages have interfaces to six solid-state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009`, FHI-Aims :cite:`Blum2009` and Phonopy :cite:`Togo2015`.  In addition, an interface is available for GULP :cite:`Gale2003` which is a force field based solid-state code. Finally, an interface has been written to an 'experiment' file format which allows the preparation of a user-defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
 The package used for the calculation is described by the -program option. In addition, a file name is given which contains the output to be processed by PDielec.
 
 VASP 
@@ -154,6 +154,16 @@ QE
 The output file is the dynamical matrix file, specified by "filedyn" in a run of the quantum espresso phonon package. Examples of input and output files are given in the PDielec distribution.  It is assumed that this files ends with a ".dynG" extension.
 The latest version of QE for which the package has been tested is version 7.3.1.  
 pdgui is capable of reading the output log file of pwscf and ph, but it is recommended to use the pwscf.xml and the .dynG file written by ph and pwscf.
+
+FHI-Aims
+--------
+The vibrational frequencies and intensities calculation using FHI-Aims and the get_vibrations.py script which is distributed with it.  
+After determining the optimised cell, the script is used to generate perturbed single point calculations of the forces and the polarization which are then used to provide data for numerical differentiation to form the hessian and the IR intensities.
+An example of the output from these calculations is provided in Examples/FHI-Aims/Na2SO42.
+In this example, PDGui requires the hessian.na2so42.dat, masses.na2so42.dat, geometry.in and the Dielectric/ directory.
+The Dielectric/ directory contains an FHI-Aims calculation of the electronic permittivity (:math:`\epsilon_{\infin}`). 
+
+
 
 PHONOPY 
 -------

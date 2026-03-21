@@ -112,10 +112,11 @@ class CrystalOutputReader(GenericOutputReader):
         There are no return values. Modifications are made directly to the instance attributes.
 
         """        
-        try:
+        splitline = line.split()
+        if "DE" in splitline[3]:
+            self.final_free_energy = hartree2ev*float(line.split()[2])
+        else:
             self.final_free_energy = hartree2ev*float(line.split()[3])
-        except Exception:
-            self.final_free_energy = 0.0
         self.final_energy_without_entropy = self.final_free_energy
 
     def _read_energy2(self, line):
@@ -137,7 +138,7 @@ class CrystalOutputReader(GenericOutputReader):
 
         """        
         try:
-            self.final_free_energy = hartree2ev*float(line.split()[5])
+            self.final_free_energy = hartree2ev*float(line.split()[-1])
         except Exception:
             self.final_free_energy = 0.0
         self.final_energy_without_entropy = self.final_free_energy

@@ -564,7 +564,7 @@ Module Contents
 
 
 .. py:data:: test_preader
-   :value: ['Castep/preader', 'Vasp/preader', 'Phonopy/preader', 'Gulp/preader', 'Crystal/preader',...
+   :value: ['Castep/preader', 'Vasp/preader', 'Phonopy/preader', 'FHI-Aims/preader', 'Gulp/preader',...
 
 
 .. py:data:: test_singlecrystal

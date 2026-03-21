@@ -122,7 +122,8 @@ class GenericOutputReader:
 
         """        
         # Test to see if all the files needed are there
-        if not all( [ os.path.isfile(f) for f in filenames ] ):
+        # the test on "ignore" is present because of the FHI-Aims interface
+        if not all( [ os.path.isfile(f) for f in filenames if "ignore" not in f ] ):
             print("Error in calling the generic output reader some files are not present")
             print(filenames)
             return
