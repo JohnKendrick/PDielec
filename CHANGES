@@ -1,4 +1,5 @@
 version 9.1.0
+   Fixed a bug in the opengl module that caused crashed on MACs
    Added support for FHI-Aims output
    Fixed bugs in the CRYSTAL reader
    Changed the default matrix material from air to ptfe 
