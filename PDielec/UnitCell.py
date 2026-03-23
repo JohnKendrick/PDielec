@@ -620,6 +620,7 @@ class UnitCell:
         y = a * (np.cos(gamma) - np.cos(alpha)*np.cos(beta))/np.sin(alpha)
         x = a * np.sqrt(1.0 - np.cos(beta)**2 - (y/a)**2)
         lattice[0] = [x, y, z]
+        self.lattice = np.array(lattice)
         self._calculate_reciprocal_lattice()
         return self.lattice
 

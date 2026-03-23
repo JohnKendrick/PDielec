@@ -1350,13 +1350,18 @@ class OpenGLWidget(QOpenGLWidget):
 
         """        
         height = self.height()
+        dpr = self.devicePixelRatio()
 
         model = glGetDoublev(GL_MODELVIEW_MATRIX)
         proj  = glGetDoublev(GL_PROJECTION_MATRIX)
         view  = glGetIntegerv(GL_VIEWPORT)
         if not screen_coordinates:
             textPosX, textPosY, textPosZ = gluProject(x, y, z, model, proj, view)
-            textPosY = height - textPosY
+            # gluProject returns physical pixel coordinates (OpenGL viewport space).
+            # On HiDPI/Retina displays (macOS), devicePixelRatio > 1, so divide by
+            # dpr to convert to logical pixels for QPainter.
+            textPosX = textPosX / dpr
+            textPosY = height - textPosY / dpr
         else:
             textPosX = x
             textPosY = height-y
@@ -1535,7 +1540,7 @@ class OpenGLWidget(QOpenGLWidget):
         #glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
         glEnable(GL_BLEND)
         self.defineLights()
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        # causes a crash on MACs glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.background_colour = np.array(self.viewerTab.settings["Background colour"])/255.0
         glClearColor(*self.background_colour)
 
