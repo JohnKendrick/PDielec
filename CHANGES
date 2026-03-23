@@ -1,3 +1,5 @@
+version 9.1.1
+   Fixed a MAC bug, where the axes label in the viewerTab didn't follow the axes rotation
 version 9.1.0
    Fixed a bug in the opengl module that caused crashed on MACs
    Added support for FHI-Aims output
