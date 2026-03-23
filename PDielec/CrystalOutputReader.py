@@ -726,7 +726,7 @@ class CrystalOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()   # Skip ATOMS IN THE ASYMMETRIC UNIT
         self._read_fractional_coordinates(line)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         # The fractional coordinates are specified before the lattice vectors
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
         self.unit_cells[-1].set_element_names(self.species_list)
