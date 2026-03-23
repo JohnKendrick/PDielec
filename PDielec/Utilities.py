@@ -18,6 +18,8 @@
 A set of utility functions that may be used anywhere in the package.
 """
 
+import glob
+import logging
 import os
 import sys
 
@@ -30,6 +32,9 @@ from PDielec.GulpOutputReader import GulpOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.VaspOutputReader import VaspOutputReader
+
+logger = logging.getLogger(__name__)
+
 
 
 def printsp(name,matrix):
@@ -51,14 +56,14 @@ def printsp(name,matrix):
     None
 
     """
-    print("")
-    print(name)
+    logger.debug("")
+    logger.debug(name)
     if len(matrix.shape) == 1:
         columns = matrix.shape[0]
         string = ""
         for i in range(columns):
             string = string + f"{matrix[i]:+.5f}" + "   "
-        print(string)
+        logger.debug(string)
     else:
         rows = matrix.shape[0]
         columns = matrix.shape[1]
@@ -66,7 +71,7 @@ def printsp(name,matrix):
             string = ""
             for i in range(columns):
                 string = string + f"{matrix[j,i]:+.5f}" + "   "
-            print(string)
+            logger.debug(string)
     return
 
 def find_program_from_name( filename ):
@@ -85,7 +90,9 @@ def find_program_from_name( filename ):
 
     Notes
     -----
-    This function examines the file extension and, in some cases, the presence of specific files in the same directory, to determine the associated simulation program. It recognizes files from several popular materials simulation programs, such as 'phonopy', 'gulp', 'vasp', and others.
+    This function examines the file extension and, in some cases, the presence of specific files in the same directory,
+    to determine the associated simulation program. It recognizes files from several popular materials simulation
+    programs, such as 'phonopy', 'gulp', 'vasp', and others.
 
     Examples
     --------
@@ -128,9 +135,9 @@ def find_program_from_name( filename ):
             return "crystal"
     if ext ==  ".log":
         if os.path.isfile(head_root+".files"):
-            return "abinit",""
+            return "abinit"
         elif os.path.isfile(head_root+".dynG"):
-            return "quantum espresso",""
+            return "quantum espresso"
         else:
             return "crystal"
     if ext ==  ".dat":
@@ -149,19 +156,20 @@ def find_program_from_name( filename ):
         return "aims"
     return ""
 
-def get_reader( name, program, debug=False):
+def get_reader( name, program):
     """Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
 
-    This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.
+    This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP,
+    etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the
+    specified quantum mechanical program.
 
     Parameters
     ----------
     name : str
         The primary filepath or name associated with the output file(s).
     program : str
-        The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit', 'qe', and 'phonopy'.
-    debug : boolean
-        Optional.  If true print debug information.  Default is false
+        The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit',
+        'qe', and 'phonopy'.
 
     Returns
     -------
@@ -173,18 +181,17 @@ def get_reader( name, program, debug=False):
     >>> reader = get_reader("output.log", "castep")
     >>> reader = get_reader("output", "phonopy")
 
-    """    
+    """
     program = program.lower()
     fulldirname = name
     head,tail = os.path.split(fulldirname)
     root,ext = os.path.splitext(tail)
-    if debug:
-        print("get_reader:  program = ",program)
-        print("get_reader:  fulldirname = ",fulldirname)
-        print("get_reader:  head = ",head)
-        print("get_reader:  tail = ",tail)
-        print("get_reader:  root = ",root)
-        print("get_reader:  ext = ",ext)
+    logger.debug(f"get_reader:  program = {program}")
+    logger.debug(f"get_reader:  fulldirname = {fulldirname}")
+    logger.debug(f"get_reader:  head = {head}")
+    logger.debug(f"get_reader:  tail = {tail}")
+    logger.debug(f"get_reader:  root = {root}")
+    logger.debug(f"get_reader:  ext = {ext}")
     if program == "castep":
         names = [ name ]
         reader = CastepOutputReader( names )
@@ -231,8 +238,7 @@ def get_reader( name, program, debug=False):
             for n in [ name1, name2, name3 ]:
                 if os.path.isfile(n):
                     names.append(n)
-        if debug:
-            print("get_reader:  names = ",names,flush=True)
+        logger.debug(f"get_reader:  names = {names}")
         reader = QEOutputReader( names )
     elif program == "phonopy":
         # The order is important
@@ -245,7 +251,6 @@ def get_reader( name, program, debug=False):
         if root.endswith(".dat"):
             identifier = root.split(".")[1]
         else:
-            import glob
             all_files = glob.glob(os.path.join(head,"hessian.*.dat"))
             if len(all_files) < 1:
                 identifier="unkown_and_ignore"
@@ -271,76 +276,8 @@ def get_reader( name, program, debug=False):
         names = [ name ]
         reader = ExperimentOutputReader(names)
     else:
-        print("Program name not recognized",program,file=sys.stderr)
+        logger.debug(f"Program name not recognized {program}")
         sys.exit()
     return reader
 
-class Debug:
-    """A class aimed at providing a structured way to include debug messages in code.
-
-    Methods
-    -------
-    print(args, level=0)
-        Prints debug messages based on the debug level provided as argument compared to the object's debug level.
-    state()
-        Returns the current state (enabled or disabled) of debugging.
-
-    Notes
-    -----
-    The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
-
-    """
-
-    def __init__(self,debug,text,level=0):
-        """Initialize an instance with debug status, text, and optional level.
-
-        Parameters
-        ----------
-        debug : bool
-            A boolean indicating whether debugging is enabled.
-        text : str
-            The text associated with the instance.
-        level : int, optional
-            The level of the instance, by default 0.
-
-        """        
-        self.debug = debug
-        self.text  = text
-        self.level = level
-        return
-
-    def print(self,*args,level=0):
-        """Print message if debugging level allows.
-
-        Parameters
-        ----------
-        args
-            Variable length argument list for the message to be printed.
-        level : int, optional
-            The level of the message that determines if it gets printed or not,
-            based on the instance's `level`. Default value is 0.
-
-        Notes
-        -----
-        This method will only print the message if the instance's `debug` flag is True
-        and the provided `level` is less than or equal to the instance's `level`.
-
-        """        
-        if self.debug and level <= self.level:
-            print(self.text,*args,flush=True)
-        return
-
-    def state(self,):
-        """Get the debug state.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        The current debug state.
-
-        """        
-        return self.debug
 

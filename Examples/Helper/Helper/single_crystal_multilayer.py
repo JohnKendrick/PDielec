@@ -20,20 +20,20 @@ examples_directory = os.path.join(home_directory,'Examples')
 sys.path.insert(0,home_directory)
 import numpy                      as np
 # Helper routines
-from PDielec.HelperRoutines   import getMaterial
-from PDielec.HelperRoutines   import calculatePowderSpectrum
-from PDielec.HelperRoutines   import calculateSingleCrystalSpectrum
+from PDielec.HelperRoutines   import get_material
+from PDielec.HelperRoutines   import calculate_powder_spectrum
+from PDielec.HelperRoutines   import calculate_single_crystal_spectrum
 # Utility routines
 from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer
 
 def singleCrystalTest():
     '''Test single crystal calculation'''
     # Define the materials
-    air1  = getMaterial('air')
-    ptfe = getMaterial('ptfe')
-    kbr  = getMaterial('kbr')
-    sapphire  = getMaterial('Sapphire')
-    air2  = getMaterial('air')
+    air1  = get_material('air')
+    ptfe = get_material('ptfe')
+    kbr  = get_material('kbr')
+    sapphire  = get_material('Sapphire')
+    air2  = get_material('air')
     # Prepare the layers
     layers = []
     # Add a substrate
@@ -45,14 +45,14 @@ def singleCrystalTest():
     frequencies_cm1 = np.array([200.0])
     incident_angle = 80.0
     global_azimuthal_angle = 0.0
-    (r_sm, t_sm, a_sm) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
+    (r_sm, t_sm, a_sm) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
     print('')
     print('Scattering matrix')
     print('R',r_sm[0], r_sm[1])
     print('T',t_sm[0], t_sm[1])
     print('A',a_sm[0], a_sm[1])
     print('S',r_sm[0]+t_sm[0]+a_sm[0], r_sm[1]+t_sm[1]+a_sm[1])
-    (r_tm, t_tm, a_tm) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Transfer matrix')
+    (r_tm, t_tm, a_tm) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Transfer matrix')
     print('')
     print('Transfer matrix')
     print('R',r_tm[0], r_tm[1])

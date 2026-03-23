@@ -4,13 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdielec"
-version = "9.1.1"
+version = "10.0.0"
 dependencies = [
     "setuptools",
     "scipy",
     "numpy",
     "matplotlib",
-    "openpyxl",
     "psutil",
     "PyOpenGL",
     "PyQt6",

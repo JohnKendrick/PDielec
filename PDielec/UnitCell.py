@@ -15,6 +15,7 @@
 #
 """Hold unit cell information and its associated calculated properties."""
 
+import logging
 import math
 import sys
 from contextlib import nullcontext
@@ -31,7 +32,7 @@ from PDielec.Calculator import (
 from PDielec.Constants import atomic_number_to_element, avogadro_si, covalent_radii, element_to_atomic_number
 from PDielec.Plotter import print_ints, print_reals, print_strings
 
-
+logger = logging.getLogger(__name__)
 def convert_length_units(value, units_in, units_out):
     """"Convert between different length units.
 
@@ -54,7 +55,8 @@ def convert_length_units(value, units_in, units_out):
 
     Notes
     -----
-    The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
+    The input can be either a scalar value, a list or a numpy array of values. The function will return the converted
+    value(s) in the output units specified.
 
     """
     # the conversion dictionary has a value that converts the key unit to angstroms
@@ -98,17 +100,20 @@ class UnitCell:
 
     Parameters
     ----------
-    a, b, c : float or array, optional
-        Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.
-    alpha, beta, gamma : float, optional
-        Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
-    units : str
-        An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
-        The internal unit is always the angstrom
+    a, b, c : float or array, optional Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0,
+    0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively. alpha, beta, gamma : float, optional Lattice angles (in
+    degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is
+    used. units : str An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is
+    Angstrom. The internal unit is always the angstrom
+
 
     Notes
     -----
-    This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
+    This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element
+    names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total
+    mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a,
+    b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors.
+    Finally, it calculates and sets the reciprocal lattice for the instance.
 
     Examples
     --------
@@ -134,16 +139,23 @@ class UnitCell:
         Parameters
         ----------
         a, b, c : float or array, optional
-            Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.
+            Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0],
+            and [0.0, 0.0, 1.0], respectively.
         alpha, beta, gamma : float, optional
-            Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
-        units : str
-            An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
-            The internal unit is always the angstrom
+            Lattice angles in degrees. These are only used if all three angles are specified, otherwise the default
+            orthorhombic lattice is used.
+        units : str, optional
+            Unit for lattice vectors, one of 'a.u.', 'au', 'bohr', 'angs', 'angstrom', 'Angs', 'Angstrom', or 'nm'.
+            The default is 'Angstrom'. Internally all values are stored in Angstrom.
+
 
         Notes
         -----
-        This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
+        This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element
+        names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total
+        mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters
+        (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice
+        vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
 
         Examples
         --------
@@ -253,7 +265,7 @@ class UnitCell:
 
         """        
         abc = [self.a, self.b, self.c]
-        volume = self.getVolume("Angstrom")
+        volume = self.get_volume("Angstrom")
         spg_symbol, spg_number = self.find_symmetry()
         # Open the filename if it is given
         with open(filename,"w") if filename else nullcontext(filedescriptor) as file_:
@@ -284,10 +296,11 @@ class UnitCell:
             print(" ",                                               file=file_)
         return
 
-    def getBoundingBox(self, originXYZ = None, originABC = None, units="Angstrom"):
+    def get_bounding_box(self, originXYZ = None, originABC = None, units="Angstrom"):
         """Generate the corners and edges of a bounding box.
 
-        This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
+        This method calculates the corners and edges of a bounding box based on predefined coordinates. These
+        coordinates are transformed using a conversion method before being paired into edges.
 
         Parameters
         ----------
@@ -302,16 +315,16 @@ class UnitCell:
 
         Returns
         -------
-        tuple of list
-            A tuple containing two elements:
-            - The first element is a list of corners' coordinates after conversion (`list` of `np.ndarray`).
-            - The second element is a list of tuples, each consisting of a pair of corners representing an edge (`list` of `tuple`).
+        tuple of list A tuple containing two elements: - The first element is a list of corners' coordinates after
+        conversion (`list` of `np.ndarray`). - The second element is a list of tuples, each consisting of a pair of
+        corners representing an edge (`list` of `tuple`).
+
 
         Example
         -------
         To fetch the bounding box coordinates and edges, simply call: ::
 
-            corners_xyz, edges = object.getBoundingBox()
+            corners_xyz, edges = object.get_bounding_box()
 
         """        
         if originABC is None and originXYZ is None:
@@ -365,7 +378,7 @@ class UnitCell:
         edges   = convert_length_units(edges  ,self.units,units)
         return corners_xyz,edges,labels
 
-    def getDensity(self, units="cm"):
+    def get_density(self, units="cm"):
         """Calculate the density of the crystal.
   
         Returns the density in g/cc.  If the mass is not known, then returns 1.0
@@ -381,7 +394,7 @@ class UnitCell:
             The density in gms/cc
 
         """
-        volume = self.getVolume(units=units)
+        volume = self.get_volume(units=units)
         mass = sum(self.atomic_masses) / avogadro_si
         if mass == 0:
             self.density = 1.0
@@ -392,7 +405,9 @@ class UnitCell:
     def print(self):
         """Print the details of the given unit cell.
 
-        This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.
+        This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha,
+        beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular
+        information if any molecules are defined within the unit cell.
 
         Parameters
         ----------
@@ -423,14 +438,14 @@ class UnitCell:
                 print_reals("",xyz, format="{:12.6f}")
             if self.molecules:
                 for molid,atoms in enumerate(self.molecules):
-                    mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atom_list=atoms,output="all")
+                    mass, cm_xyz, cm_frac = self.calculate_centre_of_mass(atom_list=atoms,output="all")
                     molstring = "Molecule "+str(molid)+":"
                     print_ints("Atoms in "+molstring,atoms)
                     print_reals("Mass of "+molstring,[ mass ], format="{:12.6f}")
                     print_reals("Centre of Mass  (xyz) of "+molstring, cm_xyz, format="{:12.6f}")
                     print_reals("Centre of Mass (frac) of "+molstring, cm_frac,format="{:12.6f}")
 
-    def calculateCentreOfMass(self,atom_list=None, output="xyz"):
+    def calculate_centre_of_mass(self,atom_list=None, output="xyz"):
         """Calculate the centre of mass for a given set of atoms.
 
         Parameters
@@ -447,12 +462,12 @@ class UnitCell:
 
         Returns
         -------
-        numpy.ndarray or float or tuple
-            The centre of mass as requested by output:
-            - If 'xyz', returns a numpy array with the x, y, z coordinates of the centre of mass.
-            - If 'mass', returns a float representing the total mass of the specified atoms.
-            - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
-            - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
+        numpy.ndarray or float or tuple The centre of mass as requested by output: - If 'xyz', returns a numpy array
+        with the x, y, z coordinates of the centre of mass. - If 'mass', returns a float representing the total mass of
+        the specified atoms. - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of
+        mass. - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and
+        fractional coordinates of the centre of mass is returned.
+
 
         See Also
         --------
@@ -460,11 +475,11 @@ class UnitCell:
 
         Examples
         --------
-        >>> calculateCentreOfMass(atom_list=[1, 2, 3], output='xyz')
+        >>> calculate_centre_of_mass(atom_list=[1, 2, 3], output='xyz')
         array([0.1, 0.2, 0.3])
-        >>> calculateCentreOfMass(output='mass')
+        >>> calculate_centre_of_mass(output='mass')
         50.2
-        >>> calculateCentreOfMass(output='abc')
+        >>> calculate_centre_of_mass(output='abc')
         array([0.4, 0.5, 0.6])
 
         """        
@@ -643,7 +658,7 @@ class UnitCell:
         self.a, self.b, self.c, self.alpha, self.beta, self.gamma = self.convert_unitcell_to_abc()
         self.reciprocal_lattice = np.linalg.inv(self.lattice)
 
-    def getVolume(self, units="cm"):
+    def get_volume(self, units="cm"):
         """Calculate the volume.
 
         Parameters
@@ -797,7 +812,7 @@ class UnitCell:
         normal = np.cross(p12, p13)
         norm = np.linalg.norm(normal)
         if norm < 1.0e-8:
-            print("Error in unit cell, calculation of normal to miller index failed")
+            logger.error("Error in unit cell, calculation of normal to miller index failed")
             sys.exit(1)
         return normal / norm
 
@@ -989,18 +1004,21 @@ class UnitCell:
     def calculate_molecular_contents(self, scale=1.1, tolerance=0.1, radii=None):
         """Find whole molecules in the unit cell.
 
-        Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
-        A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
-        The routine returns the the number of moleculess.
+        Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the
+        adjacent cell A new unit cell is created containing whole molecules, the order of the atoms in the new cell is
+        different. The routine returns the the number of moleculess.
 
         Parameters
         ----------
         scale : float, optional
-            The scale factor applied to the covalent radii. Default is 1.1
-        tolerance : float, optional. Default is 0.1
-            The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.
-        radii : a dictionary, optional
-            A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants
+            The scale factor applied to the covalent radii. Default is 1.1.
+        tolerance : float, optional
+            The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms
+            i and j for them to be considered bonded. Default is 0.1.
+        radii : dict, optional
+            A dictionary of covalent radii for the atoms, keyed by element name. If not given the package radii from
+            PDielec.Constants are used.
+
 
         Returns
         -------
@@ -1057,7 +1075,7 @@ class UnitCell:
             Atom_box_id.append(abc)
             try:
                 BoxAtoms[abc].append(i)
-            except Exception:
+            except KeyError:
                 BoxAtoms[abc] = [i]
         # Calculate the neighbouring boxes for each occupied box
         for abc in BoxAtoms:
@@ -1543,6 +1561,6 @@ class UnitCell:
             )
         else:
             pmat = np.eye(3)
-            print("Centring is not recognised",centring)
+            logger.debug(f"Centring is not recognised {centring}")
         return np.dot(np.linalg.inv(tmat), pmat)
 

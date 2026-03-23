@@ -15,14 +15,18 @@
 #
 """Read the contents of a directory containing DFT output and create a cif file of the structure.
 
-This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
+This script accepts command-line arguments to define the program used for generating output files, enables debug mode,
+and processes specified files. If no arguments are provided, it prints usage information. It sorts input files,
+processes them using a pool of workers equal to the number of logical processors available, and writes the results to
+standard output.
 
-Command-line arguments:
-    - `-debug`: Enable debug mode for more verbose output.
-    - `-program <program>`: Specify the program used to generate the output files. The program must be one of: 'abinit', 'castep', 'crystal', 'gulp', 'phonopy', 'qe', 'vasp', 'experiment', 'auto'. For 'phonopy', a quantum mechanics program must be specified immediately after.
-    - Files to process: Specify one or more filenames after the arguments.
+Command-line arguments: - `-debug`: Enable debug mode for more verbose output. - `-program <program>`: Specify the
+program used to generate the output files. The program must be one of: 'abinit', 'castep', 'crystal', 'gulp', 'phonopy',
+'qe', 'vasp', 'experiment', 'auto'. For 'phonopy', a quantum mechanics program must be specified immediately after. -
+Files to process: Specify one or more filenames after the arguments.
 
-This function uses multiprocessing to parallelize file processing, with the number of processes equal to the physical cores available on the machine.
+This function uses multiprocessing to parallelize file processing, with the number of processes equal to the physical
+cores available on the machine.
 
 Examples
 --------
@@ -39,6 +43,7 @@ Command-line usage examples:
     ```
 
 """
+import logging
 import os
 import sys
 from multiprocessing import Pool
@@ -46,6 +51,9 @@ from multiprocessing import Pool
 import psutil
 
 from PDielec import Utilities
+
+logger = logging.getLogger(__name__)
+
 
 
 def set_affinity_on_worker():
@@ -56,8 +64,6 @@ def set_affinity_on_worker():
     None.
 
     """
-    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
-    #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
@@ -95,16 +101,20 @@ def main():
     # Start processing the directories
     """Process and convert files.
 
-    This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
+    This script accepts command-line arguments to define the program used for generating output files, enables debug
+    mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input
+    files, processes them using a pool of workers equal to the number of logical processors available, and writes the
+    results to standard output.
 
     Notes
     -----
-    Command-line arguments:
-    - `-debug`: Enable debug mode for more verbose output.
-    - `-program <program>`: Specify the program used to generate the output files. The program must be one of: 'abinit', 'castep', 'crystal', 'gulp', 'phonopy', 'qe', 'vasp', 'experiment', 'auto'. For 'phonopy', a quantum mechanics program must be specified immediately after.
-    - Files to process: Specify one or more filenames after the arguments.
+    Command-line arguments: - `-debug`: Enable debug mode for more verbose output. - `-program <program>`: Specify the
+    program used to generate the output files. The program must be one of: 'abinit', 'castep', 'crystal', 'gulp',
+    'phonopy', 'qe', 'vasp', 'experiment', 'auto'. For 'phonopy', a quantum mechanics program must be specified
+    immediately after. - Files to process: Specify one or more filenames after the arguments.
 
-    This function uses multiprocessing to parallelize file processing, with the number of processes equal to the physical cores available on the machine.
+    This function uses multiprocessing to parallelize file processing, with the number of processes equal to the
+    physical cores available on the machine.
 
     Examples
     --------
@@ -186,6 +196,7 @@ def main():
         cell.write_cif()
     p.close()
     p.join()
+    p.terminate()
     return
 # end of def main
 

@@ -13,8 +13,13 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """SpreadSheetMamager module."""
+import logging
+
 import numpy as np
 import xlsxwriter as xlsx
+
+logger = logging.getLogger(__name__)
+
 
 
 class SpreadSheetManager:
@@ -52,11 +57,11 @@ class SpreadSheetManager:
 
     Methods
     -------
-    openWorkSheet(tab)
+    open_work_sheet(tab)
         Opens a new worksheet for the given tab if not already opened.
-    selectWorkSheet(name)
+    select_work_sheet(name)
         Selects the specified worksheet for further operations.
-    writeNextRow(items, row=None, col=None, check='')
+    write_next_row(items, row=None, col=None, check='')
         Writes a series of items to the next row of the currently selected worksheet.
     write(row, col, item)
         Writes an item to the specified location in the currently selected worksheet.
@@ -71,7 +76,9 @@ class SpreadSheetManager:
         # Manage a spread sheet for PDielec / PDGui
         """Initialize the instance with the given filename.
 
-        This constructor initializes an Excel workbook with predefined tab names and settings. It prepares the workbook for data entry and analysis across various predefined categories related to powder and crystal property analysis.
+        This constructor initializes an Excel workbook with predefined tab names and settings. It prepares the workbook
+        for data entry and analysis across various predefined categories related to powder and crystal property
+        analysis.
 
         Parameters
         ----------
@@ -137,9 +144,9 @@ class SpreadSheetManager:
         for tab in self.tab_names:
             self.opened[tab] = False
         self.name = "Main"
-        self.openWorkSheet(self.name)
+        self.open_work_sheet(self.name)
 
-    def openWorkSheet(self,tab):
+    def open_work_sheet(self,tab):
         """Open a new worksheet in a workbook.
 
         Parameters
@@ -167,7 +174,7 @@ class SpreadSheetManager:
         self.max_row[tab] = 0
         self.opened[tab] = True
 
-    def selectWorkSheet(self,name):
+    def select_work_sheet(self,name):
         """Select or opens a worksheet by name.
 
         Parameters
@@ -182,27 +189,31 @@ class SpreadSheetManager:
         Notes
         -----
         This method selects a worksheet if it is already opened. If the worksheet is not
-        currently open, it attempts to open the worksheet by calling `openWorkSheet` with
+        currently open, it attempts to open the worksheet by calling `open_work_sheet` with
         the worksheet name.
 
         """        
         self.name = name
         if not self.opened[name]:
-            self.openWorkSheet(self.name)
+            self.open_work_sheet(self.name)
 
-    def writeNextRow(self,items, row=None, col=None, check=""):
+    def write_next_row(self,items, row=None, col=None, check=""):
         """Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
 
         Parameters
         ----------
         items : list
-            A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item is written in subsequent columns.
+            A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item
+            is written in subsequent columns.
         row : int, optional
             The row index to start writing from. If not specified, uses the current row position of the object.
         col : int, optional
             The column index to start writing from. If not specified, uses the current column position of the object.
         check : str, optional
-            A check string written to the beginning of the row specified. Defaults to an empty string if not specified.
+            A check string written to the beginning of the row. Defaults to an empty string if not specified.
+
+
+
 
         Returns
         -------
@@ -210,10 +221,10 @@ class SpreadSheetManager:
 
         Notes
         -----
-        - If `col` is 0, a warning message is printed.
-        - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
-        - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
-        - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
+        - If `col` is 0, a warning message is printed. - The `row` and `col` are updated as items are written, and `row`
+          is incremented after writing all items. - For items that are lists, each element is written in subsequent
+          columns. This is applied recursively for nested lists. - `self.positions` is a dictionary holding the current
+          positions (row, column) for different names, and `self.name` accesses the current object's name.
 
         """        
         oldRow,oldCol = self.positions[self.name]
@@ -222,7 +233,7 @@ class SpreadSheetManager:
         if row is None:
             row = oldRow
         if col == 0:
-            print("We have a problem, col is 0")
+            logger.error("We have a problem, col is 0")
         self.write(row,0,check)
         for item in items:
             if isinstance(item,list):
@@ -280,8 +291,8 @@ class SpreadSheetManager:
     def delete(self):
         """Delete all the data in the current worksheet.
 
-        Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string.
-        After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
+        Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string. After
+        clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
 
         Parameters
         ----------
@@ -302,7 +313,8 @@ class SpreadSheetManager:
     def close(self):
         """Close the workbook if it hasn't been closed already.
 
-        Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.
+        Closes the workbook associated with an instance and sets its status as closed to prevent multiple close
+        operations.
 
         Parameters
         ----------

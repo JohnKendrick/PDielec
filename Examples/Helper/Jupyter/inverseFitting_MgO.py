@@ -9,8 +9,8 @@ import sys, os
 home_directory = os.path.join("..","..","..")
 examples_directory = os.path.join(home_directory,'Examples')
 sys.path.insert(0, home_directory)
-from PDielec.HelperRoutines   import getMaterial
-from PDielec.HelperRoutines   import calculatePowderSpectrum
+from PDielec.HelperRoutines   import get_material
+from PDielec.HelperRoutines   import calculate_powder_spectrum
 from PDielec.GUI.FitterTab    import read_experimental_file
 from PDielec.Materials        import Tabulated
 import matplotlib.pyplot as plt
@@ -56,14 +56,14 @@ reference_eps_1 = np.array(eps_r) + 1j*np.array(eps_i)
 # For the input to the tabulation routines _6 is used indicating a list with xx, yy, zz, xy, xz, yz components
 # The full tensor is indicated with _9
 #
-matrix = getMaterial('ptfe')
+matrix = get_material('ptfe')
 vf = 0.1
 #
 # Set the electronic and the phonon contributions to the crystal permittivity
 #
 crystal_eps_1 = []
 check_mg_permittivity_1 = []
-matrix_permittivity_function = matrix.getPermittivityFunction()
+matrix_permittivity_function = matrix.get_permittivity_function()
 for v,mg_permittivity in zip(frequencies,reference_eps_1):
     matrix_permittivity = matrix_permittivity_function(v)
     crystal_eps_1.append(inverse_mg_mixing(matrix_permittivity,mg_permittivity,vf))
@@ -74,9 +74,9 @@ crystal_eps_3 = [ [ eps, eps, eps ] for eps in crystal_eps_1]
 crystal_eps_3 = np.array(crystal_eps_3)
 crystal = Tabulated("Guess", vs_cm1=frequencies, permittivities=crystal_eps_3.T, density=2.0)
 crystal_epsilon_infinity = np.zeros( (3,3) )
-crystal.setEpsilonInfinity(crystal_epsilon_infinity)
+crystal.set_epsilon_infinity(crystal_epsilon_infinity)
 # Calculate the effective medium theory permittivity
-absorption,emt_eps_1 = calculatePowderSpectrum(frequencies,crystal,matrix,vf)
+absorption,emt_eps_1 = calculate_powder_spectrum(frequencies,crystal,matrix,vf)
 plt.figure(figsize = (10,5)) # set the size of the figure
 plt.plot(frequencies, np.real(reference_eps_1),label='reference') 
 plt.plot(frequencies, np.real(emt_eps_1),label='emt') 

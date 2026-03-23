@@ -15,6 +15,7 @@
 #
 """VASP output reader."""
 
+import logging
 import re
 import xml.etree.ElementTree as ET
 
@@ -24,6 +25,9 @@ from PDielec.Calculator import calculate_normal_modes_and_frequencies
 from PDielec.Constants import atomic_number_to_element, hertz
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 def read_xml_element(ele):
@@ -86,7 +90,7 @@ class VaspOutputReader(GenericOutputReader):
 
     Parameters
     ----------
-    names : list of str
+    names : list
         A list of file names to be used in processing the DFT output files
 
     Attributes
@@ -111,7 +115,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        names : list of str
+        names : list
             A list of file names to be used in processing the DFT output files
 
         Attributes
@@ -192,7 +196,8 @@ class VaspOutputReader(GenericOutputReader):
     def _read_forces(self, line):
         """Read force data from a file and update the iterations datasets with maximum and RMS forces.
 
-        After execution, `self.iterations` will be updated with the new `max_force` and `rms_force` values for the current iteration.
+        After execution, `self.iterations` will be updated with the new `max_force` and `rms_force` values for the
+        current iteration.
 
         Parameters
         ----------
@@ -227,7 +232,9 @@ class VaspOutputReader(GenericOutputReader):
     def _read_species(self, line):
         """Read species from a file and updates species information.
 
-        This method reads the number of lines for a species, computes the total charge from these lines, and appends the corresponding element to the species list. It utilizes the atomic_number_to_element dictionary to map the computed total charge to an element symbol.
+        This method reads the number of lines for a species, computes the total charge from these lines, and appends the
+        corresponding element to the species list. It utilizes the atomic_number_to_element dictionary to map the
+        computed total charge to an element symbol.
 
         Parameters
         ----------
@@ -257,7 +264,9 @@ class VaspOutputReader(GenericOutputReader):
     def _read_kpoint_grid(self, line):
         """Read and parse the k-point grid dimensions from a file line.
 
-        This method assumes that the current line from which `line` is read contains three integers that represent the dimensions of the k-point grid. These integers are read, converted to integers, and stored in the instance variable `kpoint_grid`.
+        This method assumes that the current line from which `line` is read contains three integers that represent the
+        dimensions of the k-point grid. These integers are read, converted to integers, and stored in the instance
+        variable `kpoint_grid`.
 
         Parameters
         ----------
@@ -281,7 +290,8 @@ class VaspOutputReader(GenericOutputReader):
     def _read_ionspertype(self, line):
         """Read and store the number of ions per species from a given line.
 
-        This method processes a string that contains information about the number of ions for each type/species. It updates the attributes `ions_per_type` and `nspecies` of the class.
+        This method processes a string that contains information about the number of ions for each type/species. It
+        updates the attributes `ions_per_type` and `nspecies` of the class.
 
         Parameters
         ----------
@@ -300,7 +310,10 @@ class VaspOutputReader(GenericOutputReader):
     def _read_newmasses(self, line):
         """Read and process the "newmasses" from a line in the file descriptor.
 
-        This internal method parses a single line from the file descriptor to read the masses associated with different atom types in a molecular system. Based on the number of species (`nspecies`) and ions per type, it updates `masses_per_type`, `masses`, `atom_type_list`, and `species_list` lists with the parsed and computed information.
+        This internal method parses a single line from the file descriptor to read the masses associated with different
+        atom types in a molecular system. Based on the number of species (`nspecies`) and ions per type, it updates
+        `masses_per_type`, `masses`, `atom_type_list`, and `species_list` lists with the parsed and computed
+        information.
 
         Parameters
         ----------
@@ -309,8 +322,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Returns
         -------
-        None
-            The string line from which the new masses information is to be read. Note that this parameter is initially passed but not used directly, as the function immediately reads a new line from `self.file_descriptor`.
+        None The string line from which the new masses information is to be read. Note that this parameter is initially
+        passed but not used directly, as the function immediately reads a new line from `self.file_descriptor`.
 
         """        
         self.masses_per_type = []
@@ -362,7 +375,10 @@ class VaspOutputReader(GenericOutputReader):
     def _read_eigenvectors(self, line):
         """Read and process eigenvectors from a file.
 
-        This method extracts frequencies and mass-weighted normal modes from a read file, storing them in the class's frequencies and mass_weighted_normal_modes attributes, respectively. It assumes the file follows a specific format where frequencies and their corresponding eigenvectors are listed, considering imaginary frequencies if present.
+        This method extracts frequencies and mass-weighted normal modes from a read file, storing them in the class's
+        frequencies and mass_weighted_normal_modes attributes, respectively. It assumes the file follows a specific
+        format where frequencies and their corresponding eigenvectors are listed, considering imaginary frequencies if
+        present.
 
         Parameters
         ----------
@@ -399,7 +415,8 @@ class VaspOutputReader(GenericOutputReader):
     def _read_born_charges(self, line):
         """Read the born charges from the OUTCAR file.
 
-        Each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as: ::
+        Each row of the output refers to a given field direction and each column in the row refers to the atomic
+        displacement. The output is arranged as: ::
 
             [[a1x a1y a1z]
              [a2x a2y a2z]
@@ -414,8 +431,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Returns
         -------
-        numpy.ndarray
-            A numpy array containing the born charges with its shape determined by the field directions and atomic displacements as described above.
+        numpy.ndarray A numpy array containing the born charges with its shape determined by the field directions and
+        atomic displacements as described above.
 
         """
         line = self.file_descriptor.readline()
@@ -487,7 +504,11 @@ class VaspOutputReader(GenericOutputReader):
     def _read_ionic_dielectric(self, line):
         """Read ionic dielectric constants from a file and update the zero-frequency static dielectric constant.
 
-        This method assumes the presence of two successive lines in the file corresponding to two dielectric constant values. If any of these lines are marked with an asterisk (*) as missing or do not contain at least three numeric values, default values are used instead. The method calculates the sum of the existing zero-frequency optical dielectric constants and the newly read ionic dielectric constants and updates the corresponding class attribute with this sum.
+        This method assumes the presence of two successive lines in the file corresponding to two dielectric constant
+        values. If any of these lines are marked with an asterisk (*) as missing or do not contain at least three
+        numeric values, default values are used instead. The method calculates the sum of the existing zero-frequency
+        optical dielectric constants and the newly read ionic dielectric constants and updates the corresponding class
+        attribute with this sum.
 
         Parameters
         ----------
@@ -500,9 +521,9 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - Requires that `self.file_descriptor` is an open file object positioned at the correct line where dielectric information starts.
-        - The method directly modifies `self.zerof_static_dielectric` based on read values and calculated sums.
-        - This method performs no direct output but modifies the class state.
+        - Requires that `self.file_descriptor` is an open file object positioned at the correct line where dielectric
+          information starts. - The method directly modifies `self.zerof_static_dielectric` based on read values and
+          calculated sums. - This method performs no direct output but modifies the class state.
 
         """        
         # Read the ionic contribution to the static dielectric and use it to computet
@@ -601,7 +622,10 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method updates the instance's `pressure` and `_pulay` attributes based on values extracted from the input string. The `pressure` value is obtained from the fourth item in the split string (`line.split()[3]`), and the `_pulay` value is from the ninth item (`line.split()[8]`). Both values are divided by 10.0 to convert from kbar to GPa.
+        This method updates the instance's `pressure` and `_pulay` attributes based on values extracted from the input
+        string. The `pressure` value is obtained from the fourth item in the split string (`line.split()[3]`), and the
+        `_pulay` value is from the ninth item (`line.split()[8]`). Both values are divided by 10.0 to convert from kbar
+        to GPa.
 
         """        
         # Vasp writes out kbar so convert to GPa
@@ -613,7 +637,9 @@ class VaspOutputReader(GenericOutputReader):
     def _read_pspot(self, line):
         """Read and store pseudopotential information from a line.
 
-        This method parses a line to extract pseudopotential information and stores it in the `_pspots` dictionary attribute of the object. The pseudopotential label is used as the key, and its corresponding value as the value in the `_pspots` dictionary.
+        This method parses a line to extract pseudopotential information and stores it in the `_pspots` dictionary
+        attribute of the object. The pseudopotential label is used as the key, and its corresponding value as the value
+        in the `_pspots` dictionary.
 
         Parameters
         ----------
@@ -746,7 +772,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method expects the spin value to be at the third position in the line. The method doesn't return any value but sets the object's `spin` attribute based on the extracted integer value.
+        This method expects the spin value to be at the third position in the line. The method doesn't return any value
+        but sets the object's `spin` attribute based on the extracted integer value.
 
         """        
         self.spin = int(line.split()[2])
@@ -766,7 +793,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method does not return any value. It sets the value of `energy_cutoff` attribute of the instance based on the input line.
+        This method does not return any value. It sets the value of `energy_cutoff` attribute of the instance based on
+        the input line.
 
         """        
         self.energy_cutoff = float(line.split()[2])
@@ -802,8 +830,8 @@ class VaspOutputReader(GenericOutputReader):
 
         Returns
         -------
-        None
-            The line of text containing the IBRION value, expected to be at the third position (index 2) when split by whitespace.
+        None The line of text containing the IBRION value, expected to be at the third position (index 2) when split by
+        whitespace.
 
         """        
         self._ibrion = int(line.split()[2])
@@ -899,7 +927,10 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method directly modifies the instance attributes `final_free_energy`, `final_free_energies`, `final_energy_without_entropy`, and `final_energies_without_entropy` by reading values from the file associated with `file_descriptor`. The relevant energy values can be extracted from the 5th and 4th positions (zero-indexed) of the line text split by spaces, on specific lines read in sequence.
+        This method directly modifies the instance attributes `final_free_energy`, `final_free_energies`,
+        `final_energy_without_entropy`, and `final_energies_without_entropy` by reading values from the file associated
+        with `file_descriptor`. The relevant energy values can be extracted from the 5th and 4th positions
+        (zero-indexed) of the line text split by spaces, on specific lines read in sequence.
 
         """        
         line = self.file_descriptor.readline()
@@ -929,9 +960,9 @@ class VaspOutputReader(GenericOutputReader):
         tree = ET.parse(filename)
         root = tree.getroot()
         if self.debug:
-            print(f"_read_xml filename = {filename}",flush=True)
-            print(f"_read_xml tree = {tree}",flush=True)
-            print(f"_read_xml root = {root}",flush=True)
+            logger.debug(f"_read_xml filename = {filename}")
+            logger.debug(f"_read_xml tree = {tree}")
+            logger.debug(f"_read_xml root = {root}")
         self._handle_kpoints_xml(root.findall("kpoints"))
         self._handle_parameters_xml(root.findall("parameters"))
         self._handle_atominfo_xml(root.findall("atominfo"))
@@ -1091,7 +1122,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        structures_xml : a list of xml element
+        structures_xml : list
             A list of structurexml elements
 
         Set
@@ -1113,9 +1144,9 @@ class VaspOutputReader(GenericOutputReader):
         self.unit_cells.append(self._get_unit_cell_from_xml(structures["initialpos"]))
         # Book keeping
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_handle_structure_xml: volume={self.volume}",flush=True)
+            logger.debug(f"_handle_structure_xml: volume={self.volume}")
         return
 
     def _get_unit_cell_from_xml(self,structure_xml):
@@ -1191,14 +1222,14 @@ class VaspOutputReader(GenericOutputReader):
         for atom_type in self.atom_type_list:
             self.masses.append(self.masses_per_type[atom_type])
         if self.debug:
-            print("_handle_atomicinfo_xml: nspecies", self.nspecies,flush=True)
-            print("_handle_atomicinfo_xml: nions", self.nions,flush=True)
-            print("_handle_atomicinfo_xml: ions_per_type", self.ions_per_type,flush=True)
-            print("_handle_atomicinfo_xml: atom_type_list", self.atom_type_list,flush=True)
-            print("_handle_atomicinfo_xml: species", self.species,flush=True)
-            print("_handle_atomicinfo_xml: species_list", self.species_list,flush=True)
-            print("_handle_atomicinfo_xml: masses", self.masses,flush=True)
-            print("_handle_atomicinfo_xml: masses_per_type", self.masses_per_type,flush=True)
+            logger.debug(f"_handle_atomicinfo_xml: nspecies {self.nspecies}")
+            logger.debug(f"_handle_atomicinfo_xml: nions {self.nions}")
+            logger.debug(f"_handle_atomicinfo_xml: ions_per_type {self.ions_per_type}")
+            logger.debug(f"_handle_atomicinfo_xml: atom_type_list {self.atom_type_list}")
+            logger.debug(f"_handle_atomicinfo_xml: species {self.species}")
+            logger.debug(f"_handle_atomicinfo_xml: species_list {self.species_list}")
+            logger.debug(f"_handle_atomicinfo_xml: masses {self.masses}")
+            logger.debug(f"_handle_atomicinfo_xml: masses_per_type {self.masses_per_type}")
         return
 
     def _handle_parameters_xml(self,parameters_xml):
@@ -1206,7 +1237,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        parameters_xml : a list of xml element
+        parameters_xml : list
             A list of parameters xml elements
 
         Set
@@ -1228,8 +1259,8 @@ class VaspOutputReader(GenericOutputReader):
         self.spin = parameters["ISPIN"]
         # self.masses_per_type = parameters["POMASS"] 
         if self.debug:
-            print("_handle_parameters_xml: nelect", self.electrons,flush=True)
-            print("_handle_parameters_xml: spin", self.spin,flush=True)
+            logger.debug(f"_handle_parameters_xml: nelect {self.electrons}")
+            logger.debug(f"_handle_parameters_xml: spin {self.spin}")
         return
 
     def _handle_kpoints_xml(self,kpoints_xml):
@@ -1237,7 +1268,7 @@ class VaspOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        kpoints_xml : a list of xml element
+        kpoints_xml : list
             A list of kpoint xml elements
 
         Set
@@ -1253,11 +1284,11 @@ class VaspOutputReader(GenericOutputReader):
         xml = kpoints_xml.find("generation").find("v/[@name='divisions']")
         self.kpoint_grid = [ int(f) for f in xml.text.split() ]
         if self.debug:
-            print("_handle_kpoints_xml: kpoint_grid", self.kpoint_grid ,flush=True)
+            logger.debug(f"_handle_kpoints_xml: kpoint_grid {self.kpoint_grid}")
         # Number of kpoints
         xml = kpoints_xml.find("varray/[@name='kpointlist']")
         vs = xml.findall("v")
         self.kpoints = len(vs)
         if self.debug:
-            print("_handle_kpoints_xml: kpoints", self.kpoints,flush=True)
+            logger.debug(f"_handle_kpoints_xml: kpoints {self.kpoints}")
         return

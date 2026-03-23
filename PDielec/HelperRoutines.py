@@ -18,6 +18,8 @@
 These routines are a useful starting point for investigating the way the code operates
 """
 
+import logging
+
 import numpy as np
 
 from PDielec import Calculator, DielectricFunction, Utilities
@@ -25,8 +27,11 @@ from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
 from PDielec.GUI.SingleCrystalScenarioTab import solve_single_crystal_equations
 from PDielec.Materials import External, MaterialsDataBase
 
+logger = logging.getLogger(__name__)
 
-def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition="Average"):
+
+
+def calculate_dft_permittivity_object(reader,sigma=5.0,eckart=True,mass_definition="Average"):
     """Define a permittivity object for the DFT calculation from the given reader.
 
     This routine reads in the details of the DFT calculation
@@ -58,7 +63,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
     reader.eckart = eckart
     epsilon_inf = reader.zerof_optical_dielectric
     cell = reader.get_unit_cell()
-    volume_au = cell.getVolume("Bohr")
+    volume_au = cell.get_volume("Bohr")
     mass_dictionary = []
     reader.reset_masses()
     if isinstance(mass_definition, (list, np.ndarray)):
@@ -72,7 +77,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
         elif mass_definition == "isotope":
             reader.change_masses(isotope_masses, mass_dictionary)
         else:
-            print("Helper: Error unkown mass definition", mass_definition )
+            logger.error(f"Helper: Error unkown mass definition {mass_definition}")
     masses = np.array(reader.masses)*amu
     # The reader uses the internal masses to calculate the massweighted normal modes
     mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
@@ -110,10 +115,10 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
                                   mode_list, frequencies_au, sigmas_au, oscillator_strengths,
                                   volume_au, drude, drude_plasma_au, drude_sigma_au )
     # Add the optical permittivity to the dielctric function
-    permittivityObject.setEpsilonInfinity(epsilon_inf)
+    permittivityObject.set_epsilon_infinity(epsilon_inf)
     return permittivityObject
 
-def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_definition="Average",debug=False):
+def get_material(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_definition="Average",debug=False):
     """Get a material with the given name.
 
     If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
@@ -146,59 +151,62 @@ def getMaterial(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_defi
     Examples
     --------
     ```
-    material1 = getMaterial("example.dft")
-    material2 = getMaterial("gold")
+    material1 = get_material("example.dft")
+    material2 = get_material("gold")
     ```
 
     """
     # Let's see if the name is a file name that can be read
     program = Utilities.find_program_from_name(name)
     if debug:
-        print(f"getMaterial: program = {program}")
+        logger.debug(f"get_material: program = {program}")
     if len(program) > 1:
-        reader = Utilities.get_reader(name,program,debug)
+        reader = Utilities.get_reader(name,program)
         reader.read_output()
         if debug:
-            print("getMaterial: reader.print()")
+            logger.debug("get_material: reader.print()")
             reader.print()
-        permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
+        permittivityObject=calculate_dft_permittivity_object(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
         if debug:
-            print("getMaterial: cell.print()")
+            logger.debug("get_material: cell.print()")
             cell.print()
         material = External("Dielectric layer",permittivityObject=permittivityObject,cell=cell)
     else:
         dataBase = MaterialsDataBase(dataBaseName)
-        sheets = dataBase.getSheetNames()
+        sheets = dataBase.get_sheet_names()
         if debug:
-            print("getMaterial: sheets",sheets)
+            logger.debug(f"get_material: sheets {sheets}")
         if name in sheets:
-            material = dataBase.getMaterial(name)
+            material = dataBase.get_material(name)
         else:
-            print("Material name not valid: ",name)
-            print("Available materials:     ",sheets)
+            logger.debug(f"Material name not valid: {name}")
+            logger.warning(f"Available materials: {sheets}")
             material = None
     return material
 
-def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method="Scattering matrix"):
+def calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method="Scattering matrix"):
     """Calculate a single crystal spectrum.
 
-    Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle
-    the global azimuthal angle and optional specification of the method of calculation.
-    Information about the layer class can be found here (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
+    Calculate a single crystal spectrum from the frequencies, a list of layers
+    (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle the global azimuthal angle and
+    optional specification of the method of calculation. Information about the layer class can be found here
+    (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
 
     Parameters
     ----------
     frequencies_cm1 : list
         A list of frequencies in cm-1.
     layers : list
-        A list of layers ( :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
+        A list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`).
     incident_angle : float
         The incident angle in degrees.
     global_azimuthal_angle : float
         The global azimuthal angle in degrees.
     method : str
-        The method for solving Maxwell's equation either 'Scattering matrix' (the default) or 'Transfer matrix. See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more information.
+        The method for solving Maxwell's equation, either 'Scattering matrix' (the default) or 'Transfer matrix'.
+        See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`)
+        for more information.
 
     Returns
     -------
@@ -215,9 +223,9 @@ def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, glob
 
     ::
 
-        air = getMaterial('air')
-        ptfe = getMaterial('ptfe')
-        Sapphire = getMaterial('Sapphire')
+        air = get_material('air')
+        ptfe = get_material('ptfe')
+        Sapphire = get_material('Sapphire')
         layers = []
         # Add a substrate
         layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
@@ -229,7 +237,7 @@ def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, glob
         frequencies_cm1 = np.arange( 0, 200, 0.2 )
         incident_angle = 80.0
         global_azimuthal_angle = 0.0
-        (reflectance, transmittance, absorptance) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method='Scattering matrix')
+        (reflectance, transmittance, absorptance) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method='Scattering matrix')
 
     """
     theta = np.radians(0.0)
@@ -255,7 +263,7 @@ def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, glob
         absos.append( 1.0 - R[1] - R[3] - T[1] )
     return np.array([reflp,refls]), np.array([tranp,trans]), np.array([absop,absos])
 
-def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method="Maxwell-Garnett"):
+def calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method="Maxwell-Garnett"):
     """Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
 
     Parameters
@@ -281,18 +289,18 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
     -------
     ```
     frequencies_cm1 = np.arange( 0, 200, 0.2 )
-    matrix = getMaterial('ptfe')
-    dielectric = getMaterial('Sapphire')
+    matrix = get_material('ptfe')
+    dielectric = get_material('Sapphire')
     method = 'Maxwell-Garnett' 
     volume_fraction = 0.1
-    absorption,permittivity = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+    absorption,permittivity = calculate_powder_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
     ```
 
     """
     method = method.lower()
     particle_size_mu = 0
     particle_sigma_mu = 0
-    matrixPermittivityFunction = matrix.getPermittivityFunction()
+    matrixPermittivityFunction = matrix.get_permittivity_function()
     shape = "Sphere"
     depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
     concentration = 1.0
@@ -302,16 +310,16 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
     bubble_vf = 0.0
     bubble_radius = 0.0
     previous_solution_shared = np.eye( 3 )
-    crystalPermittivityFunction = dielectric.getPermittivityFunction()
+    crystalPermittivityFunction = dielectric.get_permittivity_function()
     results = []
-    unitMatrix = np.eye(3)
+    unit_matrix = np.eye(3)
     for v_cm1 in frequencies_cm1:
         crystalPermittivity = crystalPermittivityFunction(v_cm1)
         #
         # Cope with the case that the dielectric is isotropic
         #
-        if dielectric.isScalar():
-            crystalPermittivity = crystalPermittivity*unitMatrix
+        if dielectric.is_scalar():
+            crystalPermittivity = crystalPermittivity*unit_matrix
         result = Calculator.solve_effective_medium_equations(method,volume_fraction,
                        particle_size_mu,particle_sigma_mu,matrixPermittivityFunction,
                        shape,depolarisation,concentration,

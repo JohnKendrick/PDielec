@@ -18,10 +18,14 @@
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 
 """
+import logging
 import sys
 
 from openpyxl import load_workbook
 from termcolor import colored
+
+logger = logging.getLogger(__name__)
+
 
 global threshold
 
@@ -58,15 +62,16 @@ def main():
 
     Raises
     ------
-    Depends on the Excel library used, typically:
-    - `openpyxl.utils.exceptions.InvalidFileException` if an invalid file or path is provided.
-    - Other exceptions related to file I/O or processing might be raised depending on the content and structure of the input Excel files.
+    Depends on the Excel library used, typically: - `openpyxl.utils.exceptions.InvalidFileException` if an invalid file
+    or path is provided. - Other exceptions related to file I/O or processing might be raised depending on the content
+    and structure of the input Excel files.
 
     Notes
     -----
-    - The script will immediately exit with usage instructions if less than two file paths are provided.
-    - Numerical difference is calculated only for numeric data. For text data, a simplified equivalence check is done.
-    - The script output includes printing to standard error for usage, errors, or status, with optional ANSI color highlighting.
+    - The script will immediately exit with usage instructions if less than two file paths are provided. - Numerical
+      difference is calculated only for numeric data. For text data, a simplified equivalence check is done. - The
+      script output includes printing to standard error for usage, errors, or status, with optional ANSI color
+      highlighting.
 
     """    
     if len(sys.argv) <= 1 :

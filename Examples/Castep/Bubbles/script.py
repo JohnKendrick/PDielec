@@ -44,7 +44,7 @@ tab.settings['Particle shape'] = 'Sphere'
 tab.settings['Legend'] = 'Maxwell-Garnett vf=0.1 Sphere'
 #
 #
-self.notebook.addScenario()
+self.notebook.add_scenario()
 tab = self.notebook.scenarios[1]
 tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2

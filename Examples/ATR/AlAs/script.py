@@ -32,7 +32,7 @@ tab.settings['ATR material refractive index'] = 4.0
 # Add new scenarios
 angles = [10, 20, 30, 40, 50, 60 , 70, 80 ]
 for angle in angles:
-    self.notebook.addScenario()
+    self.notebook.add_scenario()
     tab = self.notebook.scenarios[-1]
     tab.settings['ATR theta'] = angle
     tab.settings['Legend'] = 'theta='+str(angle)

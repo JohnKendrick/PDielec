@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder Infrared")
 #
 #
 #
@@ -24,7 +24,7 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Scenario 1'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2

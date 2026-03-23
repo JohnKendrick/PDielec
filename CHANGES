@@ -1,3 +1,52 @@
+version 10.0.0
+   Extensive code quality improvements across the entire codebase.
+   NOTE: Scripts written before this version that call renamed methods will not be compatible.
+
+   API renaming (snake_case):
+   - Renamed all camelCase methods and functions to snake_case throughout all modules:
+       Calculator.py, DielectricFunction.py, Materials.py, GTMcore.py, UnitCell.py,
+       SuperCell.py, GenericOutputReader.py, HelperRoutines.py, pdmake.py,
+       and all GUI tabs (SettingsTab, ScenarioTab, NoteBook, SingleCrystalLayer,
+       CrystalInfraredScenarioTab, CrystalRamanScenarioTab, OpenGLWidget, ViewerTab,
+       MainTab, App, AnalysisTab, PlottingTab, FitterTab, SpreadSheetManager).
+   - All Example Python scripts updated to use the new snake_case API names.
+
+   Debug / logging infrastructure:
+   - Replaced module-level global `debugger` variables with instance-level `self.debugger`
+     in 15 GUI files, eliminating a shared-state bug where each instantiation silently
+     overwrote the global.
+   - Added Python standard `logging` module infrastructure to all core and GUI modules:
+       * Added `import logging` and `logger = logging.getLogger(__name__)` to every module.
+       * Converted all diagnostic `print()` calls to `logger.debug()`, `logger.info()`,
+         `logger.warning()`, or `logger.error()` as appropriate.
+       * Intentional file-output `print(..., file=fd)` calls and formatted report
+         `def print(self)` methods left unchanged.
+   - Fixed a TypeError (`not all arguments converted during string formatting`) throughout
+     all modules caused by multi-argument logger calls (e.g. `logger.debug("msg", value)`).
+     All such calls have been rewritten as single f-string arguments
+     (e.g. `logger.debug(f"msg {value}")`).
+
+   Exception handling:
+   - Narrowed broad `except Exception:` clauses to specific exception types
+     (ValueError, TypeError, KeyError, ImportError, OverflowError, np.linalg.LinAlgError)
+     across Calculator.py, Materials.py, GTMcore.py, PhonopyOutputReader.py,
+     UnitCell.py, PlottingTab.py, FitterTab.py, AnalysisTab.py, MainTab.py, pdmake.py.
+
+   Type hints:
+   - Added type annotations to the full public API of Utilities.py and the key public
+     methods of GenericOutputReader.py.
+
+   Code simplification:
+   - Consolidated three near-identical tensor initialisation functions in Calculator.py
+     (`initialise_unit_tensor`, `initialise_diagonal_tensor`,
+     `initialise_complex_diagonal_tensor`) to use `np.diag()`; all names preserved.
+   - Fixed inconsistent return types in `Utilities.find_program_from_name` (the `.log`
+     branch was returning a tuple instead of a plain string).
+
+   Housekeeping:
+   - Removed all development debug comments (#JK / #jk) from source files.
+   - Moved stdlib imports (glob, csv, warnings, yaml) from inside functions to module level.
+   - Wrapped long docstring prose lines to the 120-character line length limit.
 version 9.1.1
    Fixed a MAC bug, where the axes label in the viewerTab didn't follow the axes rotation
 version 9.1.0

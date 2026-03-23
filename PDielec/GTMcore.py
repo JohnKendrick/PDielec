@@ -58,8 +58,8 @@ The optical system is assembled using the :py:class:`System` class.
     
     *15-10-2021*:
         
-        - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary parts of the wavevectors
-        - Corrected a sign error in gamma32 that lead to field discontinuities
+        - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary
+          parts of the wavevectors - Corrected a sign error in gamma32 that lead to field discontinuities
 
     *23 June 2021*:
         - integrated the code into pdielec and pdgui
@@ -90,6 +90,7 @@ The optical system is assembled using the :py:class:`System` class.
 ######## general utilities
 
 import copy
+import logging
 import sys
 
 import numpy as np
@@ -97,8 +98,9 @@ import scipy.linalg as lag
 
 from PDielec.Constants import epsilon_0_si, speed_light_si
 
-#jk c_const = 299792458 # m/s
-#jk eps0 = 8.854e-12 ## vacuum permittivity
+logger = logging.getLogger(__name__)
+
+
 #
 # JK using PDielec constants
 #
@@ -121,7 +123,7 @@ def vacuum_eps(f):
     """
     try:
         return np.ones(len(f))
-    except Exception:
+    except TypeError:
         return 1.0 + 0.0j
     
 def exact_inv_2x2(M):
@@ -206,10 +208,10 @@ def exact_inv_4x4(M):
 
     if detA == 0:
         try:
-            print("Warning 4x4 inversion problem 1")
+            logger.warning("Warning 4x4 inversion problem 1")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
-        except Exception:
-            print("Warning 4x4 inversion problem 2")
+        except (ValueError, np.linalg.LinAlgError):
+            logger.warning("Warning 4x4 inversion problem 2")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
         return result
 
@@ -376,7 +378,7 @@ class Layer:
         self.set_epsilon(epsilon)              # set epsilon, vacuum by default (JK change)
         self.set_euler(theta, phi, psi)        # set orientation of crystal axis w/ respect to the lab frame
 
-    def isCoherent(self):
+    def is_coherent(self):
         """Return True if the layer is a coherent layer.
 
         Parameters
@@ -412,7 +414,8 @@ class Layer:
 
         Parameters
         ----------
-        epsilon_function : complex function
+        epsilon_function : complex
+            function
             A function representing the complex dielectric function.
 
         Returns
@@ -448,7 +451,6 @@ class Layer:
         epsilon_xstal = self.epsilon_tensor_function(f)
         if not isinstance(epsilon_xstal,np.ndarray):
             epsilon_xstal = np.eye(3,dtype=np.cdouble)*epsilon_xstal
-        #JK Changed the order of the transformation to a transformation of basis vectors
         # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
         # rather than a transformation of the coordinates active->passive
         self.epsilon = np.matmul(self.euler, np.matmul(epsilon_xstal,self.euler_inverse))
@@ -485,8 +487,6 @@ class Layer:
         self.euler[2, 0] = np.sin(theta) * np.sin(psi)
         self.euler[2, 1] = np.sin(theta) * np.cos(psi)
         self.euler[2, 2] = np.cos(theta)
-        #JK Added the inverse calculation here so it is only done once
-        #JK self.euler_inverse = np.cdouble(lag.pinv(np.cdouble(self.euler)))
         self.euler_inverse = exact_inv_3x3(self.euler)
 
     def calculate_matrices(self, zeta):
@@ -608,8 +608,6 @@ class Layer:
         kt = 0 
         kr = 0
         ## sort berremann qi's according to (12)
-        ##JK small modification to fix problems when qs are nearly real
-        ##JK if any(np.abs(np.imag(qsunsorted))):
         if any(np.abs(np.imag(qsunsorted))>1.0E-16):
             for km in range(0,4):
                 if np.imag(qsunsorted[km])>=0 :
@@ -620,7 +618,6 @@ class Layer:
                     kr = kr +1
         else:
             for km in range(0,4):
-                ##JK if np.real(qsunsorted[km])>0:
                 if np.real(qsunsorted[km])>=0 and kt < 2  :
                     transmode[kt] = km
                     kt = kt + 1
@@ -977,8 +974,8 @@ class CoherentLayer(Layer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = True
         self.inCoherentIntensity = False
@@ -1076,8 +1073,8 @@ class SemiInfiniteLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = True
         self.inCoherentIntensity = False
@@ -1147,8 +1144,8 @@ class IncoherentIntensityLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = True
@@ -1184,15 +1181,15 @@ class IncoherentAveragePhaseLayer(CoherentLayer):
             The number of samples to be used in averages (default is 4)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
         self.inCoherentPhase = False
         self.inCoherentAveragePhase = True
         self.inCoherentThick = False
-        self.phaseShift = layer.getPhaseShift()
+        self.phaseShift = layer.get_phase_shift()
         return
 
     def calculate_propagation_exponents(self,f):
@@ -1242,8 +1239,8 @@ class IncoherentPhaseLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
@@ -1310,8 +1307,8 @@ class IncoherentThickLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
@@ -1361,7 +1358,7 @@ class IncoherentThickLayer(CoherentLayer):
         super().calculate_scattering_matrix(b)
         # Now manually set the backwards reflections for both s and p to zero
         self.SMatrix.S11 = np.zeros( (2,2) )
-        self.SMatrix.calculateS()
+        self.SMatrix.calculate_s()
         return
 
 ###########################
@@ -1392,7 +1389,10 @@ class System:
     -----
     Layers can be added and removed (not inserted).
 
-    The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.
+    The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls
+    :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they
+    require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of
+    an incident plane wave using :py:func:`calculate_Efield`.
 
     """
 
@@ -1557,7 +1557,7 @@ class System:
         if pos >= 0 and pos < len(self.layers):
             self.layers.pop(pos)
         else:
-            print("Wrong position given. No layer deleted")
+            logger.error("Wrong position given. No layer deleted")
 
     def initialize_sys(self, f):
         """Set the values of epsilon at the given frequency in all the layers.
@@ -1665,9 +1665,14 @@ class System:
         -----
         **IMPORTANT**
 
-        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions. The new definition of this function **BREAKS compatibility** with the previous one.
+        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined
+          mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.
+          The new definition of this function **BREAKS compatibility** with the previous one.
 
-        - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well defined. The intensity reflection coefficient is also correct. However, the intensity transmission coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity coefficients.
+        - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well
+          defined. The intensity reflection coefficient is also correct. However, the intensity transmission
+          coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity
+          coefficients.
 
         Note also the different ordering of the coefficients, for consistency with Passler's matlab code.
 
@@ -1757,7 +1762,7 @@ class System:
 
         return r_out, R_out, t_out, T_out
 
-    def overflowErrors(self):
+    def overflow_errors(self):
         """Return the total number of overflow errors encountered.
 
         Parameters
@@ -1899,7 +1904,8 @@ class ScatteringMatrixSystem(System):
     def calculate_r_t(self, zeta_sys):
         """Calculate the reflectance and transmittance coefficients using scattering matrix information.
 
-        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
+        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector
+        of transmitted field.
 
         Parameters
         ----------
@@ -2001,12 +2007,12 @@ class SMatrix:
 
     Methods
     -------
-    unitMatrix()
+    unit_matrix()
         Initializes the S-matrix to a unit matrix with appropriate S11, S22, S21, and S12.
     redheffer(b)
         Performs the Redheffer star product, a specialized matrix multiplication for S-matrices, 
         with another SMatrix instance `b`.
-    calculateS()
+    calculate_s()
         Reconstructs the composite 4x4 S-matrix from its constituent submatrices (S11, S22, S21, S12).
 
     Examples
@@ -2035,19 +2041,21 @@ class SMatrix:
 
         """
         if S is None:
-            self.unitMatrix()
+            self.unit_matrix()
         else:
             self.S11 = S[0:2,0:2]
             self.S22 = S[2:4,2:4]
             self.S21 = S[2:4,0:2]
             self.S12 = S[0:2,2:4]
-            self.calculateS()
+            self.calculate_s()
         return
 
-    def unitMatrix(self):
+    def unit_matrix(self):
         """Reset the scattering parameters to form a unit matrix.
 
-        Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11 and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the scattering parameters through `calculateS`.
+        Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11
+        and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the
+        scattering parameters through `calculate_s`.
 
         Parameters
         ----------
@@ -2059,14 +2067,15 @@ class SMatrix:
 
         Notes
         -----
-        This method is typically used to initialize or reset the scattering parameters in a two-port network representation to a known state before performing further operations or calculations.
+        This method is typically used to initialize or reset the scattering parameters in a two-port network
+        representation to a known state before performing further operations or calculations.
 
         """        
         self.S11 = np.zeros( (2,2) )
         self.S22 = np.zeros( (2,2) )
         self.S21 = np.eye( 2 )
         self.S12 = np.eye( 2 )
-        self.calculateS()
+        self.calculate_s()
         return
 
     def redheffer(self,b):
@@ -2096,13 +2105,14 @@ class SMatrix:
         Sab.S12 = a.S12.dot(C).dot(b.S12)
         Sab.S21 = b.S21.dot(D).dot(a.S21)
         Sab.S22 = b.S22+b.S21.dot(D).dot(a.S22).dot(b.S12)
-        Sab.calculateS()
+        Sab.calculate_s()
         return Sab
 
-    def calculateS(self):
+    def calculate_s(self):
         """Calculate and assign the scattering parameter matrix, S.
 
-        Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
+        Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering
+        parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
 
         - `S11` is placed in the top-left quadrant.
         - `S22` is placed in the bottom-right quadrant.
@@ -2120,7 +2130,8 @@ class SMatrix:
 
         Notes
         -----
-        The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before calling this method.
+        The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before
+        calling this method.
 
         """        
         self.S = np.zeros( (4,4),dtype=np.cdouble )

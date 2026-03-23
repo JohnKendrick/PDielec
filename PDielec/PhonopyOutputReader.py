@@ -15,13 +15,18 @@
 #
 """Read the contents of a directory containing Phonopy input and output files."""
 
-import sys
+
+import logging
 
 import numpy as np
+import yaml
 
 from PDielec.Constants import thz2cm1
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 class PhonopyOutputReader(GenericOutputReader):
@@ -115,14 +120,11 @@ class PhonopyOutputReader(GenericOutputReader):
 
         """        
         #
-        # Yaml imports of large files are really slow....
         # Attempt to use the PyYaml C parser, using yaml.CLoader
-        #
-        import yaml
         try:
             from yaml import CLoader as Loader
-        except Exception:
-            print("WARNING: Yaml CLoader is not avaiable, using fallback",file=sys.stderr)
+        except ImportError:
+            logger.warning("WARNING: Yaml CLoader is not avaiable, using fallback")
             from yaml import Loader as Loader
         # the first name has to be the qpoints file
         with open(qpoints_filename) as fd:
@@ -135,7 +137,7 @@ class PhonopyOutputReader(GenericOutputReader):
         #
         try:
             conversion_factor_to_THz = data_p["phonopy"]["frequency_unit_conversion_factor"]
-        except Exception:
+        except KeyError:
             conversion_factor_to_THz = 15.633302
         conversion_factor_to_cm1 = conversion_factor_to_THz * thz2cm1
         #
@@ -182,7 +184,7 @@ class PhonopyOutputReader(GenericOutputReader):
         # Proceed
         self.unit_cells = [ cell ]
         self.ncells = 1
-        self.volume = cell.getVolume("Angstrom")
+        self.volume = cell.get_volume("Angstrom")
         #
         # Process qpoints.yaml
         #
@@ -268,7 +270,7 @@ class PhonopyOutputReader(GenericOutputReader):
             #
             line = fd.readline().split()
             if len(line) != 9:
-                print("BORN file format of line 2 is incorrect")
+                logger.error("BORN file format of line 2 is incorrect")
                 return
             self.zerof_optical_dielectric = np.reshape([float(x) for x in line], (3, 3))
             #
@@ -278,10 +280,10 @@ class PhonopyOutputReader(GenericOutputReader):
             for i in range(natoms):
                 line = fd.readline().split()
                 if len(line) == 0:
-                    print("Number of lines for Born effect charge is not enough.")
+                    logger.error("Number of lines for Born effect charge is not enough.")
                     return
                 if len(line) != 9:
-                    print("BORN file format of line %d is incorrect" % (i + 3))
+                    logger.error("BORN file format of line %d is incorrect" % (i + 3))
                     return
                 self.born_charges[i] = np.reshape([float(x) for x in line], (3, 3))
         return

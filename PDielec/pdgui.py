@@ -17,18 +17,21 @@
 
 Process command line arguments and start a GUI application with optional splash screen.
 
-No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
+No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to
+configure application behavior. The command line arguments can control displaying a splash screen, application
+debugging, forcibly exiting, or showing the application version.
 
 Notes
 -----
-    - The -nosplash flag disables the splash screen.
-    - The -v, -version, or --version flags print the program version and exit.
-    - The -exit or --exit flag forces the program to exit immediately after processing arguments.
-    - The -d, -debug, or --debug flags enable debug messages.
-    - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
-    - If the splash screen is shown, it also includes a progress bar.
+    - The -nosplash flag disables the splash screen. - The -v, -version, or --version flags print the program version
+      and exit. - The -exit or --exit flag forces the program to exit immediately after processing arguments. - The -d,
+      -debug, or --debug flags enable debug messages. - The function looks for a splash image file in several locations,
+      starting with the executable's directory, and displays it if found unless the splash screen is disabled. - If the
+      splash screen is shown, it also includes a progress bar.
+
 
 """
+import logging
 import os
 import sys
 from multiprocessing import freeze_support
@@ -39,22 +42,27 @@ from qtpy.QtWidgets import QApplication, QProgressBar, QSplashScreen
 import PDielec.__init__
 from PDielec.GUI.App import App
 
+logger = logging.getLogger(__name__)
+
+
 version = PDielec.__init__.__version__
 
 
 def main():
     """Process command line arguments and start a GUI application with optional splash screen.
 
-    No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
+    No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to
+    configure application behavior. The command line arguments can control displaying a splash screen, application
+    debugging, forcibly exiting, or showing the application version.
 
     Notes
     -----
-    - The -nosplash flag disables the splash screen.
-    - The -v, -version, or --version flags print the program version and exit.
-    - The -exit or --exit flag forces the program to exit immediately after processing arguments.
-    - The -d, -debug, or --debug flags enable debug messages.
-    - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
-    - If the splash screen is shown, it also includes a progress bar.
+    - The -nosplash flag disables the splash screen. - The -v, -version, or --version flags print the program version
+      and exit. - The -exit or --exit flag forces the program to exit immediately after processing arguments. - The -d,
+      -debug, or --debug flags enable debug messages. - The function looks for a splash image file in several locations,
+      starting with the executable's directory, and displays it if found unless the splash screen is disabled. - If the
+      splash screen is shown, it also includes a progress bar.
+
 
     Side Effects
     ------------
@@ -99,6 +107,9 @@ def main():
             debug = True
         elif token in ( "-style" ):
             apply_default_style = False
+
+    if debug:
+        logging.basicConfig(level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s")
 
     if apply_default_style:
         sys.argv.append("-style")

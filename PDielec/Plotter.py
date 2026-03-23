@@ -14,7 +14,11 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """Do some pretty printing for the dielectric functions."""
+import logging
 import sys
+
+logger = logging.getLogger(__name__)
+
 
 
 def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" "):

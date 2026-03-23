@@ -17,26 +17,33 @@
 
 Parse command-line arguments to set program configuration and process a specified file.
 
-This function does not have a formal return but exits with different messages and statuses based on the command-line inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line requests for help and version information.
+This function does not have a formal return but exits with different messages and statuses based on the command-line
+inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically
+targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line
+requests for help and version information.
 
 Parameters
 ----------
-This function does not accept parameters directly through its definition. Instead, it uses command-line arguments parsed from `sys.argv`:
+This function does not accept parameters directly through its definition. Instead, it uses command-line arguments parsed
+from `sys.argv`:
+import logging
 
-- `-debug` : Enable debug mode.
-- `-help` : Print help message and exit.
-- `-version` : Print software version and exit.
-- `-program` : Specify the program to use for analysis. When set to 'phonopy', an additional quantum mechanics program argument is required.
-- Any other argument is considered as the filename for analysis.
+
+- `-debug` : Enable debug mode. - `-help` : Print help message and exit. - `-version` : Print software version and exit.
+  - `-program` : Specify the program to use for analysis. When set to 'phonopy', an additional quantum mechanics program
+  argument is required. - Any other argument is considered as the filename for analysis.
+
 
 """
 
+import logging
 import os
 import sys
 
 import PDielec.__init__
 from PDielec import Utilities
 
+logger = logging.getLogger(__name__)
 version = PDielec.__init__.__version__
 
 def print_help():
@@ -72,33 +79,35 @@ def main():
     # Start processing the directories
     """Parse command-line arguments to set program configuration and process a specified file.
 
-    This function does not have a formal return but exits with different messages and statuses based on the command-line inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line requests for help and version information.
+    This function does not have a formal return but exits with different messages and statuses based on the command-line
+    inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically
+    targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line
+    requests for help and version information.
 
     Parameters
     ----------
-    This function does not accept parameters directly through its definition. Instead, it uses command-line arguments parsed from `sys.argv`:
-    - `-debug` : Enable debug mode.
-    - `-help` : Print help message and exit.
-    - `-version` : Print software version and exit.
-    - `-program` : Specify the program to use for analysis. When set to 'phonopy', an additional quantum mechanics program argument is required.
-    - Any other argument is considered as the filename for analysis.
+    This function does not accept parameters directly through its definition. Instead, it uses command-line arguments
+    parsed from `sys.argv`: - `-debug` : Enable debug mode. - `-help` : Print help message and exit. - `-version` :
+    Print software version and exit. - `-program` : Specify the program to use for analysis. When set to 'phonopy', an
+    additional quantum mechanics program argument is required. - Any other argument is considered as the filename for
+    analysis.
+
 
     Raises
     ------
-    SystemExit
-        This function may call `exit()` which stops script execution and can be considered as raising `SystemExit` in various scenarios:
-        - If less than one argument is provided.
-        - If the `-version` argument is provided.
-        - If no program is specified or an unrecognized program is given.
-        - If the specified file does not exist.
-        - When critical configuration issues are encountered.
+    SystemExit This function may call `exit()` which stops script execution and can be considered as raising
+    `SystemExit` in various scenarios: - If less than one argument is provided. - If the `-version` argument is
+    provided. - If no program is specified or an unrecognized program is given. - If the specified file does not exist.
+    - When critical configuration issues are encountered.
+
 
     Notes
     -----
-    - It is assumed that `print_help`, `Utilities.find_program_from_name`, and `Utilities.get_reader` are defined elsewhere.
-    - The function makes extensive use of `sys.argv` for argument parsing and `sys.stderr` for error and status messaging.
-    - The function supports a flexible addition of program types and respective validation.
-    - The handling of `-debug`, `-help`, `-version`, and program-specific arguments provides an example of a rudimentary command-line interface.
+    - It is assumed that `print_help`, `Utilities.find_program_from_name`, and `Utilities.get_reader` are defined
+      elsewhere. - The function makes extensive use of `sys.argv` for argument parsing and `sys.stderr` for error and
+      status messaging. - The function supports a flexible addition of program types and respective validation. - The
+      handling of `-debug`, `-help`, `-version`, and program-specific arguments provides an example of a rudimentary
+      command-line interface.
 
     """    
     if len(sys.argv) <= 1 :

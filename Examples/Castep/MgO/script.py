@@ -35,7 +35,7 @@ hkl = [0,0,1]
 for method in methods:
     for vf in vfs:
         for shape in shapes:
-            self.notebook.addScenario()
+            self.notebook.add_scenario()
             tab = self.notebook.scenarios[-1]
             tab.settings['Particle shape'] = shape
             tab.settings['Effective medium method'] = method
@@ -46,11 +46,11 @@ for method in methods:
 tab.settings['Effective medium method'] = 'Averaged Permittivity'
 tab.settings['Particle shape'] = 'Sphere'
 for vf in vfs:
-    self.notebook.addScenario()
+    self.notebook.add_scenario()
     tab = self.notebook.scenarios[-1]
     tab.settings['Volume fraction'] = vf
     tab.settings['Legend'] = 'AP vf='+str(vf)
-self.notebook.deleteScenario(0)
+self.notebook.delete_scenario(0)
 #
 # Plotting Tab
 #

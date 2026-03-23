@@ -12,17 +12,21 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
+import logging
 import sys
-from qtpy.QtWidgets import QApplication, QMainWindow, QWidget
-from qtpy.QtWidgets import QFormLayout, QLabel, QPushButton
-from qtpy.QtGui import QPalette, QColor
+
+from qtpy.QtGui import QColor, QPalette
+from qtpy.QtWidgets import QApplication, QFormLayout, QLabel, QMainWindow, QPushButton, QWidget
+
+logger = logging.getLogger(__name__)
+
 
 class MainWindow(QMainWindow):
+    """A class for creating the main window of an application.
 
-    """
-    A class for creating the main window of an application.
-
-    This class inherits from QMainWindow and sets up the main window with a specific layout and widgets. The layout consists of a QFormLayout with multiple rows, each containing labels and either custom `Color` widgets or `QPushButton` widgets. An additional nested `QFormLayout` is also demonstrated. The window title is set to 'My App'.
+    This class inherits from QMainWindow and sets up the main window with a specific layout and widgets. The layout
+    consists of a QFormLayout with multiple rows, each containing labels and either custom `Color` widgets or
+    `QPushButton` widgets. An additional nested `QFormLayout` is also demonstrated. The window title is set to 'My App'.
 
     Attributes
     ----------
@@ -35,17 +39,21 @@ class MainWindow(QMainWindow):
 
     Notes
     -----
-    The `Color` class is referenced but not defined within this code block, implying it is a custom widget defined elsewhere.
+    The `Color` class is referenced but not defined within this code block, implying it is a custom widget defined
+    elsewhere.
 
     Examples
     --------
     No direct usage examples provided since instantiation and execution depend on a complete qtpy application setup.
-    """    
-    def __init__(self):
-        """
-        Initialize the main window interface.
 
-        This method sets up the main window with a specific layout containing several widgets. The layout initially includes rows for 'red', 'green', and an inner layout with 'label 1' and 'label 2'. Then, it adds a 'blue' row but removes the previously added inner layout.
+    """
+
+    def __init__(self):
+        """Initialize the main window interface.
+
+        This method sets up the main window with a specific layout containing several widgets. The layout initially
+        includes rows for 'red', 'green', and an inner layout with 'label 1' and 'label 2'. Then, it adds a 'blue' row
+        but removes the previously added inner layout.
 
         Parameters
         ----------
@@ -54,19 +62,20 @@ class MainWindow(QMainWindow):
         Returns
         -------
         None
+
         """        
         super(MainWindow, self).__init__()
 
         self.setWindowTitle("My App")
         layout = QFormLayout()
-        layout.addRow(QLabel('red'),Color('red'))
-        layout.addRow(QLabel('green'),Color('green'))
+        layout.addRow(QLabel("red"),Color("red"))
+        layout.addRow(QLabel("green"),Color("green"))
         insideLayout = QFormLayout()
-        insideLayout.addRow(QLabel('label 1'),QPushButton('Label 1'))
-        insideLayout.addRow(QLabel('label 2'),QPushButton('Label 2'))
-        layout.addRow(QLabel('inside'),insideLayout)
+        insideLayout.addRow(QLabel("label 1"),QPushButton("Label 1"))
+        insideLayout.addRow(QLabel("label 2"),QPushButton("Label 2"))
+        layout.addRow(QLabel("inside"),insideLayout)
         row = layout.rowCount()-1
-        layout.addRow(QLabel('blue'),Color('blue'))
+        layout.addRow(QLabel("blue"),Color("blue"))
         layout.removeRow(row)
 
         widget = QWidget()
@@ -74,8 +83,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
 class Color(QWidget):
-    """
-    A class that creates a colored widget.
+    """A class that creates a colored widget.
 
     Parameters
     ----------
@@ -104,10 +112,11 @@ class Color(QWidget):
     Or using a QColor object:
 
     >>> widget = Color(QColor(255, 0, 0))
-    """    
+
+    """
+
     def __init__(self, color):
-        """
-        Initialize a new Color instance.
+        """Initialize a new Color instance.
 
         Parameters
         ----------
@@ -143,6 +152,7 @@ class Color(QWidget):
         ```python
         myColorWidget = ColorWidget(QColor(255, 87, 51))  # RGB values
         ```
+
         """        
         super(Color, self).__init__()
         self.setAutoFillBackground(True)

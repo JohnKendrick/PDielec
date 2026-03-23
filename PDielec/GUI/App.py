@@ -14,6 +14,7 @@
 #
 """App Module."""
 
+import logging
 import os.path
 import sys
 
@@ -24,7 +25,9 @@ import PDielec.__init__
 from PDielec import Utilities
 from PDielec.Calculator import set_no_of_threads
 from PDielec.GUI.NoteBook import NoteBook
-from PDielec.Utilities import Debug
+
+logger = logging.getLogger(__name__)
+
 
 version = PDielec.__init__.__version__
 
@@ -32,7 +35,9 @@ version = PDielec.__init__.__version__
 class App(QMainWindow):
     """A class representing the main application window.
 
-    This class initializes the main application window with various configurations based on command line arguments and environment variables. It includes functionalities to read scripts, handle command line inputs, set up multiprocessing or threading as needed, and manage application events.
+    This class initializes the main application window with various configurations based on command line arguments and
+    environment variables. It includes functionalities to read scripts, handle command line inputs, set up
+    multiprocessing or threading as needed, and manage application events.
 
     Parameters
     ----------
@@ -70,9 +75,9 @@ class App(QMainWindow):
     -------
     print_usage()
         Prints usage information for the command line interface.
-    setMyWindowTitle(title)
+    set_my_window_title(title)
         Sets the window title to a formatted string including the version and the given title.
-    readScript(scriptname, spreadsheet_name='')
+    read_script(scriptname, spreadsheet_name='')
         Executes the commands from a script file and optionally sets the spreadsheet file name.
     closeEvent(event)
         Handles the close event, ensuring that multiprocessing pools are properly closed.
@@ -180,7 +185,7 @@ class App(QMainWindow):
                 # Replace an "_" with " "
                 default_scenario = tokens[itoken].replace("_"," ")
                 if default_scenario not in ("Powder Infrared", "Crystal Infrared", "Powder Raman", "Crystal Raman"):
-                    print("Error default scenario not recognised", default_scenario)
+                    logger.error(f"Error default scenario not recognised {default_scenario}")
                     self.print_usage()
                     sys.exit()
             elif token.startswith("-"):
@@ -200,12 +205,12 @@ class App(QMainWindow):
                 program = Utilities.find_program_from_name(filename)
         elif len(parameters) == 2:
             if program_has_been_specified:
-                print("Warning: program has been specified twice")
+                logger.warning("Warning: program has been specified twice")
             program = parameters[0]
             filename = parameters[1]
         elif len(parameters) == 3:
             if program_has_been_specified:
-                print("Warning: program has been specified twice")
+                logger.warning("Warning: program has been specified twice")
             program = parameters[0]
             filename = parameters[1]
             spreadsheet_name = parameters[2]
@@ -224,17 +229,15 @@ class App(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         QCoreApplication.processEvents()
-        global debugger
-        debugger = Debug(self.debug, "App:")
-        debugger.print("Start:: Initialising")
-        debugger.print("About to open the notebook")
-        debugger.print("Program is", program)
-        debugger.print("Filename is", filename)
-        debugger.print("Spreadsheet is", spreadsheet_name)
-        debugger.print("Script is", self.scriptname)
-        debugger.print("The default scenario is", default_scenario)
-        debugger.print("No. of cpus is", ncpus)
-        debugger.print("Threading is", threading)
+        logger.debug("Start:: Initialising")
+        logger.debug("About to open the notebook")
+        logger.debug(f"Program is {program}")
+        logger.debug(f"Filename is {filename}")
+        logger.debug(f"Spreadsheet is {spreadsheet_name}")
+        logger.debug(f"Script is {self.scriptname}")
+        logger.debug(f"The default scenario is {default_scenario}")
+        logger.debug(f"No. of cpus is {ncpus}")
+        logger.debug(f"Threading is {threading}")
         # Set the number of threads before NUMPY is loaded
         if threading:
             # Threading is used instead of cpu multiprocessing
@@ -255,28 +258,30 @@ class App(QMainWindow):
             threading=threading,
             default_scenario=default_scenario,
         )
-        debugger.print("About to call setCentralWidget")
+        logger.debug("About to call setCentralWidget")
         self.setCentralWidget(self.notebook)
-        debugger.print("Finished call setCentralWidget")
+        logger.debug("Finished call setCentralWidget")
         if self.scripting:
-            debugger.print("Processing script", self.scriptname)
-            self.readScript(self.scriptname, spreadsheet_name=spreadsheet_name)
+            logger.debug(f"Processing script {self.scriptname}")
+            self.read_script(self.scriptname, spreadsheet_name=spreadsheet_name)
         if self.program_exit:
             if spreadsheet_name != "":
-                debugger.print("Writing spreadsheeet on exit", spreadsheet_name)
-                self.notebook.writeSpreadsheet()
+                logger.debug(f"Writing spreadsheeet on exit {spreadsheet_name}")
+                self.notebook.write_spreadsheet()
                 self.notebook.spreadsheet.close()
-            debugger.print("Exiting with sys.exit call")
+            logger.debug("Exiting with sys.exit call")
             self.notebook.pool.close()
             self.notebook.pool.join()
+            self.notebook.pool.terminate()
             self.notebook.pool = None
-        debugger.print("Finished:: Initialising")
+        logger.debug("Finished:: Initialising")
         return
 
     def print_usage(self):
         """Print usage information for the PDielec package's graphical user interface.
 
-        This function prints the general usage information, available commands, and options for the graphical user interface to the PDielec package.
+        This function prints the general usage information, available commands, and options for the graphical user
+        interface to the PDielec package.
 
         Parameters
         ----------
@@ -290,21 +295,21 @@ class App(QMainWindow):
         -----
         The usage information includes:
 
-        - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy', 'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified.
-        - `filename`: The name of the output file.
-        - `spreadsheet file`: An optional name of a spreadsheet file (must end with .xlsx). If provided, both program and filename must be specified.
-        - `-scenario type`: Changes the default scenario to "type",
-                            which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or "Crystal_Raman"
-        - `-spreadsheet file`: An alternative way to specify the spreadsheet file.
-        - `-program`: An alternative way to specify the program.
-        - `-script file`: Specifies that initial commands are read from a script file.
-        - `-nosplash`: No splash screen is presented, which is useful for batch running.
-        - `-threading`: Use threads instead of multiprocessing.
-        - `-threads 1`: Specify the number of threads to use for each cpu
-        - `-cpus 0`: Specify the number of processors or tasks; 0 uses all available.
-        - `-version`: Prints the version of the code.
-        - `-exit`: Exit the program after executing any script.
-        - `-help`: Prints out help information.
+        - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy',
+          'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified. - `filename`:
+          The name of the output file. - `spreadsheet file`: An optional name of a spreadsheet file (must end with
+          .xlsx). If provided, both program and filename must be specified. - `-scenario type`: Changes the default
+          scenario to "type", which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or
+          "Crystal_Raman" - `-spreadsheet file`: An alternative way to specify the spreadsheet file. - `-program`: An
+          alternative way to specify the program. - `-script file`: Specifies that initial commands are read from a
+          script file. - `-nosplash`: No splash screen is presented, which is useful for batch running. - `-threading`:
+          Use threads instead of multiprocessing. - `-threads 1`: Specify the number of threads to use for each cpu -
+          `-cpus 0`: Specify the number of processors or tasks; 0 uses all available. - `-version`: Prints the version
+          of the code. - `-exit`: Exit the program after executing any script. - `-help`: Prints out help information.
+
+
+
+
         - `-debug`: Switches on debugging information.
 
         """
@@ -330,7 +335,7 @@ class App(QMainWindow):
         print("      -debug      Switches on debugging information")
         return
 
-    def setMyWindowTitle(self, title):
+    def set_my_window_title(self, title):
         """Set the window title with the provided title appended to the PDGui version.
 
         Parameters
@@ -345,14 +350,15 @@ class App(QMainWindow):
 
         Notes
         -----
-        This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
+        This function modifies the window title attribute of the instance and then updates the actual window title to
+        reflect this change. The version of the PDGui is prefixed to the given title.
 
         """
         self.title = f"PDGui {self.version}  - " + title
         self.setWindowTitle(self.title)
         return
 
-    def readScript(self, scriptname, spreadsheet_name=""):
+    def read_script(self, scriptname, spreadsheet_name=""):
         """Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
 
         Parameters
@@ -364,17 +370,21 @@ class App(QMainWindow):
 
         Returns
         -------
-        None
-            The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no spreadsheet name will be set.
+        None The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no
+        spreadsheet name will be set.
 
         Notes
         -----
-        This function changes the current working directory to the directory of the script if its directory part is non-empty. It executes the script in the current Python environment using `exec()`. It also sets various notebook flags such as `scripting` and `overwriting`.
+        This function changes the current working directory to the directory of the script if its directory part is
+        non-empty. It executes the script in the current Python environment using `exec()`. It also sets various
+        notebook flags such as `scripting` and `overwriting`.
 
-        After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with `QCoreApplication.processEvents()`.
+        After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a
+        non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with
+        `QCoreApplication.processEvents()`.
 
         """
-        debugger.print("Start:: readScript")
+        logger.debug("Start:: read_script")
         self.notebook.scripting = True
         directory = os.path.dirname(scriptname)
         # chdir to the directory that the script is in
@@ -390,22 +400,22 @@ class App(QMainWindow):
             # line_no = 0
             # for line in lines:
             #    line_no += 1
-            #    debugger.print('line: ',line_no,line)
+            #    logger.debug('line: ',line_no,line)
             #    exec(line)
-        debugger.print("readScript finished reading script")
+        logger.debug("read_script finished reading script")
         self.notebook.scripting = False
-        debugger.print("readScript notebook scripting set to False")
+        logger.debug("read_script notebook scripting set to False")
         if not self.program_exit:
             self.notebook.overwriting = False
-            debugger.print("readScript notebook overwriting set to False")
+            logger.debug("read_script notebook overwriting set to False")
         # The command line excel file overrides that in the script
         if spreadsheet_name != "":
-            debugger.print("readScript overwriting spread sheet name:", spreadsheet_name)
+            logger.debug(f"read_script overwriting spread sheet name: {spreadsheet_name}")
             self.notebook.mainTab.settings["Excel file name"] = spreadsheet_name
-        debugger.print("readScript notebook refresh")
+        logger.debug("read_script notebook refresh")
         self.notebook.refresh(force=True)
         QCoreApplication.processEvents()
-        debugger.print("Finished:: readScript")
+        logger.debug("Finished:: read_script")
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
@@ -440,9 +450,12 @@ class App(QMainWindow):
         of multiprocessing resources and performs any additional base class close event handling.
 
         """
-        debugger.print("Close event has been captured")
-        self.notebook.pool.close()
-        self.notebook.pool.join()
+        logger.debug("Close event has been captured")
+        if self.notebook.pool is not None:
+            self.notebook.pool.close()
+            self.notebook.pool.join()
+            self.notebook.pool.terminate()
+            self.notebook.pool = None
         super().closeEvent(event)
 
 

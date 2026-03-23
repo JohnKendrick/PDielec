@@ -38,6 +38,7 @@
                If the file exists it is not overwritten
       -version print the version of PDielec library being used
 """
+import logging
 import os
 import sys
 from multiprocessing.dummy import Pool
@@ -51,12 +52,13 @@ from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
 from PDielec.Utilities import find_program_from_name
 
+logger = logging.getLogger(__name__)
+
+
 version = PDielec.__init__.__version__
 
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs."""
-    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
-    #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
@@ -77,14 +79,16 @@ def read_a_file( calling_parameters):
 
     Returns
     -------
-    tuple
-        A tuple containing:
-        - reader : object (An object capable of reading and processing the data from the specified file.)
-        - name : str (Name of the file that was processed.)
-        - results_string : list (A list of strings that represent the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies, intensities, and optionally calculated molar absorption rates.)
+    tuple A tuple containing: - reader : object (An object capable of reading and processing the data from the specified
+    file.) - name : str (Name of the file that was processed.) - results_string : list (A list of strings that represent
+    the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies,
+    intensities, and optionally calculated molar absorption rates.)
+
 
     """    
     name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, debug = calling_parameters
+    if debug:
+        logging.basicConfig(level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s")
     reader = Utilities.get_reader(name,program)
     # The order that the settings are applied is important
     # Eckart and neutral are applied after the file has been read, this way the original frequencies are those before any calculations
@@ -179,7 +183,7 @@ def read_a_file( calling_parameters):
             # end loop over modes to be ignored
         # end of if ignore_modes
         crystalPermittivity = DielectricFunction.DFT(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0) 
-        crystalPermittivity.setEpsilonInfinity(epsinf)
+        crystalPermittivity.set_epsilon_infinity(epsinf)
         ionicv = crystalPermittivity.calculate(0.0) - epsinf
     # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file
@@ -272,7 +276,8 @@ def print_help():
 
     Notes
     -----
-    The function internally directs its output to `sys.stderr` instead of the default `sys.stdout`, to separate the help message from other outputs. It also exits the program after displaying the help message by calling `exit()`. 
+    The function internally directs its output to `sys.stderr` instead of the default `sys.stdout`, to separate the help
+    message from other outputs. It also exits the program after displaying the help message by calling `exit()`.
 
     Examples
     --------
@@ -469,6 +474,7 @@ def main():
     #
     p.close()
     p.join()
+    p.terminate()
 # end of def main
 
 if __name__ == "__main__":

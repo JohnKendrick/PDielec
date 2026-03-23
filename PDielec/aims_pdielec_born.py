@@ -3,11 +3,15 @@
 
 Write the BORN charge file in PDielec format
 """
+import logging
 import optparse
 import sys
 
 import numpy as np
 from scipy.constants import value
+
+logger = logging.getLogger(__name__)
+
 
 USAGE = """%prog [options] <name> 
 <name> will be used as prefix for all output files.
