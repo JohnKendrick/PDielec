@@ -159,7 +159,7 @@ class CrystalScenarioTab(ScenarioTab):
     Flag indicating whether a new calculation is required based on changes in parameters or settings. scenarioType : str
     A string representing the type of scenario. For this class, it is set to 'Crystal Infrared'. refresh_required : bool
     Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or
-    recalculated. noCalculationsRequired : int The number of calculations required for the simulation. This value may
+    recalculated. no_calculations_required : int The number of calculations required for the simulation. This value may
     change depending on the specifics of the scenario configuration (e.g., the inclusion of incoherent effects requiring
     multiple sample calculations). settings : dict A dictionary holding various scenario parameters and their values,
     which include settings for the type of analysis, material layers, angles, and method-specific parameters.
@@ -266,7 +266,7 @@ class CrystalScenarioTab(ScenarioTab):
          Perform a refresh of the GUI
     set_material_names
          Read the material names from the database
-    set_noCalculationsRequired
+    set_no_calculations_required
          Calculate the number of calculations required
     settings2Layers
          Read the settings dictionary and create the necessary layers
@@ -300,7 +300,7 @@ class CrystalScenarioTab(ScenarioTab):
             Indicates if a new calculation is required based on changed parameters.
         scenarioType : str
             The type of scenario, hardcoded as 'Crystal Infrared'.
-        noCalculationsRequired : int
+        no_calculations_required : int
             Number of calculations required, initialized to 1.
         settings : dict
             A dictionary of settings for the simulation, initialized with default values.
@@ -336,7 +336,7 @@ class CrystalScenarioTab(ScenarioTab):
         logger.debug("Start:: initialiser")
         self.refresh_required = True
         self.calculation_required = True
-        self.noCalculationsRequired = 1
+        self.no_calculations_required = 1
         self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
         self.settings["Scenario type"] = self.scenarioType
         self.settings["Global azimuthal angle"] = 0.0
@@ -1019,7 +1019,7 @@ class CrystalScenarioTab(ScenarioTab):
         logger.debug(f"on_incoherence_cb_activated {index} {layer.get_name()}")
         option = incoherentOptions[index]
         layer.set_incoherent_option(option)
-        self.set_noCalculationsRequired()
+        self.set_no_calculations_required()
         self.generate_layer_settings()
         self.refresh_required = True
         return
@@ -1531,7 +1531,7 @@ class CrystalScenarioTab(ScenarioTab):
         logger.debug(f"{self.settings['Legend']} on_partially_incoherent_samples_sb_changed {value}")
         self.refresh_required = True
         self.settings["Partially incoherent samples"] = value
-        self.noCalculationsRequired = value
+        self.no_calculations_required = value
         return
 
     def on_percentage_partial_incoherence_sb_changed(self,value):
@@ -1663,7 +1663,7 @@ class CrystalScenarioTab(ScenarioTab):
         index = self.mode_cb.findText(self.settings["Mode"], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
         # Work out how many calculations are going to be performed
-        self.set_noCalculationsRequired()
+        self.set_no_calculations_required()
         # Update the Legend widget
         self.legend_le.setText(self.settings["Legend"])
         # Update angle widgets
@@ -1688,7 +1688,7 @@ class CrystalScenarioTab(ScenarioTab):
         logger.debug(f"{self.settings['Legend']} Finished:: refresh, force = {force}")
         return
 
-    def set_noCalculationsRequired(self):
+    def set_no_calculations_required(self):
         """Determine the number of calculations required.
 
         The routine first works out the number of layers needing phase averaging,
@@ -1711,12 +1711,12 @@ class CrystalScenarioTab(ScenarioTab):
         # First see how many layers are using phase averaging
         if self.number_of_average_incoherent_layers > 0:
             number_of_samples = self.settings["Number of average incoherence samples"]
-            self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
+            self.no_calculations_required = pow(number_of_samples,self.number_of_average_incoherent_layers)
         else:
-            self.noCalculationsRequired = 1
+            self.no_calculations_required = 1
         # Now see if partial incoherence is being used
         if self.settings["Percentage partial incoherence"] > 0:
-            self.noCalculationsRequired *= self.settings["Partially incoherent samples"]
+            self.no_calculations_required *= self.settings["Partially incoherent samples"]
         return
 
     def on_mode_cb_activated(self, index):
@@ -1737,7 +1737,7 @@ class CrystalScenarioTab(ScenarioTab):
         This function performs several operations based on the selected mode: - Sets the mode in the settings to either
         'Transfer matrix' or 'Scattering matrix'. - If 'Scattering matrix' mode is selected (index 1), it goes through
         all layers and changes any layer with the incoherent option set to 'Incoherent (intensity)' to be 'Coherent'. -
-        Invokes set_noCalculationsRequired to indicate that new calculations are necessary based on the changed
+        Invokes set_no_calculations_required to indicate that new calculations are necessary based on the changed
         settings. - Calls generate_layer_settings to update the layer settings according to the new mode. - Forces a
         refresh of the display to reflect any changes. - Sets a flag indicating that a refresh is required.
 
@@ -1753,7 +1753,7 @@ class CrystalScenarioTab(ScenarioTab):
                 incoherentOption = layer.get_incoherent_option()
                 if incoherentOption == "Incoherent (intensity)":
                     layer.set_incoherent_option("Coherent")
-        self.set_noCalculationsRequired()
+        self.set_no_calculations_required()
         self.generate_layer_settings()
         self.refresh(force=True)
         self.refresh_required = True

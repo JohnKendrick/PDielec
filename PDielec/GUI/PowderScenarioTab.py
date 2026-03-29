@@ -204,7 +204,7 @@ class PowderScenarioTab(ScenarioTab):
         logger.debug("Start:: initialiser")
         self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
         self.settings["Scenario type"] = self.scenarioType
-        self.noCalculationsRequired = 1
+        self.no_calculations_required = 1
         self.settings["Matrix"] = "ptfe"
         self.settings["Matrix density"] = None
         self.settings["Matrix permittivity"] = None

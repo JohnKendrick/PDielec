@@ -38,7 +38,7 @@ class ScenarioTab(QWidget):
     Attributes
     ----------
     refresh_required : bool Indicates whether a refresh is required.
-    noCalculationsRequired : int The number of
+    no_calculations_required : int The number of
     calculations that need to be performed.
     settings : dict A dictionary of settings for the scenario. notebook :
     QWidget The parent widget, which is expected to be the notebook container for the scenarios.
@@ -107,7 +107,7 @@ class ScenarioTab(QWidget):
         super(QWidget, self).__init__(parent)
         logger.debug("Start:: initialiser")
         self.refresh_required = True
-        self.noCalculationsRequired = 0
+        self.no_calculations_required = 0
         self.settings = {}
         self.notebook = parent
         self.settings["Legend"] = "Unset"
@@ -178,7 +178,7 @@ class ScenarioTab(QWidget):
             The number of spectra requiring recalculation.
 
         """
-        result = self.noCalculationsRequired if self.refresh_required else 0
+        result = self.no_calculations_required if self.refresh_required else 0
         logger.debug(f"{self.settings['Legend']} get_no_calculations_required {result}")
         return result
 
