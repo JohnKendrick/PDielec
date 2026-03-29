@@ -17,8 +17,7 @@
 import logging
 import os
 
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QComboBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
+from qtpy.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
 
 from PDielec import __file__ as PDielec_init_filename
 from PDielec.Materials import MaterialsDataBase
@@ -38,38 +37,24 @@ class ScenarioTab(QWidget):
 
     Attributes
     ----------
-    refresh_required : bool Indicates whether a refresh is required. noCalculationsRequired : int The number of
-    calculations that need to be performed. settings : dict A dictionary of settings for the scenario. notebook :
-    QWidget The parent widget, which is expected to be the notebook container for the scenarios. scenarioType : type,
-    optional The type of the scenario, e.g., Powder Infrared, Crystal Infrared, Powder Raman, Crystal Raman.
+    refresh_required : bool Indicates whether a refresh is required.
+    noCalculationsRequired : int The number of
+    calculations that need to be performed.
+    settings : dict A dictionary of settings for the scenario. notebook :
+    QWidget The parent widget, which is expected to be the notebook container for the scenarios.
+    scenarioType : type,
+        optional The type of the scenario, e.g., Powder Infrared, Crystal Infrared, Powder Raman, Crystal Raman.
     scenarioTypes : list of scenario types The list is obtained from the keys of the self.notebook.scenarioTypes
-    dictionary vs_cm1 : list List containing default values for some settings. DataBase : MaterialsDataBase An instance
-    of a class for interacting with a materials database. openDB_button : QPushButton Button to open the materials
-    database. openDB_label : QLabel Label associated with the openDB_button. database_le : QLineEdit Line edit showing
-    the path/name of the current materials database. database_le_label : QLabel Label associated with the database_le.
-    legend_le : QLineEdit Line edit for specifying a custom legend for the scenario. addScenarioButton : QPushButton
-    Button to add another scenario. deleteScenarioButton : QPushButton Button to delete the current scenario.
-    switchScenarioCB : QComboBOx Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared,
-    Powder Raman or Crystal Raman).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    dictionary vs_cm1 : list List containing default values for some settings.
+    DataBase : MaterialsDataBase An instance of a class for interacting with a materials database.
+    openDB_button : QPushButton Button to open the materials database.
+    openDB_label : QLabel Label associated with the openDB_button.
+    database_le : QLineEdit Line edit showing the path/name of the current materials database.
+    database_le_label : QLabel Label associated with the database_le.
+    legend_le : QLineEdit Line edit for specifying a custom legend for the scenario.
+    addScenarioButton : QPushButton Button to add another scenario.
+    deleteScenarioButton : QPushButton Button to delete the current scenario.
+    switchScenarioCB : QComboBOx Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared, Powder Raman or Crystal Raman).
 
     Methods
     -------
@@ -128,7 +113,6 @@ class ScenarioTab(QWidget):
         self.settings["Legend"] = "Unset"
         self.scenarioType = None
         self.settings["Scenario type"] = "Unset"
-        self.scenarioTypes = list(self.notebook.scenarioTypes.keys())
         self.vs_cm1 = [0, 0]
         # Deal with the Materials Database here as it is used in all Scenarios
         PDielec_Directory = os.path.dirname(PDielec_init_filename)
@@ -315,19 +299,6 @@ class ScenarioTab(QWidget):
         self.deleteScenarioButton.setToolTip("Delete the current scenario")
         self.deleteScenarioButton.clicked.connect(self.delete_scenario_button_clicked)
         hbox.addWidget(self.deleteScenarioButton)
-        self.switchScenarioCB = QComboBox(self)
-        self.switchScenarioCB.setToolTip("Switch to a new scenario type")
-        self.switchScenarioCB.addItems(self.scenarioTypes)
-        index = self.switchScenarioCB.findText(self.scenarioType, Qt.MatchFixedString)
-        if index >=0:
-            self.switchScenarioCB.setCurrentIndex(index)
-        else:
-            logger.error(f"Error in scenarioType {self.scenarioType} {self.scenarioTypes}")
-        self.switchScenarioCB.activated.connect(self.switch_scenario_cb_activated)
-        label = QLabel("Switch to a new scenario type:")
-        label.setAlignment(Qt.AlignBottom | Qt.AlignRight)
-        hbox.addWidget(label)
-        hbox.addWidget(self.switchScenarioCB)
         logger.debug(f"{self.settings['Legend']} add_scenario_buttons finish")
         return hbox
 
@@ -364,27 +335,6 @@ class ScenarioTab(QWidget):
         self.notebook.delete_scenario(self.scenarioIndex)
         return
 
-    def switch_scenario_cb_activated(self, index):
-        """Handle the switch scenario when combo box has been activated.
-
-        Asks the notebook to change the scenario type 
-
-        Parameters
-        ----------
-        index
-            The index in the list of scenarios
-
-        Returns
-        -------
-        None
-
-        """
-        logger.debug(f"{self.settings['Legend']} switch_scenario_cb_activated {index}")
-        self.scenarioType = self.scenarioTypes[index]
-        self.notebook.switch_scenario(self.scenarioIndex, self.scenarioType)
-        self.request_refresh()
-        self.notebook.plottingTab.refresh(force=True)
-        return
 
 
 
