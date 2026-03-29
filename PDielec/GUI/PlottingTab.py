@@ -940,7 +940,7 @@ class PlottingTab(QWidget):
         sp.delete()
         sp.write_next_row(["A list of the scenarios used:"],col=1)
         for index,scenario in enumerate(self.notebook.scenarios):
-            if scenario.scenarioType == "Powder Infrared":
+            if scenario.scenarioType in ("Powder Infrared", "Powder ATR"):
                 direction = scenario.direction
                 depolarisation = scenario.depolarisation
                 sp.write_next_row([""],col=1)
@@ -979,7 +979,7 @@ class PlottingTab(QWidget):
                 A_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[9] ) )
                 A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
                 crystal_legends.append(scenario.settings["Legend"])
-            elif scenario.scenarioType == "Powder Raman" or scenario.scenarioType == "Crystal Raman":
+            elif scenario.scenarioType in ("Powder Raman", "Crystal Raman"):
                 pass
             else:
                 logger.error(f"Error in plotting tab: scenario not recognised {scenario.scenarioType}")
@@ -1293,14 +1293,9 @@ class PlottingTab(QWidget):
 
         """
         logger.debug("Start:: greyed_out")
-        powder_scenarios_present = False
-        crystal_scenarios_present = False
-        for scenario in self.notebook.scenarios:
-            if scenario.scenarioType == "Powder Infrared":
-                powder_scenarios_present = True
-            else:
-                crystal_scenarios_present = True
-        # end of for loop
+        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        powder_scenarios_present = spectroscopy_type.startswith("Powder")
+        crystal_scenarios_present = spectroscopy_type.startswith("Crystal")
         #
         # Disable any plot types that are not needed
         #
