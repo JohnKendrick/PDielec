@@ -232,6 +232,8 @@ class SettingsTab(QWidget):
         self.settings["Mass definition"] = "average"
         self.settings["Optical permittivity"] = None
         self.settings["Optical permittivity edited"] = False
+        self.settings["Spectroscopy type"] = "Powder Infrared"
+        self.spectroscopy_types = ["Powder Infrared", "Powder ATR", "Powder Raman", "Crystal Infrared", "Crystal Raman"]
         self.masses_dictionary = {}
         self.modes_selected = []
         self.frequencies_cm1 = []
@@ -249,6 +251,14 @@ class SettingsTab(QWidget):
         # Create second tab - SettingsTab
         vbox = QVBoxLayout()
         form = QFormLayout()
+        #
+        # Spectroscopy type selection
+        #
+        self.spectroscopy_type_cb = QComboBox(self)
+        self.spectroscopy_type_cb.setToolTip("Choose the spectroscopy type for all scenarios")
+        self.spectroscopy_type_cb.addItems(self.spectroscopy_types)
+        self.spectroscopy_type_cb.activated.connect(self.on_spectroscopy_type_cb_activated)
+        form.addRow(QLabel("Spectroscopy type:", self), self.spectroscopy_type_cb)
         #
         # The eckart checkbox
         #
@@ -990,6 +1000,28 @@ class SettingsTab(QWidget):
         logger.debug("Finished:: on_optical_itemClicked)")
         return
 
+    def on_spectroscopy_type_cb_activated(self, index):
+        """Handle changes to the spectroscopy type combo box.
+
+        Updates the spectroscopy type setting and tells the notebook to replace
+        all scenarios with a new one of the appropriate type.
+
+        Parameters
+        ----------
+        index : int
+            The index of the selected spectroscopy type.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"Start:: on_spectroscopy_type_cb_activated {index}")
+        spectroscopy_type = self.spectroscopy_types[index]
+        self.settings["Spectroscopy type"] = spectroscopy_type
+        self.notebook.set_spectroscopy_type(spectroscopy_type)
+        logger.debug(f"Finished:: on_spectroscopy_type_cb_activated {index}")
+
     def refresh(self, force=False):
         """Refresh the current state based on notebook content changes or user request.
 
@@ -1038,6 +1070,9 @@ class SettingsTab(QWidget):
             else:
                 self.refresh_optical_permittivity_tw()
         self.sigma_sb.setValue(self.settings["Sigma value"])
+        index = self.spectroscopy_type_cb.findText(self.settings["Spectroscopy type"], Qt.MatchFixedString)
+        if index >= 0:
+            self.spectroscopy_type_cb.setCurrentIndex(index)
         if self.settings["Eckart flag"]:
             self.eckart_cb.setCheckState(Qt.Checked)
         else:
