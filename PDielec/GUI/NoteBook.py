@@ -24,13 +24,11 @@ from qtpy.QtWidgets import QApplication, QFileDialog, QMessageBox, QTabWidget, Q
 
 from PDielec import Calculator
 from PDielec.GUI.AnalysisTab import AnalysisTab
-from PDielec.GUI.CrystalInfraredScenarioTab import CrystalInfraredScenarioTab
-from PDielec.GUI.CrystalRamanScenarioTab import CrystalRamanScenarioTab
+from PDielec.GUI.CrystalScenarioTab import CrystalScenarioTab
 from PDielec.GUI.FitterTab import FitterTab
 from PDielec.GUI.MainTab import MainTab
 from PDielec.GUI.PlottingTab import PlottingTab
-from PDielec.GUI.PowderInfraredScenarioTab import PowderInfraredScenarioTab
-from PDielec.GUI.PowderRamanScenarioTab import PowderRamanScenarioTab
+from PDielec.GUI.PowderScenarioTab import PowderScenarioTab
 from PDielec.GUI.SettingsTab import SettingsTab
 from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
 from PDielec.GUI.ViewerTab import ViewerTab
@@ -64,8 +62,9 @@ class NoteBook(QWidget):
         A progressbar object to reflect the current progress, by default None.
     scripting : bool, optional
         Flag to indicate if the notebook is used in scripting mode, by default False.
-    default_scenario : str, optional
-        The type of default scenario to load at initiation, by default 'Powder Infrared'.
+    spectroscopy : str, optional
+        The type of default spectroscopy to load at initiation, by default 'Powder Infrared'.
+        But it can also be 'Powder ATR', 'Powder Raman', 'Crystal Infrared' or 'Crystal Raman'
     ncpus : int, optional
         The number of CPUs to use, by default 0 which means autodetect.
     threading : bool, optional
@@ -118,7 +117,7 @@ class NoteBook(QWidget):
 
     """
 
-    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario="Powder Infrared",ncpus=0, threading=False):
+    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, spectroscopy="Powder Infrared",ncpus=0, threading=False):
         """Initialise the main NoteBook.
 
         This method initializes the main widget with all necessary components
@@ -146,9 +145,10 @@ class NoteBook(QWidget):
         scripting : bool, optional
             Flag to indicate whether the application is being used in a scripting mode.
             Defaults to False.
-        default_scenario : str, optional
+        spectroscopy : str, optional
             Specifies the default scenario to be loaded at startup. Possible values
-            might include 'Powder Infrared', 'Crystal Infrared', 'Powder Raman', 'Crystal Raman'
+            might include 'Powder Infrared', 'Powder ATR', 'Crystal Infrared',
+                          'Powder Raman', or 'Crystal Raman'.
             defaults to 'Powder Infrared'
         ncpus : int, optional
             The number of CPUs to be used for multiprocessing. If set to 0, the
@@ -198,12 +198,14 @@ class NoteBook(QWidget):
         self.fitterTab = None
         self.scenarios = None
         self.scenarioTypes = {
-                              "Powder Infrared" : PowderInfraredScenarioTab,
-                              "Crystal Infrared" : CrystalInfraredScenarioTab,
-                              "Powder Raman" : PowderRamanScenarioTab,
-                              "Crystal Raman" : CrystalRamanScenarioTab
+                              "Powder Infrared"  : PowderScenarioTab,
+                              "Powder ATR"       : PowderScenarioTab,
+                              "Powder Raman"     : PowderScenarioTab,
+                              "Crystal Infrared" : CrystalScenarioTab,
+                              "Crystal Raman"    : CrystalScenarioTab,
                               }
-        self.currentScenarioTab = self.scenarioTypes[default_scenario]
+        self.currentScenarioTab = self.scenarioTypes[spectroscopy]
+        self.spectroscopyType = spectroscopy
         #
         # Initialize tab screen
         #
@@ -595,6 +597,36 @@ class NoteBook(QWidget):
             self.scenarios[index].refresh()
         self.tabs.setCurrentIndex(self.tabOffSet+index)
         logger.debug(f"Finished:: switch for scenario {index+1}")
+        return
+
+    def set_spectroscopy_type(self, spectroscopy_type):
+        """Set the global spectroscopy type and reset all scenarios.
+
+        Deletes all existing scenarios and creates a single new scenario of the
+        appropriate type for the given spectroscopy. Then requests a refresh of
+        the plotting tab.
+
+        Parameters
+        ----------
+        spectroscopy_type : str
+            One of 'Powder Infrared', 'Powder ATR', 'Powder Raman',
+            'Crystal Infrared', or 'Crystal Raman'.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"Start:: set_spectroscopy_type {spectroscopy_type}")
+        self.spectroscopyType = spectroscopy_type
+        self.currentScenarioTab = self.scenarioTypes[spectroscopy_type]
+        self.delete_all_scenarios()
+        self.switch_scenario(0, spectroscopy_type)
+        if self.plottingTab is not None:
+            self.plottingTab.request_refresh()
+            if not self.scripting:
+                self.plottingTab.refresh(force=True)
+        logger.debug(f"Finished:: set_spectroscopy_type {spectroscopy_type}")
         return
 
     def refresh(self,force=False):
