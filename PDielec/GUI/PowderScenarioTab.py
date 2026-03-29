@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""PowderInfraredScenarioTab module."""
+"""PowderScenarioTab module."""
 import ctypes
 import logging
 import sys
@@ -39,7 +39,7 @@ from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
 
 logger = logging.getLogger(__name__)
-class PowderInfraredScenarioTab(ScenarioTab):
+class PowderScenarioTab(ScenarioTab):
     """A class for managing the Powder Infrared Scenario Tab.
 
     It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
@@ -202,7 +202,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         logger.debug("Start:: initialiser")
-        self.scenarioType = "Powder Infrared"
+        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
         self.settings["Scenario type"] = self.scenarioType
         self.noCalculationsRequired = 1
         self.settings["Matrix"] = "ptfe"
@@ -510,7 +510,7 @@ class PowderInfraredScenarioTab(ScenarioTab):
         self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
         self.legend_le.setText(self.settings["Legend"])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel("Powder IR Scenario legend",self)
+        label = QLabel("Powder scenario legend",self)
         label.setToolTip("The legend will be used to describe the results in the plotting tab")
         form.addRow(label, self.legend_le)
 
@@ -1172,11 +1172,79 @@ class PowderInfraredScenarioTab(ScenarioTab):
             self.aoverb_sb.setEnabled(False)
         else:
             logger.warning(f"ScenarioTab: Shape not recognised {self.settings['Particle shape']}")
+        # Grey out ATR widgets when not in ATR mode
+        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        is_atr = spectroscopy_type == "Powder ATR"
+        self.atr_index_sb.setEnabled(is_atr)
+        self.atr_incident_ang_sb.setEnabled(is_atr)
+        self.atr_spolfrac_sb.setEnabled(is_atr)
         logger.debug(f"{self.settings['Legend']} Finished:: change_greyed_out")
         return
 
     def calculate(self, vs_cm1):
-        """Calculate the powder absorption for the range of frequencies in vs_cm1.
+        """Calculate the powder spectrum for the range of frequencies in vs_cm1.
+
+        Dispatches to the appropriate calculation method based on the spectroscopy
+        type set in the settings tab.
+
+        Parameters
+        ----------
+        vs_cm1 : array_like
+            Array of frequencies for which to calculate the powder spectrum.
+
+        Returns
+        -------
+        None
+
+        """
+        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        if spectroscopy_type == "Powder Infrared":
+            self._calculate_infrared(vs_cm1)
+        elif spectroscopy_type == "Powder ATR":
+            self._calculate_atr(vs_cm1)
+        elif spectroscopy_type == "Powder Raman":
+            self._calculate_raman(vs_cm1)
+        else:
+            logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {spectroscopy_type}")
+
+    def _calculate_atr(self, vs_cm1):
+        """Calculate the ATR powder spectrum for the range of frequencies in vs_cm1.
+
+        Currently delegates to _calculate_infrared. In future, ATR-specific steps
+        will be separated out of _calculate_infrared into this method.
+
+        Parameters
+        ----------
+        vs_cm1 : array_like
+            Array of frequencies for which to calculate the ATR spectrum.
+
+        Returns
+        -------
+        None
+
+        """
+        self._calculate_infrared(vs_cm1)
+
+    def _calculate_raman(self, vs_cm1):
+        """Calculate the powder Raman spectrum for the range of frequencies in vs_cm1.
+
+        Not yet implemented.
+
+        Parameters
+        ----------
+        vs_cm1 : array_like
+            Array of frequencies for which to calculate the Raman spectrum.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"{self.settings['Legend']} _calculate_raman: not yet implemented")
+        self.calculation_required = False
+
+    def _calculate_infrared(self, vs_cm1):
+        """Calculate the powder infrared/ATR absorption for the range of frequencies in vs_cm1.
 
         Parameters
         ----------
@@ -1347,6 +1415,9 @@ class PowderInfraredScenarioTab(ScenarioTab):
             return
         # Force a recalculation
         self.calculation_required = True
+        # Sync scenarioType from global spectroscopy type setting
+        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        self.settings["Scenario type"] = self.scenarioType
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         #

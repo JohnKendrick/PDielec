@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""CrystalInfraredScenarioTab module."""
+"""CrystalScenarioTab module."""
 import copy
 import logging
 from functools import partial
@@ -137,7 +137,7 @@ def solve_single_crystal_equations(
     errors,largest_exponent = system.overflow_errors()
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
-class CrystalInfraredScenarioTab(ScenarioTab):
+class CrystalScenarioTab(ScenarioTab):
     """A tab class for handling a crystal infrared  scenario.
 
     This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities
@@ -337,7 +337,7 @@ class CrystalInfraredScenarioTab(ScenarioTab):
         self.refresh_required = True
         self.calculation_required = True
         self.noCalculationsRequired = 1
-        self.scenarioType = "Crystal Infrared"
+        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
         self.settings["Scenario type"] = self.scenarioType
         self.settings["Global azimuthal angle"] = 0.0
         self.settings["Angle of incidence"] = 0.0
@@ -1651,6 +1651,9 @@ class CrystalInfraredScenarioTab(ScenarioTab):
         self.generate_layer_settings()
         # Force recalculation
         self.calculation_required = True
+        # Sync scenarioType from global spectroscopy type setting
+        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
+        self.settings["Scenario type"] = self.scenarioType
         # Change any greyed out items
         self.greyed_out()
         #
@@ -2039,7 +2042,49 @@ class CrystalInfraredScenarioTab(ScenarioTab):
         logger.debug(f"{self.settings['Legend']} Finished the coherent_calculator function")
         return ( p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance, epsilon )
 
-    def calculate(self,vs_cm1):
+    def calculate(self, vs_cm1):
+        """Calculate the crystal spectrum for the range of frequencies in vs_cm1.
+
+        Dispatches to the appropriate calculation method based on the spectroscopy
+        type set in the settings tab.
+
+        Parameters
+        ----------
+        vs_cm1 : array_like
+            Array of frequencies for which to calculate the crystal spectrum.
+
+        Returns
+        -------
+        None
+
+        """
+        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
+        if spectroscopy_type == "Crystal Infrared":
+            self._calculate_infrared(vs_cm1)
+        elif spectroscopy_type == "Crystal Raman":
+            self._calculate_raman(vs_cm1)
+        else:
+            logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {spectroscopy_type}")
+
+    def _calculate_raman(self, vs_cm1):
+        """Calculate the crystal Raman spectrum for the range of frequencies in vs_cm1.
+
+        Not yet implemented.
+
+        Parameters
+        ----------
+        vs_cm1 : array_like
+            Array of frequencies for which to calculate the Raman spectrum.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"{self.settings['Legend']} _calculate_raman: not yet implemented")
+        self.calculation_required = False
+
+    def _calculate_infrared(self,vs_cm1):
         """Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
 
         Parameters
