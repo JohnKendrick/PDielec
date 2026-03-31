@@ -95,6 +95,87 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage["energy3"]  = (re.compile(" *CENTRAL POINT"), self._read_energy3)
         for f in self._outputfiles:
             self._read_output_file(f)
+        # TENS_RAMAN.DAT is an optional companion file; read it if present
+        tens_raman = os.path.join(self.open_directory, "TENS_RAMAN.DAT")
+        if os.path.isfile(tens_raman):
+            self._read_tens_raman_dat(tens_raman)
+        return
+
+    def _read_tens_raman_dat(self, filename):
+        """Read Raman polarizability derivatives from TENS_RAMAN.DAT and compute mode Raman tensors.
+
+        TENS_RAMAN.DAT contains the derivative of the unit-cell polarizability tensor
+        (in atomic units, Bohr²) with respect to each atomic Cartesian displacement (Bohr).
+        There is one line per (atom, displacement-direction) pair, ordered as
+        ``(atom1_x, atom1_y, atom1_z, atom2_x, …, atomN_z)``, and each line holds
+        six values::
+
+            ∂α_xx/∂u   ∂α_xy/∂u   ∂α_xz/∂u   ∂α_yy/∂u   ∂α_yz/∂u   ∂α_zz/∂u
+
+        The mode Raman tensors stored in ``self.raman_tensors`` are computed by
+        projecting onto the (unit-normalised) mass-weighted normal modes::
+
+            raman_tensors[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
+
+        where ``mwm[n,k,β]`` is the mass-weighted eigenvector component for mode *n*,
+        atom *k*, Cartesian direction *β*, and ``M_k`` is the atomic mass in amu.
+        The resulting tensors carry the same relative normalisation as PDielec's IR
+        mode-projected Born charges, so the frequency-dependent prefactor for
+        absolute intensities must be applied separately in the calculation code.
+
+        Parameters
+        ----------
+        filename : str
+            Path to the TENS_RAMAN.DAT file.
+
+        Returns
+        -------
+        None
+
+        """
+        if not self.mass_weighted_normal_modes or not self.masses:
+            logger.warning("TENS_RAMAN.DAT found but normal modes are not yet available; skipping Raman tensors")
+            return
+
+        nmodes = 3 * self.nions
+
+        # Read the 3N × 6 polarizability-derivative table
+        fd = pdielec_io(filename, "r")
+        dalpha = np.zeros((nmodes, 6))
+        for i in range(nmodes):
+            line = fd.readline()
+            if not line:
+                logger.error(f"Unexpected end of file in TENS_RAMAN.DAT at row {i}")
+                fd.close()
+                return
+            dalpha[i] = [float(x) for x in line.split()]
+        fd.close()
+
+        # mwm shape: (nmodes, nions, 3)  — unit-normalised mass-weighted eigenvectors
+        mwm = np.array(self.mass_weighted_normal_modes)
+
+        # Flatten to (nmodes, 3*nions) and attach 1/√M_k weights so that
+        # amp[n, k*3+β] = mwm[n, k, β] / √M_k
+        inv_sqrt_masses = np.repeat(1.0 / np.sqrt(self.masses), 3)   # shape (3*nions,)
+        amp = mwm.reshape(nmodes, nmodes) * inv_sqrt_masses           # (nmodes, nmodes)
+
+        # Project: raman_raw[n, c] = Σ_{k,β} amp[n, k*3+β] × dalpha[k*3+β, c]
+        raman_raw = amp @ dalpha   # (nmodes, 6)
+
+        # Build symmetric 3×3 tensors from the 6 independent components
+        # Column order: α_xx=0, α_xy=1, α_xz=2, α_yy=3, α_yz=4, α_zz=5
+        self.raman_tensors = []
+        for n in range(nmodes):
+            da = raman_raw[n]
+            tensor = np.array([
+                [da[0], da[1], da[2]],
+                [da[1], da[3], da[4]],
+                [da[2], da[4], da[5]],
+            ])
+            self.raman_tensors.append(tensor)
+
+        if self.debug:
+            logger.debug(f"_read_tens_raman_dat: computed Raman tensors for {nmodes} modes from {filename}")
         return
 
     def _read_energy(self, line):

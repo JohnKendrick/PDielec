@@ -111,6 +111,10 @@ class GenericOutputReader:
     original_born_charges, CrystalPermittivity, oscillator_strengths, edited_masses : Various types
         Attributes initialized as `None` to represent unassigned computational properties.
 
+    raman_tensors : list or None
+        A list of 3×3 Raman susceptibility tensors, one per normal mode, or ``None`` if
+        the output reader does not provide Raman data.
+
     original_born_charges_are_being_used : bool
         Signifies whether original Born charges are in use, defaults to True.
 
@@ -190,6 +194,7 @@ class GenericOutputReader:
         self.oscillator_strengths       = None
         self.edited_masses              = None
         self.primitive_transformation   = None
+        self.raman_tensors              = None
         return
 
     def read_output(self):
@@ -479,6 +484,22 @@ class GenericOutputReader:
         cell.set_atomic_masses(self.masses)
         # return the cell
         return cell
+
+    def get_raman_tensors(self):
+        """Return the Raman susceptibility tensors.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        list or None
+            A list of 3×3 Raman susceptibility tensors, one per normal mode, or
+            ``None`` if the reader does not provide Raman data.
+
+        """
+        return self.raman_tensors
 
     def get_crystal_density(self):
         """Return the crystal density in g/cc.
