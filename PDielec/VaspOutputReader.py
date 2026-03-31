@@ -16,10 +16,12 @@
 """VASP output reader."""
 
 import logging
+import os
 import re
 import xml.etree.ElementTree as ET
 
 import numpy as np
+import yaml
 
 from PDielec.Calculator import calculate_normal_modes_and_frequencies
 from PDielec.Constants import atomic_number_to_element, hertz
@@ -191,6 +193,55 @@ class VaspOutputReader(GenericOutputReader):
                 self._read_xml(f)
             else:
                 self._read_output_file(f)
+        # Raman-Tensors.yaml is an optional companion file; read it if present
+        directory = os.path.dirname(os.path.abspath(self._outputfiles[0]))
+        raman_yaml = os.path.join(directory, "Raman-Tensors.yaml")
+        if os.path.isfile(raman_yaml):
+            self._read_raman_tensors_yaml(raman_yaml)
+        return
+
+    def _read_raman_tensors_yaml(self, filename):
+        """Read Raman susceptibility tensors from a Raman-Tensors.yaml file.
+
+        The file is produced by the Skelton group scripts for finite-difference
+        Raman calculations with VASP.  Each entry in ``raman_activities`` holds a
+        pre-projected 3×3 Raman tensor for one normal mode, so no further
+        eigenvector projection is required.
+
+        Parameters
+        ----------
+        filename : str
+            Path to the Raman-Tensors.yaml file.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
+        NumPy arrays, sorted by ``band_index`` (ascending).
+
+        """
+        try:
+            from yaml import CLoader as Loader
+        except ImportError:
+            logger.warning("WARNING: Yaml CLoader is not available, using pure-Python loader")
+            from yaml import Loader
+        with open(filename) as fd:
+            data = yaml.load(fd, Loader=Loader)
+        activities = data.get("raman_activities", [])
+        if not activities:
+            logger.warning(f"_read_raman_tensors_yaml: no raman_activities found in {filename}")
+            return
+        # Ensure correct ordering by band_index
+        activities.sort(key=lambda x: x["band_index"])
+        self.raman_tensors = []
+        for entry in activities:
+            tensor = np.array(entry["raman_tensor"], dtype=float)
+            self.raman_tensors.append(tensor)
+        if self.debug:
+            logger.debug(f"_read_raman_tensors_yaml: read {len(self.raman_tensors)} Raman tensors from {filename}")
         return
 
     def _read_forces(self, line):
