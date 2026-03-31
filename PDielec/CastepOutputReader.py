@@ -129,6 +129,7 @@ class CastepOutputReader(GenericOutputReader):
         #  For the .phonon file
         self.manage["frequency"]      = (re.compile("     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$"), self._read_frequencies)
         self.manage["nbranches"]      = (re.compile(" Number of branches"), self._read_nbranches)
+        self.manage["ramanTensors"]   = (re.compile(".*Raman Susceptibility Tensors"), self._read_raman_tensors)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -219,6 +220,61 @@ class CastepOutputReader(GenericOutputReader):
             self.mass_weighted_normal_modes.append(normal_modes[i])
             # end of if freq
         # end of for freq
+        return
+
+    def _read_raman_tensors(self, line):
+        """Read the Raman susceptibility tensors from the .castep file.
+
+        CASTEP prints one 3×3 Raman susceptibility tensor per mode in the block
+        headed ``Raman Susceptibility Tensors ((A/amu)*0.5)``.  The units are
+        ``(Å²/amu^½)`` — i.e. the derivative of the polarisability (in Å³) with
+        respect to the mass-weighted normal coordinate (in Å·amu^½).  Precision
+        is limited to 4 decimal places; no higher-precision text source exists
+        (the binary ``castep_bin`` checkpoint holds full double precision but
+        cannot be read without a Fortran binary parser).
+
+        The tensors are stored directly in ``self.raman_tensors`` as a list of
+        ``(3, 3)`` NumPy arrays, one per mode in frequency order.  No eigenvector
+        projection is required because CASTEP writes the already-projected
+        per-mode tensors.
+
+        Parameters
+        ----------
+        line : str
+            The line that triggered this method (containing
+            ``"Raman Susceptibility Tensors"``).  Not used directly; reading
+            continues from the current position of ``self.file_descriptor``.
+
+        Returns
+        -------
+        None
+
+        """
+        # Skip the separator line  +-----...-----+
+        self.file_descriptor.readline()
+        self.raman_tensors = []
+        # Loop until the closing +---...---+ line (which has no "Mode number")
+        while True:
+            header = self.file_descriptor.readline()
+            if "Mode number" not in header:
+                break
+            # Row 0: three tensor values followed by the depolarisation ratio
+            row0 = self.file_descriptor.readline().split()
+            # Row 1 and 2: three tensor values only
+            row1 = self.file_descriptor.readline().split()
+            row2 = self.file_descriptor.readline().split()
+            # Skip the blank separator line between modes
+            self.file_descriptor.readline()
+            # Each line is bordered by '+' tokens; the tensor values are at
+            # positions [1], [2], [3] after splitting on whitespace.
+            tensor = np.array([
+                [float(row0[1]), float(row0[2]), float(row0[3])],
+                [float(row1[1]), float(row1[2]), float(row1[3])],
+                [float(row2[1]), float(row2[2]), float(row2[3])],
+            ])
+            self.raman_tensors.append(tensor)
+        if self.debug:
+            logger.debug(f"_read_raman_tensors: read {len(self.raman_tensors)} Raman tensors")
         return
 
     def _read_kpoint_grid(self, line):
