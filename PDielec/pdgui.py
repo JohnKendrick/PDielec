@@ -110,6 +110,7 @@ def main():
 
     if debug:
         logging.basicConfig(level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s")
+        logging.getLogger("matplotlib").setLevel(logging.WARNING)
 
     if apply_default_style:
         sys.argv.append("-style")
