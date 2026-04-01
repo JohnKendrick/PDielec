@@ -54,8 +54,8 @@ class PowderScenarioTab(ScenarioTab):
 
     Attributes
     ----------
-    scenarioType : str
-        Defines the type of scenario as 'Powder Infrared'.
+    spectroscopy : str
+        Defines the type of spectrocopy as 'Powder Infrared'.
     settings : dict
         Dictionary holding various settings related to the scenario.
     methods : list
@@ -91,6 +91,18 @@ class PowderScenarioTab(ScenarioTab):
 
     Methods
     -------
+    initialise_infrared_gui()
+        Set the gui appropriate for an infrared calculation
+    initialise_atr_gui()
+        Set the gui appropriate for an atr calculation
+    initialise_raman_gui()
+        Set the settings appropriate for an raman calculation
+    initialise_infrared_settings()
+        Set the settings appropriate for an infrared calculation
+    initialise_atr_settings()
+        Set the settings appropriate for an atr calculation
+    initialise_raman_settings()
+        Set the settings appropriate for an raman calculation
     crystal_density()
         Compute and return the density of the crystal based on its volume and mass.
     open_db_button_clicked()
@@ -149,6 +161,12 @@ class PowderScenarioTab(ScenarioTab):
         Prepare the necessary results for displaying or processing.
     refresh(force=False)
         Refresh the GUI interface with up to date values.
+    refresh_raman()
+        Refresh the raman gui components
+    refresh_infrared()
+        Refresh the infrared gui components
+    refresh_atr()
+        Refresh the atr gui components
 
     """
 
@@ -164,8 +182,8 @@ class PowderScenarioTab(ScenarioTab):
 
         Attributes
         ----------
-        scenarioType : str
-            Defines the type of scenario as 'Powder Infrared'.
+        spectrocopy : str
+            Defines the type of spectrocopy as 'Powder Infrared'.
         settings : dict
             Dictionary holding various settings related to the scenario.
         methods : list
@@ -202,49 +220,141 @@ class PowderScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         logger.debug("Start:: initialiser")
-        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
-        self.settings["Scenario type"] = self.scenarioType
-        self.no_calculations_required = 1
-        self.settings["Matrix"] = "ptfe"
-        self.settings["Matrix density"] = None
-        self.settings["Matrix permittivity"] = None
-        self.settings["Bubble radius"] = 30.0
-        self.settings["Bubble volume fraction"] = 0.0
-        self.settings["Mass fraction"] = 0.1
-        self.settings["Volume fraction"] = 0.1
-        self.settings["Particle size(mu)"] = 0.0001
-        self.settings["Particle size distribution sigma(mu)"] = 0.0
-        self.settings["Ellipsoid a/b"] = 1.0
-        self.settings["Unique direction - h"] = 0
-        self.settings["Unique direction - k"] = 0
-        self.settings["Unique direction - l"] = 1
-        self.settings["Mass or volume fraction"] = "volume"
-        self.settings["ATR material refractive index"] = 4.0
-        self.settings["ATR theta"] = 45.0
-        self.settings["ATR S polarisation fraction"] = 0.5
-        self.settings["Effective medium method"] = "Maxwell-Garnett"
-        self.settings["Particle shape"] = "Sphere"
-        self.methods = ["Maxwell-Garnett", "Bruggeman", "Averaged Permittivity", "Mie"]
-        self.shapes = ["Sphere", "Needle", "Plate", "Ellipsoid"]
-        self.materialNames = []
-        self.materialDefinedManually = False
-        self.direction = np.array([0,0,0])
-        self.depolarisation = np.array([0,0,0])
-        self.scenarioIndex = None
-        self.refresh_required = True
-        self.calculation_required = False
-        self.reader = None
-        self.realPermittivity = []
-        self.imagPermittivity = []
-        self.absorptionCoefficient = []
-        self.molarAbsorptionCoefficient = []
-        self.sp_atr = []
+        self.spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        #
+        # No testing on spectroscopy type, all settings are set independent of the spectroscopy
+        #
+        self.initialise_infrared_settings()
+        self.initialise_atr_settings()
+        self.initialise_raman_settings()
+        #
         # Create a scenario tab
+        #
         vbox = QVBoxLayout()
         form = QFormLayout()
+        if "Powder Infrared" in self.spectroscopy:
+            self.initialise_infrared_gui(vbox,form)
+        elif "Powder ATR" in self.spectroscopy:
+            self.initialise_infrared_gui(vbox,form)
+            self.initialise_atr_gui(vbox,form)
+        elif "Powder Raman" in self.spectroscopy:
+            self.initialise_infrared_gui(vbox,form)
+            self.initialise_raman_gui(vbox,form)
+        #
+        # Add a legend option
+        #
+        self.legend_le = QLineEdit(self)
+        self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
+        self.legend_le.setText(self.settings["Legend"])
+        self.legend_le.textChanged.connect(self.on_legend_le_changed)
+        label = QLabel("Powder scenario legend",self)
+        label.setToolTip("The legend will be used to describe the results in the plotting tab")
+        form.addRow(label, self.legend_le)
+        #
+        # Final buttons
+        #
+        hbox = self.add_scenario_buttons()
+        form.addRow(hbox)
+        vbox.addLayout(form)
+        # finalise the layout
+        self.setLayout(vbox)
+        # sort out greying of boxes
+        self.change_greyed_out()
+        logger.debug("Finished:: initialiser")
+        return
+
+    def initialise_atr_gui(self, vbox, form):
+        """Initialise the GUI for atr calculations.
+
+        Parameters
+        ----------
+        vbox : QVBoxLayout
+            vbox is defined by the PowderScenarioTab initialised
+        form : QFormLayout
+            form is defined by the PowderScenarioTab initialised
+
+        Returns
+        -------
+        vbox, form
+
+        """
+        #
+        # Refractive Index
+        #
+        self.atr_index_sb = QDoubleSpinBox(self)
+        self.atr_index_sb.setRange(0.001, 100.0)
+        self.atr_index_sb.setSingleStep(0.01)
+        self.atr_index_sb.setDecimals(3)
+        self.atr_index_sb.setToolTip("Define the ATR material refractive index")
+        self.atr_index_sb.setValue(self.settings["ATR material refractive index"])
+        self.atr_index_sb.valueChanged.connect(self.on_atr_index_sb_changed)
+        label = QLabel("ATR material refractive index", self)
+        label.setToolTip("Define the ATR material refractive index")
+        form.addRow(label, self.atr_index_sb)
+        #
+        # Incident angle in degreees
+        #
+        self.atr_incident_ang_sb = QDoubleSpinBox(self)
+        self.atr_incident_ang_sb.setRange(0.0, 180.0)
+        self.atr_incident_ang_sb.setSingleStep(0.1)
+        self.atr_incident_ang_sb.setDecimals(1)
+        self.atr_incident_ang_sb.setToolTip("Define the ATR incident angle")
+        self.atr_incident_ang_sb.setValue(self.settings["ATR theta"])
+        self.atr_incident_ang_sb.valueChanged.connect(self.on_atr_incident_ang_sb_changed)
+        label = QLabel("ATR incident angle", self)
+        label.setToolTip("Define the ATR incident angle")
+        form.addRow(label, self.atr_incident_ang_sb)
+        #
+        # S polarisation fraction
+        #
+        self.atr_spolfrac_sb = QDoubleSpinBox(self)
+        self.atr_spolfrac_sb.setRange(0.0, 1.0)
+        self.atr_spolfrac_sb.setSingleStep(0.01)
+        self.atr_spolfrac_sb.setDecimals(3)
+        self.atr_spolfrac_sb.setToolTip("Define the ATR S polarisation fraction, the rest is P polarisation")
+        self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
+        self.atr_spolfrac_sb.valueChanged.connect(self.on_atr_spolfrac_sb_changed)
+        label = QLabel("ATR S polarisation fraction", self)
+        label.setToolTip("Define the S polarisation fraction, the rest is P polarisation")
+        form.addRow(label, self.atr_spolfrac_sb)
+        return vbox, form
+
+    def initialise_raman_gui(self, vbox, form):
+        """Initialise the GUI for atr calculations.
+
+        Parameters
+        ----------
+        vbox : QVBoxLayout
+            vbox is defined by the PowderScenarioTab initialised
+        form : QFormLayout
+            form is defined by the PowderScenarioTab initialised
+
+        Returns
+        -------
+        vbox, form
+
+        """
+        return vbox, form
+
+    def initialise_infrared_gui(self, vbox, form):
+        """Initialise the GUI for atr calculations.
+
+        Parameters
+        ----------
+        vbox : QVBoxLayout
+            vbox is defined by the PowderScenarioTab initialised
+        form : QFormLayout
+            form is defined by the PowderScenarioTab initialised
+
+        Returns
+        -------
+        vbox, form
+
+        """
         #
         # Option to open a database of permittivities for the support
         # label and button are defined the parent class
+        #
         form.addRow(self.openDB_label, self.openDB_button)
         #
         # Add a name for the database
@@ -281,7 +391,9 @@ class PowderScenarioTab(ScenarioTab):
         hbox.addWidget(self.matrix_cb)
         hbox.addWidget(self.matrix_info_le)
         form.addRow(label, hbox)
+        #
         # Set the Matrix density and permittivity at 0cm-1
+        #
         self.settings["Matrix density"] = self.matrixMaterial.get_density()
         self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
         self.settings["Matrix permittivity"] = self.matrixPermittivityFunction(0.0)
@@ -432,6 +544,7 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Particle shape information
         # unique direction (hkl) or [abc]
+        #
         self.h_sb = QSpinBox(self)
         self.h_sb.setToolTip("Define the h dimension of the unique direction")
         self.h_sb.setRange(-20,20)
@@ -468,63 +581,84 @@ class PowderScenarioTab(ScenarioTab):
         label = QLabel("Ellipsoid a/b eccentricty",self)
         label.setToolTip("Define the ellipsoid a/b ratio or eccentricity.  \nOnly applicable for the ellipsoid shapes \na/b < 1: oblate ellipsoid \na/b > 1: prolate ellipsoid")
         form.addRow(label, self.aoverb_sb)
-        #
-        # Add ATR options
-        # Refractive Index
-        self.atr_index_sb = QDoubleSpinBox(self)
-        self.atr_index_sb.setRange(0.001, 100.0)
-        self.atr_index_sb.setSingleStep(0.01)
-        self.atr_index_sb.setDecimals(3)
-        self.atr_index_sb.setToolTip("Define the ATR material refractive index")
-        self.atr_index_sb.setValue(self.settings["ATR material refractive index"])
-        self.atr_index_sb.valueChanged.connect(self.on_atr_index_sb_changed)
-        label = QLabel("ATR material refractive index", self)
-        label.setToolTip("Define the ATR material refractive index")
-        form.addRow(label, self.atr_index_sb)
-        # Incident angle in degreees
-        self.atr_incident_ang_sb = QDoubleSpinBox(self)
-        self.atr_incident_ang_sb.setRange(0.0, 180.0)
-        self.atr_incident_ang_sb.setSingleStep(0.1)
-        self.atr_incident_ang_sb.setDecimals(1)
-        self.atr_incident_ang_sb.setToolTip("Define the ATR incident angle")
-        self.atr_incident_ang_sb.setValue(self.settings["ATR theta"])
-        self.atr_incident_ang_sb.valueChanged.connect(self.on_atr_incident_ang_sb_changed)
-        label = QLabel("ATR incident angle", self)
-        label.setToolTip("Define the ATR incident angle")
-        form.addRow(label, self.atr_incident_ang_sb)
-        # S polarisation fraction
-        self.atr_spolfrac_sb = QDoubleSpinBox(self)
-        self.atr_spolfrac_sb.setRange(0.0, 1.0)
-        self.atr_spolfrac_sb.setSingleStep(0.01)
-        self.atr_spolfrac_sb.setDecimals(3)
-        self.atr_spolfrac_sb.setToolTip("Define the ATR S polarisation fraction, the rest is P polarisation")
-        self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
-        self.atr_spolfrac_sb.valueChanged.connect(self.on_atr_spolfrac_sb_changed)
-        label = QLabel("ATR S polarisation fraction", self)
-        label.setToolTip("Define the S polarisation fraction, the rest is P polarisation")
-        form.addRow(label, self.atr_spolfrac_sb)
-        #
-        # Add a legend option
-        #
-        self.legend_le = QLineEdit(self)
-        self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
-        self.legend_le.setText(self.settings["Legend"])
-        self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel("Powder scenario legend",self)
-        label.setToolTip("The legend will be used to describe the results in the plotting tab")
-        form.addRow(label, self.legend_le)
+        return vbox, form
 
-        #
-        # Final buttons
-        #
-        hbox = self.add_scenario_buttons()
-        form.addRow(hbox)
-        vbox.addLayout(form)
-        # finalise the layout
-        self.setLayout(vbox)
-        # sort out greying of boxes
-        self.change_greyed_out()
-        logger.debug("Finished:: initialiser")
+
+    def initialise_raman_settings(self):
+        """Set the settings attribute for raman calculations.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        return
+
+    def initialise_atr_settings(self):
+        """Set the settings attribute for atr calculations.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        self.settings["ATR material refractive index"] = 4.0
+        self.settings["ATR theta"] = 45.0
+        self.settings["ATR S polarisation fraction"] = 0.5
+        self.sp_atr = []
+        return
+
+    def initialise_infrared_settings(self):
+        """Set the settings attribute for infrared calculations.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        self.no_calculations_required = 1
+        self.settings["Matrix"] = "ptfe"
+        self.settings["Matrix density"] = None
+        self.settings["Matrix permittivity"] = None
+        self.settings["Bubble radius"] = 30.0
+        self.settings["Bubble volume fraction"] = 0.0
+        self.settings["Mass fraction"] = 0.1
+        self.settings["Volume fraction"] = 0.1
+        self.settings["Particle size(mu)"] = 0.0001
+        self.settings["Particle size distribution sigma(mu)"] = 0.0
+        self.settings["Ellipsoid a/b"] = 1.0
+        self.settings["Unique direction - h"] = 0
+        self.settings["Unique direction - k"] = 0
+        self.settings["Unique direction - l"] = 1
+        self.settings["Mass or volume fraction"] = "volume"
+        self.settings["Effective medium method"] = "Maxwell-Garnett"
+        self.settings["Particle shape"] = "Sphere"
+        self.methods = ["Maxwell-Garnett", "Bruggeman", "Averaged Permittivity", "Mie"]
+        self.shapes = ["Sphere", "Needle", "Plate", "Ellipsoid"]
+        self.materialNames = []
+        self.materialDefinedManually = False
+        self.direction = np.array([0,0,0])
+        self.depolarisation = np.array([0,0,0])
+        self.scenarioIndex = None
+        self.refresh_required = True
+        self.calculation_required = False
+        self.reader = None
+        self.realPermittivity = []
+        self.imagPermittivity = []
+        self.absorptionCoefficient = []
+        self.molarAbsorptionCoefficient = []
         return
 
     def crystal_density(self):
@@ -1082,7 +1216,6 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def change_greyed_out(self):
-        # Have a look through the settings and see if we need to grey anything out
         """Modify UI elements based on the selected effective medium method.
 
         This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the
@@ -1173,11 +1306,11 @@ class PowderScenarioTab(ScenarioTab):
         else:
             logger.warning(f"ScenarioTab: Shape not recognised {self.settings['Particle shape']}")
         # Grey out ATR widgets when not in ATR mode
-        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
-        is_atr = spectroscopy_type == "Powder ATR"
-        self.atr_index_sb.setEnabled(is_atr)
-        self.atr_incident_ang_sb.setEnabled(is_atr)
-        self.atr_spolfrac_sb.setEnabled(is_atr)
+        is_atr = self.spectroscopy == "Powder ATR"
+        if is_atr:
+            self.atr_index_sb.setEnabled(is_atr)
+            self.atr_incident_ang_sb.setEnabled(is_atr)
+            self.atr_spolfrac_sb.setEnabled(is_atr)
         logger.debug(f"{self.settings['Legend']} Finished:: change_greyed_out")
         return
 
@@ -1210,8 +1343,8 @@ class PowderScenarioTab(ScenarioTab):
     def _calculate_atr(self, vs_cm1):
         """Calculate the ATR powder spectrum for the range of frequencies in vs_cm1.
 
-        Currently delegates to _calculate_infrared. In future, ATR-specific steps
-        will be separated out of _calculate_infrared into this method.
+        Calls _calculate_infrared to obtain the effective medium permittivity, then
+        computes the ATR reflectance from the stored complex permittivity values.
 
         Parameters
         ----------
@@ -1224,6 +1357,15 @@ class PowderScenarioTab(ScenarioTab):
 
         """
         self._calculate_infrared(vs_cm1)
+        atr_refractive_index = self.settings["ATR material refractive index"]
+        atr_theta = self.settings["ATR theta"]
+        atr_spolfraction = self.settings["ATR S polarisation fraction"]
+        self.sp_atr = []
+        for real_perm, imag_perm in zip(self.realPermittivity, self.imagPermittivity):
+            trace = complex(real_perm, imag_perm)
+            ri = Calculator.calculate_refractive_index_scalar(trace)
+            spatr = Calculator.reflectance_atr(ri, atr_refractive_index, atr_theta, atr_spolfraction)
+            self.sp_atr.append(spatr)
 
     def _calculate_raman(self, vs_cm1):
         """Calculate the powder Raman spectrum for the range of frequencies in vs_cm1.
@@ -1244,7 +1386,7 @@ class PowderScenarioTab(ScenarioTab):
         self.calculation_required = False
 
     def _calculate_infrared(self, vs_cm1):
-        """Calculate the powder infrared/ATR absorption for the range of frequencies in vs_cm1.
+        """Calculate the powder infrared absorption for the range of frequencies in vs_cm1.
 
         Parameters
         ----------
@@ -1304,14 +1446,11 @@ class PowderScenarioTab(ScenarioTab):
         particle_size_mu = self.settings["Particle size(mu)"]
         particle_sigma_mu = self.settings["Particle size distribution sigma(mu)"]
         shape = self.settings["Particle shape"].lower()
-        atr_refractive_index = self.settings["ATR material refractive index"]
-        atr_theta = self.settings["ATR theta"]
-        atr_spolfraction = self.settings["ATR S polarisation fraction"]
         bubble_vf = self.settings["Bubble volume fraction"]
         bubble_radius = self.settings["Bubble radius"]
         # Use the pool of processors already available
         # define a partial function to use with the pool
-        partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,self.matrixPermittivityFunction,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared)
+        partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,self.matrixPermittivityFunction,shape,self.depolarisation,concentration,bubble_vf,bubble_radius,previous_solution_shared)
         if self.notebook.pool is None:
             self.notebook.start_pool()
         logger.debug("About to use the pool to calculate effective medium equations")
@@ -1324,15 +1463,13 @@ class PowderScenarioTab(ScenarioTab):
         self.imagPermittivity = []
         self.absorptionCoefficient = []
         self.molarAbsorptionCoefficient = []
-        self.sp_atr = []
         self.vs_cm1 = []
         logger.debug("Extracting results")
-        for v,_method,_size_mu,_size_sigma,_shape,_data,trace,absorption_coefficient,molar_absorption_coefficient,spatr in results:
+        for v,_method,_size_mu,_size_sigma,_shape,_data,trace,absorption_coefficient,molar_absorption_coefficient in results:
              self.realPermittivity.append(np.real(trace))
              self.imagPermittivity.append(np.imag(trace))
              self.absorptionCoefficient.append(absorption_coefficient)
              self.molarAbsorptionCoefficient.append(molar_absorption_coefficient)
-             self.sp_atr.append(spatr)
              self.vs_cm1.append(v)
         self.calculation_required = False
         QCoreApplication.processEvents()
@@ -1415,9 +1552,8 @@ class PowderScenarioTab(ScenarioTab):
             return
         # Force a recalculation
         self.calculation_required = True
-        # Sync scenarioType from global spectroscopy type setting
-        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
-        self.settings["Scenario type"] = self.scenarioType
+        # Sync spectroscopy from global spectroscopy type setting
+        self.spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         #
@@ -1425,7 +1561,67 @@ class PowderScenarioTab(ScenarioTab):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
+        self.refresh_infrared()
+        if self.spectroscopy == "Powder ATR":
+           self.refresh_atr()
+        if self.spectroscopy == "Powder Raman":
+           self.refresh_raman()
+        self.change_greyed_out()
+        #
+        # Unblock signals after refresh
+        #
+        for w in self.findChildren(QWidget):
+            w.blockSignals(False)
+        self.refresh_required = False
+        logger.debug(f"{self.settings['Legend']} Finished:: refresh, force = {force}")
+        return
+
+    def refresh_atr(self):
+        """Refresh the atr settings in the GUI.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        self.atr_index_sb.setValue(self.settings["ATR material refractive index"])
+        self.atr_incident_ang_sb.setValue(self.settings["ATR theta"])
+        self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
+        return
+
+    def refresh_raman(self):
+        """Refresh the raman settings in the GUI.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        return
+
+    def refresh_infrared(self):
+        """Refresh the infrared settings in the GUI.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        #
         # Update the database 
+        #
         if self.settings["Materials database"] != self.DataBase.get_file_name():
             self.DataBase = MaterialsDataBase(self.settings["Materials database"])
             self.settings["Materials database"] = self.DataBase.get_file_name()
@@ -1447,21 +1643,35 @@ class PowderScenarioTab(ScenarioTab):
         else:
             logger.error(f"Error: matrix {self.settings['Matrix']} not available in database; available materials are: {self.materialNames}")
             sys.exit()
+        #
         # Reset the matrix combo box with new names
+        #
         self.matrix_cb.clear()
         self.matrix_cb.addItems(self.materialNames)
         index = self.matrix_cb.findText(self.settings["Matrix"], Qt.MatchFixedString)
         self.matrix_cb.setCurrentIndex(index)
+        #
         # Update the matrix material information
+        #
         text = self.matrixMaterial.get_information()
         self.matrix_info_le.setText(text)
+        #
         # Set the matrix density widget
+        #
         self.density_sb.setValue(self.settings["Matrix density"])
+        #
         # Set the matrix permittivity widget
+        #
         self.permittivity_r_sb.setValue(np.real(self.settings["Matrix permittivity"]))
         self.permittivity_i_sb.setValue(np.imag(self.settings["Matrix permittivity"]))
+        #
+        # Set the bubble data
+        #
         self.bubble_vf_sb.setValue(100*self.settings["Bubble volume fraction"])
         self.bubble_radius_sb.setValue(self.settings["Bubble radius"])
+        #
+        # Set the volume/mass fraction
+        #
         if self.settings["Mass or volume fraction"] == "volume":
             # volume fraction takes precedence
             self.update_mf_sb()
@@ -1470,10 +1680,19 @@ class PowderScenarioTab(ScenarioTab):
             # mass fraction takes precedence
             self.update_vf_sb()
             self.update_mf_sb()
+        #
+        # Set the effective medium theory method
+        #
         index = self.methods_cb.findText(self.settings["Effective medium method"], Qt.MatchFixedString)
         self.methods_cb.setCurrentIndex(index)
+        #
+        # Set the particle size and distribution
+        #
         self.size_sb.setValue(self.settings["Particle size(mu)"])
         self.sigma_sb.setValue(self.settings["Particle size distribution sigma(mu)"])
+        #
+        # Set the particle shape
+        #
         index = self.shape_cb.findText(self.settings["Particle shape"], Qt.MatchFixedString)
         self.shape_cb.setCurrentIndex(index)
         self.h_sb.setValue(self.settings["Unique direction - h"])
@@ -1482,15 +1701,4 @@ class PowderScenarioTab(ScenarioTab):
         self.aoverb_sb.setValue(self.settings["Ellipsoid a/b"])
         self.legend_le.setText(self.settings["Legend"])
         self.aoverb = self.settings["Ellipsoid a/b"]
-        self.atr_index_sb.setValue(self.settings["ATR material refractive index"])
-        self.atr_incident_ang_sb.setValue(self.settings["ATR theta"])
-        self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
-        self.change_greyed_out()
-        #
-        # Unblock signals after refresh
-        #
-        for w in self.findChildren(QWidget):
-            w.blockSignals(False)
-        self.refresh_required = False
-        logger.debug(f"{self.settings['Legend']} Finished:: refresh, force = {force}")
         return

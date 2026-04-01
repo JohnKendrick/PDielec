@@ -304,9 +304,6 @@ def calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fracti
     shape = "Sphere"
     depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
     concentration = 1.0
-    atr_refractive_index = 5.0
-    atr_theta = 45
-    atr_spolfraction  = 1.0
     bubble_vf = 0.0
     bubble_radius = 0.0
     previous_solution_shared = np.eye( 3 )
@@ -323,19 +320,16 @@ def calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fracti
         result = Calculator.solve_effective_medium_equations(method,volume_fraction,
                        particle_size_mu,particle_sigma_mu,matrixPermittivityFunction,
                        shape,depolarisation,concentration,
-                       atr_refractive_index,atr_theta,atr_spolfraction,
                        bubble_vf,bubble_radius,previous_solution_shared,(v_cm1,crystalPermittivity))
         results.append(result)
     # Prepare lists for results
     permittivity = []
     absorptionCoefficient = []
     molarAbsorptionCoefficient = []
-    sp_atr = []
-    for _v,_method,_size_mu,_size_sigma,_shape,_data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
+    for _v,_method,_size_mu,_size_sigma,_shape,_data,trace,absorption_coefficient,molar_absorption_coefficient in results:
          permittivity.append(trace)
          absorptionCoefficient.append(absorption_coefficient)
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)
-         sp_atr.append(spatr)
     return np.array(absorptionCoefficient), np.array(permittivity)
 
 def maxwell_garnett(em, ei, f):

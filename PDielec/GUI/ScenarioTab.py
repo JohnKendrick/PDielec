@@ -111,7 +111,7 @@ class ScenarioTab(QWidget):
         self.settings = {}
         self.notebook = parent
         self.settings["Legend"] = "Unset"
-        self.scenarioType = None
+        self.spectroscopy = None
         self.settings["Scenario type"] = "Unset"
         self.vs_cm1 = [0, 0]
         # Deal with the Materials Database here as it is used in all Scenarios

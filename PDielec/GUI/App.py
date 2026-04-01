@@ -133,7 +133,7 @@ class App(QMainWindow):
         itoken = 0
         ncpus = 0
         threading = False
-        default_scenario = "Powder Infrared"
+        spectroscopy = "Powder Infrared"
         # Look at the environment to see if the number of cpus is specified
         token = os.getenv("PDIELEC_NUM_PROCESSORS")
         ncpus = 0 if token is None else int(token)
@@ -180,12 +180,12 @@ class App(QMainWindow):
             elif token in ("-cpus", "--cpus"):
                 itoken += 1
                 ncpus = int(tokens[itoken])
-            elif token in ("-scenario", "--scenario"):
+            elif token in ("-spectroscopy", "--spectroscopy"):
                 itoken += 1
                 # Replace an "_" with " "
-                default_scenario = tokens[itoken].replace("_"," ")
-                if default_scenario not in ("Powder Infrared", "Crystal Infrared", "Powder Raman", "Crystal Raman"):
-                    logger.error(f"Error default scenario not recognised {default_scenario}")
+                spectroscopy = tokens[itoken].replace("_"," ")
+                if spectroscopy not in ("Powder Infrared", "Crystal Infrared", "Powder Raman", "Crystal Raman"):
+                    logger.error(f"Error default spectroscopy not recognised {spectroscopy}")
                     self.print_usage()
                     sys.exit()
             elif token.startswith("-"):
@@ -235,7 +235,7 @@ class App(QMainWindow):
         logger.debug(f"Filename is {filename}")
         logger.debug(f"Spreadsheet is {spreadsheet_name}")
         logger.debug(f"Script is {self.scriptname}")
-        logger.debug(f"The default scenario is {default_scenario}")
+        logger.debug(f"The default spectroscopy is {spectroscopy}")
         logger.debug(f"No. of cpus is {ncpus}")
         logger.debug(f"Threading is {threading}")
         # Set the number of threads before NUMPY is loaded
@@ -256,7 +256,7 @@ class App(QMainWindow):
             debug=self.debug,
             ncpus=ncpus,
             threading=threading,
-            default_scenario=default_scenario,
+            spectroscopy=spectroscopy,
         )
         logger.debug("About to call setCentralWidget")
         self.setCentralWidget(self.notebook)

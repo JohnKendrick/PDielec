@@ -337,18 +337,18 @@ class NoteBook(QWidget):
         if copyFromIndex != -2:
             # If the copyFromIndex is not -2 then we override the scenarioType
             last = self.scenarios[copyFromIndex]
-            scenarioType = last.scenarioType
+            scenarioType = last.spectroscopy
             logger.debug(f"scenario type has been set from copyFromIndex {scenarioType}")
         elif scenarioType is None:
             # The default behaviour with no parameters in the call, use the last scenario in the list
             last = self.scenarios[-1]
-            scenarioType = last.scenarioType
+            scenarioType = last.spectroscopy
             logger.debug(f"scenario type has been set from the last scenario {scenarioType}")
         else:
             # copyFromIndex is default so we find the last scenario of scenarioType in the list
             last = None
             for scenario in self.scenarios:
-                if scenarioType == scenario.scenarioType:
+                if scenarioType == scenario.spectroscopy:
                     last = scenario
             # end for
         # Create a new scenario
@@ -406,7 +406,7 @@ class NoteBook(QWidget):
             print("#",file=fd)
             print("# Handle the special case of the first scenario",file=fd)
             print("#",file=fd)
-            print('self.notebook.switch_scenario(0,scenarioType="'+self.scenarios[0].scenarioType+'")',file=fd )
+            print('self.notebook.switch_scenario(0,scenarioType="'+self.scenarios[0].spectroscopy+'")',file=fd )
             print("#",file=fd)
             # Print settings of mainTab
             self.print_tab_settings(self.mainTab, "mainTab",fd)
@@ -461,7 +461,7 @@ class NoteBook(QWidget):
         print("#",file=fd)
         print("#",file=fd)
         if new_scenario:
-            print('self.notebook.add_scenario(scenarioType="'+tab.scenarioType+'")',file=fd )
+            print('self.notebook.add_scenario(scenarioType="'+tab.spectroscopy+'")',file=fd )
         print("tab = self.notebook."+title,file=fd)
         for item in tab.settings:
             if item == "Optical permittivity" and not tab.settings["Optical permittivity edited"]:
@@ -574,19 +574,19 @@ class NoteBook(QWidget):
         logger.debug(f"Start:: switch for scenario {index+1}")
         # Replace the scenario with the other scenario type
         scenario = self.scenarios[index]
-        logger.debug(f"Current scenario type {scenario.scenarioType} {scenarioType}")
+        logger.debug(f"Current scenario type {scenario.spectroscopy} {scenarioType}")
         #
         # If scenarioType is specified in the call then force that type
         # Otherwise switch type
         #
         if scenarioType is None:
-            self.currentScenarioTab = self.scenarioTypes[scenario.scenarioType]
+            self.currentScenarioTab = self.scenarioTypes[scenario.spectroscopy]
         else:
             self.currentScenarioTab = self.scenarioTypes[scenarioType]
         #end if
         self.scenarios[index] =  self.currentScenarioTab(self, self.debug)
         scenario = self.scenarios[index]
-        logger.debug(f"Current scenario type now {scenario.scenarioType}")
+        logger.debug(f"Current scenario type now {scenario.spectroscopy}")
         self.tabs.removeTab(self.tabOffSet+index)
         self.tabs.insertTab(self.tabOffSet+index,scenario,"Scenario "+str(index+1) )
         for i,scenario in enumerate(self.scenarios):

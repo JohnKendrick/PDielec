@@ -1701,9 +1701,6 @@ def solve_effective_medium_equations(
         shape                      ,
         L                          ,
         concentration              ,
-        atr_permittivity           ,
-        atr_theta                  ,
-        atr_s_pol                  ,
         bubble_vf                  ,
         bubble_radius              ,
         previous_solution_shared   ,
@@ -1730,12 +1727,6 @@ def solve_effective_medium_equations(
         The depolarisation matrix.
     concentration : float
         The concentration of particles.
-    atr_permittivity : float
-        The permittivity of the ATR substrate.
-    atr_theta : float
-        The ATR angle of incidence.
-    atr_s_pol : str
-        The ATR polarisation. 
     bubble_vf : float
         Volume fraction of bubbles.
     bubble_radius : float
@@ -1758,7 +1749,6 @@ def solve_effective_medium_equations(
         trace
         absorption_coefficient
         molar_absorption_coefficient
-        spatr
 
     """
     # unpack the tuple that is passed by a call to the partial function
@@ -1831,9 +1821,7 @@ def solve_effective_medium_equations(
     absorption_coefficient = v_cm1 * 4*np.pi * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
-    # calculate the ATR reflectance
-    spatr = reflectance_atr(refractive_index,atr_permittivity,atr_theta,atr_s_pol)
-    return v_cm1,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
+    return v_cm1,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
 
 def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     """Calculate the scattering from bubbles embedded in a possibly complex dielectric at a given frequency.

@@ -337,8 +337,8 @@ class CrystalScenarioTab(ScenarioTab):
         self.refresh_required = True
         self.calculation_required = True
         self.no_calculations_required = 1
-        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
-        self.settings["Scenario type"] = self.scenarioType
+        self.spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
+        self.settings["Scenario type"] = self.spectroscopy
         self.settings["Global azimuthal angle"] = 0.0
         self.settings["Angle of incidence"] = 0.0
         self.settings["Mode"] = "Transfer matrix"
@@ -1651,9 +1651,9 @@ class CrystalScenarioTab(ScenarioTab):
         self.generate_layer_settings()
         # Force recalculation
         self.calculation_required = True
-        # Sync scenarioType from global spectroscopy type setting
-        self.scenarioType = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
-        self.settings["Scenario type"] = self.scenarioType
+        # Sync spectroscopy from global spectroscopy type setting
+        self.spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
+        self.settings["Scenario type"] = self.spectroscopy
         # Change any greyed out items
         self.greyed_out()
         #

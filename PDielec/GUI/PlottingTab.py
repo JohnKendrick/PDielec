@@ -940,7 +940,7 @@ class PlottingTab(QWidget):
         sp.delete()
         sp.write_next_row(["A list of the scenarios used:"],col=1)
         for index,scenario in enumerate(self.notebook.scenarios):
-            if scenario.scenarioType in ("Powder Infrared", "Powder ATR"):
+            if scenario.spectroscopy in ("Powder Infrared", "Powder ATR"):
                 direction = scenario.direction
                 depolarisation = scenario.depolarisation
                 sp.write_next_row([""],col=1)
@@ -959,7 +959,7 @@ class PlottingTab(QWidget):
                 imagPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[3] ) )
                 sp_atrs.append( scenario.get_result(self.vs_cm1,self.plot_types[4] ) )
                 powder_legends.append(scenario.settings["Legend"])
-            elif scenario.scenarioType == "Crystal Infrared":
+            elif scenario.spectroscopy == "Crystal Infrared":
                 sp.write_next_row([""],col=1)
                 sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
                 settings = scenario.settings
@@ -979,10 +979,10 @@ class PlottingTab(QWidget):
                 A_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[9] ) )
                 A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
                 crystal_legends.append(scenario.settings["Legend"])
-            elif scenario.scenarioType in ("Powder Raman", "Crystal Raman"):
+            elif scenario.spectroscopy in ("Powder Raman", "Crystal Raman"):
                 pass
             else:
-                logger.error(f"Error in plotting tab: scenario not recognised {scenario.scenarioType}")
+                logger.error(f"Error in plotting tab: scenario not recognised {scenario.spectroscopy}")
         # Single crystal Permittivity
         dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
         # Powder results
