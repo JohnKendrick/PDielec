@@ -42,9 +42,9 @@ class ScenarioTab(QWidget):
     calculations that need to be performed.
     settings : dict A dictionary of settings for the scenario. notebook :
     QWidget The parent widget, which is expected to be the notebook container for the scenarios.
-    scenarioType : type,
-        optional The type of the scenario, e.g., Powder Infrared, Crystal Infrared, Powder Raman, Crystal Raman.
-    scenarioTypes : list of scenario types The list is obtained from the keys of the self.notebook.scenarioTypes
+    spectroscopy : type,
+        optional The type of the spectroscopy, e.g., Powder Infrared, Powder ATR,
+                                                     Crystal Infrared, Powder Raman, Crystal Raman.
     dictionary vs_cm1 : list List containing default values for some settings.
     DataBase : MaterialsDataBase An instance of a class for interacting with a materials database.
     openDB_button : QPushButton Button to open the materials database.

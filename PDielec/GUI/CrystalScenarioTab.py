@@ -155,20 +155,29 @@ class CrystalScenarioTab(ScenarioTab):
 
     Attributes
     ----------
-    refresh_required : bool Flag indicating whether the widget's data needs to be refreshed. calculation_required : bool
-    Flag indicating whether a new calculation is required based on changes in parameters or settings. scenarioType : str
-    A string representing the type of scenario. For this class, it is set to 'Crystal Infrared'. refresh_required : bool
-    Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or
-    recalculated. no_calculations_required : int The number of calculations required for the simulation. This value may
-    change depending on the specifics of the scenario configuration (e.g., the inclusion of incoherent effects requiring
-    multiple sample calculations). settings : dict A dictionary holding various scenario parameters and their values,
-    which include settings for the type of analysis, material layers, angles, and method-specific parameters.
-    materialNames : list A list of names for materials that can be used in the scenario layers. p_reflectance,
-    s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list Lists holding computed values
-    for reflectance, transmittance, and absorbance for both P and S polarization modes. epsilon : list A list of
-    dielectric function values computed during simulation. layers : list A list of layer configurations used in the
-    simulation, each containing information about the material, thickness, orientation, and other layer-specific
-    properties.
+    refresh_required : bool
+        Flag indicating whether the widget's data needs to be refreshed.
+    calculation_required : bool
+        Flag indicating whether a new calculation is required based on changes in parameters or settings.
+    refresh_required : bool
+       Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or recalculated.
+    no_calculations_required : int
+       The number of calculations required for the simulation.
+       This value may change depending on the specifics of the scenario
+       configuration (e.g., the inclusion of incoherent effects requiring multiple sample calculations).
+    settings : dict
+       A dictionary holding various scenario parameters and their values,
+       which include settings for the type of analysis,
+       material layers, angles, and method-specific parameters.
+    materialNames : list
+       A list of names for materials that can be used in the scenario layers.
+    p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list
+       Lists holding computed values for reflectance, transmittance, and absorbance for both P and S polarization modes.
+    epsilon : list
+       A list of dielectric function values computed during simulation.
+    layers : list
+       A list of layer configurations used in the simulation,
+       each containing information about the material, thickness, orientation, and other layer-specific properties.
 
 
     Methods
@@ -298,8 +307,6 @@ class CrystalScenarioTab(ScenarioTab):
             Indicates if the view needs refreshing.
         calculation_required : bool
             Indicates if a new calculation is required based on changed parameters.
-        scenarioType : str
-            The type of scenario, hardcoded as 'Crystal Infrared'.
         no_calculations_required : int
             Number of calculations required, initialized to 1.
         settings : dict
