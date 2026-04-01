@@ -632,7 +632,7 @@ class Material:
         The name of the material. 
     density : float, optional 
         The density of the material. If not provided and a cell is given, it will be calculated based on the cell. 
-    permittivityObject : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional 
+    permittivity_object : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional 
         An object representing the dielectric function of the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes) 
     cell : :class:`~PDielec.UnitCell.UnitCell`, optional
         An object representing the unit cell of the material. If provided without a density, the density will be calculated from this cell. (See :class:`~PDielec.UnitCell.UnitCell`)
@@ -647,7 +647,7 @@ class Material:
         The name of the material.
     type : str
         A string indicating the type of the object. Defaults to 'Base Class' for the base Material class.
-    permittivityObject : DielectricFunction or None
+    permittivity_object : DielectricFunction or None
         An object to handle the permittivity calculations for the material.
 
     Methods
@@ -675,9 +675,9 @@ class Material:
     is_tensor()
         Checks and returns True if the material’s permittivity is tensor.
     get_permittivity_object()
-        Returns the permittivityObject of the material.
+        Returns the permittivity_object of the material.
     get_permittivity_function()
-        Returns the permittivity function from the permittivityObject.
+        Returns the permittivity function from the permittivity_object.
     get_density()
         Returns the density of the material.
     set_cell(cell)
@@ -688,12 +688,12 @@ class Material:
         Sets the density of the material.
     set_epsilon_infinity(eps)
         Sets the epsilon infinity of the material
-    set_permittivity_object(permittivityObject)
-        Sets the permittivityObject for the material.
+    set_permittivity_object(permittivity_object)
+        Sets the permittivity_object for the material.
 
     """
 
-    def __init__(self, name, density=None, permittivityObject=None, cell=None):
+    def __init__(self, name, density=None, permittivity_object=None, cell=None):
         """Initialise a material with the following parameters.
 
         Parameters
@@ -702,7 +702,7 @@ class Material:
             The name of the material.
         density : float, optional
             The density of the material. If not provided and a cell is given, it will be calculated based on the cell.
-        permittivityObject : DielectricFunction, optional
+        permittivity_object : DielectricFunction, optional
             An object representing the dielectric function of the material. This is intended to be passed by classes
             that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity.
         cell : unitCell, optional
@@ -720,7 +720,7 @@ class Material:
         self.cell               = cell
         self.name               = name
         self.type               = "Base Class"
-        self.permittivityObject = permittivityObject
+        self.permittivity_object = permittivity_object
         if self.density is None and self.cell is not None:
             self.density = self.cell.get_density("cm")
 
@@ -754,10 +754,10 @@ class Material:
         """
         result = self.type
         if "Tabulate" in self.type:
-            low = self.permittivityObject.get_lowest_frequency()
-            high = self.permittivityObject.get_highest_frequency()
-            result += f" freq range {low:.0f}-{high:.0f}" # + ' value at 0 {}'.format(self.permittivityObject.function()(0))
-        # result += ' value at 0 {}'.format(self.permittivityObject.function()(0))
+            low = self.permittivity_object.get_lowest_frequency()
+            high = self.permittivity_object.get_highest_frequency()
+            result += f" freq range {low:.0f}-{high:.0f}" # + ' value at 0 {}'.format(self.permittivity_object.function()(0))
+        # result += ' value at 0 {}'.format(self.permittivity_object.function()(0))
         return result
 
     def print(self):
@@ -796,7 +796,7 @@ class Material:
             True if the material returns a scalar permittivity, False otherwise.
 
         """
-        return self.permittivityObject.is_scalar()
+        return self.permittivity_object.is_scalar()
 
     def is_tensor(self):
         """Return true if the material returns a tensor permittivity.
@@ -811,14 +811,14 @@ class Material:
             True if the material returns a tensor permittivity, False otherwise.
 
         """
-        return self.permittivityObject.is_tensor()
+        return self.permittivity_object.is_tensor()
 
-    def set_permittivity_object(self,permittivityObject):
+    def set_permittivity_object(self,permittivity_object):
         """Set the permittivity object.
 
         Parameters
         ----------
-        permittivityObject : a permittivity object (dielectric function object)
+        permittivity_object : a permittivity object (dielectric function object)
             The permittivity object is used to calculate the permittivity of the material
 
         Returns
@@ -826,7 +826,7 @@ class Material:
         None
 
         """
-        self.permittivityObject = permittivityObject
+        self.permittivity_object = permittivity_object
         return
 
     def get_permittivity_object(self):
@@ -838,11 +838,11 @@ class Material:
 
         Returns
         -------
-        permittivityObject
+        permittivity_object
             Return the permittivity object (dielectric function object)
 
         """
-        return self.permittivityObject
+        return self.permittivity_object
 
     def get_permittivity_function(self):
         """Return the permittivity function.
@@ -857,7 +857,7 @@ class Material:
             Return the permittivity object function
 
         """
-        return self.permittivityObject.function()
+        return self.permittivity_object.function()
 
     def set_frequencies(self,frequencies):
         """Set the frequencies for a Lorentzian permittivity.
@@ -872,7 +872,7 @@ class Material:
         None
 
         """
-        self.permittivityObject.set_frequencies(frequencies)
+        self.permittivity_object.set_frequencies(frequencies)
         return 
 
     def get_frequencies(self):
@@ -888,7 +888,7 @@ class Material:
             Returns the frequencies for a Lorentzian function in cm-1
 
         """
-        return self.permittivityObject.get_frequencies()
+        return self.permittivity_object.get_frequencies()
 
     def set_oscillator_strengths(self,strengths):
         """Set the oscillator strengths for a Lorentzian permittivity.
@@ -903,7 +903,7 @@ class Material:
         None
 
         """
-        self.permittivityObject.set_oscillator_strengths(strengths)
+        self.permittivity_object.set_oscillator_strengths(strengths)
         return 
 
     def get_oscillator_strengths(self):
@@ -921,7 +921,7 @@ class Material:
             Returns the oscillator strengths for a Lorentzian permittivity function in cm-1
 
         """
-        return self.permittivityObject.get_oscillator_strengths()
+        return self.permittivity_object.get_oscillator_strengths()
 
 
     def set_sigmas(self,sigmas):
@@ -937,7 +937,7 @@ class Material:
         None
 
         """
-        self.permittivityObject.set_sigmas(sigmas)
+        self.permittivity_object.set_sigmas(sigmas)
         return 
 
     def get_sigmas(self):
@@ -953,7 +953,7 @@ class Material:
             Returns the sigma parameters for a Lorentz permittivity function in cm-1
 
         """
-        return self.permittivityObject.get_sigmas()
+        return self.permittivity_object.get_sigmas()
 
 
     def set_density(self, value):
@@ -1049,7 +1049,7 @@ class Constant(Material):
             The unit cell.
 
         """
-        super().__init__(name, density=density, permittivityObject=DielectricFunction.ConstantScalar(permittivity), cell=cell)
+        super().__init__(name, density=density, permittivity_object=DielectricFunction.ConstantScalar(permittivity), cell=cell)
         self.type = "Constant permittivity"
 
 
@@ -1061,7 +1061,7 @@ class External(Material):
     Permittivity can be a complex value indicating both the real and imaginary parts.
     """
 
-    def __init__(self, name, permittivityObject=None, density=None, cell=None):
+    def __init__(self, name, permittivity_object=None, density=None, cell=None):
         """Create an instance of a material which has the permittivity object specified externally.
 
         The permittivity can be a complex number.
@@ -1070,7 +1070,7 @@ class External(Material):
         ----------
         name : str
             The name of the material.
-        permittivityObject : complex
+        permittivity_object : complex
             The permittivity value, which can be a complex number.
         density : float
             The density of the material in grams per milliliter (g/ml).
@@ -1083,7 +1083,7 @@ class External(Material):
             An instance of the material with the specified permittivity object.
 
         """
-        super().__init__(name, density=density, permittivityObject=permittivityObject, cell=cell)
+        super().__init__(name, density=density, permittivity_object=permittivity_object, cell=cell)
         self.type = "External permittivity"
 
 
@@ -1148,9 +1148,9 @@ class DrudeLorentz(Material):
 
         """
         epsilon_infinity = np.array(epsinf)
-        permittivityObject = DielectricFunction.DrudeLorentz( omegas, strengths, gammas)
-        permittivityObject.set_epsilon_infinity(epsilon_infinity)
-        super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
+        permittivity_object = DielectricFunction.DrudeLorentz( omegas, strengths, gammas)
+        permittivity_object.set_epsilon_infinity(epsilon_infinity)
+        super().__init__(name, density=density, permittivity_object=permittivity_object,cell=cell)
         self.type = "Drude-Lorentz"
 
 class FPSQ(Material):
@@ -1200,9 +1200,9 @@ class FPSQ(Material):
 
         """
         epsilon_infinity = np.array(epsinf)
-        permittivityObject = DielectricFunction.FPSQ( omega_tos, gamma_tos, omega_los, gamma_los)
-        permittivityObject.set_epsilon_infinity(epsilon_infinity)
-        super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
+        permittivity_object = DielectricFunction.FPSQ( omega_tos, gamma_tos, omega_los, gamma_los)
+        permittivity_object.set_epsilon_infinity(epsilon_infinity)
+        super().__init__(name, density=density, permittivity_object=permittivity_object,cell=cell)
         self.type = "FPSQ"
 
 class Sellmeier(Material):
@@ -1253,8 +1253,8 @@ class Sellmeier(Material):
             The unit cell.
 
         """
-        permittivityObject = DielectricFunction.Sellmeier( Bs, Cs)
-        super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
+        permittivity_object = DielectricFunction.Sellmeier( Bs, Cs)
+        super().__init__(name, density=density, permittivity_object=permittivity_object,cell=cell)
         self.type = "Sellmeier"
 
 
@@ -1292,7 +1292,7 @@ class Tabulated(Material):
     """
 
     def __init__(self, name, vs_cm1=None, permittivities=None, density=None, cell=None):
-        """Create an instance of a material with a constant permittivity. Permittivity is the value of the permittivity and can be complex. The returned permittivityObject can generate either a scalar or a tensor. For defining a support matrix material, a scalar is used.
+        """Create an instance of a material with a constant permittivity. Permittivity is the value of the permittivity and can be complex. The returned permittivity_object can generate either a scalar or a tensor. For defining a support matrix material, a scalar is used.
 
         Parameters
         ----------
@@ -1313,14 +1313,14 @@ class Tabulated(Material):
         if len(np.shape(eps)) == 2:
             m,n = np.shape(eps)
             if m == 3:
-                permittivityObject = DielectricFunction.Tabulate3(vs,eps[0], eps[1], eps[2])
+                permittivity_object = DielectricFunction.Tabulate3(vs,eps[0], eps[1], eps[2])
             elif m== 6:
-                permittivityObject = DielectricFunction.Tabulate6(vs,eps[0], eps[1], eps[2], eps[3], eps[4], eps[5])
+                permittivity_object = DielectricFunction.Tabulate6(vs,eps[0], eps[1], eps[2], eps[3], eps[4], eps[5])
             else:
                 logger.error("Error in Tabulated, shape of parameters is wrong")
         else:
-            permittivityObject = DielectricFunction.TabulateScalar(vs,eps)
-        super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
+            permittivity_object = DielectricFunction.TabulateScalar(vs,eps)
+        super().__init__(name, density=density, permittivity_object=permittivity_object,cell=cell)
         self.type = "Tabulated permittivity"
 
     def set_epsilon_infinity(self,eps):
@@ -1337,5 +1337,5 @@ class Tabulated(Material):
 
         """
         eps = eps*np.eye(3) if isinstance(eps,float) else np.array(eps)
-        self.permittivityObject.set_epsilon_infinity(eps)
+        self.permittivity_object.set_epsilon_infinity(eps)
 

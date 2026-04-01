@@ -57,7 +57,7 @@ def calculate_dft_permittivity_object(reader,sigma=5.0,eckart=True,mass_definiti
 
     Returns
     -------
-    permittivityObject (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
+    permittivity_object (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
 
     """
     reader.eckart = eckart
@@ -111,12 +111,12 @@ def calculate_dft_permittivity_object(reader,sigma=5.0,eckart=True,mass_definiti
     drude = False
     drude_plasma_au = 0
     drude_sigma_au = 0
-    permittivityObject = DielectricFunction.DFT(
+    permittivity_object = DielectricFunction.DFT(
                                   mode_list, frequencies_au, sigmas_au, oscillator_strengths,
                                   volume_au, drude, drude_plasma_au, drude_sigma_au )
     # Add the optical permittivity to the dielctric function
-    permittivityObject.set_epsilon_infinity(epsilon_inf)
-    return permittivityObject
+    permittivity_object.set_epsilon_infinity(epsilon_inf)
+    return permittivity_object
 
 def get_material(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_definition="Average",debug=False):
     """Get a material with the given name.
@@ -166,12 +166,12 @@ def get_material(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_def
         if debug:
             logger.debug("get_material: reader.print()")
             reader.print()
-        permittivityObject=calculate_dft_permittivity_object(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
+        permittivity_object=calculate_dft_permittivity_object(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
         if debug:
             logger.debug("get_material: cell.print()")
             cell.print()
-        material = External("Dielectric layer",permittivityObject=permittivityObject,cell=cell)
+        material = External("Dielectric layer",permittivity_object=permittivity_object,cell=cell)
     else:
         dataBase = MaterialsDataBase(dataBaseName)
         sheets = dataBase.get_sheet_names()
@@ -228,12 +228,12 @@ def calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, g
         Sapphire = get_material('Sapphire')
         layers = []
         # Add a substrate
-        layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+        layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thickness_unit='um'))
          # Add the dielectric layer
-        layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+        layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thickness_unit='um',
                                          incoherentOption='Coherent'))
          # Add the superstrate
-        layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+        layers.append(SingleCrystalLayer(air,thickness=1.0,thickness_unit='um'))
         frequencies_cm1 = np.arange( 0, 200, 0.2 )
         incident_angle = 80.0
         global_azimuthal_angle = 0.0

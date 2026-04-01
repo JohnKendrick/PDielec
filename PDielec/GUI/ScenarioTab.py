@@ -162,7 +162,7 @@ class ScenarioTab(QWidget):
             return
         self.settings["Materials database"] = self.DataBase.get_file_name()
         self.database_le.setText(self.settings["Materials database"])
-        self.materialNames = sheets
+        self.material_names = sheets
         return
 
     def get_no_calculations_required(self):

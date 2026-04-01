@@ -432,7 +432,7 @@ class ConstantTensor(DielectricFunction):
 
         permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])
         df = ConstantTensor(permittivity)
-        newMaterial = Material('New material name',permittivityObject=df,cell=UnitCell(2, 2, 2))
+        newMaterial = Material('New material name',permittivity_object=df,cell=UnitCell(2, 2, 2))
 
     """
 

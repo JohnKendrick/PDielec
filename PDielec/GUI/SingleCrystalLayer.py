@@ -64,7 +64,7 @@ class SingleCrystalLayer:
     material : Material The material of the layer. (See :class:`~PDielec.Materials.Material`) hkl : list of int The
     Miller indices of the plane of interest in the crystal. incoherentOption : str The incoherent option for the layer.
     azimuthal : float The azimuthal angle of rotation of the crystal about the z-axis, in degrees. thickness : float The
-    thickness of the layer in the specified units. thicknessUnit : str The units used for the thickness measurement.
+    thickness of the layer in the specified units. thickness_unit : str The units used for the thickness measurement.
     dielectricFlag : bool A flag indicating if the layer material is the dielectric material. euler : ndarray The Euler
     rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with
     `dtype=np.longdouble`. euler_inverse : ndarray The inverse of the Euler rotation matrix, stored as a 3x3 numpy array
@@ -82,7 +82,7 @@ class SingleCrystalLayer:
     the incoherent interaction option for the layer. get_azimuthal() Returns the azimuthal angle.
     set_thickness(thickness) Sets the thickness of the layer. get_thickness() Returns the thickness of the layer.
     get_thickness_in_metres() Converts and returns the thickness of the layer in meters.
-    set_thickness_unit(thicknessUnit) Sets the unit of thickness measurement. get_thickness_unit() Returns the unit of
+    set_thickness_unit(thickness_unit) Sets the unit of thickness measurement. get_thickness_unit() Returns the unit of
     thickness measurement. set_hkl(hkl) Sets the Miller indices for the plane of interest in the crystal. get_hkl()
     Returns the Miller indices of the plane of interest. get_name() Returns the name of the material. get_material()
     Returns the material object associated with the layer. get_permittivity_function() Returns the permittivity tensor
@@ -103,7 +103,7 @@ class SingleCrystalLayer:
 
     """
 
-    def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thicknessUnit="nm",incoherentOption="Coherent",dielectricFlag=False):
+    def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thickness_unit="nm",incoherentOption="Coherent",dielectricFlag=False):
         """Initialise a single crystal layer.
 
         Parameters
@@ -121,7 +121,7 @@ class SingleCrystalLayer:
             The azimuthal angle of rotation of the crystal about the z-axis.
         thickness : float
             The thickness of the layer in the specified thickness units.
-        thicknessUnit : {'ang','nm', 'um', 'mm', 'cm'}
+        thickness_unit : {'ang','nm', 'um', 'mm', 'cm'}
             The units of thickness measurement.
         incoherentOption : {'Coherent', 'Incoherent (intensity)', 'Incoherent (phase cancelling)', 'Incoherent (phase averaging)', 'Incoherent non-reflective'}
             The option for handling incoherent scattering. 
@@ -138,7 +138,7 @@ class SingleCrystalLayer:
         self.incoherentOption = incoherentOption
         self.azimuthal = azimuthal
         self.thickness = thickness
-        self.thicknessUnit = thicknessUnit
+        self.thickness_unit = thickness_unit
         self.dielectricFlag = dielectricFlag
         self.euler = np.zeros((3,3),dtype=np.longdouble)
         self.euler_inverse = np.zeros((3,3),dtype=np.longdouble)
@@ -160,7 +160,7 @@ class SingleCrystalLayer:
         print("HKL              :      ", self.hkl)
         print("Azimuthal        :", self.azimuthal)
         print("Thickness        :", self.thickness)
-        print("Thickness unit   :", self.thicknessUnit)
+        print("Thickness unit   :", self.thickness_unit)
         print("Dielectric flag  :", self.dielectricFlag)
         print("Incoherent option:", self.incoherentOption)
         print("Phase shift      :", self.phaseShift)
@@ -327,15 +327,15 @@ class SingleCrystalLayer:
 
         """
         thickness_conversion_factors = {"ang":1.0E-10, "nm":1.0E-9, "um":1.0E-6, "mm":1.0E-3, "cm":1.0E-2}
-        tom = thickness_conversion_factors[self.thicknessUnit]
+        tom = thickness_conversion_factors[self.thickness_unit]
         return tom*self.thickness
 
-    def set_thickness_unit(self, thicknessUnit):
+    def set_thickness_unit(self, thickness_unit):
         """Set the thickness unit.
 
         Parameters
         ----------
-        thicknessUnit : str
+        thickness_unit : str
             The unit of thickness. Can be one of "ang", "nm", "um", "mm", or "cm"
 
         Returns
@@ -343,7 +343,7 @@ class SingleCrystalLayer:
         None
 
         """
-        self.thicknessUnit = thicknessUnit
+        self.thickness_unit = thickness_unit
         return 
 
     def get_thickness_unit(self):
@@ -358,7 +358,7 @@ class SingleCrystalLayer:
         str
 
         """
-        return self.thicknessUnit
+        return self.thickness_unit
 
     def set_hkl(self, hkl):
         """Set the hkl and recalculate the Euler matrix.
@@ -750,8 +750,8 @@ class ShowLayerWindow(QDialog):
         form.addRow(label,QLabel(self.message))
         label = QLabel("Material:")
         material = self.layer.get_material()
-        materialName = material.get_name()
-        form.addRow(label,QLabel(materialName))
+        material_name = material.get_name()
+        form.addRow(label,QLabel(material_name))
         label,layout = self.draw_layer_widget_line1()
         form.addRow(label,layout)
         if self.layer.get_material().is_tensor():
@@ -779,22 +779,22 @@ class ShowLayerWindow(QDialog):
         hbox = QHBoxLayout()
         logger.debug("draw_layer_widget_line1")
         # Define material thickness
-        materialThickness = self.layer.get_thickness()
+        material_thickness = self.layer.get_thickness()
         # Handle thickness
         film_thickness_sb = QDoubleSpinBox(self)
         film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         film_thickness_sb.setToolTip("Define the thin film thickness in the defined thickness units")
         film_thickness_sb.setRange(0,100000)
         film_thickness_sb.setSingleStep(0.01)
-        film_thickness_sb.setValue(materialThickness)
+        film_thickness_sb.setValue(material_thickness)
         film_thickness_sb.valueChanged.connect(self.on_film_thickness_sb_changed)
         # Handle thickness units
-        thicknessUnit = self.layer.get_thickness_unit()
+        thickness_unit = self.layer.get_thickness_unit()
         thickness_units_cb = QComboBox(self)
         thickness_units_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         thickness_units_cb.setToolTip("Set the units to be used for thickness; either nm, um, mm or cm")
         thickness_units_cb.addItems( ["nm","um","mm","cm"] )
-        index = thickness_units_cb.findText(thicknessUnit, Qt.MatchFixedString)
+        index = thickness_units_cb.findText(thickness_unit, Qt.MatchFixedString)
         thickness_units_cb.setCurrentIndex(index)
         thickness_units_cb.activated.connect(self.on_thickness_units_cb_activated)
         thicknessLabel = QLabel("Thickness:")

@@ -52,9 +52,9 @@ from PDielec.Materials import MaterialsDataBase
 logger = logging.getLogger(__name__)
 thickness_conversion_factors = {"ang":1.0E-10, "nm":1.0E-9, "um":1.0E-6, "mm":1.0E-3, "cm":1.0E-2}
 thickness_units = list(thickness_conversion_factors.keys())
-# incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Incoherent (phase averaging)','Incoherent (non-reflective)'] 
-incoherentOptions = ["Coherent","Incoherent (intensity)","Incoherent (phase averaging)","Incoherent (non-reflective)"] 
-gtmMethods ={"Coherent":GTM.CoherentLayer,
+# incoherent_options = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Incoherent (phase averaging)','Incoherent (non-reflective)'] 
+incoherent_options = ["Coherent","Incoherent (intensity)","Incoherent (phase averaging)","Incoherent (non-reflective)"] 
+gtm_methods ={"Coherent":GTM.CoherentLayer,
              "Incoherent (intensity)":GTM.IncoherentIntensityLayer,
              "Incoherent (phase cancelling)":GTM.IncoherentPhaseLayer,
              "Incoherent (phase averaging)":GTM.IncoherentAveragePhaseLayer,
@@ -109,16 +109,16 @@ def solve_single_crystal_equations(
     # Create substrate from the last layer
     substrate        = GTM.SemiInfiniteLayer(layers[-1],exponent_threshold=exponent_threshold)
     selectedLayers = layers[1:-1]
-    gtmLayers = []
+    gtm_layers = []
     # Create layers from all the layers between first and last
     for layer in selectedLayers:
         incoherentOption = layer.get_incoherent_option()
-        gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
+        gtm_layers.append(gtm_methods[incoherentOption](layer, exponent_threshold=exponent_threshold))
     # Creat the system with the layers 
     if mode == "Scattering matrix":
-        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
     else:
-        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
     # Rotate the dielectric constants to the laboratory frame
     # This is a global rotation of all the layers.
     system.substrate.set_euler(theta, phi, psi)
@@ -169,7 +169,7 @@ class CrystalScenarioTab(ScenarioTab):
        A dictionary holding various scenario parameters and their values,
        which include settings for the type of analysis,
        material layers, angles, and method-specific parameters.
-    materialNames : list
+    material_names : list
        A list of names for materials that can be used in the scenario layers.
     p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list
        Lists holding computed values for reflectance, transmittance, and absorbance for both P and S polarization modes.
@@ -243,7 +243,7 @@ class CrystalScenarioTab(ScenarioTab):
          Handle a click on a layer name
     on_mode_cb_activated
          Handle a click on the mode combobox
-    on_newLayer_cb_activated
+    on_new_layer_cb_activated
          Handle a click on the new combobox
     on_option_cb_activated
          Handle a change to the incoherent option comobox
@@ -311,7 +311,7 @@ class CrystalScenarioTab(ScenarioTab):
             Number of calculations required, initialized to 1.
         settings : dict
             A dictionary of settings for the simulation, initialized with default values.
-        materialNames : list
+        material_names : list
             List of material names used in the layers.
         p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list
             Lists for storing calculations results.
@@ -369,7 +369,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Percentage average incoherence"] = 100
         self.settings["Number of average incoherence samples"] = 10
         self.number_of_average_incoherent_layers = 0
-        self.materialNames = []
+        self.material_names = []
         self.p_reflectance = []
         self.s_reflectance = []
         self.p_transmittance = []
@@ -391,7 +391,7 @@ class CrystalScenarioTab(ScenarioTab):
         # Open the database and get the material names
         self.DataBase = MaterialsDataBase(self.settings["Materials database"])
         self.settings["Materials database"] = self.DataBase.get_file_name()
-        self.materialNames = self.set_material_names()
+        self.material_names = self.set_material_names()
         # Create the layers - superstrate / dielectric / substrate from the defaults layer settings
         if self.reader is not None:
             self.settings2Layers()
@@ -501,10 +501,10 @@ class CrystalScenarioTab(ScenarioTab):
             self.redraw_layer_table_row(sequenceNumber,layer,rowCount,firstLayer,lastLayer)
         # Add a 'create new layer' button
         rowCount += 1
-        newLayer_cb = self.new_layer_widget()
-        newLayer_cb.setStyleSheet("Text-align:left")
+        new_layer_cb = self.new_layer_widget()
+        new_layer_cb.setStyleSheet("Text-align:left")
         self.layerTable_tw.setRowCount(rowCount)
-        self.layerTable_tw.setCellWidget(rowCount-1,0,newLayer_cb)
+        self.layerTable_tw.setCellWidget(rowCount-1,0,new_layer_cb)
 
     def redraw_layer_table_row(self,sequenceNumber,layer,rowCount,firstLayer,lastLayer):
         """Draw a row of the layer table.
@@ -533,22 +533,22 @@ class CrystalScenarioTab(ScenarioTab):
         """
         # Create a layer button
         material = layer.get_material()
-        materialName = material.get_name()
-        layer_button = QPushButton(materialName)
+        material_name = material.get_name()
+        layer_button = QPushButton(material_name)
         layer_button.setToolTip("Show the material properties in a new window")
         layer_button.setStyleSheet("Text-align:left")
         layer_button.clicked.connect(lambda x: self.on_layer_button_clicked(x,layer,sequenceNumber))
         self.layerTable_tw.setCellWidget(sequenceNumber,0,layer_button)
         # Handle thickness 
-        materialThickness = layer.get_thickness()
-        thicknessUnit = layer.get_thickness_unit()
+        material_thickness = layer.get_thickness()
+        thickness_unit = layer.get_thickness_unit()
         film_thickness_sb = QDoubleSpinBox(self)
         film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         film_thickness_sb.setToolTip("Define the thin film thickness in the defined thickness units")
         film_thickness_sb.setRange(0,100000)
         film_thickness_sb.setDecimals(3)
         film_thickness_sb.setSingleStep(0.001)
-        film_thickness_sb.setValue(materialThickness)
+        film_thickness_sb.setValue(material_thickness)
         film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
         self.layerTable_tw.setCellWidget(sequenceNumber,1,film_thickness_sb)
         # thickness unit
@@ -556,7 +556,7 @@ class CrystalScenarioTab(ScenarioTab):
         thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         thickness_unit_cb.setToolTip("Set the units to be used for thickness; either angs nm, um, mm or cm")
         thickness_unit_cb.addItems( thickness_units )
-        index = thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
+        index = thickness_unit_cb.findText(thickness_unit, Qt.MatchFixedString)
         thickness_unit_cb.setCurrentIndex(index)
         thickness_unit_cb.activated.connect(lambda x: self.on_thickness_units_cb_activated(x, layer))
         self.layerTable_tw.setCellWidget(sequenceNumber,2,thickness_unit_cb)
@@ -598,7 +598,7 @@ class CrystalScenarioTab(ScenarioTab):
         # Create a checkbox for coherence/incoherence
         option_cb = QComboBox(self)
         option_cb.setToolTip("Change optional settings for the layer")
-        option_cb.addItems( incoherentOptions )
+        option_cb.addItems( incoherent_options )
         # We can't use incoherent intensity method with the scattering matrix method
         if self.settings["Mode"] == "Scattering matrix" and layer.get_incoherent_option() == "Incoherent (intensity)":
             layer.set_incoherent_option("Coherent")
@@ -912,18 +912,18 @@ class CrystalScenarioTab(ScenarioTab):
         Notes
         -----
         - The first item in the combo box is a placeholder for creating a new layer, indicated by "New layer...". - The
-          combo box is connected to the `on_newLayer_cb_activated` method, which should handle the action performed upon
+          combo box is connected to the `on_new_layer_cb_activated` method, which should handle the action performed upon
           selecting an item from the combo box.
 
         """        
-        newLayer_cb = QComboBox()
-        newLayer_cb.setToolTip("Create a new layer")
-        materialNames = ["New layer..."]
-        materialNames += self.materialNames
-        newLayer_cb.addItems(materialNames)
-        newLayer_cb.setCurrentIndex(0)
-        newLayer_cb.activated.connect(self.on_newLayer_cb_activated)
-        return newLayer_cb
+        new_layer_cb = QComboBox()
+        new_layer_cb.setToolTip("Create a new layer")
+        material_names = ["New layer..."]
+        material_names += self.material_names
+        new_layer_cb.addItems(material_names)
+        new_layer_cb.setCurrentIndex(0)
+        new_layer_cb.activated.connect(self.on_new_layer_cb_activated)
+        return new_layer_cb
 
     def on_layerTable_itemChanged(self,item):
         """Handle a change to the layer table.
@@ -943,7 +943,7 @@ class CrystalScenarioTab(ScenarioTab):
         logger.debug(f"on_layerTable_itemChanged: {item}")
         return
 
-    def on_newLayer_cb_activated(self,index):
+    def on_new_layer_cb_activated(self,index):
         """Handle a new layer button click.
 
         Based on the index chosen a new material is created and added to the list of layers.
@@ -962,14 +962,14 @@ class CrystalScenarioTab(ScenarioTab):
         if index == 0:
             return
         # Subtract 1 from the index because the widget thinks the list includes 'New layer...' at the start
-        newMaterialName = self.materialNames[index-1]
-        if "manual" in newMaterialName:
+        new_material_name = self.material_names[index-1]
+        if "manual" in new_material_name:
             return
-        newMaterial = self.get_material_from_data_base(newMaterialName)
+        newMaterial = self.get_material_from_data_base(new_material_name)
         hkl = [0,0,0]
         if newMaterial.is_tensor():
             hkl = [0,0,1]
-        new_layer = SingleCrystalLayer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thicknessUnit="um")
+        new_layer = SingleCrystalLayer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thickness_unit="um")
         self.layers.append(new_layer)
         self.generate_layer_settings()
         self.refresh(force=True)
@@ -995,12 +995,12 @@ class CrystalScenarioTab(ScenarioTab):
 
         """
         material = layer.get_material()
-        permittivityObject = material.get_permittivity_object()
+        permittivity_object = material.get_permittivity_object()
         name = material.get_name()
         name = name.replace(" ","_")
         name += "_permittivity.csv"
         logger.info(f"Printing permittivity information to {name}")
-        permittivityObject.print(0.0,2000.0,1.0,file=name)
+        permittivity_object.print(0.0,2000.0,1.0,file=name)
         return
 
     def on_option_cb_activated(self,index,layer):
@@ -1024,7 +1024,7 @@ class CrystalScenarioTab(ScenarioTab):
 
         """
         logger.debug(f"on_incoherence_cb_activated {index} {layer.get_name()}")
-        option = incoherentOptions[index]
+        option = incoherent_options[index]
         layer.set_incoherent_option(option)
         self.set_no_calculations_required()
         self.generate_layer_settings()
@@ -1189,9 +1189,9 @@ class CrystalScenarioTab(ScenarioTab):
 
         """        
         # Get the list of material names from the database
-        materialNames = self.DataBase.get_sheet_names()
-        materialNames.append("Dielectric layer")
-        return materialNames
+        material_names = self.DataBase.get_sheet_names()
+        material_names.append("Dielectric layer")
+        return material_names
 
     def print_layer_settings(self,message):
         """Print the settings related to the layers.
@@ -1243,9 +1243,9 @@ class CrystalScenarioTab(ScenarioTab):
         """
         logger.debug(f"{self.settings['Legend']} settings2Layers")
         self.layers = []
-        self.materialNames = self.set_material_names()
+        self.material_names = self.set_material_names()
         # Process the settings information and append each layer to the list
-        for  name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag, incoherentOption in zip(
+        for  name, hkl, azimuthal, thickness, thickness_unit, dielectricFlag, incoherentOption in zip(
                           self.settings["Layer material names"],
                           self.settings["Layer hkls"],
                           self.settings["Layer azimuthals"],
@@ -1253,12 +1253,12 @@ class CrystalScenarioTab(ScenarioTab):
                           self.settings["Layer thickness units"],
                           self.settings["Layer dielectric flags"],
                           self.settings["Layer incoherent options"]):
-            if name not in self.materialNames:
-                logger.error(f"Error material {name} not available {self.materialNames}")
+            if name not in self.material_names:
+                logger.error(f"Error material {name} not available {self.material_names}")
                 name = "air"
             material = self.get_material_from_data_base(name)
             self.layers.append(SingleCrystalLayer(material,hkl=hkl,azimuthal=azimuthal,
-                                     thickness=thickness,thicknessUnit=thicknessUnit,
+                                     thickness=thickness,thickness_unit=thickness_unit,
                                      incoherentOption=incoherentOption,dielectricFlag=dielectricFlag))
         return
 
@@ -1284,7 +1284,7 @@ class CrystalScenarioTab(ScenarioTab):
         if name == "Dielectric layer":
             # Create the dielectric material
             crystalPermittivityObject = self.notebook.settingsTab.get_crystal_permittivity_object()
-            material = Materials.External(name,permittivityObject=crystalPermittivityObject,cell=self.cell)
+            material = Materials.External(name,permittivity_object=crystalPermittivityObject,cell=self.cell)
         elif name == "Material defined manually":
             material = Materials.Constant("Material defined manually",permittivity=permittivity)
         else:
@@ -1342,11 +1342,11 @@ class CrystalScenarioTab(ScenarioTab):
             message = "Substrate layer"
         else:
             message = "Device layer " + str(layerIndex)
-        showLayerWindow = ShowLayerWindow(copy.copy(layer),message=message)
-        if showLayerWindow.exec():
+        show_layer_window = ShowLayerWindow(copy.copy(layer),message=message)
+        if show_layer_window.exec():
             # The 'Ok' button was pressed
             # get the new Layer and replace the old one
-            self.layers[layerIndex] = showLayerWindow.get_layer()
+            self.layers[layerIndex] = show_layer_window.get_layer()
             self.generate_layer_settings()
             self.refresh(force=True)
             self.refresh_required = True
@@ -1652,7 +1652,7 @@ class CrystalScenarioTab(ScenarioTab):
             self.settings["Materials database"] = self.DataBase.get_file_name()
             self.database_le.setText(self.settings["Materials database"])
             # Update the possible  material names from the database
-            self.materialNames = self.set_material_names()
+            self.material_names = self.set_material_names()
         # Generate the layers from the settings
         self.settings2Layers()
         self.generate_layer_settings()
