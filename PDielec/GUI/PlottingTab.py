@@ -926,6 +926,7 @@ class PlottingTab(QWidget):
         realPermittivities          = []
         imagPermittivities          = []
         sp_atrs                     = []
+        atr_legends                 = []
         R_ps                        = []
         R_ss                        = []
         T_ps                        = []
@@ -957,8 +958,10 @@ class PlottingTab(QWidget):
                 absorptionCoefficients.append( scenario.get_result(self.vs_cm1,self.plot_types[1] ) )
                 realPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[2] ) )
                 imagPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[3] ) )
-                sp_atrs.append( scenario.get_result(self.vs_cm1,self.plot_types[4] ) )
                 powder_legends.append(scenario.settings["Legend"])
+                if scenario.spectroscopy == "Powder ATR":
+                    sp_atrs.append( scenario.get_result(self.vs_cm1,self.plot_types[4] ) )
+                    atr_legends.append(scenario.settings["Legend"])
             elif scenario.spectroscopy == "Crystal Infrared":
                 sp.write_next_row([""],col=1)
                 sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
@@ -1007,7 +1010,8 @@ class PlottingTab(QWidget):
             self.write_powder_results(sp, "Powder Absorption",             self.vs_cm1, powder_legends, absorptionCoefficients)
             self.write_powder_results(sp, "Powder Real Permittivity",      self.vs_cm1, powder_legends, realPermittivities)
             self.write_powder_results(sp, "Powder Imaginary Permittivity", self.vs_cm1, powder_legends, imagPermittivities)
-            self.write_powder_results(sp, "Powder ATR Reflectance",        self.vs_cm1, powder_legends, sp_atrs)
+            if len(sp_atrs) > 0:
+                self.write_powder_results(sp, "Powder ATR Reflectance",    self.vs_cm1, atr_legends, sp_atrs)
         # Single Crystal results
         if len(R_ps) > 0:
             self.write_crystal_results(sp, "Crystal R_p", self.vs_cm1, crystal_legends, R_ps)
@@ -1293,40 +1297,36 @@ class PlottingTab(QWidget):
 
         """
         logger.debug("Start:: greyed_out")
-        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
-        powder_scenarios_present = spectroscopy_type.startswith("Powder")
-        crystal_scenarios_present = spectroscopy_type.startswith("Crystal")
+        # Determine which spectroscopies are present from the actual scenarios
+        atr_present             = any(s.spectroscopy == "Powder ATR"       for s in self.notebook.scenarios)
+        powder_present          = any(s.spectroscopy in ("Powder Infrared", "Powder ATR") for s in self.notebook.scenarios)
+        crystal_infrared_present = any(s.spectroscopy == "Crystal Infrared" for s in self.notebook.scenarios)
         #
-        # Disable any plot types that are not needed
+        # Enable all plot types first, then disable those not available
         #
-        self.plot_type_cb.model().item(0).setEnabled(True)
-        self.plot_type_cb.model().item(1).setEnabled(True)
-        self.plot_type_cb.model().item(2).setEnabled(True)
-        self.plot_type_cb.model().item(3).setEnabled(True)
-        self.plot_type_cb.model().item(4).setEnabled(True)
-        self.plot_type_cb.model().item(5).setEnabled(True)
-        self.plot_type_cb.model().item(6).setEnabled(True)
-        self.plot_type_cb.model().item(7).setEnabled(True)
-        self.plot_type_cb.model().item(8).setEnabled(True)
-        self.plot_type_cb.model().item(9).setEnabled(True)
-        self.plot_type_cb.model().item(10).setEnabled(True)
+        for i in range(len(self.plot_types)):
+            self.plot_type_cb.model().item(i).setEnabled(True)
         index = self.plot_type_cb.findText(self.settings["Plot type"], Qt.MatchFixedString)
-        if not powder_scenarios_present:
-            self.plot_type_cb.model().item(0).setEnabled(False)
-            self.plot_type_cb.model().item(1).setEnabled(False)
-            self.plot_type_cb.model().item(2).setEnabled(False)
-            self.plot_type_cb.model().item(3).setEnabled(False)
-            self.plot_type_cb.model().item(4).setEnabled(False)
-            if index < 5:
+        # Items 0-3: powder absorption/permittivity — need any powder scenario
+        if not powder_present:
+            for i in range(4):
+                self.plot_type_cb.model().item(i).setEnabled(False)
+            if index < 4:
                 self.plot_type_cb.setCurrentIndex(5)
                 self.settings["Plot type"] = self.plot_type_cb.currentText()
-        if not crystal_scenarios_present:
-            self.plot_type_cb.model().item(5).setEnabled(False)
-            self.plot_type_cb.model().item(6).setEnabled(False)
-            self.plot_type_cb.model().item(7).setEnabled(False)
-            self.plot_type_cb.model().item(8).setEnabled(False)
-            self.plot_type_cb.model().item(9).setEnabled(False)
-            self.plot_type_cb.model().item(10).setEnabled(False)
+        # Item 4: ATR — only available for Powder ATR scenarios
+        if not atr_present:
+            self.plot_type_cb.model().item(4).setEnabled(False)
+            if index == 4:
+                if powder_present:
+                    self.plot_type_cb.setCurrentIndex(0)
+                else:
+                    self.plot_type_cb.setCurrentIndex(5)
+                self.settings["Plot type"] = self.plot_type_cb.currentText()
+        # Items 5-10: crystal — only available for Crystal Infrared scenarios
+        if not crystal_infrared_present:
+            for i in range(5, 11):
+                self.plot_type_cb.model().item(i).setEnabled(False)
             if index >= 5:
                 self.plot_type_cb.setCurrentIndex(0)
                 self.settings["Plot type"] = self.plot_type_cb.currentText()

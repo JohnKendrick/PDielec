@@ -1568,7 +1568,7 @@ class OpenGLWidget(QOpenGLWidget):
         glEnable(GL_CULL_FACE)
         #glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
         glEnable(GL_BLEND)
-        self.defineLights()
+        self.define_lights()
         # causes a crash on MACs glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.background_colour = np.array(self.viewerTab.settings["Background colour"])/255.0
         glClearColor(*self.background_colour)
@@ -1650,6 +1650,7 @@ class OpenGLWidget(QOpenGLWidget):
         logger.debug(f"set projection matrix ortho {orthox} {orthoy} {orthoz}")
         logger.debug(f"set projection matrix image_size {self.image_size}")
         logger.debug(f"set projection matrix current_phase {self.current_phase}")
+
     def define_lights(self):
         """Define light configurations for the viewer.
 
