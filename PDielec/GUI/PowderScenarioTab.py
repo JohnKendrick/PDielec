@@ -170,20 +170,22 @@ class PowderScenarioTab(ScenarioTab):
 
     """
 
-    def __init__(self, parent, debug=False):
+    def __init__(self, parent, spectroscopy="Powder Infrared", debug=False):
         """Initialize the ScenarioTab subclass for Powder Infrared Scenario with UI and connectivity.
 
         Parameters
         ----------
         parent : QWidget
             The parent widget to attach to this scenario tab.
+        spectroscopy : str
+            Can be one of "Powder Infrared", "Powder ATR", "Powder Raman"
         debug : bool, optional
             If set to True, debug messages will be printed. Defaults to False.
 
         Attributes
         ----------
         spectrocopy : str
-            Defines the type of spectrocopy as 'Powder Infrared'.
+            Defines the type of spectrocopy as 'Powder Infrared', "Powder ATR", "Powder Raman".
         settings : dict
             Dictionary holding various settings related to the scenario.
         methods : list
@@ -220,7 +222,9 @@ class PowderScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         logger.debug("Start:: initialiser")
-        self.spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        if "Powder" not in spectroscopy:
+            logger.error(f"PowderSenarioTab failed incompatible spectroscopy {spectroscopy}")
+        self.spectroscopy = spectroscopy
         #
         # No testing on spectroscopy type, all settings are set independent of the spectroscopy
         #

@@ -941,6 +941,7 @@ class PlottingTab(QWidget):
         sp.delete()
         sp.write_next_row(["A list of the scenarios used:"],col=1)
         for index,scenario in enumerate(self.notebook.scenarios):
+            print('jk600 ',index, scenario.spectroscopy)
             if scenario.spectroscopy in ("Powder Infrared", "Powder ATR"):
                 direction = scenario.direction
                 depolarisation = scenario.depolarisation

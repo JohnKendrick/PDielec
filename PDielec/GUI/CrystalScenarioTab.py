@@ -284,7 +284,7 @@ class CrystalScenarioTab(ScenarioTab):
 
     """
 
-    def __init__(self, parent, debug=False ):
+    def __init__(self, parent, spectroscopy="Crystal Infrared", debug=False ):
         """Initialize the crystal infrared Scenario Tab.
 
         This initializer sets up the GUI components, populates settings with default values, 
@@ -297,6 +297,8 @@ class CrystalScenarioTab(ScenarioTab):
         parent : QWidget
             The parent widget or window, typically the main application window or a central widget
             that this tab will be a part of.
+        spectroscopy : str
+            Spectroscopy can be one of "Crystal Infrared" or "Crystal Raman"
         debug : bool, optional
             A boolean flag to indicate whether debug messages should be printed to the console
             or log. Defaults to False if not specified.
@@ -341,10 +343,12 @@ class CrystalScenarioTab(ScenarioTab):
         """        
         ScenarioTab.__init__(self,parent)
         logger.debug("Start:: initialiser")
+        if "Crystal" not in spectroscopy:
+            logger.error(f"PowderSenarioTab failed incompatible spectroscopy {spectroscopy}")
         self.refresh_required = True
         self.calculation_required = True
         self.no_calculations_required = 1
-        self.spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
+        self.spectroscopy = spectroscopy
         self.settings["Scenario type"] = self.spectroscopy
         self.settings["Global azimuthal angle"] = 0.0
         self.settings["Angle of incidence"] = 0.0
@@ -1658,9 +1662,6 @@ class CrystalScenarioTab(ScenarioTab):
         self.generate_layer_settings()
         # Force recalculation
         self.calculation_required = True
-        # Sync spectroscopy from global spectroscopy type setting
-        self.spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
-        self.settings["Scenario type"] = self.spectroscopy
         # Change any greyed out items
         self.greyed_out()
         #
@@ -2065,13 +2066,12 @@ class CrystalScenarioTab(ScenarioTab):
         None
 
         """
-        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Crystal Infrared")
-        if spectroscopy_type == "Crystal Infrared":
+        if self.spectroscopy == "Crystal Infrared":
             self._calculate_infrared(vs_cm1)
-        elif spectroscopy_type == "Crystal Raman":
+        elif self.spectroscopy == "Crystal Raman":
             self._calculate_raman(vs_cm1)
         else:
-            logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {spectroscopy_type}")
+            logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {self.spectroscopy}")
 
     def _calculate_raman(self, vs_cm1):
         """Calculate the crystal Raman spectrum for the range of frequencies in vs_cm1.

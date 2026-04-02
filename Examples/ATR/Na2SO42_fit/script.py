@@ -1,8 +1,4 @@
 #
-# Handle the special case of the first scenario
-#
-self.notebook.switch_scenario(0,scenarioType="Powder Infrared")
-#
 #
 #
 tab = self.notebook.mainTab
@@ -19,12 +15,13 @@ tab.settings['Neutral Born charges'] =  False
 tab.settings['Sigma value'] =  5
 tab.settings['Mass definition'] = 'average'
 tab.settings['Optical permittivity edited'] =  False
+tab.settings['Spectroscopy type'] = 'Powder ATR'
 tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10.0, 200.0, 5, 10.0, 5, 10.0, 5, 100.0, 5, 5, 35.0, 5, 130.0, 5, 100.0, 5]
 #
 #
+self.notebook.switch_scenario(0, scenarioType="Powder ATR")
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Scenario 1'
-tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'air'
 tab.settings['Matrix density'] =  0.001225
 tab.settings['Matrix permittivity'] =  1.0

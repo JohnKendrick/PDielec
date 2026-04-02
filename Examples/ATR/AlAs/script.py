@@ -4,6 +4,7 @@
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'abinit'
 tab.settings['Output file name'] = 'AlAs.out'
+tab.settings['Compatibility mode'] = 'Linux'
 #
 # SettingsTab
 #
@@ -12,9 +13,11 @@ tab.settings['Eckart flag'] = False
 tab.settings['Neutral Born charges'] = False
 tab.settings['Sigma value'] = 5
 tab.settings['Mass definition'] = 'average'
+tab.settings['Spectroscopy type'] = 'Powder ATR'
 #
 # 0th Scenario tabs
 #
+self.notebook.switch_scenario(0, scenarioType="Powder ATR")
 tab = self.notebook.scenarios[0]
 tab.settings['Matrix'] = 'air'
 tab.settings['Mass or volume fraction'] = 'volume'

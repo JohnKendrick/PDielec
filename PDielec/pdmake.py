@@ -21,7 +21,11 @@ cleaning build directories, and installing scripts.
 Command line options
 --------------------
     - `test` or `tests`: Runs all test cases.
-    - `test-singlecrystal`: Runs tests for single crystal analysis.
+    - `test-crystal_infrared`: Runs tests for crystal infrared analysis.
+    - `test-crystal_raman`: Runs tests for crystal raman analysis.
+    - `test-powder_raman`: Runs tests for powder raman analysis.
+    - `test-powder_infrared`: Runs tests for powder infrared analysis.
+    - `test-powder_atr`: Runs tests for powder atr analysis.
     - `test-preader`: Runs tests for the preader component.
     - `test-p2cif`: Runs tests for the p2cif component.
     - `test-pdgui`: Runs tests for the PDGUI component.
@@ -144,7 +148,55 @@ test_pdgui = [
 	"Vasp/ZnO",
     ]
 
-test_singlecrystal = [
+test_powder_atr = [
+	"ATR/AlAs",
+	"ATR/Na2SO42",
+	"ATR/Na2SO42_fit",
+    ]
+
+test_powder_raman = [
+	"Raman/Cocaine",
+    ]
+
+test_crystal_raman = [
+	"Raman/Cocaine",
+    ]
+
+test_powder_infrared = [
+	"AbInit/AlAs",
+	"AbInit/BaTiO3",
+	"AbInit/Na2SO42",
+	"FHI-Aims/Na2SO42",
+	"Castep/AsparticAcid",
+	"Castep/Bubbles",
+	"Castep/Castep17",
+	"Castep/Isoleucine",
+	"Castep/MgO",
+	"Castep/Na2SO42",
+	"Gulp/Na2SO42",
+	"Gulp/calcite",
+	"Mie/MgO",
+	"Mie/MgO_lognormal",
+	"Phonopy/Na2SO42",
+	"Phonopy/QE",
+	"Phonopy/Vasp",
+	"QE/Cocaine",
+	"QE/Na2SO42",
+	"QE/Na2SO42-v7",
+	"QE/Urea",
+	"QE/ZnO",
+	"SizeEffects/BaTiO3",
+	"SizeEffects/MgO",
+	"SizeEffects/ZnO",
+	"Vasp/F-Apatite",
+	"Vasp/Na2SO42",
+	"Vasp/Na2SO42_v",
+	"Vasp/Vasp6",
+	"Vasp/Urea",
+	"Vasp/ZnO",
+    ]
+
+test_crystal_infrared = [
 	"Experiment/fpsq",
 	"Experiment/Mayerhofer",
 	"SingleCrystal/Bi2Se3",
@@ -214,8 +266,16 @@ def usage():
     print("           run all the preader tests" , file=sys.stderr)
     print("  test-pdgui" , file=sys.stderr)
     print("           run all the pdgui tests" , file=sys.stderr)
-    print("  test-singlecrystal" , file=sys.stderr)
-    print("           run all the singlecrystal tests" , file=sys.stderr)
+    print("  test-crystal_ir" , file=sys.stderr)
+    print("           run all the crystal infrared tests" , file=sys.stderr)
+    print("  test-crystal_raman" , file=sys.stderr)
+    print("           run all the crystal raman tests" , file=sys.stderr)
+    print("  test-powder_ir" , file=sys.stderr)
+    print("           run all the powder infrared tests" , file=sys.stderr)
+    print("  test-powder_raman" , file=sys.stderr)
+    print("           run all the powder raman tests" , file=sys.stderr)
+    print("  test-atr" , file=sys.stderr)
+    print("           run all the powder atr tests" , file=sys.stderr)
     print("  test-p2cif" , file=sys.stderr)
     print("           run all the p2cif tests" , file=sys.stderr)
     print("  test-vibanalysis" , file=sys.stderr)
@@ -816,7 +876,11 @@ def run_tests(testlist, testType, regenerate):
     convertTestType["preader"] = "PReader tests"
     convertTestType["p2cif"] = "P2Cif tests"
     convertTestType["benchmarks"] = "BenchMarks"
-    convertTestType["singlecrystal"] = "Single Crystals"
+    convertTestType["crystal_infrared"] = "Crystal Infrared"
+    convertTestType["crystal_raman"] = "Crystal Raman"
+    convertTestType["powder_infrared"] = "Powder Infrared"
+    convertTestType["powder_raman"] = "Powder Raman"
+    convertTestType["powder_atr"] = "Powder ATR"
     print("")
     print("--------------------------------------------------")
     print(convertTestType[testType],"starting" )
@@ -1088,7 +1152,11 @@ def main():
     Command line options
     --------------------
     - `test` or `tests`: Runs all test cases.
-    - `test-singlecrystal`: Runs tests for single crystal analysis.
+    - `test-crystal_ir`: Runs tests for crystal infrared analysis.
+    - `test-powder_ir`: Runs tests for powder infrared analysis.
+    - `test-crystal_raman`: Runs tests for crystal raman analysis.
+    - `test-powder_raman`: Runs tests for powder raman analysis.
+    - `test-atr`: Runs tests for powder atr analysis.
     - `test-preader`: Runs tests for the preader component.
     - `test-p2cif`: Runs tests for the p2cif component.
     - `test-pdgui`: Runs tests for the PDGUI component.
@@ -1144,8 +1212,16 @@ def main():
         token = tokens[itoken]
         if token in ( "test", "tests" ):
             actions.append("test all")
-        elif token == "test-singlecrystal":
-            actions.append("test singlecrystal")
+        elif token == "test-crystal_ir":
+            actions.append("test crystal_infrared")
+        elif token == "test-crystal_raman":
+            actions.append("test crystal_raman")
+        elif token == "test-powder_ir":
+            actions.append("test powder_infrared")
+        elif token == "test-powder_raman":
+            actions.append("test powder_raman")
+        elif token == "test-atr":
+            actions.append("test powder_atr")
         elif token == "test-preader":
             actions.append("test preader")
         elif token == "test-p2cif":
@@ -1245,8 +1321,16 @@ def main():
             run_tests(test_p2cif      ,"p2cif"      ,regenerate)
         elif action == "test pdgui":
             run_tests(test_pdgui      ,"pdgui"      ,regenerate)
-        elif action == "test singlecrystal":
-            run_tests(test_singlecrystal      ,"singlecrystal"      ,regenerate)
+        elif action == "test crystal_infrared":
+            run_tests(test_crystal_infrared      ,"crystal_infrared"      ,regenerate)
+        elif action == "test crystal_raman":
+            run_tests(test_crystal_raman      ,"crystal_raman"      ,regenerate)
+        elif action == "test powder_infrared":
+            run_tests(test_powder_infrared      ,"powder_infrared"      ,regenerate)
+        elif action == "test crystal_raman":
+            run_tests(test_powder_raman      ,"powder_raman"      ,regenerate)
+        elif action == "test powder_atr":
+            run_tests(test_powder_atr      ,"powder_atr"      ,regenerate)
         elif action == "test vibanalysis":
             run_tests(test_vibanalysis,"vibanalysis",regenerate)
         elif action == "run benchmarks":
