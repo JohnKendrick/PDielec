@@ -72,6 +72,7 @@ class AbinitOutputReader(GenericOutputReader):
         self.type = "Abinit output files"
         self._acell = None
         self._charges = None
+        self._susceptibility_derivatives = None
         return
 
     def _read_output_files(self):
@@ -109,8 +110,102 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage["pressure"]    = (re.compile("-Cartesian.*GPa"), self._read_pressure)
         self.manage["znucl"]    = (re.compile("^  *znucl "), self._read_znucl)
         self.manage["totalenergy"]    = (re.compile("^  *Total energy "), self._read_total_energy)
+        self.manage["susceptibility"] = (re.compile("  First-order change in the electronic dielectric"), self._read_susceptibility_derivatives)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_susceptibility_derivatives(self, line):
+        """Read the first-order susceptibility derivatives and compute per-mode Raman tensors.
+
+        Abinit's ``optdriver=5`` writes the change in the electronic dielectric
+        susceptibility tensor induced by each atomic displacement::
+
+            ∂χ_αβ / ∂u_κγ  (units: Bohr⁻¹)
+
+        This is provided for every atom κ (1…N) and every Cartesian direction γ
+        (x, y, z).  To obtain the per-mode Raman susceptibility tensor that can
+        be compared with CASTEP output, the derivatives are projected onto the
+        phonon eigenvectors that have already been computed by
+        :meth:`_read_dynamical`:
+
+        .. math::
+
+            R_{\\alpha\\beta}^{(n)} = \\sum_{\\kappa,\\gamma}
+                \\frac{\\partial \\chi_{\\alpha\\beta}}{\\partial u_{\\kappa\\gamma}}
+                \\frac{\\varepsilon_{\\kappa\\gamma}^{(n)}}{\\sqrt{m_\\kappa}}
+
+        where :math:`\\varepsilon_{\\kappa\\gamma}^{(n)}` is the
+        ``mass_weighted_normal_modes[n][κ][γ]`` component (eigenvector of the
+        mass-weighted dynamical matrix, dimensionless) and :math:`m_\\kappa` is
+        the atomic mass in amu.  The resulting tensors have units of
+        Bohr⁻¹ amu⁻¹/².
+
+        The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
+        NumPy arrays, one per mode in frequency order.  If the phonon
+        eigenvectors are not yet available the raw derivatives are stored in
+        ``self._susceptibility_derivatives`` for later use.
+
+        Parameters
+        ----------
+        line : str
+            The line that triggered this method.  Reading continues from
+            ``self.file_descriptor``.
+
+        Returns
+        -------
+        None
+
+        """
+        # Skip the remaining three header lines:
+        #   "  susceptibility tensor (Bohr^-1)"
+        #   "  induced by an atomic displacement"
+        #   "   atom  displacement"
+        for _i in range(3):
+            self.file_descriptor.readline()
+
+        # dchi[κ][γ] is the 3×3 tensor ∂χ/∂u_κγ
+        nions = self.nions
+        dchi = np.zeros((nions, 3, 3, 3))  # [atom, direction, alpha, beta]
+
+        for iatom in range(nions):
+            for idir in range(3):
+                # First row: "  atom  dir  v00  v01  v02"
+                tokens = self.file_descriptor.readline().split()
+                dchi[iatom, idir, 0, :] = [float(tokens[2]), float(tokens[3]), float(tokens[4])]
+                # Second and third rows: "  v10  v11  v12"
+                for irow in range(1, 3):
+                    tokens = self.file_descriptor.readline().split()
+                    dchi[iatom, idir, irow, :] = [float(tokens[0]), float(tokens[1]), float(tokens[2])]
+            # blank line separating atoms
+            self.file_descriptor.readline()
+
+        # Store the raw derivatives in case eigenvectors are needed later
+        self._susceptibility_derivatives = dchi
+
+        # Project onto phonon eigenvectors to get per-mode Raman tensors
+        if self.mass_weighted_normal_modes:
+            # Unit conversion factor: Bohr^-1 amu^-1/2  →  (Å/amu)^1/2
+            # R_CASTEP = sqrt(V [Å³]) × angs2bohr × R_Abinit
+            # Derivation: CASTEP normalises dχ/dQ by sqrt(V_cell), and Q is in Å·sqrt(amu)
+            # rather than Bohr·sqrt(amu), giving an extra factor of angs2bohr.
+            unit_factor = math.sqrt(self.volume) * angs2bohr
+            nmodes = nions * 3
+            self.raman_tensors = []
+            for n in range(nmodes):
+                tensor = np.zeros((3, 3))
+                for iatom in range(nions):
+                    sqrt_mass = math.sqrt(self.masses[iatom])  # √(m_κ) in amu^½
+                    for idir in range(3):
+                        eigvec = self.mass_weighted_normal_modes[n][iatom][idir]
+                        tensor += dchi[iatom, idir] * (eigvec / sqrt_mass)
+                self.raman_tensors.append(tensor * unit_factor)
+            if self.debug:
+                logger.debug(f"_read_susceptibility_derivatives: computed {len(self.raman_tensors)} Raman tensors "
+                             f"(unit_factor={unit_factor:.4f}, volume={self.volume:.4f} A^3)")
+        else:
+            logger.warning("_read_susceptibility_derivatives: phonon eigenvectors not yet available; "
+                           "raw derivatives stored in self._susceptibility_derivatives")
         return
 
     def _read_total_energy(self, line):

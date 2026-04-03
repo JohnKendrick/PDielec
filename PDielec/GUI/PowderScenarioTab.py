@@ -323,23 +323,6 @@ class PowderScenarioTab(ScenarioTab):
         form.addRow(label, self.atr_spolfrac_sb)
         return vbox, form
 
-    def initialise_raman_gui(self, vbox, form):
-        """Initialise the GUI for atr calculations.
-
-        Parameters
-        ----------
-        vbox : QVBoxLayout
-            vbox is defined by the PowderScenarioTab initialised
-        form : QFormLayout
-            form is defined by the PowderScenarioTab initialised
-
-        Returns
-        -------
-        vbox, form
-
-        """
-        return vbox, form
-
     def initialise_infrared_gui(self, vbox, form):
         """Initialise the GUI for atr calculations.
 
@@ -587,20 +570,6 @@ class PowderScenarioTab(ScenarioTab):
         form.addRow(label, self.aoverb_sb)
         return vbox, form
 
-
-    def initialise_raman_settings(self):
-        """Set the settings attribute for raman calculations.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-
-        """
-        return
 
     def initialise_atr_settings(self):
         """Set the settings attribute for atr calculations.
@@ -1705,4 +1674,64 @@ class PowderScenarioTab(ScenarioTab):
         self.aoverb_sb.setValue(self.settings["Ellipsoid a/b"])
         self.legend_le.setText(self.settings["Legend"])
         self.aoverb = self.settings["Ellipsoid a/b"]
+        return
+
+    def initialise_raman_gui(self, vbox, form):
+        """Initialise the GUI for atr calculations.
+
+        Parameters
+        ----------
+        vbox : QVBoxLayout
+            vbox is defined by the PowderScenarioTab initialised
+        form : QFormLayout
+            form is defined by the PowderScenarioTab initialised
+
+        Returns
+        -------
+        vbox, form
+
+        """
+        #
+        # Laser light frequency
+        #
+        self.laser_frequency_sb = QDoubleSpinBox(self)
+        self.laser_frequency_sb.setRange(0.001, 2000.0)
+        self.laser_frequency_sb.setSingleStep(0.01)
+        self.laser_frequency_sb.setDecimals(3)
+        self.laser_frequency_sb.setToolTip("Define the laser frequency in nm")
+        self.laser_frequency_sb.setValue(self.settings["Raman laser frequency"])
+        self.laser_frequency_sb.valueChanged.connect(self.on_laser_frequency_sb_changed)
+        label = QLabel("Laser frequency (nm)", self)
+        label.setToolTip("Define the laser frequency in nm")
+        form.addRow(label, self.laser_frequency_sb)
+        #
+        # Raman polarisation configuration
+        #
+        self.polarisation_cb = QComboBox(self)
+        self.polarisation_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        self.polarisation_cb.setToolTip("Define the permittivity and density of the support matrix")
+        self.polarisation_cb.addItems( ["VV", "HH", "VH", "HV" ] )
+        index = self.polarisation_cb.findText(self.settings["Raman laser polarisation"], Qt.MatchFixedString)
+        if index >=0:
+            self.polarisation_cb.setCurrentIndex(index)
+        self.polarisation_cb.activated.connect(self.on_polarisation_cb_activated)
+        label = QLabel("Raman laser polarisation", self)
+        label.setToolTip("Define the experimental polarisation configuration VV/HH/VH/HV")
+        form.addRow(label, self.polarisation_cb)
+        return vbox, form
+
+    def initialise_raman_settings(self):
+        """Set the settings attribute for raman calculations.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        self.settings["Raman laser frequency"] = 785
+        self.settings["Raman laser polarisation"] = "HV"
         return
