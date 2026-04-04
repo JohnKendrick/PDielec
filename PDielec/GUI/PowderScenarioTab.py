@@ -35,6 +35,7 @@ from qtpy.QtWidgets import (
 )
 
 from PDielec import Calculator, DielectricFunction, Materials
+from PDielec.Constants import boltzmann_si, planck_si, speed_light_si
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
 
@@ -218,6 +219,8 @@ class PowderScenarioTab(ScenarioTab):
             List to hold molar absorption coefficient values.
         sp_atr : list
             List to hold ATR specific calculation results.
+        raman_spectrum : list
+            List to hold calculate Raman spectrum
 
         """        
         ScenarioTab.__init__(self,parent)
@@ -1343,7 +1346,11 @@ class PowderScenarioTab(ScenarioTab):
     def _calculate_raman(self, vs_cm1):
         """Calculate the powder Raman spectrum for the range of frequencies in vs_cm1.
 
-        Not yet implemented.
+        Implements the macroscopic approach (Section 4.2 of Raman-Theory.pdf) for
+        small ellipsoidal particles embedded in a non-absorbing matrix. The effective
+        particle Raman tensor (Eq. 60) includes local field corrections through the
+        internal field tensor N. Orientational averaging uses the rotational invariants
+        (Eqs. 90-99) valid for a general complex Raman tensor.
 
         Parameters
         ----------
@@ -1354,9 +1361,110 @@ class PowderScenarioTab(ScenarioTab):
         -------
         None
 
+        Notes
+        -----
+        Results are stored in ``self.raman_spectrum`` as a list of intensities in
+        arbitrary units, one per frequency in ``vs_cm1``.
+
         """
-        logger.debug(f"{self.settings['Legend']} _calculate_raman: not yet implemented")
+        logger.debug(f"{self.settings['Legend']} Start:: _calculate_raman")
+        if not self.calculation_required:
+            logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman - not required")
+            return
+        if self.notebook.plottingTab is None:
+            logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman - plottingTab unavailable")
+            return
+        if self.reader is None:
+            logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman - reader unavailable")
+            return
+
+        raman_tensors = self.reader.get_raman_tensors()
+        if raman_tensors is None or len(raman_tensors) == 0:
+            logger.warning(f"{self.settings['Legend']} _calculate_raman: no Raman tensors available")
+            self.raman_spectrum = list(np.zeros(len(vs_cm1)))
+            self.vs_cm1 = list(np.asarray(vs_cm1))
+            self.calculation_required = False
+            return
+
+        # Mode information from settings tab
+        settings_tab = self.notebook.settingsTab
+        frequencies_cm1 = settings_tab.frequencies_cm1
+        sigmas_cm1 = settings_tab.sigmas_cm1
+        modes_selected = settings_tab.modes_selected
+
+        # Crystal optical permittivity ε_i^∞ (3×3) and matrix optical permittivity ε_e^∞ (scalar)
+        epsilon_inf_i = np.array(self.reader.zerof_optical_dielectric, dtype=complex)
+        epsilon_e = float(np.real(self.matrixPermittivityFunction(0.0)))
+
+        # Depolarisation tensor L from particle shape (same logic as _calculate_infrared)
+        L = self.calculate_depolarisation_tensor()
+
+        # Internal field tensor N (Eq. 47):
+        #   N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}
+        I3 = np.eye(3, dtype=complex)
+        N = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_inf_i - epsilon_e * I3))
+
+        # Raman experiment parameters
+        laser_nm = self.settings["Raman laser frequency"]
+        nu_L = 1.0e7 / laser_nm          # laser frequency in cm^-1
+        polarisation = self.settings["Raman laser polarisation"]
+        temperature = self.settings["Raman temperature"]
+
+        vs_cm1 = np.asarray(vs_cm1, dtype=float)
+        spectrum = np.zeros(len(vs_cm1))
+
+        # Bose-Einstein prefactor: hc/k in units of cm·K
+        hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
+
+        for mode_idx, (freq, sigma, selected) in enumerate(
+                zip(frequencies_cm1, sigmas_cm1, modes_selected)):
+            if not selected or freq < 1.0:
+                continue
+            if mode_idx >= len(raman_tensors):
+                break
+            R_eps = np.asarray(raman_tensors[mode_idx], dtype=complex)
+
+            # Effective particle Raman tensor (Eq. 60), ε_0 V absorbed into overall scale:
+            #   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
+            correction = (1.0 / epsilon_e) * (epsilon_inf_i - epsilon_e * I3) @ N @ L @ R_eps
+            R_particle = N @ (R_eps - correction) @ N
+
+            # Rotational invariants for a general complex tensor (Eqs. 90-96)
+            alpha = (R_particle[0, 0] + R_particle[1, 1] + R_particle[2, 2]) / 3.0
+            gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
+            kappa_t = 0.5 * (R_particle - R_particle.T)
+            alpha2 = float(np.real(alpha * np.conj(alpha)))
+            gamma2 = float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
+            kappa2 = float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
+
+            # Powder-averaged scattering intensity for the chosen polarisation (Eqs. 97-99)
+            if polarisation == "VV":
+                intensity_factor = 45.0 * alpha2 + 4.0 * gamma2 + 5.0 * kappa2
+            elif polarisation in ("VH", "HV"):
+                intensity_factor = 3.0 * gamma2 + 5.0 * kappa2
+            else:  # treat unpolarised total
+                intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
+
+            # Bose-Einstein occupation factor n(ν_m) (Eq. 11)
+            x = hc_over_k * freq / temperature
+            n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
+
+            # Scattered frequency (Stokes shift)
+            nu_s = nu_L - freq
+            if nu_s <= 0.0:
+                continue
+
+            # Scattering strength S_m ∝ ν_s^4 × (n+1)/ν_m × intensity_factor (Eq. 77)
+            S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
+
+            # Add Lorentzian contribution to the spectrum (Eq. 88)
+            spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
+
+        self.raman_spectrum = spectrum.tolist()
+        self.vs_cm1 = list(vs_cm1)
         self.calculation_required = False
+        QCoreApplication.processEvents()
+        logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
 
     def _calculate_infrared(self, vs_cm1):
         """Calculate the powder infrared absorption for the range of frequencies in vs_cm1.
@@ -1384,35 +1492,29 @@ class PowderScenarioTab(ScenarioTab):
             logger.debug(f"{self.settings['Legend']} Finished:: calculate - immediate return because reader unavailable")
             return
         logger.debug(f"{self.settings['Legend']} calculate - number of frequencies {len(vs_cm1)}")
-        cell = self.reader.get_unit_cell()
-        shape = self.settings["Particle shape"]
-        hkl = [self.settings["Unique direction - h"], self.settings["Unique direction - k"], self.settings["Unique direction - l"]]
-        if shape == "Ellipsoid":
-            self.direction = cell.convert_abc_to_xyz(hkl)
-            self.depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(self.direction,self.aoverb)
-        elif shape == "Plate":
-            self.direction = cell.convert_hkl_to_xyz(hkl)
-            self.depolarisation = Calculator.initialise_plate_depolarisation_matrix(self.direction)
-        elif shape == "Needle":
-            self.direction = cell.convert_abc_to_xyz(hkl)
-            self.depolarisation = Calculator.initialise_needle_depolarisation_matrix(self.direction)
-        else:
-            self.depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
-            self.direction = np.array( [] )
-        self.direction = self.direction / np.linalg.norm(self.direction)
+
+        # Calculate the depolarisation tensor and the unique direction
+        # (sets self.depolarisation and self.direction as side effects)
+        self.calculate_depolarisation_tensor()
+
         # Get the crystal permittivity function from the settings tab
         crystalPermittivity = self.notebook.settingsTab.get_crystal_permittivity(vs_cm1)
+
         # Allocate space for the shared memory, we need twice as much as we have a complex data type
         shared_array_base = Array(ctypes.c_double, 18)
         previous_solution_shared = np.ctypeslib.as_array(shared_array_base.get_obj())
+
         # Convert the space allocated to complex
         previous_solution_shared.dtype = np.complex128
+
         # Reshape the array and fill everything with zero's
         previous_solution_shared = previous_solution_shared.reshape(3,3)
         previous_solution_shared.fill(0.0+0.0j)
+
         # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
         # The concentration is defined in the plottingTab, which may not exist yet
         concentration = self.notebook.plottingTab.settings["cell concentration"]
+
         # Set the material parameters
         method = self.settings["Effective medium method"].lower()
         volume_fraction = self.settings["Volume fraction"]
@@ -1474,7 +1576,8 @@ class PowderScenarioTab(ScenarioTab):
                  "Powder Absorption"            : self.absorptionCoefficient,
                  "Powder Real Permittivity"     : self.realPermittivity,
                  "Powder Imaginary Permittivity": self.imagPermittivity,
-                 "Powder ATR"                   : self.sp_atr 
+                 "Powder ATR"                   : self.sp_atr,
+                 "Powder Raman"                 : self.raman_spectrum,
                 }.get(plot_type)
 
 
@@ -1566,6 +1669,46 @@ class PowderScenarioTab(ScenarioTab):
         self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
         return
 
+    def on_laser_frequency_sb_changed(self, value):
+        """Handle a change to the Raman laser frequency.
+
+        Parameters
+        ----------
+        value : float
+            The laser wavelength in nm.
+
+        """
+        logger.debug(f"{self.settings['Legend']} on_laser_frequency_sb_changed {value}")
+        self.refresh_required = True
+        self.settings["Raman laser frequency"] = value
+
+    def on_polarisation_cb_activated(self, index):
+        """Handle a change to the Raman polarisation configuration.
+
+        Parameters
+        ----------
+        index : int
+            Index into the polarisation list ["VV", "VH", "HV", "Unpolarised"].
+
+        """
+        polarisations = ["VV", "VH", "HV", "Unpolarised"]
+        logger.debug(f"{self.settings['Legend']} on_polarisation_cb_activated {polarisations[index]}")
+        self.refresh_required = True
+        self.settings["Raman laser polarisation"] = polarisations[index]
+
+    def on_temperature_sb_changed(self, value):
+        """Handle a change to the sample temperature.
+
+        Parameters
+        ----------
+        value : float
+            The temperature in K.
+
+        """
+        logger.debug(f"{self.settings['Legend']} on_temperature_sb_changed {value}")
+        self.refresh_required = True
+        self.settings["Raman temperature"] = value
+
     def refresh_raman(self):
         """Refresh the raman settings in the GUI.
 
@@ -1578,6 +1721,12 @@ class PowderScenarioTab(ScenarioTab):
         None
 
         """
+        self.laser_frequency_sb.setValue(self.settings["Raman laser frequency"])
+        polarisations = ["VV", "VH", "HV", "Unpolarised"]
+        pol = self.settings["Raman laser polarisation"]
+        if pol in polarisations:
+            self.polarisation_cb.setCurrentIndex(polarisations.index(pol))
+        self.temperature_sb.setValue(self.settings["Raman temperature"])
         return
 
     def refresh_infrared(self):
@@ -1709,15 +1858,28 @@ class PowderScenarioTab(ScenarioTab):
         #
         self.polarisation_cb = QComboBox(self)
         self.polarisation_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        self.polarisation_cb.setToolTip("Define the permittivity and density of the support matrix")
-        self.polarisation_cb.addItems( ["VV", "HH", "VH", "HV" ] )
+        self.polarisation_cb.setToolTip("Define the Raman polarisation geometry: VV (parallel), VH/HV (cross), Unpolarised")
+        self.polarisation_cb.addItems( ["VV", "VH", "HV", "Unpolarised" ] )
         index = self.polarisation_cb.findText(self.settings["Raman laser polarisation"], Qt.MatchFixedString)
         if index >=0:
             self.polarisation_cb.setCurrentIndex(index)
         self.polarisation_cb.activated.connect(self.on_polarisation_cb_activated)
         label = QLabel("Raman laser polarisation", self)
-        label.setToolTip("Define the experimental polarisation configuration VV/HH/VH/HV")
+        label.setToolTip("Define the experimental polarisation configuration VV/VH/HV or Unpolarised")
         form.addRow(label, self.polarisation_cb)
+        #
+        # Sample temperature for Bose-Einstein factor
+        #
+        self.temperature_sb = QDoubleSpinBox(self)
+        self.temperature_sb.setRange(0.01, 10000.0)
+        self.temperature_sb.setSingleStep(10.0)
+        self.temperature_sb.setDecimals(1)
+        self.temperature_sb.setToolTip("Sample temperature in K (used for the Bose-Einstein occupation factor)")
+        self.temperature_sb.setValue(self.settings["Raman temperature"])
+        self.temperature_sb.valueChanged.connect(self.on_temperature_sb_changed)
+        label = QLabel("Temperature (K)", self)
+        label.setToolTip("Sample temperature in K (used for the Bose-Einstein occupation factor)")
+        form.addRow(label, self.temperature_sb)
         return vbox, form
 
     def initialise_raman_settings(self):
@@ -1734,4 +1896,42 @@ class PowderScenarioTab(ScenarioTab):
         """
         self.settings["Raman laser frequency"] = 785
         self.settings["Raman laser polarisation"] = "HV"
+        self.settings["Raman temperature"] = 298.0
+        self.raman_spectrum = []
         return
+
+    def calculate_depolarisation_tensor(self):
+        """Calculate the depolarisation tensor.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        L : np.array 3x3
+
+        """
+        cell = self.reader.get_unit_cell()
+        shape = self.settings["Particle shape"]
+        hkl = [self.settings["Unique direction - h"],
+               self.settings["Unique direction - k"],
+               self.settings["Unique direction - l"]]
+        if shape == "Ellipsoid":
+            self.direction = cell.convert_abc_to_xyz(hkl)
+            self.direction = self.direction / np.linalg.norm(self.direction)
+            self.depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(
+                self.direction, self.settings["Ellipsoid a/b"])
+        elif shape == "Plate":
+            self.direction = cell.convert_hkl_to_xyz(hkl)
+            self.direction = self.direction / np.linalg.norm(self.direction)
+            self.depolarisation = Calculator.initialise_plate_depolarisation_matrix(self.direction)
+        elif shape == "Needle":
+            self.direction = cell.convert_abc_to_xyz(hkl)
+            self.direction = self.direction / np.linalg.norm(self.direction)
+            self.depolarisation = Calculator.initialise_needle_depolarisation_matrix(self.direction)
+        else:
+            self.depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
+            self.direction = np.array([])
+        return self.depolarisation
+
