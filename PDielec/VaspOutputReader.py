@@ -16,6 +16,7 @@
 """VASP output reader."""
 
 import logging
+import math
 import os
 import re
 import xml.etree.ElementTree as ET
@@ -219,6 +220,16 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
+        The Skelton scripts store tensors as ``R = (V/4π) × ∂ε/∂Q`` in units of
+        Å²·amu⁻¹/².  PDielec uses the CASTEP convention ``T = (√V/4π) × ∂ε/∂Q``
+        in ``(Å/amu)^{0.5}``, so each tensor is divided by ``√V_cell`` on read::
+
+            T_PDielec = R_Skelton / √V_cell
+
+        ``self.volume`` must have been set (from OUTCAR or vasprun.xml) before
+        this method is called; it always is because Raman-Tensors.yaml is read
+        after the main file loop in ``_read_output_files``.
+
         The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
         NumPy arrays, sorted by ``band_index`` (ascending).
 
@@ -234,11 +245,14 @@ class VaspOutputReader(GenericOutputReader):
         if not activities:
             logger.warning(f"_read_raman_tensors_yaml: no raman_activities found in {filename}")
             return
+        # Convert from Skelton units (Å²·amu⁻¹/²) to CASTEP convention ((Å/amu)^{0.5}).
+        # Skelton stores R = (V/4π) × ∂ε/∂Q; CASTEP stores T = (√V/4π) × ∂ε/∂Q = R/√V.
+        unit_factor = 1.0 / math.sqrt(self.volume)
         # Ensure correct ordering by band_index
         activities.sort(key=lambda x: x["band_index"])
         self.raman_tensors = []
         for entry in activities:
-            tensor = np.array(entry["raman_tensor"], dtype=float)
+            tensor = np.array(entry["raman_tensor"], dtype=float) * unit_factor
             self.raman_tensors.append(tensor)
         if self.debug:
             logger.debug(f"_read_raman_tensors_yaml: read {len(self.raman_tensors)} Raman tensors from {filename}")
