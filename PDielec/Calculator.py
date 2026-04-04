@@ -426,6 +426,63 @@ def infrared_intensities(oscillator_strengths):
     convert = d2byamuang2
     return intensities / convert
 
+def raman_intensities(raman_tensors):
+    """Calculate Raman activities from per-mode Raman tensors.
+
+    For each mode the powder-averaged isotropic Raman activity is computed
+    from the three rotational invariants of the Raman tensor:
+
+    .. math::
+
+        A_m = 45\\alpha^2 + 7\\gamma^2 + 5\\kappa^2
+
+    where :math:`\\alpha` is the mean polarisability derivative, :math:`\\gamma^2`
+    is the symmetric anisotropy, and :math:`\\kappa^2` is the antisymmetric
+    contribution (Placzek invariants).
+
+    Parameters
+    ----------
+    raman_tensors : list of array_like
+        Per-mode 3×3 Raman tensors as stored by the output readers.
+        Units are ``(Å/amu)^{0.5}`` per element (i.e. the derivative of the
+        polarisability volume with respect to the mass-weighted normal
+        coordinate, divided by ``√V_cell``).
+
+    Returns
+    -------
+    np.ndarray
+        Per-mode Raman activities in units of ``Å/amu``
+        (i.e. tensor-element units squared, summed over the invariants).
+        Modes with no Raman tensor data are assigned zero activity.
+
+    Notes
+    -----
+    The rotational invariants follow the general (complex-tensor) definition
+    used in the powder-Raman theory implemented in PowderRamanScenarioTab:
+
+    * :math:`\\alpha  = \\operatorname{Tr}(R)/3`
+    * :math:`\\gamma^2 = \\sum_{ij}(R_{\\rm sym,\\,traceless})_{ij}^2`
+    * :math:`\\kappa^2 = \\sum_{ij}(R_{\\rm anti})_{ij}^2`
+
+    For a purely symmetric Raman tensor :math:`\\kappa = 0` and the
+    expression reduces to the classical result :math:`45\\alpha^2 + 7\\gamma^2`.
+
+    """
+    nmodes = len(raman_tensors)
+    activities = np.zeros(nmodes)
+    I3 = np.eye(3, dtype=float)
+    for i, R in enumerate(raman_tensors):
+        R = np.asarray(R, dtype=float)
+        alpha = np.trace(R) / 3.0
+        R_sym = 0.5 * (R + R.T)
+        R_anti = 0.5 * (R - R.T)
+        R_traceless = R_sym - alpha * I3
+        gamma2 = float(np.sum(R_traceless * R_traceless))
+        kappa2 = float(np.sum(R_anti * R_anti))
+        activities[i] = 45.0 * alpha * alpha + 7.0 * gamma2 + 5.0 * kappa2
+    return activities
+
+
 def longitudinal_modes(frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader):
     """Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies.
 
