@@ -12,4 +12,4 @@ This example is taken from the tests directory of the Abinit program
 | results.ref.xlsx      | reference results for the test suite |
 | script.py             | script used by pdgui for the test suite |
 
-[Back](..)
+[Back](../README.md)

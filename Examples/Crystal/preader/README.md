@@ -6,4 +6,4 @@
 | command.pdmake   | pdmake command for test suite    |
 | command.ref.csv  | reference results for test suite |
 
-[Back](..)
+[Back](../README.md)

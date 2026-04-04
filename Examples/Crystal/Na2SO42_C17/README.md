@@ -20,4 +20,4 @@ This calculation of the frequencies and intensities is a CPHF calculation, so CR
  | script.py           | pdgui script to create reference results |
 
 
-[Back](..)
+[Back](../README.md)

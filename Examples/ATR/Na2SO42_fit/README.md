@@ -14,4 +14,4 @@
 | results.ref.xlsx             | reference results for test suite |
 | script.py                    | PDGui script to generate the reference results |
 
-[Back](..)
+[Back](../README.md)

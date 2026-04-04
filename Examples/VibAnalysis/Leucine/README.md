@@ -17,4 +17,4 @@ vibanalysis --autosel crystal LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out
 &nbsp;
 Thanks to Tim Kortner's group for providing the example for CRYSTAL14
 
-[Back](..)
+[Back](../README.md)

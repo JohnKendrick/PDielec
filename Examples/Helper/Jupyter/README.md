@@ -45,4 +45,4 @@ Illustrate the properties of the UnitCell class.
 Compares calculations on Na2(SO4)2 using different DFT methods.  
 The results of the calculations are collected together as separate directories in Na2SO42/
 
-[Back](..)
+[Back](../README.md)

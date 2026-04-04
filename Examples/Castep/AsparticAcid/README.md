@@ -16,4 +16,4 @@ Power calculations on Aspartic acid
 | results.ref.xlsx      |  Reference results for the test system |
 | script.py             |  Script used by the test system |
 
-[Back](..)
+[Back](../README.md)

@@ -17,4 +17,4 @@ The bonds, bond angles and torsion angles are calculated and printed.
 ### longitudinal_modes.py
 Calculates the longitudinal modes of MgO from CASTEP
 
-[Back](..)
+[Back](../README.md)

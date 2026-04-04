@@ -13,4 +13,4 @@ Bruggeman and Maxwell-Garnett calculations are performed for crystallite sizes o
 | results.ref.xlsx   | Reference results used by the test suite                     |
 | script.py          | pdgui script to create the reference results                 |
 
-[Back](..)
+[Back](../README.md)

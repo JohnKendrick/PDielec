@@ -8,4 +8,4 @@ Tests for QE output reader
 | command.pdmake    | pdmake command for test suite    |
 | command.ref.csv   | reference results for QE preader |
 
-[Back](..)
+[Back](../README.md)

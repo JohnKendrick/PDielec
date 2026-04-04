@@ -16,4 +16,4 @@ Instead, an estimate is provided in script.py.
  | results.ref.xlsx    | Reference results for test suite |
  | script.py           | pdgui script to create reference results |
 
-[Back](..)
+[Back](../README.md)

@@ -7,4 +7,4 @@
 | [Default/](./Default/README.md) | Example using default CRYSTAL settings |
 | [NoEckart/](./NoEckart/README.md) | Example using default settings with no Eckart |
 
-[Back](..)
+[Back](../README.md)

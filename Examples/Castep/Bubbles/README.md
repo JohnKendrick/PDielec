@@ -12,4 +12,4 @@
 | results.ref.xlsx   |  Reference results for test         |
 | script.py          |  PDgui test script                  |
 
-[Back](..)
+[Back](../README.md)

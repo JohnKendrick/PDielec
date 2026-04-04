@@ -14,4 +14,4 @@
 
 zno.ph.dynG is used by PDielec to generate the absorption spectrum.
 
-[Back](..)
+[Back](../README.md)

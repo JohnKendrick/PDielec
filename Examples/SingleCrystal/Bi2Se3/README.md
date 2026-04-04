@@ -18,4 +18,4 @@ The 'Thick Slab' model is used, so there is no internal reflection.
 | results.ref.xlsx  | reference results for tests          |
 | script.py         | script to generate reference results |
 
-[Back](..)
+[Back](../README.md)

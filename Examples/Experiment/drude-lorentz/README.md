@@ -10,4 +10,4 @@ A Drude Lorentz permittivity model for MgO taken from Mayerhoefer's book "Wave O
 | results.ref.xlsx      |Reference results for the test suite         |
 | script.py             |pdgui suite to generate the reference results|
 
-[Back](..)
+[Back](../README.md)

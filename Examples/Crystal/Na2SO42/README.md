@@ -18,4 +18,4 @@ This calculation of the frequencies and intensities is a CPHF calculation, so CR
  | results.ref.xlsx    | Reference results for test suite |
  | script.py           | pdgui script to create reference results |
 
-[Back](..)
+[Back](../README.md)

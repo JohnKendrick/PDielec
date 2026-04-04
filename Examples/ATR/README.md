@@ -7,4 +7,4 @@
  | [Na2SO42/](./Na2SO42/README.md) | Vasp calculation on Na2(SO4)2 |
  | [Na2SO42_fit/](./Na2SO42_fit/README.md) | Vasp calculation on Na2(SO4)2, with fitting |
 
-[Back](..)
+[Back](../README.md)

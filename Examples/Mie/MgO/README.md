@@ -13,4 +13,4 @@
 | results.ref.xlsx     | Reference results for testing suite |
 | script.py            | Script to generate results for testing suite |
 
-[Back](..)
+[Back](../README.md)

@@ -8,4 +8,4 @@ The Helper directory contains useful scripts and Jupyter notebooks the give exam
 | [Helper/](./Helper/README.md) | Example scripts |
 | [Jupyter/](./Jupyter/README.md) | Example Jupyter notebooks |
 
-[Back](..)
+[Back](../README.md)

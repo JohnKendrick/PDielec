@@ -10,4 +10,4 @@
 | [Urea/](./Urea/README.md)             | Urea example using xml file (QE 7.3.1) |
 | [ZnO/](./ZnO/README.md)               | ZnO example                            |
 
-[Back](..)
+[Back](../README.md)

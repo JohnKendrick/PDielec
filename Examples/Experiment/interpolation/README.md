@@ -10,4 +10,4 @@ From a Castep calculation on aspartic acid the effective permittivity (a complex
 | results.ref.xlsx      | Reference results for the test suite        |
 | script.py             | Pdgui script to create the reference results|
 
-[Back](..)
+[Back](../README.md)

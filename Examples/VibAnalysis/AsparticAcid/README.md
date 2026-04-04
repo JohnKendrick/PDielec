@@ -20,4 +20,4 @@ vibanalysis -autosel phonon.castep
 | command.pdmake    | pdmake commands for testing   |
 | phonon.nma.ref    | reference vibanlysis output   |
 
-[Back](..)
+[Back](../README.md)

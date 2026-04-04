@@ -10,4 +10,4 @@
 | [ZnO/](./ZnO/README.md) | Phonopy-Vasp calculations on ZnO                              |
 | [QE/](./QE/README.md) | Phonopy-QE calculations on Urea                              |
 
-[Back](..)
+[Back](../README.md)

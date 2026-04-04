@@ -19,4 +19,4 @@
 | results.ref.xlsx                       | reference results for the testing system |
 | script.py                              | script used to create the reference results |
 
-[Back](..)
+[Back](../README.md)

@@ -13,4 +13,4 @@
 | command.pdmake     | PDmake test command |
 | results.ref.xlsx   | Reference results for test case |
 
-[Back](..)
+[Back](../README.md)
