@@ -220,9 +220,16 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
-        The Skelton scripts store tensors as ``R = (V/4π) × ∂ε/∂Q`` in units of
-        Å²·amu⁻¹/².  PDielec uses the CASTEP convention ``T = (√V/4π) × ∂ε/∂Q``
-        in ``(Å/amu)^{0.5}``, so each tensor is divided by ``√V_cell`` on read::
+        Both CASTEP and Skelton's group  compute the derivative of the **polarizability volume**
+        ``α_vol = V(ε−1)/(4π)`` [Å³] with respect to the mass-weighted normal
+        coordinate ``Q`` [Å·√amu].  The 4π is the standard factor relating the
+        macroscopic dielectric tensor to the cell polarizability volume and is
+        present in both conventions.
+
+        - Skelton: ``R = ∂α_vol/∂Q = (V/4π) × ∂ε/∂Q``  [Å²·amu⁻¹/²]
+        - CASTEP:  ``T = ∂α_vol/∂Q / √V = R / √V``  [(Å/amu)^{0.5}]
+
+        So each tensor element is divided by ``√V_cell`` on read::
 
             T_PDielec = R_Skelton / √V_cell
 
@@ -245,8 +252,8 @@ class VaspOutputReader(GenericOutputReader):
         if not activities:
             logger.warning(f"_read_raman_tensors_yaml: no raman_activities found in {filename}")
             return
-        # Convert from Skelton units (Å²·amu⁻¹/²) to CASTEP convention ((Å/amu)^{0.5}).
-        # Skelton stores R = (V/4π) × ∂ε/∂Q; CASTEP stores T = (√V/4π) × ∂ε/∂Q = R/√V.
+        # Both codes compute ∂α_vol/∂Q where α_vol = V(ε-1)/(4π) [Å³].
+        # Skelton stores R = ∂α_vol/∂Q [Å²·amu⁻¹/²]; CASTEP stores T = R/√V [(Å/amu)^{0.5}].
         unit_factor = 1.0 / math.sqrt(self.volume)
         # Ensure correct ordering by band_index
         activities.sort(key=lambda x: x["band_index"])
