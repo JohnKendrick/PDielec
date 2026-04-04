@@ -239,6 +239,7 @@ class SettingsTab(QWidget):
         self.frequencies_cm1 = []
         self.frequencies_have_been_edited = False
         self.intensities = []
+        self.raman_intensities = []
         self.sigmas_cm1 = []
         self.oscillator_strengths = []
         self.mass_weighted_normal_modes = None
@@ -460,16 +461,23 @@ class SettingsTab(QWidget):
             self.oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
         # calculate the intensities from the trace of the oscillator strengths
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
+        # calculate Raman activities if Raman tensors are available
+        raman_tensors = self.reader.get_raman_tensors() if self.reader else None
+        if raman_tensors is not None and len(raman_tensors) == len(self.frequencies_cm1):
+            self.raman_intensities = Calculator.raman_intensities(raman_tensors).tolist()
+        else:
+            self.raman_intensities = [0.0] * len(self.frequencies_cm1)
         # Decide which modes to select
         if self.recalculate_selected_modes and len(self.intensities) > 0 and len(self.frequencies_cm1) > 0:
             logger.debug("create_intensity_table: recalculating selected modes")
+            is_raman = self.settings["Spectroscopy type"] in ("Powder Raman", "Crystal Raman")
             self.modes_selected = []
             self.mode_list = []
-            for f,intensity in zip(self.frequencies_cm1,self.intensities):
-                if f > 10.0 and intensity > 1.0E-6:
-                    self.modes_selected.append(True)
+            for f, ir_intensity, raman_activity in zip(self.frequencies_cm1, self.intensities, self.raman_intensities):
+                if is_raman:
+                    self.modes_selected.append(f > 10.0 and raman_activity > 1.0e-6)
                 else:
-                    self.modes_selected.append(False)
+                    self.modes_selected.append(f > 10.0 and ir_intensity > 1.0e-6)
             self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
             logger.debug(f"Selected modes are; {self.mode_list}")
             self.recalculate_selected_modes = False
@@ -501,9 +509,27 @@ class SettingsTab(QWidget):
         #
         # Prepare to finish
         #
+        is_raman = self.settings["Spectroscopy type"] in ("Powder Raman", "Crystal Raman")
+        has_raman = any(a > 0.0 for a in self.raman_intensities)
+        show_raman_col = is_raman and has_raman
+        ncols = 6 if show_raman_col else 5
         self.output_tw.setRowCount(len(self.sigmas_cm1))
-        self.output_tw.setColumnCount(5)
-        self.output_tw.setHorizontalHeaderLabels(["   Sigma   \n(cm-1)", " Frequency \n(cm-1)", "  Intensity  \n(Debye2/Å2/amu)", "Integrated Molar Absorption\n(L/mole/cm2)", "Absorption maximum\n(L/mole/cm)"])
+        self.output_tw.setColumnCount(ncols)
+        if show_raman_col:
+            self.output_tw.setHorizontalHeaderLabels([
+                "   Sigma   \n(cm-1)", " Frequency \n(cm-1)",
+                "  Intensity  \n(Debye2/Å2/amu)",
+                "Integrated Molar Absorption\n(L/mole/cm2)",
+                "Absorption maximum\n(L/mole/cm)",
+                "Raman Activity\n(Å/amu)",
+            ])
+        else:
+            self.output_tw.setHorizontalHeaderLabels([
+                "   Sigma   \n(cm-1)", " Frequency \n(cm-1)",
+                "  Intensity  \n(Debye2/Å2/amu)",
+                "Integrated Molar Absorption\n(L/mole/cm2)",
+                "Absorption maximum\n(L/mole/cm)",
+            ])
         QCoreApplication.processEvents()
         self.redraw_output_tw()
         QCoreApplication.processEvents()
@@ -583,12 +609,13 @@ class SettingsTab(QWidget):
             else:
                sp.write_next_row([item,self.settings[item]], col=1, check=1)
         sp.write_next_row([""], col=1)
-        sp.write_next_row(["Mode","Include?","Sigma(cm-1)","Frequency(cm-1)","Intensity(Debye2/Angs2/amu","Integrated Molar Absorption(/L/mole/cm2","Absorption maximum (L/mole/cm)"], col=1)
-        for mode,(f,intensity,sigma,selected) in enumerate(zip(self.frequencies_cm1, self.intensities, self.sigmas_cm1,self.modes_selected)):
+        raman_acts = self.raman_intensities if self.raman_intensities else [0.0] * len(self.frequencies_cm1)
+        sp.write_next_row(["Mode","Include?","Sigma(cm-1)","Frequency(cm-1)","Intensity(Debye2/Angs2/amu","Integrated Molar Absorption(/L/mole/cm2","Absorption maximum (L/mole/cm)","Raman Activity (Å/amu)"], col=1)
+        for mode,(f,intensity,raman_act,sigma,selected) in enumerate(zip(self.frequencies_cm1, self.intensities, raman_acts, self.sigmas_cm1,self.modes_selected)):
             yn = "No"
             if selected:
                 yn = "Yes"
-            sp.write_next_row([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi], col=1)
+            sp.write_next_row([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi, raman_act], col=1)
         logger.debug("Finished:: write_spreadsheet")
 
     def redraw_output_tw(self):
@@ -619,8 +646,10 @@ class SettingsTab(QWidget):
         """        
         logger.debug("Start:: redraw_output_tw")
         # If the frequencies haven't been set yet just don't try to do anything
+        show_raman_col = self.output_tw.columnCount() == 6
+        raman_acts = self.raman_intensities if self.raman_intensities else [0.0] * len(self.frequencies_cm1)
         self.output_tw.blockSignals(True)
-        for i,(f,sigma,intensity) in enumerate(zip(self.frequencies_cm1, self.sigmas_cm1, self.intensities)):
+        for i,(f,sigma,intensity,raman_act) in enumerate(zip(self.frequencies_cm1, self.sigmas_cm1, self.intensities, raman_acts)):
             # Sigma and check / unchecked column
             items = []
             itemFlags = []
@@ -635,7 +664,7 @@ class SettingsTab(QWidget):
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled )
                 freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
                 item.setCheckState(Qt.Unchecked)
-                freqFlags = item.flags() & Qt.NoItemFlags 
+                freqFlags = item.flags() & Qt.NoItemFlags
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
             # Frequency column cm-1
@@ -650,6 +679,10 @@ class SettingsTab(QWidget):
             # Maximum extinction L/mole/cm
             items.append(QTableWidgetItem(f"{2*intensity*4225.6/self.sigmas_cm1[i]/np.pi:.2f}" ) )
             itemFlags.append( otherFlags )
+            if show_raman_col:
+                # Raman activity (Å/amu)
+                items.append(QTableWidgetItem(f"{raman_act:.6g}" ) )
+                itemFlags.append( otherFlags )
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
                 item.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
@@ -1019,6 +1052,8 @@ class SettingsTab(QWidget):
         logger.debug(f"Start:: on_spectroscopy_type_cb_activated {index}")
         spectroscopy_type = self.spectroscopy_types[index]
         self.settings["Spectroscopy type"] = spectroscopy_type
+        self.recalculate_selected_modes = True
+        self.refresh_required = True
         self.notebook.set_spectroscopy_type(spectroscopy_type)
         logger.debug(f"Finished:: on_spectroscopy_type_cb_activated {index}")
 
