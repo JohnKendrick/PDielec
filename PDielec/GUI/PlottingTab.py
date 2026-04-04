@@ -371,6 +371,7 @@ class PlottingTab(QWidget):
                             "Crystal Transmittance (S polarisation)",
                             "Crystal Absorbtance (P polarisation)",
                             "Crystal Absorbtance (S polarisation)",
+                            "Powder Raman",
                           ]
         self.plot_ylabels = {
                      "Powder Molar Absorption": r"Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$",
@@ -384,6 +385,7 @@ class PlottingTab(QWidget):
       "Crystal Transmittance (S polarisation)": r"Fraction of s-polarised transmitted",
         "Crystal Absorbtance (P polarisation)": r"Fraction of p-polarised absorbtance",
         "Crystal Absorbtance (S polarisation)": r"Fraction of s-polarised absorbtance",
+                           "Powder Raman": r"Raman Intensity (arbitrary units)",
                             }
 
         self.plot_type_cb.activated.connect(self.on_plot_type_cb_activated)
@@ -935,13 +937,15 @@ class PlottingTab(QWidget):
         A_ss                        = []
         powder_legends              = []
         crystal_legends             = []
+        raman_intensities           = []
+        raman_legends               = []
         # Deal with Scenarios
         sp = self.notebook.spreadsheet
         sp.select_work_sheet("Scenarios")
         sp.delete()
         sp.write_next_row(["A list of the scenarios used:"],col=1)
         for index,scenario in enumerate(self.notebook.scenarios):
-            print('jk600 ',index, scenario.spectroscopy)
+            logger.debug(f"write_spreadsheet: scenario {index} spectroscopy={scenario.spectroscopy}")
             if scenario.spectroscopy in ("Powder Infrared", "Powder ATR"):
                 direction = scenario.direction
                 depolarisation = scenario.depolarisation
@@ -983,7 +987,15 @@ class PlottingTab(QWidget):
                 A_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[9] ) )
                 A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
                 crystal_legends.append(scenario.settings["Legend"])
-            elif scenario.spectroscopy in ("Powder Raman", "Crystal Raman"):
+            elif scenario.spectroscopy == "Powder Raman":
+                sp.write_next_row([""],col=1)
+                sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
+                settings = scenario.settings
+                for key in sorted(settings,key=str.lower):
+                    sp.write_next_row([key, settings[key]],col=1,check=1)
+                raman_intensities.append( scenario.get_result(self.vs_cm1, "Powder Raman") )
+                raman_legends.append(scenario.settings["Legend"])
+            elif scenario.spectroscopy in ("Crystal Raman",):
                 pass
             else:
                 logger.error(f"Error in plotting tab: scenario not recognised {scenario.spectroscopy}")
@@ -1021,6 +1033,9 @@ class PlottingTab(QWidget):
             self.write_crystal_results(sp, "Crystal T_s", self.vs_cm1, crystal_legends, T_ss)
             self.write_crystal_results(sp, "Crystal A_p", self.vs_cm1, crystal_legends, A_ps)
             self.write_crystal_results(sp, "Crystal A_s", self.vs_cm1, crystal_legends, A_ss)
+        # Powder Raman results
+        if len(raman_intensities) > 0:
+            self.write_powder_results(sp, "Powder Raman", self.vs_cm1, raman_legends, raman_intensities)
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)
@@ -1299,9 +1314,10 @@ class PlottingTab(QWidget):
         """
         logger.debug("Start:: greyed_out")
         # Determine which spectroscopies are present from the actual scenarios
-        atr_present             = any(s.spectroscopy == "Powder ATR"       for s in self.notebook.scenarios)
-        powder_present          = any(s.spectroscopy in ("Powder Infrared", "Powder ATR") for s in self.notebook.scenarios)
-        crystal_infrared_present = any(s.spectroscopy == "Crystal Infrared" for s in self.notebook.scenarios)
+        atr_present              = any(s.spectroscopy == "Powder ATR"       for s in self.notebook.scenarios)
+        powder_present           = any(s.spectroscopy in ("Powder Infrared", "Powder ATR") for s in self.notebook.scenarios)
+        crystal_infrared_present = any(s.spectroscopy == "Crystal Infrared"  for s in self.notebook.scenarios)
+        raman_present            = any(s.spectroscopy == "Powder Raman"      for s in self.notebook.scenarios)
         #
         # Enable all plot types first, then disable those not available
         #
@@ -1328,7 +1344,14 @@ class PlottingTab(QWidget):
         if not crystal_infrared_present:
             for i in range(5, 11):
                 self.plot_type_cb.model().item(i).setEnabled(False)
-            if index >= 5:
+            if index >= 5 and index <= 10:
+                self.plot_type_cb.setCurrentIndex(0)
+                self.settings["Plot type"] = self.plot_type_cb.currentText()
+        # Item 11: Powder Raman — only available for Powder Raman scenarios
+        raman_index = self.plot_types.index("Powder Raman")
+        if not raman_present:
+            self.plot_type_cb.model().item(raman_index).setEnabled(False)
+            if index == raman_index:
                 self.plot_type_cb.setCurrentIndex(0)
                 self.settings["Plot type"] = self.plot_type_cb.currentText()
         logger.debug("Finished:: greyed_out")
