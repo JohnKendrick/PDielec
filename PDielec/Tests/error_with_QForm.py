@@ -1,3 +1,4 @@
+"""Test module demonstrating QFormLayout row removal with qtpy."""
 #
 # Copyright 2024 John Kendrick & Andrew Burnett
 #
@@ -64,7 +65,7 @@ class MainWindow(QMainWindow):
         None
 
         """        
-        super(MainWindow, self).__init__()
+        super().__init__()
 
         self.setWindowTitle("My App")
         layout = QFormLayout()
@@ -154,7 +155,7 @@ class Color(QWidget):
         ```
 
         """        
-        super(Color, self).__init__()
+        super().__init__()
         self.setAutoFillBackground(True)
 
         palette = self.palette()
