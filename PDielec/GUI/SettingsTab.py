@@ -190,6 +190,8 @@ class SettingsTab(QWidget):
         Handles changes to the Born charge neutrality setting.
     on_eckart_changed()
         Handles changes to the Eckart condition setting.
+    on_spectroscopy_type_cb_activated(index)
+        Handles changes to the spectroscopy type
     calculate(vs_cm1)
         Calculates the permittivity of the crystal over the specified range of frequencies.
     get_crystal_permittivity(vs_cm1)
@@ -240,6 +242,8 @@ class SettingsTab(QWidget):
         self.frequencies_have_been_edited = False
         self.intensities = []
         self.raman_intensities = []
+        self.raman_intensities_par = []
+        self.raman_intensities_perp = []
         self.sigmas_cm1 = []
         self.oscillator_strengths = []
         self.mass_weighted_normal_modes = None
@@ -247,14 +251,15 @@ class SettingsTab(QWidget):
         self.vs_cm1 = []
         self.crystal_permittivity = []
         self.recalculate_selected_modes = True
+        #
         # get the reader from the main tab
         self.reader = self.notebook.reader
+        #
         # Create second tab - SettingsTab
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
         # Spectroscopy type selection
-        #
         self.spectroscopy_type_cb = QComboBox(self)
         self.spectroscopy_type_cb.setToolTip("Choose the spectroscopy type for all scenarios")
         self.spectroscopy_type_cb.addItems(self.spectroscopy_types)
@@ -262,7 +267,6 @@ class SettingsTab(QWidget):
         form.addRow(QLabel("Spectroscopy type:", self), self.spectroscopy_type_cb)
         #
         # The eckart checkbox
-        #
         self.eckart_cb = QCheckBox(self)
         self.eckart_cb.setToolTip("Applying Eckart conditions ensures three zero translation mode)")
         self.eckart_cb.setText("")
@@ -275,7 +279,6 @@ class SettingsTab(QWidget):
         form.addRow(QLabel("Apply Eckart conditions?", self), self.eckart_cb)
         #
         # Add the Born neutral condition
-        #
         self.born_cb = QCheckBox(self)
         self.born_cb.setToolTip("Applying Born charge neutrality ensures unit cell has zero charge")
         self.born_cb.setText("")
@@ -288,7 +291,6 @@ class SettingsTab(QWidget):
         form.addRow(QLabel("Apply Born charge neutrality?",self),self.born_cb)
         #
         # The mass definition combobox
-        #
         self.mass_cb = QComboBox(self)
         self.mass_cb.setToolTip("The atomic masses used to calculate frequencies and intensities can be give here")
         self.mass_cb.addItem("Average natural abundance")
@@ -296,11 +298,13 @@ class SettingsTab(QWidget):
         self.mass_cb.addItem("Most common isotope mass")
         self.mass_cb.addItem("Masses set individually")
         self.mass_cb.model().item(3).setEnabled(False)
+        #
         # set default to average natural abundance
         self.mass_cb.activated.connect(self.on_mass_cb_activated)
         self.current_mass_definition_index = self.mass_definition_options.index(self.settings["Mass definition"])
         self.mass_cb.setCurrentIndex(0)
         form.addRow(QLabel("Atomic mass defintion:", self), self.mass_cb)
+        #
         # Create Table containing the masses - block signals until the table is loaded
         self.element_masses_tw = FixedQTableWidget(parent=self)
         self.element_masses_tw.setToolTip("Individual element masses can be modified here")
@@ -313,7 +317,6 @@ class SettingsTab(QWidget):
         form.addRow(QLabel("Atomic masses", self), self.element_masses_tw)
         #
         # The lorentzian width - sigma
-        #
         self.sigma_sb = QDoubleSpinBox(self)
         self.sigma_sb.setRange(0.1,100.0)
         self.sigma_sb.setSingleStep(0.1)
@@ -326,19 +329,21 @@ class SettingsTab(QWidget):
         form.addRow(label, self.sigma_sb)
         #
         # Create the Optical permittivity table widget and block signals until a click on the widget
-        #
         self.optical_tw = FixedQTableWidget(3,3,parent=self)
         self.optical_tw.setToolTip("The optical permittivity is taken from the calculation where this is possible.  If it is not availble suitbale values should be provided here")
+        #
         # Set the header names
         self.optical_tw.setHorizontalHeaderLabels(["x","y","z"])
         self.optical_tw.setVerticalHeaderLabels  (["x","y","z"])
         self.optical_tw.itemClicked.connect(self.on_optical_tw_itemClicked)
         self.optical_tw.itemChanged.connect(self.on_optical_tw_itemChanged)
+        #
         # Block the widget until the optical permittivity is loaded
         self.optical_tw.blockSignals(True)
         self.optical_tw.setSizePolicy(sizePolicy)
         form.addRow(QLabel("Optical permittivity:", self), self.optical_tw)
         vbox.addLayout(form)
+        #
         # output window
         # Create Table containing the IR active modes
         self.output_tw = FixedQTableWidget(parent=self)
@@ -386,6 +391,7 @@ class SettingsTab(QWidget):
         self.recalculate_selected_modes = True
         self.refresh()
         logger.debug(f"Finished::  set_element_mass {element} {mass}")
+
     def create_intensity_table(self):
         """Generate the intensity table for spectroscopy analysis.
 
@@ -406,7 +412,8 @@ class SettingsTab(QWidget):
         This method relies on several external variables and settings, including: - reader settings for neutralizing or
         resetting born charges - mass definition settings to determine how masses are handled in calculations - a check
         on if frequencies have been edited, which affects reading directly from the reader or not - uses `Calculator`
-        class methods to compute normal modes, oscillator strengths, infrared intensities, and ionic permittivity - the
+        class methods to compute normal modes, oscillator strengths, infrared intensities, 
+        Raman intensities and ionic permittivity - the
         method also determines the dielectric function based on the configuration and recalculates selected modes if
         necessary - it finally populates a provided table widget (`self.output_tw`) with computed spectroscopic
         properties
@@ -421,15 +428,22 @@ class SettingsTab(QWidget):
         """        
         logger.debug("Start:: create_intensity_table")
         self.reader = self.notebook.reader
+
         # Only calculate if the reader is set
         if self.reader is None:
             logger.debug("create_intensity_table aborting as now reader available")
             return
+
+        # Deal with Born charges
         if self.settings["Neutral Born charges"]:
             self.reader.neutralise_born_charges()
         else:
             self.reader.reset_born_charges()
+
+        # Set the Eckart flag in the reader
         self.reader.eckart = self.settings["Eckart flag"]
+
+        # Set up the Mass definitions
         mass_dictionary = []
         self.reader.reset_masses()
         if self.settings["Mass definition"] == "average":
@@ -443,13 +457,20 @@ class SettingsTab(QWidget):
         else:
             logger.error(f"Error unknown mass definition {self.settings['Mass definition']}")
         QCoreApplication.processEvents()
+
+        # Calculate normal modes
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
-        # convert cm-1 to au
+
+        # Find the sigmas for each frequency, the sigmas might have been edited by hand
         if not self.frequencies_have_been_edited:
             self.frequencies_cm1 = self.reader.frequencies
         if len(self.sigmas_cm1) == 0:
             self.sigmas_cm1 = [ self.settings["Sigma value"] for i in self.frequencies_cm1 ]
+
+        # Get the Born charges from the reader
         born_charges = np.array(self.reader.born_charges)
+
+        # If reader is Experimental then also get oscilator strengths, otherwise calculate them
         if self.reader.type == "Experimental output":
             self.oscillator_strengths = self.reader.oscillator_strengths
         else:
@@ -459,18 +480,29 @@ class SettingsTab(QWidget):
             normal_modes = Calculator.normal_modes(masses, self.mass_weighted_normal_modes)
             # from the normal modes and the born charges calculate the oscillator strengths of each mode
             self.oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
+
         # calculate the intensities from the trace of the oscillator strengths
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
+
         # calculate Raman activities if Raman tensors are available
         raman_tensors = self.reader.get_raman_tensors() if self.reader else None
-        if raman_tensors is not None and len(raman_tensors) == len(self.frequencies_cm1):
-            self.raman_intensities = Calculator.raman_intensities(raman_tensors).tolist()
+
+        # Set the Raman intensities for each mode, set to zero if they are not available
+        show_raman_col = raman_tensors is not None and len(raman_tensors) == len(self.frequencies_cm1)
+        if show_raman_col:
+            _acts = Calculator.raman_intensities(raman_tensors, self.reader.volume)
+            self.raman_intensities      = _acts[:, 0].tolist()
+            self.raman_intensities_par  = _acts[:, 1].tolist()
+            self.raman_intensities_perp = _acts[:, 2].tolist()
         else:
-            self.raman_intensities = [0.0] * len(self.frequencies_cm1)
-        # Decide which modes to select
+            self.raman_intensities      = [0.0] * len(self.frequencies_cm1)
+            self.raman_intensities_par  = [0.0] * len(self.frequencies_cm1)
+            self.raman_intensities_perp = [0.0] * len(self.frequencies_cm1)
+
+        # Decide which modes to select based on IR/Raman activity
         if self.recalculate_selected_modes and len(self.intensities) > 0 and len(self.frequencies_cm1) > 0:
             logger.debug("create_intensity_table: recalculating selected modes")
-            is_raman = self.settings["Spectroscopy type"] in ("Powder Raman", "Crystal Raman")
+            is_raman = "Raman" in self.settings["Spectroscopy type"]
             self.modes_selected = []
             self.mode_list = []
             for f, ir_intensity, raman_activity in zip(self.frequencies_cm1, self.intensities, self.raman_intensities):
@@ -481,21 +513,19 @@ class SettingsTab(QWidget):
             self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
             logger.debug(f"Selected modes are; {self.mode_list}")
             self.recalculate_selected_modes = False
-        # end if
-        #
+
         # Calculate the ionic contribution to the permittivity
         frequencies_au = wavenumber*np.array(self.frequencies_cm1)
         volume_au = self.reader.volume*angstrom*angstrom*angstrom
         self.epsilon_ionic = Calculator.ionic_permittivity(self.mode_list, self.oscillator_strengths, frequencies_au, volume_au )
         # Make an np array of epsilon infinity
         epsilon_inf = np.array(self.settings["Optical permittivity"])
-        #
+
         # If the reader already has a Dielectric Constant then use this
-        #
+        # Otherwise create one from the data that has been read in
         if self.reader.CrystalPermittivity:
             self.CrystalPermittivityObject = self.reader.CrystalPermittivity
         else:
-            # Otherwise create one from the data that has been read in
             drude = False
             drude_plasma_au = 0
             drude_sigma_au = 0
@@ -504,37 +534,28 @@ class SettingsTab(QWidget):
             self.CrystalPermittivityObject = DielectricFunction.DFT(
                                          self.mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
                                          volume_au, drude, drude_plasma_au, drude_sigma_au )
+
         # Add the optical permittivity to the dielctric function
         self.CrystalPermittivityObject.set_epsilon_infinity(epsilon_inf)
-        #
-        # Prepare to finish
-        #
-        is_raman = self.settings["Spectroscopy type"] in ("Powder Raman", "Crystal Raman")
-        has_raman = any(a > 0.0 for a in self.raman_intensities)
-        show_raman_col = is_raman and has_raman
-        ncols = 6 if show_raman_col else 5
+
+        # Prepare to finish and output table
+        ncols = 8 if show_raman_col else 5
         self.output_tw.setRowCount(len(self.sigmas_cm1))
         self.output_tw.setColumnCount(ncols)
-        if show_raman_col:
-            self.output_tw.setHorizontalHeaderLabels([
-                "   Sigma   \n(cm-1)", " Frequency \n(cm-1)",
-                "  Intensity  \n(Debye2/Å2/amu)",
-                "Integrated Molar Absorption\n(L/mole/cm2)",
-                "Absorption maximum\n(L/mole/cm)",
-                "Raman Activity\n(Å/amu)",
-            ])
-        else:
-            self.output_tw.setHorizontalHeaderLabels([
-                "   Sigma   \n(cm-1)", " Frequency \n(cm-1)",
-                "  Intensity  \n(Debye2/Å2/amu)",
-                "Integrated Molar Absorption\n(L/mole/cm2)",
-                "Absorption maximum\n(L/mole/cm)",
-            ])
-        QCoreApplication.processEvents()
+
+        # Set the table headers
+        self.output_tw.setHorizontalHeaderLabels([
+            "   Sigma   \n(cm-1)", " Frequency \n(cm-1)",
+            "  Intensity  \n(Debye²/Å²/amu)",
+            "Integrated Molar Absorption\n(L/mole/cm²)",
+            "Absorption maximum\n(L/mole/cm)",
+            "Raman total\n(Å⁴/amu)",
+            "Raman ∥\n(Å⁴/amu)",
+            "Raman ⟂\n(Å⁴/amu)",
+        ])
+
+        # Draw the table
         self.redraw_output_tw()
-        QCoreApplication.processEvents()
-        # if self.notebook.spreadsheet is not None:
-        #     self.write_spreadsheet()
         QCoreApplication.processEvents()
         logger.debug("Finished:: create_intensity_table")
         return
@@ -555,7 +576,6 @@ class SettingsTab(QWidget):
         """        
         logger.debug("Start:: request_refresh")
         self.refresh_required = True
-        # self.refresh()
         logger.debug("Finished:: request_refresh")
         return
 
@@ -577,13 +597,19 @@ class SettingsTab(QWidget):
 
         """        
         logger.debug("Start:: write_spreadsheet")
+
+        # Set the spreadsheet and test if it exists in the Notebook
         sp = self.notebook.spreadsheet
         if sp is None:
             logger.debug("Finished:: write_spreadsheet - Aborting write of spreadsheet")
             return
         logger.debug("Writing of spreadsheet")
+
+        # Select and delete the existing Settings tab of the worksheet
         sp.select_work_sheet("Settings")
         sp.delete()
+
+        # Start writing the rows with information
         sp.write_next_row(["Settings and calculations of frequencies and absorption"], row=0, col=1)
         for item in sorted(self.settings):
             if item == "Optical permittivity" and self.settings[item] is not None:
@@ -609,13 +635,20 @@ class SettingsTab(QWidget):
             else:
                sp.write_next_row([item,self.settings[item]], col=1, check=1)
         sp.write_next_row([""], col=1)
-        raman_acts = self.raman_intensities if self.raman_intensities else [0.0] * len(self.frequencies_cm1)
-        sp.write_next_row(["Mode","Include?","Sigma(cm-1)","Frequency(cm-1)","Intensity(Debye2/Angs2/amu","Integrated Molar Absorption(/L/mole/cm2","Absorption maximum (L/mole/cm)","Raman Activity (Å/amu)"], col=1)
-        for mode,(f,intensity,raman_act,sigma,selected) in enumerate(zip(self.frequencies_cm1, self.intensities, raman_acts, self.sigmas_cm1,self.modes_selected)):
+
+        # Now write out the a spreadsheet of information
+        sp.write_next_row(["Mode","Include?","Sigma(cm-1)","Frequency(cm-1)","Intensity(Debye2/Angs2/amu)",
+                           "Integrated Molar Absorption(L/mole/cm2)","Absorption maximum (L/mole/cm)",
+                           "Raman R_total (Å4/amu)","Raman R_parallel (Å4/amu)","Raman R_perp (Å4/amu)"], col=1)
+        for mode,(f,intensity,raman_act,raman_par,raman_perp,sigma,selected) in enumerate(zip(
+                self.frequencies_cm1, self.intensities, self.raman_intensities,
+                self.raman_intensities_par, self.raman_intensities_perp,
+                self.sigmas_cm1, self.modes_selected)):
             yn = "No"
             if selected:
                 yn = "Yes"
-            sp.write_next_row([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi, raman_act], col=1)
+            sp.write_next_row([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi,
+                               raman_act, raman_par, raman_perp], col=1)
         logger.debug("Finished:: write_spreadsheet")
 
     def redraw_output_tw(self):
@@ -645,50 +678,71 @@ class SettingsTab(QWidget):
 
         """        
         logger.debug("Start:: redraw_output_tw")
-        # If the frequencies haven't been set yet just don't try to do anything
-        show_raman_col = self.output_tw.columnCount() == 6
-        raman_acts = self.raman_intensities if self.raman_intensities else [0.0] * len(self.frequencies_cm1)
+        show_raman_col = self.output_tw.columnCount() == 8
         self.output_tw.blockSignals(True)
-        for i,(f,sigma,intensity,raman_act) in enumerate(zip(self.frequencies_cm1, self.sigmas_cm1, self.intensities, raman_acts)):
+
+        # Loop over modes, frequencies, intensities and raman activities
+        for i,(f,sigma,intensity,raman_act,raman_par,raman_perp) in enumerate(zip(
+                self.frequencies_cm1, self.sigmas_cm1, self.intensities,
+                self.raman_intensities, self.raman_intensities_par, self.raman_intensities_perp)):
+            #
             # Sigma and check / unchecked column
             items = []
             itemFlags = []
             item = QTableWidgetItem(f"{sigma:.1f}")
             if self.modes_selected[i]:
+                
+                # Set selection flags for active modes
                 item.setCheckState(Qt.Checked)
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
                 freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
                 otherFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled
             else:
-                #itemFlags.append( item.flags() | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled & ~Qt.ItemIsSelectable & ~Qt.ItemIsEditable )
+                
+                # Set selection flags for inactive modes
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled )
                 freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
                 item.setCheckState(Qt.Unchecked)
                 freqFlags = item.flags() & Qt.NoItemFlags
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
+
             # Frequency column cm-1
             items.append(QTableWidgetItem(f"{f:.4f}" ) )
             itemFlags.append( freqFlags )
+
             # Intensity column Debye2/Angs2/amu
             items.append(QTableWidgetItem(f"{intensity:.4f}" ) )
             itemFlags.append( otherFlags )
+
             # Integrated molar absorption L/mole/cm/cm
             items.append(QTableWidgetItem(f"{intensity*4225.6:.2f}" ) )
             itemFlags.append( otherFlags )
+
             # Maximum extinction L/mole/cm
             items.append(QTableWidgetItem(f"{2*intensity*4225.6/self.sigmas_cm1[i]/np.pi:.2f}" ) )
             itemFlags.append( otherFlags )
+
+            # Show the Raman columns 
             if show_raman_col:
-                # Raman activity (Å/amu)
-                items.append(QTableWidgetItem(f"{raman_act:.6g}" ) )
-                itemFlags.append( otherFlags )
+                # Raman activities (Å⁴/amu): total, parallel, perpendicular
+                items.append(QTableWidgetItem(f"{raman_act:.6g}"))
+                itemFlags.append(otherFlags)
+                items.append(QTableWidgetItem(f"{raman_par:.6g}"))
+                itemFlags.append(otherFlags)
+                items.append(QTableWidgetItem(f"{raman_perp:.6g}"))
+                itemFlags.append(otherFlags)
+
+            # Set the text alignment
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
                 item.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                 self.output_tw.setItem(i, j, item )
-        # Release the block on signals for the frequency output table
+
+        # Resize the column widths to content
         self.output_tw.resizeColumnsToContents()
+
+        # Release the block on signals for the frequency output table
         self.output_tw.blockSignals(False)
         QCoreApplication.processEvents()
         logger.debug("Finished:: redraw_output_tw")
@@ -752,6 +806,7 @@ class SettingsTab(QWidget):
         self.current_mass_definition_index = index
         if index < 3:
             self.mass_cb.model().item(3).setEnabled(False)
+
         # Modify the element masses
         self.set_masses_tw()
         self.refresh_required = True
@@ -759,6 +814,7 @@ class SettingsTab(QWidget):
         self.refresh()
         QCoreApplication.processEvents()
         logger.debug(f"Finished:: on_mass_combobox_activated {self.mass_cb.currentText()}")
+
     def set_masses_tw(self):
         """Set the element masses in the table widget based on the mass_definition setting.
 
@@ -779,28 +835,39 @@ class SettingsTab(QWidget):
         logger.debug("Start:: set_masses_tw")
         if self.reader:
             self.element_masses_tw.blockSignals(True)
+
+            # Get the species list
             species = self.reader.get_species()
+
             # set the initial dictionary according to the mass_definition
             masses = []
             if self.settings["Mass definition"] == "average":
+
+                # Set up the average masses 
                 self.mass_cb.setCurrentIndex(0)
                 for element in species:
                     mass = average_masses[element]
                     masses.append(mass)
                     self.masses_dictionary[element] = mass
             elif self.settings["Mass definition"] == "program":
+
+                # Set up the masses as used by the DFT program
                 self.mass_cb.setCurrentIndex(1)
                 self.reader.reset_masses()
                 masses = self.reader.masses_per_type
                 for mass,element in zip(masses,species):
                     self.masses_dictionary[element] = mass
             elif self.settings["Mass definition"] == "isotope":
+
+                # Set up the isotopic masess
                 self.mass_cb.setCurrentIndex(2)
                 for element in species:
                     mass = isotope_masses[element]
                     masses.append(mass)
                     self.masses_dictionary[element] = mass
             elif self.settings["Mass definition"] == "gui":
+
+                # Set up the masses defined in the GUI
                 for element in species:
                     mass = self.masses_dictionary[element]
                     masses.append(mass)
@@ -811,28 +878,37 @@ class SettingsTab(QWidget):
             self.element_masses_tw.setVerticalHeaderLabels([""])
             logger.debug(f"masses_dictionary {self.masses_dictionary}")
             logger.debug(f"masses {masses}")
+            #
             # set masses of the elements in the table widget according to the mass definition
             for i,(mass,element) in enumerate(zip(masses,species)):
                 logger.debug(f"set_masses_tw {self.settings['Mass definition']} {i} {mass} {element}")
                 qw = QTableWidgetItem()
                 if self.settings["Mass definition"] == "program":
+
+                    # Set up the program masses 
                     self.element_masses_tw.blockSignals(True)
                     qw.setText(f"{mass:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     self.element_masses_tw.setItem(0,i, qw )
                 elif self.settings["Mass definition"] == "average":
+
+                    # Set up the average masses 
                     self.element_masses_tw.blockSignals(True)
                     qw.setText(f"{average_masses[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     logger.debug(f"average {average_masses[element]}")
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings["Mass definition"] == "isotope":
+
+                    # Set up the isotopic masses 
                     self.element_masses_tw.blockSignals(True)
                     qw.setText(f"{isotope_masses[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     logger.debug(f"isotope {isotope_masses[element]}")
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings["Mass definition"] == "gui":
+
+                    # Set up the gui masses 
                     self.element_masses_tw.blockSignals(True)
                     qw.setText(f"{self.masses_dictionary[element]:.6f}")
                     qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
@@ -840,8 +916,11 @@ class SettingsTab(QWidget):
                     self.element_masses_tw.setItem(0,i, qw )
                 else:
                     logger.warning(f"Mass definition not processed {self.settings['Mass definition']}")
+
             # unblock the table signals
             self.element_masses_tw.blockSignals(False)
+
+        # Wait for any un processed events
         QCoreApplication.processEvents()
         logger.debug("Finished:: set_masses_tw")
 
@@ -882,17 +961,24 @@ class SettingsTab(QWidget):
         col = item.column()
         row = item.row()
         if col == 0:
+
             # If this is the first column alter the check status but reset the sigma value
             if item.checkState() == Qt.Checked:
+
+                # Item was checked set selected to true and create and new mode_list
                 logger.debug(f"on_output_tw_itemChanged setting selected mode to True {row}")
                 self.modes_selected[row] = True
                 self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
             else:
+
+                # Item was not checked set selected to false and create and new mode_list
                 logger.debug(f"on_output_tw_itemChanged setting selected mode to False {row}")
                 self.modes_selected[row] = False
                 self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
+
+            # Check to see if a new value has been given for sigma
             new_value = float(item.text())
-            if new_value != self.sigmas_cm1:
+            if new_value != self.sigmas_cm1[row]:
                 self.sigmas_cm1[row] = new_value
                 self.redraw_output_tw()
         elif col == 1:
