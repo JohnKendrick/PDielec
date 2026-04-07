@@ -152,10 +152,24 @@ class PowderScenarioTab(ScenarioTab):
         Handle changes to the ATR incident angle spinbox.
     on_atr_spolfrac_sb_changed(value)
         Handle changes to the ATR s-polarisation fraction spinbox.
+    on_laser_frequency_sb_changed(value)
+        Handle changes to the laser frequency spin box
+    on_polarisation_cb_activated(index)
+        Handle changes to polarisation setting for the experiment
+    on_temperature_sb_changed(value)
+        Handle changes to temperature spin box
     change_greyed_out()
         Enable or disable elements of the GUI based on the current scenario settings.
     calculate(vs_cm1)
-        Calculate the powder absorption for the given frequency range.
+        Calls the _calculate_?? routines based on the spectroscopy 
+    _calculate_atr(vs_cm1)
+        Calculate the ATR spectrum
+    _calculate_infrared(vs_cm1)
+        Calculate the infrared powder absorption for the given frequency range.
+    _calculate_raman(vs_cm1)
+        Calculate the powder Raman scattering for the given frequency range.
+    calculate_depolarisation_tensor()
+        Calculate the depolarisation tensor
     get_result(vs_cm1, plot_type)
         Return the calculation result for the specified plot type.
     get_results(vs_cm1)
@@ -1382,7 +1396,7 @@ class PowderScenarioTab(ScenarioTab):
         if raman_tensors is None or len(raman_tensors) == 0:
             logger.warning(f"{self.settings['Legend']} _calculate_raman: no Raman tensors available")
             self.raman_spectrum = list(np.zeros(len(vs_cm1)))
-            self.vs_cm1 = list(np.asarray(vs_cm1))
+            self.vs_cm1 = list(np.array(vs_cm1))
             self.calculation_required = False
             return
 
@@ -1410,7 +1424,7 @@ class PowderScenarioTab(ScenarioTab):
         polarisation = self.settings["Raman laser polarisation"]
         temperature = self.settings["Raman temperature"]
 
-        vs_cm1 = np.asarray(vs_cm1, dtype=float)
+        vs_cm1 = np.array(vs_cm1, dtype=float)
         spectrum = np.zeros(len(vs_cm1))
 
         # Bose-Einstein prefactor: hc/k in units of cm·K
@@ -1422,7 +1436,7 @@ class PowderScenarioTab(ScenarioTab):
                 continue
             if mode_idx >= len(raman_tensors):
                 break
-            R_eps = np.asarray(raman_tensors[mode_idx], dtype=complex)
+            R_eps = np.array(raman_tensors[mode_idx], dtype=complex)
 
             # Effective particle Raman tensor (Eq. 60), ε_0 V absorbed into overall scale:
             #   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
