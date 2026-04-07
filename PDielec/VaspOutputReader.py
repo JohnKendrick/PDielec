@@ -238,7 +238,10 @@ class VaspOutputReader(GenericOutputReader):
         after the main file loop in ``_read_output_files``.
 
         The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
-        NumPy arrays, sorted by ``band_index`` (ascending).
+        NumPy arrays ordered to match PDielec's internal ascending-frequency
+        ordering: zero tensors for acoustic/imaginary modes first (indices 0–2),
+        followed by the optical mode tensors in ascending frequency order
+        (lowest optical frequency first, highest last).
 
         """
         try:
@@ -252,12 +255,23 @@ class VaspOutputReader(GenericOutputReader):
         if not activities:
             logger.warning(f"_read_raman_tensors_yaml: no raman_activities found in {filename}")
             return
-        # Both codes compute ∂α_vol/∂Q where α_vol = V(ε-1)/(4π) [Å³].
+        #
+        # Skelton and Castep codes compute ∂α_vol/∂Q where α_vol = V(ε-1)/(4π) [Å³].
         # Skelton stores R = ∂α_vol/∂Q [Å²·amu⁻¹/²]; CASTEP stores T = R/√V [(Å/amu)^{0.5}].
         unit_factor = 1.0 / math.sqrt(self.volume)
-        # Ensure correct ordering by band_index
-        activities.sort(key=lambda x: x["band_index"])
+
+        # PDielec sorts modes by ascending frequency (acoustic/imaginary modes first,
+        # highest optical mode last).  Skelton's band_index 1 = highest-frequency optical
+        # mode (descending OUTCAR order).  Sort by band_index descending to convert to
+        # ascending frequency order (lowest optical frequency first).
+        activities.sort(key=lambda x: x["band_index"], reverse=True)
+
+        # Prepend zero tensors for the acoustic modes (they appear first in ascending
+        # frequency order), then append optical tensors in ascending frequency order.
+        n_acoustic = 3 * self.nions - len(activities)
         self.raman_tensors = []
+        for _ in range(n_acoustic):
+            self.raman_tensors.append(np.zeros((3, 3)))
         for entry in activities:
             tensor = np.array(entry["raman_tensor"], dtype=float) * unit_factor
             self.raman_tensors.append(tensor)
