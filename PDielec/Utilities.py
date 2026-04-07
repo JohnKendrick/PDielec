@@ -131,6 +131,8 @@ def find_program_from_name( filename ):
             return "abinit"
         elif os.path.isfile(head_root+".dynG"):
             return "quantum espresso"
+        elif glob.glob(os.path.join(head if head else ".", "*.dynG")):
+            return "quantum espresso"
         else:
             return "crystal"
     if ext ==  ".log":
@@ -138,12 +140,31 @@ def find_program_from_name( filename ):
             return "abinit"
         elif os.path.isfile(head_root+".dynG"):
             return "quantum espresso"
+        elif glob.glob(os.path.join(head if head else ".", "*.dynG")):
+            return "quantum espresso"
         else:
             return "crystal"
     if ext ==  ".dat":
         return "aims"
     if tail ==  "aims.out":
         return "aims"
+    if ext == ".xml":
+        if tail == "vasprun.xml":
+            return "vasp"
+        # Peek inside to check for a QE output or tensors file
+        try:
+            import xml.etree.ElementTree as ET
+            xml_tree = ET.parse(filename)
+            xml_root = xml_tree.getroot()
+            xml_tag = xml_root.tag
+            # pwscf / SCF output: root tag contains 'espresso'
+            if "espresso" in xml_tag:
+                return "quantum espresso"
+            # tensors.xml: root is 'Root' with an EF_TENSORS child
+            if xml_tag == "Root" and xml_root.find("EF_TENSORS") is not None:
+                return "quantum espresso"
+        except Exception:
+            pass
     if os.path.isfile(os.path.join(head,"vasprun.xml")):
         return "vasp"
     if os.path.isfile(os.path.join(head,"pwscf.xml")):
@@ -214,20 +235,27 @@ def get_reader( name, program):
         names = [ name ]
         reader = AbinitOutputReader( names )
     elif program == "quantum espresso":
-        pwscf_name = os.path.join(head,"pwscf.xml")
-        tensors_name = os.path.join(head,"tensors.xml")
-        if ext in [".xml",".dynG"] and os.path.isfile(pwscf_name) and os.path.isfile(tensors_name):
-            # Only handle xml but add the dynG file
-            tail3 = root+".dynG"               # The order is important
-            name1 = pwscf_name
-            name2 = tensors_name
-            name3 = os.path.join(head,tail3)
-            names = []
-            for n in [ name1, name2, name3 ]:
-                if os.path.isfile(n):
-                    names.append(n)
+        tensors_name = os.path.join(head, "tensors.xml")
+        if ext == ".xml":
+            # User passed an xml file directly (e.g. ZnO.xml or pwscf.xml)
+            # Use it as the primary source, then add tensors.xml and matching dynG
+            names = [name]
+            if os.path.isfile(tensors_name) and os.path.abspath(name) != os.path.abspath(tensors_name):
+                names.append(tensors_name)
+            # Look for a dynG whose root matches the xml filename (e.g. ZnO.dynG for ZnO.xml)
+            dynG_name = os.path.join(head, root + ".dynG")
+            if os.path.isfile(dynG_name):
+                names.append(dynG_name)
+            else:
+                # The dynG may have a different name (set via fildyn= in the ph.x input).
+                # If there is exactly one *.dynG file in the same directory, use it.
+                search_dir = head if head else "."
+                dynG_candidates = glob.glob(os.path.join(search_dir, "*.dynG"))
+                if len(dynG_candidates) == 1:
+                    names.append(dynG_candidates[0])
+                    logger.debug(f"get_reader: auto-selected dynG {dynG_candidates[0]}")
         else:
-            # try and read the log file or out file based on the dynG file name
+            # Try to read the log file, out file, and/or dynG file derived from the given name
             tail1 = root+".log"
             tail2 = root+".out"
             tail3 = root+".dynG"               # The order is important
@@ -235,9 +263,24 @@ def get_reader( name, program):
             name2 = os.path.join(head,tail2)
             name3 = os.path.join(head,tail3)
             names = []
+            # Add a matching SCF xml file first if present (e.g. ZnO.xml for ZnO.dynG)
+            xml_name = os.path.join(head, root + ".xml")
+            if os.path.isfile(xml_name) and os.path.abspath(xml_name) != os.path.abspath(tensors_name):
+                names.append(xml_name)
             for n in [ name1, name2, name3 ]:
                 if os.path.isfile(n):
                     names.append(n)
+            # If no exact-match dynG was found, look for any single *.dynG in the directory
+            # (handles cases where fildyn= in ph.x gave the dynG a different prefix)
+            if name3 not in names:
+                search_dir = head if head else "."
+                dynG_candidates = glob.glob(os.path.join(search_dir, "*.dynG"))
+                if len(dynG_candidates) == 1:
+                    names.append(dynG_candidates[0])
+                    logger.debug(f"get_reader: auto-selected dynG {dynG_candidates[0]}")
+            # Also read tensors.xml if present (higher-precision Raman tensors)
+            if os.path.isfile(tensors_name):
+                names.append(tensors_name)
         logger.debug(f"get_reader:  names = {names}")
         reader = QEOutputReader( names )
     elif program == "phonopy":

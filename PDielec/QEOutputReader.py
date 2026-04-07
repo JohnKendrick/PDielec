@@ -64,6 +64,7 @@ class QEOutputReader(GenericOutputReader):
         self.type                    = "QE output"
         self._alat                   = None
         self._alat_from_xml          = False
+        self._qe_raman_suscept       = None
         return
 
     def _read_output_files(self):
@@ -885,9 +886,11 @@ class QEOutputReader(GenericOutputReader):
             self._basis(inputxml.findall("basis")[-1])
             self._atomic_species(inputxml.findall("atomic_species")[-1])
             self._kpoints(inputxml.findall("k_points_IBZ")[-1])
-        # Handle output 
+        # Handle output
         if outputxml is not None:
-            self._pressure(outputxml.findall("stress")[-1])
+            stress_list = outputxml.findall("stress")
+            if stress_list:
+                self._pressure(stress_list[-1])
             self._band_structure(outputxml.findall("band_structure")[-1])
         # Handle the case of optimisation
         if use_this_xml is not None:
@@ -897,6 +900,9 @@ class QEOutputReader(GenericOutputReader):
         if tensorsxml is not None:
             self._dielectric_constant(tensorsxml.find("DIELECTRIC_CONSTANT"))
             self._effective_charges(tensorsxml.find("EFFECTIVE_CHARGES_EU"))
+            raman_tns_list = tensorsxml.findall("RAMAN_TNS")
+            if raman_tns_list:
+                self._read_raman_tensors_xml(raman_tns_list)
         return
 
     def _effective_charges(self,effective_charges_xml):
@@ -1213,6 +1219,58 @@ class QEOutputReader(GenericOutputReader):
         self._qe_raman_suscept = dchi
         return
 
+    def _read_raman_tensors_xml(self, raman_tns_list):
+        """Read Raman susceptibility tensors from ``tensors.xml`` RAMAN_TNS elements.
+
+        Each ``<RAMAN_TNS atom="N">`` element contains 9 rows of 3 values,
+        arranged as three consecutive 3×3 blocks corresponding to the x, y,
+        and z Cartesian displacement directions respectively::
+
+            rows 0-2  → dα_{αβ}/du_{κ,x}
+            rows 3-5  → dα_{αβ}/du_{κ,y}
+            rows 6-8  → dα_{αβ}/du_{κ,z}
+
+        The result is stored in ``self._qe_raman_suscept`` in the same
+        ``dchi[iatom, idir, irow, icol]`` layout used by
+        :meth:`_read_raman_tensors_log`, so :meth:`_calculate_raman_tensors`
+        can process it without modification.
+
+        Parameters
+        ----------
+        raman_tns_list : list of xml.etree.ElementTree.Element
+            List of ``RAMAN_TNS`` elements from the ``EF_TENSORS`` block of
+            ``tensors.xml``.
+
+        Returns
+        -------
+        None
+
+        """
+        nions = len(raman_tns_list)
+        # dchi[κ, γ, α, β] in tensors.xml is stored in au^-1 units:
+        #   dε_{αβ}/du_{κγ}  where ε is dimensionless and u is in bohr.
+        # _calculate_raman_tensors expects A² units:
+        #   d(V(ε-1)/4π)/du_{κγ}  where V is in Å³ and u is in Å.
+        # Conversion: A² = au^-1 × V(Å³) × angs2bohr / (4π)
+        #   (= au^-1 × V / (4π × a₀)  where a₀ = 1/angs2bohr Å)
+        unit_conv = self.volume * angs2bohr / (4.0 * math.pi)
+        # dchi[κ, γ, α, β] = dα_{αβ}/du_{κγ} in Å²
+        dchi = np.zeros((nions, 3, 3, 3))
+        for atom_xml in raman_tns_list:
+            iatom = int(atom_xml.attrib["atom"]) - 1  # XML is 1-indexed
+            values = [float(f) for f in atom_xml.text.split()]
+            # 9 rows × 3 cols per atom; rows 0-2 = x dir, 3-5 = y dir, 6-8 = z dir
+            for idir in range(3):
+                for irow in range(3):
+                    idx = idir * 9 + irow * 3
+                    dchi[iatom, idir, irow, :] = values[idx:idx + 3]
+        dchi *= unit_conv
+        self._qe_raman_suscept = dchi
+        if self.debug:
+            logger.debug(f"_read_raman_tensors_xml: read Raman tensors for {nions} atoms")
+            logger.debug(f"_read_raman_tensors_xml: unit conversion factor = {unit_conv}")
+        return
+
     def _calculate_raman_tensors(self):
         """Calculate the Raman tensors from the susceptibility tensors.
 
@@ -1256,6 +1314,8 @@ class QEOutputReader(GenericOutputReader):
         None
 
         """
+        if self._qe_raman_suscept is None:
+            return
         dchi = self._qe_raman_suscept
         nions = self.nions
         if self.mass_weighted_normal_modes:

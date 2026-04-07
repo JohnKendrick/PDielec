@@ -460,6 +460,9 @@ class SettingsTab(QWidget):
 
         # Calculate normal modes
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
+        if not self.mass_weighted_normal_modes:
+            logger.warning("create_intensity_table: no normal modes available (no phonon data in input file)")
+            return
 
         # Find the sigmas for each frequency, the sigmas might have been edited by hand
         if not self.frequencies_have_been_edited:
