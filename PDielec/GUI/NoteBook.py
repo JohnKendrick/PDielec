@@ -115,6 +115,45 @@ class NoteBook(QWidget):
     scenarioTypes : dict
         A dictionary of scenario types which index the scenario tab classes they represent
 
+    Methods
+    -------
+    start_pool()
+        Start a pool of core processes
+    request_refresh()
+        Request a refresh takes place of the GUI
+    add_scenario(scenarioTyp,copyFromIndex)
+        Add a scenario tab
+    print_settings(filename=None)
+        Print the settings of all tabs
+    print_tab_settings(tab,title,fd,new_scenario)
+        Print the settings of a tab
+    delete_all_scenarios()
+        Delete all scenarios
+    delete_scenario(index)
+        Delete this scenario
+    switch_scenario(index,scenarioType=None)
+        Switch the scenario type to a new one
+    set_spectroscopy_type(spectroscopy_type)
+        Change the spectroscopy type
+    refresh(force=False)
+        Do a refresh of the gui
+    write_spreadsheet()
+        Write out a spreadsheet
+    open_excel_spreadsheet()
+        Open a spread sheet
+    open_spread_sheet(filename)
+        Open a spreadsheet with a file name
+    on_tabs_currentChanged(tabindex)
+        Handle a tab change event
+    keyPressEvent(e)
+        Handle a key press
+    progressbars_set_maximum(maximum )
+        Set the maximum limit for the progressbar
+    progressbars_update(increment=1 )
+        Update the progressbar
+    progressbars_add( bar )
+        Add a progress bar
+
     """
 
     def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, spectroscopy="Powder Infrared",ncpus=0, threading=False):
@@ -616,8 +655,19 @@ class NoteBook(QWidget):
         logger.debug(f"Start:: set_spectroscopy_type {spectroscopy_type}")
         self.spectroscopyType = spectroscopy_type
         self.currentScenarioTab = self.scenarioTypes[spectroscopy_type]
+        current_index = self.tabs.currentIndex()
         self.delete_all_scenarios()
+        # Re-compute mode selection for the new spectroscopy type before the new
+        # scenario is created.  In interactive mode this also happens via the
+        # currentChanged signal below, but in scripting mode that signal is never
+        # emitted, so the modes_selected list would remain stale (IR-based even for
+        # a Raman calculation), causing Raman-only modes (e.g. E2 in ZnO) to be
+        # silently excluded from the spectrum.
+        if self.settingsTab.recalculate_selected_modes and self.settingsTab.reader:
+            self.settingsTab.create_intensity_table()
         self.switch_scenario(0, spectroscopy_type)
+        if not self.scripting:
+            self.tabs.setCurrentIndex(current_index)
         if self.plottingTab is not None:
             self.plottingTab.request_refresh()
             if not self.scripting:
