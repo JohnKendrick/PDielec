@@ -426,7 +426,7 @@ def infrared_intensities(oscillator_strengths):
     convert = d2byamuang2
     return intensities / convert
 
-def raman_intensities(raman_tensors):
+def raman_intensities(raman_tensors, volume):
     """Calculate Raman activities from per-mode Raman tensors.
 
     For each mode the powder-averaged isotropic Raman activity is computed
@@ -434,11 +434,30 @@ def raman_intensities(raman_tensors):
 
     .. math::
 
-        A_m = 45\\alpha^2 + 7\\gamma^2 + 5\\kappa^2
+        R_m^{\\rm total} = V \\left(45\\alpha^2 + 7G^{(2)} + 5G^{(1)}\\right)
 
-    where :math:`\\alpha` is the mean polarisability derivative, :math:`\\gamma^2`
-    is the symmetric anisotropy, and :math:`\\kappa^2` is the antisymmetric
-    contribution (Placzek invariants).
+        R_m^{\\parallel}  = V \\left(30\\alpha^2 + 4G^{(2)}\\right)
+
+        R_m^{\\perp}      = V \\left(15\\alpha^2 + 3G^{(2)}\\right)
+
+    where :math:`\\alpha = \\operatorname{Tr}(R)/3` is the isotropic invariant,
+    :math:`G^{(2)}` is the symmetric anisotropy invariant (sum of squares of the
+    traceless symmetric part), :math:`G^{(1)}` is the antisymmetric invariant
+    (sum of squares of the antisymmetric part), and :math:`V` is the unit-cell
+    volume in Å³.
+
+    The factor of :math:`V` converts from the code's internal tensor convention
+    (CASTEP-style, units ``(Å/amu)^{0.5}``, i.e. divided by ``√V_cell``) to the
+    convention used in Raman-Theory.pdf (Eq. 18), where the Raman tensor is
+    defined as :math:`\\mathbf{R}^{(m)} = \\partial\\boldsymbol{\\alpha}/\\partial Q_m`
+    without the ``√V`` normalisation.  Because the stored tensors :math:`T`
+    satisfy :math:`\\mathbf{R}^{(m)} = \\sqrt{V}\\,T`, squaring gives an extra
+    factor of :math:`V`.
+
+    The parallel and perpendicular components follow Eqs. 26–27 of Raman-Theory.pdf
+    (:math:`R^{\\parallel} = 10G^{(0)} + 4G^{(2)}`,
+    :math:`R^{\\perp} = 5G^{(0)} + 3G^{(2)}` with :math:`G^{(0)} = 3\\alpha^2`),
+    and their sum equals :math:`R^{\\rm total}` when :math:`G^{(1)} = 0`.
 
     Parameters
     ----------
@@ -447,29 +466,27 @@ def raman_intensities(raman_tensors):
         Units are ``(Å/amu)^{0.5}`` per element (i.e. the derivative of the
         polarisability volume with respect to the mass-weighted normal
         coordinate, divided by ``√V_cell``).
+    volume : float
+        Unit-cell volume in Å³.
 
     Returns
     -------
-    np.ndarray
-        Per-mode Raman activities in units of ``Å/amu``
-        (i.e. tensor-element units squared, summed over the invariants).
-        Modes with no Raman tensor data are assigned zero activity.
+    np.ndarray, shape (nmodes, 3)
+        Per-mode Raman activities in units of ``Å⁴/amu``, consistent with the
+        Raman-Theory.pdf convention.  Columns are
+        ``[:, 0]`` total, ``[:, 1]`` parallel, ``[:, 2]`` perpendicular.
 
     Notes
     -----
-    The rotational invariants follow the general (complex-tensor) definition
-    used in the powder-Raman theory implemented in PowderRamanScenarioTab:
+    The rotational invariants used here:
 
     * :math:`\\alpha  = \\operatorname{Tr}(R)/3`
-    * :math:`\\gamma^2 = \\sum_{ij}(R_{\\rm sym,\\,traceless})_{ij}^2`
-    * :math:`\\kappa^2 = \\sum_{ij}(R_{\\rm anti})_{ij}^2`
-
-    For a purely symmetric Raman tensor :math:`\\kappa = 0` and the
-    expression reduces to the classical result :math:`45\\alpha^2 + 7\\gamma^2`.
+    * :math:`G^{(2)} = \\sum_{ij}(R_{\\rm sym,\\,traceless})_{ij}^2`
+    * :math:`G^{(1)} = \\sum_{ij}(R_{\\rm anti})_{ij}^2`
 
     """
     nmodes = len(raman_tensors)
-    activities = np.zeros(nmodes)
+    activities = np.zeros((nmodes, 3))
     I3 = np.eye(3, dtype=float)
     for i, R in enumerate(raman_tensors):
         R = np.asarray(R, dtype=float)
@@ -479,7 +496,9 @@ def raman_intensities(raman_tensors):
         R_traceless = R_sym - alpha * I3
         gamma2 = float(np.sum(R_traceless * R_traceless))
         kappa2 = float(np.sum(R_anti * R_anti))
-        activities[i] = 45.0 * alpha * alpha + 7.0 * gamma2 + 5.0 * kappa2
+        activities[i, 0] = volume * (45.0 * alpha * alpha + 7.0 * gamma2 + 5.0 * kappa2)
+        activities[i, 1] = volume * (30.0 * alpha * alpha + 4.0 * gamma2)
+        activities[i, 2] = volume * (15.0 * alpha * alpha + 3.0 * gamma2)
     return activities
 
 
