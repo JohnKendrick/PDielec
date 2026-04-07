@@ -94,11 +94,14 @@ class QEOutputReader(GenericOutputReader):
         self.manage["celldm1"]  = (re.compile("^ *celldm.1. ="), self._read_celldm1)
         self.manage["pressure"]  = (re.compile("^ *total *stress *.Ry"), self._read_pressure)
         self.manage["nions"]  = (re.compile("^ *number of atoms/cell"), self._read_nions)
+        self.manage["ramanTensors"] = (re.compile(r"\s*Raman tensor \(A\^2\)"), self._read_raman_tensors_log)
         for f in self._outputfiles:
             if f.lower().endswith(".xml"):
                 self._read_xml(f)
             else:
                 self._read_output_file(f)
+        # For Raman calculate the Raman tensor
+        self._calculate_raman_tensors()
         return
 
     def _read_nions(self, line):
@@ -1164,6 +1167,118 @@ class QEOutputReader(GenericOutputReader):
         self.pressure = au2GPa * (stress[0] + stress[4] + stress[8]) / 3.0 
         if self.debug:
             logger.debug(f"_pressure: pressure={self.pressure}")
+        return
+
+    def _read_raman_tensors_log(self, line):
+        """Read the Raman susceptibility tensors from the QE phonon log file.
+
+        QE ph.x prints per-atom per-direction 3×3 derivatives of the
+        macroscopic polarisability tensor under the heading
+        ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
+        one per atom per Cartesian displacement direction, each labeled
+        ``atom # K    pol.  J``.
+
+        The "A^2" tensors represent::
+
+            A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+
+        where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
+        polarisability in Å³ and u_{κγ} is the displacement of atom κ in
+        Cartesian direction γ in Å, giving units of Å².
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (containing ``"Raman tensor (A^2)"``).
+            Not used directly; reading continues from ``self.file_descriptor``.
+
+        Returns
+        -------
+        None
+
+        """
+        nions = self.nions
+        # dchi[κ, γ, α, β] = dα_{αβ}/du_{κγ} in Å²
+        dchi = np.zeros((nions, 3, 3, 3))
+        # Skip the blank line that follows the heading
+        self.file_descriptor.readline()
+        for iatom in range(nions):
+            for idir in range(3):
+                # Skip "atom # K    pol.  J" header line
+                self.file_descriptor.readline()
+                for irow in range(3):
+                    tokens = self.file_descriptor.readline().split()
+                    dchi[iatom, idir, irow, :] = [float(t) for t in tokens[0:3]]
+        # Store raw derivatives in case they are needed later
+        self._qe_raman_suscept = dchi
+        return
+
+    def _calculate_raman_tensors(self):
+        """Calculate the Raman tensors from the susceptibility tensors.
+
+        QE ph.x prints per-atom per-direction 3×3 derivatives of the
+        macroscopic polarisability tensor under the heading
+        ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
+        one per atom per Cartesian displacement direction, each labeled
+        ``atom # K    pol.  J``.
+
+        The "A^2" tensors represent::
+
+            A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+
+        where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
+        polarisability in Å³ and u_{κγ} is the displacement of atom κ in
+        Cartesian direction γ in Å, giving units of Å².
+
+        To obtain the per-mode Raman tensor in the CASTEP convention
+        [(Å/amu)^{1/2}], the raw derivatives are projected onto the
+        mass-weighted phonon eigenvectors and divided by √V::
+
+            R_n[α,β] = Σ_{κ,γ}  A2_{κ,γ}[α,β] × mwm[n,κ,γ] / √m_κ
+            T_n[α,β] = R_n[α,β] / √V
+
+        where mwm = ``mass_weighted_normal_modes``, m_κ is in amu, and
+        V is the unit-cell volume in Å³.  The 1/√V factor (not 4π/√V)
+        is correct because the A^2 tensors already incorporate the
+        V/(4π) prefactor of the macroscopic polarisability α.
+
+        The normal modes must be available before this method is called;
+        they are read from the ``.dynG`` file by :meth:`_read_dyng_file`.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (containing ``"Raman tensor (A^2)"``).
+            Not used directly; reading continues from ``self.file_descriptor``.
+
+        Returns
+        -------
+        None
+
+        """
+        dchi = self._qe_raman_suscept
+        nions = self.nions
+        if self.mass_weighted_normal_modes:
+            # unit_factor = 1 / √V_Å  converts Å² × amu^{-1/2} → (Å/amu)^{1/2}
+            # The QE "A^2" section already encodes α = V(ε−1)/(4π), so no 4π
+            # factor is needed here; only the √V normalisation to match the
+            # CASTEP convention T = R/√V.
+            unit_factor = 1.0 / math.sqrt(self.volume)
+            nmodes = nions * 3
+            self.raman_tensors = []
+            for n in range(nmodes):
+                tensor = np.zeros((3, 3))
+                for iatom in range(nions):
+                    sqrt_mass = math.sqrt(self.masses[iatom])
+                    for idir in range(3):
+                        eigvec = self.mass_weighted_normal_modes[n][iatom][idir]
+                        tensor += dchi[iatom, idir] * (eigvec / sqrt_mass)
+                self.raman_tensors.append(tensor * unit_factor)
+            if self.debug:
+                logger.debug(f"_read_raman_tensors_log: computed {len(self.raman_tensors)} Raman tensors")
+        else:
+            logger.warning("_read_raman_tensors_log: normal modes not yet available; "
+                           "raw derivatives stored in self._qe_raman_suscept")
         return
 
     def _read_dyng_file(self,line):
