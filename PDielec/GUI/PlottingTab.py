@@ -359,21 +359,37 @@ class PlottingTab(QWidget):
         #
         self.plot_type_cb = QComboBox(self)
         self.plot_type_cb.setToolTip("Choose the which data to plot")
-        self.plot_types = [
-                            "Powder Molar Absorption",
-                            "Powder Absorption",
-                            "Powder Real Permittivity",
-                            "Powder Imaginary Permittivity",
-                            "Powder ATR",
-                            "Crystal Reflectance (P polarisation)",
-                            "Crystal Reflectance (S polarisation)",
-                            "Crystal Transmittance (P polarisation)",
-                            "Crystal Transmittance (S polarisation)",
-                            "Crystal Absorbtance (P polarisation)",
-                            "Crystal Absorbtance (S polarisation)",
-                            "Powder Raman",
-                            "Crystal Raman",
-                          ]
+        self.plot_types_by_spectroscopy = {
+            "Powder Infrared": [
+                "Powder Molar Absorption",
+                "Powder Absorption",
+                "Powder Real Permittivity",
+                "Powder Imaginary Permittivity",
+            ],
+            "Powder ATR": [
+                "Powder Molar Absorption",
+                "Powder Absorption",
+                "Powder Real Permittivity",
+                "Powder Imaginary Permittivity",
+                "Powder ATR",
+            ],
+            "Powder Raman": [
+                "Powder Raman",
+            ],
+            "Crystal Infrared": [
+                "Crystal Reflectance (P polarisation)",
+                "Crystal Reflectance (S polarisation)",
+                "Crystal Transmittance (P polarisation)",
+                "Crystal Transmittance (S polarisation)",
+                "Crystal Absorbtance (P polarisation)",
+                "Crystal Absorbtance (S polarisation)",
+            ],
+            "Crystal Raman": [
+                "Crystal Raman",
+            ],
+        }
+        initial_spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        self.plot_types = self.plot_types_by_spectroscopy.get(initial_spectroscopy, self.plot_types_by_spectroscopy["Powder Infrared"])
         self.plot_ylabels = {
                      "Powder Molar Absorption": r"Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$",
                            "Powder Absorption": r"Absorption Coefficient $\mathdefault{(cm^{-1})}$",
@@ -812,19 +828,13 @@ class PlottingTab(QWidget):
 
         """
         logger.debug(f"Start:: set_plot_type_for_spectroscopy {spectroscopy_type}")
-        mapping = {
-            "Powder Infrared":  "Powder Molar Absorption",
-            "Powder ATR":       "Powder ATR",
-            "Powder Raman":     "Powder Raman",
-            "Crystal Infrared": "Crystal Reflectance (P polarisation)",
-            "Crystal Raman":    "Crystal Raman",
-        }
-        plot_type = mapping.get(spectroscopy_type)
-        if plot_type and plot_type in self.plot_types:
-            self.settings["Plot type"] = plot_type
-            index = self.plot_type_cb.findText(plot_type, Qt.MatchFixedString)
-            if index >= 0:
-                self.plot_type_cb.setCurrentIndex(index)
+        new_plot_types = self.plot_types_by_spectroscopy.get(spectroscopy_type, [])
+        self.plot_type_cb.clear()
+        self.plot_type_cb.addItems(new_plot_types)
+        self.plot_types = new_plot_types
+        if new_plot_types:
+            self.plot_type_cb.setCurrentIndex(0)
+            self.settings["Plot type"] = new_plot_types[0]
         logger.debug(f"Finished:: set_plot_type_for_spectroscopy {spectroscopy_type}")
 
     def on_funits_cb_activated(self, index):
@@ -992,13 +1002,13 @@ class PlottingTab(QWidget):
                 sp.write_next_row(depolarisation[0].tolist(), col=2, check=1)
                 sp.write_next_row(depolarisation[1].tolist(), col=2, check=1)
                 sp.write_next_row(depolarisation[2].tolist(), col=2, check=1)
-                molarAbsorptionCoefficients.append( scenario.get_result(self.vs_cm1,self.plot_types[0] ) )
-                absorptionCoefficients.append( scenario.get_result(self.vs_cm1,self.plot_types[1] ) )
-                realPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[2] ) )
-                imagPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[3] ) )
+                molarAbsorptionCoefficients.append( scenario.get_result(self.vs_cm1, "Powder Molar Absorption") )
+                absorptionCoefficients.append( scenario.get_result(self.vs_cm1, "Powder Absorption") )
+                realPermittivities.append( scenario.get_result(self.vs_cm1, "Powder Real Permittivity") )
+                imagPermittivities.append( scenario.get_result(self.vs_cm1, "Powder Imaginary Permittivity") )
                 powder_legends.append(scenario.settings["Legend"])
                 if scenario.spectroscopy == "Powder ATR":
-                    sp_atrs.append( scenario.get_result(self.vs_cm1,self.plot_types[4] ) )
+                    sp_atrs.append( scenario.get_result(self.vs_cm1, "Powder ATR") )
                     atr_legends.append(scenario.settings["Legend"])
             elif scenario.spectroscopy == "Crystal Infrared":
                 sp.write_next_row([""],col=1)
@@ -1013,12 +1023,12 @@ class PlottingTab(QWidget):
                     sp.write_next_row(scenario.layers[dielectricLayerIndex].labframe[1].tolist(), col=2, check=1)
                     sp.write_next_row(scenario.layers[dielectricLayerIndex].labframe[2].tolist(), col=2, check=1)
                 # Store the reflectance and transmittance
-                R_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[5] ) )
-                R_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[6] ) )
-                T_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[7] ) )
-                T_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[8] ) )
-                A_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[9] ) )
-                A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
+                R_ps.append( scenario.get_result(self.vs_cm1, "Crystal Reflectance (P polarisation)") )
+                R_ss.append( scenario.get_result(self.vs_cm1, "Crystal Reflectance (S polarisation)") )
+                T_ps.append( scenario.get_result(self.vs_cm1, "Crystal Transmittance (P polarisation)") )
+                T_ss.append( scenario.get_result(self.vs_cm1, "Crystal Transmittance (S polarisation)") )
+                A_ps.append( scenario.get_result(self.vs_cm1, "Crystal Absorbtance (P polarisation)") )
+                A_ss.append( scenario.get_result(self.vs_cm1, "Crystal Absorbtance (S polarisation)") )
                 crystal_legends.append(scenario.settings["Legend"])
             elif scenario.spectroscopy == "Powder Raman":
                 sp.write_next_row([""],col=1)
@@ -1334,7 +1344,10 @@ class PlottingTab(QWidget):
         return n
 
     def greyed_out(self):
-        """Handle items that should be greyed out if they are not needed.
+        """Repopulate the plot type combo box for the current spectroscopy type.
+
+        Replaces the combo box contents with only the plot types relevant to the
+        active spectroscopy type, preserving the current selection when possible.
 
         Parameters
         ----------
@@ -1342,57 +1355,19 @@ class PlottingTab(QWidget):
 
         Returns
         -------
-        int
+        None
 
         """
         logger.debug("Start:: greyed_out")
-        # Determine which spectroscopies are present from the actual scenarios
-        atr_present              = any(s.spectroscopy == "Powder ATR"       for s in self.notebook.scenarios)
-        powder_present           = any(s.spectroscopy in ("Powder Infrared", "Powder ATR") for s in self.notebook.scenarios)
-        crystal_infrared_present = any(s.spectroscopy == "Crystal Infrared"  for s in self.notebook.scenarios)
-        raman_present            = any(s.spectroscopy == "Powder Raman"      for s in self.notebook.scenarios)
-        crystal_raman_present    = any(s.spectroscopy == "Crystal Raman"     for s in self.notebook.scenarios)
-        #
-        # Enable all plot types first, then disable those not available
-        #
-        for i in range(len(self.plot_types)):
-            self.plot_type_cb.model().item(i).setEnabled(True)
-        index = self.plot_type_cb.findText(self.settings["Plot type"], Qt.MatchFixedString)
-        # Items 0-3: powder absorption/permittivity — need any powder scenario
-        if not powder_present:
-            for i in range(4):
-                self.plot_type_cb.model().item(i).setEnabled(False)
-            if index < 4:
-                self.plot_type_cb.setCurrentIndex(5)
-                self.settings["Plot type"] = self.plot_type_cb.currentText()
-        # Item 4: ATR — only available for Powder ATR scenarios
-        if not atr_present:
-            self.plot_type_cb.model().item(4).setEnabled(False)
-            if index == 4:
-                if powder_present:
-                    self.plot_type_cb.setCurrentIndex(0)
-                else:
-                    self.plot_type_cb.setCurrentIndex(5)
-                self.settings["Plot type"] = self.plot_type_cb.currentText()
-        # Items 5-10: crystal — only available for Crystal Infrared scenarios
-        if not crystal_infrared_present:
-            for i in range(5, 11):
-                self.plot_type_cb.model().item(i).setEnabled(False)
-            if index >= 5 and index <= 10:
-                self.plot_type_cb.setCurrentIndex(0)
-                self.settings["Plot type"] = self.plot_type_cb.currentText()
-        # Item 11: Powder Raman — only available for Powder Raman scenarios
-        raman_index = self.plot_types.index("Powder Raman")
-        if not raman_present:
-            self.plot_type_cb.model().item(raman_index).setEnabled(False)
-            if index == raman_index:
-                self.plot_type_cb.setCurrentIndex(0)
-                self.settings["Plot type"] = self.plot_type_cb.currentText()
-        # Item 12: Crystal Raman — only available for Crystal Raman scenarios
-        crystal_raman_index = self.plot_types.index("Crystal Raman")
-        if not crystal_raman_present:
-            self.plot_type_cb.model().item(crystal_raman_index).setEnabled(False)
-            if index == crystal_raman_index:
-                self.plot_type_cb.setCurrentIndex(0)
-                self.settings["Plot type"] = self.plot_type_cb.currentText()
+        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        new_plot_types = self.plot_types_by_spectroscopy.get(spectroscopy_type, [])
+        current_plot_type = self.settings["Plot type"]
+        self.plot_type_cb.clear()
+        self.plot_type_cb.addItems(new_plot_types)
+        self.plot_types = new_plot_types
+        index = self.plot_type_cb.findText(current_plot_type, Qt.MatchFixedString)
+        if index < 0:
+            index = 0
+        self.plot_type_cb.setCurrentIndex(index)
+        self.settings["Plot type"] = self.plot_type_cb.currentText()
         logger.debug("Finished:: greyed_out")
