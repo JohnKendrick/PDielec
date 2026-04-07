@@ -126,6 +126,7 @@ class SpreadSheetManager:
                 "Powder Real Permittivity",
                 "Powder Imaginary Permittivity",
                 "Powder ATR Reflectance",
+                "Powder Raman",
                 "Analysis",
                 "Crystal R_p",
                 "Crystal R_s",
@@ -166,7 +167,7 @@ class SpreadSheetManager:
         handled by the instance. 
 
         """        
-        if self.opened[tab]:
+        if self.opened.get(tab, False):
             return
         self.worksheets[tab] = self.workbook.add_worksheet(tab)
         self.positions[tab] = (0,0)
@@ -194,7 +195,7 @@ class SpreadSheetManager:
 
         """        
         self.name = name
-        if not self.opened[name]:
+        if not self.opened.get(name, False):
             self.open_work_sheet(self.name)
 
     def write_next_row(self,items, row=None, col=None, check=""):
