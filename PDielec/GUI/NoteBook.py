@@ -669,6 +669,7 @@ class NoteBook(QWidget):
         if not self.scripting:
             self.tabs.setCurrentIndex(current_index)
         if self.plottingTab is not None:
+            self.plottingTab.set_plot_type_for_spectroscopy(spectroscopy_type)
             self.plottingTab.request_refresh()
             if not self.scripting:
                 self.plottingTab.refresh(force=True)

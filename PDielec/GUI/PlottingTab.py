@@ -372,6 +372,7 @@ class PlottingTab(QWidget):
                             "Crystal Absorbtance (P polarisation)",
                             "Crystal Absorbtance (S polarisation)",
                             "Powder Raman",
+                            "Crystal Raman",
                           ]
         self.plot_ylabels = {
                      "Powder Molar Absorption": r"Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$",
@@ -385,7 +386,8 @@ class PlottingTab(QWidget):
       "Crystal Transmittance (S polarisation)": r"Fraction of s-polarised transmitted",
         "Crystal Absorbtance (P polarisation)": r"Fraction of p-polarised absorbtance",
         "Crystal Absorbtance (S polarisation)": r"Fraction of s-polarised absorbtance",
-                           "Powder Raman": r"Raman Intensity (arbitrary units)",
+                             "Powder Raman": r"Raman Intensity (arbitrary units)",
+                            "Crystal Raman": r"Raman Intensity (arbitrary units)",
                             }
 
         self.plot_type_cb.activated.connect(self.on_plot_type_cb_activated)
@@ -794,6 +796,37 @@ class PlottingTab(QWidget):
         self.notebook.fitterTab.request_refresh()
         self.refresh()
         logger.debug(f"Finished:: on_plot_type_cb_activated {index}")
+
+    def set_plot_type_for_spectroscopy(self, spectroscopy_type):
+        """Set the plot type to an appropriate default for the given spectroscopy type.
+
+        Parameters
+        ----------
+        spectroscopy_type : str
+            One of 'Powder Infrared', 'Powder ATR', 'Powder Raman',
+            'Crystal Infrared', or 'Crystal Raman'.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"Start:: set_plot_type_for_spectroscopy {spectroscopy_type}")
+        mapping = {
+            "Powder Infrared":  "Powder Molar Absorption",
+            "Powder ATR":       "Powder ATR",
+            "Powder Raman":     "Powder Raman",
+            "Crystal Infrared": "Crystal Reflectance (P polarisation)",
+            "Crystal Raman":    "Crystal Raman",
+        }
+        plot_type = mapping.get(spectroscopy_type)
+        if plot_type and plot_type in self.plot_types:
+            self.settings["Plot type"] = plot_type
+            index = self.plot_type_cb.findText(plot_type, Qt.MatchFixedString)
+            if index >= 0:
+                self.plot_type_cb.setCurrentIndex(index)
+        logger.debug(f"Finished:: set_plot_type_for_spectroscopy {spectroscopy_type}")
+
     def on_funits_cb_activated(self, index):
         """Handle the activation of a frequency unit combo box item.
 
@@ -1318,6 +1351,7 @@ class PlottingTab(QWidget):
         powder_present           = any(s.spectroscopy in ("Powder Infrared", "Powder ATR") for s in self.notebook.scenarios)
         crystal_infrared_present = any(s.spectroscopy == "Crystal Infrared"  for s in self.notebook.scenarios)
         raman_present            = any(s.spectroscopy == "Powder Raman"      for s in self.notebook.scenarios)
+        crystal_raman_present    = any(s.spectroscopy == "Crystal Raman"     for s in self.notebook.scenarios)
         #
         # Enable all plot types first, then disable those not available
         #
@@ -1352,6 +1386,13 @@ class PlottingTab(QWidget):
         if not raman_present:
             self.plot_type_cb.model().item(raman_index).setEnabled(False)
             if index == raman_index:
+                self.plot_type_cb.setCurrentIndex(0)
+                self.settings["Plot type"] = self.plot_type_cb.currentText()
+        # Item 12: Crystal Raman — only available for Crystal Raman scenarios
+        crystal_raman_index = self.plot_types.index("Crystal Raman")
+        if not crystal_raman_present:
+            self.plot_type_cb.model().item(crystal_raman_index).setEnabled(False)
+            if index == crystal_raman_index:
                 self.plot_type_cb.setCurrentIndex(0)
                 self.settings["Plot type"] = self.plot_type_cb.currentText()
         logger.debug("Finished:: greyed_out")
