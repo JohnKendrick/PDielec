@@ -182,10 +182,12 @@ class App(QMainWindow):
                 ncpus = int(tokens[itoken])
             elif token in ("-spectroscopy", "--spectroscopy"):
                 itoken += 1
-                # Replace an "_" with " "
-                spectroscopy = tokens[itoken].replace("_"," ")
-                if spectroscopy not in ("Powder Infrared", "Crystal Infrared", "Powder Raman", "Crystal Raman"):
-                    logger.error(f"Error default spectroscopy not recognised {spectroscopy}")
+                # Replace "_" with " " and do a case-insensitive match against valid types
+                raw = tokens[itoken].replace("_", " ")
+                valid_types = ("Powder Infrared", "Crystal Infrared", "Powder Raman", "Crystal Raman")
+                spectroscopy = next((v for v in valid_types if v.lower() == raw.lower()), None)
+                if spectroscopy is None:
+                    logger.error(f"Error default spectroscopy not recognised {raw}")
                     self.print_usage()
                     sys.exit()
             elif token.startswith("-"):
@@ -321,7 +323,7 @@ class App(QMainWindow):
         print("    filename      The name of the output file")
         print(" spreadsheet file The optional name of a spreadsheet (file must end with .xlsx")
         print("                  If this option is used program, filename must also be specified")
-        print('   -scenario type Change the default scenario to "type"; either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or "Crystal_Raman"')
+        print('   -spectroscopy type Change the default spectroscopy to "type"; either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or "Crystal_Raman"')
         print("-spreadsheet file An alternative way of specifying the spread sheet")
         print("    -program      Specify the program used to generate the output")
         print("     -script file The initial commands are read from a script file")

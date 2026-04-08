@@ -252,6 +252,7 @@ class NoteBook(QWidget):
         self.tabs.currentChanged.connect(self.on_tabs_currentChanged)
         self.mainTab = MainTab(self, program, filename, spreadsheet, debug=debug)
         self.settingsTab = SettingsTab(self, debug=debug)
+        self.settingsTab.settings["Spectroscopy type"] = spectroscopy
         if filename != "" and not self.scripting:
             logger.debug(f"Refreshing settingsTab in notebook initialisation - filename {filename}")
             self.settingsTab.refresh()

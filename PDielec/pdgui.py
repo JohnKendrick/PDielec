@@ -25,9 +25,11 @@ Notes
 -----
     - The -nosplash flag disables the splash screen. - The -v, -version, or --version flags print the program version
       and exit. - The -exit or --exit flag forces the program to exit immediately after processing arguments. - The -d,
-      -debug, or --debug flags enable debug messages. - The function looks for a splash image file in several locations,
-      starting with the executable's directory, and displays it if found unless the splash screen is disabled. - If the
-      splash screen is shown, it also includes a progress bar.
+      -debug, or --debug flags enable debug messages. - The -spectroscopy flag sets the default spectroscopy type;
+      accepted values are Powder_Infrared, Crystal_Infrared, Powder_Raman, and Crystal_Raman (underscores are
+      converted to spaces). - The function looks for a splash image file in several locations, starting with the
+      executable's directory, and displays it if found unless the splash screen is disabled. - If the splash screen is
+      shown, it also includes a progress bar.
 
 
 """
@@ -59,9 +61,11 @@ def main():
     -----
     - The -nosplash flag disables the splash screen. - The -v, -version, or --version flags print the program version
       and exit. - The -exit or --exit flag forces the program to exit immediately after processing arguments. - The -d,
-      -debug, or --debug flags enable debug messages. - The function looks for a splash image file in several locations,
-      starting with the executable's directory, and displays it if found unless the splash screen is disabled. - If the
-      splash screen is shown, it also includes a progress bar.
+      -debug, or --debug flags enable debug messages. - The -spectroscopy flag sets the default spectroscopy type;
+      accepted values are Powder_Infrared, Crystal_Infrared, Powder_Raman, and Crystal_Raman (underscores are
+      converted to spaces). - The function looks for a splash image file in several locations, starting with the
+      executable's directory, and displays it if found unless the splash screen is disabled. - If the splash screen is
+      shown, it also includes a progress bar.
 
 
     Side Effects

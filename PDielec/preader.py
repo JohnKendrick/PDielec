@@ -76,17 +76,18 @@ def read_a_file( calling_parameters):
         - global_no_calculation : bool (A flag to indicate whether any calculations should be performed.)
         - program : str (Name of the computational chemistry program used to generate the file.)
         - debug : bool (If set to True, additional debug information will be printed.)
+        - spectroscopy : str (Either 'infrared' or 'raman'; controls which intensities are calculated.)
 
     Returns
     -------
     tuple A tuple containing: - reader : object (An object capable of reading and processing the data from the specified
     file.) - name : str (Name of the file that was processed.) - results_string : list (A list of strings that represent
     the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies,
-    intensities, and optionally calculated molar absorption rates.)
+    intensities, and optionally calculated molar absorption rates or Raman activities.)
 
 
-    """    
-    name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, debug = calling_parameters
+    """
+    name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, debug, spectroscopy = calling_parameters
     if debug:
         logging.basicConfig(level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s")
     reader = Utilities.get_reader(name,program)
@@ -103,88 +104,100 @@ def read_a_file( calling_parameters):
     ignore_modes = []
     sigmas = []
     epsinf = np.array(reader.zerof_optical_dielectric)
-    if not no_calculation:
-        # apply the eckart conditions before we change the masses
-        reader.eckart = eckart
-        # Get the born charges
-        if neutral:
-            reader.neutralise_born_charges()
-        # What mass definition are we using?
-        if mass_definition != "program" or mass_dictionary:
-            if mass_definition == "average":
-                reader.change_masses(average_masses, mass_dictionary)
-            elif mass_definition == "isotope":
-                reader.change_masses(isotope_masses, mass_dictionary)
-        born_charges = np.array(reader.born_charges)
-        # Calculate the mass weighted normal modes.  This just forces projection
-        mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
-        # The masses might have changed in the calculation of the mass weighted normal modes
-        masses = np.array(reader.masses) * amu
-        normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
-        # from the normal modes and the born charges calculate the oscillator strengths of each mode
-        oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
-        modified_frequencies_cm1 = reader.frequencies
-        modified_frequencies_cm1.sort()
-        modified_frequencies = np.array(modified_frequencies_cm1)
-        # if the frequency is less than 5 cm-1 assume that the oscillator strength is zero
-        for imode,f in enumerate(modified_frequencies_cm1):
-            mode_list.append(imode)
-            sigmas.append(5.0)
-            if f < 5.0:
-                oscillator_strengths[imode]=np.zeros((3,3))
-        # calculate the intensities from the trace of the oscillator strengths
-        intensities = Calculator.infrared_intensities(oscillator_strengths)
-        # Calculate eps0
-        volume = reader.volume*angstrom*angstrom*angstrom
-        #
-        # Calculate degenerate lists
-        #
-        degeneracy_threshold = 1.0E-8
-        threshold_intensity = 1.0E-6
-        threshold_frequency = 5.0
-        degenerate_lists = {}
-        mmax = len(modified_frequencies_cm1)
-        for m1 in range(len(modified_frequencies_cm1)):
-            degenerate_lists[m1] = []
-        for m1 in range(len(modified_frequencies_cm1)):
-            f1 = modified_frequencies[m1]
-            for m2 in range(m1+1,min(mmax,m1+3)):
-                f2 = modified_frequencies_cm1[m2]
-                if abs(f2-f1) < degeneracy_threshold:
-                    degenerate_lists[m1].append(m2)
-                    degenerate_lists[m2].append(m1)
-        #
-        # Only modes with non-zero oscillator strengths contribute to the dielectric
-        # so calculate those modes which we can safely ignore and store them in ignore_modes
-        #
-        if len(ignore_modes) == 0:
-            for mode, intensity in enumerate(intensities):
-                # ignore modes with a low oscillator strength
-                if intensity < threshold_intensity:
-                    # If any of its degenerate modes have intensity then we shouldn't ignore it
-                    ignore = True
-                    for m in degenerate_lists[mode]:
-                        if intensities[m] > threshold_intensity:
-                            ignore = False
-                    if ignore:
+    ionicv = None
+    raman_activities = None
+    if spectroscopy == "raman":
+        # Raman calculation path — use per-mode Raman tensors stored by the reader
+        if not no_calculation:
+            raman_tensors = reader.get_raman_tensors()
+            if raman_tensors is None:
+                print(f"Warning: No Raman tensors available for {name}, skipping Raman calculation", file=sys.stderr)
+            else:
+                raman_activities = Calculator.raman_intensities(raman_tensors, reader.volume)
+    else:
+        # Infrared calculation path
+        if not no_calculation:
+            # apply the eckart conditions before we change the masses
+            reader.eckart = eckart
+            # Get the born charges
+            if neutral:
+                reader.neutralise_born_charges()
+            # What mass definition are we using?
+            if mass_definition != "program" or mass_dictionary:
+                if mass_definition == "average":
+                    reader.change_masses(average_masses, mass_dictionary)
+                elif mass_definition == "isotope":
+                    reader.change_masses(isotope_masses, mass_dictionary)
+            born_charges = np.array(reader.born_charges)
+            # Calculate the mass weighted normal modes.  This just forces projection
+            mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
+            # The masses might have changed in the calculation of the mass weighted normal modes
+            masses = np.array(reader.masses) * amu
+            normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
+            # from the normal modes and the born charges calculate the oscillator strengths of each mode
+            oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
+            modified_frequencies_cm1 = reader.frequencies
+            modified_frequencies_cm1.sort()
+            modified_frequencies = np.array(modified_frequencies_cm1)
+            # if the frequency is less than 5 cm-1 assume that the oscillator strength is zero
+            for imode,f in enumerate(modified_frequencies_cm1):
+                mode_list.append(imode)
+                sigmas.append(5.0)
+                if f < 5.0:
+                    oscillator_strengths[imode]=np.zeros((3,3))
+            # calculate the intensities from the trace of the oscillator strengths
+            intensities = Calculator.infrared_intensities(oscillator_strengths)
+            # Calculate eps0
+            volume = reader.volume*angstrom*angstrom*angstrom
+            #
+            # Calculate degenerate lists
+            #
+            degeneracy_threshold = 1.0E-8
+            threshold_intensity = 1.0E-6
+            threshold_frequency = 5.0
+            degenerate_lists = {}
+            mmax = len(modified_frequencies_cm1)
+            for m1 in range(len(modified_frequencies_cm1)):
+                degenerate_lists[m1] = []
+            for m1 in range(len(modified_frequencies_cm1)):
+                f1 = modified_frequencies[m1]
+                for m2 in range(m1+1,min(mmax,m1+3)):
+                    f2 = modified_frequencies_cm1[m2]
+                    if abs(f2-f1) < degeneracy_threshold:
+                        degenerate_lists[m1].append(m2)
+                        degenerate_lists[m2].append(m1)
+            #
+            # Only modes with non-zero oscillator strengths contribute to the dielectric
+            # so calculate those modes which we can safely ignore and store them in ignore_modes
+            #
+            if len(ignore_modes) == 0:
+                for mode, intensity in enumerate(intensities):
+                    # ignore modes with a low oscillator strength
+                    if intensity < threshold_intensity:
+                        # If any of its degenerate modes have intensity then we shouldn't ignore it
+                        ignore = True
+                        for m in degenerate_lists[mode]:
+                            if intensities[m] > threshold_intensity:
+                                ignore = False
+                        if ignore:
+                            ignore_modes.append(mode)
+                    # ignore modes with low real frequency
+                    elif np.real(modified_frequencies_cm1[mode])/wavenumber < threshold_frequency or abs(np.imag(modified_frequencies_cm1[mode]))/wavenumber > 1.0e-6:
                         ignore_modes.append(mode)
-                # ignore modes with low real frequency
-                elif np.real(modified_frequencies_cm1[mode])/wavenumber < threshold_frequency or abs(np.imag(modified_frequencies_cm1[mode]))/wavenumber > 1.0e-6:
-                    ignore_modes.append(mode)
-                # end if intensity
-            # end for
-        # end if len()
-        # Remove any unwanted modes
-        ignore_modes = list(set(ignore_modes))
-        if len(ignore_modes) > 0:
-            for mode in ignore_modes:
-                if mode in mode_list:
-                    mode_list.remove(mode)
-            # end loop over modes to be ignored
-        # end of if ignore_modes
-        crystalPermittivity = DielectricFunction.DFT(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0) 
-        crystalPermittivity.set_epsilon_infinity(epsinf)
-        ionicv = crystalPermittivity.calculate(0.0) - epsinf
+                    # end if intensity
+                # end for
+            # end if len()
+            # Remove any unwanted modes
+            ignore_modes = list(set(ignore_modes))
+            if len(ignore_modes) > 0:
+                for mode in ignore_modes:
+                    if mode in mode_list:
+                        mode_list.remove(mode)
+                # end loop over modes to be ignored
+            # end of if ignore_modes
+            crystalPermittivity = DielectricFunction.DFT(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0)
+            crystalPermittivity.set_epsilon_infinity(epsinf)
+            ionicv = crystalPermittivity.calculate(0.0) - epsinf
     # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file
     frequencies_cm1.sort()
@@ -193,7 +206,7 @@ def read_a_file( calling_parameters):
         a,b,c,alpha,beta,gamma = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     else:
         a,b,c,alpha,beta,gamma = unitCell.convert_unitcell_to_abc()
-    eps0   = np.array(reader.zerof_static_dielectric) if no_calculation else np.real(ionicv)
+    eps0   = np.array(reader.zerof_static_dielectric) if (no_calculation or ionicv is None) else np.real(ionicv)
     eps0_xx = str(eps0[0,0])
     eps0_yy = str(eps0[1,1])
     eps0_zz = str(eps0[2,2])
@@ -240,33 +253,48 @@ def read_a_file( calling_parameters):
     for f in frequencies_cm1:
         string = string + "," + str(f)
     results_string = [ string ]
-    # Assemble the next line if any of eckart/neutral have been used
-    option_string = ""
-    if not no_calculation:
-        option_string = "Calculated frequencies (cm-1)"
-        if eckart :
-            option_string = option_string+" eckart"
-        if neutral :
-            option_string = option_string+" neutral"
-        option_string = option_string+" mass_definition="+mass_definition
-        header = name+","+option_string
-        string = header + common_output
-        for f in modified_frequencies_cm1:
-            string = string + "," + str(f)
-        results_string.append(string)
-        option_string = "Calculated Intensities (Debye2/Angs2/amu)"
-        header = name+","+option_string
-        string = header + common_output
-        for f in intensities:
-            string = string + "," + str(f)
-        results_string.append(string)
-        option_string = "Calculated Integrated Molar Absorption (L/mole/cm/cm)"
-        header = name+","+option_string
-        string = header + common_output
-        for f in intensities:
-            string = string + "," + str(f*4225.6)
-        results_string.append(string)
-    # End if not no_calculation
+    if spectroscopy == "raman":
+        # Raman output rows: one row each for total, parallel, and perpendicular activities
+        if raman_activities is not None:
+            for label, col in (
+                ("Calculated Raman Total Activity (Ang^4/amu)", 0),
+                ("Calculated Raman Parallel Activity (Ang^4/amu)", 1),
+                ("Calculated Raman Perpendicular Activity (Ang^4/amu)", 2),
+            ):
+                header = name + "," + label
+                string = header + common_output
+                for act in raman_activities:
+                    string = string + "," + str(act[col])
+                results_string.append(string)
+    else:
+        # Infrared output rows
+        # Assemble the next line if any of eckart/neutral have been used
+        option_string = ""
+        if not no_calculation:
+            option_string = "Calculated frequencies (cm-1)"
+            if eckart :
+                option_string = option_string+" eckart"
+            if neutral :
+                option_string = option_string+" neutral"
+            option_string = option_string+" mass_definition="+mass_definition
+            header = name+","+option_string
+            string = header + common_output
+            for f in modified_frequencies_cm1:
+                string = string + "," + str(f)
+            results_string.append(string)
+            option_string = "Calculated Intensities (Debye2/Angs2/amu)"
+            header = name+","+option_string
+            string = header + common_output
+            for f in intensities:
+                string = string + "," + str(f)
+            results_string.append(string)
+            option_string = "Calculated Integrated Molar Absorption (L/mole/cm/cm)"
+            header = name+","+option_string
+            string = header + common_output
+            for f in intensities:
+                string = string + "," + str(f*4225.6)
+            results_string.append(string)
+        # End if not no_calculation
     return reader,name,results_string
 
 def print_help():
@@ -288,7 +316,7 @@ def print_help():
     No output is returned by this function as it directs its message to `sys.stderr` and exits the program.
 
     """    
-    print("preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....", file=sys.stderr)
+    print("preader -program program [-spectroscopy infrared|raman] [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....", file=sys.stderr)
     print('  "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"       ', file=sys.stderr)
     print('           "phonopy", "qe", "vasp", "experiment", "auto"               ', file=sys.stderr)
     print("           The default is auto, so the program tries to guess the package from   ", file=sys.stderr)
@@ -307,6 +335,9 @@ def print_help():
     print("  -pickle  write each file reader to a pickled dump file for later processing    ", file=sys.stderr)
     print("           the name of the file to hold all the pickled readers is given         ", file=sys.stderr)
     print("           If the file exists it is not overwritten                              ", file=sys.stderr)
+    print("  -spectroscopy [infrared|raman]  selects which intensities are calculated         ", file=sys.stderr)
+    print('          The default is "infrared"                                               ', file=sys.stderr)
+    print('          Use "raman" to output Raman activities instead of IR intensities        ', file=sys.stderr)
     print("  -version print the version of PDielec library being used                       ", file=sys.stderr)
     print("  Version ",version,file=sys.stderr)
     sys.exit()
@@ -317,11 +348,14 @@ def main():
 
     ::
 
-        preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
+        preader -program program [-spectroscopy infrared|raman] [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
           "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
                    "phonopy", "qe", "vasp", "experiment", "auto"
                    The default is auto, so the program tries to guess the package from
                    the contents of the directory.  However this is not fool-proof!
+          -spectroscopy [infrared|raman]  selects which intensities are calculated
+                  The default is "infrared"
+                  Use "raman" to output Raman activities instead of IR intensities
           -masses [average|isotope|program]  chooses the atomic mass definition average
                   The default is "average"
           -mass  element mass
@@ -354,6 +388,7 @@ def main():
     program = "auto"
     debug = False
     picklefile = None
+    spectroscopy = "infrared"
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
@@ -364,6 +399,12 @@ def main():
             eckart = True
         elif token == "-neutral":
             neutral = True
+        elif token == "-spectroscopy":
+            itoken += 1
+            spectroscopy = tokens[itoken].lower()
+            if spectroscopy not in ("infrared", "raman"):
+                print('-spectroscopy must be followed by "infrared" or "raman"', file=sys.stderr)
+                sys.exit()
         elif token == "-masses":
             itoken += 1
             token = tokens[itoken]
@@ -451,7 +492,7 @@ def main():
         if program == "auto":
             prog = find_program_from_name(name)
             print(f"  Analysing {name} generated by {prog}",file=sys.stderr)
-        calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, prog, debug) )
+        calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, prog, debug, spectroscopy) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)
     results_map_object.wait()
