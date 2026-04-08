@@ -155,11 +155,14 @@ test_powder_atr = [
     ]
 
 test_powder_raman = [
-	"Raman/Cocaine",
+	"Powder_Raman/AbInit",
+	"Powder_Raman/Castep",
+	"Powder_Raman/Crystal",
+	"Powder_Raman/QE",
+	"Powder_Raman/Vasp",
     ]
 
 test_crystal_raman = [
-	"Raman/Cocaine",
     ]
 
 test_powder_infrared = [
