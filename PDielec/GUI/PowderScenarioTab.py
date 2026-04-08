@@ -15,6 +15,7 @@
 """PowderScenarioTab module."""
 import ctypes
 import logging
+import math
 import sys
 from functools import partial
 from multiprocessing import Array
@@ -35,7 +36,7 @@ from qtpy.QtWidgets import (
 )
 
 from PDielec import Calculator, DielectricFunction, Materials
-from PDielec.Constants import boltzmann_si, planck_si, speed_light_si
+from PDielec.Constants import amu, angs2bohr, boltzmann_si, planck_si, speed_light_si, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
 
@@ -1361,10 +1362,16 @@ class PowderScenarioTab(ScenarioTab):
         """Calculate the powder Raman spectrum for the range of frequencies in vs_cm1.
 
         Implements the macroscopic approach (Section 4.2 of Raman-Theory.pdf) for
-        small ellipsoidal particles embedded in a non-absorbing matrix. The effective
-        particle Raman tensor (Eq. 60) includes local field corrections through the
-        internal field tensor N. Orientational averaging uses the rotational invariants
-        (Eqs. 90-99) valid for a general complex Raman tensor.
+        small ellipsoidal particles embedded in a non-absorbing matrix.
+
+        When Born charges and the mass-weighted hessian are available, the phonon
+        frequencies are modified by the particle boundary conditions via the particle
+        dynamical matrix (Eqs. 73-74).  The Raman tensors are simultaneously
+        rotated into the particle normal-mode basis.  The effective particle Raman
+        tensor (Eq. 60) then includes both the boundary-condition frequency shift and
+        the local-field correction through the internal field tensor N.
+        Orientational averaging uses the rotational invariants (Eqs. 90-99) valid for
+        a general complex Raman tensor.
 
         Parameters
         ----------
@@ -1418,6 +1425,27 @@ class PowderScenarioTab(ScenarioTab):
         I3 = np.eye(3, dtype=complex)
         N = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_inf_i - epsilon_e * I3))
 
+        # Particle phonon frequencies (Eqs. 73-74):
+        # D^particle = D^TO + (4π/ε_e) Z^T N_bg L Z
+        # N_bg ≈ N (Eqs. 67-68: background permittivity ≈ optical permittivity)
+        # When Born charges and the hessian are available, diagonalise D^particle
+        # to obtain shifted frequencies and transformed Raman tensors.
+        has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
+        has_born = len(self.reader.born_charges) > 0
+        has_normal_modes = bool(self.reader.mass_weighted_normal_modes)
+
+        if has_hessian and has_born and has_normal_modes:
+            logger.debug(f"{self.settings['Legend']} _calculate_raman: applying particle frequency correction (Eqs. 73-74)")
+            loop_freqs, loop_raman, loop_sigmas, loop_selected = self._compute_particle_modes(
+                N, L, epsilon_e, epsilon_inf_i, I3,
+                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected)
+        else:
+            logger.debug(f"{self.settings['Legend']} _calculate_raman: no hessian/born charges, using bulk TO frequencies")
+            loop_freqs = np.array(frequencies_cm1)
+            loop_raman = [np.array(rt, dtype=complex) for rt in raman_tensors]
+            loop_sigmas = list(sigmas_cm1)
+            loop_selected = list(modes_selected)
+
         # Raman experiment parameters
         laser_nm = self.settings["Raman laser frequency"]
         nu_L = 1.0e7 / laser_nm          # laser frequency in cm^-1
@@ -1430,13 +1458,9 @@ class PowderScenarioTab(ScenarioTab):
         # Bose-Einstein prefactor: hc/k in units of cm·K
         hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
 
-        for mode_idx, (freq, sigma, selected) in enumerate(
-                zip(frequencies_cm1, sigmas_cm1, modes_selected)):
-            if not selected or freq < 1.0:
+        for freq, sigma, selected, R_eps in zip(loop_freqs, loop_sigmas, loop_selected, loop_raman):
+            if not selected or abs(freq) < 1.0:
                 continue
-            if mode_idx >= len(raman_tensors):
-                break
-            R_eps = np.array(raman_tensors[mode_idx], dtype=complex)
 
             # Effective particle Raman tensor (Eq. 60), ε_0 V absorbed into overall scale:
             #   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
@@ -1460,7 +1484,7 @@ class PowderScenarioTab(ScenarioTab):
                 intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
 
             # Bose-Einstein occupation factor n(ν_m) (Eq. 11)
-            x = hc_over_k * freq / temperature
+            x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
             n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
 
             # Scattered frequency (Stokes shift)
@@ -1479,6 +1503,152 @@ class PowderScenarioTab(ScenarioTab):
         self.calculation_required = False
         QCoreApplication.processEvents()
         logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
+
+    def _compute_particle_modes(self, N_bg, L, epsilon_e, epsilon_inf_i, I3,
+                                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected):
+        """Compute particle phonon frequencies and Raman tensors in the particle normal-mode basis.
+
+        Implements Eqs. 73-74 of Raman-Theory.pdf.  The particle dynamical matrix
+
+        .. math::
+
+            D^{\\mathrm{particle}} = D^{TO} + \\frac{4\\pi}{\\varepsilon_e} Z^T N_{bg} L Z
+
+        is diagonalised (Eq. 74) to give phonon frequencies and normal modes appropriate
+        for a small particle with depolarisation tensor L embedded in a medium with
+        permittivity ε_e.  The bulk Raman tensors are transformed into the resulting
+        particle normal-mode basis.
+
+        Parameters
+        ----------
+        N_bg : ndarray, shape (3, 3)
+            Background internal field tensor (≈ N from Eqs. 47 and 67-68).
+        L : ndarray, shape (3, 3)
+            Depolarisation tensor for the particle shape.
+        epsilon_e : float
+            Optical permittivity of the external medium (scalar).
+        epsilon_inf_i : ndarray, shape (3, 3)
+            Optical permittivity tensor of the inclusion.
+        I3 : ndarray, shape (3, 3)
+            3×3 identity matrix.
+        raman_tensors : list of ndarray
+            Bulk TO Raman tensors (one per TO mode, each 3×3).
+        frequencies_cm1 : list of float
+            Bulk TO frequencies in cm^{-1}.
+        sigmas_cm1 : list of float
+            Lorentzian half-widths in cm^{-1} (one per TO mode).
+        modes_selected : list of bool
+            Mode selection flags (one per TO mode).
+
+        Returns
+        -------
+        particle_freqs : ndarray, shape (3N,)
+            Particle phonon frequencies in cm^{-1}.
+        particle_raman : list of ndarray
+            Raman tensors in the particle normal-mode basis (one 3×3 array per mode).
+        particle_sigmas : list of float
+            Lorentzian half-widths inherited from the dominant TO component.
+        particle_selected : list of bool
+            Mode selection flags inherited from the dominant TO component.
+
+        Notes
+        -----
+        The correction uses the Gaussian-unit convention ``1/ε₀ → 4π`` that matches
+        the non-analytic correction in :func:`~PDielec.Calculator.longitudinal_modes`.
+        The Born charge matrix Z' = Z*/√M carries **no volume factor**; the volume
+        enters only as ``1/V`` in the prefactor ``4π/(ε_e V)``.  This is consistent
+        with the NAC prefactor ``4π/V`` in ``longitudinal_modes``.  The Born charges
+        are in units of the elementary charge (dimensionless), masses in electron-mass
+        units, and the volume in Bohr³.
+
+        """
+        nAtoms = self.reader.nions
+        n_modes = 3 * nAtoms
+
+        # Unit-cell volume in Bohr³ (reader stores Å³)
+        volume_au = self.reader.volume * angs2bohr ** 3
+
+        # Atomic masses in atomic units (electron masses)
+        masses_au = np.array(self.reader.masses) * amu
+
+        # Born effective charges Z*[κ, α, β]: (nAtoms, 3, 3)
+        born_charges = np.array(self.reader.born_charges)
+
+        # Z' matrix (3 × 3N): Z'[α, κβ] = Z*[κ, α, β] / √M_κ_au  (no volume factor)
+        # This matches the Born-charge convention in Calculator.longitudinal_modes.
+        # The volume enters only in the prefactor below.
+        Z_mat = np.zeros((3, n_modes))
+        for kappa in range(nAtoms):
+            inv_sqrtM = 1.0 / math.sqrt(masses_au[kappa])
+            for beta in range(3):
+                Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
+
+        # Correction to dynamical matrix: ΔD = (4π / (ε_e V)) Z'^T (N_bg L) Z'  (Eq. 73)
+        # Derived from F^mw = (e²/(ε₀ε_e V)) Z'^T N_bg L Z' x in atomic units
+        # (1/ε₀ → 4π, same Gaussian convention as Calculator.longitudinal_modes).
+        # N_bg and L are real for non-absorbing media; take real part to be safe.
+        NbgL = np.real(N_bg) @ np.real(L)
+        delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
+
+        # Bulk TO dynamical matrix (mass-weighted hessian in atomic units)
+        D_TO = np.array(self.reader.hessian, dtype=float)
+
+        # Particle dynamical matrix (Eq. 73) and its eigendecomposition (Eq. 74)
+        eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
+
+        # Particle frequencies in cm^{-1}; preserve sign for dynamically unstable modes
+        particle_freqs = np.array([
+            (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
+            for ev in eig_val
+        ])
+
+        # Build U_TO: rows = TO eigenvectors flattened to (n_to_modes × 3N)
+        n_to_modes = len(self.reader.mass_weighted_normal_modes)
+        U_TO = np.zeros((n_to_modes, n_modes))
+        for imode, mode in enumerate(self.reader.mass_weighted_normal_modes):
+            col = 0
+            for atom in mode:
+                U_TO[imode, col:col + 3] = atom
+                col += 3
+
+        # Overlap matrix C[n, m] = <u_n^TO | u_m^particle>
+        # eig_vec columns are the particle eigenvectors (shape 3N × 3N)
+        C = U_TO @ eig_vec  # shape (n_to_modes, 3N)
+
+        # All mode-indexed lists must have the same length; warn if not.
+        n_rt = len(raman_tensors)
+        n_sigma = len(sigmas_cm1)
+        n_sel = len(modes_selected)
+        if not (n_to_modes == n_rt == n_sigma == n_sel == n_modes):
+            logger.warning(
+                f"_compute_particle_modes: inconsistent list lengths — "
+                f"n_to_modes={n_to_modes}, n_raman_tensors={n_rt}, "
+                f"n_sigmas={n_sigma}, n_selected={n_sel}, n_modes={n_modes}"
+            )
+
+        particle_raman = []
+        particle_sigmas = []
+        particle_selected = []
+
+        # loop over the particle modes
+        for p_idx in range(n_modes):
+
+            # Raman tensor in particle mode basis: R^(m,particle) = Σ_n C[n,m] R_eps^(n)
+            R_p = np.zeros((3, 3), dtype=complex)
+            for n_to in range(n_to_modes):
+                R_p += C[n_to, p_idx] * np.array(raman_tensors[n_to], dtype=complex)
+
+            # Store the particle raman tensor
+            particle_raman.append(R_p)
+
+            # Assign sigma and selected flag from the dominant TO mode
+            # In the case of degeneracy this approach might fail
+            # But any other approach seems fraught with dangers too.
+            dominant_to = int(np.argmax(np.abs(C[:, p_idx])))
+            particle_sigmas.append(sigmas_cm1[dominant_to])
+            particle_selected.append(modes_selected[dominant_to])
+
+        return particle_freqs, particle_raman, particle_sigmas, particle_selected
 
     def _calculate_infrared(self, vs_cm1):
         """Calculate the powder infrared absorption for the range of frequencies in vs_cm1.
