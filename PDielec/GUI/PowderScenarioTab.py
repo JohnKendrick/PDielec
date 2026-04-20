@@ -1426,7 +1426,8 @@ class PowderScenarioTab(ScenarioTab):
         N = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_inf_i - epsilon_e * I3))
 
         # Particle phonon frequencies (Eqs. 73-74):
-        # D^particle = D^TO + (4π/ε_e) Z^T N_bg L Z
+        # D^particle = D^TO + (4π/(ε_e V)) (Z^mw)^T N_bg L Z^mw
+        # where Z^mw[α,κβ] = Z[α,κβ]/√M_κ (Eq. 64) and V is the unit-cell volume.
         # N_bg ≈ N (Eqs. 67-68: background permittivity ≈ optical permittivity)
         # When Born charges and the hessian are available, diagonalise D^particle
         # to obtain shifted frequencies and transformed Raman tensors.
@@ -1512,11 +1513,15 @@ class PowderScenarioTab(ScenarioTab):
 
         .. math::
 
-            D^{\\mathrm{particle}} = D^{TO} + \\frac{4\\pi}{\\varepsilon_e} Z^T N_{bg} L Z
+            D^{\\mathrm{particle}} = D^{TO} + \\frac{4\\pi}{\\varepsilon_e V}
+                \\left(Z^{mw}\\right)^T N_{bg} L Z^{mw}
 
-        is diagonalised (Eq. 74) to give phonon frequencies and normal modes appropriate
-        for a small particle with depolarisation tensor L embedded in a medium with
-        permittivity ε_e.  The bulk Raman tensors are transformed into the resulting
+        where :math:`Z^{mw}_{\\alpha,\\kappa\\beta} = Z_{\\alpha,\\kappa\\beta}/\\sqrt{M_\\kappa}`
+        (Eq. 64) carries **no volume factor**, and :math:`V` is the unit-cell volume
+        (explicit in the :math:`1/V` prefactor, consistent with Eq. 73).
+        The matrix is diagonalised (Eq. 74) to give phonon frequencies and normal modes
+        appropriate for a small particle with depolarisation tensor L embedded in a medium
+        with permittivity ε_e.  The bulk Raman tensors are transformed into the resulting
         particle normal-mode basis.
 
         Parameters
