@@ -21,8 +21,10 @@ from functools import partial
 from multiprocessing import Array
 
 import numpy as np
+from scipy.stats.qmc import Sobol
 from qtpy.QtCore import QCoreApplication, Qt
 from qtpy.QtWidgets import (
+    QCheckBox,
     QComboBox,
     QDoubleSpinBox,
     QFormLayout,
@@ -1364,14 +1366,16 @@ class PowderScenarioTab(ScenarioTab):
         Implements the macroscopic approach (Section 4.2 of Raman-Theory.pdf) for
         small ellipsoidal particles embedded in a non-absorbing matrix.
 
-        When Born charges and the mass-weighted hessian are available, the phonon
-        frequencies are modified by the particle boundary conditions via the particle
-        dynamical matrix (Eqs. 73-74).  The Raman tensors are simultaneously
-        rotated into the particle normal-mode basis.  The effective particle Raman
-        tensor (Eq. 60) then includes both the boundary-condition frequency shift and
-        the local-field correction through the internal field tensor N.
-        Orientational averaging uses the rotational invariants (Eqs. 90-99) valid for
-        a general complex Raman tensor.
+        Two code paths are used depending on particle shape:
+
+        * **Sphere** — the depolarisation tensor L = I/3 is rotationally invariant, so
+          R_particle(Ω) = R @ R_particle_crystal @ R.T is a pure rank-2 tensor rotation
+          and the analytical rotational invariants (Eqs. 90-99) are exact.
+        * **Non-sphere** — D^{particle} is diagonalised once in the crystal frame
+          (ΔD is orientation-invariant); for each of ``n_samples`` SO(3) orientations
+          the orientation-dependent N_bg_lab(Ω) is recomputed and used to evaluate the
+          effective particle Raman tensor R_particle(Ω) (Eq. 60), whose contribution is
+          accumulated into the spectrum.
 
         Parameters
         ----------
@@ -1434,8 +1438,37 @@ class PowderScenarioTab(ScenarioTab):
         has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
         has_born = len(self.reader.born_charges) > 0
         has_normal_modes = bool(self.reader.mass_weighted_normal_modes)
+        has_correction_data = has_hessian and has_born and has_normal_modes
 
-        if has_hessian and has_born and has_normal_modes:
+        # Raman experiment parameters
+        laser_nm = self.settings["Raman laser frequency"]
+        nu_L = 1.0e7 / laser_nm          # laser frequency in cm^-1
+        polarisation = self.settings["Raman laser polarisation"]
+        temperature = self.settings["Raman temperature"]
+        n_samples = self.settings["Raman orientation samples"]
+
+        vs_cm1 = np.array(vs_cm1, dtype=float)
+
+        # Determine whether the depolarisation tensor is spherical (L = I/3)
+        is_sphere = np.allclose(np.real(L), (1.0 / 3.0) * np.eye(3), atol=1e-6)
+
+        # Non-sphere: numerical SO(3) averaging with per-orientation N_bg (Eq. 60)
+        if not is_sphere and has_correction_data:
+            logger.debug(f"{self.settings['Legend']} _calculate_raman: non-sphere numerical average ({n_samples} samples)")
+            spectrum = self._compute_orientation_sampled_spectrum(
+                L, epsilon_e, epsilon_inf_i, I3,
+                raman_tensors, sigmas_cm1, modes_selected,
+                polarisation, nu_L, temperature, n_samples, vs_cm1)
+            self.raman_spectrum = spectrum.tolist()
+            self.vs_cm1 = list(vs_cm1)
+            self.calculation_required = False
+            QCoreApplication.processEvents()
+            logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
+            return
+
+        # Sphere path (or non-sphere fallback when correction data unavailable):
+        # compute particle modes once in crystal frame, then use analytical invariants.
+        if has_correction_data:
             logger.debug(f"{self.settings['Legend']} _calculate_raman: applying particle frequency correction (Eqs. 73-74)")
             loop_freqs, loop_raman, loop_sigmas, loop_selected = self._compute_particle_modes(
                 N, L, epsilon_e, epsilon_inf_i, I3,
@@ -1447,57 +1480,55 @@ class PowderScenarioTab(ScenarioTab):
             loop_sigmas = list(sigmas_cm1)
             loop_selected = list(modes_selected)
 
-        # Raman experiment parameters
-        laser_nm = self.settings["Raman laser frequency"]
-        nu_L = 1.0e7 / laser_nm          # laser frequency in cm^-1
-        polarisation = self.settings["Raman laser polarisation"]
-        temperature = self.settings["Raman temperature"]
-
-        vs_cm1 = np.array(vs_cm1, dtype=float)
         spectrum = np.zeros(len(vs_cm1))
 
         # Bose-Einstein prefactor: hc/k in units of cm·K
         hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
 
-        for freq, sigma, selected, R_eps in zip(loop_freqs, loop_sigmas, loop_selected, loop_raman):
-            if not selected or abs(freq) < 1.0:
-                continue
+        # Analytical rotational invariants (Eqs. 90-99) — exact for spheres
+        if not is_sphere:
+            logger.warning(f"{self.settings['Legend']} _calculate_raman: non-sphere but correction data unavailable, falling back to analytical invariants")
+        else:
+            logger.debug(f"{self.settings['Legend']} _calculate_raman: sphere — analytical invariants")
+            for freq, sigma, selected, R_eps in zip(loop_freqs, loop_sigmas, loop_selected, loop_raman):
+                if not selected or abs(freq) < 1.0:
+                    continue
 
-            # Effective particle Raman tensor (Eq. 60), ε_0 V absorbed into overall scale:
-            #   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
-            correction = (1.0 / epsilon_e) * (epsilon_inf_i - epsilon_e * I3) @ N @ L @ R_eps
-            R_particle = N @ (R_eps - correction) @ N
+                # Effective particle Raman tensor (Eq. 60):
+                #   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
+                correction = (1.0 / epsilon_e) * (epsilon_inf_i - epsilon_e * I3) @ N @ L @ R_eps
+                R_particle = N @ (R_eps - correction) @ N
 
-            # Rotational invariants for a general complex tensor (Eqs. 90-96)
-            alpha = (R_particle[0, 0] + R_particle[1, 1] + R_particle[2, 2]) / 3.0
-            gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
-            kappa_t = 0.5 * (R_particle - R_particle.T)
-            alpha2 = float(np.real(alpha * np.conj(alpha)))
-            gamma2 = float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
-            kappa2 = float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
+                # Rotational invariants for a general complex tensor (Eqs. 90-96)
+                alpha = (R_particle[0, 0] + R_particle[1, 1] + R_particle[2, 2]) / 3.0
+                gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
+                kappa_t = 0.5 * (R_particle - R_particle.T)
+                alpha2 = float(np.real(alpha * np.conj(alpha)))
+                gamma2 = float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
+                kappa2 = float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
 
-            # Powder-averaged scattering intensity for the chosen polarisation (Eqs. 97-99)
-            if polarisation == "VV":
-                intensity_factor = 45.0 * alpha2 + 4.0 * gamma2 + 5.0 * kappa2
-            elif polarisation in ("VH", "HV"):
-                intensity_factor = 3.0 * gamma2 + 5.0 * kappa2
-            else:  # treat unpolarised total
-                intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
+                # Powder-averaged scattering intensity for the chosen polarisation (Eqs. 97-99)
+                if polarisation == "VV":
+                    intensity_factor = 45.0 * alpha2 + 4.0 * gamma2 + 5.0 * kappa2
+                elif polarisation in ("VH", "HV"):
+                    intensity_factor = 3.0 * gamma2 + 5.0 * kappa2
+                else:  # Unpolarised
+                    intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
 
-            # Bose-Einstein occupation factor n(ν_m) (Eq. 11)
-            x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
-            n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
+                # Bose-Einstein occupation factor n(ν_m) (Eq. 11)
+                x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
+                n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
 
-            # Scattered frequency (Stokes shift)
-            nu_s = nu_L - freq
-            if nu_s <= 0.0:
-                continue
+                # Scattered frequency (Stokes shift)
+                nu_s = nu_L - freq
+                if nu_s <= 0.0:
+                    continue
 
-            # Scattering strength S_m ∝ ν_s^4 × (n+1)/ν_m × intensity_factor (Eq. 77)
-            S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
+                # Scattering strength S_m ∝ ν_s^4 × (n+1)/ν_m × intensity_factor (Eq. 77)
+                S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
 
-            # Add Lorentzian contribution to the spectrum (Eq. 88)
-            spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
+                # Add Lorentzian contribution to the spectrum (Eq. 88)
+                spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
 
         self.raman_spectrum = spectrum.tolist()
         self.vs_cm1 = list(vs_cm1)
@@ -1654,6 +1685,243 @@ class PowderScenarioTab(ScenarioTab):
             particle_selected.append(modes_selected[dominant_to])
 
         return particle_freqs, particle_raman, particle_sigmas, particle_selected
+
+    @staticmethod
+    def _get_sobol_rotations(n_samples):
+        """Return ``n_samples`` rotations in SO(3) drawn uniformly from S² via a Sobol sequence.
+
+           The method uses James Arvo's "Fast Random Rotation" method.
+
+        Parameters
+        ----------
+        n_samples : int
+            Number of orientations required.
+
+        Returns
+        -------
+        phis : ndarray, shape (n_samples,)
+        thetas : ndarray, shape (n_samples,)
+        psis : ndarray, shape (n_samples,)
+        """
+        # Round up to the next power of 2 for optimal Sobol equidistribution,
+        # then truncate to the requested number of samples.
+        n_pow2 = 2 ** int(np.ceil(np.log2(max(n_samples, 1))))
+        sampler = Sobol(d=3, scramble=True, seed=42)
+        samples = sampler.random(n_pow2)[:n_samples]
+    
+        rotations = []
+        for u in samples:
+            theta, phi, z = 2*np.pi*u[0], 2*np.pi*u[1], u[2]
+            
+            # Householder reflection vector
+            V = np.array([np.cos(phi)*np.sqrt(z), np.sin(phi)*np.sqrt(z), np.sqrt(1-z)])
+            H = np.eye(3) - 2 * np.outer(V, V)
+        
+            # Rotation around Z
+            R = np.array([[np.cos(theta), np.sin(theta), 0],
+                          [-np.sin(theta), np.cos(theta), 0],
+                          [0, 0, 1]])
+        
+            rotations.append(-H @ R)
+        return rotations
+
+    def _compute_orientation_sampled_spectrum(
+            self, L, epsilon_e, epsilon_inf_i, I3,
+            raman_tensors, sigmas_cm1, modes_selected,
+            polarisation, nu_L, temperature, n_samples, vs_cm1):
+        """Compute the powder Raman spectrum for non-spherical particles by numerical SO(3) averaging.
+
+        The particle dynamical matrix correction ΔD is orientation-invariant (proof: rotating
+        L, ε_inf, and Z to the lab frame and back always recovers ΔD_crystal), so D^{particle}
+        is diagonalised **once** before the orientation loop.  For each sampled orientation
+        Ω ∈ SO(3) only the orientation-dependent internal field tensor N_bg_lab(Ω) is
+        recomputed; this is used to apply the local-field correction (Eq. 60) to the
+        pre-rotated Raman tensors.  Scattering strengths (Eq. 77) are accumulated as
+        Lorentzian contributions (Eq. 88) and normalised by ``n_samples``.
+
+        Parameters
+        ----------
+        L : ndarray, shape (3, 3)
+            Crystal-frame depolarisation tensor.
+        epsilon_e : float
+            Optical permittivity of the external medium (scalar).
+        epsilon_inf_i : ndarray, shape (3, 3)
+            Optical permittivity tensor of the inclusion (crystal frame).
+        I3 : ndarray, shape (3, 3)
+            3×3 identity matrix.
+        raman_tensors : list of ndarray
+            Bulk TO Raman tensors (crystal frame), one 3×3 array per mode.
+        sigmas_cm1 : list of float
+            Lorentzian half-widths in cm⁻¹ (one per TO mode).
+        modes_selected : list of bool
+            Mode selection flags (one per TO mode).
+        polarisation : str
+            One of ``"VV"``, ``"VH"``, ``"HV"``, ``"Unpolarised"``.
+        nu_L : float
+            Laser frequency in cm⁻¹.
+        temperature : float
+            Sample temperature in K.
+        n_samples : int
+            Number of SO(3) orientations to sample.
+        vs_cm1 : ndarray, shape (n_freqs,)
+            Frequency axis for the spectrum in cm⁻¹.
+
+        Returns
+        -------
+        spectrum : ndarray, shape (n_freqs,)
+            Accumulated and normalised Raman spectrum.
+
+        Notes
+        -----
+        Polarisation vectors follow the backscattering geometry with the laser along Z:
+        VV uses ``e_L = e_S = [0, 1, 0]``; VH uses ``e_S = [1, 0, 0]``; Unpolarised
+        sums both.  The rotation ``R`` maps crystal-frame coordinates to the lab frame.
+
+        The Born-charge α-index transforms as a vector under rotation, i.e.
+        ``Z_lab[α, κβ] = Σ_γ R[α, γ] Z_crystal[γ, κβ]``, so
+        ``Z_mat_lab = R @ Z_mat_crystal``.
+
+        The Lorentzian width and mode-selection flags are inherited from the dominant
+        TO component of each particle mode (same heuristic as ``_compute_particle_modes``).
+
+        """
+        nAtoms = self.reader.nions
+        n_modes = 3 * nAtoms
+
+        # Unit-cell volume in Bohr³
+        volume_au = self.reader.volume * angs2bohr ** 3
+
+        # Atomic masses in electron-mass units
+        masses_au = np.array(self.reader.masses) * amu
+
+        # Born effective charges Z*[κ, α, β]: shape (nAtoms, 3, 3)
+        born_charges = np.array(self.reader.born_charges)
+
+        # Crystal-frame mass-weighted Born charge matrix Z' (3 × 3N)
+        # Z'[α, κβ] = Z*[κ, α, β] / √M_κ  (Eq. 64, no volume factor)
+        Z_mat = np.zeros((3, n_modes))
+        for kappa in range(nAtoms):
+            inv_sqrtM = 1.0 / math.sqrt(masses_au[kappa])
+            for beta in range(3):
+                Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
+
+        # Bulk TO dynamical matrix (mass-weighted Hessian)
+        D_TO = np.array(self.reader.hessian, dtype=float)
+
+        # TO normal modes: rows of U_TO are the mass-weighted eigenvectors (n_to_modes × 3N)
+        n_to_modes = len(self.reader.mass_weighted_normal_modes)
+        U_TO = np.zeros((n_to_modes, n_modes))
+        for imode, mode in enumerate(self.reader.mass_weighted_normal_modes):
+            col = 0
+            for atom in mode:
+                U_TO[imode, col:col + 3] = atom
+                col += 3
+
+        # Raman tensors as complex arrays
+        raman_tensors_c = [np.array(rt, dtype=complex) for rt in raman_tensors]
+
+        # Bose-Einstein prefactor: hc/k in units of cm·K
+        hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
+
+        # ── Pre-loop: orientation-invariant quantities ────────────────────────────────
+        # ΔD is invariant under rotation: Z_lab^T NbgL_lab Z_lab = Z_mat^T N L Z_mat
+        # for any R (proof in raman_notes.md).  Diagonalise D^particle once here.
+        N_bg_crystal = np.linalg.inv(
+            I3 + (1.0 / epsilon_e) * np.real(L) @ (np.real(epsilon_inf_i) - epsilon_e * I3)
+        )
+        NbgL = np.real(N_bg_crystal) @ np.real(L)
+        delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
+
+        eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
+
+        part_freqs = np.array([
+            (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
+            for ev in eig_val
+        ])
+
+        # Overlap matrix C[n_to, p]: <u_n^TO | u_p^particle>
+        C = U_TO @ eig_vec  # (n_to_modes, 3N)
+
+        # Crystal-frame Raman tensor in particle-mode basis, per mode
+        R_eps_cryst_list = []
+        for p_idx in range(n_modes):
+            R_eps = np.zeros((3, 3), dtype=complex)
+            for n_to in range(n_to_modes):
+                R_eps += C[n_to, p_idx] * raman_tensors_c[n_to]
+            R_eps_cryst_list.append(R_eps)
+
+        # Per-mode orientation-independent scalars: (freq, sigma, n_bose, nu_s)
+        # None marks modes that should be skipped entirely.
+        mode_data = []
+        for p_idx in range(n_modes):
+            freq = part_freqs[p_idx]
+            if abs(freq) < 1.0:
+                mode_data.append(None)
+                continue
+            dominant_to = int(np.argmax(np.abs(C[:, p_idx])))
+            if not modes_selected[dominant_to]:
+                mode_data.append(None)
+                continue
+            sigma = sigmas_cm1[dominant_to]
+            x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
+            n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
+            nu_s = nu_L - freq
+            if nu_s <= 0.0:
+                mode_data.append(None)
+                continue
+            mode_data.append((freq, sigma, n_bose, nu_s))
+
+        # ── Orientation loop ──────────────────────────────────────────────────────────
+        # Lab-frame polarisation vectors (backscattering, laser along Z)
+        e_L  = np.array([0.0, 1.0, 0.0])
+        e_VV = np.array([0.0, 1.0, 0.0])
+        e_VH = np.array([1.0, 0.0, 0.0])
+
+        spectrum = np.zeros(len(vs_cm1))
+        
+        # Loop over a random set of rotations
+        for R in self._get_sobol_rotations(n_samples):
+
+            # Rotate depolarisation tensor and ε_inf_i to the lab frame
+            L_lab   = R @ np.real(L) @ R.T
+            eps_lab = R @ np.real(epsilon_inf_i) @ R.T
+
+            # Orientation-dependent internal field tensor N_bg_lab (Eq. 47)
+            N_bg_lab = np.linalg.inv(
+                I3 + (1.0 / epsilon_e) * L_lab @ (eps_lab - epsilon_e * I3)
+            )
+
+            # Loop over particle modes (skip inactive ones)
+            for p_idx in range(n_modes):
+                if mode_data[p_idx] is None:
+                    continue
+                freq, sigma, n_bose, nu_s = mode_data[p_idx]
+
+                # Rotate crystal-frame Raman tensor to the lab frame
+                R_eps_lab = R @ R_eps_cryst_list[p_idx] @ R.T
+
+                # Effective particle Raman tensor in the lab frame (Eq. 60)
+                correction = (1.0 / epsilon_e) * (eps_lab - epsilon_e * I3) @ N_bg_lab @ L_lab @ R_eps_lab
+                R_part_lab = N_bg_lab @ (R_eps_lab - correction) @ N_bg_lab
+
+                # Polarisation-specific intensity
+                if polarisation == "VV":
+                    intensity_factor = 45.0 * abs(e_VV @ R_part_lab @ e_L) ** 2
+                elif polarisation in ("VH", "HV"):
+                    intensity_factor = 45.0 * abs(e_VH @ R_part_lab @ e_L) ** 2
+                else:  # Unpolarised
+                    intensity_factor = 45.0 * (
+                        abs(e_VV @ R_part_lab @ e_L) ** 2
+                        + abs(e_VH @ R_part_lab @ e_L) ** 2
+                    )
+
+                # Scattering strength (Eq. 77) accumulated as Lorentzian (Eq. 88)
+                S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
+                spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
+
+        # Normalise by number of orientations
+        spectrum /= n_samples
+        return spectrum
 
     def _calculate_infrared(self, vs_cm1):
         """Calculate the powder infrared absorption for the range of frequencies in vs_cm1.
@@ -1898,6 +2166,21 @@ class PowderScenarioTab(ScenarioTab):
         self.refresh_required = True
         self.settings["Raman temperature"] = value
 
+    def on_orientation_samples_cb_activated(self, index):
+        """Handle a change to the number of orientation samples.
+
+        Parameters
+        ----------
+        index : int
+            Index into the orientation sample count list.
+
+        """
+        counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
+        value = counts[index]
+        logger.debug(f"{self.settings['Legend']} on_orientation_samples_cb_activated {value}")
+        self.refresh_required = True
+        self.settings["Raman orientation samples"] = value
+
     def refresh_raman(self):
         """Refresh the raman settings in the GUI.
 
@@ -1916,6 +2199,10 @@ class PowderScenarioTab(ScenarioTab):
         if pol in polarisations:
             self.polarisation_cb.setCurrentIndex(polarisations.index(pol))
         self.temperature_sb.setValue(self.settings["Raman temperature"])
+        counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
+        current = self.settings["Raman orientation samples"]
+        idx = counts.index(current) if current in counts else counts.index(256)
+        self.orientation_samples_cb.setCurrentIndex(idx)
         return
 
     def refresh_infrared(self):
@@ -2069,6 +2356,27 @@ class PowderScenarioTab(ScenarioTab):
         label = QLabel("Temperature (K)", self)
         label.setToolTip("Sample temperature in K (used for the Bose-Einstein occupation factor)")
         form.addRow(label, self.temperature_sb)
+        #
+        # Orientation samples for numerical powder averaging (non-spherical particles)
+        #
+        counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
+        self.orientation_samples_cb = QComboBox(self)
+        for c in counts:
+            self.orientation_samples_cb.addItem(str(c))
+        current = self.settings["Raman orientation samples"]
+        idx = counts.index(current) if current in counts else counts.index(256)
+        self.orientation_samples_cb.setCurrentIndex(idx)
+        self.orientation_samples_cb.setToolTip(
+            "Number of SO(3) orientations used for numerical powder averaging "
+            "(applies to non-spherical particles only; powers of 2 give optimal Sobol coverage)"
+        )
+        self.orientation_samples_cb.activated.connect(self.on_orientation_samples_cb_activated)
+        label = QLabel("Orientation samples", self)
+        label.setToolTip(
+            "Number of SO(3) orientations for numerical powder averaging "
+            "(non-spherical particles only; 256 is usually sufficient)"
+        )
+        form.addRow(label, self.orientation_samples_cb)
         return vbox, form
 
     def initialise_raman_settings(self):
@@ -2086,6 +2394,7 @@ class PowderScenarioTab(ScenarioTab):
         self.settings["Raman laser frequency"] = 785
         self.settings["Raman laser polarisation"] = "HV"
         self.settings["Raman temperature"] = 298.0
+        self.settings["Raman orientation samples"] = 256
         self.raman_spectrum = []
         return
 

@@ -2372,6 +2372,47 @@ def determine_euler_angles(R):
          phi = np.arctan2(R21/np.cos(theta1), R11/np.cos(theta1))
      return theta, phi, psi
 
+def euler_rotation_matrix(theta, phi, psi):
+     """Return the 3×3 SO(3) rotation matrix for the given ZYZ Euler angles.
+
+     Parameters
+     ----------
+     theta : float
+         The polar angle (rotation about Y axis) in radians.
+     phi : float
+         The first azimuthal angle (rotation about Z axis) in radians.
+     psi : float
+         The second azimuthal angle (rotation about Z axis) in radians.
+
+     Returns
+     -------
+     ndarray, shape (3, 3)
+         The rotation matrix R such that a tensor T transforms as R @ T @ R.T.
+
+     Notes
+     -----
+     Uses the same ZYZ Euler convention as :func:`euler_rotation`.
+     Uniform sampling over SO(3) is obtained by drawing::
+
+         phi   = 2π U₁
+         theta = arccos(2 U₂ - 1)
+         psi   = 2π U₃
+
+     where U₁, U₂, U₃ are independent Uniform[0, 1) random variables.
+
+     """
+     euler = np.zeros((3, 3))
+     euler[0, 0] =  np.cos(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.sin(psi)
+     euler[0, 1] = -np.sin(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.cos(psi)
+     euler[0, 2] =  np.sin(theta) * np.sin(phi)
+     euler[1, 0] =  np.cos(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.sin(psi)
+     euler[1, 1] = -np.sin(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.cos(psi)
+     euler[1, 2] = -np.sin(theta) * np.cos(phi)
+     euler[2, 0] =  np.sin(theta) * np.sin(psi)
+     euler[2, 1] =  np.sin(theta) * np.cos(psi)
+     euler[2, 2] =  np.cos(theta)
+     return euler
+
 def euler_rotation(vector, theta, phi, psi):
      """Apply a passive Euler rotation to a vector.
 
@@ -2392,23 +2433,13 @@ def euler_rotation(vector, theta, phi, psi):
 
      Notes
      -----
-     A passive Euler rotation refers to the rotation of the coordinate system 
-     while the vector remains fixed. This operation is often used in 
-     physics and engineering to describe the orientation of an object 
+     A passive Euler rotation refers to the rotation of the coordinate system
+     while the vector remains fixed. This operation is often used in
+     physics and engineering to describe the orientation of an object
      with respect to a reference coordinate system.
 
      """
-     euler = np.zeros( (3,3) )
-     euler[0, 0] =  np.cos(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.sin(psi)
-     euler[0, 1] = -np.sin(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.cos(psi)
-     euler[0, 2] =  np.sin(theta) * np.sin(phi)
-     euler[1, 0] =  np.cos(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.sin(psi)
-     euler[1, 1] = -np.sin(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.cos(psi)
-     euler[1, 2] = -np.sin(theta) * np.cos(phi)
-     euler[2, 0] =  np.sin(theta) * np.sin(psi)
-     euler[2, 1] =  np.sin(theta) * np.cos(psi)
-     euler[2, 2] =  np.cos(theta)
-     return np.matmul(euler, vector)
+     return np.matmul(euler_rotation_matrix(theta, phi, psi), vector)
 
 def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
      """Return a pool of processors given the number of cpus and whether threading is requested.
