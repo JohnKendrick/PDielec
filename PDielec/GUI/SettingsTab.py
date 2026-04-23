@@ -460,7 +460,7 @@ class SettingsTab(QWidget):
 
         # Calculate normal modes
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
-        if not self.mass_weighted_normal_modes:
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
             logger.warning("create_intensity_table: no normal modes available (no phonon data in input file)")
             return
 

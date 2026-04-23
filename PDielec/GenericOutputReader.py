@@ -643,7 +643,7 @@ class GenericOutputReader:
         # Construct UT from the normal modes
         if self.debug:
             logger.debug("calculate mass weighted normal modes")
-        if not self.mass_weighted_normal_modes:
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
             return self.mass_weighted_normal_modes
         n = np.size(self.mass_weighted_normal_modes, 0)
         m = np.size(self.mass_weighted_normal_modes, 1)*3
