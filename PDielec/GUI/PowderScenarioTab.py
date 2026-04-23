@@ -808,10 +808,15 @@ class PowderScenarioTab(ScenarioTab):
         rho2 = self.settings["Matrix density"]
         #
         # Avoid overflow through division by 0
+        # When matrix density is zero (e.g. 'none' matrix), volume fraction is undefined;
+        # leave the existing volume fraction unchanged.
         #
         mf2  = max(mf2,1.0E-18)
         rho1 = max(rho1,1.0E-18)
-        vf1 = ( 1.0 - self.settings["Bubble volume fraction"] ) * (mf1/mf2)*(rho2/rho1) / ( 1 + (mf1/mf2)*(rho2/rho1))
+        if rho2 < 1.0E-18:
+            vf1 = self.settings["Volume fraction"]
+        else:
+            vf1 = ( 1.0 - self.settings["Bubble volume fraction"] ) * (mf1/mf2)*(rho2/rho1) / ( 1 + (mf1/mf2)*(rho2/rho1))
         self.settings["Volume fraction"] = vf1
         blocking_state = self.vf_sb.signalsBlocked()
         self.vf_sb.blockSignals(True)
@@ -911,7 +916,11 @@ class PowderScenarioTab(ScenarioTab):
         vf2 = 1.0 - vf1 - self.settings["Bubble volume fraction"]
         rho1 = self.crystal_density()
         rho2 = self.settings["Matrix density"]
-        mf1 = rho1*vf1 / ( rho1*vf1 + rho2*vf2 )
+        denominator = rho1*vf1 + rho2*vf2
+        if denominator < 1e-30:
+            mf1 = 1.0
+        else:
+            mf1 = rho1*vf1 / denominator
         self.settings["Mass fraction"] = mf1
         blocking_state = self.mf_sb.signalsBlocked()
         self.mf_sb.blockSignals(True)
@@ -1235,6 +1244,25 @@ class PowderScenarioTab(ScenarioTab):
 
         """        
         logger.debug(f"{self.settings['Legend']} Start:: change_greyed_out")
+        if self.settings["Matrix"] == "none":
+            # No matrix selected: disable all EMT and matrix-related controls
+            self.size_sb.setEnabled(False)
+            self.sigma_sb.setEnabled(False)
+            self.shape_cb.setEnabled(False)
+            self.methods_cb.setEnabled(False)
+            self.density_sb.setEnabled(False)
+            self.permittivity_r_sb.setEnabled(False)
+            self.permittivity_i_sb.setEnabled(False)
+            self.vf_sb.setEnabled(False)
+            self.mf_sb.setEnabled(False)
+            self.bubble_vf_sb.setEnabled(False)
+            self.bubble_radius_sb.setEnabled(False)
+            self.h_sb.setEnabled(False)
+            self.k_sb.setEnabled(False)
+            self.l_sb.setEnabled(False)
+            self.aoverb_sb.setEnabled(False)
+            logger.debug(f"{self.settings['Legend']} Finished:: change_greyed_out")
+            return
         method = self.settings["Effective medium method"]
         if method in ( "Mie",  "Anisotropic-Mie" ):
             self.size_sb.setEnabled(True)
@@ -1417,28 +1445,37 @@ class PowderScenarioTab(ScenarioTab):
         sigmas_cm1 = settings_tab.sigmas_cm1
         modes_selected = settings_tab.modes_selected
 
-        # Crystal optical permittivity ε_i^∞ (3×3) and matrix optical permittivity ε_e^∞ (scalar)
+        # Crystal optical permittivity ε_i^∞ (3×3)
         epsilon_inf_i = np.array(self.reader.zerof_optical_dielectric, dtype=complex)
-        epsilon_e = float(np.real(self.matrixPermittivityFunction(0.0)))
-
-        # Depolarisation tensor L from particle shape (same logic as _calculate_infrared)
-        L = self.calculate_depolarisation_tensor()
-
-        # Internal field tensor N (Eq. 47):
-        #   N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}
         I3 = np.eye(3, dtype=complex)
-        N = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_inf_i - epsilon_e * I3))
 
-        # Particle phonon frequencies (Eqs. 73-74):
-        # D^particle = D^TO + (4π/(ε_e V)) (Z^mw)^T N_bg L Z^mw
-        # where Z^mw[α,κβ] = Z[α,κβ]/√M_κ (Eq. 64) and V is the unit-cell volume.
-        # N_bg ≈ N (Eqs. 67-68: background permittivity ≈ optical permittivity)
-        # When Born charges and the hessian are available, diagonalise D^particle
-        # to obtain shifted frequencies and transformed Raman tensors.
-        has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
-        has_born = len(self.reader.born_charges) > 0
-        has_normal_modes = bool(self.reader.mass_weighted_normal_modes)
-        has_correction_data = has_hessian and has_born and has_normal_modes
+        is_none_matrix = (self.settings["Matrix"] == "none")
+        if is_none_matrix:
+            # No matrix: skip all EMT/field corrections.
+            # N = I (no internal field), sphere path, no particle frequency correction.
+            N = I3.copy()
+            L = I3 / 3.0
+            has_correction_data = False
+            is_sphere = True
+        else:
+            # Matrix optical permittivity ε_e^∞ (scalar)
+            epsilon_e = float(np.real(self.matrixPermittivityFunction(0.0)))
+            # Depolarisation tensor L from particle shape (same logic as _calculate_infrared)
+            L = self.calculate_depolarisation_tensor()
+            # Internal field tensor N (Eq. 47):
+            #   N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}
+            N = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_inf_i - epsilon_e * I3))
+            # Particle phonon frequencies (Eqs. 73-74):
+            # When Born charges and the hessian are available, diagonalise D^particle
+            # to obtain shifted frequencies and transformed Raman tensors.
+            has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
+            has_born = len(self.reader.born_charges) > 0
+            has_normal_modes = bool(self.reader.mass_weighted_normal_modes)
+            has_correction_data = has_hessian and has_born and has_normal_modes
+            is_sphere = np.allclose(np.real(L), (1.0 / 3.0) * np.eye(3), atol=1e-6)
+
+        # Volume fraction of crystal in the sample (scales total scattering intensity).
+        volume_fraction = self.settings["Volume fraction"]
 
         # Raman experiment parameters
         laser_nm = self.settings["Raman laser frequency"]
@@ -1449,9 +1486,6 @@ class PowderScenarioTab(ScenarioTab):
 
         vs_cm1 = np.array(vs_cm1, dtype=float)
 
-        # Determine whether the depolarisation tensor is spherical (L = I/3)
-        is_sphere = np.allclose(np.real(L), (1.0 / 3.0) * np.eye(3), atol=1e-6)
-
         # Non-sphere: numerical SO(3) averaging with per-orientation N_bg (Eq. 60)
         if not is_sphere and has_correction_data:
             logger.debug(f"{self.settings['Legend']} _calculate_raman: non-sphere numerical average ({n_samples} samples)")
@@ -1459,7 +1493,7 @@ class PowderScenarioTab(ScenarioTab):
                 L, epsilon_e, epsilon_inf_i, I3,
                 raman_tensors, sigmas_cm1, modes_selected,
                 polarisation, nu_L, temperature, n_samples, vs_cm1)
-            self.raman_spectrum = spectrum.tolist()
+            self.raman_spectrum = (spectrum * volume_fraction).tolist()
             self.vs_cm1 = list(vs_cm1)
             self.calculation_required = False
             QCoreApplication.processEvents()
@@ -1496,8 +1530,12 @@ class PowderScenarioTab(ScenarioTab):
 
                 # Effective particle Raman tensor (Eq. 60):
                 #   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
-                correction = (1.0 / epsilon_e) * (epsilon_inf_i - epsilon_e * I3) @ N @ L @ R_eps
-                R_particle = N @ (R_eps - correction) @ N
+                # For 'none' matrix, use the raw DFT Raman tensor with no correction.
+                if is_none_matrix:
+                    R_particle = np.array(R_eps, dtype=complex)
+                else:
+                    correction = (1.0 / epsilon_e) * (epsilon_inf_i - epsilon_e * I3) @ N @ L @ R_eps
+                    R_particle = N @ (R_eps - correction) @ N
 
                 # Rotational invariants for a general complex tensor (Eqs. 90-96)
                 alpha = (R_particle[0, 0] + R_particle[1, 1] + R_particle[2, 2]) / 3.0
@@ -1530,7 +1568,7 @@ class PowderScenarioTab(ScenarioTab):
                 # Add Lorentzian contribution to the spectrum (Eq. 88)
                 spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
 
-        self.raman_spectrum = spectrum.tolist()
+        self.raman_spectrum = (spectrum * volume_fraction).tolist()
         self.vs_cm1 = list(vs_cm1)
         self.calculation_required = False
         QCoreApplication.processEvents()
@@ -1949,6 +1987,10 @@ class PowderScenarioTab(ScenarioTab):
             logger.debug(f"{self.settings['Legend']} Finished:: calculate - immediate return because reader unavailable")
             return
         logger.debug(f"{self.settings['Legend']} calculate - number of frequencies {len(vs_cm1)}")
+        # Bypass EMT when 'none' matrix is selected: use raw DFT permittivity
+        if self.settings["Matrix"] == "none":
+            self._calculate_infrared_none(vs_cm1)
+            return
 
         # Calculate the depolarisation tensor and the unique direction
         # (sets self.depolarisation and self.direction as side effects)
@@ -2006,6 +2048,60 @@ class PowderScenarioTab(ScenarioTab):
         self.calculation_required = False
         QCoreApplication.processEvents()
         logger.debug(f"{self.settings['Legend']} Finished:: calculate")
+        return
+
+    def _calculate_infrared_none(self, vs_cm1):
+        """Calculate the powder infrared spectrum directly from DFT data, bypassing EMT.
+
+        Used when the matrix material is 'none'.  The isotropic average of the
+        DFT crystal permittivity tensor (trace/3) is used directly as the
+        effective permittivity; no effective medium correction is applied.
+        The absorption coefficient is derived from the imaginary refractive
+        index in the same way as for the normal EMT path.
+
+        Parameters
+        ----------
+        vs_cm1 : array_like
+            Array of frequencies in cm^-1.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"{self.settings['Legend']} Start:: _calculate_infrared_none")
+        # Ensure self.depolarisation is a valid 3×3 matrix for spreadsheet writing.
+        # For the "none" path there is no particle shape, so use sphere (L = I/3).
+        self.depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
+        self.direction = np.array([])
+        crystalPermittivity = self.notebook.settingsTab.get_crystal_permittivity(vs_cm1)
+        concentration = self.notebook.plottingTab.settings["cell concentration"]
+        volume_fraction = self.settings["Volume fraction"]
+        self.realPermittivity = []
+        self.imagPermittivity = []
+        self.absorptionCoefficient = []
+        self.molarAbsorptionCoefficient = []
+        self.vs_cm1 = []
+        for v_cm1, crystal_perm in zip(vs_cm1, crystalPermittivity):
+            trace = (crystal_perm[0, 0] + crystal_perm[1, 1] + crystal_perm[2, 2]) / 3.0
+            self.realPermittivity.append(float(np.real(trace)))
+            self.imagPermittivity.append(float(np.imag(trace)))
+            # Use Im(ε) directly rather than Im(√ε): Im(ε) from the DFT Lorentzian model
+            # is a pure sum of Lorentzians centred at the TO frequencies.  Computing
+            # Im(√ε) instead introduces the full Kramers-Kronig reststrahlen lineshape
+            # (asymmetric peaks, frequency shifts) which is not the intended baseline.
+            # Scale by volume_fraction so that the raw absorption_coefficient represents
+            # the mixture (consistent with the EMT path), and divide molar by vf too
+            # so the intrinsic molar absorption coefficient is vf-independent.
+            absorption_coefficient = v_cm1 * 4 * np.pi * np.imag(trace) * math.log10(math.e) * volume_fraction
+            molar_absorption_coefficient = absorption_coefficient / concentration / volume_fraction if concentration > 1e-30 else 0.0
+            self.absorptionCoefficient.append(absorption_coefficient)
+            self.molarAbsorptionCoefficient.append(molar_absorption_coefficient)
+            self.vs_cm1.append(v_cm1)
+            self.notebook.progressbars_update()
+        self.calculation_required = False
+        QCoreApplication.processEvents()
+        logger.debug(f"{self.settings['Legend']} Finished:: _calculate_infrared_none")
         return
 
     def get_result(self, vs_cm1, plot_type):

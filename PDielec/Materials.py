@@ -216,13 +216,15 @@ class MaterialsDataBase:
             fullList.append("kbr")
         if "nujol" not in fullList:
             fullList.append("nujol")
+        if "none" not in fullList:
+            fullList.append("none")
         logger.debug(f"get_sheet_names:: {fullList}")
         return sorted(fullList, key=lambda s: s.casefold())
 
     def get_material(self,sheet):
         """Return a material object based on the data in sheet (an excel sheet).
 
-        If one of the following is requested: air, vacuum, ptfe, ldpe, mdpe, kbr, nujol, then
+        If one of the following is requested: air, vacuum, ptfe, ldpe, mdpe, kbr, nujol, none, then
         the material is created even if it is not in the database.
 
         Parameters
@@ -257,6 +259,8 @@ class MaterialsDataBase:
                 material = Constant("kbr",permittivity=2.25,density=2.75)
             elif sheet == "nujol":
                 material = Constant("nujol",permittivity=2.155,density=0.838)
+            elif sheet == "none":
+                material = NoMatrix()
             else:
                 logger.error(f"Error in get_material sheet {sheet} not in self.sheetNames {self.sheetNames}")
                 material = Constant("vacuum",permittivity=1.0,density=0.0)
@@ -610,6 +614,9 @@ class Material:
     + Material subclass         + DielectricFunction subclass                                 +
     +===========================+=============================================================+
     + :class:`Constant`         + :class:`~PDielec.DielectricFunction.Constant`               +
+    +---------------------------+-------------------------------------------------------------+
+    + :class:`NoMatrix`         + :class:`~PDielec.DielectricFunction.ConstantScalar` (1.0)  +
+    +                           + placeholder; bypasses EMT entirely when used as matrix.     +
     +---------------------------+-------------------------------------------------------------+
     + :class:`External`         + This class is passed a permittivity object which has been   +
     +                           + defined externally                                          +
@@ -1051,6 +1058,33 @@ class Constant(Material):
         """
         super().__init__(name, density=density, permittivity_object=DielectricFunction.ConstantScalar(permittivity), cell=cell)
         self.type = "Constant permittivity"
+
+
+class NoMatrix(Material):
+    """A sentinel material representing no support matrix.
+
+    When selected as the support matrix, calculations bypass effective medium
+    theory entirely. Infrared spectra are computed directly from the
+    isotropic average of the DFT crystal permittivity tensor.  Raman spectra
+    use the raw DFT Raman tensors with no local-field (internal-field)
+    correction and no particle-shape frequency shift.
+
+    Attributes
+    ----------
+    type : str
+        Set to 'No matrix (DFT only)'.
+
+    """
+
+    def __init__(self):
+        """Create a NoMatrix material.
+
+        The permittivity is set to 1.0 as a placeholder; it is not used in
+        any actual calculation when this material is active.
+        """
+        super().__init__("none", density=0.0,
+                         permittivity_object=DielectricFunction.ConstantScalar(1.0))
+        self.type = "No matrix (DFT only)"
 
 
 class External(Material):
