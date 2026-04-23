@@ -1437,6 +1437,7 @@ class PowderScenarioTab(ScenarioTab):
             self.raman_spectrum = list(np.zeros(len(vs_cm1)))
             self.vs_cm1 = list(np.array(vs_cm1))
             self.calculation_required = False
+            self.notebook.progressbars_update(increment=len(vs_cm1))
             return
 
         # Mode information from settings tab
@@ -1489,10 +1490,28 @@ class PowderScenarioTab(ScenarioTab):
         # Non-sphere: numerical SO(3) averaging with per-orientation N_bg (Eq. 60)
         if not is_sphere and has_correction_data:
             logger.debug(f"{self.settings['Legend']} _calculate_raman: non-sphere numerical average ({n_samples} samples)")
+            n_freqs = len(vs_cm1)
+            _accumulated = [0.0]
+            _updated = [0]
+            _increment_per_sample = n_freqs / n_samples
+
+            def _progress_callback():
+                _accumulated[0] += _increment_per_sample
+                new_int = int(_accumulated[0])
+                if new_int > _updated[0]:
+                    self.notebook.progressbars_update(increment=new_int - _updated[0])
+                    _updated[0] = new_int
+                    QCoreApplication.processEvents()
+
             spectrum = self._compute_orientation_sampled_spectrum(
                 L, epsilon_e, epsilon_inf_i, I3,
                 raman_tensors, sigmas_cm1, modes_selected,
-                polarisation, nu_L, temperature, n_samples, vs_cm1)
+                polarisation, nu_L, temperature, n_samples, vs_cm1,
+                progress_callback=_progress_callback)
+            # Flush any remaining fractional increments
+            remaining = n_freqs - _updated[0]
+            if remaining > 0:
+                self.notebook.progressbars_update(increment=remaining)
             self.raman_spectrum = (spectrum * volume_fraction).tolist()
             self.vs_cm1 = list(vs_cm1)
             self.calculation_required = False
@@ -1568,6 +1587,7 @@ class PowderScenarioTab(ScenarioTab):
                 # Add Lorentzian contribution to the spectrum (Eq. 88)
                 spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
 
+        self.notebook.progressbars_update(increment=len(vs_cm1))
         self.raman_spectrum = (spectrum * volume_fraction).tolist()
         self.vs_cm1 = list(vs_cm1)
         self.calculation_required = False
@@ -1766,7 +1786,8 @@ class PowderScenarioTab(ScenarioTab):
     def _compute_orientation_sampled_spectrum(
             self, L, epsilon_e, epsilon_inf_i, I3,
             raman_tensors, sigmas_cm1, modes_selected,
-            polarisation, nu_L, temperature, n_samples, vs_cm1):
+            polarisation, nu_L, temperature, n_samples, vs_cm1,
+            progress_callback=None):
         """Compute the powder Raman spectrum for non-spherical particles by numerical SO(3) averaging.
 
         The particle dynamical matrix correction ΔD is orientation-invariant (proof: rotating
@@ -1803,6 +1824,9 @@ class PowderScenarioTab(ScenarioTab):
             Number of SO(3) orientations to sample.
         vs_cm1 : ndarray, shape (n_freqs,)
             Frequency axis for the spectrum in cm⁻¹.
+        progress_callback : callable or None, optional
+            If provided, called once after each orientation sample to allow the
+            caller to update a progress bar.  The callable takes no arguments.
 
         Returns
         -------
@@ -1956,6 +1980,9 @@ class PowderScenarioTab(ScenarioTab):
                 # Scattering strength (Eq. 77) accumulated as Lorentzian (Eq. 88)
                 S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
                 spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
+
+            if progress_callback is not None:
+                progress_callback()
 
         # Normalise by number of orientations
         spectrum /= n_samples
