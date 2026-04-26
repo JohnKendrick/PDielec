@@ -45,6 +45,7 @@ from scipy import signal
 import PDielec.GTMcore as GTM
 from PDielec import Materials
 from PDielec.Constants import speed_light_si
+from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
 from PDielec.Materials import MaterialsDataBase
@@ -381,7 +382,14 @@ class CrystalScenarioTab(ScenarioTab):
         self.p_absorbtance = []
         self.s_absorbtance = []
         self.epsilon = []
+        self.raman_spectrum = []
         self.layers = []
+        if spectroscopy == "Crystal Raman":
+            self.settings["Laser frequency cm1"] = 18797.0   # ~532 nm
+            self.settings["Incident polarisation"] = "p"
+            self.settings["Detected polarisation"] = "unpolarised"
+            self.settings["Temperature K"] = 298.0
+            self.settings["Number of GL points"] = 20
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -2074,22 +2082,143 @@ class CrystalScenarioTab(ScenarioTab):
             logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {self.spectroscopy}")
 
     def _calculate_raman(self, vs_cm1):
-        """Calculate the crystal Raman spectrum for the range of frequencies in vs_cm1.
+        """Calculate the layered crystal Raman spectrum via GTM field integration.
 
-        Not yet implemented.
+        Builds a GTMcore multilayer system from the current layer stack, then
+        uses LayeredRamanCalculator to evaluate the Raman source-overlap integral
+        with Gauss-Legendre quadrature inside each Raman-active (dielectric) layer.
+
+        Results are stored in ``self.raman_spectrum``.
 
         Parameters
         ----------
         vs_cm1 : array_like
-            Array of frequencies for which to calculate the Raman spectrum.
+            Raman-shift axis in cm⁻¹ at which to evaluate the spectrum.
 
         Returns
         -------
         None
 
         """
-        logger.debug(f"{self.settings['Legend']} _calculate_raman: not yet implemented")
+        logger.debug(f"{self.settings['Legend']} Start:: _calculate_raman")
+        if not self.calculation_required:
+            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: calculation_required=False")
+            return
+        QCoreApplication.processEvents()
+        self.vs_cm1 = vs_cm1
+
+        settings = self.notebook.mainTab.settings
+        program = settings["Program"]
+        filename = self.notebook.mainTab.get_full_file_name()
+        if self.reader is None:
+            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: no reader")
+            return
+        if program == "":
+            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: no program")
+            return
+        if filename == "":
+            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: no filename")
+            return
+
+        raman_tensors = self.reader.get_raman_tensors()
+        if raman_tensors is None:
+            logger.warning(f"{self.settings['Legend']} _calculate_raman: reader has no Raman tensors")
+            self.calculation_required = False
+            return
+
+        # Euler angles (global azimuthal rotation only; HKL rotation is in layer.euler)
+        theta = 0.0
+        phi = 0.0
+        psi = np.radians(self.settings["Global azimuthal angle"])
+        angle_of_incidence = np.radians(self.settings["Angle of incidence"])
+
+        # Compute HKL rotation matrices for all tensor layers
+        for layer in self.layers:
+            if layer.is_tensor():
+                hkl = layer.get_hkl()
+                if hkl[0] == 0 and hkl[1] == 0 and hkl[2] == 0:
+                    QMessageBox.about(self, "", f"Unable to calculate surface for scenario {self.settings['Legend']}, hkl=[0,0,0]")
+                    return
+                layer.calculate_euler_matrix()
+
+        # Build GTM multilayer system
+        mode = self.settings["Mode"]
+        exponent_threshold = self.exponent_threshold
+        superstrate = GTM.SemiInfiniteLayer(self.layers[0], exponent_threshold=exponent_threshold)
+        substrate   = GTM.SemiInfiniteLayer(self.layers[-1], exponent_threshold=exponent_threshold)
+        selected_layers = self.layers[1:-1]
+        gtm_layers = []
+        for layer in selected_layers:
+            incoherent_option = layer.get_incoherent_option()
+            gtm_layers.append(gtm_methods[incoherent_option](layer, exponent_threshold=exponent_threshold))
+        if mode == "Scattering matrix":
+            system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
+        else:
+            system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
+
+        # Apply global azimuthal rotation to all GTM layers
+        system.superstrate.set_euler(theta, phi, psi)
+        system.substrate.set_euler(theta, phi, psi)
+        for gtm_layer in system.layers:
+            gtm_layer.set_euler(theta, phi, psi)
+
+        # Global azimuthal rotation matrix (rotation around z by psi)
+        G_psi = np.array([
+            [ np.cos(psi), -np.sin(psi), 0.0],
+            [ np.sin(psi),  np.cos(psi), 0.0],
+            [ 0.0,          0.0,         1.0],
+        ])
+
+        # Scale stored Raman tensors by sqrt(volume) to get actual R = sqrt(V) * T_stored
+        volume_ang3 = self.reader.volume   # Å³
+        scale = np.sqrt(volume_ang3)
+        scaled_tensors = [scale * np.asarray(R, dtype=float) for R in raman_tensors]
+
+        # Phonon frequencies and linewidths from SettingsTab
+        frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
+        sigmas_cm1      = self.notebook.settingsTab.sigmas_cm1
+
+        # Build RamanLayer descriptors for each Raman-active (dielectric) layer
+        raman_layer_list = []
+        for sys_idx, scl in enumerate(selected_layers):
+            if not scl.is_dielectric():
+                continue
+            # Combined rotation: G_psi (global azimuthal) on top of G_HKL (surface normal)
+            G_total = G_psi @ scl.euler
+            rl = RamanLayer(
+                layer_index=sys_idx,
+                phonon_frequencies_cm1=frequencies_cm1,
+                raman_tensors=scaled_tensors,
+                rotation_matrix=G_total,
+            )
+            raman_layer_list.append(rl)
+
+        if not raman_layer_list:
+            logger.warning(f"{self.settings['Legend']} _calculate_raman: no Raman-active dielectric layers in stack")
+            self.calculation_required = False
+            return
+
+        laser_freq_cm1 = self.settings.get("Laser frequency cm1", 18797.0)
+        incident_pol   = self.settings.get("Incident polarisation", "p")
+        detected_pol   = self.settings.get("Detected polarisation", "unpolarised")
+        temperature_K  = self.settings.get("Temperature K", 298.0)
+        n_gauss        = self.settings.get("Number of GL points", 20)
+
+        calculator = LayeredRamanCalculator(
+            system=system,
+            raman_layers=raman_layer_list,
+            laser_frequency_cm1=laser_freq_cm1,
+            incident_angle_rad=angle_of_incidence,
+            incident_pol=incident_pol,
+            detected_pol=detected_pol,
+            temperature_K=temperature_K,
+            linewidths_cm1=sigmas_cm1,
+            n_gauss=n_gauss,
+        )
+
+        self.raman_spectrum = calculator.calculate_spectrum(vs_cm1)
         self.calculation_required = False
+        logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
 
     def _calculate_infrared(self,vs_cm1):
         """Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
@@ -2213,6 +2342,7 @@ class CrystalScenarioTab(ScenarioTab):
                 "Crystal Transmittance (S polarisation)": self.s_transmittance,
                 "Crystal Absorbtance (P polarisation)"  : self.p_absorbtance,
                 "Crystal Absorbtance (S polarisation)"  : self.s_absorbtance,
+                "Crystal Raman Intensity"               : self.raman_spectrum,
         }.get(plot_type)
 
     def get_results(self, vs_cm1):
