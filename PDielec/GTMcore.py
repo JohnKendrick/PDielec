@@ -1118,8 +1118,9 @@ class SemiInfiniteLayer(CoherentLayer):
 
         """
         self.calculate_propagation_exponents(f)
-        return np.eye( 4, dtype=np.cdouble)
-        
+        self.Ki = np.eye(4, dtype=np.cdouble)
+        return self.Ki
+
 class IncoherentIntensityLayer(CoherentLayer):
     """Define an incoherent layer using intensity transfer matrices.
 

@@ -39,6 +39,14 @@ Phase 2 features (all enabled by default):
 - Coherent layer summation: set ``coherent_layers=True`` to sum amplitudes
   across Raman-active layers before squaring.
 
+Phase 3c Jones-vector polarisation:
+- Incident and detected channels are internally represented as Jones vectors
+  ``[cp, cs]`` (complex coefficients for p- and s-pol field components).  The
+  string shortcuts ``incident_pol='p'`` → ``[1, 0]``, ``'s'`` → ``[0, 1]``,
+  and ``detected_pol='unpolarised'`` → incoherent sum of |A_p|² + |A_s|² are
+  converted automatically.  Direct Jones vector control can be added later via
+  a subclass or optional parameter.
+
 The integral is evaluated numerically using Gauss-Legendre quadrature within
 each Raman-active layer.
 """
@@ -259,7 +267,7 @@ class LayeredRamanCalculator:
         temperature_K,
         linewidths_cm1,
         n_gauss=20,
-        collection_side='superstrate',
+        collection_side="superstrate",
         collection_angle_rad=None,
         coherent_layers=False,
         approximate_es=False,
@@ -286,6 +294,15 @@ class LayeredRamanCalculator:
         self.coherent_layers = bool(coherent_layers)
         self.approximate_es = bool(approximate_es)
 
+        # Phase 3c: internal Jones vectors for incident and detected channels.
+        # _incident_jones : (cp, cs) complex pair — determines the linear combination
+        #     of p- and s-pol incident fields used in the overlap integral.
+        # _detected_jones : (cp, cs) or None — None signals incoherent (no-analyser)
+        #     detection: both p and s amplitudes are squared and summed.
+        _pol_to_jones = {"p": np.array([1.0 + 0j, 0.0]), "s": np.array([0.0, 1.0 + 0j])}
+        self._incident_jones = _pol_to_jones[incident_pol]
+        self._detected_jones = None if detected_pol == "unpolarised" else _pol_to_jones[detected_pol]
+
         # Gauss-Legendre nodes and weights on [-1, 1]
         self._gl_nodes, self._gl_weights = leggauss(self.n_gauss)
 
@@ -310,9 +327,12 @@ class LayeredRamanCalculator:
         Populates
         ---------
         _gl_z : ndarray
-            Concatenated GL z coordinates for all Raman-active layers.
+            Concatenated GL z coordinates for all Raman-active layers, in metres
+            (the unit ``calculate_Efield`` expects).
         _gl_phys_weights : ndarray
-            Corresponding integration weights in metres (GL weight × half-thickness).
+            Corresponding integration weights in Ångström (GL weight × half-thickness × 1e10).
+            The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
+            keeping intensity magnitudes in a readable range.
         _gl_layer_slices : list of slice
             One slice per ``RamanLayer`` indexing into ``_gl_z`` / ``_gl_phys_weights``.
         """
@@ -332,8 +352,8 @@ class LayeredRamanCalculator:
             z_end   = boundaries[idx + 2]
             half    = 0.5 * (z_end - z_start)
             mid     = 0.5 * (z_start + z_end)
-            z_j = mid + half * self._gl_nodes
-            w_j = half * self._gl_weights
+            z_j = mid + half * self._gl_nodes              # metres (for calculate_Efield)
+            w_j = half * self._gl_weights * 1.0e10         # Å (for the intensity integral)
             z_parts.append(z_j)
             w_parts.append(w_j)
             slices.append(slice(offset, offset + self.n_gauss))
@@ -419,8 +439,10 @@ class LayeredRamanCalculator:
             'unpolarised'``; ``None`` otherwise.
 
         """
-        # Incident field: shape (3, n_gauss)
-        E_L = E_L_out[0:3, sl] if self.incident_pol == "p" else E_L_out[3:6, sl]
+        # Incident field: Jones vector combination of p and s incidence.
+        # E_L_out rows 0:3 = p-pol incidence, rows 3:6 = s-pol incidence.
+        cp_L, cs_L = self._incident_jones
+        E_L = cp_L * E_L_out[0:3, sl] + cs_L * E_L_out[3:6, sl]  # (3, n_gauss)
 
         # R_lab @ E_L  →  shape (3, n_gauss)
         R_E_L = R_lab @ E_L
@@ -428,13 +450,16 @@ class LayeredRamanCalculator:
         # Physical quadrature weights for this layer
         w = self._gl_phys_weights[sl]  # shape (n_gauss,)
 
-        if self.detected_pol == "unpolarised":
+        if self._detected_jones is None:
+            # Unpolarised (no analyser): incoherent sum of p and s detected channels.
             E_S_p = E_S_out[0:3, sl]
             E_S_s = E_S_out[3:6, sl]
             integrand_p = np.einsum("ij,ij->j", E_S_p, R_E_L)  # shape (n_gauss,)
             integrand_s = np.einsum("ij,ij->j", E_S_s, R_E_L)
             return np.dot(w, integrand_p), np.dot(w, integrand_s)
-        E_S = E_S_out[0:3, sl] if self.detected_pol == "p" else E_S_out[3:6, sl]
+        # Polarised detection: Jones vector combination of p and s detected fields.
+        cp_S, cs_S = self._detected_jones
+        E_S = cp_S * E_S_out[0:3, sl] + cs_S * E_S_out[3:6, sl]
         integrand = np.einsum("ij,ij->j", E_S, R_E_L)
         return np.dot(w, integrand), None
 
@@ -541,9 +566,9 @@ class LayeredRamanCalculator:
                     R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
                     amp_p, amp_s = self._layer_amplitude(E_L_out, E_S_out, R_lab, sl)
                     total_amp_p += amp_p
-                    if self.detected_pol == "unpolarised":
+                    if self._detected_jones is None:
                         total_amp_s += amp_s
-                if self.detected_pol == "unpolarised":
+                if self._detected_jones is None:
                     I_m = abs(total_amp_p) ** 2 + abs(total_amp_s) ** 2
                 else:
                     I_m = abs(total_amp_p) ** 2
@@ -554,7 +579,7 @@ class LayeredRamanCalculator:
                     R_crystal = rl.raman_tensors[mode_idx]
                     R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
                     amp_p, amp_s = self._layer_amplitude(E_L_out, E_S_out, R_lab, sl)
-                    if self.detected_pol == "unpolarised":
+                    if self._detected_jones is None:
                         I_m += abs(amp_p) ** 2 + abs(amp_s) ** 2
                     else:
                         I_m += abs(amp_p) ** 2

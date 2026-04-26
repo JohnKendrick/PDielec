@@ -15,6 +15,7 @@
 """CrystalScenarioTab module."""
 import copy
 import logging
+import math
 from functools import partial
 from itertools import product
 
@@ -22,6 +23,7 @@ import numpy as np
 from qtpy.QtCore import QCoreApplication, QSize, Qt
 from qtpy.QtWidgets import (
     QApplication,
+    QCheckBox,
     QComboBox,
     QDoubleSpinBox,
     QFormLayout,
@@ -44,10 +46,10 @@ from scipy import signal
 
 import PDielec.GTMcore as GTM
 from PDielec import Materials
-from PDielec.Constants import speed_light_si
-from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer
+from PDielec.Constants import amu, angs2bohr, speed_light_si, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
+from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer
 from PDielec.Materials import MaterialsDataBase
 
 logger = logging.getLogger(__name__)
@@ -394,6 +396,8 @@ class CrystalScenarioTab(ScenarioTab):
             self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
             self.settings["Coherent layer summation"] = False
             self.settings["Approximate ES"] = False
+            self.settings["Phonon boundary correction"] = "none"  # 'none' or 'slab'
+            self.settings["Raman normalisation"] = "none"        # 'none', 'max=1', or 'area=1'
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -471,13 +475,19 @@ class CrystalScenarioTab(ScenarioTab):
         #
         label,layout = self.smoothing_widget()
         #
+        # Crystal Raman specific widgets (Phase 2f + Phase 3a)
+        #
+        if spectroscopy == "Crystal Raman":
+            self._build_raman_widgets()
+        #
         # Add a legend option
         #
         self.legend_le = QLineEdit(self)
         self.legend_le.setToolTip("The legend will be used to describe the results in the plot")
         self.legend_le.setText(self.settings["Legend"])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel("Crystal IR Scenario legend")
+        legend_label_text = "Crystal Raman Scenario legend" if spectroscopy == "Crystal Raman" else "Crystal IR Scenario legend"
+        label = QLabel(legend_label_text)
         label.setToolTip("The legend will be used to describe the results in the plot")
         self.form.addRow(label, self.legend_le)
         #
@@ -1417,6 +1427,157 @@ class CrystalScenarioTab(ScenarioTab):
         label.setToolTip("Define the angle of incidence, (normal incidence is 0 degrees).")
         return label,self.angle_of_incidence_sb
 
+    def _build_raman_widgets(self):
+        """Build and add Crystal Raman-specific GUI widgets to self.form.
+
+        Called from __init__ only when spectroscopy == 'Crystal Raman'.
+        Creates widgets for laser frequency, temperature, GL quadrature points,
+        incident/detected polarisation, collection geometry, coherent summation,
+        approximate-E_S flag, and phonon boundary correction (Phase 3a).
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        # Separator
+        label = QLabel("Crystal Raman settings")
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        hbox = QHBoxLayout()
+        hbox.addWidget(line)
+        hbox.setAlignment(Qt.AlignVCenter)
+        self.form.addRow(label, hbox)
+
+        # Laser frequency
+        self.laser_freq_sb = QDoubleSpinBox(self)
+        self.laser_freq_sb.setRange(5000.0, 50000.0)
+        self.laser_freq_sb.setSingleStep(1.0)
+        self.laser_freq_sb.setDecimals(1)
+        self.laser_freq_sb.setValue(self.settings["Laser frequency cm1"])
+        self.laser_freq_sb.valueChanged.connect(self.on_laser_freq_sb_changed)
+        self.laser_freq_sb.setToolTip("Laser frequency in cm⁻¹ (e.g. 18797 ≈ 532 nm, 15803 ≈ 633 nm)")
+        label = QLabel("Laser frequency (cm⁻¹)")
+        label.setToolTip(self.laser_freq_sb.toolTip())
+        self.form.addRow(label, self.laser_freq_sb)
+
+        # Temperature
+        self.temperature_sb = QDoubleSpinBox(self)
+        self.temperature_sb.setRange(0.0, 2000.0)
+        self.temperature_sb.setSingleStep(1.0)
+        self.temperature_sb.setDecimals(1)
+        self.temperature_sb.setValue(self.settings["Temperature K"])
+        self.temperature_sb.valueChanged.connect(self.on_temperature_sb_changed)
+        self.temperature_sb.setToolTip("Sample temperature in Kelvin for the Bose-Einstein thermal prefactor")
+        label = QLabel("Temperature (K)")
+        label.setToolTip(self.temperature_sb.toolTip())
+        self.form.addRow(label, self.temperature_sb)
+
+        # Number of Gauss-Legendre quadrature points
+        self.n_gauss_sb = QSpinBox(self)
+        self.n_gauss_sb.setRange(4, 200)
+        self.n_gauss_sb.setSingleStep(2)
+        self.n_gauss_sb.setValue(self.settings["Number of GL points"])
+        self.n_gauss_sb.valueChanged.connect(self.on_n_gauss_sb_changed)
+        self.n_gauss_sb.setToolTip("Number of Gauss-Legendre quadrature points per Raman-active layer\n(higher = more accurate but slower)")
+        label = QLabel("GL quadrature points")
+        label.setToolTip(self.n_gauss_sb.toolTip())
+        self.form.addRow(label, self.n_gauss_sb)
+
+        # Incident polarisation
+        self.incident_pol_cb = QComboBox(self)
+        self.incident_pol_cb.addItems(["p", "s"])
+        idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.incident_pol_cb.setCurrentIndex(idx)
+        self.incident_pol_cb.activated.connect(self.on_incident_pol_cb_activated)
+        self.incident_pol_cb.setToolTip("Incident laser polarisation (p = in the plane of incidence, s = perpendicular)")
+        label = QLabel("Incident polarisation")
+        label.setToolTip(self.incident_pol_cb.toolTip())
+        self.form.addRow(label, self.incident_pol_cb)
+
+        # Detected polarisation
+        self.detected_pol_cb = QComboBox(self)
+        self.detected_pol_cb.addItems(["p", "s", "unpolarised"])
+        idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.detected_pol_cb.setCurrentIndex(idx)
+        self.detected_pol_cb.activated.connect(self.on_detected_pol_cb_activated)
+        self.detected_pol_cb.setToolTip("Detected polarisation (p, s, or 'unpolarised' for no analyser — sums |A_p|² + |A_s|²)")
+        label = QLabel("Detected polarisation")
+        label.setToolTip(self.detected_pol_cb.toolTip())
+        self.form.addRow(label, self.detected_pol_cb)
+
+        # Collection side
+        self.collection_side_cb = QComboBox(self)
+        self.collection_side_cb.addItems(["superstrate", "substrate"])
+        idx = self.collection_side_cb.findText(self.settings["Collection side"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.collection_side_cb.setCurrentIndex(idx)
+        self.collection_side_cb.activated.connect(self.on_collection_side_cb_activated)
+        self.collection_side_cb.setToolTip("Which side the detector is on:\n'superstrate' = backscattering (default)\n'substrate' = forward scattering (reversed stack for E_S)")
+        label = QLabel("Collection side")
+        label.setToolTip(self.collection_side_cb.toolTip())
+        self.form.addRow(label, self.collection_side_cb)
+
+        # Collection angle
+        self.collection_angle_sb = QDoubleSpinBox(self)
+        self.collection_angle_sb.setRange(-1.0, 89.9)
+        self.collection_angle_sb.setSingleStep(1.0)
+        self.collection_angle_sb.setDecimals(1)
+        self.collection_angle_sb.setValue(self.settings["Collection angle"])
+        self.collection_angle_sb.valueChanged.connect(self.on_collection_angle_sb_changed)
+        self.collection_angle_sb.setToolTip("Collection (detector) angle in degrees.\n−1 = use the angle of incidence (default for backscattering)")
+        label = QLabel("Collection angle (°, −1 = auto)")
+        label.setToolTip(self.collection_angle_sb.toolTip())
+        self.form.addRow(label, self.collection_angle_sb)
+
+        # Coherent layer summation
+        self.coherent_cb = QCheckBox(self)
+        self.coherent_cb.setChecked(self.settings["Coherent layer summation"])
+        self.coherent_cb.toggled.connect(self.on_coherent_cb_toggled)
+        self.coherent_cb.setToolTip("When checked, sum amplitudes across Raman-active layers before squaring\n(coherent combination). Default: incoherent (sum intensities).")
+        label = QLabel("Coherent layer summation")
+        label.setToolTip(self.coherent_cb.toolTip())
+        self.form.addRow(label, self.coherent_cb)
+
+        # Approximate E_S = E_L
+        self.approximate_cb = QCheckBox(self)
+        self.approximate_cb.setChecked(self.settings["Approximate ES"])
+        self.approximate_cb.toggled.connect(self.on_approximate_cb_toggled)
+        self.approximate_cb.setToolTip("When checked, use E_S ≈ E_L (both at the laser frequency).\nDefault: compute E_S separately at ν_S = ν_L − ν_m per mode.")
+        label = QLabel("Approximate E_S = E_L")
+        label.setToolTip(self.approximate_cb.toolTip())
+        self.form.addRow(label, self.approximate_cb)
+
+        # Phonon boundary correction (Phase 3a)
+        self.phonon_bc_cb = QComboBox(self)
+        self.phonon_bc_cb.addItems(["none", "slab"])
+        idx = self.phonon_bc_cb.findText(self.settings["Phonon boundary correction"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.phonon_bc_cb.setCurrentIndex(idx)
+        self.phonon_bc_cb.activated.connect(self.on_phonon_bc_cb_activated)
+        self.phonon_bc_cb.setToolTip("Phonon boundary correction:\n'none' — use bulk TO frequencies\n'slab' — apply slab depolarisation correction (requires Born charges and hessian)")
+        label = QLabel("Phonon boundary correction")
+        label.setToolTip(self.phonon_bc_cb.toolTip())
+        self.form.addRow(label, self.phonon_bc_cb)
+
+        # Spectrum normalisation
+        self.raman_norm_cb = QComboBox(self)
+        self.raman_norm_cb.addItems(["none", "max=1", "area=1"])
+        idx = self.raman_norm_cb.findText(self.settings["Raman normalisation"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.raman_norm_cb.setCurrentIndex(idx)
+        self.raman_norm_cb.activated.connect(self.on_raman_norm_cb_activated)
+        self.raman_norm_cb.setToolTip("Spectrum normalisation:\n'none' — raw arbitrary units (peaks O(1e4–1e8))\n'max=1' — divide by spectrum peak\n'area=1' — divide by integrated area")
+        label = QLabel("Spectrum normalisation")
+        label.setToolTip(self.raman_norm_cb.toolTip())
+        self.form.addRow(label, self.raman_norm_cb)
+
     def partial_incoherence_widget(self):
         """Create a partial incoherence widget.
 
@@ -1695,6 +1856,29 @@ class CrystalScenarioTab(ScenarioTab):
         # For partial incoherent case, set the smoothing parameters
         self.partially_incoherent_kernel_sb.setValue(self.settings["Filter kernel size"])
         self.partially_incoherent_polynomial_sb.setValue(self.settings["Filter polynomial size"])
+        # Crystal Raman widgets (Phase 2f)
+        if self.spectroscopy == "Crystal Raman":
+            self.laser_freq_sb.setValue(self.settings["Laser frequency cm1"])
+            self.temperature_sb.setValue(self.settings["Temperature K"])
+            self.n_gauss_sb.setValue(self.settings["Number of GL points"])
+            idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.incident_pol_cb.setCurrentIndex(idx)
+            idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.detected_pol_cb.setCurrentIndex(idx)
+            idx = self.collection_side_cb.findText(self.settings["Collection side"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.collection_side_cb.setCurrentIndex(idx)
+            self.collection_angle_sb.setValue(self.settings["Collection angle"])
+            self.coherent_cb.setChecked(self.settings["Coherent layer summation"])
+            self.approximate_cb.setChecked(self.settings["Approximate ES"])
+            idx = self.phonon_bc_cb.findText(self.settings["Phonon boundary correction"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.phonon_bc_cb.setCurrentIndex(idx)
+            idx = self.raman_norm_cb.findText(self.settings["Raman normalisation"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.raman_norm_cb.setCurrentIndex(idx)
         #
         # Unblock signals after refresh
         #
@@ -1780,6 +1964,76 @@ class CrystalScenarioTab(ScenarioTab):
         logger.debug(f"{self.settings['Legend']} Mode changed to {self.settings['Mode']}")
         logger.debug(f"{self.settings['Legend']} Finished:: on_mode_cb_activated")
         return
+
+    # ------------------------------------------------------------------
+    # Crystal Raman signal handlers (Phase 2f)
+    # ------------------------------------------------------------------
+
+    def on_laser_freq_sb_changed(self, value):
+        """Handle a change in the laser frequency spin box."""
+        self.settings["Laser frequency cm1"] = value
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_temperature_sb_changed(self, value):
+        """Handle a change in the temperature spin box."""
+        self.settings["Temperature K"] = value
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_n_gauss_sb_changed(self, value):
+        """Handle a change in the GL quadrature points spin box."""
+        self.settings["Number of GL points"] = value
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_incident_pol_cb_activated(self, index):
+        """Handle a change in the incident polarisation combo box."""
+        self.settings["Incident polarisation"] = self.incident_pol_cb.currentText()
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_detected_pol_cb_activated(self, index):
+        """Handle a change in the detected polarisation combo box."""
+        self.settings["Detected polarisation"] = self.detected_pol_cb.currentText()
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_collection_side_cb_activated(self, index):
+        """Handle a change in the collection side combo box."""
+        self.settings["Collection side"] = self.collection_side_cb.currentText()
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_collection_angle_sb_changed(self, value):
+        """Handle a change in the collection angle spin box."""
+        self.settings["Collection angle"] = value
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_coherent_cb_toggled(self, checked):
+        """Handle a toggle of the coherent layer summation checkbox."""
+        self.settings["Coherent layer summation"] = checked
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_approximate_cb_toggled(self, checked):
+        """Handle a toggle of the approximate E_S checkbox."""
+        self.settings["Approximate ES"] = checked
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_phonon_bc_cb_activated(self, index):
+        """Handle a change in the phonon boundary correction combo box."""
+        self.settings["Phonon boundary correction"] = self.phonon_bc_cb.currentText()
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_raman_norm_cb_activated(self, index):
+        """Handle a change in the Raman normalisation combo box."""
+        self.settings["Raman normalisation"] = self.raman_norm_cb.currentText()
+        self.calculation_required = True
+        self.refresh_required = True
 
     def average_incoherent_calculator( self,
                             layers,
@@ -2085,6 +2339,118 @@ class CrystalScenarioTab(ScenarioTab):
         else:
             logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {self.spectroscopy}")
 
+    def _compute_slab_modes(self, G_total, scaled_tensors, frequencies_cm1, sigmas_cm1):
+        """Compute slab-corrected phonon frequencies and Raman tensors.
+
+        Applies the slab depolarisation correction (Phase 3a) to the bulk TO
+        dynamical matrix.  The slab surface normal is the lab z-axis ``[0,0,1]``;
+        in the crystal frame this is ``n̂ = G_total.T @ [0,0,1]``.  The correction
+        term is identical in form to the particle boundary correction in
+        PowderScenarioTab, but the depolarisation tensor ``L = n̂ ⊗ n̂`` is
+        orientation-dependent and specific to this layer's crystallographic face.
+
+        The surrounding medium is assumed to be vacuum (ε_e = 1).
+
+        Parameters
+        ----------
+        G_total : ndarray, shape (3, 3)
+            Combined crystal-to-lab rotation (G_psi @ layer.euler).
+        scaled_tensors : list of ndarray, each (3, 3)
+            Bulk TO Raman tensors in the crystal frame, scaled by sqrt(V_cell).
+        frequencies_cm1 : array_like, shape (n_to_modes,)
+            Bulk TO phonon frequencies in cm⁻¹ (including acoustic zeros).
+        sigmas_cm1 : array_like, shape (n_to_modes,)
+            Bulk TO Lorentzian linewidths in cm⁻¹.
+
+        Returns
+        -------
+        slab_freqs : ndarray, shape (3N,)
+            Slab phonon frequencies in cm⁻¹ (all 3N modes, including acoustic).
+        slab_tensors : list of ndarray, each (3, 3)
+            Slab Raman tensors in crystal frame (3N total).
+        slab_sigmas : ndarray, shape (3N,)
+            Linewidths inherited from the dominant TO component.
+
+        Notes
+        -----
+        Requires ``self.reader.hessian``, ``self.reader.born_charges``,
+        ``self.reader.mass_weighted_normal_modes``, ``self.reader.zerof_optical_dielectric``.
+
+        """
+        nAtoms = self.reader.nions
+        n_modes = 3 * nAtoms
+        volume_au = self.reader.volume * angs2bohr ** 3
+        masses_au = np.array(self.reader.masses) * amu
+
+        # Slab normal in lab frame → crystal frame
+        n_hat_crystal = G_total.T @ np.array([0.0, 0.0, 1.0])
+        norm = np.linalg.norm(n_hat_crystal)
+        if norm > 0.0:
+            n_hat_crystal /= norm
+
+        # Depolarisation tensor for a thin slab: L = n̂ ⊗ n̂
+        L = np.outer(n_hat_crystal, n_hat_crystal)
+
+        # Optical dielectric tensor ε_∞ in crystal frame
+        eps_inf = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+        if eps_inf.ndim == 1:
+            eps_inf = np.diag(eps_inf)
+
+        # External medium: vacuum (ε_e = 1)
+        epsilon_e = 1.0
+        I3 = np.eye(3)
+
+        # Background internal field tensor: N_bg = (I + (1/ε_e) L (ε_∞ − ε_e I))⁻¹
+        N_bg = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (eps_inf - epsilon_e * I3))
+        NbgL = N_bg @ L
+
+        # Mass-weighted Born charges Z'[α, κβ] = Z*[κ, α, β] / √M_κ  (no volume factor)
+        born_charges = np.array(self.reader.born_charges)
+        Z_mat = np.zeros((3, n_modes))
+        for kappa in range(nAtoms):
+            inv_sqrtM = 1.0 / math.sqrt(masses_au[kappa])
+            for beta in range(3):
+                Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
+
+        # Dynamical matrix correction: ΔD = (4π / (ε_e V)) Z'^T (N_bg L) Z'
+        delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
+        D_TO = np.array(self.reader.hessian, dtype=float)
+
+        # Diagonalize the slab dynamical matrix
+        eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
+
+        # Slab frequencies in cm⁻¹ (preserve sign for unstable modes)
+        slab_freqs = np.array([
+            (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
+            for ev in eig_val
+        ])
+
+        # Build U_TO: rows = TO eigenvectors flattened, shape (n_to_modes, 3N)
+        n_to_modes = len(self.reader.mass_weighted_normal_modes)
+        U_TO = np.zeros((n_to_modes, n_modes))
+        for imode, mode in enumerate(self.reader.mass_weighted_normal_modes):
+            col = 0
+            for atom in mode:
+                U_TO[imode, col:col + 3] = atom
+                col += 3
+
+        # Overlap matrix C[n, m] = <u_n^TO | u_m^slab>
+        C = U_TO @ eig_vec  # (n_to_modes, 3N)
+
+        # Transform Raman tensors and inherit linewidths from dominant TO component
+        sigmas = np.asarray(sigmas_cm1, dtype=float)
+        slab_tensors = []
+        slab_sigmas = np.zeros(n_modes)
+        for p_idx in range(n_modes):
+            R_p = np.zeros((3, 3), dtype=float)
+            for n_to in range(n_to_modes):
+                R_p += C[n_to, p_idx] * np.asarray(scaled_tensors[n_to], dtype=float)
+            slab_tensors.append(R_p)
+            dominant_to = int(np.argmax(np.abs(C[:, p_idx])))
+            slab_sigmas[p_idx] = sigmas[dominant_to] if dominant_to < len(sigmas) else 5.0
+
+        return slab_freqs, slab_tensors, slab_sigmas
+
     def _calculate_raman(self, vs_cm1):
         """Calculate the layered crystal Raman spectrum via GTM field integration.
 
@@ -2182,6 +2548,41 @@ class CrystalScenarioTab(ScenarioTab):
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         sigmas_cm1      = self.notebook.settingsTab.sigmas_cm1
 
+        # Phase 3a: check whether slab NAC correction is possible
+        phonon_bc = self.settings.get("Phonon boundary correction", "none")
+        has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
+        has_born    = len(self.reader.born_charges) > 0
+        has_modes   = bool(self.reader.mass_weighted_normal_modes)
+        has_optical = (hasattr(self.reader, "zerof_optical_dielectric")
+                       and self.reader.zerof_optical_dielectric is not None)
+        can_slab_nac = (phonon_bc == "slab" and has_hessian and has_born
+                        and has_modes and has_optical)
+        if phonon_bc == "slab" and not can_slab_nac:
+            logger.warning(
+                f"{self.settings['Legend']} _calculate_raman: slab NAC requested but "
+                "Born charges / hessian / optical dielectric not available — "
+                "falling back to bulk TO frequencies"
+            )
+
+        # If slab NAC is active, compute corrected frequencies using the first
+        # Raman-active layer's G_total.  The same slab_freqs and slab_sigmas are
+        # used for all layers (good approximation when all layers share the same
+        # crystal orientation).  Per-layer slab tensors are computed individually
+        # so that each layer's crystallographic face is correctly treated.
+        slab_freqs_shared = None
+        slab_sigmas_shared = None
+        if can_slab_nac:
+            # Find the first Raman-active layer to determine shared frequencies
+            first_G = None
+            for scl in selected_layers:
+                if scl.is_dielectric():
+                    first_G = G_psi @ scl.euler
+                    break
+            if first_G is not None:
+                slab_freqs_shared, _, slab_sigmas_shared = self._compute_slab_modes(
+                    first_G, scaled_tensors, frequencies_cm1, sigmas_cm1
+                )
+
         # Build RamanLayer descriptors for each Raman-active (dielectric) layer
         raman_layer_list = []
         for sys_idx, scl in enumerate(selected_layers):
@@ -2189,18 +2590,33 @@ class CrystalScenarioTab(ScenarioTab):
                 continue
             # Combined rotation: G_psi (global azimuthal) on top of G_HKL (surface normal)
             G_total = G_psi @ scl.euler
-            rl = RamanLayer(
-                layer_index=sys_idx,
-                phonon_frequencies_cm1=frequencies_cm1,
-                raman_tensors=scaled_tensors,
-                rotation_matrix=G_total,
-            )
+            if can_slab_nac and slab_freqs_shared is not None:
+                # Per-layer slab tensors (orientation-specific), shared frequencies
+                _, layer_slab_tensors, _ = self._compute_slab_modes(
+                    G_total, scaled_tensors, frequencies_cm1, sigmas_cm1
+                )
+                rl = RamanLayer(
+                    layer_index=sys_idx,
+                    phonon_frequencies_cm1=slab_freqs_shared,
+                    raman_tensors=layer_slab_tensors,
+                    rotation_matrix=G_total,
+                )
+            else:
+                rl = RamanLayer(
+                    layer_index=sys_idx,
+                    phonon_frequencies_cm1=frequencies_cm1,
+                    raman_tensors=scaled_tensors,
+                    rotation_matrix=G_total,
+                )
             raman_layer_list.append(rl)
 
         if not raman_layer_list:
             logger.warning(f"{self.settings['Legend']} _calculate_raman: no Raman-active dielectric layers in stack")
             self.calculation_required = False
             return
+
+        # Linewidths: use slab-corrected sigmas when slab NAC is active
+        linewidths = slab_sigmas_shared if (can_slab_nac and slab_sigmas_shared is not None) else sigmas_cm1
 
         laser_freq_cm1    = self.settings.get("Laser frequency cm1", 18797.0)
         incident_pol      = self.settings.get("Incident polarisation", "p")
@@ -2226,7 +2642,7 @@ class CrystalScenarioTab(ScenarioTab):
             incident_pol=incident_pol,
             detected_pol=detected_pol,
             temperature_K=temperature_K,
-            linewidths_cm1=sigmas_cm1,
+            linewidths_cm1=linewidths,
             n_gauss=n_gauss,
             collection_side=collection_side,
             collection_angle_rad=collection_angle_rad,
@@ -2234,7 +2650,21 @@ class CrystalScenarioTab(ScenarioTab):
             approximate_es=approximate_es,
         )
 
-        self.raman_spectrum = calculator.calculate_spectrum(vs_cm1)
+        spectrum = calculator.calculate_spectrum(vs_cm1)
+
+        # Apply user-selected spectrum normalisation
+        norm_mode = self.settings.get("Raman normalisation", "none")
+        if norm_mode == "max=1":
+            peak = np.max(spectrum) if len(spectrum) else 0.0
+            if peak > 0.0:
+                spectrum = spectrum / peak
+        elif norm_mode == "area=1":
+            # Trapezoidal area on the supplied frequency axis
+            area = np.trapezoid(spectrum, vs_cm1) if len(spectrum) else 0.0
+            if area > 0.0:
+                spectrum = spectrum / area
+
+        self.raman_spectrum = spectrum
         self.calculation_required = False
         logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
 
@@ -2360,7 +2790,7 @@ class CrystalScenarioTab(ScenarioTab):
                 "Crystal Transmittance (S polarisation)": self.s_transmittance,
                 "Crystal Absorbtance (P polarisation)"  : self.p_absorbtance,
                 "Crystal Absorbtance (S polarisation)"  : self.s_absorbtance,
-                "Crystal Raman Intensity"               : self.raman_spectrum,
+                "Crystal Raman"                         : self.raman_spectrum,
         }.get(plot_type)
 
     def get_results(self, vs_cm1):
