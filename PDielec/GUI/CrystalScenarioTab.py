@@ -390,6 +390,10 @@ class CrystalScenarioTab(ScenarioTab):
             self.settings["Detected polarisation"] = "unpolarised"
             self.settings["Temperature K"] = 298.0
             self.settings["Number of GL points"] = 20
+            self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
+            self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
+            self.settings["Coherent layer summation"] = False
+            self.settings["Approximate ES"] = False
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -2198,11 +2202,21 @@ class CrystalScenarioTab(ScenarioTab):
             self.calculation_required = False
             return
 
-        laser_freq_cm1 = self.settings.get("Laser frequency cm1", 18797.0)
-        incident_pol   = self.settings.get("Incident polarisation", "p")
-        detected_pol   = self.settings.get("Detected polarisation", "unpolarised")
-        temperature_K  = self.settings.get("Temperature K", 298.0)
-        n_gauss        = self.settings.get("Number of GL points", 20)
+        laser_freq_cm1    = self.settings.get("Laser frequency cm1", 18797.0)
+        incident_pol      = self.settings.get("Incident polarisation", "p")
+        detected_pol      = self.settings.get("Detected polarisation", "unpolarised")
+        temperature_K     = self.settings.get("Temperature K", 298.0)
+        n_gauss           = self.settings.get("Number of GL points", 20)
+        collection_side   = self.settings.get("Collection side", "superstrate")
+        collection_angle  = self.settings.get("Collection angle", -1.0)
+        coherent_layers   = self.settings.get("Coherent layer summation", False)
+        approximate_es    = self.settings.get("Approximate ES", False)
+
+        # A negative collection angle is the sentinel meaning "use the angle of incidence"
+        if collection_angle < 0.0:
+            collection_angle_rad = angle_of_incidence
+        else:
+            collection_angle_rad = np.radians(collection_angle)
 
         calculator = LayeredRamanCalculator(
             system=system,
@@ -2214,6 +2228,10 @@ class CrystalScenarioTab(ScenarioTab):
             temperature_K=temperature_K,
             linewidths_cm1=sigmas_cm1,
             n_gauss=n_gauss,
+            collection_side=collection_side,
+            collection_angle_rad=collection_angle_rad,
+            coherent_layers=coherent_layers,
+            approximate_es=approximate_es,
         )
 
         self.raman_spectrum = calculator.calculate_spectrum(vs_cm1)

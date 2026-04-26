@@ -2043,6 +2043,38 @@ class System:
         zn[-1] = zn[-2]+self.substrate.thick
         return np.array(zn)
 
+    def reversed_system(self):
+        """Return a new system with the propagation direction reversed.
+
+        The returned system has the original substrate as the new superstrate,
+        the original superstrate as the new substrate, and the finite layers in
+        reversed order.  This is used to compute the reciprocal (E_S) field for
+        forward-scattering Raman: launching the time-reversed scattered field
+        from the substrate side is equivalent to running the same
+        ``calculate_Efield`` on the reversed stack.
+
+        Returns
+        -------
+        System
+            New system of the same concrete type (``TransferMatrixSystem`` or
+            ``ScatteringMatrixSystem``) with superstrate ↔ substrate swapped
+            and ``self.layers`` reversed.
+
+        Notes
+        -----
+        The returned system shares the same ``Layer`` objects as the original
+        (shallow copy).  Euler angles and permittivity functions are preserved
+        unchanged.  z = 0 in the returned system corresponds to the
+        original substrate/last-layer interface, so z-coordinates must be
+        remapped by ``z_rev = total_thickness - z_orig`` before calling
+        ``calculate_Efield`` on the reversed system.
+        """
+        return type(self)(
+            substrate=self.superstrate,
+            superstrate=self.substrate,
+            layers=list(reversed(self.layers)),
+        )
+
     def get_spatial_permittivity(self, z):
         """Extract the permittivity tensor at given z-positions in the structure.
 

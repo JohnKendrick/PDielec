@@ -4,13 +4,18 @@
 # This file is part of PDielec
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 #
 """Layered Raman scattering calculator using GTMcore for optical field propagation.
 
@@ -19,17 +24,23 @@ over the Raman-active layers in a multilayer stack:
 
     A_m = Σ_ℓ ∫ E_S(z)^T R_{ℓ,m}^lab E_L(z) dz
 
-where E_L is the incident laser field, E_S is the reciprocal scattered field
-(launched back from the detector channel), and R_{ℓ,m}^lab is the Raman tensor
-of mode m in layer ℓ rotated into the laboratory frame.
+where E_L is the incident laser field (evaluated at the laser frequency ν_L)
+and E_S is the reciprocal scattered field (launched back from the detector
+channel, evaluated at the scattered frequency ν_S = ν_L − ν_m).  R_{ℓ,m}^lab
+is the Raman tensor of mode m in layer ℓ rotated into the laboratory frame.
 
-Phase 1 approximation: E_S ≈ E_L (the scattered frequency is close enough to
-the laser frequency that both fields are evaluated at the laser frequency).  This
-is lifted in Phase 2 when mode-by-mode reciprocal fields are added.
+Phase 2 features (all enabled by default):
+- E_S evaluated at ν_S per mode (set ``approximate_es=True`` for the Phase 1
+  approximation E_S ≈ E_L).
+- Forward scattering: set ``collection_side='substrate'`` to launch E_S from
+  the substrate side using a reversed stack (GTMcore.System.reversed_system).
+- Independent collection angle: ``collection_angle_rad`` for E_S (defaults to
+  the incident angle for backscattering).
+- Coherent layer summation: set ``coherent_layers=True`` to sum amplitudes
+  across Raman-active layers before squaring.
 
 The integral is evaluated numerically using Gauss-Legendre quadrature within
-each Raman-active layer.  Layers are combined incoherently by default (intensities
-are summed).
+each Raman-active layer.
 """
 
 import logging
@@ -160,13 +171,18 @@ class LayeredRamanCalculator:
        incidence in a single call to ``system.calculate_Efield``.
     3. For each phonon mode m (skipping acoustic modes):
 
-       a. Phase 1 approximation: use E_S ≈ E_L.
+       a. Compute E_S at the scattered frequency ν_S = ν_L − ν_m on the
+          appropriate system (original for backscattering, reversed for
+          forward scattering).  When ``approximate_es=True`` the Phase 1
+          approximation E_S ≈ E_L is used instead (one field call total).
        b. For each Raman-active layer ℓ, evaluate the integrand
 
               a_{ℓ,m}(z_j) = E_S(z_j)^T R_{ℓ,m}^lab E_L(z_j)
 
           and integrate with the GL weights to obtain A_{ℓ,m}.
-       c. Combine layer contributions incoherently: I_m ∝ Σ_ℓ |A_{ℓ,m}|².
+       c. Combine layer contributions:
+          - ``coherent_layers=False`` (default): I_m ∝ Σ_ℓ |A_{ℓ,m}|²
+          - ``coherent_layers=True``:            I_m ∝ |Σ_ℓ A_{ℓ,m}|²
        d. Apply the Bose-Einstein prefactor: I_m ← (n(ν_m)+1)/ν_m × I_m.
 
     4. Broaden all mode intensities with Lorentzian lineshapes and sum.
@@ -197,6 +213,20 @@ class LayeredRamanCalculator:
     n_gauss : int, optional
         Number of Gauss-Legendre quadrature points per Raman-active layer.
         Default is 20, which is accurate for smooth fields in thin layers.
+    collection_side : {'superstrate', 'substrate'}, optional
+        Which side the detector is on.  ``'superstrate'`` (default) gives
+        backscattering geometry; ``'substrate'`` gives forward scattering and
+        causes E_S to be computed on the reversed stack.
+    collection_angle_rad : float or None, optional
+        Collection (detector) angle in radians from the surface normal.
+        Defaults to ``incident_angle_rad`` (appropriate for backscattering).
+    coherent_layers : bool, optional
+        If ``True``, amplitudes are summed across Raman-active layers before
+        squaring (coherent combination).  Default is ``False`` (incoherent:
+        intensities are summed).
+    approximate_es : bool, optional
+        If ``True``, use the Phase 1 approximation E_S ≈ E_L (both fields at
+        the laser frequency).  Default is ``False``.
 
     Notes
     -----
@@ -211,6 +241,11 @@ class LayeredRamanCalculator:
 
         A = Σ_j w_j  E_S(z_j)^T  R_lab  E_L(z_j)
 
+    For forward scattering (``collection_side='substrate'``), the z-coordinates
+    for E_S are remapped as ``z_rev = total_thickness − z_orig`` before being
+    passed to ``calculate_Efield`` on the reversed system; the GL quadrature
+    weights are unchanged.
+
     """
 
     def __init__(
@@ -224,12 +259,18 @@ class LayeredRamanCalculator:
         temperature_K,
         linewidths_cm1,
         n_gauss=20,
+        collection_side='superstrate',
+        collection_angle_rad=None,
+        coherent_layers=False,
+        approximate_es=False,
     ):
         """Initialise LayeredRamanCalculator with system, layers and calculation parameters."""
         if incident_pol not in ("p", "s"):
             raise ValueError(f"incident_pol must be 'p' or 's', got '{incident_pol}'")
         if detected_pol not in ("p", "s", "unpolarised"):
             raise ValueError(f"detected_pol must be 'p', 's', or 'unpolarised', got '{detected_pol}'")
+        if collection_side not in ("superstrate", "substrate"):
+            raise ValueError(f"collection_side must be 'superstrate' or 'substrate', got '{collection_side}'")
 
         self.system = system
         self.raman_layers = list(raman_layers)
@@ -240,12 +281,16 @@ class LayeredRamanCalculator:
         self.temperature_K = float(temperature_K)
         self.linewidths_cm1 = np.asarray(linewidths_cm1, dtype=float)
         self.n_gauss = int(n_gauss)
+        self.collection_side = collection_side
+        self.collection_angle_rad = float(collection_angle_rad) if collection_angle_rad is not None else float(incident_angle_rad)
+        self.coherent_layers = bool(coherent_layers)
+        self.approximate_es = bool(approximate_es)
 
         # Gauss-Legendre nodes and weights on [-1, 1]
         self._gl_nodes, self._gl_weights = leggauss(self.n_gauss)
 
         # Built by _build_gl_grid()
-        self._gl_z = None               # ndarray: concatenated z points (m)
+        self._gl_z = None               # ndarray: concatenated z points (m) for E_L
         self._gl_phys_weights = None    # ndarray: corresponding physical integration weights (m)
         self._gl_layer_slices = None    # list of slice: one per RamanLayer
 
@@ -298,35 +343,32 @@ class LayeredRamanCalculator:
         self._gl_phys_weights = np.concatenate(w_parts)
         self._gl_layer_slices = slices
 
-    def _zeta_sys(self):
-        """Compute the conserved in-plane normalised wavevector at the laser frequency.
+    def _get_field_at_gl_points(self, freq_cm1, system, angle_rad, z_arr):
+        """Compute the electric field at the given z positions.
+
+        Parameters
+        ----------
+        freq_cm1 : float
+            Frequency in cm⁻¹ at which to evaluate the field.
+        system : GTMcore.System
+            The optical system to use for the field calculation.
+        angle_rad : float
+            Angle of incidence on ``system``'s superstrate, in radians.
+        z_arr : ndarray
+            z-coordinates (metres) at which to evaluate the field.  Must be
+            in the coordinate system of ``system`` (z = 0 at superstrate/
+            first-layer interface).
 
         Returns
         -------
-        complex
-            zeta = sin(θ) × sqrt(ε_superstrate[0,0]) evaluated at the laser frequency.
+        E_out : ndarray, shape (6, len(z_arr))
+            Electric field: rows 0–2 for p-pol incidence, rows 3–5 for s-pol.
 
         """
-        freq_hz = self.laser_frequency_cm1 * speed_light_si * 1e2
-        self.system.initialize_sys(freq_hz)
-        return np.sin(self.incident_angle_rad) * np.sqrt(self.system.superstrate.epsilon[0, 0])
-
-    def _get_field_at_gl_points(self):
-        """Compute the electric field at all GL quadrature points.
-
-        Uses the laser frequency and the Phase 1 approximation E_S ≈ E_L
-        (both fields evaluated at the same frequency).
-
-        Returns
-        -------
-        E_out : ndarray, shape (6, N_total)
-            Electric field at all GL points:
-            rows 0–2 for p-pol incidence, rows 3–5 for s-pol incidence.
-
-        """
-        freq_hz = self.laser_frequency_cm1 * speed_light_si * 1e2
-        zeta = self._zeta_sys()
-        _, E_out, _ = self.system.calculate_Efield(freq_hz, zeta, z_vect=self._gl_z)
+        freq_hz = freq_cm1 * speed_light_si * 1e2
+        system.initialize_sys(freq_hz)
+        zeta = np.sin(angle_rad) * np.sqrt(system.superstrate.epsilon[0, 0])
+        _, E_out, _ = system.calculate_Efield(freq_hz, zeta, z_vect=z_arr)
         return E_out
 
     @staticmethod
@@ -348,36 +390,37 @@ class LayeredRamanCalculator:
         """
         return G @ R_crystal @ G.T
 
-    def _layer_amplitude(self, E_out, R_lab, sl):
+    def _layer_amplitude(self, E_L_out, E_S_out, R_lab, sl):
         """Compute the Raman amplitude for one mode in one layer.
 
         Evaluates the numerical quadrature:
 
             A = Σ_j w_j  E_S(z_j)^T  R_lab  E_L(z_j)
 
-        using the Phase 1 approximation E_S ≈ E_L.
-
         Parameters
         ----------
-        E_out : ndarray, shape (6, N_total)
-            Full electric-field array from ``calculate_Efield``.
+        E_L_out : ndarray, shape (6, N_total)
+            Incident laser field array from ``calculate_Efield`` at ν_L.
+        E_S_out : ndarray, shape (6, N_total)
+            Reciprocal scattered field array from ``calculate_Efield`` at ν_S.
+            May be equal to ``E_L_out`` when ``approximate_es=True`` in
+            backscattering geometry.
         R_lab : ndarray, shape (3, 3)
             Raman tensor in the lab frame.
         sl : slice
-            Slice selecting the GL points for this layer from ``E_out``.
+            Slice selecting the GL points for this layer.
 
         Returns
         -------
         amplitude_p : complex
-            Amplitude for the p-detected channel (or the only amplitude when
-            ``detected_pol != 'unpolarised'``).
+            Amplitude for the p-detected channel.
         amplitude_s : complex or None
             Amplitude for the s-detected channel when ``detected_pol ==
             'unpolarised'``; ``None`` otherwise.
 
         """
         # Incident field: shape (3, n_gauss)
-        E_L = E_out[0:3, sl] if self.incident_pol == "p" else E_out[3:6, sl]
+        E_L = E_L_out[0:3, sl] if self.incident_pol == "p" else E_L_out[3:6, sl]
 
         # R_lab @ E_L  →  shape (3, n_gauss)
         R_E_L = R_lab @ E_L
@@ -386,13 +429,12 @@ class LayeredRamanCalculator:
         w = self._gl_phys_weights[sl]  # shape (n_gauss,)
 
         if self.detected_pol == "unpolarised":
-            # Sum p and s detected contributions at intensity level
-            E_S_p = E_out[0:3, sl]
-            E_S_s = E_out[3:6, sl]
+            E_S_p = E_S_out[0:3, sl]
+            E_S_s = E_S_out[3:6, sl]
             integrand_p = np.einsum("ij,ij->j", E_S_p, R_E_L)  # shape (n_gauss,)
             integrand_s = np.einsum("ij,ij->j", E_S_s, R_E_L)
             return np.dot(w, integrand_p), np.dot(w, integrand_s)
-        E_S = E_out[0:3, sl] if self.detected_pol == "p" else E_out[3:6, sl]
+        E_S = E_S_out[0:3, sl] if self.detected_pol == "p" else E_S_out[3:6, sl]
         integrand = np.einsum("ij,ij->j", E_S, R_E_L)
         return np.dot(w, integrand), None
 
@@ -404,7 +446,8 @@ class LayeredRamanCalculator:
         """Compute the per-mode Raman intensities (before broadening).
 
         Modes below ``_ACOUSTIC_THRESHOLD_CM1`` are excluded.  Layer
-        contributions are combined incoherently (intensities summed).
+        contributions are combined incoherently or coherently depending on
+        ``self.coherent_layers``.
 
         Returns
         -------
@@ -421,13 +464,41 @@ class LayeredRamanCalculator:
         have the same set of phonon modes (same DFT calculation).  If layers
         have different materials this method must be extended.
 
+        When ``approximate_es=False`` (default), ``calculate_Efield`` is called
+        once per active mode for E_S at ν_S = ν_L − ν_m, plus once for E_L.
+        For systems with many modes this can be slow; set ``approximate_es=True``
+        to recover the single-field-call behaviour at the cost of accuracy.
+
         """
         if not self.raman_layers:
             logger.warning("calculate_mode_intensities: no Raman-active layers defined")
             return np.array([]), np.array([]), np.array([])
 
-        # Compute field at all GL points (Phase 1: one call at laser frequency)
-        E_out = self._get_field_at_gl_points()
+        # --- E_L: incident laser field on the original system ---
+        E_L_out = self._get_field_at_gl_points(
+            self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
+        )
+
+        # --- Set up the system and z-array for E_S ---
+        if self.collection_side == "substrate":
+            # Forward scattering: launch E_S from the substrate side
+            total_thick = sum(layer.thick for layer in self.system.layers)
+            z_s = total_thick - self._gl_z   # z in the reversed system
+            es_system = self.system.reversed_system()
+        else:
+            # Backscattering: same system, same z-array
+            z_s = self._gl_z
+            es_system = self.system
+
+        # If approximate_es, compute E_S once at the laser frequency
+        if self.approximate_es:
+            if self.collection_side == "substrate":
+                E_S_out_fixed = self._get_field_at_gl_points(
+                    self.laser_frequency_cm1, es_system, self.collection_angle_rad, z_s
+                )
+            else:
+                # Pure Phase-1 approximation: E_S = E_L (no extra call)
+                E_S_out_fixed = E_L_out
 
         # Use frequencies from the first RamanLayer (all layers share the same DFT modes)
         ref_layer = self.raman_layers[0]
@@ -446,17 +517,47 @@ class LayeredRamanCalculator:
 
             sigma = self.linewidths_cm1[mode_idx] if mode_idx < len(self.linewidths_cm1) else 5.0
 
-            # Accumulate intensity from all Raman-active layers (incoherent sum)
-            I_m = 0.0
-            for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
-                R_crystal = rl.raman_tensors[mode_idx]
-                R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
-                amp_p, amp_s = self._layer_amplitude(E_out, R_lab, sl)
+            # Compute or reuse E_S
+            if self.approximate_es:
+                E_S_out = E_S_out_fixed
+            else:
+                nu_S = self.laser_frequency_cm1 - nu_m
+                if nu_S <= 0.0:
+                    logger.warning(
+                        "Mode at %.1f cm⁻¹ exceeds laser frequency; skipping.", nu_m
+                    )
+                    continue
+                E_S_out = self._get_field_at_gl_points(
+                    nu_S, es_system, self.collection_angle_rad, z_s
+                )
 
+            # Accumulate amplitude contributions from all Raman-active layers
+            if self.coherent_layers:
+                # Coherent: sum amplitudes first
+                total_amp_p = 0.0 + 0.0j
+                total_amp_s = 0.0 + 0.0j
+                for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
+                    R_crystal = rl.raman_tensors[mode_idx]
+                    R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
+                    amp_p, amp_s = self._layer_amplitude(E_L_out, E_S_out, R_lab, sl)
+                    total_amp_p += amp_p
+                    if self.detected_pol == "unpolarised":
+                        total_amp_s += amp_s
                 if self.detected_pol == "unpolarised":
-                    I_m += abs(amp_p) ** 2 + abs(amp_s) ** 2
+                    I_m = abs(total_amp_p) ** 2 + abs(total_amp_s) ** 2
                 else:
-                    I_m += abs(amp_p) ** 2
+                    I_m = abs(total_amp_p) ** 2
+            else:
+                # Incoherent: sum intensities
+                I_m = 0.0
+                for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
+                    R_crystal = rl.raman_tensors[mode_idx]
+                    R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
+                    amp_p, amp_s = self._layer_amplitude(E_L_out, E_S_out, R_lab, sl)
+                    if self.detected_pol == "unpolarised":
+                        I_m += abs(amp_p) ** 2 + abs(amp_s) ** 2
+                    else:
+                        I_m += abs(amp_p) ** 2
 
             # Apply Bose-Einstein thermal prefactor
             I_m *= bose_factor(nu_m, self.temperature_K)
