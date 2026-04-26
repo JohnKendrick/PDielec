@@ -386,18 +386,17 @@ class CrystalScenarioTab(ScenarioTab):
         self.epsilon = []
         self.raman_spectrum = []
         self.layers = []
-        if spectroscopy == "Crystal Raman":
-            self.settings["Laser frequency cm1"] = 18797.0   # ~532 nm
-            self.settings["Incident polarisation"] = "p"
-            self.settings["Detected polarisation"] = "unpolarised"
-            self.settings["Temperature K"] = 298.0
-            self.settings["Number of GL points"] = 20
-            self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
-            self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
-            self.settings["Coherent layer summation"] = False
-            self.settings["Approximate ES"] = False
-            self.settings["Phonon boundary correction"] = "none"  # 'none' or 'slab'
-            self.settings["Raman normalisation"] = "none"        # 'none', 'max=1', or 'area=1'
+        self.settings["Laser frequency cm1"] = 18797.0   # ~532 nm
+        self.settings["Incident polarisation"] = "p"
+        self.settings["Detected polarisation"] = "unpolarised"
+        self.settings["Temperature K"] = 298.0
+        self.settings["Number of GL points"] = 20
+        self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
+        self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
+        self.settings["Coherent layer summation"] = False
+        self.settings["Approximate ES"] = False
+        self.settings["Phonon boundary correction"] = "none"  # 'none' or 'slab'
+        self.settings["Raman normalisation"] = "none"        # 'none', 'max=1', or 'area=1'
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
