@@ -222,8 +222,6 @@ class CrystalScenarioTab(ScenarioTab):
          Calculate all the reflectance, transmittance and absorptance information
     global_azimuthal_widget
          Set the global azimuthal angle
-    greyed_out
-         Grey out menu items according to the GUI settings
     move_layer_down
          Move a layer up the layer table
     move_layer_up
@@ -1822,8 +1820,6 @@ class CrystalScenarioTab(ScenarioTab):
         self.generate_layer_settings()
         # Force recalculation
         self.calculation_required = True
-        # Change any greyed out items
-        self.greyed_out()
         #
         # Now refresh values that need updating
         #
@@ -2813,21 +2809,5 @@ class CrystalScenarioTab(ScenarioTab):
             logger.debug(f"{self.settings['Legend']} get_results no need for recalculation")
             #self.notebook.progressbars_update(increment=len(vs_cm1))
         logger.debug(f"{self.settings['Legend']} Finished:: get_results {len(vs_cm1)} {self.refresh_required}")
-        return
-
-    def greyed_out(self):
-        """Have a look through the settings and see if we need to grey anything out.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-
-        """
-        # At the moment it appears there is nothing to do.
-        logger.debug(f"{self.settings['Legend']} Finished:: greyed_out")
         return
 

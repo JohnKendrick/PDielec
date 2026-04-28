@@ -172,8 +172,6 @@ class PlottingTab(QWidget):
         Generates and displays the plot based on the selected plot type and data.
     get_number_of_califications_required()
         Returns the number of calculations needed for updating the plot.
-    greyed_out()
-        Greys out options in the UI that are not available.
     write_spreadsheet()
         Writes results to a spreadsheet.
     set_concentrations()
@@ -699,7 +697,6 @@ class PlottingTab(QWidget):
         #
         # Block signals during refresh
         #
-        self.greyed_out()
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         # Now refresh values
@@ -1390,31 +1387,3 @@ class PlottingTab(QWidget):
         self.plot()
         logger.debug(f"Finished:: on_renorm_cb_activated {index}")
 
-    def greyed_out(self):
-        """Repopulate the plot type combo box for the current spectroscopy type.
-
-        Replaces the combo box contents with only the plot types relevant to the
-        active spectroscopy type, preserving the current selection when possible.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-
-        """
-        logger.debug("Start:: greyed_out")
-        spectroscopy_type = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
-        new_plot_types = self.plot_types_by_spectroscopy.get(spectroscopy_type, [])
-        current_plot_type = self.settings["Plot type"]
-        self.plot_type_cb.clear()
-        self.plot_type_cb.addItems(new_plot_types)
-        self.plot_types = new_plot_types
-        index = self.plot_type_cb.findText(current_plot_type, Qt.MatchFixedString)
-        if index < 0:
-            index = 0
-        self.plot_type_cb.setCurrentIndex(index)
-        self.settings["Plot type"] = self.plot_type_cb.currentText()
-        logger.debug("Finished:: greyed_out")
