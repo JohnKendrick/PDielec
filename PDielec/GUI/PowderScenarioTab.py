@@ -1471,7 +1471,7 @@ class PowderScenarioTab(ScenarioTab):
             # to obtain shifted frequencies and transformed Raman tensors.
             has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
             has_born = len(self.reader.born_charges) > 0
-            has_normal_modes = bool(self.reader.mass_weighted_normal_modes)
+            has_normal_modes = np.any(self.reader.mass_weighted_normal_modes)
             has_correction_data = has_hessian and has_born and has_normal_modes
             is_sphere = np.allclose(np.real(L), (1.0 / 3.0) * np.eye(3), atol=1e-6)
 

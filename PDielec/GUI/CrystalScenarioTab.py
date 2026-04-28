@@ -2532,7 +2532,7 @@ class CrystalScenarioTab(ScenarioTab):
         phonon_bc = self.settings.get("Phonon boundary correction", "none")
         has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
         has_born    = len(self.reader.born_charges) > 0
-        has_modes   = bool(self.reader.mass_weighted_normal_modes)
+        has_modes   = np.any(self.reader.mass_weighted_normal_modes)
         has_optical = (hasattr(self.reader, "zerof_optical_dielectric")
                        and self.reader.zerof_optical_dielectric is not None)
         can_slab_nac = (phonon_bc == "slab" and has_hessian and has_born

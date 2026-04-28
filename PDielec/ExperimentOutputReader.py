@@ -15,6 +15,7 @@
 #
 """Read the contents of a directory containing Experiment input and output files."""
 import logging
+import math
 import re
 
 import numpy as np
@@ -143,6 +144,9 @@ class ExperimentOutputReader(GenericOutputReader):
         self.manage["interpolate3"]  = (re.compile("interpolate_3"),    self._read_interpolate3_model)
         self.manage["interpolate6"]  = (re.compile("interpolate_6"),    self._read_interpolate6_model)
         self.manage["interpolate"]   = (re.compile("interpolate"),      self._read_interpolate1_model)
+        self.manage["raman_tensors"] = (re.compile("raman_tensors"),    self._read_raman_tensors)
+        self.manage["normal_modes"]  = (re.compile("normal_modes"),     self._read_normal_modes)
+        self.manage["frequencies"]   = (re.compile("frequencies"),      self._read_frequencies)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -488,9 +492,15 @@ class ExperimentOutputReader(GenericOutputReader):
         self.oscillator_strengths = []
         for _i in range(nfreq):
             line = self._read_line()
-            self.frequencies.append(float(line.split()[0]))
-            strength = float(line.split()[1])
-            self.oscillator_strengths.append(initialise_diagonal_tensor( [strength, strength, strength] ) )
+            parts = line.split()
+            self.frequencies.append(float(parts[0]))
+            if len(parts) >= 4:
+                sxx, syy, szz = float(parts[1]), float(parts[2]), float(parts[3])
+            elif len(parts) == 2:
+                sxx = syy = szz = float(parts[1])
+            else:
+                sxx = syy = szz = 0.0
+            self.oscillator_strengths.append(initialise_diagonal_tensor( [sxx, syy, szz] ) )
         return
 
     def _read_species(self, line):
@@ -780,8 +790,125 @@ class ExperimentOutputReader(GenericOutputReader):
             self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         return
 
+    def _read_raman_tensors(self, line):
+        """Read Raman tensors for each normal mode.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line, expected format: ``raman_tensors N [units]``
+            where *N* is the total number of modes and the optional *units*
+            keyword is either ``castep`` (default) or ``skelton``.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        Each mode occupies four consecutive non-comment lines:
+
+        1. Frequency in cm-1.
+        2. First row of the 3×3 Raman tensor.
+        3. Second row.
+        4. Third row.
+
+        Modes must be listed in ascending-frequency order (acoustic / silent
+        modes first, with zero tensors), consistent with the ordering used
+        throughout PDielec.
+
+        Two unit conventions are supported via the optional keyword on the
+        header line:
+
+        ``castep`` (default)
+            Elements are already in PDielec internal units
+            ``(Å / amu)^{0.5}``  — the CASTEP convention
+            ``T = ∂α_vol/∂Q / √V``.
+        ``skelton``
+            Elements are in Skelton/Phonopy units
+            ``Å²·amu^{-0.5}`` — the convention ``R = ∂α_vol/∂Q``.
+            Each element is divided by ``√V_cell`` on read, so ``volume``
+            must already be set before this section is parsed.
+
+        Frequencies are taken from a preceding ``frequencies`` block; this
+        section contains only the tensor data.
+
+        Example input (ZnO, 12 modes, CASTEP units)::
+
+            raman_tensors  12
+            # 3x3 tensor rows for each mode, in ascending-frequency order
+              0.000   0.000   0.000
+              0.000   0.000   0.000
+              0.000   0.000   0.000
+              0.0487  -0.0101   0.0041
+             -0.0101   0.0487   0.0041
+              0.0041   0.0041   0.1208
+            ...
+
+        """
+        parts = line.split()
+        n = int(parts[1])
+        units = parts[2].lower() if len(parts) > 2 else "castep"
+        tensors = []
+        for _i in range(n):
+            row0 = [float(x) for x in self._read_line().split()[:3]]
+            row1 = [float(x) for x in self._read_line().split()[:3]]
+            row2 = [float(x) for x in self._read_line().split()[:3]]
+            tensors.append(np.array([row0, row1, row2], dtype=float))
+        if units == "skelton":
+            factor = 1.0 / math.sqrt(self.volume)
+            tensors = [t * factor for t in tensors]
+        self.raman_tensors = tensors
+        return
+
+    def _read_normal_modes(self, line):
+        """Read mass-weighted normal-mode eigenvectors for each mode.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line, expected format: ``normal_modes N``
+            where *N* is the total number of modes.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        Frequencies are taken from a preceding ``frequencies`` block.
+        Each mode occupies *nions* consecutive non-comment lines, each
+        containing three floating-point values (the x, y, z components of
+        the mass-weighted displacement for that atom).
+
+        The eigenvectors should be normalised to unit length
+        (``Σ |u|² = 1``) and ordered to match the ``frequencies`` block —
+        acoustic / imaginary modes first, then optical in ascending
+        frequency order.
+
+        Example input (ZnO, 12 modes, 4 atoms)::
+
+            normal_modes  12
+            # mode 0 (acoustic)
+             0.19709682  -0.22840953   0.00000001
+             0.19709682  -0.22840953   0.00000001
+             0.41779946  -0.48417512   0.00000003
+             0.41779946  -0.48417512   0.00000003
+            # mode 1 ...
+
+        """
+        n = int(line.split()[1])
+        modes = []
+        for _i in range(n):
+            mode = []
+            for _atom in range(self.nions):
+                mode.append([float(x) for x in self._read_line().split()[:3]])
+            modes.append(mode)
+        self.mass_weighted_normal_modes = np.array(modes, dtype=float)
+        return
+
     def calculate_mass_weighted_normal_modes(self):
-        """Calculate the mass weight normal modes.
+        """Return mass-weighted normal modes, preserving any read from file.
 
         Parameters
         ----------
@@ -790,9 +917,15 @@ class ExperimentOutputReader(GenericOutputReader):
         Returns
         -------
         np.array
-            Returns an array for the mass weighted normal modes which in this case is zero
-            The array has a shape 3*nions, nions, 3
+            Mass-weighted normal modes with shape (3*nions, nions, 3).
+            If a ``normal_modes`` block was present in the input file the
+            stored values are returned unchanged.  Otherwise a zero array
+            is returned (no phonon data available).
 
-        """        
+        """
+        if (isinstance(self.mass_weighted_normal_modes, np.ndarray)
+                and self.mass_weighted_normal_modes.shape == (3*self.nions, self.nions, 3)
+                and np.any(self.mass_weighted_normal_modes)):
+            return self.mass_weighted_normal_modes
         self.mass_weighted_normal_modes = np.zeros( (3*self.nions,self.nions,3) )
         return self.mass_weighted_normal_modes
