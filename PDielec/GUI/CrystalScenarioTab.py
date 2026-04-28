@@ -386,7 +386,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.epsilon = []
         self.raman_spectrum = []
         self.layers = []
-        self.settings["Laser frequency cm1"] = 18797.0   # ~532 nm
+        self.settings["Laser wavelength nm"] = 532.0
         self.settings["Incident polarisation"] = "p"
         self.settings["Detected polarisation"] = "unpolarised"
         self.settings["Temperature K"] = 298.0
@@ -1452,17 +1452,17 @@ class CrystalScenarioTab(ScenarioTab):
         hbox.setAlignment(Qt.AlignVCenter)
         self.form.addRow(label, hbox)
 
-        # Laser frequency
-        self.laser_freq_sb = QDoubleSpinBox(self)
-        self.laser_freq_sb.setRange(5000.0, 50000.0)
-        self.laser_freq_sb.setSingleStep(1.0)
-        self.laser_freq_sb.setDecimals(1)
-        self.laser_freq_sb.setValue(self.settings["Laser frequency cm1"])
-        self.laser_freq_sb.valueChanged.connect(self.on_laser_freq_sb_changed)
-        self.laser_freq_sb.setToolTip("Laser frequency in cm⁻¹ (e.g. 18797 ≈ 532 nm, 15803 ≈ 633 nm)")
-        label = QLabel("Laser frequency (cm⁻¹)")
-        label.setToolTip(self.laser_freq_sb.toolTip())
-        self.form.addRow(label, self.laser_freq_sb)
+        # Laser wavelength
+        self.laser_wavelength_sb = QDoubleSpinBox(self)
+        self.laser_wavelength_sb.setRange(200.0, 2000.0)
+        self.laser_wavelength_sb.setSingleStep(1.0)
+        self.laser_wavelength_sb.setDecimals(1)
+        self.laser_wavelength_sb.setValue(self.settings["Laser wavelength nm"])
+        self.laser_wavelength_sb.valueChanged.connect(self.on_laser_wavelength_sb_changed)
+        self.laser_wavelength_sb.setToolTip("Laser wavelength in nm (e.g. 532, 633, 785)")
+        label = QLabel("Laser wavelength (nm)")
+        label.setToolTip(self.laser_wavelength_sb.toolTip())
+        self.form.addRow(label, self.laser_wavelength_sb)
 
         # Temperature
         self.temperature_sb = QDoubleSpinBox(self)
@@ -1857,7 +1857,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.partially_incoherent_polynomial_sb.setValue(self.settings["Filter polynomial size"])
         # Crystal Raman widgets (Phase 2f)
         if self.spectroscopy == "Crystal Raman":
-            self.laser_freq_sb.setValue(self.settings["Laser frequency cm1"])
+            self.laser_wavelength_sb.setValue(self.settings["Laser wavelength nm"])
             self.temperature_sb.setValue(self.settings["Temperature K"])
             self.n_gauss_sb.setValue(self.settings["Number of GL points"])
             idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
@@ -1911,6 +1911,12 @@ class CrystalScenarioTab(ScenarioTab):
         for layer in self.layers:
             if layer.get_incoherent_option() == "Incoherent (phase averaging)":
                 self.number_of_average_incoherent_layers += 1
+        # The Raman calculator runs a single pass over phonon modes regardless of
+        # the incoherent settings (those only affect IR), so its per-scenario
+        # progress-bar quota is just len(vs_cm1).
+        if self.spectroscopy == "Crystal Raman":
+            self.no_calculations_required = 1
+            return
         # First see how many layers are using phase averaging
         if self.number_of_average_incoherent_layers > 0:
             number_of_samples = self.settings["Number of average incoherence samples"]
@@ -1968,9 +1974,9 @@ class CrystalScenarioTab(ScenarioTab):
     # Crystal Raman signal handlers (Phase 2f)
     # ------------------------------------------------------------------
 
-    def on_laser_freq_sb_changed(self, value):
-        """Handle a change in the laser frequency spin box."""
-        self.settings["Laser frequency cm1"] = value
+    def on_laser_wavelength_sb_changed(self, value):
+        """Handle a change in the laser wavelength spin box."""
+        self.settings["Laser wavelength nm"] = value
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2617,7 +2623,8 @@ class CrystalScenarioTab(ScenarioTab):
         # Linewidths: use slab-corrected sigmas when slab NAC is active
         linewidths = slab_sigmas_shared if (can_slab_nac and slab_sigmas_shared is not None) else sigmas_cm1
 
-        laser_freq_cm1    = self.settings.get("Laser frequency cm1", 18797.0)
+        laser_wavelength_nm = self.settings.get("Laser wavelength nm", 532.0)
+        laser_freq_cm1    = 1.0e7 / laser_wavelength_nm
         incident_pol      = self.settings.get("Incident polarisation", "p")
         detected_pol      = self.settings.get("Detected polarisation", "unpolarised")
         temperature_K     = self.settings.get("Temperature K", 298.0)
@@ -2649,7 +2656,30 @@ class CrystalScenarioTab(ScenarioTab):
             approximate_es=approximate_es,
         )
 
-        spectrum = calculator.calculate_spectrum(vs_cm1)
+        # The progress-bar quota for this scenario is len(vs_cm1) (set by
+        # PlottingTab.get_total_number_of_frequency_calculations).  Spread the
+        # quota across the modes using integer arithmetic so the cumulative
+        # target hits exactly len(vs_cm1) on the last mode, and flush in a
+        # finally block so the bar is filled even if the calculator raises.
+        ref_layer = raman_layer_list[0]
+        n_modes = len(ref_layer.phonon_frequencies_cm1)
+        n_freqs = len(vs_cm1)
+        _count = [0]
+        _updated = [0]
+
+        def _progress_callback():
+            _count[0] += 1
+            target = (n_freqs * _count[0]) // n_modes if n_modes > 0 else n_freqs
+            if target > _updated[0]:
+                self.notebook.progressbars_update(increment=target - _updated[0])
+                _updated[0] = target
+
+        try:
+            spectrum = calculator.calculate_spectrum(vs_cm1, progress_callback=_progress_callback)
+        finally:
+            remaining = n_freqs - _updated[0]
+            if remaining > 0:
+                self.notebook.progressbars_update(increment=remaining)
 
         # Apply user-selected spectrum normalisation
         norm_mode = self.settings.get("Raman normalisation", "none")

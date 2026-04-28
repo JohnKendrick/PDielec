@@ -467,12 +467,19 @@ class LayeredRamanCalculator:
     # Public interface
     # ------------------------------------------------------------------
 
-    def calculate_mode_intensities(self):
+    def calculate_mode_intensities(self, progress_callback=None):
         """Compute the per-mode Raman intensities (before broadening).
 
         Modes below ``_ACOUSTIC_THRESHOLD_CM1`` are excluded.  Layer
         contributions are combined incoherently or coherently depending on
         ``self.coherent_layers``.
+
+        Parameters
+        ----------
+        progress_callback : callable, optional
+            If supplied, called once per phonon-mode iteration (including modes
+            that are skipped as acoustic), so the caller can drive a progress
+            bar.  The callback takes no arguments.
 
         Returns
         -------
@@ -534,6 +541,9 @@ class LayeredRamanCalculator:
         active_sigmas = []
 
         for mode_idx in range(n_modes):
+            if progress_callback is not None:
+                progress_callback()
+
             nu_m = ref_layer.phonon_frequencies_cm1[mode_idx]
 
             # Skip acoustic modes
@@ -597,13 +607,16 @@ class LayeredRamanCalculator:
             np.array(active_sigmas),
         )
 
-    def calculate_spectrum(self, freq_axis_cm1):
+    def calculate_spectrum(self, freq_axis_cm1, progress_callback=None):
         """Compute the broadened Raman spectrum on the given frequency axis.
 
         Parameters
         ----------
         freq_axis_cm1 : array_like, shape (N,)
             Raman-shift axis in cm⁻¹ on which to evaluate the spectrum.
+        progress_callback : callable, optional
+            Forwarded to :meth:`calculate_mode_intensities` so a caller can
+            drive a progress bar.  Called once per phonon mode.
 
         Returns
         -------
@@ -612,7 +625,9 @@ class LayeredRamanCalculator:
 
         """
         freq_axis_cm1 = np.asarray(freq_axis_cm1)
-        active_freqs, active_intensities, active_sigmas = self.calculate_mode_intensities()
+        active_freqs, active_intensities, active_sigmas = self.calculate_mode_intensities(
+            progress_callback=progress_callback
+        )
         if len(active_freqs) == 0:
             return np.zeros(len(freq_axis_cm1))
         return lorentzian_broaden(active_freqs, active_intensities, active_sigmas, freq_axis_cm1)
