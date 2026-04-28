@@ -239,6 +239,7 @@ class PlottingTab(QWidget):
         self.settings["Number of atoms"] = 1
         self.settings["Plot type"] = "Powder Molar Absorption"
         self.settings["Frequency unit"] = "wavenumber"
+        self.settings["Spectrum renormalisation"] = "none"
         # self.settings['Plot title'] = 'Plot Title'
         self.legends = []
         self.vs_cm1 = []
@@ -419,6 +420,19 @@ class PlottingTab(QWidget):
         hbox.addWidget(self.plot_type_cb)
         hbox.addWidget(plot_button)
         form.addRow(label, hbox)
+        #
+        # Spectrum renormalisation (applied per-curve at plot time)
+        #
+        self.renorm_cb = QComboBox(self)
+        self.renorm_cb.addItems(["none", "max=1", "area=1"])
+        idx = self.renorm_cb.findText(self.settings["Spectrum renormalisation"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.renorm_cb.setCurrentIndex(idx)
+        self.renorm_cb.activated.connect(self.on_renorm_cb_activated)
+        self.renorm_cb.setToolTip("Renormalise each plotted curve:\n'none' — raw units\n'max=1' — divide each curve by its peak\n'area=1' — divide each curve by its integrated area")
+        self.renorm_label = QLabel("Spectrum renormalisation", self)
+        self.renorm_label.setToolTip(self.renorm_cb.toolTip())
+        form.addRow(self.renorm_label, self.renorm_cb)
         # Add a progress bar
         self.progressbar = QProgressBar(self)
         self.progressbar.setToolTip("Show the progress of any calculations")
@@ -741,6 +755,9 @@ class PlottingTab(QWidget):
             self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
         self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
         self.natoms_sb.setValue(self.settings["Number of atoms"])
+        idx = self.renorm_cb.findText(self.settings.get("Spectrum renormalisation", "none"), Qt.MatchFixedString)
+        if idx >= 0:
+            self.renorm_cb.setCurrentIndex(idx)
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
@@ -1302,6 +1319,15 @@ class PlottingTab(QWidget):
             y = scenario.get_result(self.vs_cm1,self.settings["Plot type"])
             if y is not None and len(y) > 0:
                 y = np.array(y)
+                norm_mode = self.settings.get("Spectrum renormalisation", "none")
+                if norm_mode == "max=1":
+                    peak = np.max(y) if len(y) else 0.0
+                    if peak > 0.0:
+                        y = y / peak
+                elif norm_mode == "area=1":
+                    area = np.trapezoid(y, self.vs_cm1) if len(y) else 0.0
+                    if area > 0.0:
+                        y = y / area
                 if removeFirstElement:
                     y = y[1:]
                 if reverseElements:
@@ -1312,7 +1338,10 @@ class PlottingTab(QWidget):
                 line, = self.subplot.plot(x,y,lw=2, label=legend )
         if plots > 0:
             self.subplot.set_xlabel(xlabel)
-            self.subplot.set_ylabel(self.plot_ylabels[self.settings["Plot type"]])
+            if self.settings.get("Spectrum renormalisation", "none") != "none":
+                self.subplot.set_ylabel("Arbitrary units")
+            else:
+                self.subplot.set_ylabel(self.plot_ylabels[self.settings["Plot type"]])
             self.subplot.legend(loc="best")
             self.subplot.set_title(self.settings["Plot type"])
             #self.subplot.set_autoscaley_on(False)
@@ -1342,6 +1371,24 @@ class PlottingTab(QWidget):
             n += scenario.get_no_calculations_required()
         logger.debug(f"get_number_of_calculations_required {n}")
         return n
+
+    def on_renorm_cb_activated(self, index):
+        """Handle a change in the spectrum renormalisation combo box.
+
+        Parameters
+        ----------
+        index : int
+            The index of the selected item.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"Start:: on_renorm_cb_activated {index}")
+        self.settings["Spectrum renormalisation"] = self.renorm_cb.currentText()
+        self.plot()
+        logger.debug(f"Finished:: on_renorm_cb_activated {index}")
 
     def greyed_out(self):
         """Repopulate the plot type combo box for the current spectroscopy type.

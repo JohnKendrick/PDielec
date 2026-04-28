@@ -396,7 +396,6 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Coherent layer summation"] = False
         self.settings["Approximate ES"] = False
         self.settings["Phonon boundary correction"] = "none"  # 'none' or 'slab'
-        self.settings["Raman normalisation"] = "none"        # 'none', 'max=1', or 'area=1'
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -1565,17 +1564,6 @@ class CrystalScenarioTab(ScenarioTab):
         label.setToolTip(self.phonon_bc_cb.toolTip())
         self.form.addRow(label, self.phonon_bc_cb)
 
-        # Spectrum normalisation
-        self.raman_norm_cb = QComboBox(self)
-        self.raman_norm_cb.addItems(["none", "max=1", "area=1"])
-        idx = self.raman_norm_cb.findText(self.settings["Raman normalisation"], Qt.MatchFixedString)
-        if idx >= 0:
-            self.raman_norm_cb.setCurrentIndex(idx)
-        self.raman_norm_cb.activated.connect(self.on_raman_norm_cb_activated)
-        self.raman_norm_cb.setToolTip("Spectrum normalisation:\n'none' — raw arbitrary units (peaks O(1e4–1e8))\n'max=1' — divide by spectrum peak\n'area=1' — divide by integrated area")
-        label = QLabel("Spectrum normalisation")
-        label.setToolTip(self.raman_norm_cb.toolTip())
-        self.form.addRow(label, self.raman_norm_cb)
 
     def partial_incoherence_widget(self):
         """Create a partial incoherence widget.
@@ -1875,9 +1863,6 @@ class CrystalScenarioTab(ScenarioTab):
             idx = self.phonon_bc_cb.findText(self.settings["Phonon boundary correction"], Qt.MatchFixedString)
             if idx >= 0:
                 self.phonon_bc_cb.setCurrentIndex(idx)
-            idx = self.raman_norm_cb.findText(self.settings["Raman normalisation"], Qt.MatchFixedString)
-            if idx >= 0:
-                self.raman_norm_cb.setCurrentIndex(idx)
         #
         # Unblock signals after refresh
         #
@@ -2031,12 +2016,6 @@ class CrystalScenarioTab(ScenarioTab):
     def on_phonon_bc_cb_activated(self, index):
         """Handle a change in the phonon boundary correction combo box."""
         self.settings["Phonon boundary correction"] = self.phonon_bc_cb.currentText()
-        self.calculation_required = True
-        self.refresh_required = True
-
-    def on_raman_norm_cb_activated(self, index):
-        """Handle a change in the Raman normalisation combo box."""
-        self.settings["Raman normalisation"] = self.raman_norm_cb.currentText()
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2680,18 +2659,6 @@ class CrystalScenarioTab(ScenarioTab):
             remaining = n_freqs - _updated[0]
             if remaining > 0:
                 self.notebook.progressbars_update(increment=remaining)
-
-        # Apply user-selected spectrum normalisation
-        norm_mode = self.settings.get("Raman normalisation", "none")
-        if norm_mode == "max=1":
-            peak = np.max(spectrum) if len(spectrum) else 0.0
-            if peak > 0.0:
-                spectrum = spectrum / peak
-        elif norm_mode == "area=1":
-            # Trapezoidal area on the supplied frequency axis
-            area = np.trapezoid(spectrum, vs_cm1) if len(spectrum) else 0.0
-            if area > 0.0:
-                spectrum = spectrum / area
 
         self.raman_spectrum = spectrum
         self.calculation_required = False
