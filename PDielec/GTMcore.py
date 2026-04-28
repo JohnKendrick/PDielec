@@ -1905,7 +1905,7 @@ class System:
         L = self.superstrate
         for ii, zc in enumerate(z):
 
-            if zc > zn[current_layer]:
+            while current_layer < laynum+1 and zc > zn[current_layer]:
                 current_layer += 1
                 if current_layer == laynum+1: ## reached substrate
                     L = self.substrate
