@@ -494,12 +494,137 @@ def raman_intensities(raman_tensors, volume):
         R_sym = 0.5 * (R + R.T)
         R_anti = 0.5 * (R - R.T)
         R_traceless = R_sym - alpha * I3
-        gamma2 = float(np.sum(R_traceless * R_traceless))
-        kappa2 = float(np.sum(R_anti * R_anti))
+        gamma2 = 3.0 / 2.0 * float(np.sum(R_traceless * R_traceless))
+        kappa2 = 3.0 / 2.0 * float(np.sum(R_anti * R_anti))
         activities[i, 0] = volume * (45.0 * alpha * alpha + 7.0 * gamma2 + 5.0 * kappa2)
         activities[i, 1] = volume * (30.0 * alpha * alpha + 4.0 * gamma2)
         activities[i, 2] = volume * (15.0 * alpha * alpha + 3.0 * gamma2)
     return activities
+
+
+def compute_internal_field_tensor(L, epsilon_i, epsilon_e):
+    """Compute the internal field tensor N (Eq. 47 of Raman-Theory.pdf).
+
+    N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}
+
+    Parameters
+    ----------
+    L : array_like, shape (3, 3)
+        Depolarisation tensor.
+    epsilon_i : array_like, shape (3, 3) or scalar
+        Optical permittivity of the particle (inclusion).
+    epsilon_e : float
+        Optical permittivity of the external medium (scalar).
+
+    Returns
+    -------
+    N : ndarray, shape (3, 3), complex
+        Internal field tensor.
+    """
+    I3 = np.eye(3, dtype=complex)
+    epsilon_i = np.asarray(epsilon_i, dtype=complex)
+    if epsilon_i.ndim == 0:
+        epsilon_i = float(epsilon_i) * I3
+    L = np.asarray(L, dtype=complex)
+    return np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_i - epsilon_e * I3))
+
+
+def compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e):
+    """Compute the effective particle Raman tensor (Eq. 60 of Raman-Theory.pdf).
+
+    R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
+
+    Parameters
+    ----------
+    R_eps : array_like, shape (3, 3)
+        Crystal Raman tensor.
+    N : ndarray, shape (3, 3)
+        Internal field tensor from compute_internal_field_tensor().
+    L : array_like, shape (3, 3)
+        Depolarisation tensor.
+    epsilon_i : array_like, shape (3, 3) or scalar
+        Optical permittivity of the particle.
+    epsilon_e : float
+        Optical permittivity of the external medium.
+
+    Returns
+    -------
+    R_particle : ndarray, shape (3, 3), complex
+        Effective particle Raman tensor.
+    """
+    I3 = np.eye(3, dtype=complex)
+    epsilon_i = np.asarray(epsilon_i, dtype=complex)
+    if epsilon_i.ndim == 0:
+        epsilon_i = float(epsilon_i) * I3
+    R_eps = np.asarray(R_eps, dtype=complex)
+    L = np.asarray(L, dtype=complex)
+    correction = (1.0 / epsilon_e) * (epsilon_i - epsilon_e * I3) @ N @ L @ R_eps
+    return N @ (R_eps - correction) @ N
+
+
+def compute_powder_raman_intensities(R):
+    """Compute powder-averaged VV and VH Raman intensities from a Raman tensor.
+
+    Implements the Placzek rotational-invariant formula (Eqs. 90-99 of
+    Raman-Theory.pdf).  Uses the 3/2 Placzek normalisation for γ² and κ²,
+    which is consistent with the numerical SO(3)-averaging path.
+
+    Parameters
+    ----------
+    R : array_like, shape (3, 3)
+        Raman tensor (may be complex).
+
+    Returns
+    -------
+    vv : float
+        VV (parallel) powder intensity: 45α² + 4γ² + 5κ²
+    vh : float
+        VH (crossed) powder intensity: 3γ² + 5κ²
+    """
+    R = np.asarray(R, dtype=complex)
+    I3 = np.eye(3, dtype=complex)
+    alpha = np.trace(R) / 3.0
+    gamma_t = 0.5 * (R + R.T) - alpha * I3
+    kappa_t = 0.5 * (R - R.T)
+    alpha2 = float(np.real(alpha * np.conj(alpha)))
+    gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
+    kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
+    vv = 45.0 * alpha2 + 4.0 * gamma2 + 5.0 * kappa2
+    vh = 3.0 * gamma2 + 5.0 * kappa2
+    return vv, vh
+
+
+def sobol_rotations(n_samples, seed=42):
+    """Return n_samples uniform SO(3) rotations via a scrambled Sobol sequence.
+
+    Uses James Arvo's "Fast Random Rotation" method.
+
+    Parameters
+    ----------
+    n_samples : int
+        Number of rotation matrices to generate.
+    seed : int, optional
+        Seed for the Sobol scrambler (default 42).
+
+    Returns
+    -------
+    list of ndarray, each shape (3, 3)
+        Orthogonal rotation matrices (det = +1).
+    """
+    from scipy.stats.qmc import Sobol
+    n_pow2 = 2 ** int(np.ceil(np.log2(max(n_samples, 1))))
+    sampler = Sobol(d=3, scramble=True, seed=seed)
+    samples = sampler.random(n_pow2)[:n_samples]
+    rotations = []
+    for u in samples:
+        theta, phi, z = 2 * np.pi * u[0], 2 * np.pi * u[1], u[2]
+        V = np.array([np.cos(phi) * np.sqrt(z), np.sin(phi) * np.sqrt(z), np.sqrt(1 - z)])
+        H = np.eye(3) - 2 * np.outer(V, V)
+        Rmat = np.array([[np.cos(theta), np.sin(theta), 0],
+                         [-np.sin(theta), np.cos(theta), 0],
+                         [0, 0, 1]])
+        rotations.append(-H @ Rmat)
+    return rotations
 
 
 def longitudinal_modes(frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader):

@@ -1463,9 +1463,8 @@ class PowderScenarioTab(ScenarioTab):
             epsilon_e = float(np.real(self.matrixPermittivityFunction(0.0)))
             # Depolarisation tensor L from particle shape (same logic as _calculate_infrared)
             L = self.calculate_depolarisation_tensor()
-            # Internal field tensor N (Eq. 47):
-            #   N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}
-            N = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_inf_i - epsilon_e * I3))
+            # Internal field tensor N (Eq. 47)
+            N = Calculator.compute_internal_field_tensor(L, epsilon_inf_i, epsilon_e)
             # Particle phonon frequencies (Eqs. 73-74):
             # When Born charges and the hessian are available, diagonalise D^particle
             # to obtain shifted frequencies and transformed Raman tensors.
@@ -1547,29 +1546,24 @@ class PowderScenarioTab(ScenarioTab):
                 if not selected or abs(freq) < 1.0:
                     continue
 
-                # Effective particle Raman tensor (Eq. 60):
-                #   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
-                # For 'none' matrix, use the raw DFT Raman tensor with no correction.
+                # Effective particle Raman tensor (Eq. 60)
                 if is_none_matrix:
                     R_particle = np.array(R_eps, dtype=complex)
                 else:
-                    correction = (1.0 / epsilon_e) * (epsilon_inf_i - epsilon_e * I3) @ N @ L @ R_eps
-                    R_particle = N @ (R_eps - correction) @ N
-
-                # Rotational invariants for a general complex tensor (Eqs. 90-96)
-                alpha = (R_particle[0, 0] + R_particle[1, 1] + R_particle[2, 2]) / 3.0
-                gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
-                kappa_t = 0.5 * (R_particle - R_particle.T)
-                alpha2 = float(np.real(alpha * np.conj(alpha)))
-                gamma2 = float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
-                kappa2 = float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
+                    R_particle = Calculator.compute_particle_raman_tensor(
+                        R_eps, N, L, epsilon_inf_i, epsilon_e)
 
                 # Powder-averaged scattering intensity for the chosen polarisation (Eqs. 97-99)
-                if polarisation == "VV":
-                    intensity_factor = 45.0 * alpha2 + 4.0 * gamma2 + 5.0 * kappa2
-                elif polarisation in ("VH", "HV"):
-                    intensity_factor = 3.0 * gamma2 + 5.0 * kappa2
-                else:  # Unpolarised
+                if polarisation in ("VV", "VH", "HV"):
+                    vv, vh = Calculator.compute_powder_raman_intensities(R_particle)
+                    intensity_factor = vv if polarisation == "VV" else vh
+                else:  # Unpolarised: 45α² + 7γ² + 5κ² (≠ VV+VH for antisymmetric tensors)
+                    alpha = np.trace(R_particle) / 3.0
+                    gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
+                    kappa_t = 0.5 * (R_particle - R_particle.T)
+                    alpha2 = float(np.real(alpha * np.conj(alpha)))
+                    gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
+                    kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
                     intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
 
                 # Bose-Einstein occupation factor n(ν_m) (Eq. 11)
@@ -1746,9 +1740,10 @@ class PowderScenarioTab(ScenarioTab):
 
     @staticmethod
     def _get_sobol_rotations(n_samples):
-        """Return ``n_samples`` rotations in SO(3) drawn uniformly from S² via a Sobol sequence.
+        """Return ``n_samples`` rotations in SO(3) drawn uniformly via a Sobol sequence.
 
-           The method uses James Arvo's "Fast Random Rotation" method.
+        Delegates to :func:`PDielec.Calculator.sobol_rotations` with the fixed
+        seed used for reproducible powder averaging.
 
         Parameters
         ----------
@@ -1757,31 +1752,10 @@ class PowderScenarioTab(ScenarioTab):
 
         Returns
         -------
-        phis : ndarray, shape (n_samples,)
-        thetas : ndarray, shape (n_samples,)
-        psis : ndarray, shape (n_samples,)
+        list of ndarray, each shape (3, 3)
+            Orthogonal rotation matrices (det = +1).
         """
-        # Round up to the next power of 2 for optimal Sobol equidistribution,
-        # then truncate to the requested number of samples.
-        n_pow2 = 2 ** int(np.ceil(np.log2(max(n_samples, 1))))
-        sampler = Sobol(d=3, scramble=True, seed=42)
-        samples = sampler.random(n_pow2)[:n_samples]
-    
-        rotations = []
-        for u in samples:
-            theta, phi, z = 2*np.pi*u[0], 2*np.pi*u[1], u[2]
-            
-            # Householder reflection vector
-            V = np.array([np.cos(phi)*np.sqrt(z), np.sin(phi)*np.sqrt(z), np.sqrt(1-z)])
-            H = np.eye(3) - 2 * np.outer(V, V)
-        
-            # Rotation around Z
-            R = np.array([[np.cos(theta), np.sin(theta), 0],
-                          [-np.sin(theta), np.cos(theta), 0],
-                          [0, 0, 1]])
-        
-            rotations.append(-H @ R)
-        return rotations
+        return Calculator.sobol_rotations(n_samples, seed=42)
 
     def _compute_orientation_sampled_spectrum(
             self, L, epsilon_e, epsilon_inf_i, I3,
@@ -1888,9 +1862,8 @@ class PowderScenarioTab(ScenarioTab):
         # ── Pre-loop: orientation-invariant quantities ────────────────────────────────
         # ΔD is invariant under rotation: Z_lab^T NbgL_lab Z_lab = Z_mat^T N L Z_mat
         # for any R (proof in raman_notes.md).  Diagonalise D^particle once here.
-        N_bg_crystal = np.linalg.inv(
-            I3 + (1.0 / epsilon_e) * np.real(L) @ (np.real(epsilon_inf_i) - epsilon_e * I3)
-        )
+        N_bg_crystal = Calculator.compute_internal_field_tensor(
+            np.real(L), np.real(epsilon_inf_i), epsilon_e)
         NbgL = np.real(N_bg_crystal) @ np.real(L)
         delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
 
@@ -1949,9 +1922,7 @@ class PowderScenarioTab(ScenarioTab):
             eps_lab = R @ np.real(epsilon_inf_i) @ R.T
 
             # Orientation-dependent internal field tensor N_bg_lab (Eq. 47)
-            N_bg_lab = np.linalg.inv(
-                I3 + (1.0 / epsilon_e) * L_lab @ (eps_lab - epsilon_e * I3)
-            )
+            N_bg_lab = Calculator.compute_internal_field_tensor(L_lab, eps_lab, epsilon_e)
 
             # Loop over particle modes (skip inactive ones)
             for p_idx in range(n_modes):
@@ -1963,8 +1934,8 @@ class PowderScenarioTab(ScenarioTab):
                 R_eps_lab = R @ R_eps_cryst_list[p_idx] @ R.T
 
                 # Effective particle Raman tensor in the lab frame (Eq. 60)
-                correction = (1.0 / epsilon_e) * (eps_lab - epsilon_e * I3) @ N_bg_lab @ L_lab @ R_eps_lab
-                R_part_lab = N_bg_lab @ (R_eps_lab - correction) @ N_bg_lab
+                R_part_lab = Calculator.compute_particle_raman_tensor(
+                    R_eps_lab, N_bg_lab, L_lab, eps_lab, epsilon_e)
 
                 # Polarisation-specific intensity
                 if polarisation == "VV":
