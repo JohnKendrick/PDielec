@@ -277,6 +277,8 @@ def usage():
     print("           run all the powder infrared tests" , file=sys.stderr)
     print("  test-powder_raman" , file=sys.stderr)
     print("           run all the powder raman tests" , file=sys.stderr)
+    print("  test-pytest-powder_raman" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Powder_Raman/" , file=sys.stderr)
     print("  test-atr" , file=sys.stderr)
     print("           run all the powder atr tests" , file=sys.stderr)
     print("  test-p2cif" , file=sys.stderr)
@@ -856,6 +858,29 @@ def change_padding(all):
         maxlen = max(maxlen,len(d))
     return max(maxlen, settings["padding"])
 
+def run_pytest_suite(suite_dir, label):
+    """Run pytest on a directory relative to the project root.
+
+    Parameters
+    ----------
+    suite_dir : str
+        Path to the pytest directory, relative to rootDirectory.
+    label : str
+        Human-readable label used in progress output.
+
+    """
+    global start_time
+    print("")
+    print("--------------------------------------------------")
+    print(label, "starting")
+    start_time = time.time()
+    target = os.path.join(rootDirectory, suite_dir)
+    result = subprocess.run(["pytest", target], check=False)
+    elapsed_time = time.time() - start_time
+    print("--------------------------------------------------")
+    status = "completed" if result.returncode == 0 else "FAILED"
+    print(label, f"{status} in {elapsed_time:.3f}s")
+
 def run_tests(testlist, testType, regenerate):
     """Run the tests given in the directories stored in testlist.
 
@@ -1223,6 +1248,8 @@ def main():
             actions.append("test powder_infrared")
         elif token == "test-powder_raman":
             actions.append("test powder_raman")
+        elif token == "test-pytest-powder_raman":
+            actions.append("test pytest_powder_raman")
         elif token == "test-atr":
             actions.append("test powder_atr")
         elif token == "test-preader":
@@ -1330,8 +1357,10 @@ def main():
             run_tests(test_crystal_raman      ,"crystal_raman"      ,regenerate)
         elif action == "test powder_infrared":
             run_tests(test_powder_infrared      ,"powder_infrared"      ,regenerate)
-        elif action == "test crystal_raman":
+        elif action == "test powder_raman":
             run_tests(test_powder_raman      ,"powder_raman"      ,regenerate)
+        elif action == "test pytest_powder_raman":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Powder_Raman"), "Pytest Powder Raman")
         elif action == "test powder_atr":
             run_tests(test_powder_atr      ,"powder_atr"      ,regenerate)
         elif action == "test vibanalysis":
