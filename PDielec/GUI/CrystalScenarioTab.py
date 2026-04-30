@@ -49,7 +49,7 @@ from PDielec import Materials
 from PDielec.Constants import amu, angs2bohr, speed_light_si, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
-from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer
+from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer, lorentzian_broaden
 from PDielec.Materials import MaterialsDataBase
 
 logger = logging.getLogger(__name__)
@@ -383,6 +383,9 @@ class CrystalScenarioTab(ScenarioTab):
         self.s_absorbtance = []
         self.epsilon = []
         self.raman_spectrum = []
+        self.raman_mode_frequencies = np.array([])
+        self.raman_mode_intensities = np.array([])
+        self.raman_mode_sigmas = np.array([])
         self.layers = []
         self.settings["Laser wavelength nm"] = 532.0
         self.settings["Incident polarisation"] = "p"
@@ -394,6 +397,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Coherent layer summation"] = False
         self.settings["Approximate ES"] = False
         self.settings["Phonon boundary correction"] = "none"  # 'none' or 'slab'
+        self.settings["Azimuthal sweep points"] = 36
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -1562,6 +1566,35 @@ class CrystalScenarioTab(ScenarioTab):
         label.setToolTip(self.phonon_bc_cb.toolTip())
         self.form.addRow(label, self.phonon_bc_cb)
 
+        # Separator: azimuthal sweep
+        sweep_label = QLabel("Azimuthal sweep")
+        sweep_line = QFrame()
+        sweep_line.setFrameShape(QFrame.HLine)
+        sweep_hbox = QHBoxLayout()
+        sweep_hbox.addWidget(sweep_line)
+        sweep_hbox.setAlignment(Qt.AlignVCenter)
+        self.form.addRow(sweep_label, sweep_hbox)
+
+        # Number of sweep points
+        self.sweep_n_points_sb = QSpinBox(self)
+        self.sweep_n_points_sb.setRange(4, 360)
+        self.sweep_n_points_sb.setSingleStep(4)
+        self.sweep_n_points_sb.setValue(self.settings["Azimuthal sweep points"])
+        self.sweep_n_points_sb.valueChanged.connect(self.on_sweep_n_points_sb_changed)
+        self.sweep_n_points_sb.setToolTip("Number of azimuthal angles (0°–360°) to compute in the sweep")
+        sweep_pts_label = QLabel("Sweep points")
+        sweep_pts_label.setToolTip(self.sweep_n_points_sb.toolTip())
+        self.form.addRow(sweep_pts_label, self.sweep_n_points_sb)
+
+        # Plot button
+        self.azimuthal_sweep_btn = QPushButton("Plot azimuthal sweep", self)
+        self.azimuthal_sweep_btn.clicked.connect(self.on_azimuthal_sweep_btn_clicked)
+        self.azimuthal_sweep_btn.setToolTip(
+            "Calculate Raman intensity over 0°–360° azimuthal angles and open a plot window.\n"
+            "Multiple windows may be opened to compare settings."
+        )
+        self.form.addRow("", self.azimuthal_sweep_btn)
+
 
     def partial_incoherence_widget(self):
         """Create a partial incoherence widget.
@@ -2015,6 +2048,42 @@ class CrystalScenarioTab(ScenarioTab):
         self.calculation_required = True
         self.refresh_required = True
 
+    def on_sweep_n_points_sb_changed(self, value):
+        """Handle change in azimuthal sweep point count."""
+        self.settings["Azimuthal sweep points"] = value
+
+    def on_azimuthal_sweep_btn_clicked(self):
+        """Run the azimuthal sweep and open a new plot window."""
+        if not hasattr(self, "vs_cm1") or self.vs_cm1 is None or len(self.vs_cm1) == 0:
+            QMessageBox.warning(
+                self, "No calculation",
+                "Please run a Crystal Raman calculation first to define the frequency axis."
+            )
+            return
+        n_points = self.settings["Azimuthal sweep points"]
+        psi_values = np.linspace(0.0, 360.0, n_points, endpoint=False)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        try:
+            sweep_data = self._run_azimuthal_sweep(self.vs_cm1, psi_values)
+        finally:
+            QApplication.restoreOverrideCursor()
+        if sweep_data is None:
+            QMessageBox.warning(
+                self, "Sweep failed",
+                "Azimuthal sweep could not be completed. Check the Crystal Raman settings."
+            )
+            return
+        from PDielec.GUI.AzimuthalSweepWindow import AzimuthalSweepWindow
+        window = AzimuthalSweepWindow(
+            sweep_data,
+            title=f"Azimuthal sweep — {self.settings['Legend']}",
+            parent=None,
+        )
+        window.show()
+        if not hasattr(self, "_sweep_windows"):
+            self._sweep_windows = []
+        self._sweep_windows.append(window)
+
     def average_incoherent_calculator( self,
                             layers,
                             mode,
@@ -2431,6 +2500,169 @@ class CrystalScenarioTab(ScenarioTab):
 
         return slab_freqs, slab_tensors, slab_sigmas
 
+    def _build_raman_calculator(self, psi_rad):
+        """Build and return a configured LayeredRamanCalculator for the given azimuthal angle.
+
+        Constructs the GTMcore multilayer system, applies global azimuthal rotation,
+        builds the list of RamanLayer descriptors (with optional slab NAC), and returns
+        a fully configured LayeredRamanCalculator ready to call calculate_mode_intensities().
+
+        Parameters
+        ----------
+        psi_rad : float
+            Global azimuthal rotation angle in radians.
+
+        Returns
+        -------
+        LayeredRamanCalculator or None
+            Configured calculator, or None if prerequisites are missing or invalid.
+
+        """
+        raman_tensors = self.reader.get_raman_tensors()
+        if raman_tensors is None:
+            logger.warning(f"{self.settings['Legend']} _build_raman_calculator: no Raman tensors")
+            return None
+
+        theta = 0.0
+        phi = 0.0
+        angle_of_incidence = np.radians(self.settings["Angle of incidence"])
+
+        # Compute HKL rotation matrices for all tensor layers
+        for layer in self.layers:
+            if layer.is_tensor():
+                hkl = layer.get_hkl()
+                if hkl[0] == 0 and hkl[1] == 0 and hkl[2] == 0:
+                    logger.warning(f"{self.settings['Legend']} _build_raman_calculator: hkl=[0,0,0]")
+                    return None
+                layer.calculate_euler_matrix()
+
+        # Build GTM multilayer system
+        mode = self.settings["Mode"]
+        exponent_threshold = self.exponent_threshold
+        superstrate = GTM.SemiInfiniteLayer(self.layers[0], exponent_threshold=exponent_threshold)
+        substrate   = GTM.SemiInfiniteLayer(self.layers[-1], exponent_threshold=exponent_threshold)
+        selected_layers = self.layers[1:-1]
+        gtm_layers = []
+        for layer in selected_layers:
+            incoherent_option = layer.get_incoherent_option()
+            gtm_layers.append(gtm_methods[incoherent_option](layer, exponent_threshold=exponent_threshold))
+        if mode == "Scattering matrix":
+            system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
+        else:
+            system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
+
+        # Apply global azimuthal rotation to all GTM layers
+        system.superstrate.set_euler(theta, phi, psi_rad)
+        system.substrate.set_euler(theta, phi, psi_rad)
+        for gtm_layer in system.layers:
+            gtm_layer.set_euler(theta, phi, psi_rad)
+
+        # Global azimuthal rotation matrix (rotation around z by psi_rad)
+        G_psi = np.array([
+            [ np.cos(psi_rad), -np.sin(psi_rad), 0.0],
+            [ np.sin(psi_rad),  np.cos(psi_rad), 0.0],
+            [ 0.0,              0.0,              1.0],
+        ])
+
+        # Scale stored Raman tensors by sqrt(volume) to get actual R = sqrt(V) * T_stored
+        volume_ang3 = self.reader.volume
+        scale = np.sqrt(volume_ang3)
+        scaled_tensors = [scale * np.asarray(R, dtype=float) for R in raman_tensors]
+
+        # Phonon frequencies and linewidths from SettingsTab
+        frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
+        sigmas_cm1      = self.notebook.settingsTab.sigmas_cm1
+
+        # Phase 3a: check whether slab NAC correction is possible
+        phonon_bc = self.settings.get("Phonon boundary correction", "none")
+        has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
+        has_born    = len(self.reader.born_charges) > 0
+        has_modes   = np.any(self.reader.mass_weighted_normal_modes)
+        has_optical = (hasattr(self.reader, "zerof_optical_dielectric")
+                       and self.reader.zerof_optical_dielectric is not None)
+        can_slab_nac = (phonon_bc == "slab" and has_hessian and has_born
+                        and has_modes and has_optical)
+        if phonon_bc == "slab" and not can_slab_nac:
+            logger.warning(
+                f"{self.settings['Legend']} _build_raman_calculator: slab NAC requested but "
+                "Born charges / hessian / optical dielectric not available — "
+                "falling back to bulk TO frequencies"
+            )
+
+        slab_freqs_shared = None
+        slab_sigmas_shared = None
+        if can_slab_nac:
+            first_G = None
+            for scl in selected_layers:
+                if scl.is_dielectric():
+                    first_G = G_psi @ scl.euler
+                    break
+            if first_G is not None:
+                slab_freqs_shared, _, slab_sigmas_shared = self._compute_slab_modes(
+                    first_G, scaled_tensors, frequencies_cm1, sigmas_cm1
+                )
+
+        # Build RamanLayer descriptors for each Raman-active (dielectric) layer
+        raman_layer_list = []
+        for sys_idx, scl in enumerate(selected_layers):
+            if not scl.is_dielectric():
+                continue
+            G_total = G_psi @ scl.euler
+            if can_slab_nac and slab_freqs_shared is not None:
+                _, layer_slab_tensors, _ = self._compute_slab_modes(
+                    G_total, scaled_tensors, frequencies_cm1, sigmas_cm1
+                )
+                rl = RamanLayer(
+                    layer_index=sys_idx,
+                    phonon_frequencies_cm1=slab_freqs_shared,
+                    raman_tensors=layer_slab_tensors,
+                    rotation_matrix=G_total,
+                )
+            else:
+                rl = RamanLayer(
+                    layer_index=sys_idx,
+                    phonon_frequencies_cm1=frequencies_cm1,
+                    raman_tensors=scaled_tensors,
+                    rotation_matrix=G_total,
+                )
+            raman_layer_list.append(rl)
+
+        if not raman_layer_list:
+            logger.warning(f"{self.settings['Legend']} _build_raman_calculator: no Raman-active dielectric layers in stack")
+            return None
+
+        # Linewidths: use slab-corrected sigmas when slab NAC is active
+        linewidths = slab_sigmas_shared if (can_slab_nac and slab_sigmas_shared is not None) else sigmas_cm1
+
+        laser_wavelength_nm = self.settings.get("Laser wavelength nm", 532.0)
+        laser_freq_cm1    = 1.0e7 / laser_wavelength_nm
+        incident_pol      = self.settings.get("Incident polarisation", "p")
+        detected_pol      = self.settings.get("Detected polarisation", "unpolarised")
+        temperature_K     = self.settings.get("Temperature K", 298.0)
+        n_gauss           = self.settings.get("Number of GL points", 20)
+        collection_side   = self.settings.get("Collection side", "superstrate")
+        collection_angle  = self.settings.get("Collection angle", -1.0)
+        coherent_layers   = self.settings.get("Coherent layer summation", False)
+        approximate_es    = self.settings.get("Approximate ES", False)
+
+        collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
+
+        return LayeredRamanCalculator(
+            system=system,
+            raman_layers=raman_layer_list,
+            laser_frequency_cm1=laser_freq_cm1,
+            incident_angle_rad=angle_of_incidence,
+            incident_pol=incident_pol,
+            detected_pol=detected_pol,
+            temperature_K=temperature_K,
+            linewidths_cm1=linewidths,
+            n_gauss=n_gauss,
+            collection_side=collection_side,
+            collection_angle_rad=collection_angle_rad,
+            coherent_layers=coherent_layers,
+            approximate_es=approximate_es,
+        )
+
     def _calculate_raman(self, vs_cm1):
         """Calculate the layered crystal Raman spectrum via GTM field integration.
 
@@ -2438,7 +2670,8 @@ class CrystalScenarioTab(ScenarioTab):
         uses LayeredRamanCalculator to evaluate the Raman source-overlap integral
         with Gauss-Legendre quadrature inside each Raman-active (dielectric) layer.
 
-        Results are stored in ``self.raman_spectrum``.
+        Results are stored in ``self.raman_spectrum``, ``self.raman_mode_frequencies``,
+        ``self.raman_mode_intensities``, and ``self.raman_mode_sigmas``.
 
         Parameters
         ----------
@@ -2460,14 +2693,8 @@ class CrystalScenarioTab(ScenarioTab):
         settings = self.notebook.mainTab.settings
         program = settings["Program"]
         filename = self.notebook.mainTab.get_full_file_name()
-        if self.reader is None:
-            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: no reader")
-            return
-        if program == "":
-            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: no program")
-            return
-        if filename == "":
-            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: no filename")
+        if self.reader is None or program == "" or filename == "":
+            logger.debug(f"{self.settings['Legend']} _calculate_raman aborted: reader/program/filename not set")
             return
 
         raman_tensors = self.reader.get_raman_tensors()
@@ -2476,167 +2703,20 @@ class CrystalScenarioTab(ScenarioTab):
             self.calculation_required = False
             return
 
-        # Euler angles (global azimuthal rotation only; HKL rotation is in layer.euler)
-        theta = 0.0
-        phi = 0.0
-        psi = np.radians(self.settings["Global azimuthal angle"])
-        angle_of_incidence = np.radians(self.settings["Angle of incidence"])
-
-        # Compute HKL rotation matrices for all tensor layers
         for layer in self.layers:
             if layer.is_tensor():
                 hkl = layer.get_hkl()
                 if hkl[0] == 0 and hkl[1] == 0 and hkl[2] == 0:
                     QMessageBox.about(self, "", f"Unable to calculate surface for scenario {self.settings['Legend']}, hkl=[0,0,0]")
                     return
-                layer.calculate_euler_matrix()
 
-        # Build GTM multilayer system
-        mode = self.settings["Mode"]
-        exponent_threshold = self.exponent_threshold
-        superstrate = GTM.SemiInfiniteLayer(self.layers[0], exponent_threshold=exponent_threshold)
-        substrate   = GTM.SemiInfiniteLayer(self.layers[-1], exponent_threshold=exponent_threshold)
-        selected_layers = self.layers[1:-1]
-        gtm_layers = []
-        for layer in selected_layers:
-            incoherent_option = layer.get_incoherent_option()
-            gtm_layers.append(gtm_methods[incoherent_option](layer, exponent_threshold=exponent_threshold))
-        if mode == "Scattering matrix":
-            system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
-        else:
-            system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
-
-        # Apply global azimuthal rotation to all GTM layers
-        system.superstrate.set_euler(theta, phi, psi)
-        system.substrate.set_euler(theta, phi, psi)
-        for gtm_layer in system.layers:
-            gtm_layer.set_euler(theta, phi, psi)
-
-        # Global azimuthal rotation matrix (rotation around z by psi)
-        G_psi = np.array([
-            [ np.cos(psi), -np.sin(psi), 0.0],
-            [ np.sin(psi),  np.cos(psi), 0.0],
-            [ 0.0,          0.0,         1.0],
-        ])
-
-        # Scale stored Raman tensors by sqrt(volume) to get actual R = sqrt(V) * T_stored
-        volume_ang3 = self.reader.volume   # Å³
-        scale = np.sqrt(volume_ang3)
-        scaled_tensors = [scale * np.asarray(R, dtype=float) for R in raman_tensors]
-
-        # Phonon frequencies and linewidths from SettingsTab
-        frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
-        sigmas_cm1      = self.notebook.settingsTab.sigmas_cm1
-
-        # Phase 3a: check whether slab NAC correction is possible
-        phonon_bc = self.settings.get("Phonon boundary correction", "none")
-        has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
-        has_born    = len(self.reader.born_charges) > 0
-        has_modes   = np.any(self.reader.mass_weighted_normal_modes)
-        has_optical = (hasattr(self.reader, "zerof_optical_dielectric")
-                       and self.reader.zerof_optical_dielectric is not None)
-        can_slab_nac = (phonon_bc == "slab" and has_hessian and has_born
-                        and has_modes and has_optical)
-        if phonon_bc == "slab" and not can_slab_nac:
-            logger.warning(
-                f"{self.settings['Legend']} _calculate_raman: slab NAC requested but "
-                "Born charges / hessian / optical dielectric not available — "
-                "falling back to bulk TO frequencies"
-            )
-
-        # If slab NAC is active, compute corrected frequencies using the first
-        # Raman-active layer's G_total.  The same slab_freqs and slab_sigmas are
-        # used for all layers (good approximation when all layers share the same
-        # crystal orientation).  Per-layer slab tensors are computed individually
-        # so that each layer's crystallographic face is correctly treated.
-        slab_freqs_shared = None
-        slab_sigmas_shared = None
-        if can_slab_nac:
-            # Find the first Raman-active layer to determine shared frequencies
-            first_G = None
-            for scl in selected_layers:
-                if scl.is_dielectric():
-                    first_G = G_psi @ scl.euler
-                    break
-            if first_G is not None:
-                slab_freqs_shared, _, slab_sigmas_shared = self._compute_slab_modes(
-                    first_G, scaled_tensors, frequencies_cm1, sigmas_cm1
-                )
-
-        # Build RamanLayer descriptors for each Raman-active (dielectric) layer
-        raman_layer_list = []
-        for sys_idx, scl in enumerate(selected_layers):
-            if not scl.is_dielectric():
-                continue
-            # Combined rotation: G_psi (global azimuthal) on top of G_HKL (surface normal)
-            G_total = G_psi @ scl.euler
-            if can_slab_nac and slab_freqs_shared is not None:
-                # Per-layer slab tensors (orientation-specific), shared frequencies
-                _, layer_slab_tensors, _ = self._compute_slab_modes(
-                    G_total, scaled_tensors, frequencies_cm1, sigmas_cm1
-                )
-                rl = RamanLayer(
-                    layer_index=sys_idx,
-                    phonon_frequencies_cm1=slab_freqs_shared,
-                    raman_tensors=layer_slab_tensors,
-                    rotation_matrix=G_total,
-                )
-            else:
-                rl = RamanLayer(
-                    layer_index=sys_idx,
-                    phonon_frequencies_cm1=frequencies_cm1,
-                    raman_tensors=scaled_tensors,
-                    rotation_matrix=G_total,
-                )
-            raman_layer_list.append(rl)
-
-        if not raman_layer_list:
-            logger.warning(f"{self.settings['Legend']} _calculate_raman: no Raman-active dielectric layers in stack")
+        psi = np.radians(self.settings["Global azimuthal angle"])
+        calculator = self._build_raman_calculator(psi)
+        if calculator is None:
             self.calculation_required = False
             return
 
-        # Linewidths: use slab-corrected sigmas when slab NAC is active
-        linewidths = slab_sigmas_shared if (can_slab_nac and slab_sigmas_shared is not None) else sigmas_cm1
-
-        laser_wavelength_nm = self.settings.get("Laser wavelength nm", 532.0)
-        laser_freq_cm1    = 1.0e7 / laser_wavelength_nm
-        incident_pol      = self.settings.get("Incident polarisation", "p")
-        detected_pol      = self.settings.get("Detected polarisation", "unpolarised")
-        temperature_K     = self.settings.get("Temperature K", 298.0)
-        n_gauss           = self.settings.get("Number of GL points", 20)
-        collection_side   = self.settings.get("Collection side", "superstrate")
-        collection_angle  = self.settings.get("Collection angle", -1.0)
-        coherent_layers   = self.settings.get("Coherent layer summation", False)
-        approximate_es    = self.settings.get("Approximate ES", False)
-
-        # A negative collection angle is the sentinel meaning "use the angle of incidence"
-        if collection_angle < 0.0:
-            collection_angle_rad = angle_of_incidence
-        else:
-            collection_angle_rad = np.radians(collection_angle)
-
-        calculator = LayeredRamanCalculator(
-            system=system,
-            raman_layers=raman_layer_list,
-            laser_frequency_cm1=laser_freq_cm1,
-            incident_angle_rad=angle_of_incidence,
-            incident_pol=incident_pol,
-            detected_pol=detected_pol,
-            temperature_K=temperature_K,
-            linewidths_cm1=linewidths,
-            n_gauss=n_gauss,
-            collection_side=collection_side,
-            collection_angle_rad=collection_angle_rad,
-            coherent_layers=coherent_layers,
-            approximate_es=approximate_es,
-        )
-
-        # The progress-bar quota for this scenario is len(vs_cm1) (set by
-        # PlottingTab.get_total_number_of_frequency_calculations).  Spread the
-        # quota across the modes using integer arithmetic so the cumulative
-        # target hits exactly len(vs_cm1) on the last mode, and flush in a
-        # finally block so the bar is filled even if the calculator raises.
-        ref_layer = raman_layer_list[0]
+        ref_layer = calculator.raman_layers[0]
         n_modes = len(ref_layer.phonon_frequencies_cm1)
         n_freqs = len(vs_cm1)
         _count = [0]
@@ -2650,15 +2730,86 @@ class CrystalScenarioTab(ScenarioTab):
                 _updated[0] = target
 
         try:
-            spectrum = calculator.calculate_spectrum(vs_cm1, progress_callback=_progress_callback)
+            active_freqs, active_ints, active_sigmas = calculator.calculate_mode_intensities(
+                progress_callback=_progress_callback
+            )
         finally:
             remaining = n_freqs - _updated[0]
             if remaining > 0:
                 self.notebook.progressbars_update(increment=remaining)
 
+        if len(active_freqs) > 0:
+            spectrum = lorentzian_broaden(active_freqs, active_ints, active_sigmas, np.asarray(vs_cm1))
+        else:
+            spectrum = np.zeros(len(vs_cm1))
+
+        self.raman_mode_frequencies = active_freqs
+        self.raman_mode_intensities = active_ints
+        self.raman_mode_sigmas = active_sigmas
         self.raman_spectrum = spectrum
         self.calculation_required = False
         logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
+
+    def _run_azimuthal_sweep(self, vs_cm1, psi_values):
+        """Compute Raman mode intensities and spectra over a range of azimuthal angles.
+
+        Parameters
+        ----------
+        vs_cm1 : ndarray
+            Frequency axis in cm⁻¹.
+        psi_values : ndarray
+            Azimuthal angles in degrees.
+
+        Returns
+        -------
+        dict or None
+            Keys: 'psi_array', 'mode_frequencies', 'mode_intensities_2d',
+            'vs_cm1', 'spectra_2d'. Returns None on failure.
+
+        """
+        if self.reader is None:
+            logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: no reader")
+            return None
+        if self.reader.get_raman_tensors() is None:
+            logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: no Raman tensors")
+            return None
+        for layer in self.layers:
+            if layer.is_tensor():
+                hkl = layer.get_hkl()
+                if hkl[0] == 0 and hkl[1] == 0 and hkl[2] == 0:
+                    logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: hkl=[0,0,0]")
+                    return None
+
+        vs = np.asarray(vs_cm1)
+        all_intensities = []
+        all_spectra = []
+        mode_freqs = None
+
+        for psi_deg in psi_values:
+            calculator = self._build_raman_calculator(np.radians(psi_deg))
+            if calculator is None:
+                logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: calculator failed at psi={psi_deg:.1f}")
+                return None
+            freqs, ints, sigmas = calculator.calculate_mode_intensities()
+            if mode_freqs is None:
+                mode_freqs = freqs
+            spectrum = lorentzian_broaden(freqs, ints, sigmas, vs) if len(freqs) > 0 else np.zeros(len(vs))
+            n_m = len(mode_freqs) if mode_freqs is not None else 0
+            all_intensities.append(ints if len(ints) == n_m else np.zeros(n_m))
+            all_spectra.append(spectrum)
+            QCoreApplication.processEvents()
+
+        if mode_freqs is None or len(mode_freqs) == 0:
+            logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: no active modes found")
+            return None
+
+        return {
+            "psi_array": psi_values,
+            "mode_frequencies": mode_freqs,
+            "mode_intensities_2d": np.array(all_intensities),
+            "vs_cm1": vs,
+            "spectra_2d": np.array(all_spectra),
+        }
 
     def _calculate_infrared(self,vs_cm1):
         """Perform simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
