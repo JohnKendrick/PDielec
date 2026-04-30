@@ -5,8 +5,8 @@ PDielec.aims_pdielec_born
 
 .. autoapi-nested-parse::
 
-   aims_pdielec_born
-   Read the FHI Aims output after a calculation of intensities using get_vibrations.py
+   Read the FHI Aims output after a calculation of intensities using get_vibrations.py.
+
    Write the BORN charge file in PDielec format
 
 
@@ -17,6 +17,7 @@ Attributes
 .. autoapisummary::
 
    PDielec.aims_pdielec_born.USAGE
+   PDielec.aims_pdielec_born.logger
 
 
 Functions
@@ -34,9 +35,45 @@ Module Contents
 
 .. py:function:: find_number_of_atoms()
 
+   Find the number of atoms in the geometry.in file.
+
+   Returns
+   -------
+   n_atoms : int
+       The number of atoms in a geometry.in file
+
+
+
 .. py:function:: main()
 
+   Generate Born Charge file from Aims to PDielec.
+
+
 .. py:function:: read_aims_output(folder, aimsoutname, n_atoms)
+
+   Read an Aims output file and find the volume and polarisation.
+
+   Parameters
+   ----------
+   folder : str
+       The directory holding the Aims file
+   aimsoutname : str
+        The name of the Aims file, usually aims.out
+   n_atoms : int
+        The number of atoms
+
+   Returns
+   -------
+   volume : float
+       The volume in angstrom^3
+   pol_jump : np array of 3
+       The polarizability
+   polr_jump : np array of 3
+       The polarization
+   dielectric : np array of 3x3
+       The permitivity epsilon infinity
+
+
 
 .. py:data:: USAGE
    :value: Multiline-String
@@ -59,4 +96,6 @@ Module Contents
       </details>
 
 
+
+.. py:data:: logger
 

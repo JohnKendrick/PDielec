@@ -9,6 +9,14 @@ PDielec.Calculator
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.Calculator.logger
+
+
 Functions
 ---------
 
@@ -38,10 +46,14 @@ Functions
    PDielec.Calculator.cleanup_symbol
    PDielec.Calculator.coherent
    PDielec.Calculator.compute_all_sg_permutations
+   PDielec.Calculator.compute_internal_field_tensor
+   PDielec.Calculator.compute_particle_raman_tensor
+   PDielec.Calculator.compute_powder_raman_intensities
    PDielec.Calculator.construct_projection_operator
-   PDielec.Calculator.determineEulerAngles
+   PDielec.Calculator.determine_euler_angles
    PDielec.Calculator.direction_from_shape
    PDielec.Calculator.euler_rotation
+   PDielec.Calculator.euler_rotation_matrix
    PDielec.Calculator.get_pool
    PDielec.Calculator.hodrick_prescott_filter
    PDielec.Calculator.infrared_intensities
@@ -60,11 +72,13 @@ Functions
    PDielec.Calculator.normal_modes
    PDielec.Calculator.orthogonalise_projection_operator
    PDielec.Calculator.oscillator_strengths
+   PDielec.Calculator.raman_intensities
    PDielec.Calculator.reflectance_atr
    PDielec.Calculator.rodridgues_rotations
    PDielec.Calculator.set_affinity_on_worker
    PDielec.Calculator.set_no_of_threads
    PDielec.Calculator.similarity_transform
+   PDielec.Calculator.sobol_rotations
    PDielec.Calculator.solve_effective_medium_equations
    PDielec.Calculator.waterman_truell_scattering
 
@@ -311,7 +325,8 @@ Module Contents
 
    Notes
    -----
-   This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+   This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of
+   Tom G. Mackay and Akhlesh Lakhtakia.
 
 
 
@@ -343,7 +358,8 @@ Module Contents
 
    Notes
    -----
-   This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+   This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of
+   Tom G. Mackay and Akhlesh Lakhtakia.
 
 
 
@@ -393,7 +409,10 @@ Module Contents
 
    Notes
    -----
-   This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive index.
+   This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex
+   refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of
+   bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive
+   index.
 
 
 
@@ -639,6 +658,73 @@ Module Contents
 
 
 
+.. py:function:: compute_internal_field_tensor(L, epsilon_i, epsilon_e)
+
+   Compute the internal field tensor N (Eq. 47 of Raman-Theory.pdf).
+
+   N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}
+
+   Parameters
+   ----------
+   L : array_like, shape (3, 3)
+       Depolarisation tensor.
+   epsilon_i : array_like, shape (3, 3) or scalar
+       Optical permittivity of the particle (inclusion).
+   epsilon_e : float
+       Optical permittivity of the external medium (scalar).
+
+   Returns
+   -------
+   N : ndarray, shape (3, 3), complex
+       Internal field tensor.
+
+
+.. py:function:: compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e)
+
+   Compute the effective particle Raman tensor (Eq. 60 of Raman-Theory.pdf).
+
+   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
+
+   Parameters
+   ----------
+   R_eps : array_like, shape (3, 3)
+       Crystal Raman tensor.
+   N : ndarray, shape (3, 3)
+       Internal field tensor from compute_internal_field_tensor().
+   L : array_like, shape (3, 3)
+       Depolarisation tensor.
+   epsilon_i : array_like, shape (3, 3) or scalar
+       Optical permittivity of the particle.
+   epsilon_e : float
+       Optical permittivity of the external medium.
+
+   Returns
+   -------
+   R_particle : ndarray, shape (3, 3), complex
+       Effective particle Raman tensor.
+
+
+.. py:function:: compute_powder_raman_intensities(R)
+
+   Compute powder-averaged VV and VH Raman intensities from a Raman tensor.
+
+   Implements the Placzek rotational-invariant formula (Eqs. 90-99 of
+   Raman-Theory.pdf).  Uses the 3/2 Placzek normalisation for γ² and κ²,
+   which is consistent with the numerical SO(3)-averaging path.
+
+   Parameters
+   ----------
+   R : array_like, shape (3, 3)
+       Raman tensor (may be complex).
+
+   Returns
+   -------
+   vv : float
+       VV (parallel) powder intensity: 45α² + 4γ² + 5κ²
+   vh : float
+       VH (crossed) powder intensity: 3γ² + 5κ²
+
+
 .. py:function:: construct_projection_operator(atoms, xyzs, masses, nats)
 
    Construct the projection operator for the molecule defined by atoms, xyz, masses.
@@ -661,7 +747,7 @@ Module Contents
 
 
 
-.. py:function:: determineEulerAngles(R)
+.. py:function:: determine_euler_angles(R)
 
    Determine the euler angles of a rotation matrix.
 
@@ -717,10 +803,41 @@ Module Contents
 
    Notes
    -----
-   A passive Euler rotation refers to the rotation of the coordinate system 
-   while the vector remains fixed. This operation is often used in 
-   physics and engineering to describe the orientation of an object 
+   A passive Euler rotation refers to the rotation of the coordinate system
+   while the vector remains fixed. This operation is often used in
+   physics and engineering to describe the orientation of an object
    with respect to a reference coordinate system.
+
+
+
+.. py:function:: euler_rotation_matrix(theta, phi, psi)
+
+   Return the 3×3 SO(3) rotation matrix for the given ZYZ Euler angles.
+
+   Parameters
+   ----------
+   theta : float
+       The polar angle (rotation about Y axis) in radians.
+   phi : float
+       The first azimuthal angle (rotation about Z axis) in radians.
+   psi : float
+       The second azimuthal angle (rotation about Z axis) in radians.
+
+   Returns
+   -------
+   ndarray, shape (3, 3)
+       The rotation matrix R such that a tensor T transforms as R @ T @ R.T.
+
+   Notes
+   -----
+   Uses the same ZYZ Euler convention as :func:`euler_rotation`.
+   Uniform sampling over SO(3) is obtained by drawing::
+
+       phi   = 2π U₁
+       theta = arccos(2 U₂ - 1)
+       psi   = 2π U₃
+
+   where U₁, U₂, U₃ are independent Uniform[0, 1) random variables.
 
 
 
@@ -1113,7 +1230,68 @@ Module Contents
 
 
 
-.. py:function:: reflectance_atr(ns, n0, theta, atrSPolFraction)
+.. py:function:: raman_intensities(raman_tensors, volume)
+
+   Calculate Raman activities from per-mode Raman tensors.
+
+   For each mode the powder-averaged isotropic Raman activity is computed
+   from the three rotational invariants of the Raman tensor:
+
+   .. math::
+
+       R_m^{\rm total} = V \left(45\alpha^2 + 7G^{(2)} + 5G^{(1)}\right)
+
+       R_m^{\parallel}  = V \left(30\alpha^2 + 4G^{(2)}\right)
+
+       R_m^{\perp}      = V \left(15\alpha^2 + 3G^{(2)}\right)
+
+   where :math:`\alpha = \operatorname{Tr}(R)/3` is the isotropic invariant,
+   :math:`G^{(2)}` is the symmetric anisotropy invariant (sum of squares of the
+   traceless symmetric part), :math:`G^{(1)}` is the antisymmetric invariant
+   (sum of squares of the antisymmetric part), and :math:`V` is the unit-cell
+   volume in Å³.
+
+   The factor of :math:`V` converts from the code's internal tensor convention
+   (CASTEP-style, units ``(Å/amu)^{0.5}``, i.e. divided by ``√V_cell``) to the
+   convention used in Raman-Theory.pdf (Eq. 18), where the Raman tensor is
+   defined as :math:`\mathbf{R}^{(m)} = \partial\boldsymbol{\alpha}/\partial Q_m`
+   without the ``√V`` normalisation.  Because the stored tensors :math:`T`
+   satisfy :math:`\mathbf{R}^{(m)} = \sqrt{V}\,T`, squaring gives an extra
+   factor of :math:`V`.
+
+   The parallel and perpendicular components follow Eqs. 26–27 of Raman-Theory.pdf
+   (:math:`R^{\parallel} = 10G^{(0)} + 4G^{(2)}`,
+   :math:`R^{\perp} = 5G^{(0)} + 3G^{(2)}` with :math:`G^{(0)} = 3\alpha^2`),
+   and their sum equals :math:`R^{\rm total}` when :math:`G^{(1)} = 0`.
+
+   Parameters
+   ----------
+   raman_tensors : list of array_like
+       Per-mode 3×3 Raman tensors as stored by the output readers.
+       Units are ``(Å/amu)^{0.5}`` per element (i.e. the derivative of the
+       polarisability volume with respect to the mass-weighted normal
+       coordinate, divided by ``√V_cell``).
+   volume : float
+       Unit-cell volume in Å³.
+
+   Returns
+   -------
+   np.ndarray, shape (nmodes, 3)
+       Per-mode Raman activities in units of ``Å⁴/amu``, consistent with the
+       Raman-Theory.pdf convention.  Columns are
+       ``[:, 0]`` total, ``[:, 1]`` parallel, ``[:, 2]`` perpendicular.
+
+   Notes
+   -----
+   The rotational invariants used here:
+
+   * :math:`\alpha  = \operatorname{Tr}(R)/3`
+   * :math:`G^{(2)} = \sum_{ij}(R_{\rm sym,\,traceless})_{ij}^2`
+   * :math:`G^{(1)} = \sum_{ij}(R_{\rm anti})_{ij}^2`
+
+
+
+.. py:function:: reflectance_atr(ns, n0, theta, s_pol_fraction)
 
    Calculate the atr s and p reflectance.
 
@@ -1125,8 +1303,8 @@ Module Contents
        The permittivity of atr material.
    theta : float
        The angle of incidence in degrees.
-   atrSPolFraction : float
-       The fraction of S wave to be considered. The amount of P wave is 1 - atrSPolFraction.
+   s_pol_fraction : float
+       The fraction of S wave to be considered. The amount of P wave is 1 - s_pol_fraction.
 
    Returns
    -------
@@ -1154,7 +1332,8 @@ Module Contents
    Parameters
    ----------
    efield : array_like
-       The field directions, where each direction is used to calculate a random rotation about that axis. Assumes the field is real.
+       The field directions, where each direction is used to calculate a random rotation about that axis.
+       Assumes the field is real.
 
    Returns
    -------
@@ -1203,21 +1382,41 @@ Module Contents
 
 
 
-.. py:function:: solve_effective_medium_equations(method, vf, size_mu, size_distribution_sigma, matrixPermittivityFunction, shape, L, concentration, atrPermittivity, atrTheta, atrSPol, bubble_vf, bubble_radius, previous_solution_shared, atuple)
+.. py:function:: sobol_rotations(n_samples, seed=42)
+
+   Return n_samples uniform SO(3) rotations via a scrambled Sobol sequence.
+
+   Uses James Arvo's "Fast Random Rotation" method.
+
+   Parameters
+   ----------
+   n_samples : int
+       Number of rotation matrices to generate.
+   seed : int, optional
+       Seed for the Sobol scrambler (default 42).
+
+   Returns
+   -------
+   list of ndarray, each shape (3, 3)
+       Orthogonal rotation matrices (det = +1).
+
+
+.. py:function:: solve_effective_medium_equations(method, vf, size_mu, size_distribution_sigma, matrix_permittivity_function, shape, L, concentration, bubble_vf, bubble_radius, previous_solution_shared, atuple)
 
    Solve the effective medium equations.
 
    Parameters
    ----------
    method : str
-       The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity, maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie.
+       The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity,
+       maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie.
    vf : float
        The volume fraction of dielectric.
    size_mu : float
        The particle size in micron
    size_distribution_sigma : float
        The width of the size distribution.
-   matrixPermittivityFunction : function
+   matrix_permittivity_function : function
        Function returning the matrix permittivity at a frequency.
    shape : str
        The shape of the particles.
@@ -1225,12 +1424,6 @@ Module Contents
        The depolarisation matrix.
    concentration : float
        The concentration of particles.
-   atrPermittivity : float
-       The permittivity of the ATR substrate.
-   atrTheta : float
-       The ATR angle of incidence.
-   atrSPol : str
-       The ATR polarisation.
    bubble_vf : float
        Volume fraction of bubbles.
    bubble_radius : float
@@ -1238,7 +1431,8 @@ Module Contents
    previous_solution_shared : bool
        Use the previous solution to speed up iterations in the case of Bruggeman and coherent methods.
    atuple : tuple
-       A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of the permittivity of the crystal at a given frequency (crystalPermittivity).
+       A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of the permittivity of the crystal
+       at a given frequency (crystalPermittivity).
 
    Returns
    -------
@@ -1252,7 +1446,6 @@ Module Contents
        trace
        absorption_coefficient
        molar_absorption_coefficient
-       spatr
 
 
 
@@ -1291,4 +1484,6 @@ Module Contents
    of wave scattering in composite materials and biological tissues.
 
 
+
+.. py:data:: logger
 

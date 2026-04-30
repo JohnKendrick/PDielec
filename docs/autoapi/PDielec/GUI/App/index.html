@@ -3,12 +3,12 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="PDielec.GUI.FitterTab" href="../FitterTab/index.html"><link rel="prev" title="PDielec.GUI.AnalysisTab" href="../AnalysisTab/index.html">
+<link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="PDielec.GUI.AzimuthalSweepWindow" href="../AzimuthalSweepWindow/index.html"><link rel="prev" title="PDielec.GUI.AnalysisTab" href="../AnalysisTab/index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>PDielec.GUI.App - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -228,6 +228,8 @@
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
@@ -237,7 +239,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,6 +247,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
@@ -271,6 +273,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_complex_values/index.html">test_F_complex_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
@@ -329,7 +343,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.App.app" title="PDielec.GUI.App.app"><code class="xref py py-obj docutils literal notranslate"><span class="pre">app</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.App.version" title="PDielec.GUI.App.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.App.logger" title="PDielec.GUI.App.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.App.version" title="PDielec.GUI.App.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -352,10 +369,12 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.App.</span></span><span class="sig-name descname"><span class="pre">App</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progressbar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/App.html#App"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.App.App" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.App.</span></span><span class="sig-name descname"><span class="pre">App</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progressbar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/App.html#App"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.App.App" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QMainWindow</span></code></p>
 <p>A class representing the main application window.</p>
-<p>This class initializes the main application window with various configurations based on command line arguments and environment variables. It includes functionalities to read scripts, handle command line inputs, set up multiprocessing or threading as needed, and manage application events.</p>
+<p>This class initializes the main application window with various configurations based on command line arguments and
+environment variables. It includes functionalities to read scripts, handle command line inputs, set up
+multiprocessing or threading as needed, and manage application events.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
 <dl class="simple">
@@ -397,9 +416,9 @@
 <dl class="simple">
 <dt>print_usage()</dt><dd><p>Prints usage information for the command line interface.</p>
 </dd>
-<dt>setMyWindowTitle(title)</dt><dd><p>Sets the window title to a formatted string including the version and the given title.</p>
+<dt>set_my_window_title(title)</dt><dd><p>Sets the window title to a formatted string including the version and the given title.</p>
 </dd>
-<dt>readScript(scriptname, spreadsheet_name=’’)</dt><dd><p>Executes the commands from a script file and optionally sets the spreadsheet file name.</p>
+<dt>read_script(scriptname, spreadsheet_name=’’)</dt><dd><p>Executes the commands from a script file and optionally sets the spreadsheet file name.</p>
 </dd>
 <dt>closeEvent(event)</dt><dd><p>Handles the close event, ensuring that multiprocessing pools are properly closed.</p>
 </dd>
@@ -442,7 +461,8 @@ of multiprocessing resources and performs any additional base class close event 
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.print_usage">
 <span class="sig-name descname"><span class="pre">print_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/App.html#App.print_usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.App.App.print_usage" title="Link to this definition">¶</a></dt>
 <dd><p>Print usage information for the PDielec package’s graphical user interface.</p>
-<p>This function prints the general usage information, available commands, and options for the graphical user interface to the PDielec package.</p>
+<p>This function prints the general usage information, available commands, and options for the graphical user
+interface to the PDielec package.</p>
 <section id="id3">
 <h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <p>None</p>
@@ -455,28 +475,25 @@ of multiprocessing resources and performs any additional base class close event 
 <h4>Notes<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <p>The usage information includes:</p>
 <ul class="simple">
-<li><p><cite>program</cite>: The name of the program which created the output file. Supported programs are ‘vasp’, ‘phonopy’, ‘gulp’, ‘castep’, ‘abinit’, and ‘qe’. The program is guessed from the filename if not specified.</p></li>
-<li><p><cite>filename</cite>: The name of the output file.</p></li>
-<li><p><cite>spreadsheet file</cite>: An optional name of a spreadsheet file (must end with .xlsx). If provided, both program and filename must be specified.</p></li>
-<li><p><cite>-scenario type</cite>: Changes the default scenario to “type”, which can be either “powder” or “crystal”.</p></li>
-<li><p><cite>-spreadsheet file</cite>: An alternative way to specify the spreadsheet file.</p></li>
-<li><p><cite>-program</cite>: An alternative way to specify the program.</p></li>
-<li><p><cite>-script file</cite>: Specifies that initial commands are read from a script file.</p></li>
-<li><p><cite>-nosplash</cite>: No splash screen is presented, which is useful for batch running.</p></li>
-<li><p><cite>-threading</cite>: Use threads instead of multiprocessing.</p></li>
-<li><p><cite>-threads 1</cite>: Specify the number of threads to use for each cpu</p></li>
-<li><p><cite>-cpus 0</cite>: Specify the number of processors or tasks; 0 uses all available.</p></li>
-<li><p><cite>-version</cite>: Prints the version of the code.</p></li>
-<li><p><cite>-exit</cite>: Exit the program after executing any script.</p></li>
-<li><p><cite>-help</cite>: Prints out help information.</p></li>
+<li><p><cite>program</cite>: The name of the program which created the output file. Supported programs are ‘vasp’, ‘phonopy’,
+‘gulp’, ‘castep’, ‘abinit’, and ‘qe’. The program is guessed from the filename if not specified. - <cite>filename</cite>:
+The name of the output file. - <cite>spreadsheet file</cite>: An optional name of a spreadsheet file (must end with
+.xlsx). If provided, both program and filename must be specified. - <cite>-scenario type</cite>: Changes the default
+scenario to “type”, which can be either “Powder_Infrared”, “Crystal_Infrared”, “Powder_Raman” or
+“Crystal_Raman” - <cite>-spreadsheet file</cite>: An alternative way to specify the spreadsheet file. - <cite>-program</cite>: An
+alternative way to specify the program. - <cite>-script file</cite>: Specifies that initial commands are read from a
+script file. - <cite>-nosplash</cite>: No splash screen is presented, which is useful for batch running. - <cite>-threading</cite>:
+Use threads instead of multiprocessing. - <cite>-threads 1</cite>: Specify the number of threads to use for each cpu -
+<cite>-cpus 0</cite>: Specify the number of processors or tasks; 0 uses all available. - <cite>-version</cite>: Prints the version
+of the code. - <cite>-exit</cite>: Exit the program after executing any script. - <cite>-help</cite>: Prints out help information.</p></li>
 <li><p><cite>-debug</cite>: Switches on debugging information.</p></li>
 </ul>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.App.App.readScript">
-<span class="sig-name descname"><span class="pre">readScript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scriptname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spreadsheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/App.html#App.readScript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.App.App.readScript" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.App.App.read_script">
+<span class="sig-name descname"><span class="pre">read_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scriptname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spreadsheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/App.html#App.read_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.App.App.read_script" title="Link to this definition">¶</a></dt>
 <dd><p>Read and execute a script, optionally changing the working directory to the script’s location and optionally setting a spreadsheet name.</p>
 <section id="id6">
 <h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
@@ -489,21 +506,23 @@ of multiprocessing resources and performs any additional base class close event 
 </section>
 <section id="id7">
 <h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>None</dt><dd><p>The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no spreadsheet name will be set.</p>
-</dd>
-</dl>
+<p>None The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no
+spreadsheet name will be set.</p>
 </section>
 <section id="id8">
 <h4>Notes<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
-<p>This function changes the current working directory to the directory of the script if its directory part is non-empty. It executes the script in the current Python environment using <cite>exec()</cite>. It also sets various notebook flags such as <cite>scripting</cite> and <cite>overwriting</cite>.</p>
-<p>After executing the script, it potentially updates the spreadsheet name in the notebook’s mainTab settings if a non-empty <cite>spreadsheet_name</cite> is provided. It refreshes the notebook and processes pending Qt events with <cite>QCoreApplication.processEvents()</cite>.</p>
+<p>This function changes the current working directory to the directory of the script if its directory part is
+non-empty. It executes the script in the current Python environment using <cite>exec()</cite>. It also sets various
+notebook flags such as <cite>scripting</cite> and <cite>overwriting</cite>.</p>
+<p>After executing the script, it potentially updates the spreadsheet name in the notebook’s mainTab settings if a
+non-empty <cite>spreadsheet_name</cite> is provided. It refreshes the notebook and processes pending Qt events with
+<cite>QCoreApplication.processEvents()</cite>.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.App.App.setMyWindowTitle">
-<span class="sig-name descname"><span class="pre">setMyWindowTitle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/App.html#App.setMyWindowTitle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.App.App.setMyWindowTitle" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.App.App.set_my_window_title">
+<span class="sig-name descname"><span class="pre">set_my_window_title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/App.html#App.set_my_window_title"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.App.App.set_my_window_title" title="Link to this definition">¶</a></dt>
 <dd><p>Set the window title with the provided title appended to the PDGui version.</p>
 <section id="id9">
 <h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
@@ -521,23 +540,24 @@ of multiprocessing resources and performs any additional base class close event 
 </section>
 <section id="id11">
 <h4>Notes<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
-<p>This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.</p>
+<p>This function modifies the window title attribute of the instance and then updates the actual window title to
+reflect this change. The version of the PDGui is prefixed to the given title.</p>
 </section>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.debug">
-<span class="sig-name descname"><span class="pre">debug</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GUI.App.App.debug" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GUI.App.App.debug" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.height">
-<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">800</span></em><a class="headerlink" href="#PDielec.GUI.App.App.height" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">height</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">800</span></span><a class="headerlink" href="#PDielec.GUI.App.App.height" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.left">
-<span class="sig-name descname"><span class="pre">left</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#PDielec.GUI.App.App.left" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">left</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></span><a class="headerlink" href="#PDielec.GUI.App.App.left" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -547,27 +567,27 @@ of multiprocessing resources and performs any additional base class close event 
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.program_exit">
-<span class="sig-name descname"><span class="pre">program_exit</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GUI.App.App.program_exit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">program_exit</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GUI.App.App.program_exit" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.scripting">
-<span class="sig-name descname"><span class="pre">scripting</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GUI.App.App.scripting" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">scripting</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GUI.App.App.scripting" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.scriptname">
-<span class="sig-name descname"><span class="pre">scriptname</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#PDielec.GUI.App.App.scriptname" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">scriptname</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#PDielec.GUI.App.App.scriptname" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.title">
-<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PDGui</span> <span class="pre">-</span> <span class="pre">Using</span> <span class="pre">PDielec</span> <span class="pre">library</span> <span class="pre">Uninferable</span> <span class="pre">'</span></em><a class="headerlink" href="#PDielec.GUI.App.App.title" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#PDielec.GUI.App.App.title" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.top">
-<span class="sig-name descname"><span class="pre">top</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30</span></em><a class="headerlink" href="#PDielec.GUI.App.App.top" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">top</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30</span></span><a class="headerlink" href="#PDielec.GUI.App.App.top" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -577,7 +597,7 @@ of multiprocessing resources and performs any additional base class close event 
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.App.App.width">
-<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">900</span></em><a class="headerlink" href="#PDielec.GUI.App.App.width" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">width</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">900</span></span><a class="headerlink" href="#PDielec.GUI.App.App.width" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -586,6 +606,11 @@ of multiprocessing resources and performs any additional base class close event 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GUI.App.app">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.App.</span></span><span class="sig-name descname"><span class="pre">app</span></span><a class="headerlink" href="#PDielec.GUI.App.app" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GUI.App.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.App.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.GUI.App.logger" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -601,12 +626,12 @@ of multiprocessing resources and performs any additional base class close event 
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../FitterTab/index.html">
+          <a class="next-page" href="../AzimuthalSweepWindow/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.GUI.FitterTab</div>
+                <div class="title">PDielec.GUI.AzimuthalSweepWindow</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -658,8 +683,8 @@ of multiprocessing resources and performs any additional base class close event 
 <li><a class="reference internal" href="#PDielec.GUI.App.App"><code class="docutils literal notranslate"><span class="pre">App</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.App.App.closeEvent"><code class="docutils literal notranslate"><span class="pre">App.closeEvent()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.App.App.print_usage"><code class="docutils literal notranslate"><span class="pre">App.print_usage()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.App.App.readScript"><code class="docutils literal notranslate"><span class="pre">App.readScript()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.App.App.setMyWindowTitle"><code class="docutils literal notranslate"><span class="pre">App.setMyWindowTitle()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.App.App.read_script"><code class="docutils literal notranslate"><span class="pre">App.read_script()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.App.App.set_my_window_title"><code class="docutils literal notranslate"><span class="pre">App.set_my_window_title()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.App.App.debug"><code class="docutils literal notranslate"><span class="pre">App.debug</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.App.App.height"><code class="docutils literal notranslate"><span class="pre">App.height</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.App.App.left"><code class="docutils literal notranslate"><span class="pre">App.left</span></code></a></li>
@@ -674,6 +699,7 @@ of multiprocessing resources and performs any additional base class close event 
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GUI.App.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.App.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.App.version"><code class="docutils literal notranslate"><span class="pre">version</span></code></a></li>
 </ul>
 </li>
@@ -688,9 +714,9 @@ of multiprocessing resources and performs any additional base class close event 
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="../../../../_static/documentation_options.js?v=335988e4"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

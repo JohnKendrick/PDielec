@@ -19,7 +19,7 @@ import os
 
 from qtpy.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
 
-from PDielec import __file__ as PDielec_init_filename
+import PDielec
 from PDielec.Materials import MaterialsDataBase
 
 logger = logging.getLogger(__name__)
@@ -37,24 +37,37 @@ class ScenarioTab(QWidget):
 
     Attributes
     ----------
-    refresh_required : bool Indicates whether a refresh is required.
-    no_calculations_required : int The number of
-    calculations that need to be performed.
-    settings : dict A dictionary of settings for the scenario. notebook :
-    QWidget The parent widget, which is expected to be the notebook container for the scenarios.
-    spectroscopy : type,
+    refresh_required : bool
+        Indicates whether a refresh is required.
+    no_calculations_required : int
+        The number of calculations that need to be performed.
+    settings : dict
+        A dictionary of settings for the scenario.
+    notebook : QWidget
+        The parent widget, which is expected to be the notebook container for the scenarios.
+    spectroscopy : type
         optional The type of the spectroscopy, e.g., Powder Infrared, Powder ATR,
-                                                     Crystal Infrared, Powder Raman, Crystal Raman.
-    dictionary vs_cm1 : list List containing default values for some settings.
-    DataBase : MaterialsDataBase An instance of a class for interacting with a materials database.
-    openDB_button : QPushButton Button to open the materials database.
-    openDB_label : QLabel Label associated with the openDB_button.
-    database_le : QLineEdit Line edit showing the path/name of the current materials database.
-    database_le_label : QLabel Label associated with the database_le.
-    legend_le : QLineEdit Line edit for specifying a custom legend for the scenario.
-    addScenarioButton : QPushButton Button to add another scenario.
-    deleteScenarioButton : QPushButton Button to delete the current scenario.
-    switchScenarioCB : QComboBOx Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared, Powder Raman or Crystal Raman).
+        Crystal Infrared, Powder Raman, Crystal Raman.
+    dictionary vs_cm1 : list
+        List containing default values for some settings.
+    DataBase : MaterialsDataBase
+        An instance of a class for interacting with a materials database.
+    openDB_button : QPushButton
+        Button to open the materials database.
+    openDB_label : QLabel
+        Label associated with the openDB_button.
+    database_le : QLineEdit
+        Line edit showing the path/name of the current materials database.
+    database_le_label : QLabel
+        Label associated with the database_le.
+    legend_le : QLineEdit
+        Line edit for specifying a custom legend for the scenario.
+    addScenarioButton : QPushButton
+        Button to add another scenario.
+    deleteScenarioButton : QPushButton
+        Button to delete the current scenario.
+    switchScenarioCB : QComboBOx
+        Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared, Powder Raman or Crystal Raman).
 
     Methods
     -------
@@ -115,7 +128,7 @@ class ScenarioTab(QWidget):
         self.settings["Scenario type"] = "Unset"
         self.vs_cm1 = [0, 0]
         # Deal with the Materials Database here as it is used in all Scenarios
-        PDielec_Directory = os.path.dirname(PDielec_init_filename)
+        PDielec_Directory = os.path.dirname(PDielec.__file__)
         filename  = os.path.join(PDielec_Directory, "MaterialsDataBase.xlsx")
         filename  = os.path.relpath(filename)
         self.settings["Materials database"] = filename
@@ -334,7 +347,6 @@ class ScenarioTab(QWidget):
         logger.debug(f"{self.settings['Legend']} delete_scenario_button_clicked")
         self.notebook.delete_scenario(self.scenarioIndex)
         return
-
 
 
 

@@ -9,10 +9,11 @@ Tests verify:
 - VV and VH polarisation definitions are consistent (E4).
 
 The numerical averaging in _powder_average_numerical matches the
-backscattering geometry in PowderScenarioTab._compute_orientation_sampled_spectrum:
+backscattering geometry in PowderScenarioTab._compute_orientation_sampled_spectrum::
+
   VV: e_L = e_S = [0, 1, 0]
   VH: e_L = [0, 1, 0], e_S = [1, 0, 0]
-  contribution per orientation: 45 × |e_S @ R_lab @ e_L|^2
+  contribution per orientation: 45 × \|e_S @ R_lab @ e_L\|^2
 """
 import sys
 import os

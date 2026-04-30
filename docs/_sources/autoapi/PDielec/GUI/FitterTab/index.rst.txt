@@ -9,6 +9,14 @@ PDielec.GUI.FitterTab
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.FitterTab.logger
+
+
 Classes
 -------
 
@@ -22,8 +30,8 @@ Functions
 
 .. autoapisummary::
 
-   PDielec.GUI.FitterTab.calculateCrossCorrelation
-   PDielec.GUI.FitterTab.calculateSpectralDifference
+   PDielec.GUI.FitterTab.calculate_cross_correlation
+   PDielec.GUI.FitterTab.calculate_spectral_difference
    PDielec.GUI.FitterTab.find_delimiter
    PDielec.GUI.FitterTab.is_float
    PDielec.GUI.FitterTab.read_experimental_file
@@ -40,8 +48,10 @@ Module Contents
 
    Initialize the main FitterTab with its components and connect signals to slots.
 
-   A class for managing and displaying a spectroscopic fitting interface within a QWidget.
-   This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.
+   A class for managing and displaying a spectroscopic fitting interface within a QWidget. This constructor sets up the
+   UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and
+   plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis
+   settings and data.
 
    Parameters
    ----------
@@ -52,16 +62,20 @@ Module Contents
 
    Attributes
    ----------
-   parent : QWidget
-       The parent QWidget within which this `FitterTab` is contained.
-   debug : bool, optional
-       A flag to activate debug mode which provides additional output for development and troubleshooting. Defaults to False.
+   parent : QWidget The parent QWidget within which this `FitterTab` is contained. debug : bool, optional A flag to
+   activate debug mode which provides additional output for development and troubleshooting. Defaults to False.
+
 
    Notes
    -----
-   This class is designed to provide a user interface for spectral fitting tasks, allowing for adjustments of various fitting parameters and visualization of fitting results. It leverages Qt widgets for the graphical user interface components and matplotlib for plotting.
+   This class is designed to provide a user interface for spectral fitting tasks, allowing for adjustments of various
+   fitting parameters and visualization of fitting results. It leverages Qt widgets for the graphical user interface
+   components and matplotlib for plotting.
 
-   The class initializes with customizable settings related to spectral fitting including file names, fitting types, iterations, scaling factors, and baseline correction options. It supports reading experimental data from .xlsx or .csv files, setting fitting parameters through a dynamically generated form, and presenting the fitting results graphically with options to adjust the view.
+   The class initializes with customizable settings related to spectral fitting including file names, fitting types,
+   iterations, scaling factors, and baseline correction options. It supports reading experimental data from .xlsx or
+   .csv files, setting fitting parameters through a dynamically generated form, and presenting the fitting results
+   graphically with options to adjust the view.
 
    Methods
    -------
@@ -85,17 +99,17 @@ Module Contents
        Handle changes to the spectral difference threshold spinbox value.
    on_frequency_scaling_factor_sb_changed(self, value)
        Handle changes to the frequency scaling factor spinbox value.
-   replotButton1Clicked(self)
+   replot_button1_clicked(self)
        Handle the event when the first replot button is clicked.
-   replotButton2Clicked(self)
+   replot_button2_clicked(self)
        Handle the event when the second replot button with frequency shift is clicked.
    plot(self, experiment, xs, ys, legends, label)
        Plots the fitting results with optional experiment data overlay.
-   fittingButtonClicked(self)
+   fitting_button_clicked(self)
        Initiates the fitting process when the fitting button is clicked.
-   optimiseFit(self)
+   optimise_fit(self)
        Optimises the fitting parameters.
-   optimiseFunction(self, variables)
+   optimise_function(self, variables)
        Function to be optimised during the fitting process.
    redraw_sigmas_tw(self)
        Redraws the table widget for sigma values based on current settings.
@@ -115,12 +129,12 @@ Module Contents
        Handle the replotting of spectra.
    refresh(self, force=False)
        Refreshes the interface based on current settings and data.
-   requestRefresh(self)
+   request_refresh(self)
        Requests a refresh of the interface.
 
 
 
-   .. py:method:: fittingButtonClicked()
+   .. py:method:: fitting_button_clicked()
 
       Handle the click event on the fitting button.
 
@@ -146,7 +160,8 @@ Module Contents
 
       Handle the change event of the baseline checkbox.
 
-      This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and marks refresh as required.
+      This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and
+      marks refresh as required.
 
       Parameters
       ----------
@@ -164,7 +179,8 @@ Module Contents
 
       Handle the activation of a fitting type option.
 
-      This method updates the current settings to reflect the selected fitting type based on the provided index. It also marks the state as requiring a refresh.
+      This method updates the current settings to reflect the selected fitting type based on the provided index. It
+      also marks the state as requiring a refresh.
 
       Parameters
       ----------
@@ -182,7 +198,8 @@ Module Contents
 
       Handle changes in the frequency scaling factor setting.
 
-      This function changes the frequency scaling factor setting. It updates the setting with the new value and marks a refresh as necessary. It also handles conversion errors gracefully.
+      This function changes the frequency scaling factor setting. It updates the setting with the new value and marks
+      a refresh as necessary. It also handles conversion errors gracefully.
 
       Parameters
       ----------
@@ -195,7 +212,7 @@ Module Contents
 
       Notes
       -----
-      - The `self.refreshRequired` flag is set to True regardless of whether the conversion succeeds.
+      - The `self.refresh_required` flag is set to True regardless of whether the conversion succeeds.
 
 
 
@@ -231,7 +248,9 @@ Module Contents
 
       Notes
       -----
-      This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refreshRequired' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
+      This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings
+      dictionary with the new state of the 'Independent y-axes' option and sets the 'refresh_required' flag to True,
+      indicating that a refresh is needed to reflect the changes in the UI or data visualization.
 
 
 
@@ -240,7 +259,8 @@ Module Contents
 
       Handle changes in the iterations spin box value.
 
-      This method is called when the iterations spin box value is changed. It updates the 'Number of iterations' setting with the new value and flags that a refresh is required.
+      This method is called when the iterations spin box value is changed. It updates the 'Number of iterations'
+      setting with the new value and flags that a refresh is required.
 
       Parameters
       ----------
@@ -257,7 +277,8 @@ Module Contents
 
       Handle changes in the frequency scaling optimization option.
 
-      This method updates the 'Optimise frequency scaling' setting based on the state of a checkbox and marks that a refresh is required based on the new setting.
+      This method updates the 'Optimise frequency scaling' setting based on the state of a checkbox and marks that a
+      refresh is required based on the new setting.
 
       Parameters
       ----------
@@ -275,7 +296,8 @@ Module Contents
 
       Handle scenario combobox activation.
 
-      This function is triggered when a scenario combobox option is selected. It logs the activation with the selected index, marks that a refresh is required, and updates the settings to reflect the new scenario.
+      This function is triggered when a scenario combobox option is selected. It logs the activation with the selected
+      index, marks that a refresh is required, and updates the settings to reflect the new scenario.
 
       Parameters
       ----------
@@ -320,7 +342,9 @@ Module Contents
 
       Handle changes to the spectra file input field.
 
-      This method is triggered when the text of the spectrum file input field changes. It updates the 'Experimental file name' setting with the new text, marks the current experimental file as unread, and indicates that a refresh is required.
+      This method is triggered when the text of the spectrum file input field changes. It updates the 'Experimental
+      file name' setting with the new text, marks the current experimental file as unread, and indicates that a
+      refresh is required.
 
       Parameters
       ----------
@@ -333,7 +357,8 @@ Module Contents
 
       Notes
       -----
-      The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text` argument.
+      The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text`
+      argument.
 
 
 
@@ -342,7 +367,9 @@ Module Contents
 
       Handle file selection for experimental spectra.
 
-      This method is executed when an action associated with the `spectrafile_le` widget is performed. It prompts the user to select a file if the currently specified file does not exist or cannot be found. It updates the application's settings with the new file name, if a file is selected.
+      This method is executed when an action associated with the `spectrafile_le` widget is performed. It prompts the
+      user to select a file if the currently specified file does not exist or cannot be found. It updates the
+      application's settings with the new file name, if a file is selected.
 
       Parameters
       ----------
@@ -354,7 +381,11 @@ Module Contents
 
       Notes
       -----
-      The method first checks if the file specified in the `spectrafile_le` widget exists. If it does not, a file dialog is opened for the user to select a file. If a file is selected, the method updates the application's settings and the text of the `spectrafile_le` widget to reflect the new file name. Additionally, it sets a flag indicating that a refresh is required and that the experimental file needs to be read again. Finally, it triggers the last button pressed action.
+      The method first checks if the file specified in the `spectrafile_le` widget exists. If it does not, a file
+      dialog is opened for the user to select a file. If a file is selected, the method updates the application's
+      settings and the text of the `spectrafile_le` widget to reflect the new file name. Additionally, it sets a flag
+      indicating that a refresh is required and that the experimental file needs to be read again. Finally, it
+      triggers the last button pressed action.
 
       This method utilizes `os.path.isfile` to check file existence, `QFileDialog` for file selection. 
 
@@ -384,7 +415,8 @@ Module Contents
 
       Handle the change event of the spectrum scaling checkbox.
 
-      This method is triggered whenever the spectrum scaling checkbox's state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.
+      This method is triggered whenever the spectrum scaling checkbox's state changes. It updates the settings to
+      reflect the current state of the checkbox and flags that a refresh is required.
 
       Parameters
       ----------
@@ -413,12 +445,13 @@ Module Contents
 
       Notes
       -----
-      This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.
+      This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to
+      float. If the conversion fails, a message is printed indicating the failure.
 
 
 
 
-   .. py:method:: optimiseFit()
+   .. py:method:: optimise_fit()
 
       Optimise the fit based on the initial and adjusted sigmas and potential frequency scaling.
 
@@ -440,11 +473,11 @@ Module Contents
 
       Notes
       -----
-      The function uses several attributes of the class instance it belongs to:
-      - `modes_fitted` to determine which modes are fitted.
-      - `sigmas_cm1` as initial sigma points for optimization.
-      - `settings` to check if frequency scaling should be optimised and to determine the number of iterations for the optimization.
-      - `optimiseFunction` as the function to be minimized.
+      The function uses several attributes of the class instance it belongs to: - `modes_fitted` to determine which
+      modes are fitted. - `sigmas_cm1` as initial sigma points for optimization. - `settings` to check if frequency
+      scaling should be optimised and to determine the number of iterations for the optimization. -
+      `optimise_function` as the function to be minimized.
+
 
       It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
       `fit_list` to store the indexes of modes that are being fitted.
@@ -452,7 +485,7 @@ Module Contents
 
 
 
-   .. py:method:: optimiseFunction(variables)
+   .. py:method:: optimise_function(variables)
 
       Optimise the fitting function based on given variables.
 
@@ -482,7 +515,7 @@ Module Contents
         object that indicates whether a calculation can proceed.
       - Manipulates GUI components such as `fittingButton` and elements within
         `notebook.settingsTab`, thus requires the GUI to be in a responsive state.
-      - Uses global `debugger` object for logging progress and results.
+      - Uses `logger` for logging progress and results.
       - The method updates the internal state of the object, such as the
         `functionCalls` counter and sigma values for elements being fitted.
 
@@ -541,7 +574,8 @@ Module Contents
       -------
       None
 
-      Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
+      Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger`
+      print method.
 
 
 
@@ -566,9 +600,9 @@ Module Contents
 
       Notes
       -----
-      - `sigmas_cm1`, `frequencies_cm1`, and `intensities` are lists that store sigma, frequency, and intensity data, respectively.
-      - `modes_selected` and `modes_fitted` are lists that store boolean values indicating whether a mode is selected and
-        whether it is fitted, respectively.
+      - `sigmas_cm1`, `frequencies_cm1`, and `intensities` are lists that store sigma, frequency, and intensity data,
+        respectively. - `modes_selected` and `modes_fitted` are lists that store boolean values indicating whether a
+        mode is selected and whether it is fitted, respectively.
 
 
 
@@ -579,8 +613,9 @@ Module Contents
 
       Parameters
       ----------
-      force : bool, optional
-          If True, the refresh proceeds regardless of whether it is deemed necessary based on the internal state. Defaults to False.
+      force : bool, optional 
+          If True, the refresh proceeds regardless of whether it is deemed necessary based on the
+          internal state. Defaults to False.
 
       Returns
       -------
@@ -588,9 +623,15 @@ Module Contents
 
       Notes
       -----
-      The refresh process involves several key steps including checking if a refresh is required, updating plotting data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no frequencies, it returns early. Additionally, if `force` is True, it ignores the check for whether a refresh is required and proceeds with the refresh.
+      The refresh process involves several key steps including checking if a refresh is required, updating plotting
+      data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and
+      recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no
+      frequencies, it returns early. Additionally, if `force` is True, it ignores the check for whether a refresh is
+      required and proceeds with the refresh.
 
-      After updating relevant class attributes and GUI components, the function recalculates cross-correlation, root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these metrics.
+      After updating relevant class attributes and GUI components, the function recalculates cross-correlation,
+      root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these
+      metrics.
 
 
 
@@ -599,7 +640,9 @@ Module Contents
 
       Replots the experimental spectrum along with calculated frequencies and spectra.
 
-      This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related information such as legends and labels.
+      This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the
+      spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related
+      information such as legends and labels.
 
       Parameters
       ----------
@@ -612,11 +655,12 @@ Module Contents
 
 
 
-   .. py:method:: replotButton1Clicked()
+   .. py:method:: replot_button1_clicked()
 
       Handle the click event on the replot button.
 
-      This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot operation and invokes the refresh method to update the plot.
+      This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot
+      operation and invokes the refresh method to update the plot.
 
       Parameters
       ----------
@@ -628,12 +672,14 @@ Module Contents
 
       Notes
       -----
-      This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and it bookmarks the last button pressed as 'replotButton1Clicked'. It also calls the `self.refresh` method to initiate the replotting process.
+      This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and
+      it bookmarks the last button pressed as 'replot_button1_clicked'. It also calls the `self.refresh` method to
+      initiate the replotting process.
 
 
 
 
-   .. py:method:: replotButton2Clicked()
+   .. py:method:: replot_button2_clicked()
 
       Handle the event when the second replot button is clicked.
 
@@ -652,7 +698,7 @@ Module Contents
 
 
 
-   .. py:method:: requestRefresh()
+   .. py:method:: request_refresh()
 
       Request a refresh of the interface.
 
@@ -771,7 +817,7 @@ Module Contents
    .. py:attribute:: progressbar
 
 
-   .. py:attribute:: refreshRequired
+   .. py:attribute:: refresh_required
       :value: True
 
 
@@ -829,7 +875,7 @@ Module Contents
 
 
 
-.. py:function:: calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum, scaling_factor=1.0, debug=False)
+.. py:function:: calculate_cross_correlation(xaxis, calculated_spectrum, experimental_spectrum, scaling_factor=1.0, debug=False)
 
    Calculate the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
 
@@ -859,11 +905,13 @@ Module Contents
 
    Notes
    -----
-   The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum's x-axis is performed using cubic interpolation.
+   The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the
+   normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental
+   spectrum's x-axis is performed using cubic interpolation.
 
 
 
-.. py:function:: calculateSpectralDifference(xaxis, calculated_spectrum, experimental_spectrum, spectral_threshold=0.05, scaling_factor=1.0, debug=False)
+.. py:function:: calculate_spectral_difference(xaxis, calculated_spectrum, experimental_spectrum, spectral_threshold=0.05, scaling_factor=1.0, debug=False)
 
    Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.
 
@@ -994,4 +1042,6 @@ Module Contents
        Modifies the instance's resampled_experimental_spectrum in place.
 
 
+
+.. py:data:: logger
 

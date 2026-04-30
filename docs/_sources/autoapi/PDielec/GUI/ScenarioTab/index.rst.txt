@@ -9,6 +9,14 @@ PDielec.GUI.ScenarioTab
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.ScenarioTab.logger
+
+
 Classes
 -------
 
@@ -27,23 +35,26 @@ Module Contents
 
    A class representing a tab for scenario configurations within a user interface.
 
-   This class provides functionalities for managing and interacting with scenarios.
-   It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
-   :class:`~PDielec.GUI.PowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
+   This class provides functionalities for managing and interacting with scenarios. It allows users to create, delete,
+   and switch between different scenarios, as well as open and manipulate a materials database.
+   :class:`~PDielec.GUI.PowderInfraredScenarioTab`, :class:`~PDielec.GUI.CrystalInfraredScenarioTab`,
+   :class:`~PDielec.GUI.PowderRamanScenarioTab` and :class:`~PDielec.GUI.CrystalRamanScenarioTab` inherit from this
+   class.
 
    Attributes
    ----------
-   refreshRequired : bool
+   refresh_required : bool
        Indicates whether a refresh is required.
-   noCalculationsRequired : int
+   no_calculations_required : int
        The number of calculations that need to be performed.
    settings : dict
        A dictionary of settings for the scenario.
    notebook : QWidget
        The parent widget, which is expected to be the notebook container for the scenarios.
-   scenarioType : type, optional
-       The type of the scenario, e.g., powder, crystal.
-   vs_cm1 : list
+   spectroscopy : type
+       optional The type of the spectroscopy, e.g., Powder Infrared, Powder ATR,
+       Crystal Infrared, Powder Raman, Crystal Raman.
+   dictionary vs_cm1 : list
        List containing default values for some settings.
    DataBase : MaterialsDataBase
        An instance of a class for interacting with a materials database.
@@ -61,24 +72,24 @@ Module Contents
        Button to add another scenario.
    deleteScenarioButton : QPushButton
        Button to delete the current scenario.
-   switchScenarioButton : QPushButton
-       Button to switch between scenario types (e.g., powder to crystal).
+   switchScenarioCB : QComboBOx
+       Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared, Powder Raman or Crystal Raman).
 
    Methods
    -------
-   openDataBase()
+   open_data_base()
        Open the database and set the material names.
 
-   getNoCalculationsRequired()
+   get_no_calculations_required()
        Get the number of spectra that need recalculating from this scenario.
 
-   requestRefresh()
+   request_refresh()
        Request a refresh of the scenario
 
    set_reader(reader)
        Set the reader associated with this scenario
 
-   setScenarioIndex(index)
+   set_scenario_index(index)
        Set the index for the current scenario and a default legend name based on the index.
 
    print_settings()
@@ -90,18 +101,18 @@ Module Contents
    add_scenario_buttons()
        Add a set of scenario buttons in an hbox. Return the hbox.
 
-   addScenarioButtonClicked()
+   add_scenario_button_clicked()
        Handle when the "add another scenario" button has been clicked.
 
-   deleteScenarioButtonClicked()
+   delete_scenario_button_clicked()
        Handle when a delete button has been clicked.
 
-   switchScenarioButtonClicked()
+   switchScenarioCBClicked()
        Handle the scenario when a button has been clicked.
 
 
 
-   .. py:method:: addScenarioButtonClicked()
+   .. py:method:: add_scenario_button_clicked()
 
       Handle when the "add another scenario" button has been clicked.
 
@@ -132,7 +143,7 @@ Module Contents
 
 
 
-   .. py:method:: deleteScenarioButtonClicked()
+   .. py:method:: delete_scenario_button_clicked()
 
       Handle when a delete button has been clicked.
 
@@ -147,7 +158,7 @@ Module Contents
 
 
 
-   .. py:method:: getNoCalculationsRequired()
+   .. py:method:: get_no_calculations_required()
 
       Get the number of spectra that need recalculating from this scenario.
 
@@ -179,7 +190,7 @@ Module Contents
 
 
 
-   .. py:method:: openDataBase()
+   .. py:method:: open_data_base()
 
       Open the database and set the material names.
 
@@ -209,29 +220,13 @@ Module Contents
 
 
 
-   .. py:method:: requestRefresh()
+   .. py:method:: request_refresh()
 
       Request a refresh of the scenario.
 
       Parameters
       ----------
       None
-
-      Returns
-      -------
-      None
-
-
-
-
-   .. py:method:: setScenarioIndex(index)
-
-      Set the index for the current scenario and a default legend name based on the index.
-
-      Parameters
-      ----------
-      index : int
-          The scenario index.  
 
       Returns
       -------
@@ -256,15 +251,14 @@ Module Contents
 
 
 
-   .. py:method:: switchScenarioButtonClicked()
+   .. py:method:: set_scenario_index(index)
 
-      Handle the switch scenario when a button has been clicked.
-
-      Asks the notebook to change the scenario type (Powder or Crystal) to the other.
+      Set the index for the current scenario and a default legend name based on the index.
 
       Parameters
       ----------
-      None
+      index : int
+          The scenario index.  
 
       Returns
       -------
@@ -282,7 +276,7 @@ Module Contents
    .. py:attribute:: database_le_label
 
 
-   .. py:attribute:: noCalculationsRequired
+   .. py:attribute:: no_calculations_required
       :value: 0
 
 
@@ -296,21 +290,23 @@ Module Contents
    .. py:attribute:: openDB_label
 
 
-   .. py:attribute:: refreshRequired
+   .. py:attribute:: refresh_required
       :value: True
-
-
-
-   .. py:attribute:: scenarioType
-      :value: None
 
 
 
    .. py:attribute:: settings
 
 
+   .. py:attribute:: spectroscopy
+      :value: None
+
+
+
    .. py:attribute:: vs_cm1
       :value: [0, 0]
 
 
+
+.. py:data:: logger
 

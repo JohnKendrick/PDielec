@@ -77,9 +77,13 @@ PDielec.Constants
    J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. Rosman and P. D. P. Taylor (2003).
    "Atomic weights of the elements. Review 2000 (IUPAC Technical Report)"
 
-   isotopic_masses is a dictionary of masses for each element, the key is an element name.  The contents is a list of tuples, each tuple contains, three numbers: the first is the isotope, the second is its mass and the last is its percentage occurence on average.
+   isotopic_masses is a dictionary of masses for each element, the key is an element name.  The contents is a list of
+   tuples, each tuple contains, three numbers: the first is the isotope, the second is its mass and the last is its
+   percentage occurence on average.
 
-   covalent_radii is a dictionary of covalent radii taken from: Beatriz Cordero, Veronica Gomex, Ana E. Platero-Prats, Marc Reves, Jorge Echeverria, Eduard Cremades, Flavia Barragan and Santiago Alvarez (2008) Covalent Radii Revisited - Dalton Trans. (21) 2832-2838 doi:10.1039/b801115j
+   covalent_radii is a dictionary of covalent radii taken from: Beatriz Cordero, Veronica Gomex, Ana E. Platero-Prats, Marc
+   Reves, Jorge Echeverria, Eduard Cremades, Flavia Barragan and Santiago Alvarez (2008) Covalent Radii Revisited - Dalton
+   Trans. (21) 2832-2838 doi:10.1039/b801115j
 
    elemental_colours is a dictionary of an RGB list for each element
 
@@ -121,6 +125,7 @@ Attributes
    PDielec.Constants.isotopic_masses
    PDielec.Constants.jmol_elemental_colours
    PDielec.Constants.joule
+   PDielec.Constants.logger
    PDielec.Constants.metre
    PDielec.Constants.molar_gas_si
    PDielec.Constants.mu_0_si
@@ -208,6 +213,8 @@ Module Contents
 .. py:data:: jmol_elemental_colours
 
 .. py:data:: joule
+
+.. py:data:: logger
 
 .. py:data:: metre
 

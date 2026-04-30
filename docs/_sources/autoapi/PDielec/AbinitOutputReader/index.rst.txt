@@ -9,6 +9,14 @@ PDielec.AbinitOutputReader
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.AbinitOutputReader.logger
+
+
 Classes
 -------
 
@@ -31,8 +39,8 @@ Module Contents
 
    Parameters
    ----------
-   filenames : list or str
-       A list of filenames or a single filename string corresponding to the Abinit output files to be processed.
+   filenames : list
+       A list of filename strings or a single filename string corresponding to the Abinit output files to be processed.
 
    Attributes
    ----------
@@ -45,7 +53,10 @@ Module Contents
 
    Notes
    -----
-   This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be defined or processed.
+   This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for
+   any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it
+   will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be
+   defined or processed.
 
 
 
@@ -107,8 +118,8 @@ Module Contents
 
       Returns
       -------
-      numpy.ndarray
-          A 2D array where each row represents a field direction and each column represents an atomic displacement in the x, y, and z directions.
+      numpy.ndarray A 2D array where each row represents a field direction and each column represents an atomic
+      displacement in the x, y, and z directions.
 
 
 
@@ -117,7 +128,8 @@ Module Contents
 
       Read and populate the Hessian matrix from a file.
 
-      This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the Hessian matrix from these data. 
+      This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the
+      Hessian matrix from these data.
 
       Parameters
       ----------
@@ -130,8 +142,9 @@ Module Contents
 
       Notes
       -----
-      This method assumes the file format is structured in a specific way, where each line after the first four lines (which are skipped) contains the indices and value needed to populate the Hessian matrix.
-      The Hessian matrix is used in molecular dynamics and vibrational analysis to describe the second-order interaction between atoms.
+      This method assumes the file format is structured in a specific way, where each line after the first four lines
+      (which are skipped) contains the indices and value needed to populate the Hessian matrix. The Hessian matrix is
+      used in molecular dynamics and vibrational analysis to describe the second-order interaction between atoms.
 
       See Also
       --------
@@ -144,7 +157,9 @@ Module Contents
 
       Read and set the number of electrons from a given line.
 
-      This method sets the number of electrons for the object based on the string input. It expects the string to be formatted in a specific way where the seventh item (index 6, as indexing is zero-based) when split by whitespace, is convertible to float and represents the number of electrons.
+      This method sets the number of electrons for the object based on the string input. It expects the string to be
+      formatted in a specific way where the seventh item (index 6, as indexing is zero-based) when split by
+      whitespace, is convertible to float and represents the number of electrons.
 
       Parameters
       ----------
@@ -166,7 +181,8 @@ Module Contents
 
       Process and update the energy cutoff value from a given line.
 
-      This function reads a line containing energy information, converts the energy value from Hartree to electron volts (eV), and updates the object's energy_cutoff attribute accordingly.
+      This function reads a line containing energy information, converts the energy value from Hartree to electron
+      volts (eV), and updates the object's energy_cutoff attribute accordingly.
 
       Parameters
       ----------
@@ -263,7 +279,9 @@ Module Contents
 
       Read lattice vectors from a line of a file and update the object state.
 
-      Reads three lines starting from the given line from the file associated with the object's file descriptor, interprets them as lattice vectors, scales them according to the object's _acell attribute, and updates the object by appending a new `UnitCell` to its `unit_cells` list and updating the `ncells` and `volume` attributes.
+      Reads three lines starting from the given line from the file associated with the object's file descriptor,
+      interprets them as lattice vectors, scales them according to the object's _acell attribute, and updates the
+      object by appending a new `UnitCell` to its `unit_cells` list and updating the `ncells` and `volume` attributes.
 
       Parameters
       ----------
@@ -276,15 +294,21 @@ Module Contents
 
       Notes
       -----
-      This method modifies the internal state of the object by adding a new `UnitCell` to `unit_cells`, updating `ncells` to the new total number of unit cells, and updating `volume` to the volume of the most recently added `UnitCell`.
+      This method modifies the internal state of the object by adding a new `UnitCell` to `unit_cells`, updating
+      `ncells` to the new total number of unit cells, and updating `volume` to the volume of the most recently added
+      `UnitCell`.
 
-      This method assumes that `line` is formatted correctly, with lattice vector components being float-convertible strings separated by spaces. It also assumes that `self.file_descriptor` is an open file object positioned appropriately to read the subsequent lines for the b and c vectors.
+      This method assumes that `line` is formatted correctly, with lattice vector components being float-convertible
+      strings separated by spaces. It also assumes that `self.file_descriptor` is an open file object positioned
+      appropriately to read the subsequent lines for the b and c vectors.
 
-      This method requires that `self._acell` is already set to an iterable of three scaling factors corresponding to each of the a, b, and c lattice vectors.
+      This method requires that `self._acell` is already set to an iterable of three scaling factors corresponding to
+      each of the a, b, and c lattice vectors.
 
       See Also
       --------
-      UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its constructor.
+      UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its
+      constructor.
 
 
 
@@ -312,7 +336,9 @@ Module Contents
 
       Read and process the number of atoms from a given line.
 
-      This method reads the number of atoms from a given line of text, sets the object's 'nions' attribute to this number, and initializes the '_charges' attribute to a zero array with shape `(nions, 3, 3)`. This method does not return any value.
+      This method reads the number of atoms from a given line of text, sets the object's 'nions' attribute to this
+      number, and initializes the '_charges' attribute to a zero array with shape `(nions, 3, 3)`. This method does
+      not return any value.
 
       Parameters
       ----------
@@ -352,7 +378,9 @@ Module Contents
 
       Read and calculate the total occupancy from a line or lines in a file.
 
-      This method reads occupancies from a given line, and if necessary, continues reading the next lines from the file until it gathers occupancies equal to the number of bands (`self.nbands`). It then calculates the sum of these occupancies and updates the total number of electrons.
+      This method reads occupancies from a given line, and if necessary, continues reading the next lines from the
+      file until it gathers occupancies equal to the number of bands (`self.nbands`). It then calculates the sum of
+      these occupancies and updates the total number of electrons.
 
       Parameters
       ----------
@@ -365,8 +393,8 @@ Module Contents
 
       Attributes Modified
       -------------------
-      self.electrons : int
-          Sets the `self.electrons` attribute to the integer value closest to the total sum of the occupancies read. The total is slightly adjusted before conversion to ensure correct rounding.
+      self.electrons : int Sets the `self.electrons` attribute to the integer value closest to the total sum of the
+      occupancies read. The total is slightly adjusted before conversion to ensure correct rounding.
 
       Raises
       ------
@@ -411,7 +439,54 @@ Module Contents
 
       Notes
       -----
-      The function expects `line` to be a well-formatted string containing at least 8 space-separated values. The eighth value is converted to a float and stored in the `pressure` attribute of the class instance. This function does not return any value.
+      The function expects `line` to be a well-formatted string containing at least 8 space-separated values. The
+      eighth value is converted to a float and stored in the `pressure` attribute of the class instance. This function
+      does not return any value.
+
+
+
+
+   .. py:method:: _read_susceptibility_derivatives(line)
+
+      Read the first-order susceptibility derivatives and compute per-mode Raman tensors.
+
+      Abinit's ``optdriver=5`` writes the change in the electronic dielectric
+      susceptibility tensor induced by each atomic displacement::
+
+          ∂χ_αβ / ∂u_κγ  (units: Bohr⁻¹)
+
+      This is provided for every atom κ (1…N) and every Cartesian direction γ
+      (x, y, z).  To obtain the per-mode Raman susceptibility tensor that can
+      be compared with CASTEP output, the derivatives are projected onto the
+      phonon eigenvectors that have already been computed by
+      :meth:`_read_dynamical`:
+
+      .. math::
+
+          R_{\alpha\beta}^{(n)} = \sum_{\kappa,\gamma}
+              \frac{\partial \chi_{\alpha\beta}}{\partial u_{\kappa\gamma}}
+              \frac{\varepsilon_{\kappa\gamma}^{(n)}}{\sqrt{m_\kappa}}
+
+      where :math:`\varepsilon_{\kappa\gamma}^{(n)}` is the
+      ``mass_weighted_normal_modes[n][κ][γ]`` component (eigenvector of the
+      mass-weighted dynamical matrix, dimensionless) and :math:`m_\kappa` is
+      the atomic mass in amu.  The resulting tensors have units of
+      Bohr⁻¹ amu⁻¹/².
+
+      The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
+      NumPy arrays, one per mode in frequency order.  If the phonon
+      eigenvectors are not yet available the raw derivatives are stored in
+      ``self._susceptibility_derivatives`` for later use.
+
+      Parameters
+      ----------
+      line : str
+          The line that triggered this method.  Reading continues from
+          ``self.file_descriptor``.
+
+      Returns
+      -------
+      None
 
 
 
@@ -478,18 +553,19 @@ Module Contents
       Notes
       -----
       - This method assumes that the current context includes attributes for 'nions' (the number of ions),
-        'file_descriptor' (a file object for reading), 'unit_cells' (a list of unit cell objects),
-        and 'species' (a list of element species names) along with 'atom_type_list' (a list of indices for species).
-      - It is further assumed that the 'unit_cells' list has at least one unit cell object that supports
-        'set_fractional_coordinates' and 'set_element_names' methods for updating its state.
-      - The method reads a line, splits it to extract fractional coordinates, and then reads additional lines
-        corresponding to the remaining ions ('nions' - 1).
-      - The extracted fractional coordinates are stored in a nested list, which is passed to the last unit cell's
-        'set_fractional_coordinates' method.
-      - If the 'species' attribute is provided along with a coherent 'atom_type_list', the method will also set element names for the 
-        last unit cell using these mappings.
+        'file_descriptor' (a file object for reading), 'unit_cells' (a list of unit cell objects), and 'species' (a
+        list of element species names) along with 'atom_type_list' (a list of indices for species). - It is further
+        assumed that the 'unit_cells' list has at least one unit cell object that supports
+        'set_fractional_coordinates' and 'set_element_names' methods for updating its state. - The method reads a
+        line, splits it to extract fractional coordinates, and then reads additional lines corresponding to the
+        remaining ions ('nions' - 1). - The extracted fractional coordinates are stored in a nested list, which is
+        passed to the last unit cell's 'set_fractional_coordinates' method. - If the 'species' attribute is provided
+        along with a coherent 'atom_type_list', the method will also set element names for the  last unit cell using
+        these mappings.
 
-      No direct returns but updates the state of the last unit cell in the 'unit_cells' list by setting its fractional coordinates and optionally, element names.
+
+      No direct returns but updates the state of the last unit cell in the 'unit_cells' list by setting its fractional
+      coordinates and optionally, element names.
 
 
 
@@ -536,8 +612,15 @@ Module Contents
 
 
 
+   .. py:attribute:: _susceptibility_derivatives
+      :value: None
+
+
+
    .. py:attribute:: type
       :value: 'Abinit output files'
 
 
+
+.. py:data:: logger
 

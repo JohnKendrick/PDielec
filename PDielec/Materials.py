@@ -24,8 +24,8 @@ import os
 import numpy as np
 import openpyxl as xl
 
+import PDielec
 from PDielec import Calculator, DielectricFunction
-from PDielec import __file__ as PDielec_init_filename
 from PDielec.UnitCell import UnitCell
 
 logger = logging.getLogger(__name__)
@@ -125,7 +125,7 @@ class MaterialsDataBase:
             # workbook.close()
         else:
             # Try opening the default database
-            PDielec_Directory = os.path.dirname(PDielec_init_filename)
+            PDielec_Directory = os.path.dirname(PDielec.__file__)
             filename  = os.path.join(PDielec_Directory, "MaterialsDataBase.xlsx")
             filename  = os.path.relpath(filename)
             if os.path.isfile(filename):
@@ -611,26 +611,26 @@ class Material:
     between the Material subclass and the DielectricFunction subclass of the permittivity object is shown below.
 
     +---------------------------+-------------------------------------------------------------+
-    + Material subclass         + DielectricFunction subclass                                 +
+    | Material subclass         | DielectricFunction subclass                                 |
     +===========================+=============================================================+
-    + :class:`Constant`         + :class:`~PDielec.DielectricFunction.Constant`               +
+    | :class:`Constant`         | :class:`~PDielec.DielectricFunction.Constant`               |
     +---------------------------+-------------------------------------------------------------+
-    + :class:`NoMatrix`         + :class:`~PDielec.DielectricFunction.ConstantScalar` (1.0)  +
-    +                           + placeholder; bypasses EMT entirely when used as matrix.     +
+    | :class:`NoMatrix`         | :class:`~PDielec.DielectricFunction.ConstantScalar` (1.0)   |
+    |                           | placeholder; bypasses EMT entirely when used as matrix.     |
     +---------------------------+-------------------------------------------------------------+
-    + :class:`External`         + This class is passed a permittivity object which has been   +
-    +                           + defined externally                                          +
+    | :class:`External`         | This class is passed a permittivity object which has been   |
+    |                           | defined externally                                          |
     +---------------------------+-------------------------------------------------------------+
-    + :class:`DrudeLorentz`     + :class:`~PDielec.DielectricFunction.DrudeLorentz`           +
+    | :class:`DrudeLorentz`     | :class:`~PDielec.DielectricFunction.DrudeLorentz`           |
     +---------------------------+-------------------------------------------------------------+
-    + :class:`FPSQ`             + :class:`~PDielec.DielectricFunction.FPSQ`                   +
+    | :class:`FPSQ`             | :class:`~PDielec.DielectricFunction.FPSQ`                   |
     +---------------------------+-------------------------------------------------------------+
-    + :class:`Sellmeier`        + :class:`~PDielec.DielectricFunction.Sellmeier`              +
+    | :class:`Sellmeier`        | :class:`~PDielec.DielectricFunction.Sellmeier`              |
     +---------------------------+-------------------------------------------------------------+
-    + :class:`Tabulated`        +  - :class:`~PDielec.DielectricFunction.TabulateScalar`      +
-    +                           +  - :class:`~PDielec.DielectricFunction.Tabulate3`           +
-    +                           +  - :class:`~PDielec.DielectricFunction.Tabulate3`           +
-    +                           +  - :class:`~PDielec.DielectricFunction.Tabulate6`           +
+    | :class:`Tabulated`        | :class:`~PDielec.DielectricFunction.TabulateScalar`         |
+    |                           | :class:`~PDielec.DielectricFunction.Tabulate3`              |
+    |                           | :class:`~PDielec.DielectricFunction.Tabulate3`              |
+    |                           | :class:`~PDielec.DielectricFunction.Tabulate6`              |
     +---------------------------+-------------------------------------------------------------+
 
     Parameters
@@ -1372,4 +1372,3 @@ class Tabulated(Material):
         """
         eps = eps*np.eye(3) if isinstance(eps,float) else np.array(eps)
         self.permittivity_object.set_epsilon_infinity(eps)
-

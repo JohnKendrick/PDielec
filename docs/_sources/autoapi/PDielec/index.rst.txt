@@ -51,6 +51,7 @@ Submodules
    /autoapi/PDielec/GulpOutputReader/index
    /autoapi/PDielec/HelperRoutines/index
    /autoapi/PDielec/IO/index
+   /autoapi/PDielec/LayeredRamanCalculator/index
    /autoapi/PDielec/Materials/index
    /autoapi/PDielec/Mie/index
    /autoapi/PDielec/PhonopyOutputReader/index
@@ -88,6 +89,6 @@ Package Contents
 ----------------
 
 .. py:data:: __version__
-   :value: '9.0.0'
+   :value: '10.0.0'
 
 

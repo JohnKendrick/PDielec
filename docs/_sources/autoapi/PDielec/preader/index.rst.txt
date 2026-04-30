@@ -37,6 +37,7 @@ Attributes
 
 .. autoapisummary::
 
+   PDielec.preader.logger
    PDielec.preader.version
 
 
@@ -60,11 +61,14 @@ Module Contents
 
    ::
 
-       preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
+       preader -program program [-spectroscopy infrared|raman] [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
          "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
                   "phonopy", "qe", "vasp", "experiment", "auto"
                   The default is auto, so the program tries to guess the package from
                   the contents of the directory.  However this is not fool-proof!
+         -spectroscopy [infrared|raman]  selects which intensities are calculated
+                 The default is "infrared"
+                 Use "raman" to output Raman activities instead of IR intensities
          -masses [average|isotope|program]  chooses the atomic mass definition average
                  The default is "average"
          -mass  element mass
@@ -91,7 +95,8 @@ Module Contents
 
    Notes
    -----
-   The function internally directs its output to `sys.stderr` instead of the default `sys.stdout`, to separate the help message from other outputs. It also exits the program after displaying the help message by calling `exit()`. 
+   The function internally directs its output to `sys.stderr` instead of the default `sys.stdout`, to separate the help
+   message from other outputs. It also exits the program after displaying the help message by calling `exit()`.
 
    Examples
    --------
@@ -119,14 +124,15 @@ Module Contents
        - global_no_calculation : bool (A flag to indicate whether any calculations should be performed.)
        - program : str (Name of the computational chemistry program used to generate the file.)
        - debug : bool (If set to True, additional debug information will be printed.)
+       - spectroscopy : str (Either 'infrared' or 'raman'; controls which intensities are calculated.)
 
    Returns
    -------
-   tuple
-       A tuple containing:
-       - reader : object (An object capable of reading and processing the data from the specified file.)
-       - name : str (Name of the file that was processed.)
-       - results_string : list (A list of strings that represent the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies, intensities, and optionally calculated molar absorption rates.)
+   tuple A tuple containing: - reader : object (An object capable of reading and processing the data from the specified
+   file.) - name : str (Name of the file that was processed.) - results_string : list (A list of strings that represent
+   the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies,
+   intensities, and optionally calculated molar absorption rates or Raman activities.)
+
 
 
 
@@ -134,6 +140,8 @@ Module Contents
 
    When a new worker process is created, the affinity is set to all CPUs.
 
+
+.. py:data:: logger
 
 .. py:data:: version
 

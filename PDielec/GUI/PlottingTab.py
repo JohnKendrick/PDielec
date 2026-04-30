@@ -61,8 +61,8 @@ def is_this_a_frequency_unit(unit):
 def convert_frequency_units( value, unit_in, unit_out ):
     """Convert between frequency and wavelength units.
 
-    The input can be either a scalar value or a numpy array of values. The function will return the converted
-    value(s) in the output units specified.
+    The input can be either a scalar value or a numpy array of values.
+    The function will return the converted value(s) in the output units specified.
     The unit strings are turned into lower-case so case is irrelevant
 
     Parameters
@@ -70,11 +70,11 @@ def convert_frequency_units( value, unit_in, unit_out ):
     value : scalar or numpy array
         The value(s) for which the conversion is to be made.
     unit_in : str
-        The units of the input value(s). Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm',
-        'cm', 'm'.
+        The units of the input value(s).
+        Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
     unit_out : str
-        The units of the output value(s). Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um',
-        'mm', 'cm', 'm'.
+        The units of the output value(s).
+        Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
 
     Returns
     -------
@@ -120,9 +120,10 @@ def convert_frequency_units( value, unit_in, unit_out ):
 class PlottingTab(QWidget):
     """A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.
 
-    This class is responsible for handling plotting functionalities like choosing plot types, setting molar definitions
-    and frequency values, managing interactions with UI components such as spin boxes, combo boxes, and buttons, and
-    plotting the data using matplotlib.
+    This class is responsible for handling plotting functionalities like:
+    choosing plot types, setting molar definitions and frequency values,
+    managing interactions with UI components such as:
+    spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.
 
     Parameters
     ----------
@@ -134,14 +135,16 @@ class PlottingTab(QWidget):
     Attributes
     ----------
     settings : dict
-        A dictionary containing settings related to plotting such as minimum frequency, maximum frequency,
-        frequency increment, molar definitions, number of atoms, plot type, and frequency unit.
+        A dictionary containing settings related to plotting such as:
+        minimum frequency, maximum frequency, frequency increment,
+        molar definitions, number of atoms, plot type, and frequency unit.
     refresh_required : bool
         A flag indicating whether the plot needs to be refreshed.
     subplot : matplotlib subplot object
         The subplot used for plotting data.
     vmin, vmax, vinc : float
-        Variables to store current minimum frequency, maximum frequency, and frequency increment values for the plot.
+        Variables to store current minimum frequency,
+        maximum frequency, and frequency increment values for the plot.
     molar_cb_current_index : int
         Tracks the current index of the molar definition combo box to handle changes.
     notebook : QWidget
@@ -163,9 +166,12 @@ class PlottingTab(QWidget):
         Requests a refresh for the plotting.
     request_scenario_refresh()
         Requests a refresh for all scenarios in the application.
-    on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value), on_funits_cb_activated(index),
-    on_molar_cb_activated(index), on_natoms_changed(value), on_plot_type_cb_activated(index)
-        Event handlers for UI component changes.
+    on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value)
+        Event handlers for frequency range UI changes.
+    on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value)
+        Event handlers for units and molar definition UI changes.
+    on_plot_type_cb_activated(index)
+        Event handler for plot type selection changes.
     refresh(force=False)
         Refreshes the plot based on current settings and data.
     plot()
@@ -198,7 +204,8 @@ class PlottingTab(QWidget):
         subplot : NoneType or matplotlib subplot
             Placeholder for a future subplot object, initialized as None.
         molar_definitions : list
-            A list of possible definitions for a mole, including 'Unit cells', 'Atoms', 'Molecules'.
+            A list of possible definitions for a mole, including:
+            'Unit cells', 'Atoms', 'Molecules'.
         legends : list
             A list to store legend entries.
         vs_cm1 : list
@@ -206,7 +213,8 @@ class PlottingTab(QWidget):
         frequency_length : int
             Stores the length of `vs_cm1` list.
         vmin, vmax, vinc : float
-            Variables to store minimum, maximum, and increment values for frequency/wavelength after conversion.
+            Variables to store minimum, maximum, and
+            increment values for frequency/wavelength after conversion.
         molar_cb_current_index : int
             Tracks the currently selected index in the molar definitions combo box.
         notebook : QWidget
@@ -533,11 +541,10 @@ class PlottingTab(QWidget):
     def on_vinc_changed(self,value):
         """Handle the change in frequency increment and update GUI accordingly.
 
-        This function is triggered when there's a change in the frequency increment value. It adjusts the number
-        of GUI elements based on
-        new values of minimum and maximum frequency and the changed frequency increment. It also updates the
-        settings dict with the
-        new frequency increment value.
+        This function is triggered when there's a change in the frequency increment value.
+        It adjusts the number of GUI elements based on new values
+        of minimum and maximum frequency and the changed frequency increment.
+        It also updates the settings dict with the new frequency increment value.
 
         Parameters
         ----------
@@ -599,7 +606,7 @@ class PlottingTab(QWidget):
         - Uses the `blockSignals` method on `self.vmin_sb` to prevent signal-slot recursion.
         - Adjusts settings based on a unit conversion utility function, `convert_frequency_units`.
         - The effect of this method extends beyond just the internal state changes; it influences the UI and
-        possibly other components' states through the requested refresh.
+          possibly other components' states through the requested refresh.
 
         """
         logger.debug("Start:: on_vmin_changed")
@@ -637,9 +644,9 @@ class PlottingTab(QWidget):
         Notes
         -----
         - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box
-        GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
+          GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
         - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and
-        'Minimum frequency' keys which are updated based on the condition.
+          'Minimum frequency' keys which are updated based on the condition.
 
         """
         logger.debug("Start:: on_vmax_changed")
@@ -681,7 +688,7 @@ class PlottingTab(QWidget):
         - The actual refresh operation involves several steps:
             - Checking if a refresh is required based on the current settings and the 'force' parameter.
             - Temporarily blocking signals from all child widgets to prevent unintended side effects during
-            settings updates.
+              settings updates.
             - Verifying and updating frequency settings to maintain logical constraints.
             - Updating GUI components with new settings values and tooltips based on the current frequency unit.
             - Processing and plotting data based on the updated settings.
@@ -788,9 +795,9 @@ class PlottingTab(QWidget):
         Notes
         -----
         - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of
-        the container and the number of ions, respectively.
+          the container and the number of ions, respectively.
         - The method refreshes `self.notebook.fitterTab` object with a `request_refresh` method to initiate the
-        refresh process.
+          refresh process.
 
         """
         logger.debug(f"Start:: on_natoms_changed {value}")
@@ -874,13 +881,13 @@ class PlottingTab(QWidget):
 
         - `self.settings` is a dictionary where application settings are stored.
         - `self.refresh_required` is a boolean flag used to indicate whether a refresh of certain GUI components
-        is necessary.
+          is necessary.
         - `self.notebook` appears to be a widget container (like a tab widget), with `fitterTab` being one of
-        its child tabs.
+          its child tabs.
         - `self.vmin_sb` is another component (likely a spin box or similar input widget) that may need its
-        signals blocked/unblocked during the process to avoid unwanted signal emission.
+          signals blocked/unblocked during the process to avoid unwanted signal emission.
         - The `debugger.print` calls are used for logging and are not a standard Python function; they imply the
-        existence of a custom logging or debugging utility named `debugger`.
+          existence of a custom logging or debugging utility named `debugger`.
 
         The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown
         here, such as `self.refresh()` and `self.notebook.fitterTab.request_refresh()`.
@@ -1120,10 +1127,12 @@ class PlottingTab(QWidget):
         Notes
         -----
         The function does two main tasks:
+
         1. Selects the 'Real Crystal Permittivity' sheet, deletes its current content if any, and writes the real parts
-        of the permittivity tensor for each frequency along with the frequency values themselves.
+           of the permittivity tensor for each frequency along with the frequency values themselves.
+
         2. Selects the 'Imag Crystal Permittivity' sheet, deletes its current content if any, and writes the imaginary
-        parts of the permittivity tensor for each frequency along with the frequency values themselves.
+           parts of the permittivity tensor for each frequency along with the frequency values themselves.
 
         Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz,
         xy, xz, and yz are components of the permittivity tensor.

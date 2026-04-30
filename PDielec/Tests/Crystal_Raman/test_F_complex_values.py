@@ -89,7 +89,7 @@ class TestF1ComplexPermittivitySign:
         For moderate n'' (0.1–1.0) the coherent Raman integral is non-monotonic
         because the complex k shifts the system between constructive/destructive
         interference regimes.  For n'' ≥ 2 the penetration depth δ < 20 nm is
-        ≪ d=3200 nm, so the saturation formula I ∝ |t|⁴/|k|² dominates and the
+        ≪ d=3200 nm, so the saturation formula I ∝ \|t\|⁴/\|k\|² dominates and the
         signal is strictly decreasing with n''.
         """
         n_vals  = [1.5 + 2j, 1.5 + 3j, 1.5 + 5j, 1.5 + 10j]

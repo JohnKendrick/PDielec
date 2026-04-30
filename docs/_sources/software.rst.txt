@@ -28,7 +28,7 @@ Command options
 Examples of data sets for these packages are included with the distribution and can be found in the Examples/'Package'/preader directory. The program is run from the command line. There are several command options and these are summarised below. Some options may be repeated.
 
   - \-program program_name
-       | Program_name can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed
+       | Program_name can be “abinit”,  "aims", “castep”, “crystal”, “gulp”, “qe”, “experiment”, "phonopy", or “vasp” and specifies the program which generated the results to be analysed
   - \-neutral
        | Impose neutrality on the Born charge matrices
   - \-nocalculation
@@ -44,11 +44,13 @@ Examples of data sets for these packages are included with the distribution and 
 Examples
 --------
 
-::
+.. code-block:: bash
 
          preader -program vasp `find . -name OUTCAR` > results.csv
 
-This reads all the VASP OUTCAR files in the current and any of its subdirectories and summarises the results to results.csv. ::
+This reads all the VASP OUTCAR files in the current and any of its subdirectories and summarises the results to results.csv.
+
+.. code-block:: bash
 
          preader -program castep -eckart `find . -name \*.castep` > results.csv
 
@@ -56,14 +58,82 @@ This reads all the CASTEP output files in the current and any of its subdirector
 
 There are examples of preader being used in the Examples/'Package'/preader subdirectories of the distribution of PDielec.
 
-Vibanalysis
+aims-pdielec-born
+=================
+
+To generate the Born charges from an FHI-Aims calculation of infrared vibrational frequencies and intensities, the aims-pdielec-born command reads the single point FHI-Aims calculations of forces and polarisation at the displaced geometries created by the get_vibrations.py script from the FHI-Aims distribution. 
+The aims-pdielec-born writes a single file BORN_PDIELEC containing the Born charges for all atoms in the unit cell.
+
+In the example given below the FHI-Aims command ``python get_vibrations.py na2so42`` was used to generate the perturbations.
+
+.. code-block:: bash
+
+         aims-pdielec-born na2so42
+
+The command line options are:
+
++----------------------------+--------------------------------------------------------------------------------------------------+
+| Command line option        | Description                                                                                      |
++============================+==================================================================================================+
+| name                       | "name" is the string used in the get_vibrations.py command to identify the set of displacements. |
++----------------------------+--------------------------------------------------------------------------------------------------+
+| | -d delta                 | | Define the step used to generate the perturbed geometries                                      |
+| | --delta delta            | | the default delta is 0.0025                                                                    |
++----------------------------+--------------------------------------------------------------------------------------------------+
+| | -p dir                   | | Set the directory name holding the calculation of permittivity                                 |
+| | --permittivity dir       | | the default is "Dielectric"                                                                    |
++----------------------------+--------------------------------------------------------------------------------------------------+
+| | -h                       | | Show some help information                                                                     |
+| | --help                   | |                                                                                                |
++----------------------------+--------------------------------------------------------------------------------------------------+
+
+phonopy-pdielec-born
+====================
+
+The BORN file calculated by Phonopy holds the Born charges for the symmetry unique atoms in the unit-cell.  
+To allow PDielec to use these Born charges the phonopy-pdielec-born command reads the phonopy.yaml and BORN files and writes out the full set of charges to the terminal.
+PDGui expects the Born charges to be in the file BORN_PDIELEC.  An example of the use of the script is given below.
+
+.. code-block:: bash
+
+       phonopy-pdielec-born  BORN_PDIELEC
+
+
+The command line options are:
+
++----------------------------+----------------------------------------------------------+
+| Command line option        | Description                                              |
++============================+==========================================================+
+| | name                     | | Output the charges to a file called name               |
++----------------------------+----------------------------------------------------------+
+| | -input name              | | Set the name of the Phonopy Born charge file           |
+| | --input name             | | the default is "BORN"                                  |
++----------------------------+----------------------------------------------------------+
+| | -output name             | | Send the output to this file                           |
+| | --output name            | | the default is to send the output to standard out      |
++----------------------------+----------------------------------------------------------+
+| | -yaml name               | | Set the name of the phonopy.yaml file                  |
+| | --yaml name              | | the default is "phonopy.yaml"                          |
++----------------------------+----------------------------------------------------------+
+| | -symprec float           | | Define the symmetry threshold                          |
+| | --symprec float          | | the default 1.0E-5                                     |
++----------------------------+----------------------------------------------------------+
+| | -nosym                   | | Do not use any symmetry                                |
++----------------------------+----------------------------------------------------------+
+| | -h                       | | Show some help information                             |
+| | --help                   | |                                                        |
++----------------------------+----------------------------------------------------------+
+
+
+
+vibanalysis
 ===========
 
 The vibanalysis command provides an interface the vibAnalysis package of Philipe Teixeira.  This package provides Vibrational Mode Decomposition of the phonon modes using a variety of methods including; Vibrational Mode Projection (VMP), Vibrational Mode Linear Decomposition (VMLD) and Vibrational Mode Automatic Relevance Determination (VMARD).  By default VMARD is used.
 
 The package options can be determined using; 
 
-::
+.. code-block:: bash
 
        vibanalysis OUTCAR
        vibanalysis phonon.castep
@@ -74,43 +144,45 @@ pdmake
 ======
 The testing suite is run using the the pdmake command.  The command line options are summarised below.
 
-   +-----------------------+----------------------------------------+
-   | Command line option   | Description                            |
-   +=======================+========================================+
-   | test                  | Run all the tests                      |
-   | tests                 | Run all the tests                      |
-   +-----------------------+----------------------------------------+
-   | test-preader          | Run preader tests                      |
-   +-----------------------+----------------------------------------+
-   | test-pdgui            | Run pdgui tests                        |
-   +-----------------------+----------------------------------------+
-   | test-p2cif            | Run p2cif tests                        |
-   +-----------------------+----------------------------------------+
-   | test-vibanalysis      | Run vibanalysis tests                  |
-   +-----------------------+----------------------------------------+
-   | benchmarks            | Run the benchmark suite (no testing)   |
-   +-----------------------+----------------------------------------+
-   | --regenerate          | Regenerate the reference data          |
-   +-----------------------+----------------------------------------+
-   | --root adirectory     | Set the root directory to adirectory   |
-   +-----------------------+----------------------------------------+
-   | --directory           | Print the directory name for the test  |
-   +-----------------------+----------------------------------------+
-   | --debug               | Switch on debugging                    |
-   +-----------------------+----------------------------------------+
-   | --view                | Use windowing with pdgui               |
-   +-----------------------+----------------------------------------+
-   | --padding 60          | Set the size of the title field to 60  |
-   +-----------------------+----------------------------------------+
-   | --usesystem           | Force the use of system executables    |
-   +-----------------------+----------------------------------------+
++-----------------------+----------------------------------------+
+| Command line option   | Description                            |
++=======================+========================================+
+| test                  | Run all the tests                      |
+| tests                 | Run all the tests                      |
++-----------------------+----------------------------------------+
+| test-preader          | Run preader tests                      |
++-----------------------+----------------------------------------+
+| test-pdgui            | Run pdgui tests                        |
++-----------------------+----------------------------------------+
+| test-p2cif            | Run p2cif tests                        |
++-----------------------+----------------------------------------+
+| test-vibanalysis      | Run vibanalysis tests                  |
++-----------------------+----------------------------------------+
+| benchmarks            | Run the benchmark suite (no testing)   |
++-----------------------+----------------------------------------+
+| --regenerate          | Regenerate the reference data          |
++-----------------------+----------------------------------------+
+| --root adirectory     | Set the root directory to adirectory   |
++-----------------------+----------------------------------------+
+| --directory           | Print the directory name for the test  |
++-----------------------+----------------------------------------+
+| --debug               | Switch on debugging                    |
++-----------------------+----------------------------------------+
+| --view                | Use windowing with pdgui               |
++-----------------------+----------------------------------------+
+| --padding 60          | Set the size of the title field to 60  |
++-----------------------+----------------------------------------+
+| --usesystem           | Force the use of system executables    |
++-----------------------+----------------------------------------+
 
 
 The command can also be use in an examples directory.  There will be a file, command.pdmake, which contains the instructions to run the test.
 The first line of the file is a title that is used to identify the test.
 The second line is the command to be used in the test followed by the command parameters required.
 
-Examples of the use of the command are;::
+Examples of the use of the command are;
+
+.. code-block:: bash
 
         pdmake                              # prints a help summary
         pdmake tests                        # runs all the tests
@@ -157,13 +229,13 @@ pdgui is capable of reading the output log file of pwscf and ph, but it is recom
 
 FHI-Aims
 --------
-The vibrational frequencies and intensities calculation using FHI-Aims and the get_vibrations.py script which is distributed with it.  
+The vibrational frequencies and intensities calculation uses FHI-Aims and the get_vibrations.py script which is distributed with it.  
 After determining the optimised cell, the script is used to generate perturbed single point calculations of the forces and the polarization which are then used to provide data for numerical differentiation to form the hessian and the IR intensities.
 An example of the output from these calculations is provided in Examples/FHI-Aims/Na2SO42.
 In this example, PDGui requires the hessian.na2so42.dat, masses.na2so42.dat, geometry.in and the Dielectric/ directory.
-The Dielectric/ directory contains an FHI-Aims calculation of the electronic permittivity (:math:`\epsilon_{\infin}`). 
+The Dielectric/ directory contains an FHI-Aims calculation of the electronic permittivity (:math:`\epsilon_{\infty}`). More details of the calculations are provided in the example directory.
 
-
+The any file with the "in" or "dat" extension will cause PDGui to assume the DFT package used to create the files in that directory was the FHI-Aims package.  The current version of FHI-Aims which is supported is 250822.
 
 PHONOPY 
 -------

@@ -129,8 +129,10 @@ def _intensity_subdivided(d_total, n_layer, n_sublayers, n_gauss=30):
 class TestC2SubdivisionInvariance:
     """C2: Subdividing a homogeneous layer must not change the Raman strength.
 
-    Uses coherent_layers=True so that the mathematical identity
+    Uses coherent_layers=True so that the mathematical identity::
+
         ∫₀ᵈ = ∫₀^{d/N} + ∫_{d/N}^{2d/N} + … + ∫_{(N-1)d/N}^d
+
     translates directly to equal total amplitudes.
 
     The superstrate/substrate are matched to the layer index (n_sup = n_sub =

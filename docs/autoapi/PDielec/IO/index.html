@@ -3,12 +3,12 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.Materials" href="../Materials/index.html"><link rel="prev" title="PDielec.HelperRoutines" href="../HelperRoutines/index.html">
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.LayeredRamanCalculator" href="../LayeredRamanCalculator/index.html"><link rel="prev" title="PDielec.HelperRoutines" href="../HelperRoutines/index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>PDielec.IO - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -228,6 +228,8 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
@@ -237,7 +239,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,6 +247,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
@@ -271,6 +273,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
@@ -321,6 +335,8 @@
           <section id="module-PDielec.IO">
 <span id="pdielec-io"></span><h1>PDielec.IO<a class="headerlink" href="#module-PDielec.IO" title="Link to this heading">¶</a></h1>
 <p>Simple IO interface.</p>
+<p>import logging
+logger = logging.getLogger(__name__)</p>
 <p>This aims to reproduce the python readline() io method, with limited functionality but much faster.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
@@ -338,7 +354,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.IO.pdielec_io">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.IO.</span></span><span class="sig-name descname"><span class="pre">pdielec_io</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/IO.html#pdielec_io"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.IO.pdielec_io" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.IO.</span></span><span class="sig-name descname"><span class="pre">pdielec_io</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/IO.html#pdielec_io"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.IO.pdielec_io" title="Link to this definition">¶</a></dt>
 <dd><p>A class for reading lines from a file and providing an interface similar to file objects.</p>
 <p>The class opens a file upon initialization, reads its lines into memory,
 and allows sequential reading of these lines through the readline method.
@@ -391,7 +407,9 @@ deleting all lines read from the file from memory.</p>
 </section>
 <section id="notes">
 <h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
-<p>This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.</p>
+<p>This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by
+deleting attributes. Calling this method on an object may render it unusable for certain operations that depend
+on the deleted attributes.</p>
 </section>
 </dd></dl>
 
@@ -427,7 +445,7 @@ If the end of the list is reached, it returns an empty string.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.IO.pdielec_io.index">
-<span class="sig-name descname"><span class="pre">index</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.IO.pdielec_io.index" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">index</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.IO.pdielec_io.index" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -441,12 +459,12 @@ If the end of the list is reached, it returns an empty string.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../Materials/index.html">
+          <a class="next-page" href="../LayeredRamanCalculator/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.Materials</div>
+                <div class="title">PDielec.LayeredRamanCalculator</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -515,9 +533,9 @@ If the end of the list is reached, it returns an empty string.</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

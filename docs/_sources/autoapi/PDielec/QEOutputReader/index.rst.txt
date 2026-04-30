@@ -9,6 +9,14 @@ PDielec.QEOutputReader
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.QEOutputReader.logger
+
+
 Classes
 -------
 
@@ -68,7 +76,7 @@ Module Contents
 
       Parameters
       ----------
-      atomic_structure_xml : a list of xml elements
+      atomic_structure_xml : list
           A list of atomic structure elements
 
       Set
@@ -119,6 +127,52 @@ Module Contents
           The energy cutoff in hartree
       self.rho_cutoff
           The charge density cutoff in hartree
+
+
+
+
+   .. py:method:: _calculate_raman_tensors()
+
+      Calculate the Raman tensors from the susceptibility tensors.
+
+      QE ph.x prints per-atom per-direction 3×3 derivatives of the
+      macroscopic polarisability tensor under the heading
+      ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
+      one per atom per Cartesian displacement direction, each labeled
+      ``atom # K    pol.  J``.
+
+      The "A^2" tensors represent::
+
+          A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+
+      where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
+      polarisability in Å³ and u_{κγ} is the displacement of atom κ in
+      Cartesian direction γ in Å, giving units of Å².
+
+      To obtain the per-mode Raman tensor in the CASTEP convention
+      [(Å/amu)^{1/2}], the raw derivatives are projected onto the
+      mass-weighted phonon eigenvectors and divided by √V::
+
+          R_n[α,β] = Σ_{κ,γ}  A2_{κ,γ}[α,β] × mwm[n,κ,γ] / √m_κ
+          T_n[α,β] = R_n[α,β] / √V
+
+      where mwm = ``mass_weighted_normal_modes``, m_κ is in amu, and
+      V is the unit-cell volume in Å³.  The 1/√V factor (not 4π/√V)
+      is correct because the A^2 tensors already incorporate the
+      V/(4π) prefactor of the macroscopic polarisability α.
+
+      The normal modes must be available before this method is called;
+      they are read from the ``.dynG`` file by :meth:`_read_dyng_file`.
+
+      Parameters
+      ----------
+      line : str
+          The trigger line (containing ``"Raman tensor (A^2)"``).
+          Not used directly; reading continues from ``self.file_descriptor``.
+
+      Returns
+      -------
+      None
 
 
 
@@ -248,12 +302,13 @@ Module Contents
 
       Attributes Modified
       -------------------
-      _alat
-          The lattice parameter is set or adjusted within this instance based on the value read from `line`. It is adjusted to `angs2bohr` if the absolute difference between the read value and `angs2bohr` is less than 0.0001.
+      _alat The lattice parameter is set or adjusted within this instance based on the value read from `line`. It is
+      adjusted to `angs2bohr` if the absolute difference between the read value and `angs2bohr` is less than 0.0001.
 
       Notes
       -----
-      This method does not return any value. It updates the `_alat` attribute of the class instance with the value read from the input line, after applying necessary conversions and checks.
+      This method does not return any value. It updates the `_alat` attribute of the class instance with the value
+      read from the input line, after applying necessary conversions and checks.
 
 
 
@@ -262,7 +317,8 @@ Module Contents
 
       Read and parse Born charges from a file.
 
-      This internal method reads the Born charges of `nions` ions from the file specified by `file_descriptor` and updates the `born_charges` attribute of the class instance.
+      This internal method reads the Born charges of `nions` ions from the file specified by `file_descriptor` and
+      updates the `born_charges` attribute of the class instance.
 
       Parameters
       ----------
@@ -277,9 +333,12 @@ Module Contents
 
       Notes
       -----
-      This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates (x, y, z). It expects each line to contain three space-separated values, which represent the components of the Born charge tensor for that direction.
+      This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates
+      (x, y, z). It expects each line to contain three space-separated values, which represent the components of the
+      Born charge tensor for that direction.
 
-      This method directly modifies the `born_charges` attribute of the class instance, appending a 3x3 list (representing the Born charge tensor) for each ion.
+      This method directly modifies the `born_charges` attribute of the class instance, appending a 3x3 list
+      (representing the Born charge tensor) for each ion.
 
       If `self.debug` is True, it prints a debug message upon completion.
 
@@ -305,10 +364,11 @@ Module Contents
 
       Notes
       -----
-      The function expects the `line` input to contain the lattice parameter as its third value after removing parentheses.
-      Each subsequent line read from the input file (after the parameter line) is expected to represent the lattice vectors,
-      scaled by the lattice parameter and converted from Angstroms to Bohr radii.
-      The method directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+      The function expects the `line` input to contain the lattice parameter as its third value after removing
+      parentheses. Each subsequent line read from the input file (after the parameter line) is expected to represent
+      the lattice vectors, scaled by the lattice parameter and converted from Angstroms to Bohr radii. The method
+      directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+
 
 
 
@@ -317,7 +377,9 @@ Module Contents
 
       Process and update the class attribute _alat based on a line from a file.
 
-      This function is intended to read and process a line that contains a unit of length. It updates the class attribute `_alat` after converting the value properly and checks for conformity within a tolerance. If `debug` is set to True in the class, it also prints the updated `_alat` value.
+      This function is intended to read and process a line that contains a unit of length. It updates the class
+      attribute `_alat` after converting the value properly and checks for conformity within a tolerance. If `debug`
+      is set to True in the class, it also prints the updated `_alat` value.
 
       Parameters
       ----------
@@ -330,10 +392,11 @@ Module Contents
 
       Notes
       -----
-      - Presumes the existence of a class attribute `_alat` which is updated by this function.
-      - Assumes `angs2bohr` is a predefined constant available within the scope of this method for conversion or comparison purposes.
-      - Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it precisely sets `_alat` to `angs2bohr`.
-      - The `debug` attribute of the class controls whether an update operation is printed or not.
+      - Presumes the existence of a class attribute `_alat` which is updated by this function. - Assumes `angs2bohr`
+        is a predefined constant available within the scope of this method for conversion or comparison purposes. -
+        Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it
+        precisely sets `_alat` to `angs2bohr`. - The `debug` attribute of the class controls whether an update
+        operation is printed or not.
 
 
 
@@ -342,7 +405,11 @@ Module Contents
 
       Read and process lattice vectors from a dynG file, then updates unit cell information.
 
-      This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
+      This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a
+      unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from
+      Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these
+      vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit
+      cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
 
       Parameters
       ----------
@@ -354,12 +421,12 @@ Module Contents
 
       Attributes Updated
       ------------------
-      unit_cells : list
-          A list of `UnitCell` objects representing the unit cells read from the file. Updated by appending a new `UnitCell`.
-      ncells : int
-          The total number of unit cells, updated after reading new lattice vectors.
-      volume : float
-          The volume of the last read unit cell, updated after appending a new `UnitCell`.
+      unit_cells : list A list of `UnitCell` objects representing the unit cells read from the file. Updated by
+      appending a new `UnitCell`. ncells : int The total number of unit cells, updated after reading new lattice
+      vectors. volume : float The volume of the last read unit cell, updated after appending a new `UnitCell`.
+
+
+
 
 
 
@@ -368,7 +435,9 @@ Module Contents
 
       Read dynamic coordinates from a dynG file and update related properties.
 
-      This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the corresponding `unit_cells` properties.
+      This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species
+      list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the
+      corresponding `unit_cells` properties.
 
       Parameters
       ----------
@@ -380,18 +449,18 @@ Module Contents
 
       Attributes Updated
       ------------------
-      self.masses : list
-          Updated list of masses based on the atomic positions read.
-      self.atom_type_list : list
-          Updated list of atom types corresponding to each atom based on the read positions.
-      self.ions_per_type : list
-          Updated list with the count of ions per type.
-      self.unit_cells : list
-          List of unit cells, where the last one is updated with new xyz coordinates and element names based on read data.
-      self.ncells : int
-          Updated count of unit cells.
-      self.volume : float
-          Updated volume of the last unit cell in the list.
+      self.masses : list Updated list of masses based on the atomic positions read. self.atom_type_list : list Updated
+      list of atom types corresponding to each atom based on the read positions. self.ions_per_type : list Updated
+      list with the count of ions per type. self.unit_cells : list List of unit cells, where the last one is updated
+      with new xyz coordinates and element names based on read data. self.ncells : int Updated count of unit cells.
+      self.volume : float Updated volume of the last unit cell in the list.
+
+
+
+
+
+
+
 
       See Also
       --------
@@ -425,7 +494,10 @@ Module Contents
 
       Read and process zero frequency optical permittivity data from the dynG file.
 
-      This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
+      This method reads the next four lines from a file, processes them to extract optical dielectric constant data,
+      and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first
+      line, then reads three lines of numeric values, where each line contains at least three numeric values which are
+      converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
 
       Parameters
       ----------
@@ -439,7 +511,8 @@ Module Contents
       Notes
       -----
       - This method modifies the instance attribute `zerof_optical_dielectric` directly.
-      - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
+      - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute
+        after it is updated.
 
 
 
@@ -474,7 +547,9 @@ Module Contents
 
       Read and process the header line from the dynG file.
 
-      This method updates the object's state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.
+      This method updates the object's state by reading the header line from the set file descriptor and parsing it to
+      extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after
+      converting it to Bohr units if it is within a tolerance range of the conversion factor.
 
       Parameters
       ----------
@@ -486,9 +561,16 @@ Module Contents
 
       Notes
       -----
-      The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
+      The function assumes that the file has been opened and that the file descriptor is stored in
+      `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the
+      first, second, and fourth values being integers representing the number of species, the number of ions, and a
+      float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined
+      elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the
+      `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or
+      identification.
 
-      This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
+      This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents
+      of the header line.
 
 
 
@@ -497,7 +579,11 @@ Module Contents
 
       Read the masses of species from an dynG file and populate mass and species lists.
 
-      This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
+      This method parses lines from an already opened file object (`file_descriptor`), extracting species names and
+      their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit
+      (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their
+      respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls
+      `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
 
       Parameters
       ----------
@@ -516,8 +602,8 @@ Module Contents
 
       Notes
       -----
-      - The atomic mass unit (`amu`) is defined elsewhere
-      - It's assumed that `_read_dyng_coordinates` is a method within the same class that takes a single string argument.
+      - The atomic mass unit (`amu`) is defined elsewhere - It's assumed that `_read_dyng_coordinates` is a method
+        within the same class that takes a single string argument.
 
 
 
@@ -553,7 +639,9 @@ Module Contents
 
       Parse the energy values from a given line and set them to the instance variables.
 
-      This function extracts energy-related values from a provided line of text, then calculates and assigns these values (in electron volts) to instance attributes for final energy without entropy and final free energy, while considering conversion factors. If debugging is enabled, it prints the final free energy.
+      This function extracts energy-related values from a provided line of text, then calculates and assigns these
+      values (in electron volts) to instance attributes for final energy without entropy and final free energy, while
+      considering conversion factors. If debugging is enabled, it prints the final free energy.
 
       Parameters
       ----------
@@ -570,10 +658,11 @@ Module Contents
 
       Notes
       -----
-      - Assumes that 'hartree2ev' is a predefined conversion constant available in the scope where this function is defined.
-      - Utilizes the fourth element in the whitespace-separated list from the input string, after splitting, for the relevant energy-related value.
-      - The energy value is converted to electron volts, halved, and then assigned to both 'final_energy_without_entropy' and 'final_free_energy' attributes of the object.
-      - If the 'debug' attribute of the object is True, the final free energy is printed.
+      - Assumes that 'hartree2ev' is a predefined conversion constant available in the scope where this function is
+        defined. - Utilizes the fourth element in the whitespace-separated list from the input string, after
+        splitting, for the relevant energy-related value. - The energy value is converted to electron volts, halved,
+        and then assigned to both 'final_energy_without_entropy' and 'final_free_energy' attributes of the object. -
+        If the 'debug' attribute of the object is True, the final free energy is printed.
 
 
 
@@ -610,12 +699,16 @@ Module Contents
 
       Read the log file and sets the fractional coordinates and element names for the last unit cell in the object.
 
-      This function iterates over a specified number of lines (defined by `self.nions`) from the object's file descriptor, parsing each line into species names and their fractional coordinates. These species names and coordinates are then used to set the corresponding properties for the last unit cell managed by the object. Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
+      This function iterates over a specified number of lines (defined by `self.nions`) from the object's file
+      descriptor, parsing each line into species names and their fractional coordinates. These species names and
+      coordinates are then used to set the corresponding properties for the last unit cell managed by the object.
+      Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the
+      last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
 
       Parameters
       ----------
       line : str
-          The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading. 
+          The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading.
 
       Returns
       -------
@@ -623,9 +716,10 @@ Module Contents
 
       Notes
       -----
-      - The function directly modifies the object's state by setting properties of the last unit cell (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`.
-      - Only operates if `self.nions` is greater than 0.
-      - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
+      - The function directly modifies the object's state by setting properties of the last unit cell
+        (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`. - Only operates if `self.nions` is
+        greater than 0. - The function is intended to be called in a context where `self.file_descriptor` is already
+        open and positioned correctly.
 
 
 
@@ -634,7 +728,9 @@ Module Contents
 
       Read and set the k-point grid from a line in a file.
 
-      This method reads a line from the file associated with the file_descriptor attribute, parses the first three elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set to True, it prints the k-point grid.
+      This method reads a line from the file associated with the file_descriptor attribute, parses the first three
+      elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set
+      to True, it prints the k-point grid.
 
       Parameters
       ----------
@@ -647,7 +743,8 @@ Module Contents
 
       Notes
       -----
-      This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid values.
+      This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid
+      values.
 
 
 
@@ -656,7 +753,9 @@ Module Contents
 
       Read and store the number of k-points from a given line.
 
-      This is an internal method that extracts the number of k-points from a provided line (assumed to contain this information in a predefined format) and stores it in the class instance. Optionally, it prints debug information if the debug mode is activated.
+      This is an internal method that extracts the number of k-points from a provided line (assumed to contain this
+      information in a predefined format) and stores it in the class instance. Optionally, it prints debug information
+      if the debug mode is activated.
 
       Parameters
       ----------
@@ -724,7 +823,69 @@ Module Contents
 
       Notes
       -----
-      This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object's `debug` attribute is set to True.
+      This function updates the pressure attribute of the object it is called on and optionally prints the updated
+      pressure value if the object's `debug` attribute is set to True.
+
+
+
+
+   .. py:method:: _read_raman_tensors_log(line)
+
+      Read the Raman susceptibility tensors from the QE phonon log file.
+
+      QE ph.x prints per-atom per-direction 3×3 derivatives of the
+      macroscopic polarisability tensor under the heading
+      ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
+      one per atom per Cartesian displacement direction, each labeled
+      ``atom # K    pol.  J``.
+
+      The "A^2" tensors represent::
+
+          A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+
+      where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
+      polarisability in Å³ and u_{κγ} is the displacement of atom κ in
+      Cartesian direction γ in Å, giving units of Å².
+
+      Parameters
+      ----------
+      line : str
+          The trigger line (containing ``"Raman tensor (A^2)"``).
+          Not used directly; reading continues from ``self.file_descriptor``.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_raman_tensors_xml(raman_tns_list)
+
+      Read Raman susceptibility tensors from ``tensors.xml`` RAMAN_TNS elements.
+
+      Each ``<RAMAN_TNS atom="N">`` element contains 9 rows of 3 values,
+      arranged as three consecutive 3×3 blocks corresponding to the x, y,
+      and z Cartesian displacement directions respectively::
+
+          rows 0-2  → dα_{αβ}/du_{κ,x}
+          rows 3-5  → dα_{αβ}/du_{κ,y}
+          rows 6-8  → dα_{αβ}/du_{κ,z}
+
+      The result is stored in ``self._qe_raman_suscept`` in the same
+      ``dchi[iatom, idir, irow, icol]`` layout used by
+      :meth:`_read_raman_tensors_log`, so :meth:`_calculate_raman_tensors`
+      can process it without modification.
+
+      Parameters
+      ----------
+      raman_tns_list : list of xml.etree.ElementTree.Element
+          List of ``RAMAN_TNS`` elements from the ``EF_TENSORS`` block of
+          ``tensors.xml``.
+
+      Returns
+      -------
+      None
 
 
 
@@ -756,7 +917,7 @@ Module Contents
 
       Parameters
       ----------
-      total_energy_xml : a list of xml element
+      total_energy_xml : list
           A list of total_energy elements
 
       Set
@@ -781,8 +942,15 @@ Module Contents
 
 
 
+   .. py:attribute:: _qe_raman_suscept
+      :value: None
+
+
+
    .. py:attribute:: type
       :value: 'QE output'
 
 
+
+.. py:data:: logger
 

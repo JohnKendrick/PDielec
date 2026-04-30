@@ -7,5 +7,17 @@ This page contains auto-generated API reference documentation [#f1]_.
    :titlesonly:
 
    /autoapi/PDielec/index
+   /autoapi/conftest/index
+   /autoapi/test_E_frequency/index
+   /autoapi/test_D_reciprocity/index
+   /autoapi/test_B_single_layer/index
+   /autoapi/test_F_complex_values/index
+   /autoapi/test_B_local_field_sphere/index
+   /autoapi/test_C_anisotropic_sphere/index
+   /autoapi/test_I_numerical_stability/index
+   /autoapi/test_C_layered_consistency/index
+   /autoapi/test_A_raman_tensor_algebra/index
+   /autoapi/test_E_orientation_averaging/index
+   /autoapi/test_D_ellipsoid_depolarisation/index
 
 .. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_

@@ -20,11 +20,15 @@ PDGui provides a graphical front end to the capabilities of PDielec.
 PDGui can be run from the command line without any parameters or followed by the file to be read in.  PDGui makes a best guess at the DFT/MM program used to create the output.
 It can also be used as a command line tool without having to use the GUI, this needs a script file to be available.
 
-For example; ::
+For example; 
+
+.. code-block:: bash
 
     pdgui
 
-or ::
+or 
+
+.. code-block:: bash
 
     pdgui OUTCAR                                                # A Vasp calculation, only OUTCAR is parsed for information
     pdgui vasprun.xml                                           # A Vasp calculation, only vasprun.xml is parsed for information
@@ -37,7 +41,9 @@ or ::
     pdgui control.in                                            # An FHI-Aims calculation
 
 Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
-It is possible to specifiy the DFT program as in the examples below; ::
+It is possible to specifiy the DFT program as in the examples below; 
+
+.. code-block:: bash
 
     pdgui -program aims geometry.in                              # An FHI-Aims calculation
     pdgui -program vasp OUTCAR                                   # A Vasp calculation, only OUTCAR is parsed for information
@@ -48,7 +54,9 @@ If running a script that contains program and output file information, then::
 
     pdgui -script script.py
 
-If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line. ::
+If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line. 
+
+.. code-block::
 
     pdgui OUTCAR -spreadsheet results.xlsx
     
@@ -58,6 +66,13 @@ To use as a command line tool an example would be; ::
     pdgui OUTCAR -spreadsheet results.xlsx -script script.py -nosplash -exit
 
 Several command line options may be useful in running the package.
+Options are specified using '-' or '--' before a keyword.  In addition, up to 3 none-option keywords can be specfied.
+
+If only one is specified it is taken to be a file name and the dft program is guessed from the file name extension.
+
+If two none option keywords are given, the first is assumed to be the dft program designation ( one of abinit, aims, crystal, vasp, qe, gulp, phonopy), and the second is the output file to be read.
+
+If three non option keywords are given, the first is the program designation, the second is the output file and the third is a spreadsheet name ending in .xlsx.
 
 .. table:: PDGui command line options
    :name: command_line_options

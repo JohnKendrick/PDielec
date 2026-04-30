@@ -9,6 +9,14 @@ PDielec.ExperimentOutputReader
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.ExperimentOutputReader.logger
+
+
 Classes
 -------
 
@@ -31,7 +39,7 @@ Module Contents
 
    Parameters
    ----------
-   names : Various types
+   names : Various
        Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
 
    Attributes
@@ -211,7 +219,9 @@ Module Contents
 
       Read and process fractional coordinates from a string line.
 
-      This method reads a string representing a line containing the number of ions followed by the fractional coordinates and species of each ion. It updates the instance variables associated with the ions' type, position, mass, and further initializes oscillator strengths and frequencies arrays if they haven't been initialized yet.
+      This method reads a string representing a line containing the number of ions followed by the fractional
+      coordinates and species of each ion. It updates the instance variables associated with the ions' type, position,
+      mass, and further initializes oscillator strengths and frequencies arrays if they haven't been initialized yet.
 
       Parameters
       ----------
@@ -224,15 +234,16 @@ Module Contents
 
       Notes
       -----
-      This method updates several instance variables:
-      - `nions`: The total number of ions as determined from `line`.
-      - `ions_per_type`: A list that tracks the number of ions per species.
-      - `masses`: A list of masses for each ion, ordered accordingly.
-      - `atom_type_list`: A list mapping each ion to its species index.
-      - `unit_cells[-1]`: The coordinates and element names for ions in the most recent unit cell are set based on the processed line.
-      - Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays if they haven't been already.
+      This method updates several instance variables: - `nions`: The total number of ions as determined from `line`. -
+      `ions_per_type`: A list that tracks the number of ions per species. - `masses`: A list of masses for each ion,
+      ordered accordingly. - `atom_type_list`: A list mapping each ion to its species index. - `unit_cells[-1]`: The
+      coordinates and element names for ions in the most recent unit cell are set based on the processed line. -
+      Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays
+      if they haven't been already.
 
-      Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
+
+      Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled
+      outside of its scope.
 
 
 
@@ -252,15 +263,16 @@ Module Contents
 
       Notes
       -----
-      This method reads the 'nfreq' (number of frequencies) from the initial given line. Then, for each frequency, it reads
-      the corresponding line to extract the frequency and its oscillator strength. These values are stored in the object's
-      'frequencies' and 'oscillator_strengths' lists, respectively. Each oscillator strength is initialized as a diagonal
-      tensor with identical values across the diagonal.
+      This method reads the 'nfreq' (number of frequencies) from the initial given line. Then, for each frequency, it
+      reads the corresponding line to extract the frequency and its oscillator strength. These values are stored in
+      the object's 'frequencies' and 'oscillator_strengths' lists, respectively. Each oscillator strength is
+      initialized as a diagonal tensor with identical values across the diagonal.
 
-      The method assumes 'line' is in a specific format, where the first entry in a line after splitting is the frequency
-      and the second entry is the oscillator strength. It also uses '_read_line' method, which is not defined in the snippet,
-      to read each subsequent line for the frequencies and their oscillator strengths. Furthermore, 'initialise_diagonal_tensor'
-      is used to convert the scalar strength values into tensor form, which is not detailed here.
+      The method assumes 'line' is in a specific format, where the first entry in a line after splitting is the
+      frequency and the second entry is the oscillator strength. It also uses '_read_line' method, which is not
+      defined in the snippet, to read each subsequent line for the frequencies and their oscillator strengths.
+      Furthermore, 'initialise_diagonal_tensor' is used to convert the scalar strength values into tensor form, which
+      is not detailed here.
 
 
 
@@ -323,8 +335,9 @@ Module Contents
 
       Read and process lattice vectors from an input line, then updates internal structures with the new unit cell.
 
-      This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
-      The lattice vectors are assumed to be in Angstrom
+      This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and
+      update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal
+      permittivity. The lattice vectors are assumed to be in Angstrom
 
       Parameters
       ----------
@@ -367,6 +380,45 @@ Module Contents
 
 
 
+   .. py:method:: _read_normal_modes(line)
+
+      Read mass-weighted normal-mode eigenvectors for each mode.
+
+      Parameters
+      ----------
+      line : str
+          The trigger line, expected format: ``normal_modes N``
+          where *N* is the total number of modes.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Frequencies are taken from a preceding ``frequencies`` block.
+      Each mode occupies *nions* consecutive non-comment lines, each
+      containing three floating-point values (the x, y, z components of
+      the mass-weighted displacement for that atom).
+
+      The eigenvectors should be normalised to unit length
+      (``Σ |u|² = 1``) and ordered to match the ``frequencies`` block —
+      acoustic / imaginary modes first, then optical in ascending
+      frequency order.
+
+      Example input (ZnO, 12 modes, 4 atoms)::
+
+          normal_modes  12
+          # mode 0 (acoustic)
+           0.19709682  -0.22840953   0.00000001
+           0.19709682  -0.22840953   0.00000001
+           0.41779946  -0.48417512   0.00000003
+           0.41779946  -0.48417512   0.00000003
+          # mode 1 ...
+
+
+
+
    .. py:method:: _read_output_files()
 
       Define the search strings and read the Experiment files in the directory.
@@ -378,6 +430,65 @@ Module Contents
       Returns
       -------
       None
+
+
+
+
+   .. py:method:: _read_raman_tensors(line)
+
+      Read Raman tensors for each normal mode.
+
+      Parameters
+      ----------
+      line : str
+          The trigger line, expected format: ``raman_tensors N [units]``
+          where *N* is the total number of modes and the optional *units*
+          keyword is either ``castep`` (default) or ``skelton``.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Each mode occupies four consecutive non-comment lines:
+
+      1. Frequency in cm-1.
+      2. First row of the 3×3 Raman tensor.
+      3. Second row.
+      4. Third row.
+
+      Modes must be listed in ascending-frequency order (acoustic / silent
+      modes first, with zero tensors), consistent with the ordering used
+      throughout PDielec.
+
+      Two unit conventions are supported via the optional keyword on the
+      header line:
+
+      ``castep`` (default)
+          Elements are already in PDielec internal units
+          ``(Å / amu)^{0.5}``  — the CASTEP convention
+          ``T = ∂α_vol/∂Q / √V``.
+      ``skelton``
+          Elements are in Skelton/Phonopy units
+          ``Å²·amu^{-0.5}`` — the convention ``R = ∂α_vol/∂Q``.
+          Each element is divided by ``√V_cell`` on read, so ``volume``
+          must already be set before this section is parsed.
+
+      Frequencies are taken from a preceding ``frequencies`` block; this
+      section contains only the tensor data.
+
+      Example input (ZnO, 12 modes, CASTEP units)::
+
+          raman_tensors  12
+          # 3x3 tensor rows for each mode, in ascending-frequency order
+            0.000   0.000   0.000
+            0.000   0.000   0.000
+            0.000   0.000   0.000
+            0.0487  -0.0101   0.0041
+           -0.0101   0.0487   0.0041
+            0.0041   0.0041   0.1208
+          ...
 
 
 
@@ -397,7 +508,11 @@ Module Contents
 
       Notes
       -----
-      This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.
+      This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the
+      information read from the input line(s). Initially, it reads the total number of species from the first line.
+      Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists,
+      respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The
+      `nspecies` attribute is updated with the current number of species after each iteration.
 
 
 
@@ -435,7 +550,7 @@ Module Contents
 
    .. py:method:: calculate_mass_weighted_normal_modes()
 
-      Calculate the mass weight normal modes.
+      Return mass-weighted normal modes, preserving any read from file.
 
       Parameters
       ----------
@@ -444,8 +559,10 @@ Module Contents
       Returns
       -------
       np.array
-          Returns an array for the mass weighted normal modes which in this case is zero
-          The array has a shape 3*nions, nions, 3
+          Mass-weighted normal modes with shape (3*nions, nions, 3).
+          If a ``normal_modes`` block was present in the input file the
+          stored values are returned unchanged.  Otherwise a zero array
+          is returned (no phonon data available).
 
 
 
@@ -477,4 +594,6 @@ Module Contents
       :value: None
 
 
+
+.. py:data:: logger
 

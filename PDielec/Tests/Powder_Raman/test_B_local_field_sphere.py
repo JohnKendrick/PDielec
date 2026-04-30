@@ -7,9 +7,10 @@ Raman tensor R_particle (Eq. 60) for the case of an isotropic sphere embedded
 in a scalar matrix permittivity.
 
 For an isotropic sphere (L = I/3) with scalar particle permittivity ε_i and
-scalar matrix permittivity ε_e:
+scalar matrix permittivity ε_e::
+
   N = (3 ε_e / (ε_i + 2 ε_e)) × I   (scalar factor × identity)
-  R_particle = N_s^3 × R_eps          (cubic in the scalar factor N_s)
+  R_particle = N_s^3 × R_eps        (cubic in the scalar factor N_s)
 
 where N_s = 3 ε_e / (ε_i + 2 ε_e).
 

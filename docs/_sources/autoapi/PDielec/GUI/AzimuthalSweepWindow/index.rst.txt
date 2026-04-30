@@ -1,0 +1,162 @@
+PDielec.GUI.AzimuthalSweepWindow
+================================
+
+.. py:module:: PDielec.GUI.AzimuthalSweepWindow
+
+.. autoapi-nested-parse::
+
+   AzimuthalSweepWindow module — pop-up window showing Raman intensity vs azimuthal angle.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.AzimuthalSweepWindow.AzimuthalSweepWindow
+
+
+Module Contents
+---------------
+
+.. py:class:: AzimuthalSweepWindow(sweep_data, title='Azimuthal sweep', parent=None)
+
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
+
+
+   Non-modal window displaying Raman intensity vs azimuthal angle in four plot styles.
+
+   Parameters
+   ----------
+   sweep_data : dict
+       Pre-computed sweep data with keys:
+
+       ``psi_array`` : ndarray, shape (N,)
+           Azimuthal angles in degrees.
+       ``mode_frequencies`` : ndarray, shape (M,)
+           Active mode frequencies in cm⁻¹.
+       ``mode_intensities_2d`` : ndarray, shape (N, M)
+           Per-mode intensities at each azimuthal angle.
+       ``vs_cm1`` : ndarray, shape (K,)
+           Wavenumber axis in cm⁻¹.
+       ``spectra_2d`` : ndarray, shape (N, K)
+           Broadened spectra at each azimuthal angle.
+
+   title : str, optional
+       Window title string.
+   parent : QWidget or None, optional
+       Parent widget (pass ``None`` for an independent top-level window).
+
+
+
+   .. py:method:: _on_controls_changed()
+
+      React to either combo-box changing.
+
+
+
+   .. py:method:: _plot_colourmap(psi, vs, spectra)
+
+      Draw a colour-map (image) of the broadened Raman spectrum vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      vs : ndarray
+          Wavenumber axis in cm⁻¹, shape (K,).
+      spectra : ndarray
+          Broadened spectra, shape (N, K).
+
+
+
+
+   .. py:method:: _plot_line(psi, mode_freqs, mode_ints, mode_idx)
+
+      Draw a line plot of Raman mode intensity vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      mode_freqs : ndarray
+          Mode frequencies in cm⁻¹, shape (M,).
+      mode_ints : ndarray
+          Per-mode intensities, shape (N, M).
+      mode_idx : int
+          Index of selected mode, or -1 to plot all modes.
+
+
+
+
+   .. py:method:: _plot_polar(psi, mode_freqs, mode_ints, mode_idx)
+
+      Draw a polar plot of Raman intensity vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      mode_freqs : ndarray
+          Mode frequencies in cm⁻¹, shape (M,).
+      mode_ints : ndarray
+          Per-mode intensities, shape (N, M).
+      mode_idx : int
+          Index of selected mode, or -1 for the integrated sum over all modes.
+
+
+
+
+   .. py:method:: _plot_waterfall(psi, vs, spectra)
+
+      Draw a waterfall plot of the broadened Raman spectrum vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      vs : ndarray
+          Wavenumber axis in cm⁻¹, shape (K,).
+      spectra : ndarray
+          Broadened spectra, shape (N, K).
+
+
+
+
+   .. py:method:: _update_plot()
+
+      Clear the figure and redraw according to the current control state.
+
+
+
+   .. py:attribute:: _mode_cb
+
+
+   .. py:attribute:: _mode_freqs
+
+
+   .. py:attribute:: _mode_ints
+
+
+   .. py:attribute:: _plot_type_cb
+
+
+   .. py:attribute:: _psi
+
+
+   .. py:attribute:: _spectra
+
+
+   .. py:attribute:: _vs
+
+
+   .. py:attribute:: canvas
+
+
+   .. py:attribute:: figure
+
+
+   .. py:attribute:: toolbar
+
+

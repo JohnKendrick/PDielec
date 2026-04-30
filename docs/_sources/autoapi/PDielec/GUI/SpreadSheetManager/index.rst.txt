@@ -9,6 +9,14 @@ PDielec.GUI.SpreadSheetManager
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.SpreadSheetManager.logger
+
+
 Classes
 -------
 
@@ -56,11 +64,11 @@ Module Contents
 
    Methods
    -------
-   openWorkSheet(tab)
+   open_work_sheet(tab)
        Opens a new worksheet for the given tab if not already opened.
-   selectWorkSheet(name)
+   select_work_sheet(name)
        Selects the specified worksheet for further operations.
-   writeNextRow(items, row=None, col=None, check='')
+   write_next_row(items, row=None, col=None, check='')
        Writes a series of items to the next row of the currently selected worksheet.
    write(row, col, item)
        Writes an item to the specified location in the currently selected worksheet.
@@ -75,7 +83,8 @@ Module Contents
 
       Close the workbook if it hasn't been closed already.
 
-      Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.
+      Closes the workbook associated with an instance and sets its status as closed to prevent multiple close
+      operations.
 
       Parameters
       ----------
@@ -92,8 +101,8 @@ Module Contents
 
       Delete all the data in the current worksheet.
 
-      Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string.
-      After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
+      Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string. After
+      clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
 
       Parameters
       ----------
@@ -106,7 +115,7 @@ Module Contents
 
 
 
-   .. py:method:: openWorkSheet(tab)
+   .. py:method:: open_work_sheet(tab)
 
       Open a new worksheet in a workbook.
 
@@ -129,7 +138,7 @@ Module Contents
 
 
 
-   .. py:method:: selectWorkSheet(name)
+   .. py:method:: select_work_sheet(name)
 
       Select or opens a worksheet by name.
 
@@ -145,7 +154,7 @@ Module Contents
       Notes
       -----
       This method selects a worksheet if it is already opened. If the worksheet is not
-      currently open, it attempts to open the worksheet by calling `openWorkSheet` with
+      currently open, it attempts to open the worksheet by calling `open_work_sheet` with
       the worksheet name.
 
 
@@ -179,20 +188,24 @@ Module Contents
 
 
 
-   .. py:method:: writeNextRow(items, row=None, col=None, check='')
+   .. py:method:: write_next_row(items, row=None, col=None, check='')
 
       Write a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
 
       Parameters
       ----------
       items : list
-          A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item is written in subsequent columns.
+          A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item
+          is written in subsequent columns.
       row : int, optional
           The row index to start writing from. If not specified, uses the current row position of the object.
       col : int, optional
           The column index to start writing from. If not specified, uses the current column position of the object.
       check : str, optional
-          A check string written to the beginning of the row specified. Defaults to an empty string if not specified.
+          A check string written to the beginning of the row. Defaults to an empty string if not specified.
+
+
+
 
       Returns
       -------
@@ -200,10 +213,10 @@ Module Contents
 
       Notes
       -----
-      - If `col` is 0, a warning message is printed.
-      - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
-      - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
-      - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
+      - If `col` is 0, a warning message is printed. - The `row` and `col` are updated as items are written, and `row`
+        is incremented after writing all items. - For items that are lists, each element is written in subsequent
+        columns. This is applied recursively for nested lists. - `self.positions` is a dictionary holding the current
+        positions (row, column) for different names, and `self.name` accesses the current object's name.
 
 
 
@@ -240,4 +253,6 @@ Module Contents
 
    .. py:attribute:: worksheets
 
+
+.. py:data:: logger
 

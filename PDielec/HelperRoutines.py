@@ -24,7 +24,7 @@ import numpy as np
 
 from PDielec import Calculator, DielectricFunction, Utilities
 from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
-from PDielec.GUI.SingleCrystalScenarioTab import solve_single_crystal_equations
+from PDielec.GUI.CrystalScenarioTab import solve_single_crystal_equations
 from PDielec.Materials import External, MaterialsDataBase
 
 logger = logging.getLogger(__name__)

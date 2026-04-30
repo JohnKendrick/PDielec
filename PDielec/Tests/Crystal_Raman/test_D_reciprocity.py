@@ -2,11 +2,13 @@
 
 Plan sections D1, D2.
 
-D1  Incident/collection reciprocity.  For a symmetric Raman tensor (R = R^T)
+D1
+    Incident/collection reciprocity.  For a symmetric Raman tensor (R = R^T)
     and a reciprocal optical system the p→s and s→p Raman intensities must
     be equal.
 
-    Derivation (backscattering, approximate_es=True):
+    Derivation (backscattering, approximate_es=True)::
+
         A(p→s) = ∫ E_L_s(z)^T R E_L_p(z) dz
         A(s→p) = ∫ E_L_p(z)^T R E_L_s(z) dz
                = ∫ E_L_s(z)^T R^T E_L_p(z) dz
@@ -15,7 +17,8 @@ D1  Incident/collection reciprocity.  For a symmetric Raman tensor (R = R^T)
     This check is a necessary (not sufficient) condition for the transpose
     (not Hermitian-conjugate) convention being implemented correctly.
 
-D2  The full calculation (approximate_es=False) must also satisfy p→s = s→p
+D2
+    The full calculation (approximate_es=False) must also satisfy p→s = s→p
     for a symmetric tensor.  This extends D1 to the case where the scattered
     field is evaluated at a different frequency.
 """

@@ -8,7 +8,6 @@ PDielec.GTMcore
    The pyGTM module.
 
    It has been heavily modified by John Kendrick for inclusion in the PDielec library
-   Quite a lot has been removed as the fields spatial distribution was not needed
    Thanks to the authors of the original code for all their hard work
 
    This program is free software: you can redistribute it and/or modify
@@ -38,8 +37,8 @@ PDielec.GTMcore
 
    Please cite the relevant associated publications if you use this code.
 
-   Author:
-       - Mathieu Jeannin math.jeannin@free.fr (permanent)
+   Author: 
+       - Mathieu Jeannin mathieu.jeannin@c2n.upsaclay.fr  math.jeannin@free.fr (permanent)
 
    Affiliations:
        - Laboratoire de Physique de l'Ecole Normale Superieure (2019)
@@ -53,7 +52,7 @@ PDielec.GTMcore
    **Change log:**
 
        *01-10-2024*:
-           - Moving back to 63 bit arithmetic as scattering formalism is stable
+           - Moving back to 64 bit arithmetic as scattering formalism is stable
 
        *01-01-2023*: 
            
@@ -65,8 +64,8 @@ PDielec.GTMcore
        
        *15-10-2021*:
            
-           - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary parts of the wavevectors
-           - Corrected a sign error in gamma32 that lead to field discontinuities
+           - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary
+             parts of the wavevectors - Corrected a sign error in gamma32 that lead to field discontinuities
 
        *23 June 2021*:
            - integrated the code into pdielec and pdgui
@@ -103,6 +102,7 @@ Attributes
 
    PDielec.GTMcore.c_const
    PDielec.GTMcore.eps0
+   PDielec.GTMcore.logger
 
 
 Classes
@@ -601,7 +601,7 @@ Module Contents
 
 
 
-   .. py:method:: isCoherent()
+   .. py:method:: is_coherent()
 
       Return True if the layer is a coherent layer.
 
@@ -623,7 +623,8 @@ Module Contents
 
       Parameters
       ----------
-      epsilon_function : complex function
+      epsilon_function : complex
+          function
           A function representing the complex dielectric function.
 
       Returns
@@ -834,12 +835,12 @@ Module Contents
 
    Methods
    -------
-   unitMatrix()
+   unit_matrix()
        Initializes the S-matrix to a unit matrix with appropriate S11, S22, S21, and S12.
    redheffer(b)
        Performs the Redheffer star product, a specialized matrix multiplication for S-matrices, 
        with another SMatrix instance `b`.
-   calculateS()
+   calculate_s()
        Reconstructs the composite 4x4 S-matrix from its constituent submatrices (S11, S22, S21, S12).
 
    Examples
@@ -858,11 +859,12 @@ Module Contents
 
 
 
-   .. py:method:: calculateS()
+   .. py:method:: calculate_s()
 
       Calculate and assign the scattering parameter matrix, S.
 
-      Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
+      Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering
+      parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
 
       - `S11` is placed in the top-left quadrant.
       - `S22` is placed in the bottom-right quadrant.
@@ -880,7 +882,8 @@ Module Contents
 
       Notes
       -----
-      The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before calling this method.
+      The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before
+      calling this method.
 
 
 
@@ -902,11 +905,13 @@ Module Contents
 
 
 
-   .. py:method:: unitMatrix()
+   .. py:method:: unit_matrix()
 
       Reset the scattering parameters to form a unit matrix.
 
-      Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11 and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the scattering parameters through `calculateS`.
+      Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11
+      and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the
+      scattering parameters through `calculate_s`.
 
       Parameters
       ----------
@@ -918,7 +923,8 @@ Module Contents
 
       Notes
       -----
-      This method is typically used to initialize or reset the scattering parameters in a two-port network representation to a known state before performing further operations or calculations.
+      This method is typically used to initialize or reset the scattering parameters in a two-port network
+      representation to a known state before performing further operations or calculations.
 
 
 
@@ -931,6 +937,54 @@ Module Contents
    Define a system of layers which is described by a Scattering Matrix method.
 
    This implements additional routines needed for the scattering matrix method
+
+
+
+   .. py:method:: calculate_Efield(f, zeta_sys, z_vect=None, x=0.0, magnetic=False, dz=None)
+
+      Calculate the electric field profiles using the scattering matrix method.
+
+      Overrides :py:meth:`System.calculate_Efield` to ensure ``Ki`` is populated
+      for all layers before the field propagation.
+
+      The scattering matrix variant of :py:meth:`Layer.update_sm` deliberately
+      skips building ``Ki`` (the full-layer propagation matrix) to avoid numerical
+      overflow in electrically thick layers.  :py:meth:`System.calculate_Efield`
+      requires ``Ki`` at every interface for its boundary propagation step, so
+      this override calls :py:meth:`Layer.calculate_propagation_matrix` on every
+      layer after the scattering-matrix setup.  The partial-layer exponents used
+      inside the field propagation (proportional to ``z - zn[current_layer]``)
+      are always smaller than full-layer exponents, so overflow is not a concern.
+
+      Parameters
+      ----------
+      f : float
+          Frequency (Hz).
+      zeta_sys : complex
+          In-plane normalised wavevector kx/k0.
+      z_vect : 1D array, optional
+          Coordinates at which the calculation is done. If None, the layer
+          boundaries are used.
+      x : float or 1D array, optional
+          x-coordinates (reserved for future 2D field plots). Default is 0.0.
+      magnetic : bool, optional
+          If True, also compute and return the magnetic field vector.
+          Default is False.
+      dz : float, optional
+          Spatial resolution along the propagation (z) axis. Supersedes
+          ``z_vect`` when provided.
+
+      Returns
+      -------
+      z : 1D array
+          z-coordinates at which the fields were evaluated.
+      E_out : ndarray, shape (6, len(z))
+          Total electric field in the structure (rows 0–2: p-pol in,
+          rows 3–5: s-pol in).
+      H_out : ndarray, shape (6, len(z)), optional
+          Total magnetic field (only returned when ``magnetic=True``).
+      zn : 1D array
+          Positions of the layer interfaces.
 
 
 
@@ -959,7 +1013,8 @@ Module Contents
 
       Calculate the reflectance and transmittance coefficients using scattering matrix information.
 
-      Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
+      Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector
+      of transmitted field.
 
       Parameters
       ----------
@@ -1102,7 +1157,10 @@ Module Contents
    -----
    Layers can be added and removed (not inserted).
 
-   The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.
+   The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls
+   :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they
+   require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of
+   an incident plane wave using :py:func:`calculate_Efield`.
 
 
 
@@ -1131,6 +1189,47 @@ Module Contents
 
 
 
+   .. py:method:: calculate_Efield(f, zeta_sys, z_vect=None, x=0.0, magnetic=False, dz=None)
+
+      Calculate the electric field profiles for both s-pol and p-pol excitation.
+
+      Parameters
+      ----------
+      f : float
+          Frequency (Hz).
+      zeta_sys : complex
+          In-plane normalised wavevector kx/k0.
+      z_vect : 1D array, optional
+          Coordinates at which the calculation is done. If None, the layer
+          boundaries are used.
+      x : float or 1D array, optional
+          x-coordinates (reserved for future 2D field plots). Default is 0.0.
+      magnetic : bool, optional
+          If True, also compute and return the magnetic field vector.
+          Default is False.
+      dz : float, optional
+          Spatial resolution along the propagation (z) axis. Supersedes
+          `z_vect` when provided.
+
+      Returns
+      -------
+      z : 1D array
+          z-coordinates at which the fields were evaluated.
+      E_out : ndarray, shape (6, len(z))
+          Total electric field in the structure (rows 0–2: p-pol in,
+          rows 3–5: s-pol in).
+      H_out : ndarray, shape (6, len(z)), optional
+          Total magnetic field (only returned when ``magnetic=True``).
+      zn : 1D array
+          Positions of the layer interfaces.
+
+      Notes
+      -----
+      Adapted from the original pyGTM ``calculate_Efield`` (v19-03-2020).
+      All calls to ``exact_inv`` updated to ``exact_inv_4x4``.
+
+
+
    .. py:method:: calculate_GammaStar(f, zeta_sys)
 
       Calculate the whole system's transfer matrix.
@@ -1149,6 +1248,30 @@ Module Contents
       GammaStar : complex ndarray
           4x4 complex matrix representing the system transfer matrix :math:`\Gamma^{*}`
 
+
+
+
+   .. py:method:: calculate_Poynting_Absorption_vs_z(z, E, H, R)
+
+      Calculate the z-dependent Poynting vector and cumulated absorption.
+
+      Parameters
+      ----------
+      z : 1D array
+          Spatial coordinate for the fields.
+      E : ndarray, shape (6, len(z))
+          Electric field vector (p- and s-pol in) along z.
+      H : ndarray, shape (6, len(z))
+          Magnetic field vector (p- and s-pol in) along z.
+      R : array_like, shape (4,)
+          Intensity reflectivity from :py:func:`calculate_r_t`.
+
+      Returns
+      -------
+      S_out : ndarray, shape (6, len(z))
+          Six-component (p//s) Poynting vector along z.
+      A_out : ndarray, shape (2, len(z))
+          Two-component (p//s) cumulated absorption along z.
 
 
 
@@ -1176,9 +1299,14 @@ Module Contents
       -----
       **IMPORTANT**
 
-      - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions. The new definition of this function **BREAKS compatibility** with the previous one.
+      - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined
+        mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.
+        The new definition of this function **BREAKS compatibility** with the previous one.
 
-      - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well defined. The intensity reflection coefficient is also correct. However, the intensity transmission coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity coefficients.
+      - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well
+        defined. The intensity reflection coefficient is also correct. However, the intensity transmission
+        coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity
+        coefficients.
 
       Note also the different ordering of the coefficients, for consistency with Passler's matlab code.
 
@@ -1231,6 +1359,35 @@ Module Contents
       self.layers[pos] : Layer
           The layer at the position `pos`.
 
+
+
+
+   .. py:method:: get_layers_boundaries()
+
+      Return the z-position of all boundaries, including superstrate top and substrate bottom.
+
+      This gives the minimum set of z-positions needed to sample the fields.
+
+      Returns
+      -------
+      zn : 1D array
+          Array of layer boundary positions.
+
+
+
+   .. py:method:: get_spatial_permittivity(z)
+
+      Extract the permittivity tensor at given z-positions in the structure.
+
+      Parameters
+      ----------
+      z : 1D array
+          Points at which to sample the permittivity.
+
+      Returns
+      -------
+      eps : ndarray, shape (3, 3, len(z))
+          Complex permittivity tensor as a function of z.
 
 
 
@@ -1287,7 +1444,7 @@ Module Contents
 
 
 
-   .. py:method:: overflowErrors()
+   .. py:method:: overflow_errors()
 
       Return the total number of overflow errors encountered.
 
@@ -1300,6 +1457,35 @@ Module Contents
       int
           The total number of overflow errors encountered.
 
+
+
+
+   .. py:method:: reversed_system()
+
+      Return a new system with the propagation direction reversed.
+
+      The returned system has the original substrate as the new superstrate,
+      the original superstrate as the new substrate, and the finite layers in
+      reversed order.  This is used to compute the reciprocal (E_S) field for
+      forward-scattering Raman: launching the time-reversed scattered field
+      from the substrate side is equivalent to running the same
+      ``calculate_Efield`` on the reversed stack.
+
+      Returns
+      -------
+      System
+          New system of the same concrete type (``TransferMatrixSystem`` or
+          ``ScatteringMatrixSystem``) with superstrate ↔ substrate swapped
+          and ``self.layers`` reversed.
+
+      Notes
+      -----
+      The returned system shares the same ``Layer`` objects as the original
+      (shallow copy).  Euler angles and permittivity functions are preserved
+      unchanged.  z = 0 in the returned system corresponds to the
+      original substrate/last-layer interface, so z-coordinates must be
+      remapped by ``z_rev = total_thickness - z_orig`` before calling
+      ``calculate_Efield`` on the reversed system.
 
 
 
@@ -1436,4 +1622,6 @@ Module Contents
 .. py:data:: eps0
    :value: 8.854187812800385e-12
 
+
+.. py:data:: logger
 

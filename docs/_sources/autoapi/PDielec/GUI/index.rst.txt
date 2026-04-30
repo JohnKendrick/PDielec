@@ -39,6 +39,8 @@ Submodules
 
    /autoapi/PDielec/GUI/AnalysisTab/index
    /autoapi/PDielec/GUI/App/index
+   /autoapi/PDielec/GUI/AzimuthalSweepWindow/index
+   /autoapi/PDielec/GUI/CrystalScenarioTab/index
    /autoapi/PDielec/GUI/FitterTab/index
    /autoapi/PDielec/GUI/MainTab/index
    /autoapi/PDielec/GUI/NoteBook/index
@@ -48,7 +50,6 @@ Submodules
    /autoapi/PDielec/GUI/ScenarioTab/index
    /autoapi/PDielec/GUI/SettingsTab/index
    /autoapi/PDielec/GUI/SingleCrystalLayer/index
-   /autoapi/PDielec/GUI/SingleCrystalScenarioTab/index
    /autoapi/PDielec/GUI/SpreadSheetManager/index
    /autoapi/PDielec/GUI/ViewerTab/index
 
@@ -65,6 +66,6 @@ Package Contents
 ----------------
 
 .. py:data:: __version__
-   :value: '9.0.0'
+   :value: '10.0.0'
 
 

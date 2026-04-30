@@ -9,6 +9,14 @@ PDielec.PrimitiveCell
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.PrimitiveCell.logger
+
+
 Classes
 -------
 
@@ -55,4 +63,6 @@ Module Contents
 
    .. py:attribute:: originalCell
 
+
+.. py:data:: logger
 

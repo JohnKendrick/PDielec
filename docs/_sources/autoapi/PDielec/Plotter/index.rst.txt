@@ -9,6 +9,14 @@ PDielec.Plotter
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.Plotter.logger
+
+
 Functions
 ---------
 
@@ -120,4 +128,6 @@ Module Contents
    None
 
 
+
+.. py:data:: logger
 

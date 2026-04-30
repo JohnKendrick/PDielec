@@ -3,12 +3,12 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="PDielec.GUI.SingleCrystalScenarioTab" href="../SingleCrystalScenarioTab/index.html"><link rel="prev" title="PDielec.GUI.SettingsTab" href="../SettingsTab/index.html">
+<link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="PDielec.GUI.SpreadSheetManager" href="../SpreadSheetManager/index.html"><link rel="prev" title="PDielec.GUI.SettingsTab" href="../SettingsTab/index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>PDielec.GUI.SingleCrystalLayer - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -228,6 +228,8 @@
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
@@ -237,7 +239,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,6 +247,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
@@ -271,6 +273,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_complex_values/index.html">test_F_complex_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
@@ -321,6 +335,18 @@
           <section id="module-PDielec.GUI.SingleCrystalLayer">
 <span id="pdielec-gui-singlecrystallayer"></span><h1>PDielec.GUI.SingleCrystalLayer<a class="headerlink" href="#module-PDielec.GUI.SingleCrystalLayer" title="Link to this heading">¶</a></h1>
 <p>SingleCrystalLayer module.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.logger" title="PDielec.GUI.SingleCrystalLayer.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
@@ -340,7 +366,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalLayer.</span></span><span class="sig-name descname"><span class="pre">ShowLayerWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalLayer.</span></span><span class="sig-name descname"><span class="pre">ShowLayerWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QDialog</span></code></p>
 <p>A GUI window for displaying and editing the properties of a layer in a project.</p>
 <section id="parameters">
@@ -356,8 +382,8 @@
 </dd>
 </dl>
 </section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
+<section id="id1">
+<h3>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>layer<span class="classifier">object</span></dt><dd><p>The <a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a> instance that is displayed or being edited in this window.</p>
 </dd>
@@ -372,17 +398,17 @@
 <section id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>getLayer()</dt><dd><p>Return the <a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a> instance being edited or displayed.</p>
+<dt>get_layer()</dt><dd><p>Return the <a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a> instance being edited or displayed.</p>
 </dd>
-<dt>drawLayerWidget()</dt><dd><p>Create a QWidget displaying all information about the layer.</p>
+<dt>draw_layer_widget()</dt><dd><p>Create a QWidget displaying all information about the layer.</p>
 </dd>
-<dt>drawLayerWidgetLine1()</dt><dd><p>Add widgets to display the first line of layer properties.</p>
+<dt>draw_layer_widget_line1()</dt><dd><p>Add widgets to display the first line of layer properties.</p>
 </dd>
-<dt>drawLayerWidgetLine2()</dt><dd><p>Add widgets to display the second line of layer properties related to the crystallographic direction (hkl).</p>
+<dt>draw_layer_widget_line2()</dt><dd><p>Add widgets to display the second line of layer properties related to the crystallographic direction (hkl).</p>
 </dd>
-<dt>drawLayerWidgetLine3()</dt><dd><p>Add widgets for displaying the third line of layer properties related to lab frame information.</p>
+<dt>draw_layer_widget_line3()</dt><dd><p>Add widgets for displaying the third line of layer properties related to lab frame information.</p>
 </dd>
-<dt>changeLabFrameInfo()</dt><dd><p>Update the displayed lab frame information based on the layer’s current state.</p>
+<dt>change_lab_frame_info()</dt><dd><p>Update the displayed lab frame information based on the layer’s current state.</p>
 </dd>
 <dt>on_film_thickness_sb_changed(value)</dt><dd><p>Respond to changes in the film thickness spin box.</p>
 </dd>
@@ -394,12 +420,12 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.changeLabFrameInfo">
-<span class="sig-name descname"><span class="pre">changeLabFrameInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.changeLabFrameInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.changeLabFrameInfo" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.change_lab_frame_info">
+<span class="sig-name descname"><span class="pre">change_lab_frame_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.change_lab_frame_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.change_lab_frame_info" title="Link to this definition">¶</a></dt>
 <dd><p>Update the lab frame information in the labframe widget.</p>
 <p>Shows a, b and c crystal axis in the labframe.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="returns">
@@ -409,74 +435,74 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidget">
-<span class="sig-name descname"><span class="pre">drawLayerWidget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.drawLayerWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidget" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget">
+<span class="sig-name descname"><span class="pre">draw_layer_widget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.draw_layer_widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget" title="Link to this definition">¶</a></dt>
 <dd><p>Create a layer widget showing all the information about the layer.</p>
-<section id="id2">
-<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id3">
-<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine1">
-<span class="sig-name descname"><span class="pre">drawLayerWidgetLine1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.drawLayerWidgetLine1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine1" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line1">
+<span class="sig-name descname"><span class="pre">draw_layer_widget_line1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.draw_layer_widget_line1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line1" title="Link to this definition">¶</a></dt>
 <dd><p>Add the first line of the layer description.</p>
 <p>Shows the material name and the film thickness and units.</p>
-<section id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id5">
-<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<section id="id6">
+<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine2">
-<span class="sig-name descname"><span class="pre">drawLayerWidgetLine2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.drawLayerWidgetLine2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine2" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line2">
+<span class="sig-name descname"><span class="pre">draw_layer_widget_line2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.draw_layer_widget_line2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line2" title="Link to this definition">¶</a></dt>
 <dd><p>Add the second line of the layer description.</p>
 <p>Shows the hkl specification and the azimuthal angle</p>
-<section id="id6">
-<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id7">
-<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<section id="id8">
+<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine3">
-<span class="sig-name descname"><span class="pre">drawLayerWidgetLine3</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.drawLayerWidgetLine3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine3" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line3">
+<span class="sig-name descname"><span class="pre">draw_layer_widget_line3</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.draw_layer_widget_line3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line3" title="Link to this definition">¶</a></dt>
 <dd><p>Add the third line of the layer description.</p>
 <p>Shows the relationship between crystal and labframe coordinate systems</p>
-<section id="id8">
-<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<section id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id9">
-<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<section id="id10">
+<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.getLayer">
-<span class="sig-name descname"><span class="pre">getLayer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.getLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.getLayer" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.get_layer">
+<span class="sig-name descname"><span class="pre">get_layer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.get_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.get_layer" title="Link to this definition">¶</a></dt>
 <dd><p>Return the edited layer.</p>
-<section id="id10">
-<h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id11">
-<h4>Returns<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<section id="id12">
+<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 <p>self.layer : An instance of a single crystal layer</p>
 </section>
 </dd></dl>
@@ -485,15 +511,15 @@
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_azimuthal_angle_sb_changed">
 <span class="sig-name descname"><span class="pre">on_azimuthal_angle_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.on_azimuthal_angle_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_azimuthal_angle_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle azimuthal spin box change.</p>
-<section id="id12">
-<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<section id="id13">
+<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new azimuthal angle in degrees</p>
 </dd>
 </dl>
 </section>
-<section id="id13">
-<h4>Returns<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<section id="id14">
+<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -502,15 +528,15 @@
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_film_thickness_sb_changed">
 <span class="sig-name descname"><span class="pre">on_film_thickness_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.on_film_thickness_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_film_thickness_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle film thickness spin box change.</p>
-<section id="id14">
-<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<section id="id15">
+<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new thickness</p>
 </dd>
 </dl>
 </section>
-<section id="id15">
-<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
+<section id="id16">
+<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -519,8 +545,8 @@
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_hkl_sb_changed">
 <span class="sig-name descname"><span class="pre">on_hkl_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hkorl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.on_hkl_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_hkl_sb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle h, k, or l change.</p>
-<section id="id16">
-<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<section id="id17">
+<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>value<span class="classifier">int</span></dt><dd><p>The value of h, k or l</p>
 </dd>
@@ -528,8 +554,8 @@
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h4>Returns<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<section id="id18">
+<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -538,16 +564,16 @@
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_thickness_units_cb_activated">
 <span class="sig-name descname"><span class="pre">on_thickness_units_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#ShowLayerWindow.on_thickness_units_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_thickness_units_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle activation of thickness units combobox.</p>
-<section id="id18">
-<h4>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<section id="id19">
+<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected item in the combobox.
 One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd>
 </dl>
 </section>
-<section id="id19">
-<h4>Returns<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<section id="id20">
+<h4>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -569,7 +595,7 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.message">
-<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.message" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">message</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.message" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -577,10 +603,10 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalLayer.</span></span><span class="sig-name descname"><span class="pre">SingleCrystalLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hkl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuthal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thicknessUnit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoherentOption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Coherent'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectricFlag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalLayer.</span></span><span class="sig-name descname"><span class="pre">SingleCrystalLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hkl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuthal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoherentOption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Coherent'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectricFlag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="Link to this definition">¶</a></dt>
 <dd><p>A class representing a single crystal layer.</p>
-<section id="id20">
-<h3>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<section id="id21">
+<h3>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>material<span class="classifier">Material</span></dt><dd><dl class="simple">
 <dt>An instance of Material object (see <a class="reference internal" href="../../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>), which contains:</dt><dd><ul class="simple">
@@ -606,132 +632,60 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd>
 </dl>
 </section>
-<section id="id21">
-<h3>Attributes<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>material<span class="classifier">Material</span></dt><dd><p>The material of the layer. (See <a class="reference internal" href="../../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>)</p>
-</dd>
-<dt>hkl<span class="classifier">list of int</span></dt><dd><p>The Miller indices of the plane of interest in the crystal.</p>
-</dd>
-<dt>incoherentOption<span class="classifier">str</span></dt><dd><p>The incoherent option for the layer.</p>
-</dd>
-<dt>azimuthal<span class="classifier">float</span></dt><dd><p>The azimuthal angle of rotation of the crystal about the z-axis, in degrees.</p>
-</dd>
-<dt>thickness<span class="classifier">float</span></dt><dd><p>The thickness of the layer in the specified units.</p>
-</dd>
-<dt>thicknessUnit<span class="classifier">str</span></dt><dd><p>The units used for the thickness measurement.</p>
-</dd>
-<dt>dielectricFlag<span class="classifier">bool</span></dt><dd><p>A flag indicating if the layer material is the dielectric material.</p>
-</dd>
-<dt>euler<span class="classifier">ndarray</span></dt><dd><p>The Euler rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with <cite>dtype=np.longdouble</cite>.</p>
-</dd>
-<dt>euler_inverse<span class="classifier">ndarray</span></dt><dd><p>The inverse of the Euler rotation matrix, stored as a 3x3 numpy array with <cite>dtype=np.longdouble</cite>.</p>
-</dd>
-<dt>labframe_w :</dt><dd><p>Placeholder attribute for GUI interactions, not initialized within the class definition.</p>
-</dd>
-<dt>labframe<span class="classifier">ndarray</span></dt><dd><p>The lattice vectors of the crystal in the laboratory frame, stored as a numpy array.</p>
-</dd>
-<dt>phaseShift<span class="classifier">float</span></dt><dd><p>The phase shift for the layer.</p>
-</dd>
-</dl>
-</section>
 <section id="id22">
-<h3>Methods<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>print()</dt><dd><p>Prints the main attributes of the layer.</p>
-</dd>
-<dt>getPhaseShift()</dt><dd><p>Returns the phase shift for the layer.</p>
-</dd>
-<dt>setPhaseShift(phaseShift)</dt><dd><p>Sets the phase shift for the layer.</p>
-</dd>
-<dt>setAzimuthal(angle)</dt><dd><p>Sets the azimuthal angle of the layer and recalculates the Euler matrix.</p>
-</dd>
-<dt>isCoherent()</dt><dd><p>Returns True if the layer is coherent, False otherwise.</p>
-</dd>
-<dt>getIncoherentOption()</dt><dd><p>Returns the incoherent interaction option for the layer.</p>
-</dd>
-<dt>setIncoherentOption(option)</dt><dd><p>Sets the incoherent interaction option for the layer.</p>
-</dd>
-<dt>getAzimuthal()</dt><dd><p>Returns the azimuthal angle.</p>
-</dd>
-<dt>setThickness(thickness)</dt><dd><p>Sets the thickness of the layer.</p>
-</dd>
-<dt>getThickness()</dt><dd><p>Returns the thickness of the layer.</p>
-</dd>
-<dt>getThicknessInMetres()</dt><dd><p>Converts and returns the thickness of the layer in meters.</p>
-</dd>
-<dt>setThicknessUnit(thicknessUnit)</dt><dd><p>Sets the unit of thickness measurement.</p>
-</dd>
-<dt>getThicknessUnit()</dt><dd><p>Returns the unit of thickness measurement.</p>
-</dd>
-<dt>setHKL(hkl)</dt><dd><p>Sets the Miller indices for the plane of interest in the crystal.</p>
-</dd>
-<dt>getHKL()</dt><dd><p>Returns the Miller indices of the plane of interest.</p>
-</dd>
-<dt>getName()</dt><dd><p>Returns the name of the material.</p>
-</dd>
-<dt>getMaterial()</dt><dd><p>Returns the material object associated with the layer.</p>
-</dd>
-<dt>getPermittivityFunction()</dt><dd><p>Returns the permittivity tensor for the crystal at the surface and azimuthal angle specified.</p>
-</dd>
-<dt>isTensor()</dt><dd><p>Returns True if the material of the layer is a tensor material, False otherwise.</p>
-</dd>
-<dt>isScalar()</dt><dd><p>Returns True if the material of the layer is a scalar material, False otherwise.</p>
-</dd>
-<dt>isDielectric()</dt><dd><p>Returns True if the material of the layer is the dielectric being studied.</p>
-</dd>
-<dt>calculate_euler_matrix()</dt><dd><p>Calculates the Euler angles for the crystal to lab frame transformation.</p>
-</dd>
-<dt>azimuthalRotationMatrix(angle)</dt><dd><p>Calculates a rotation matrix for the azimuthal angle.</p>
-</dd>
-<dt>changeLabFrameInfo()</dt><dd><p>Changes the Lab Frame Information, used with GUI interactions.</p>
-</dd>
-<dt>getLabFrame()</dt><dd><p>Returns the information of the crystal axes in the laboratory frame.</p>
-</dd>
-<dt>calculateLabFrameEpsilon(v)</dt><dd><p>Computes the permittivity tensor for the material at a given frequency and transforms it to the laboratory frame.</p>
-</dd>
-<dt>invert(m)</dt><dd><p>Calculates the inverse of a given 3x3 complex matrix.</p>
-</dd>
-</dl>
+<h3>Attributes<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<p>material : Material The material of the layer. (See <a class="reference internal" href="../../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>) hkl : list of int The
+Miller indices of the plane of interest in the crystal. incoherentOption : str The incoherent option for the layer.
+azimuthal : float The azimuthal angle of rotation of the crystal about the z-axis, in degrees. thickness : float The
+thickness of the layer in the specified units. thickness_unit : str The units used for the thickness measurement.
+dielectricFlag : bool A flag indicating if the layer material is the dielectric material. euler : ndarray The Euler
+rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with
+<cite>dtype=np.longdouble</cite>. euler_inverse : ndarray The inverse of the Euler rotation matrix, stored as a 3x3 numpy array
+with <cite>dtype=np.longdouble</cite>. labframe_w :  Placeholder attribute for GUI interactions, not initialized within the
+class definition. labframe : ndarray The lattice vectors of the crystal in the laboratory frame, stored as a numpy
+array. phaseShift : float The phase shift for the layer.</p>
+</section>
+<section id="id23">
+<h3>Methods<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<p>print() Prints the main attributes of the layer. get_phase_shift() Returns the phase shift for the layer.
+set_phase_shift(phaseShift) Sets the phase shift for the layer. set_azimuthal(angle) Sets the azimuthal angle of the
+layer and recalculates the Euler matrix. is_coherent() Returns True if the layer is coherent, False otherwise.
+get_incoherent_option() Returns the incoherent interaction option for the layer. set_incoherent_option(option) Sets
+the incoherent interaction option for the layer. get_azimuthal() Returns the azimuthal angle.
+set_thickness(thickness) Sets the thickness of the layer. get_thickness() Returns the thickness of the layer.
+get_thickness_in_metres() Converts and returns the thickness of the layer in meters.
+set_thickness_unit(thickness_unit) Sets the unit of thickness measurement. get_thickness_unit() Returns the unit of
+thickness measurement. set_hkl(hkl) Sets the Miller indices for the plane of interest in the crystal. get_hkl()
+Returns the Miller indices of the plane of interest. get_name() Returns the name of the material. get_material()
+Returns the material object associated with the layer. get_permittivity_function() Returns the permittivity tensor
+for the crystal at the surface and azimuthal angle specified. is_tensor() Returns True if the material of the layer
+is a tensor material, False otherwise. is_scalar() Returns True if the material of the layer is a scalar material,
+False otherwise. is_dielectric() Returns True if the material of the layer is the dielectric being studied.
+calculate_euler_matrix() Calculates the Euler angles for the crystal to lab frame transformation.
+azimuthal_rotation_matrix(angle) Calculates a rotation matrix for the azimuthal angle. change_lab_frame_info()
+Changes the Lab Frame Information, used with GUI interactions. get_lab_frame() Returns the information of the
+crystal axes in the laboratory frame. calculate_lab_frame_epsilon(v) Computes the permittivity tensor for the
+material at a given frequency and transforms it to the laboratory frame. invert(m) Calculates the inverse of a given
+3x3 complex matrix.</p>
 </section>
 <section id="notes">
 <h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
 <p>The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthalRotationMatrix">
-<span class="sig-name descname"><span class="pre">azimuthalRotationMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.azimuthalRotationMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthalRotationMatrix" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthal_rotation_matrix">
+<span class="sig-name descname"><span class="pre">azimuthal_rotation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.azimuthal_rotation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthal_rotation_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate a rotation matrix for the azimuthal angle (in degrees).</p>
-<section id="id23">
-<h4>Parameters<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
+<section id="id24">
+<h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>angle<span class="classifier">float</span></dt><dd><p>The azimuthal angle in degrees</p>
 </dd>
 </dl>
 </section>
-<section id="id24">
-<h4>Returns<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
+<section id="id25">
+<h4>Returns<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>ndarray 3x3</dt><dd><p>The rotation matrix for the given azimuthal angle.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculateLabFrameEpsilon">
-<span class="sig-name descname"><span class="pre">calculateLabFrameEpsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.calculateLabFrameEpsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculateLabFrameEpsilon" title="Link to this definition">¶</a></dt>
-<dd><p>Get the permittivity for this material at frequency v and transform it to the laboratory frame.</p>
-<section id="id25">
-<h4>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>v<span class="classifier">float</span></dt><dd><p>Frequency at which the permittivity is evaluated.</p>
-</dd>
-</dl>
-</section>
-<section id="id26">
-<h4>Returns<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>float</dt><dd><p>The permittivity of the material in the laboratory frame.</p>
 </dd>
 </dl>
 </section>
@@ -741,33 +695,53 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculate_euler_matrix">
 <span class="sig-name descname"><span class="pre">calculate_euler_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.calculate_euler_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculate_euler_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the Euler angles for the crystal to lab transformation.</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
+<section id="id26">
+<h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<section id="id27">
+<h4>Returns<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.changeLabFrameInfo">
-<span class="sig-name descname"><span class="pre">changeLabFrameInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.changeLabFrameInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.changeLabFrameInfo" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculate_lab_frame_epsilon">
+<span class="sig-name descname"><span class="pre">calculate_lab_frame_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.calculate_lab_frame_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculate_lab_frame_epsilon" title="Link to this definition">¶</a></dt>
+<dd><p>Get the permittivity for this material at frequency v and transform it to the laboratory frame.</p>
+<section id="id28">
+<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>Frequency at which the permittivity is evaluated.</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>float</dt><dd><p>The permittivity of the material in the laboratory frame.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.change_lab_frame_info">
+<span class="sig-name descname"><span class="pre">change_lab_frame_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.change_lab_frame_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.change_lab_frame_info" title="Link to this definition">¶</a></dt>
 <dd><p>Change the Lab Frame Info panel.</p>
 <p>Information about the relationship between the crystal and labframe coordinate systems is presented.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getAzimuthal">
-<span class="sig-name descname"><span class="pre">getAzimuthal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getAzimuthal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getAzimuthal" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_azimuthal">
+<span class="sig-name descname"><span class="pre">get_azimuthal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_azimuthal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_azimuthal" title="Link to this definition">¶</a></dt>
 <dd><p>Get the azimuthal angle.</p>
-<section id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<section id="id30">
+<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id30">
-<h4>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<section id="id31">
+<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>float</dt><dd><p>The azimuthal angle.</p>
 </dd>
@@ -776,30 +750,30 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getHKL">
-<span class="sig-name descname"><span class="pre">getHKL</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getHKL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getHKL" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_hkl">
+<span class="sig-name descname"><span class="pre">get_hkl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_hkl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_hkl" title="Link to this definition">¶</a></dt>
 <dd><p>Get the hkl.</p>
-<section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
 <p>list of 3 ints</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getIncoherentOption">
-<span class="sig-name descname"><span class="pre">getIncoherentOption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getIncoherentOption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getIncoherentOption" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_incoherent_option">
+<span class="sig-name descname"><span class="pre">get_incoherent_option</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_incoherent_option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_incoherent_option" title="Link to this definition">¶</a></dt>
 <dd><p>Return the value of the incoherent option attribute.</p>
 <p>This will return ‘Coherent’ for a coherent layer</p>
-<section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<section id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<section id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>type</dt><dd><p>The value of the <cite>incoherentOption</cite> attribute of the object.</p>
 </dd>
@@ -808,15 +782,15 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getLabFrame">
-<span class="sig-name descname"><span class="pre">getLabFrame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getLabFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getLabFrame" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_lab_frame">
+<span class="sig-name descname"><span class="pre">get_lab_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_lab_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_lab_frame" title="Link to this definition">¶</a></dt>
 <dd><p>Return the a, b, and c cell axes in the laboratory frame coordinates.</p>
-<section id="id35">
-<h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id36">
+<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<section id="id37">
+<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>(a, b, c)<span class="classifier">3 lists of floats each with 3 elements</span></dt><dd><ul class="simple">
 <li><p>a, The a cell axis in the laboratory frame.</p></li>
@@ -829,29 +803,29 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getMaterial">
-<span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getMaterial" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_material">
+<span class="sig-name descname"><span class="pre">get_material</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_material" title="Link to this definition">¶</a></dt>
 <dd><p>Return the material.</p>
-<section id="id37">
-<h4>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<section id="id38">
+<h4>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id38">
-<h4>Returns<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<section id="id39">
+<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
 <p>an instance of a Materials object</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getName">
-<span class="sig-name descname"><span class="pre">getName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getName" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_name" title="Link to this definition">¶</a></dt>
 <dd><p>Return the material name.</p>
-<section id="id39">
-<h4>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<section id="id40">
+<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id40">
-<h4>Returns<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<section id="id41">
+<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>str</dt><dd><p>The name of the material.</p>
 </dd>
@@ -860,29 +834,29 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPermittivityFunction">
-<span class="sig-name descname"><span class="pre">getPermittivityFunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getPermittivityFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPermittivityFunction" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_permittivity_function">
+<span class="sig-name descname"><span class="pre">get_permittivity_function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_permittivity_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_permittivity_function" title="Link to this definition">¶</a></dt>
 <dd><p>Return the permittivity function associated with this material.</p>
-<section id="id41">
-<h4>Parameters<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<section id="id42">
+<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id42">
-<h4>Returns<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<section id="id43">
+<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
 <p>A permittivity function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPhaseShift">
-<span class="sig-name descname"><span class="pre">getPhaseShift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getPhaseShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPhaseShift" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_phase_shift">
+<span class="sig-name descname"><span class="pre">get_phase_shift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_phase_shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_phase_shift" title="Link to this definition">¶</a></dt>
 <dd><p>Get the phase shift for the layer.</p>
-<section id="id43">
-<h4>Parameters<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<section id="id44">
+<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id44">
-<h4>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<section id="id45">
+<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>float</dt><dd><p>The phase shift used in the averaged phase shift method</p>
 </dd>
@@ -891,43 +865,43 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThickness">
-<span class="sig-name descname"><span class="pre">getThickness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getThickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThickness" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness">
+<span class="sig-name descname"><span class="pre">get_thickness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_thickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness" title="Link to this definition">¶</a></dt>
 <dd><p>Get the thickness.</p>
-<section id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
-<p>float</p>
+<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<p>None</p>
 </section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessInMetres">
-<span class="sig-name descname"><span class="pre">getThicknessInMetres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getThicknessInMetres"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessInMetres" title="Link to this definition">¶</a></dt>
-<dd><p>Get the thickness in metres.</p>
 <section id="id47">
-<h4>Parameters<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id48">
-<h4>Returns<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <p>float</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessUnit">
-<span class="sig-name descname"><span class="pre">getThicknessUnit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.getThicknessUnit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessUnit" title="Link to this definition">¶</a></dt>
-<dd><p>Get the thickness unit.</p>
-<section id="id49">
-<h4>Parameters<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness_in_metres">
+<span class="sig-name descname"><span class="pre">get_thickness_in_metres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_thickness_in_metres"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness_in_metres" title="Link to this definition">¶</a></dt>
+<dd><p>Get the thickness in metres.</p>
+<section id="id48">
+<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
+<section id="id49">
+<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<p>float</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness_unit">
+<span class="sig-name descname"><span class="pre">get_thickness_unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.get_thickness_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness_unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the thickness unit.</p>
 <section id="id50">
-<h4>Returns<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id51">
+<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
 <p>str</p>
 </section>
 </dd></dl>
@@ -936,15 +910,15 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.invert">
 <span class="sig-name descname"><span class="pre">invert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.invert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.invert" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the inverse of m.</p>
-<section id="id51">
-<h4>Parameters<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>m<span class="classifier">complex 3x3 array</span></dt><dd><p>The input matrix for which to calculate the inverse.</p>
 </dd>
 </dl>
 </section>
-<section id="id52">
-<h4>Returns<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<section id="id53">
+<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The inverse of <cite>m</cite> as a 3x3 complex numpy array.</p>
 </dd>
@@ -953,15 +927,15 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isCoherent">
-<span class="sig-name descname"><span class="pre">isCoherent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isCoherent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isCoherent" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_coherent">
+<span class="sig-name descname"><span class="pre">is_coherent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.is_coherent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_coherent" title="Link to this definition">¶</a></dt>
 <dd><p>Return True if this is a coherent layer, False otherwise.</p>
-<section id="id53">
-<h4>Parameters<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<section id="id54">
+<h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id54">
-<h4>Returns<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<section id="id55">
+<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if this is a coherent layer, False otherwise.</p>
 </dd>
@@ -970,15 +944,15 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isDielectric">
-<span class="sig-name descname"><span class="pre">isDielectric</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isDielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isDielectric" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_dielectric">
+<span class="sig-name descname"><span class="pre">is_dielectric</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.is_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_dielectric" title="Link to this definition">¶</a></dt>
 <dd><p>Return true if the material of the layer is the dielectric material.</p>
-<section id="id55">
-<h4>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<section id="id56">
+<h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id56">
-<h4>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<section id="id57">
+<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if the material of the layer is the dielectric material, otherwise False.</p>
 </dd>
@@ -987,15 +961,15 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isScalar">
-<span class="sig-name descname"><span class="pre">isScalar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isScalar" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_scalar">
+<span class="sig-name descname"><span class="pre">is_scalar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.is_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_scalar" title="Link to this definition">¶</a></dt>
 <dd><p>Return true if the material of the layer is a scalar material.</p>
-<section id="id57">
-<h4>Parameters<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
+<section id="id58">
+<h4>Parameters<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id58">
-<h4>Returns<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
+<section id="id59">
+<h4>Returns<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if the material of the layer is a scalar material, False otherwise.</p>
 </dd>
@@ -1004,15 +978,15 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isTensor">
-<span class="sig-name descname"><span class="pre">isTensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.isTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isTensor" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_tensor">
+<span class="sig-name descname"><span class="pre">is_tensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.is_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_tensor" title="Link to this definition">¶</a></dt>
 <dd><p>Return true if the material of the layer is a tensor material.</p>
-<section id="id59">
-<h4>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
+<section id="id60">
+<h4>Parameters<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id60">
-<h4>Returns<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
+<section id="id61">
+<h4>Returns<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if the material of the layer is a tensor material, False otherwise.</p>
 </dd>
@@ -1024,52 +998,52 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.print" title="Link to this definition">¶</a></dt>
 <dd><p>Print the main attributes of the layer.</p>
-<section id="id61">
-<h4>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
+<section id="id62">
+<h4>Parameters<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setAzimuthal">
-<span class="sig-name descname"><span class="pre">setAzimuthal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setAzimuthal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setAzimuthal" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_azimuthal">
+<span class="sig-name descname"><span class="pre">set_azimuthal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.set_azimuthal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_azimuthal" title="Link to this definition">¶</a></dt>
 <dd><p>Set the azimuthal angle of the layer and calculate the Euler matrix.</p>
-<section id="id62">
-<h4>Parameters<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
+<section id="id63">
+<h4>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>angle<span class="classifier">float</span></dt><dd><p>The azimuthal angle in degrees</p>
 </dd>
 </dl>
 </section>
-<section id="id63">
-<h4>Returns<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
+<section id="id64">
+<h4>Returns<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setHKL">
-<span class="sig-name descname"><span class="pre">setHKL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hkl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setHKL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setHKL" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_hkl">
+<span class="sig-name descname"><span class="pre">set_hkl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hkl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.set_hkl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_hkl" title="Link to this definition">¶</a></dt>
 <dd><p>Set the hkl and recalculate the Euler matrix.</p>
-<section id="id64">
-<h4>Parameters<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
+<section id="id65">
+<h4>Parameters<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>hkl<span class="classifier">list of 3 ints</span></dt><dd><p>The hkl parameters of the surface</p>
 </dd>
 </dl>
 </section>
-<section id="id65">
-<h4>Returns<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
+<section id="id66">
+<h4>Returns<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setIncoherentOption">
-<span class="sig-name descname"><span class="pre">setIncoherentOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setIncoherentOption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setIncoherentOption" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_incoherent_option">
+<span class="sig-name descname"><span class="pre">set_incoherent_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.set_incoherent_option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_incoherent_option" title="Link to this definition">¶</a></dt>
 <dd><p>Set the incoherent option.</p>
-<section id="id66">
-<h4>Parameters<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
+<section id="id67">
+<h4>Parameters<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>option<span class="classifier">string</span></dt><dd><p>Sets the incoherent option.  Can be one of;
 - “Coherent”
@@ -1080,71 +1054,71 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </dd>
 </dl>
 </section>
-<section id="id67">
-<h4>Returns<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
+<section id="id68">
+<h4>Returns<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setPhaseShift">
-<span class="sig-name descname"><span class="pre">setPhaseShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phaseShift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setPhaseShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setPhaseShift" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_phase_shift">
+<span class="sig-name descname"><span class="pre">set_phase_shift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phaseShift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.set_phase_shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_phase_shift" title="Link to this definition">¶</a></dt>
 <dd><p>Set the phase shift for the layer.</p>
-<section id="id68">
-<h4>Parameters<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
+<section id="id69">
+<h4>Parameters<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>phaseShift<span class="classifier">float</span></dt><dd><p>The phase shift</p>
 </dd>
 </dl>
 </section>
-<section id="id69">
-<h4>Returns<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
+<section id="id70">
+<h4>Returns<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThickness">
-<span class="sig-name descname"><span class="pre">setThickness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setThickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThickness" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_thickness">
+<span class="sig-name descname"><span class="pre">set_thickness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.set_thickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_thickness" title="Link to this definition">¶</a></dt>
 <dd><p>Set the thickness.</p>
-<section id="id70">
-<h4>Parameters<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
+<section id="id71">
+<h4>Parameters<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>thickness<span class="classifier">float</span></dt><dd><p>The value of the layer thickness in the current thickness units</p>
 </dd>
 </dl>
 </section>
-<section id="id71">
-<h4>Returns<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<section id="id72">
+<h4>Returns<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThicknessUnit">
-<span class="sig-name descname"><span class="pre">setThicknessUnit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thicknessUnit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.setThicknessUnit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThicknessUnit" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_thickness_unit">
+<span class="sig-name descname"><span class="pre">set_thickness_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness_unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SingleCrystalLayer.html#SingleCrystalLayer.set_thickness_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_thickness_unit" title="Link to this definition">¶</a></dt>
 <dd><p>Set the thickness unit.</p>
-<section id="id72">
-<h4>Parameters<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<section id="id73">
+<h4>Parameters<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>thicknessUnit<span class="classifier">str</span></dt><dd><p>The unit of thickness. Can be one of “ang”, “nm”, “um”, “mm”, or “cm”</p>
+<dt>thickness_unit<span class="classifier">str</span></dt><dd><p>The unit of thickness. Can be one of “ang”, “nm”, “um”, “mm”, or “cm”</p>
 </dd>
 </dl>
 </section>
-<section id="id73">
-<h4>Returns<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
+<section id="id74">
+<h4>Returns<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthal">
-<span class="sig-name descname"><span class="pre">azimuthal</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthal" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">azimuthal</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthal" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.dielectricFlag">
-<span class="sig-name descname"><span class="pre">dielectricFlag</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.dielectricFlag" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">dielectricFlag</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.dielectricFlag" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1159,22 +1133,22 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.hkl">
-<span class="sig-name descname"><span class="pre">hkl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.hkl" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">hkl</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.hkl" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.incoherentOption">
-<span class="sig-name descname"><span class="pre">incoherentOption</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Coherent'</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.incoherentOption" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">incoherentOption</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Coherent'</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.incoherentOption" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.labframe">
-<span class="sig-name descname"><span class="pre">labframe</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.labframe" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">labframe</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.labframe" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.labframe_w">
-<span class="sig-name descname"><span class="pre">labframe_w</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.labframe_w" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">labframe_w</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.labframe_w" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1184,21 +1158,26 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.phaseShift">
-<span class="sig-name descname"><span class="pre">phaseShift</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.phaseShift" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">phaseShift</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.phaseShift" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness">
-<span class="sig-name descname"><span class="pre">thickness</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">thickness</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thicknessUnit">
-<span class="sig-name descname"><span class="pre">thicknessUnit</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'nm'</span></em><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thicknessUnit" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness_unit">
+<span class="sig-name descname"><span class="pre">thickness_unit</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'nm'</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness_unit" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GUI.SingleCrystalLayer.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SingleCrystalLayer.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.GUI.SingleCrystalLayer.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -1208,12 +1187,12 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../SingleCrystalScenarioTab/index.html">
+          <a class="next-page" href="../SpreadSheetManager/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.GUI.SingleCrystalScenarioTab</div>
+                <div class="title">PDielec.GUI.SpreadSheetManager</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1259,15 +1238,16 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDielec.GUI.SingleCrystalLayer</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.changeLabFrameInfo"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.changeLabFrameInfo()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidget"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.drawLayerWidget()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine1"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.drawLayerWidgetLine1()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine2"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.drawLayerWidgetLine2()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine3"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.drawLayerWidgetLine3()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.getLayer"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.getLayer()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.change_lab_frame_info"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.change_lab_frame_info()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.draw_layer_widget()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line1"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.draw_layer_widget_line1()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line2"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.draw_layer_widget_line2()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.draw_layer_widget_line3"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.draw_layer_widget_line3()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.get_layer"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.get_layer()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_azimuthal_angle_sb_changed"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.on_azimuthal_angle_sb_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_film_thickness_sb_changed"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.on_film_thickness_sb_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_hkl_sb_changed"><code class="docutils literal notranslate"><span class="pre">ShowLayerWindow.on_hkl_sb_changed()</span></code></a></li>
@@ -1279,33 +1259,33 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthalRotationMatrix"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.azimuthalRotationMatrix()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculateLabFrameEpsilon"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.calculateLabFrameEpsilon()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthal_rotation_matrix"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.azimuthal_rotation_matrix()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculate_euler_matrix"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.calculate_euler_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.changeLabFrameInfo"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.changeLabFrameInfo()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getAzimuthal"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getAzimuthal()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getHKL"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getHKL()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getIncoherentOption"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getIncoherentOption()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getLabFrame"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getLabFrame()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getMaterial"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getMaterial()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getName"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getName()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPermittivityFunction"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getPermittivityFunction()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPhaseShift"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getPhaseShift()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThickness"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getThickness()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessInMetres"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getThicknessInMetres()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessUnit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.getThicknessUnit()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculate_lab_frame_epsilon"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.calculate_lab_frame_epsilon()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.change_lab_frame_info"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.change_lab_frame_info()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_azimuthal"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_azimuthal()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_hkl"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_hkl()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_incoherent_option"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_incoherent_option()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_lab_frame"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_lab_frame()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_material"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_material()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_name"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_permittivity_function"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_permittivity_function()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_phase_shift"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_phase_shift()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_thickness()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness_in_metres"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_thickness_in_metres()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.get_thickness_unit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.get_thickness_unit()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.invert"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.invert()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isCoherent"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isCoherent()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isDielectric"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isDielectric()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isScalar"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isScalar()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isTensor"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.isTensor()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_coherent"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.is_coherent()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_dielectric"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.is_dielectric()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_scalar"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.is_scalar()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.is_tensor"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.is_tensor()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.print"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.print()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setAzimuthal"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setAzimuthal()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setHKL"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setHKL()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setIncoherentOption"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setIncoherentOption()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setPhaseShift"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setPhaseShift()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThickness"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setThickness()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThicknessUnit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.setThicknessUnit()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_azimuthal"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.set_azimuthal()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_hkl"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.set_hkl()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_incoherent_option"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.set_incoherent_option()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_phase_shift"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.set_phase_shift()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_thickness"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.set_thickness()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.set_thickness_unit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.set_thickness_unit()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthal"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.azimuthal</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.dielectricFlag"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.dielectricFlag</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.euler"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.euler</span></code></a></li>
@@ -1317,9 +1297,10 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.material"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.material</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.phaseShift"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.phaseShift</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.thickness</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thicknessUnit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.thicknessUnit</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.thickness_unit"><code class="docutils literal notranslate"><span class="pre">SingleCrystalLayer.thickness_unit</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#PDielec.GUI.SingleCrystalLayer.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1333,9 +1314,9 @@ One of ‘nm’, ‘um’, ‘mm’, ‘cm’</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="../../../../_static/documentation_options.js?v=335988e4"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

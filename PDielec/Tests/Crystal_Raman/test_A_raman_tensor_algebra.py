@@ -219,7 +219,7 @@ class TestA4OffDiagonalSelectionRules:
 # ---------------------------------------------------------------------------
 
 class TestA5ComplexPhaseInvariance:
-    """A5: |A(e^{iθ} R)|² = |A(R)|² for any real θ."""
+    """A5: \|A(e^{iθ} R)\|² = \|A(R)\|² for any real θ."""
 
     R_sym = np.array([[2.0, 0.5, 0.1],
                       [0.5, 1.0, 0.3],

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="PDielec.GUI.SettingsTab" href="../SettingsTab/index.html"><link rel="prev" title="PDielec.GUI.PowderScenarioTab" href="../PowderScenarioTab/index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>PDielec.GUI.ScenarioTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -228,6 +228,8 @@
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
@@ -237,7 +239,6 @@
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,6 +247,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
@@ -271,6 +273,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_complex_values/index.html">test_F_complex_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
@@ -321,6 +335,18 @@
           <section id="module-PDielec.GUI.ScenarioTab">
 <span id="pdielec-gui-scenariotab"></span><h1>PDielec.GUI.ScenarioTab<a class="headerlink" href="#module-PDielec.GUI.ScenarioTab" title="Link to this heading">¶</a></h1>
 <p>ScenarioTab module.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.ScenarioTab.logger" title="PDielec.GUI.ScenarioTab.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
@@ -337,26 +363,29 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ScenarioTab.</span></span><span class="sig-name descname"><span class="pre">ScenarioTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ScenarioTab.</span></span><span class="sig-name descname"><span class="pre">ScenarioTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>A class representing a tab for scenario configurations within a user interface.</p>
-<p>This class provides functionalities for managing and interacting with scenarios.
-It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
-<a class="reference internal" href="../PowderScenarioTab/index.html#PDielec.GUI.PowderScenarioTab.PowderScenarioTab" title="PDielec.GUI.PowderScenarioTab.PowderScenarioTab"><code class="xref py py-class docutils literal notranslate"><span class="pre">PowderScenarioTab</span></code></a> and <a class="reference internal" href="../SingleCrystalScenarioTab/index.html#PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab" title="PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalScenarioTab</span></code></a> inherit from this class.</p>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
+<p>This class provides functionalities for managing and interacting with scenarios. It allows users to create, delete,
+and switch between different scenarios, as well as open and manipulate a materials database.
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PowderInfraredScenarioTab</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">CrystalInfraredScenarioTab</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PowderRamanScenarioTab</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">CrystalRamanScenarioTab</span></code> inherit from this
+class.</p>
+<section id="id1">
+<h3>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>refreshRequired<span class="classifier">bool</span></dt><dd><p>Indicates whether a refresh is required.</p>
+<dt>refresh_required<span class="classifier">bool</span></dt><dd><p>Indicates whether a refresh is required.</p>
 </dd>
-<dt>noCalculationsRequired<span class="classifier">int</span></dt><dd><p>The number of calculations that need to be performed.</p>
+<dt>no_calculations_required<span class="classifier">int</span></dt><dd><p>The number of calculations that need to be performed.</p>
 </dd>
 <dt>settings<span class="classifier">dict</span></dt><dd><p>A dictionary of settings for the scenario.</p>
 </dd>
 <dt>notebook<span class="classifier">QWidget</span></dt><dd><p>The parent widget, which is expected to be the notebook container for the scenarios.</p>
 </dd>
-<dt>scenarioType<span class="classifier">type, optional</span></dt><dd><p>The type of the scenario, e.g., powder, crystal.</p>
+<dt>spectroscopy<span class="classifier">type</span></dt><dd><p>optional The type of the spectroscopy, e.g., Powder Infrared, Powder ATR,
+Crystal Infrared, Powder Raman, Crystal Raman.</p>
 </dd>
-<dt>vs_cm1<span class="classifier">list</span></dt><dd><p>List containing default values for some settings.</p>
+<dt>dictionary vs_cm1<span class="classifier">list</span></dt><dd><p>List containing default values for some settings.</p>
 </dd>
 <dt>DataBase<span class="classifier">MaterialsDataBase</span></dt><dd><p>An instance of a class for interacting with a materials database.</p>
 </dd>
@@ -374,22 +403,22 @@ It allows users to create, delete, and switch between different scenarios, as we
 </dd>
 <dt>deleteScenarioButton<span class="classifier">QPushButton</span></dt><dd><p>Button to delete the current scenario.</p>
 </dd>
-<dt>switchScenarioButton<span class="classifier">QPushButton</span></dt><dd><p>Button to switch between scenario types (e.g., powder to crystal).</p>
+<dt>switchScenarioCB<span class="classifier">QComboBOx</span></dt><dd><p>Dropdown menu to switch between scenario types (e.g., Powder Infrared, Cystal Infrared, Powder Raman or Crystal Raman).</p>
 </dd>
 </dl>
 </section>
 <section id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>openDataBase()</dt><dd><p>Open the database and set the material names.</p>
+<dt>open_data_base()</dt><dd><p>Open the database and set the material names.</p>
 </dd>
-<dt>getNoCalculationsRequired()</dt><dd><p>Get the number of spectra that need recalculating from this scenario.</p>
+<dt>get_no_calculations_required()</dt><dd><p>Get the number of spectra that need recalculating from this scenario.</p>
 </dd>
-<dt>requestRefresh()</dt><dd><p>Request a refresh of the scenario</p>
+<dt>request_refresh()</dt><dd><p>Request a refresh of the scenario</p>
 </dd>
 <dt>set_reader(reader)</dt><dd><p>Set the reader associated with this scenario</p>
 </dd>
-<dt>setScenarioIndex(index)</dt><dd><p>Set the index for the current scenario and a default legend name based on the index.</p>
+<dt>set_scenario_index(index)</dt><dd><p>Set the index for the current scenario and a default legend name based on the index.</p>
 </dd>
 <dt>print_settings()</dt><dd><p>Print all the settings for this scenario.</p>
 </dd>
@@ -397,16 +426,16 @@ It allows users to create, delete, and switch between different scenarios, as we
 </dd>
 <dt>add_scenario_buttons()</dt><dd><p>Add a set of scenario buttons in an hbox. Return the hbox.</p>
 </dd>
-<dt>addScenarioButtonClicked()</dt><dd><p>Handle when the “add another scenario” button has been clicked.</p>
+<dt>add_scenario_button_clicked()</dt><dd><p>Handle when the “add another scenario” button has been clicked.</p>
 </dd>
-<dt>deleteScenarioButtonClicked()</dt><dd><p>Handle when a delete button has been clicked.</p>
+<dt>delete_scenario_button_clicked()</dt><dd><p>Handle when a delete button has been clicked.</p>
 </dd>
-<dt>switchScenarioButtonClicked()</dt><dd><p>Handle the scenario when a button has been clicked.</p>
+<dt>switchScenarioCBClicked()</dt><dd><p>Handle the scenario when a button has been clicked.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.addScenarioButtonClicked">
-<span class="sig-name descname"><span class="pre">addScenarioButtonClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.addScenarioButtonClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.addScenarioButtonClicked" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.add_scenario_button_clicked">
+<span class="sig-name descname"><span class="pre">add_scenario_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.add_scenario_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.add_scenario_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle when the “add another scenario” button has been clicked.</p>
 <section id="parameters">
 <h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h4>
@@ -422,12 +451,12 @@ It allows users to create, delete, and switch between different scenarios, as we
 <dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.add_scenario_buttons">
 <span class="sig-name descname"><span class="pre">add_scenario_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.add_scenario_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.add_scenario_buttons" title="Link to this definition">¶</a></dt>
 <dd><p>Add a set of scenario buttons in an hbox. Return the hbox.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>hbox</dt><dd><p>The hbox containing the scenario buttons.</p>
 </dd>
@@ -436,29 +465,29 @@ It allows users to create, delete, and switch between different scenarios, as we
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.deleteScenarioButtonClicked">
-<span class="sig-name descname"><span class="pre">deleteScenarioButtonClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.deleteScenarioButtonClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.deleteScenarioButtonClicked" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.delete_scenario_button_clicked">
+<span class="sig-name descname"><span class="pre">delete_scenario_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.delete_scenario_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.delete_scenario_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle when a delete button has been clicked.</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<section id="id5">
+<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.getNoCalculationsRequired">
-<span class="sig-name descname"><span class="pre">getNoCalculationsRequired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.getNoCalculationsRequired"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.getNoCalculationsRequired" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.get_no_calculations_required">
+<span class="sig-name descname"><span class="pre">get_no_calculations_required</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.get_no_calculations_required"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.get_no_calculations_required" title="Link to this definition">¶</a></dt>
 <dd><p>Get the number of spectra that need recalculating from this scenario.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>int</dt><dd><p>The number of spectra requiring recalculation.</p>
 </dd>
@@ -470,29 +499,29 @@ It allows users to create, delete, and switch between different scenarios, as we
 <dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.on_legend_le_changed">
 <span class="sig-name descname"><span class="pre">on_legend_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.on_legend_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.on_legend_le_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle a change in the scenario legend.</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new legend for this scenario</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.openDataBase">
-<span class="sig-name descname"><span class="pre">openDataBase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.openDataBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.openDataBase" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.open_data_base">
+<span class="sig-name descname"><span class="pre">open_data_base</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.open_data_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.open_data_base" title="Link to this definition">¶</a></dt>
 <dd><p>Open the database and set the material names.</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -501,43 +530,26 @@ It allows users to create, delete, and switch between different scenarios, as we
 <dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.print_settings">
 <span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.print_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.print_settings" title="Link to this definition">¶</a></dt>
 <dd><p>Print all the settings for this scenario.</p>
-<section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.requestRefresh" title="Link to this definition">¶</a></dt>
-<dd><p>Request a refresh of the scenario.</p>
 <section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.setScenarioIndex">
-<span class="sig-name descname"><span class="pre">setScenarioIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.setScenarioIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.setScenarioIndex" title="Link to this definition">¶</a></dt>
-<dd><p>Set the index for the current scenario and a default legend name based on the index.</p>
-<section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>index<span class="classifier">int</span></dt><dd><p>The scenario index.</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.request_refresh">
+<span class="sig-name descname"><span class="pre">request_refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.request_refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.request_refresh" title="Link to this definition">¶</a></dt>
+<dd><p>Request a refresh of the scenario.</p>
+<section id="id14">
+<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<p>None</p>
 </section>
-<section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<section id="id15">
+<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -546,30 +558,32 @@ It allows users to create, delete, and switch between different scenarios, as we
 <dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.set_reader">
 <span class="sig-name descname"><span class="pre">set_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.set_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.set_reader" title="Link to this definition">¶</a></dt>
 <dd><p>Set the reader associated with this scenario.</p>
-<section id="id17">
-<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<section id="id16">
+<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>reader<span class="classifier">a reader object</span></dt><dd><p>The reader to be used for this scenario</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<section id="id17">
+<h4>Returns<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.switchScenarioButtonClicked">
-<span class="sig-name descname"><span class="pre">switchScenarioButtonClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.switchScenarioButtonClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.switchScenarioButtonClicked" title="Link to this definition">¶</a></dt>
-<dd><p>Handle the switch scenario when a button has been clicked.</p>
-<p>Asks the notebook to change the scenario type (Powder or Crystal) to the other.</p>
-<section id="id19">
-<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.set_scenario_index">
+<span class="sig-name descname"><span class="pre">set_scenario_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ScenarioTab.html#ScenarioTab.set_scenario_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.set_scenario_index" title="Link to this definition">¶</a></dt>
+<dd><p>Set the index for the current scenario and a default legend name based on the index.</p>
+<section id="id18">
+<h4>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>index<span class="classifier">int</span></dt><dd><p>The scenario index.</p>
+</dd>
+</dl>
 </section>
-<section id="id20">
-<h4>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<section id="id19">
+<h4>Returns<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -590,8 +604,8 @@ It allows users to create, delete, and switch between different scenarios, as we
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.noCalculationsRequired">
-<span class="sig-name descname"><span class="pre">noCalculationsRequired</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.noCalculationsRequired" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.no_calculations_required">
+<span class="sig-name descname"><span class="pre">no_calculations_required</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.no_calculations_required" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -610,13 +624,8 @@ It allows users to create, delete, and switch between different scenarios, as we
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.refreshRequired">
-<span class="sig-name descname"><span class="pre">refreshRequired</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.refreshRequired" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.scenarioType">
-<span class="sig-name descname"><span class="pre">scenarioType</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.scenarioType" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.refresh_required">
+<span class="sig-name descname"><span class="pre">refresh_required</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.refresh_required" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -625,12 +634,22 @@ It allows users to create, delete, and switch between different scenarios, as we
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.spectroscopy">
+<span class="sig-name descname"><span class="pre">spectroscopy</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.spectroscopy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.ScenarioTab.vs_cm1">
-<span class="sig-name descname"><span class="pre">vs_cm1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0,</span> <span class="pre">0]</span></em><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.vs_cm1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vs_cm1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0,</span> <span class="pre">0]</span></span><a class="headerlink" href="#PDielec.GUI.ScenarioTab.ScenarioTab.vs_cm1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GUI.ScenarioTab.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.ScenarioTab.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.GUI.ScenarioTab.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -691,33 +710,34 @@ It allows users to create, delete, and switch between different scenarios, as we
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDielec.GUI.ScenarioTab</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab"><code class="docutils literal notranslate"><span class="pre">ScenarioTab</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.addScenarioButtonClicked"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.addScenarioButtonClicked()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.add_scenario_button_clicked"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.add_scenario_button_clicked()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.add_scenario_buttons"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.add_scenario_buttons()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.deleteScenarioButtonClicked"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.deleteScenarioButtonClicked()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.getNoCalculationsRequired"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.getNoCalculationsRequired()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.delete_scenario_button_clicked"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.delete_scenario_button_clicked()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.get_no_calculations_required"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.get_no_calculations_required()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.on_legend_le_changed"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.on_legend_le_changed()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.openDataBase"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.openDataBase()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.open_data_base"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.open_data_base()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.print_settings"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.print_settings()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.requestRefresh"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.requestRefresh()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.setScenarioIndex"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.setScenarioIndex()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.request_refresh"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.request_refresh()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.set_reader"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.set_reader()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.switchScenarioButtonClicked"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.switchScenarioButtonClicked()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.set_scenario_index"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.set_scenario_index()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.DataBase"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.DataBase</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.database_le"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.database_le</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.database_le_label"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.database_le_label</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.noCalculationsRequired"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.noCalculationsRequired</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.no_calculations_required"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.no_calculations_required</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.notebook"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.notebook</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.openDB_button"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.openDB_button</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.openDB_label"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.openDB_label</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.refreshRequired"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.refreshRequired</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.scenarioType"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.scenarioType</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.refresh_required"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.refresh_required</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.settings"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.settings</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.spectroscopy"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.spectroscopy</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.ScenarioTab.vs_cm1"><code class="docutils literal notranslate"><span class="pre">ScenarioTab.vs_cm1</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#PDielec.GUI.ScenarioTab.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -731,9 +751,9 @@ It allows users to create, delete, and switch between different scenarios, as we
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="../../../../_static/documentation_options.js?v=335988e4"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

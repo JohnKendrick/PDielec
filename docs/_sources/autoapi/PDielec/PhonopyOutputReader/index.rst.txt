@@ -9,6 +9,14 @@ PDielec.PhonopyOutputReader
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.PhonopyOutputReader.logger
+
+
 Classes
 -------
 
@@ -135,4 +143,6 @@ Module Contents
 
    .. py:attribute:: units
 
+
+.. py:data:: logger
 

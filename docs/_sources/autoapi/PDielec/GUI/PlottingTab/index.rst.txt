@@ -14,6 +14,7 @@ Attributes
 
 .. autoapisummary::
 
+   PDielec.GUI.PlottingTab.logger
    PDielec.GUI.PlottingTab.possible_frequency_units
 
 
@@ -31,7 +32,7 @@ Functions
 .. autoapisummary::
 
    PDielec.GUI.PlottingTab.convert_frequency_units
-   PDielec.GUI.PlottingTab.isThisAFrequencyUnit
+   PDielec.GUI.PlottingTab.is_this_a_frequency_unit
 
 
 Module Contents
@@ -44,7 +45,10 @@ Module Contents
 
    A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.
 
-   This class is responsible for handling plotting functionalities like choosing plot types, setting molar definitions and frequency values, managing interactions with UI components such as spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.
+   This class is responsible for handling plotting functionalities like:
+   choosing plot types, setting molar definitions and frequency values,
+   managing interactions with UI components such as:
+   spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.
 
    Parameters
    ----------
@@ -56,13 +60,16 @@ Module Contents
    Attributes
    ----------
    settings : dict
-       A dictionary containing settings related to plotting such as minimum frequency, maximum frequency, frequency increment, molar definitions, number of atoms, plot type, and frequency unit.
-   refreshRequired : bool
+       A dictionary containing settings related to plotting such as:
+       minimum frequency, maximum frequency, frequency increment,
+       molar definitions, number of atoms, plot type, and frequency unit.
+   refresh_required : bool
        A flag indicating whether the plot needs to be refreshed.
    subplot : matplotlib subplot object
        The subplot used for plotting data.
    vmin, vmax, vinc : float
-       Variables to store current minimum frequency, maximum frequency, and frequency increment values for the plot.
+       Variables to store current minimum frequency,
+       maximum frequency, and frequency increment values for the plot.
    molar_cb_current_index : int
        Tracks the current index of the molar definition combo box to handle changes.
    notebook : QWidget
@@ -80,21 +87,23 @@ Module Contents
    -------
    get_total_number_of_frequency_calculations()
        Calculates the total number of frequency calculations required.
-   requestRefresh()
+   request_refresh()
        Requests a refresh for the plotting.
-   requestScenarioRefresh()
+   request_scenario_refresh()
        Requests a refresh for all scenarios in the application.
-   on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value), on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value), on_plot_type_cb_activated(index)
-       Event handlers for UI component changes.
+   on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value)
+       Event handlers for frequency range UI changes.
+   on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value)
+       Event handlers for units and molar definition UI changes.
+   on_plot_type_cb_activated(index)
+       Event handler for plot type selection changes.
    refresh(force=False)
        Refreshes the plot based on current settings and data.
    plot()
        Generates and displays the plot based on the selected plot type and data.
    get_number_of_califications_required()
        Returns the number of calculations needed for updating the plot.
-   greyed_out()
-       Greys out options in the UI that are not available.
-   writeSpreadsheet()
+   write_spreadsheet()
        Writes results to a spreadsheet.
    set_concentrations()
        Sets the concentrations for the plotting based on the molar definition.
@@ -123,7 +132,9 @@ Module Contents
 
       Calculate and return the total number of frequency calculations required.
 
-      This method computes the total number of frequency calculations based on the current settings for minimum frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the increment has changed since the last update.
+      This method computes the total number of frequency calculations based on the current settings for minimum
+      frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the
+      increment has changed since the last update.
 
       Parameters
       ----------
@@ -132,22 +143,9 @@ Module Contents
       Returns
       -------
       int
-          The total number of frequency calculations required, which is the product of the number of calculations required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range computed.
-
-
-
-
-   .. py:method:: greyed_out()
-
-      Handle items that should be greyed out if they are not needed.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      int
+          The total number of frequency calculations required, which is the product of the number of calculations
+          required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range
+          computed.
 
 
 
@@ -156,7 +154,8 @@ Module Contents
 
       Handle the activation of a frequency unit combo box item.
 
-      This method updates the active frequency unit in the settings, triggers necessary refresh processes and logs the change.
+      This method updates the active frequency unit in the settings, triggers necessary refresh processes and
+      logs the change.
 
       Parameters
       ----------
@@ -169,19 +168,27 @@ Module Contents
 
       Notes
       -----
-      This method is part of a GUI application where `self` refers to an instance of the application or a relevant widget. It manages updates to the application's settings and GUI components based on the user's selection of a frequency unit from a combo box.
+      This method is part of a GUI application where `self` refers to an instance of the application or a relevant
+      widget. It manages updates to the application's settings and GUI components based on the user's selection of a
+      frequency unit from a combo box.
 
       - `self.settings` is a dictionary where application settings are stored.
-      - `self.refreshRequired` is a boolean flag used to indicate whether a refresh of certain GUI components is necessary.
-      - `self.notebook` appears to be a widget container (like a tab widget), with `fitterTab` being one of its child tabs.
-      - `self.vmin_sb` is another component (likely a spin box or similar input widget) that may need its signals blocked/unblocked during the process to avoid unwanted signal emission.
-      - The `debugger.print` calls are used for logging and are not a standard Python function; they imply the existence of a custom logging or debugging utility named `debugger`.
+      - `self.refresh_required` is a boolean flag used to indicate whether a refresh of certain GUI components
+        is necessary.
+      - `self.notebook` appears to be a widget container (like a tab widget), with `fitterTab` being one of
+        its child tabs.
+      - `self.vmin_sb` is another component (likely a spin box or similar input widget) that may need its
+        signals blocked/unblocked during the process to avoid unwanted signal emission.
+      - The `debugger.print` calls are used for logging and are not a standard Python function; they imply the
+        existence of a custom logging or debugging utility named `debugger`.
 
-      The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown here, such as `self.refresh()` and `self.notebook.fitterTab.requestRefresh()`.
+      The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown
+      here, such as `self.refresh()` and `self.notebook.fitterTab.request_refresh()`.
 
       Raises
       ------
-      This function does not explicitly raise any exceptions but depends on the proper functioning of the methods it calls and the state of `self` and its attributes.
+      This function does not explicitly raise any exceptions but depends on the proper functioning of the
+      methods it calls and the state of `self` and its attributes.
 
 
 
@@ -190,12 +197,15 @@ Module Contents
 
       Handle the activation of the molar combobox option.
 
-      This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the application state, including setting concentrations, refreshing UI elements, and potentially triggering further calculations or refreshes as needed.
+      This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the
+      application state, including setting concentrations, refreshing UI elements, and potentially triggering further
+      calculations or refreshes as needed.
 
       Parameters
       ----------
       index : int
-          The index of the selected item in the molar combobox. This index corresponds to a specific molar definition and is used to update the application settings and state accordingly.
+          The index of the selected item in the molar combobox. This index corresponds to a specific molar
+          definition and is used to update the application settings and state accordingly.
 
       Returns
       -------
@@ -213,7 +223,9 @@ Module Contents
 
       Handle the change in the number of atoms.
 
-      This method is called when the number of atoms changes. It updates the relevant setting in the instance, recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then triggers the refresh process.
+      This method is called when the number of atoms changes. It updates the relevant setting in the instance,
+      recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then
+      triggers the refresh process.
 
       Parameters
       ----------
@@ -222,8 +234,10 @@ Module Contents
 
       Notes
       -----
-      - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of the container and the number of ions, respectively.
-      - The method refreshes `self.notebook.fitterTab` object with a `requestRefresh` method to initiate the refresh process.
+      - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of
+        the container and the number of ions, respectively.
+      - The method refreshes `self.notebook.fitterTab` object with a `request_refresh` method to initiate the
+        refresh process.
 
 
 
@@ -248,13 +262,30 @@ Module Contents
 
 
 
+   .. py:method:: on_renorm_cb_activated(index)
+
+      Handle a change in the spectrum renormalisation combo box.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected item.
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: on_vinc_changed(value)
 
       Handle the change in frequency increment and update GUI accordingly.
 
-      This function is triggered when there's a change in the frequency increment value. It adjusts the number of GUI elements based on 
-      new values of minimum and maximum frequency and the changed frequency increment. It also updates the settings dict with the 
-      new frequency increment value.
+      This function is triggered when there's a change in the frequency increment value.
+      It adjusts the number of GUI elements based on new values
+      of minimum and maximum frequency and the changed frequency increment.
+      It also updates the settings dict with the new frequency increment value.
 
       Parameters
       ----------
@@ -278,7 +309,13 @@ Module Contents
 
       Handle the event when the maximum frequency setting is changed.
 
-      This method is triggered whenever there is a change in the maximum frequency setting (`vmax`). It blocks signal emission from the `vmax_sb` spinner box (presumably, a GUI element for setting `vmax`), reads the current minimum (`vmin`) and maximum (`vmax`) frequency settings, and updates the corresponding setting based on the specified frequency unit. If the frequency unit denotes a frequency, `vmax` is converted and stored as the 'Maximum frequency' in the settings dictionary in the 'wavenumber' unit. Otherwise, it updates the 'Minimum frequency' with the converted value. This method also triggers any necessary refresh operations in the user interface and finally unblocks signal emissions from the `vmax_sb`.
+      This method is triggered whenever there is a change in the maximum frequency setting (`vmax`). It blocks signal
+      emission from the `vmax_sb` spinner box (presumably, a GUI element for setting `vmax`), reads the current
+      minimum (`vmin`) and maximum (`vmax`) frequency settings, and updates the corresponding setting based on the
+      specified frequency unit. If the frequency unit denotes a frequency, `vmax` is converted and stored as the
+      'Maximum frequency' in the settings dictionary in the 'wavenumber' unit. Otherwise, it updates the 'Minimum
+      frequency' with the converted value. This method also triggers any necessary refresh operations in the user
+      interface and finally unblocks signal emissions from the `vmax_sb`.
 
       Parameters
       ----------
@@ -290,8 +327,10 @@ Module Contents
 
       Notes
       -----
-      - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
-      - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and 'Minimum frequency' keys which are updated based on the condition.
+      - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box
+        GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
+      - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and
+        'Minimum frequency' keys which are updated based on the condition.
 
 
 
@@ -320,7 +359,8 @@ Module Contents
       -----
       - Uses the `blockSignals` method on `self.vmin_sb` to prevent signal-slot recursion.
       - Adjusts settings based on a unit conversion utility function, `convert_frequency_units`.
-      - The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components' states through the requested refresh.
+      - The effect of this method extends beyond just the internal state changes; it influences the UI and
+        possibly other components' states through the requested refresh.
 
 
 
@@ -347,7 +387,7 @@ Module Contents
       Notes
       -----
       - self.notebook.mainTab.settings: Dictionary containing program settings.
-      - self.notebook.mainTab.getFullFileName(): Method that returns the currently selected filename.
+      - self.notebook.mainTab.get_full_file_name(): Method that returns the currently selected filename.
       - self.notebook.mainTab.reader: Object used for reading data files.
       - self.notebook.settingsTab.CrystalPermittivityObject: Object containing crystal permittivity settings.
       - self.settings: Dictionary containing plot-related settings such as frequency range and plot type.
@@ -360,12 +400,19 @@ Module Contents
 
       Refresh the current state based on the changes in settings, forces refresh if needed.
 
-      This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment) based on the current settings. It ensures that these settings are within logical limits. The function updates GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization plot based on the refreshed data. If the 'force' flag is set or if a refresh is deemed necessary due to significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to optimize performance.
+      This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment)
+      based on the current settings. It ensures that these settings are within logical limits. The function updates
+      GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion
+      of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization
+      plot based on the refreshed data. If the 'force' flag is set or if a refresh is deemed necessary due to
+      significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to
+      optimize performance.
 
       Parameters
       ----------
       force : bool, optional
-          A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed necessary based on internal conditions. The default is False.
+          A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed
+          necessary based on internal conditions. The default is False.
 
       Returns
       -------
@@ -375,7 +422,8 @@ Module Contents
       -----
       - The actual refresh operation involves several steps:
           - Checking if a refresh is required based on the current settings and the 'force' parameter.
-          - Temporarily blocking signals from all child widgets to prevent unintended side effects during settings updates.
+          - Temporarily blocking signals from all child widgets to prevent unintended side effects during
+            settings updates.
           - Verifying and updating frequency settings to maintain logical constraints.
           - Updating GUI components with new settings values and tooltips based on the current frequency unit.
           - Processing and plotting data based on the updated settings.
@@ -385,7 +433,7 @@ Module Contents
 
 
 
-   .. py:method:: requestRefresh()
+   .. py:method:: request_refresh()
 
       Initiate a refresh request.
 
@@ -403,11 +451,11 @@ Module Contents
 
 
 
-   .. py:method:: requestScenarioRefresh()
+   .. py:method:: request_scenario_refresh()
 
       Request a refresh on all scenarios within a notebook.
 
-      This function triggers a refresh process for the settings tab and all scenarios within the notebook. 
+      This function triggers a refresh process for the settings tab and all scenarios within the notebook.
 
       Parameters
       ----------
@@ -424,19 +472,21 @@ Module Contents
 
       Set the concentration based on the molar definition in settings.
 
-      This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
+      This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It
+      calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit
+      cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
 
 
 
-   .. py:method:: writeSpreadsheet()
+   .. py:method:: set_plot_type_for_spectroscopy(spectroscopy_type)
 
-      Update and write the results of powder and crystal scenarios to a spreadsheet.
-
-      This function navigates through each scenario defined in the `notebook` attribute, extracts relevant data such as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet object's methods for selecting worksheets, writing rows, and dealing with data transformation. The function also handles the calculation of molar absorption coefficients with unit conversion when necessary.
+      Set the plot type to an appropriate default for the given spectroscopy type.
 
       Parameters
       ----------
-      None
+      spectroscopy_type : str
+          One of 'Powder Infrared', 'Powder ATR', 'Powder Raman',
+          'Crystal Infrared', or 'Crystal Raman'.
 
       Returns
       -------
@@ -480,7 +530,9 @@ Module Contents
       vs : list
           A list containing frequency values.
       dielecv : numpy.ndarray
-          A complex numpy array where the real parts represent the real permittivities and the imaginary parts represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.
+          A complex numpy array where the real parts represent the real permittivities and the imaginary parts
+          represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the
+          number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.
 
       Returns
       -------
@@ -489,10 +541,15 @@ Module Contents
       Notes
       -----
       The function does two main tasks:
-      1. Selects the 'Real Crystal Permittivity' sheet, deletes its current content if any, and writes the real parts of the permittivity tensor for each frequency along with the frequency values themselves.
-      2. Selects the 'Imag Crystal Permittivity' sheet, deletes its current content if any, and writes the imaginary parts of the permittivity tensor for each frequency along with the frequency values themselves.
 
-      Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz, xy, xz, and yz are components of the permittivity tensor.
+      1. Selects the 'Real Crystal Permittivity' sheet, deletes its current content if any, and writes the real parts
+         of the permittivity tensor for each frequency along with the frequency values themselves.
+
+      2. Selects the 'Imag Crystal Permittivity' sheet, deletes its current content if any, and writes the imaginary
+         parts of the permittivity tensor for each frequency along with the frequency values themselves.
+
+      Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz,
+      xy, xz, and yz are components of the permittivity tensor.
       The output data starts from the second column (index 1), and for each row written, a 'check' flag is set to 1.
 
 
@@ -514,6 +571,27 @@ Module Contents
           The legends to be used as headers, alongside 'frequencies (cm-1)'.
       yss : list of lists
           A list where each element is a list of intensities corresponding to each frequency in `vs`.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: write_spreadsheet()
+
+      Update and write the results of powder and crystal scenarios to a spreadsheet.
+
+      This function navigates through each scenario defined in the `notebook` attribute, extracts relevant data such
+      as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a
+      spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet
+      object's methods for selecting worksheets, writing rows, and dealing with data transformation. The function also
+      handles the calculation of molar absorption coefficients with unit conversion when necessary.
+
+      Parameters
+      ----------
+      None
 
       Returns
       -------
@@ -562,8 +640,9 @@ Module Contents
 
 
    .. py:attribute:: plot_types
-      :value: ['Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary...
 
+
+   .. py:attribute:: plot_types_by_spectroscopy
 
 
    .. py:attribute:: plot_ylabels
@@ -575,9 +654,15 @@ Module Contents
    .. py:attribute:: reader
 
 
-   .. py:attribute:: refreshRequired
+   .. py:attribute:: refresh_required
       :value: True
 
+
+
+   .. py:attribute:: renorm_cb
+
+
+   .. py:attribute:: renorm_label
 
 
    .. py:attribute:: settings
@@ -624,7 +709,8 @@ Module Contents
 
    Convert between frequency and wavelength units.
 
-   The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
+   The input can be either a scalar value or a numpy array of values.
+   The function will return the converted value(s) in the output units specified.
    The unit strings are turned into lower-case so case is irrelevant
 
    Parameters
@@ -632,9 +718,11 @@ Module Contents
    value : scalar or numpy array
        The value(s) for which the conversion is to be made.
    unit_in : str
-       The units of the input value(s). Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
+       The units of the input value(s).
+       Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
    unit_out : str
-       The units of the output value(s). Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
+       The units of the output value(s).
+       Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
 
    Returns
    -------
@@ -643,7 +731,7 @@ Module Contents
 
 
 
-.. py:function:: isThisAFrequencyUnit(unit)
+.. py:function:: is_this_a_frequency_unit(unit)
 
    Return true if this is a frequency unit, false if a wavelength.
 
@@ -656,6 +744,8 @@ Module Contents
        True if this is a frequency unit, False if a wavelength.
 
 
+
+.. py:data:: logger
 
 .. py:data:: possible_frequency_units
    :value: ['wavenumber', 'THz', 'GHz', 'ang', 'nm', 'um', 'mm', 'cm', 'm']

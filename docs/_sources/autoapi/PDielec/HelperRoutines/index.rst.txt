@@ -11,22 +11,30 @@ PDielec.HelperRoutines
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.HelperRoutines.logger
+
+
 Functions
 ---------
 
 .. autoapisummary::
 
-   PDielec.HelperRoutines.calculateDFTPermittivityObject
-   PDielec.HelperRoutines.calculatePowderSpectrum
-   PDielec.HelperRoutines.calculateSingleCrystalSpectrum
-   PDielec.HelperRoutines.getMaterial
+   PDielec.HelperRoutines.calculate_dft_permittivity_object
+   PDielec.HelperRoutines.calculate_powder_spectrum
+   PDielec.HelperRoutines.calculate_single_crystal_spectrum
+   PDielec.HelperRoutines.get_material
    PDielec.HelperRoutines.maxwell_garnett
 
 
 Module Contents
 ---------------
 
-.. py:function:: calculateDFTPermittivityObject(reader, sigma=5.0, eckart=True, mass_definition='Average')
+.. py:function:: calculate_dft_permittivity_object(reader, sigma=5.0, eckart=True, mass_definition='Average')
 
    Define a permittivity object for the DFT calculation from the given reader.
 
@@ -53,11 +61,11 @@ Module Contents
 
    Returns
    -------
-   permittivityObject (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
+   permittivity_object (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
 
 
 
-.. py:function:: calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method='Maxwell-Garnett')
+.. py:function:: calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method='Maxwell-Garnett')
 
    Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
 
@@ -84,35 +92,38 @@ Module Contents
    -------
    ```
    frequencies_cm1 = np.arange( 0, 200, 0.2 )
-   matrix = getMaterial('ptfe')
-   dielectric = getMaterial('Sapphire')
+   matrix = get_material('ptfe')
+   dielectric = get_material('Sapphire')
    method = 'Maxwell-Garnett' 
    volume_fraction = 0.1
-   absorption,permittivity = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+   absorption,permittivity = calculate_powder_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
    ```
 
 
 
-.. py:function:: calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method='Scattering matrix')
+.. py:function:: calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method='Scattering matrix')
 
    Calculate a single crystal spectrum.
 
-   Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle
-   the global azimuthal angle and optional specification of the method of calculation.
-   Information about the layer class can be found here (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
+   Calculate a single crystal spectrum from the frequencies, a list of layers
+   (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle the global azimuthal angle and
+   optional specification of the method of calculation. Information about the layer class can be found here
+   (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
 
    Parameters
    ----------
    frequencies_cm1 : list
        A list of frequencies in cm-1.
    layers : list
-       A list of layers ( :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
+       A list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`).
    incident_angle : float
        The incident angle in degrees.
    global_azimuthal_angle : float
        The global azimuthal angle in degrees.
    method : str
-       The method for solving Maxwell's equation either 'Scattering matrix' (the default) or 'Transfer matrix. See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more information.
+       The method for solving Maxwell's equation, either 'Scattering matrix' (the default) or 'Transfer matrix'.
+       See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`)
+       for more information.
 
    Returns
    -------
@@ -129,25 +140,25 @@ Module Contents
 
    ::
 
-       air = getMaterial('air')
-       ptfe = getMaterial('ptfe')
-       Sapphire = getMaterial('Sapphire')
+       air = get_material('air')
+       ptfe = get_material('ptfe')
+       Sapphire = get_material('Sapphire')
        layers = []
        # Add a substrate
-       layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+       layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thickness_unit='um'))
         # Add the dielectric layer
-       layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+       layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thickness_unit='um',
                                         incoherentOption='Coherent'))
         # Add the superstrate
-       layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+       layers.append(SingleCrystalLayer(air,thickness=1.0,thickness_unit='um'))
        frequencies_cm1 = np.arange( 0, 200, 0.2 )
        incident_angle = 80.0
        global_azimuthal_angle = 0.0
-       (reflectance, transmittance, absorptance) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method='Scattering matrix')
+       (reflectance, transmittance, absorptance) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method='Scattering matrix')
 
 
 
-.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', eckart=True, mass_definition='Average', debug=False)
+.. py:function:: get_material(name, dataBaseName='MaterialsDataBase.xlsx', eckart=True, mass_definition='Average', debug=False)
 
    Get a material with the given name.
 
@@ -181,8 +192,8 @@ Module Contents
    Examples
    --------
    ```
-   material1 = getMaterial("example.dft")
-   material2 = getMaterial("gold")
+   material1 = get_material("example.dft")
+   material2 = get_material("gold")
    ```
 
 
@@ -206,4 +217,6 @@ Module Contents
        The dielectric constant of the mixture
 
 
+
+.. py:data:: logger
 

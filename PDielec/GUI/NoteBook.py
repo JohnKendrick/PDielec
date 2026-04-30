@@ -63,8 +63,7 @@ class NoteBook(QWidget):
     scripting : bool, optional
         Flag to indicate if the notebook is used in scripting mode, by default False.
     spectroscopy : str, optional
-        The type of default spectroscopy to load at initiation, by default 'Powder Infrared'.
-        But it can also be 'Powder ATR', 'Powder Raman', 'Crystal Infrared' or 'Crystal Raman'
+        The type of default spectroscopy to load at initiation, by default 'Powder Infrared'.  But it can also be 'Powder ATR', 'Powder Raman', 'Crystal Infrared' or 'Crystal Raman'
     ncpus : int, optional
         The number of CPUs to use, by default 0 which means autodetect.
     threading : bool, optional
@@ -586,7 +585,7 @@ class NoteBook(QWidget):
         scenarioType : str, optional
             The type of scenario to switch to. Can be: 
               'Powder Infrared', 'Crystal Infrared', 'Powder Raman', or 'Crystal Raman' or None. 
-            If None, the scenario type is determined by the current scenario's type.
+              If None, the scenario type is determined by the current scenario's type.
 
         Returns
         -------

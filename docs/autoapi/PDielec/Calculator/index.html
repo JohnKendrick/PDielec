@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.CastepOutputReader" href="../CastepOutputReader/index.html"><link rel="prev" title="PDielec.AimsOutputReader" href="../AimsOutputReader/index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>PDielec.Calculator - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -228,6 +228,8 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
@@ -237,7 +239,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,6 +247,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
@@ -271,6 +273,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
@@ -321,6 +335,18 @@
           <section id="module-PDielec.Calculator">
 <span id="pdielec-calculator"></span><h1>PDielec.Calculator<a class="headerlink" href="#module-PDielec.Calculator" title="Link to this heading">¶</a></h1>
 <p>Calculator module.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.logger" title="PDielec.Calculator.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
@@ -398,17 +424,29 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.compute_all_sg_permutations" title="PDielec.Calculator.compute_all_sg_permutations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_all_sg_permutations</span></code></a>(rot, mat)</p></td>
 <td><p>Similarity transformation by R x M x R^-1.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.construct_projection_operator" title="PDielec.Calculator.construct_projection_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_projection_operator</span></code></a>(atoms, xyzs, masses, nats)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.compute_internal_field_tensor" title="PDielec.Calculator.compute_internal_field_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_internal_field_tensor</span></code></a>(L, epsilon_i, epsilon_e)</p></td>
+<td><p>Compute the internal field tensor N (Eq. 47 of Raman-Theory.pdf).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.compute_particle_raman_tensor" title="PDielec.Calculator.compute_particle_raman_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_particle_raman_tensor</span></code></a>(R_eps, N, L, epsilon_i, ...)</p></td>
+<td><p>Compute the effective particle Raman tensor (Eq. 60 of Raman-Theory.pdf).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.compute_powder_raman_intensities" title="PDielec.Calculator.compute_powder_raman_intensities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_powder_raman_intensities</span></code></a>(R)</p></td>
+<td><p>Compute powder-averaged VV and VH Raman intensities from a Raman tensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.construct_projection_operator" title="PDielec.Calculator.construct_projection_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_projection_operator</span></code></a>(atoms, xyzs, masses, nats)</p></td>
 <td><p>Construct the projection operator for the molecule defined by atoms, xyz, masses.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.determineEulerAngles" title="PDielec.Calculator.determineEulerAngles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determineEulerAngles</span></code></a>(R)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.determine_euler_angles" title="PDielec.Calculator.determine_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_euler_angles</span></code></a>(R)</p></td>
 <td><p>Determine the euler angles of a rotation matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.direction_from_shape" title="PDielec.Calculator.direction_from_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction_from_shape</span></code></a>(data, reader)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.direction_from_shape" title="PDielec.Calculator.direction_from_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction_from_shape</span></code></a>(data, reader)</p></td>
 <td><p>Determine the unique direction of the shape from the shape data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.euler_rotation" title="PDielec.Calculator.euler_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_rotation</span></code></a>(vector, theta, phi, psi)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.euler_rotation" title="PDielec.Calculator.euler_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_rotation</span></code></a>(vector, theta, phi, psi)</p></td>
 <td><p>Apply a passive Euler rotation to a vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.euler_rotation_matrix" title="PDielec.Calculator.euler_rotation_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_rotation_matrix</span></code></a>(theta, phi, psi)</p></td>
+<td><p>Return the 3×3 SO(3) rotation matrix for the given ZYZ Euler angles.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.get_pool" title="PDielec.Calculator.get_pool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pool</span></code></a>(ncpus, threading[, initializer, initargs, ...])</p></td>
 <td><p>Return a pool of processors given the number of cpus and whether threading is requested.</p></td>
@@ -464,20 +502,26 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.oscillator_strengths" title="PDielec.Calculator.oscillator_strengths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oscillator_strengths</span></code></a>(normal_modes, born_charges)</p></td>
 <td><p>Calculate oscillator strengths from the normal modes and the born charges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.reflectance_atr" title="PDielec.Calculator.reflectance_atr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reflectance_atr</span></code></a>(ns, n0, theta, atrSPolFraction)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.raman_intensities" title="PDielec.Calculator.raman_intensities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raman_intensities</span></code></a>(raman_tensors, volume)</p></td>
+<td><p>Calculate Raman activities from per-mode Raman tensors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.reflectance_atr" title="PDielec.Calculator.reflectance_atr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reflectance_atr</span></code></a>(ns, n0, theta, s_pol_fraction)</p></td>
 <td><p>Calculate the atr s and p reflectance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.rodridgues_rotations" title="PDielec.Calculator.rodridgues_rotations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rodridgues_rotations</span></code></a>(efield)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.rodridgues_rotations" title="PDielec.Calculator.rodridgues_rotations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rodridgues_rotations</span></code></a>(efield)</p></td>
 <td><p>Take the field directions in efield and use each direction to calculate a random rotation about that axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.set_affinity_on_worker" title="PDielec.Calculator.set_affinity_on_worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_affinity_on_worker</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.set_affinity_on_worker" title="PDielec.Calculator.set_affinity_on_worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_affinity_on_worker</span></code></a>()</p></td>
 <td><p>When a new worker process is created, the affinity is set to all CPUs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.set_no_of_threads" title="PDielec.Calculator.set_no_of_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_no_of_threads</span></code></a>(nthreads)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.set_no_of_threads" title="PDielec.Calculator.set_no_of_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_no_of_threads</span></code></a>(nthreads)</p></td>
 <td><p>Set default number of threads.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.similarity_transform" title="PDielec.Calculator.similarity_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_transform</span></code></a>(rot, mat)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.similarity_transform" title="PDielec.Calculator.similarity_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_transform</span></code></a>(rot, mat)</p></td>
 <td><p>Similarity transformation by R x M x R^-1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Calculator.sobol_rotations" title="PDielec.Calculator.sobol_rotations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sobol_rotations</span></code></a>(n_samples[, seed])</p></td>
+<td><p>Return n_samples uniform SO(3) rotations via a scrambled Sobol sequence.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Calculator.solve_effective_medium_equations" title="PDielec.Calculator.solve_effective_medium_equations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_effective_medium_equations</span></code></a>(method, vf, size_mu, ...)</p></td>
 <td><p>Solve the effective medium equations.</p></td>
@@ -760,7 +804,8 @@
 </section>
 <section id="id18">
 <h3>Notes<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
-<p>This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.</p>
+<p>This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of
+Tom G. Mackay and Akhlesh Lakhtakia.</p>
 </section>
 </dd></dl>
 
@@ -796,7 +841,8 @@
 </section>
 <section id="id21">
 <h3>Notes<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
-<p>This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.</p>
+<p>This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of
+Tom G. Mackay and Akhlesh Lakhtakia.</p>
 </section>
 </dd></dl>
 
@@ -853,7 +899,10 @@
 </section>
 <section id="id26">
 <h3>Notes<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
-<p>This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive index.</p>
+<p>This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex
+refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of
+bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive
+index.</p>
 </section>
 </dd></dl>
 
@@ -1138,11 +1187,90 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Calculator.compute_internal_field_tensor">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">compute_internal_field_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#compute_internal_field_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.compute_internal_field_tensor" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the internal field tensor N (Eq. 47 of Raman-Theory.pdf).</p>
+<p>N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}</p>
+<section id="id51">
+<h3>Parameters<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>L<span class="classifier">array_like, shape (3, 3)</span></dt><dd><p>Depolarisation tensor.</p>
+</dd>
+<dt>epsilon_i<span class="classifier">array_like, shape (3, 3) or scalar</span></dt><dd><p>Optical permittivity of the particle (inclusion).</p>
+</dd>
+<dt>epsilon_e<span class="classifier">float</span></dt><dd><p>Optical permittivity of the external medium (scalar).</p>
+</dd>
+</dl>
+</section>
+<section id="id52">
+<h3>Returns<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>N<span class="classifier">ndarray, shape (3, 3), complex</span></dt><dd><p>Internal field tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Calculator.compute_particle_raman_tensor">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">compute_particle_raman_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R_eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#compute_particle_raman_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.compute_particle_raman_tensor" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the effective particle Raman tensor (Eq. 60 of Raman-Theory.pdf).</p>
+<p>R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N</p>
+<section id="id53">
+<h3>Parameters<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>R_eps<span class="classifier">array_like, shape (3, 3)</span></dt><dd><p>Crystal Raman tensor.</p>
+</dd>
+<dt>N<span class="classifier">ndarray, shape (3, 3)</span></dt><dd><p>Internal field tensor from compute_internal_field_tensor().</p>
+</dd>
+<dt>L<span class="classifier">array_like, shape (3, 3)</span></dt><dd><p>Depolarisation tensor.</p>
+</dd>
+<dt>epsilon_i<span class="classifier">array_like, shape (3, 3) or scalar</span></dt><dd><p>Optical permittivity of the particle.</p>
+</dd>
+<dt>epsilon_e<span class="classifier">float</span></dt><dd><p>Optical permittivity of the external medium.</p>
+</dd>
+</dl>
+</section>
+<section id="id54">
+<h3>Returns<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>R_particle<span class="classifier">ndarray, shape (3, 3), complex</span></dt><dd><p>Effective particle Raman tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Calculator.compute_powder_raman_intensities">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">compute_powder_raman_intensities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#compute_powder_raman_intensities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.compute_powder_raman_intensities" title="Link to this definition">¶</a></dt>
+<dd><p>Compute powder-averaged VV and VH Raman intensities from a Raman tensor.</p>
+<p>Implements the Placzek rotational-invariant formula (Eqs. 90-99 of
+Raman-Theory.pdf).  Uses the 3/2 Placzek normalisation for γ² and κ²,
+which is consistent with the numerical SO(3)-averaging path.</p>
+<section id="id55">
+<h3>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>R<span class="classifier">array_like, shape (3, 3)</span></dt><dd><p>Raman tensor (may be complex).</p>
+</dd>
+</dl>
+</section>
+<section id="id56">
+<h3>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>vv<span class="classifier">float</span></dt><dd><p>VV (parallel) powder intensity: 45α² + 4γ² + 5κ²</p>
+</dd>
+<dt>vh<span class="classifier">float</span></dt><dd><p>VH (crossed) powder intensity: 3γ² + 5κ²</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.construct_projection_operator">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">construct_projection_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyzs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#construct_projection_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.construct_projection_operator" title="Link to this definition">¶</a></dt>
 <dd><p>Construct the projection operator for the molecule defined by atoms, xyz, masses.</p>
-<section id="id51">
-<h3>Parameters<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h3>
+<section id="id57">
+<h3>Parameters<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>atoms<span class="classifier">list strings</span></dt><dd><p>The atom types</p>
 </dd>
@@ -1154,8 +1282,8 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 </dd>
 </dl>
 </section>
-<section id="id52">
-<h3>Returns<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h3>
+<section id="id58">
+<h3>Returns<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>type</dt><dd><p>The projection operators for this molecule</p>
 </dd>
@@ -1164,18 +1292,18 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PDielec.Calculator.determineEulerAngles">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">determineEulerAngles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#determineEulerAngles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.determineEulerAngles" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.Calculator.determine_euler_angles">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">determine_euler_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#determine_euler_angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.determine_euler_angles" title="Link to this definition">¶</a></dt>
 <dd><p>Determine the euler angles of a rotation matrix.</p>
-<section id="id53">
-<h3>Parameters<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h3>
+<section id="id59">
+<h3>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>R<span class="classifier">tensor (3,3)</span></dt><dd><p>The rotation matrix</p>
 </dd>
 </dl>
 </section>
-<section id="id54">
-<h3>Returns<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
+<section id="id60">
+<h3>Returns<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>theta, phi, psi<span class="classifier">float</span></dt><dd><p>The Euler angles</p>
 </dd>
@@ -1187,8 +1315,8 @@ the largest imaginary component to satisfy the Konig-Kramer conditions.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.direction_from_shape">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">direction_from_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#direction_from_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.direction_from_shape" title="Link to this definition">¶</a></dt>
 <dd><p>Determine the unique direction of the shape from the shape data.</p>
-<section id="id55">
-<h3>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
+<section id="id61">
+<h3>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>data<span class="classifier">list of strings</span></dt><dd><p>Data may contain a miller indices which defines a surface, e.g., (1,1,-1),
 or a direction as a miller direction vector, e.g., [1,0,-1].</p>
@@ -1197,8 +1325,8 @@ or a direction as a miller direction vector, e.g., [1,0,-1].</p>
 </dd>
 </dl>
 </section>
-<section id="id56">
-<h3>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h3>
+<section id="id62">
+<h3>Returns<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>out<span class="classifier">vector (3)</span></dt><dd><p>Description of the unique direction determined from the data.</p>
 </dd>
@@ -1210,8 +1338,8 @@ or a direction as a miller direction vector, e.g., [1,0,-1].</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.euler_rotation">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">euler_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#euler_rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.euler_rotation" title="Link to this definition">¶</a></dt>
 <dd><p>Apply a passive Euler rotation to a vector.</p>
-<section id="id57">
-<h3>Parameters<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
+<section id="id63">
+<h3>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>vector<span class="classifier">vector (3)</span></dt><dd><p>The vector to be rotated</p>
 </dd>
@@ -1223,12 +1351,12 @@ or a direction as a miller direction vector, e.g., [1,0,-1].</p>
 </dd>
 </dl>
 </section>
-<section id="id58">
-<h3>Returns<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h3>
+<section id="id64">
+<h3>Returns<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
 <p>vector (3)</p>
 </section>
-<section id="id59">
-<h3>Notes<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h3>
+<section id="id65">
+<h3>Notes<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h3>
 <p>A passive Euler rotation refers to the rotation of the coordinate system
 while the vector remains fixed. This operation is often used in
 physics and engineering to describe the orientation of an object
@@ -1237,11 +1365,46 @@ with respect to a reference coordinate system.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Calculator.euler_rotation_matrix">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">euler_rotation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#euler_rotation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.euler_rotation_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Return the 3×3 SO(3) rotation matrix for the given ZYZ Euler angles.</p>
+<section id="id66">
+<h3>Parameters<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>theta<span class="classifier">float</span></dt><dd><p>The polar angle (rotation about Y axis) in radians.</p>
+</dd>
+<dt>phi<span class="classifier">float</span></dt><dd><p>The first azimuthal angle (rotation about Z axis) in radians.</p>
+</dd>
+<dt>psi<span class="classifier">float</span></dt><dd><p>The second azimuthal angle (rotation about Z axis) in radians.</p>
+</dd>
+</dl>
+</section>
+<section id="id67">
+<h3>Returns<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ndarray, shape (3, 3)</dt><dd><p>The rotation matrix R such that a tensor T transforms as R &#64; T &#64; R.T.</p>
+</dd>
+</dl>
+</section>
+<section id="id68">
+<h3>Notes<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h3>
+<p>Uses the same ZYZ Euler convention as <a class="reference internal" href="#PDielec.Calculator.euler_rotation" title="PDielec.Calculator.euler_rotation"><code class="xref py py-func docutils literal notranslate"><span class="pre">euler_rotation()</span></code></a>.
+Uniform sampling over SO(3) is obtained by drawing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>phi   = 2π U₁
+theta = arccos(2 U₂ - 1)
+psi   = 2π U₃
+</pre></div>
+</div>
+<p>where U₁, U₂, U₃ are independent Uniform[0, 1) random variables.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.get_pool">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">get_pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ncpus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threading</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debugger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#get_pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.get_pool" title="Link to this definition">¶</a></dt>
 <dd><p>Return a pool of processors given the number of cpus and whether threading is requested.</p>
-<section id="id60">
-<h3>Parameters<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h3>
+<section id="id69">
+<h3>Parameters<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ncpus<span class="classifier">int</span></dt><dd><p>the number of processors</p>
 </dd>
@@ -1255,8 +1418,8 @@ with respect to a reference coordinate system.</p>
 </dd>
 </dl>
 </section>
-<section id="id61">
-<h3>Returns<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h3>
+<section id="id70">
+<h3>Returns<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
 <p>pool : the pool of processors</p>
 </section>
 </dd></dl>
@@ -1265,8 +1428,8 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.hodrick_prescott_filter">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">hodrick_prescott_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">niters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#hodrick_prescott_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.hodrick_prescott_filter" title="Link to this definition">¶</a></dt>
 <dd><p>Apply a Hodrick Prescott filter to the spectrum in x, y.</p>
-<section id="id62">
-<h3>Parameters<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h3>
+<section id="id71">
+<h3>Parameters<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>y<span class="classifier">array_like</span></dt><dd><p>The experimental absorption data.</p>
 </dd>
@@ -1278,12 +1441,12 @@ with respect to a reference coordinate system.</p>
 </dd>
 </dl>
 </section>
-<section id="id63">
-<h3>Returns<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
+<section id="id72">
+<h3>Returns<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
 <p>list of floats : The new spectrum</p>
 </section>
-<section id="id64">
-<h3>Notes<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
+<section id="id73">
+<h3>Notes<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h3>
 <p>Based on ideas in the thesis of Mayank Kaushik (University Adelaide).</p>
 </section>
 </dd></dl>
@@ -1292,8 +1455,8 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.infrared_intensities">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">infrared_intensities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oscillator_strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#infrared_intensities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.infrared_intensities" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the IR intensities from the trace of the oscillator strengths.</p>
-<section id="id65">
-<h3>Returns<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h3>
+<section id="id74">
+<h3>Returns<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>np.array</dt><dd><p>An array of the calculated IR intensities in units of (D/A)^2/amu.</p>
 </dd>
@@ -1305,15 +1468,15 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.initialise_complex_diagonal_tensor">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">initialise_complex_diagonal_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reals</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#initialise_complex_diagonal_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.initialise_complex_diagonal_tensor" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise a complex 3x3 tensor with the given diagonal components.</p>
-<section id="id66">
-<h3>Parameters<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h3>
+<section id="id75">
+<h3>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>reals<span class="classifier">list</span></dt><dd><p>A list of 3 real numbers for the diagonals.</p>
 </dd>
 </dl>
 </section>
-<section id="id67">
-<h3>Returns<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h3>
+<section id="id76">
+<h3>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>array</dt><dd><p>The returned tensor is a complex 3x3 array.</p>
 </dd>
@@ -1325,15 +1488,15 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.initialise_diagonal_tensor">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">initialise_diagonal_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reals</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#initialise_diagonal_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.initialise_diagonal_tensor" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise a real 3x3 tensor with the given diagonal components.</p>
-<section id="id68">
-<h3>Parameters<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h3>
+<section id="id77">
+<h3>Parameters<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>reals<span class="classifier">list</span></dt><dd><p>A list of 3 real numbers for the diagonals.</p>
 </dd>
 </dl>
 </section>
-<section id="id69">
-<h3>Returns<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h3>
+<section id="id78">
+<h3>Returns<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>array</dt><dd><p>The returned tensor is a real 3x3 array.</p>
 </dd>
@@ -1345,8 +1508,8 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.initialise_ellipsoid_depolarisation_matrix">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">initialise_ellipsoid_depolarisation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unique</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aoverb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#initialise_ellipsoid_depolarisation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.initialise_ellipsoid_depolarisation_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise a 3x3 tensor with the ellipsoid depolarisation matrix.</p>
-<section id="id70">
-<h3>Parameters<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
+<section id="id79">
+<h3>Parameters<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>unique<span class="classifier">list of 3 floats</span></dt><dd><p>Unique direction for ellipsoid</p>
 </dd>
@@ -1354,8 +1517,8 @@ with respect to a reference coordinate system.</p>
 </dd>
 </dl>
 </section>
-<section id="id71">
-<h3>Returns<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h3>
+<section id="id80">
+<h3>Returns<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>np.array</dt><dd><p>The Ellipsoid dpolarisation tensor</p>
 </dd>
@@ -1367,15 +1530,15 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.initialise_needle_depolarisation_matrix">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">initialise_needle_depolarisation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unique</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#initialise_needle_depolarisation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.initialise_needle_depolarisation_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise a 3x3 tensor with the needle depolarisation matrix.</p>
-<section id="id72">
-<h3>Parameters<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
+<section id="id81">
+<h3>Parameters<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>unique: np.array</dt><dd><p>The unique direction of the needle</p>
 </dd>
 </dl>
 </section>
-<section id="id73">
-<h3>Returns<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h3>
+<section id="id82">
+<h3>Returns<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ndarray</dt><dd><p>A 3x3 tensor initialized with the plate depolarisation matrix.</p>
 </dd>
@@ -1387,15 +1550,15 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.initialise_plate_depolarisation_matrix">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">initialise_plate_depolarisation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#initialise_plate_depolarisation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.initialise_plate_depolarisation_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise a 3x3 tensor with the plate depolarisation matrix, returns a tensor.</p>
-<section id="id74">
-<h3>Parameters<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h3>
+<section id="id83">
+<h3>Parameters<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>normal<span class="classifier">np.array</span></dt><dd><p>A 3 vector giving the normal direction of the plate</p>
 </dd>
 </dl>
 </section>
-<section id="id75">
-<h3>Returns<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h3>
+<section id="id84">
+<h3>Returns<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ndarray</dt><dd><p>A 3x3 tensor initialized with the plate depolarisation matrix.</p>
 </dd>
@@ -1411,8 +1574,8 @@ with respect to a reference coordinate system.</p>
 <h3>Parmeters<a class="headerlink" href="#parmeters" title="Link to this heading">¶</a></h3>
 <p>None</p>
 </section>
-<section id="id76">
-<h3>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h3>
+<section id="id85">
+<h3>Returns<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ndarray</dt><dd><p>A 3x3 tensor representing the sphere depolarisation matrix.</p>
 </dd>
@@ -1424,12 +1587,12 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.initialise_unit_tensor">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">initialise_unit_tensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#initialise_unit_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.initialise_unit_tensor" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise a 3x3 tensor to a unit tensor.</p>
-<section id="id77">
-<h3>Parameters<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h3>
+<section id="id86">
+<h3>Parameters<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h3>
 <p>None</p>
 </section>
-<section id="id78">
-<h3>Returns<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h3>
+<section id="id87">
+<h3>Returns<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>array</dt><dd><p>The returned tensor is a 3x3 array.</p>
 </dd>
@@ -1441,8 +1604,8 @@ with respect to a reference coordinate system.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.ionic_permittivity">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">ionic_permittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oscillator_strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#ionic_permittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.ionic_permittivity" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the low frequency permittivity or zero frequency permittivity.</p>
-<section id="id79">
-<h3>Parameters<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h3>
+<section id="id88">
+<h3>Parameters<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>mode_list<span class="classifier">list</span></dt><dd><p>List of integers giving the active modes</p>
 </dd>
@@ -1454,15 +1617,15 @@ with respect to a reference coordinate system.</p>
 </dd>
 </dl>
 </section>
-<section id="id80">
-<h3>Returns<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h3>
+<section id="id89">
+<h3>Returns<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>3x3 np.array</dt><dd><p>The calculated low frequency permittivity or zero frequency permittivity.</p>
 </dd>
 </dl>
 </section>
-<section id="id81">
-<h3>Notes<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h3>
+<section id="id90">
+<h3>Notes<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h3>
 <p>The calculation of low frequency permittivity or zero frequency permittivity
 requires oscillator strengths, frequencies, and volume all to be specified
 in atomic units.</p>
@@ -1473,8 +1636,8 @@ in atomic units.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.longitudinal_modes">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">longitudinal_modes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">born_charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#longitudinal_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.longitudinal_modes" title="Link to this definition">¶</a></dt>
 <dd><p>Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies.</p>
-<section id="id82">
-<h3>Parameters<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h3>
+<section id="id91">
+<h3>Parameters<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>frequencies<span class="classifier">array_like</span></dt><dd><p>The frequencies (f) in atomic units.</p>
 </dd>
@@ -1496,15 +1659,15 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 </dd>
 </dl>
 </section>
-<section id="id83">
-<h3>Returns<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h3>
+<section id="id92">
+<h3>Returns<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>list</dt><dd><p>A list of (real) frequencies in atomic units. Any imaginary frequencies are set to 0.</p>
 </dd>
 </dl>
 </section>
-<section id="id84">
-<h3>Notes<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h3>
+<section id="id93">
+<h3>Notes<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h3>
 <p>If projection was requested in the reader, the correction is modified to ensure translational invariance.</p>
 </section>
 </dd></dl>
@@ -1513,8 +1676,8 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 <dt class="sig sig-object py" id="PDielec.Calculator.maxwell">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">maxwell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dielectric_medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_permittivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#maxwell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.maxwell" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the effective constant permittivity using the Maxwell Garnett method.</p>
-<section id="id85">
-<h3>Parameters<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h3>
+<section id="id94">
+<h3>Parameters<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>dielectric_medium<span class="classifier">tensor (3x3)</span></dt><dd><p>The dielectric constant tensor of the medium.</p>
 </dd>
@@ -1530,8 +1693,8 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 </dd>
 </dl>
 </section>
-<section id="id86">
-<h3>Returns<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h3>
+<section id="id95">
+<h3>Returns<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>tensor (3x3)</dt><dd><p>The effective dielectric constant.</p>
 </dd>
@@ -1543,8 +1706,8 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 <dt class="sig sig-object py" id="PDielec.Calculator.maxwell_sihvola">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">maxwell_sihvola</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dielectric_medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_permittivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#maxwell_sihvola"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.maxwell_sihvola" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the effective constant permittivity using the Maxwell Garnett method.</p>
-<section id="id87">
-<h3>Parameters<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h3>
+<section id="id96">
+<h3>Parameters<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>dielectric_medium<span class="classifier">tensor (3x3)</span></dt><dd><p>The dielectric constant tensor of the medium.</p>
 </dd>
@@ -1560,8 +1723,8 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 </dd>
 </dl>
 </section>
-<section id="id88">
-<h3>Returns<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h3>
+<section id="id97">
+<h3>Returns<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>tensor</dt><dd><p>The effective dielectric constant.</p>
 </dd>
@@ -1573,8 +1736,8 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 <dt class="sig sig-object py" id="PDielec.Calculator.mie_scattering">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">mie_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dielectric_medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_permittivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_distribution_sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#mie_scattering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.mie_scattering" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the effective constant permittivity using a Mie scattering approach.</p>
-<section id="id89">
-<h3>Parameters<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h3>
+<section id="id98">
+<h3>Parameters<a class="headerlink" href="#id98" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>dielectric_medium<span class="classifier">array_like (3x3)</span></dt><dd><p>Dielectric constant tensor of the medium.</p>
 </dd>
@@ -1594,15 +1757,15 @@ where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of
 </dd>
 </dl>
 </section>
-<section id="id90">
-<h3>Returns<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h3>
+<section id="id99">
+<h3>Returns<a class="headerlink" href="#id99" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>float or array_like</dt><dd><p>The effective dielectric constant.</p>
 </dd>
 </dl>
 </section>
-<section id="id91">
-<h3>Notes<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h3>
+<section id="id100">
+<h3>Notes<a class="headerlink" href="#id100" title="Link to this heading">¶</a></h3>
 <p>In this method, the MG method is used to calculate the averaged effective permittivity.
 Then, the permittivity of the isotropic sphere that would give the same average permittivity is calculated.
 Finally, the Mie scattering of that sphere is calculated. The routine returns the effective dielectric constant.</p>
@@ -1615,8 +1778,8 @@ Finally, the Mie scattering of that sphere is calculated. The routine returns th
 <dd><p>Transform from mass weighted coordinates to xyz.</p>
 <p>Note this returns an array object. The returned normal modes have NOT been renormalized.
 The input masses are in atomic units. The output normal modes are in atomic units.</p>
-<section id="id92">
-<h3>Parameters<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h3>
+<section id="id101">
+<h3>Parameters<a class="headerlink" href="#id101" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>masses<span class="classifier">array of floats</span></dt><dd><p>The masses in atomic units</p>
 </dd>
@@ -1624,15 +1787,15 @@ The input masses are in atomic units. The output normal modes are in atomic unit
 </dd>
 </dl>
 </section>
-<section id="id93">
-<h3>Returns<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h3>
+<section id="id102">
+<h3>Returns<a class="headerlink" href="#id102" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>np.array</dt><dd><p>An array of xyz coordinates derived from mass-weighted coordinates.</p>
 </dd>
 </dl>
 </section>
-<section id="id94">
-<h3>Notes<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h3>
+<section id="id103">
+<h3>Notes<a class="headerlink" href="#id103" title="Link to this heading">¶</a></h3>
 <p>The transformation to xyz coordinates does not involve renormalization of the normal modes.
 Both the input masses and the output normal modes are in atomic units.</p>
 </section>
@@ -1643,22 +1806,22 @@ Both the input masses and the output normal modes are in atomic units.</p>
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">orthogonalise_projection_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#orthogonalise_projection_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.orthogonalise_projection_operator" title="Link to this definition">¶</a></dt>
 <dd><p>Orthogonalise the list of projection operators ps.</p>
 <p>Use Gramm Schmidt orthogonalisation to perform the operation</p>
-<section id="id95">
-<h3>Parameters<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h3>
+<section id="id104">
+<h3>Parameters<a class="headerlink" href="#id104" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ps<span class="classifier">list of operators</span></dt><dd><p>The projection operators to orthogonalise.</p>
 </dd>
 </dl>
 </section>
-<section id="id96">
-<h3>Returns<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h3>
+<section id="id105">
+<h3>Returns<a class="headerlink" href="#id105" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>out<span class="classifier">list of operators</span></dt><dd><p>The orthogonalised projection operators.</p>
 </dd>
 </dl>
 </section>
-<section id="id97">
-<h3>Notes<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h3>
+<section id="id106">
+<h3>Notes<a class="headerlink" href="#id106" title="Link to this heading">¶</a></h3>
 <p>This function orthogonalises a set of projection operators.</p>
 </section>
 </dd></dl>
@@ -1667,8 +1830,8 @@ Both the input masses and the output normal modes are in atomic units.</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.oscillator_strengths">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">oscillator_strengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal_modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">born_charges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#oscillator_strengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.oscillator_strengths" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate oscillator strengths from the normal modes and the born charges.</p>
-<section id="id98">
-<h3>Parameters<a class="headerlink" href="#id98" title="Link to this heading">¶</a></h3>
+<section id="id107">
+<h3>Parameters<a class="headerlink" href="#id107" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>normal_modes<span class="classifier">array_like</span></dt><dd><p>Normal modes are in the mass weighted coordinate system and normalized.</p>
 </dd>
@@ -1676,8 +1839,8 @@ Both the input masses and the output normal modes are in atomic units.</p>
 </dd>
 </dl>
 </section>
-<section id="id99">
-<h3>Returns<a class="headerlink" href="#id99" title="Link to this heading">¶</a></h3>
+<section id="id108">
+<h3>Returns<a class="headerlink" href="#id108" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>array_like</dt><dd><p>Oscillator strengths calculated from the given normal modes and born charges.</p>
 </dd>
@@ -1686,11 +1849,69 @@ Both the input masses and the output normal modes are in atomic units.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Calculator.raman_intensities">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">raman_intensities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raman_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#raman_intensities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.raman_intensities" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate Raman activities from per-mode Raman tensors.</p>
+<p>For each mode the powder-averaged isotropic Raman activity is computed
+from the three rotational invariants of the Raman tensor:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}R_m^{\rm total} = V \left(45\alpha^2 + 7G^{(2)} + 5G^{(1)}\right)\\R_m^{\parallel}  = V \left(30\alpha^2 + 4G^{(2)}\right)\\R_m^{\perp}      = V \left(15\alpha^2 + 3G^{(2)}\right)\end{aligned}\end{align} \]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha = \operatorname{Tr}(R)/3\)</span> is the isotropic invariant,
+<span class="math notranslate nohighlight">\(G^{(2)}\)</span> is the symmetric anisotropy invariant (sum of squares of the
+traceless symmetric part), <span class="math notranslate nohighlight">\(G^{(1)}\)</span> is the antisymmetric invariant
+(sum of squares of the antisymmetric part), and <span class="math notranslate nohighlight">\(V\)</span> is the unit-cell
+volume in Å³.</p>
+<p>The factor of <span class="math notranslate nohighlight">\(V\)</span> converts from the code’s internal tensor convention
+(CASTEP-style, units <code class="docutils literal notranslate"><span class="pre">(Å/amu)^{0.5}</span></code>, i.e. divided by <code class="docutils literal notranslate"><span class="pre">√V_cell</span></code>) to the
+convention used in Raman-Theory.pdf (Eq. 18), where the Raman tensor is
+defined as <span class="math notranslate nohighlight">\(\mathbf{R}^{(m)} = \partial\boldsymbol{\alpha}/\partial Q_m\)</span>
+without the <code class="docutils literal notranslate"><span class="pre">√V</span></code> normalisation.  Because the stored tensors <span class="math notranslate nohighlight">\(T\)</span>
+satisfy <span class="math notranslate nohighlight">\(\mathbf{R}^{(m)} = \sqrt{V}\,T\)</span>, squaring gives an extra
+factor of <span class="math notranslate nohighlight">\(V\)</span>.</p>
+<p>The parallel and perpendicular components follow Eqs. 26–27 of Raman-Theory.pdf
+(<span class="math notranslate nohighlight">\(R^{\parallel} = 10G^{(0)} + 4G^{(2)}\)</span>,
+<span class="math notranslate nohighlight">\(R^{\perp} = 5G^{(0)} + 3G^{(2)}\)</span> with <span class="math notranslate nohighlight">\(G^{(0)} = 3\alpha^2\)</span>),
+and their sum equals <span class="math notranslate nohighlight">\(R^{\rm total}\)</span> when <span class="math notranslate nohighlight">\(G^{(1)} = 0\)</span>.</p>
+<section id="id109">
+<h3>Parameters<a class="headerlink" href="#id109" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>raman_tensors<span class="classifier">list of array_like</span></dt><dd><p>Per-mode 3×3 Raman tensors as stored by the output readers.
+Units are <code class="docutils literal notranslate"><span class="pre">(Å/amu)^{0.5}</span></code> per element (i.e. the derivative of the
+polarisability volume with respect to the mass-weighted normal
+coordinate, divided by <code class="docutils literal notranslate"><span class="pre">√V_cell</span></code>).</p>
+</dd>
+<dt>volume<span class="classifier">float</span></dt><dd><p>Unit-cell volume in Å³.</p>
+</dd>
+</dl>
+</section>
+<section id="id110">
+<h3>Returns<a class="headerlink" href="#id110" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>np.ndarray, shape (nmodes, 3)</dt><dd><p>Per-mode Raman activities in units of <code class="docutils literal notranslate"><span class="pre">Å⁴/amu</span></code>, consistent with the
+Raman-Theory.pdf convention.  Columns are
+<code class="docutils literal notranslate"><span class="pre">[:,</span> <span class="pre">0]</span></code> total, <code class="docutils literal notranslate"><span class="pre">[:,</span> <span class="pre">1]</span></code> parallel, <code class="docutils literal notranslate"><span class="pre">[:,</span> <span class="pre">2]</span></code> perpendicular.</p>
+</dd>
+</dl>
+</section>
+<section id="id111">
+<h3>Notes<a class="headerlink" href="#id111" title="Link to this heading">¶</a></h3>
+<p>The rotational invariants used here:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha  = \operatorname{Tr}(R)/3\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(G^{(2)} = \sum_{ij}(R_{\rm sym,\,traceless})_{ij}^2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(G^{(1)} = \sum_{ij}(R_{\rm anti})_{ij}^2\)</span></p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Calculator.reflectance_atr">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">reflectance_atr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atrSPolFraction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#reflectance_atr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.reflectance_atr" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">reflectance_atr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_pol_fraction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#reflectance_atr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.reflectance_atr" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the atr s and p reflectance.</p>
-<section id="id100">
-<h3>Parameters<a class="headerlink" href="#id100" title="Link to this heading">¶</a></h3>
+<section id="id112">
+<h3>Parameters<a class="headerlink" href="#id112" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ns<span class="classifier">complex</span></dt><dd><p>The complex permittivity of the effective medium.</p>
 </dd>
@@ -1698,12 +1919,12 @@ Both the input masses and the output normal modes are in atomic units.</p>
 </dd>
 <dt>theta<span class="classifier">float</span></dt><dd><p>The angle of incidence in degrees.</p>
 </dd>
-<dt>atrSPolFraction<span class="classifier">float</span></dt><dd><p>The fraction of S wave to be considered. The amount of P wave is 1 - atrSPolFraction.</p>
+<dt>s_pol_fraction<span class="classifier">float</span></dt><dd><p>The fraction of S wave to be considered. The amount of P wave is 1 - s_pol_fraction.</p>
 </dd>
 </dl>
 </section>
-<section id="id101">
-<h3>Returns<a class="headerlink" href="#id101" title="Link to this heading">¶</a></h3>
+<section id="id113">
+<h3>Returns<a class="headerlink" href="#id113" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>rs<span class="classifier">float</span></dt><dd><p>The s-wave Fresnel amplitude.</p>
 </dd>
@@ -1726,22 +1947,23 @@ where I3 is a unit matrix, e is the direction, and ex is the cross product matri
 &amp;\text{ex} = \begin{pmatrix} 0 &amp; -e3 &amp; e2 \\ e3 &amp; 0 &amp; -e1 \\ -e2 &amp; e1 &amp; 0 \end{pmatrix}
 \end{align}\end{split}\]</div>
 </div>
-<section id="id102">
-<h3>Parameters<a class="headerlink" href="#id102" title="Link to this heading">¶</a></h3>
+<section id="id114">
+<h3>Parameters<a class="headerlink" href="#id114" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>efield<span class="classifier">array_like</span></dt><dd><p>The field directions, where each direction is used to calculate a random rotation about that axis. Assumes the field is real.</p>
+<dt>efield<span class="classifier">array_like</span></dt><dd><p>The field directions, where each direction is used to calculate a random rotation about that axis.
+Assumes the field is real.</p>
 </dd>
 </dl>
 </section>
-<section id="id103">
-<h3>Returns<a class="headerlink" href="#id103" title="Link to this heading">¶</a></h3>
+<section id="id115">
+<h3>Returns<a class="headerlink" href="#id115" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>list of ndarray</dt><dd><p>A list of rotation matrices for each direction in efield.</p>
 </dd>
 </dl>
 </section>
-<section id="id104">
-<h3>Notes<a class="headerlink" href="#id104" title="Link to this heading">¶</a></h3>
+<section id="id116">
+<h3>Notes<a class="headerlink" href="#id116" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>The input field is assumed to be real.</p></li>
 <li><p>Output is a list of 3x3 rotation matrices.</p></li>
@@ -1759,8 +1981,8 @@ where I3 is a unit matrix, e is the direction, and ex is the cross product matri
 <dt class="sig sig-object py" id="PDielec.Calculator.set_no_of_threads">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">set_no_of_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nthreads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#set_no_of_threads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.set_no_of_threads" title="Link to this definition">¶</a></dt>
 <dd><p>Set default number of threads.</p>
-<section id="id105">
-<h3>Parameters<a class="headerlink" href="#id105" title="Link to this heading">¶</a></h3>
+<section id="id117">
+<h3>Parameters<a class="headerlink" href="#id117" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>nthreads<span class="classifier">int the number of threads to be used</span></dt><dd><p>The number of threads to be applied</p>
 </dd>
@@ -1776,8 +1998,8 @@ BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB</p>
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">similarity_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#similarity_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.similarity_transform" title="Link to this definition">¶</a></dt>
 <dd><p>Similarity transformation by R x M x R^-1.</p>
 <p>This routine was taken from Phonopy.</p>
-<section id="id106">
-<h3>Parameters<a class="headerlink" href="#id106" title="Link to this heading">¶</a></h3>
+<section id="id118">
+<h3>Parameters<a class="headerlink" href="#id118" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>rot<span class="classifier">3x3 floats</span></dt><dd><p>The rotation matrix</p>
 </dd>
@@ -1788,13 +2010,37 @@ BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PDielec.Calculator.solve_effective_medium_equations">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">solve_effective_medium_equations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_distribution_sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrixPermittivityFunction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concentration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atrPermittivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atrTheta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atrSPol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bubble_vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bubble_radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">previous_solution_shared</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#solve_effective_medium_equations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.solve_effective_medium_equations" title="Link to this definition">¶</a></dt>
-<dd><p>Solve the effective medium equations.</p>
-<section id="id107">
-<h3>Parameters<a class="headerlink" href="#id107" title="Link to this heading">¶</a></h3>
+<dt class="sig sig-object py" id="PDielec.Calculator.sobol_rotations">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">sobol_rotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#sobol_rotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.sobol_rotations" title="Link to this definition">¶</a></dt>
+<dd><p>Return n_samples uniform SO(3) rotations via a scrambled Sobol sequence.</p>
+<p>Uses James Arvo’s “Fast Random Rotation” method.</p>
+<section id="id119">
+<h3>Parameters<a class="headerlink" href="#id119" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>method<span class="classifier">str</span></dt><dd><p>The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity, maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie.</p>
+<dt>n_samples<span class="classifier">int</span></dt><dd><p>Number of rotation matrices to generate.</p>
+</dd>
+<dt>seed<span class="classifier">int, optional</span></dt><dd><p>Seed for the Sobol scrambler (default 42).</p>
+</dd>
+</dl>
+</section>
+<section id="id120">
+<h3>Returns<a class="headerlink" href="#id120" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>list of ndarray, each shape (3, 3)</dt><dd><p>Orthogonal rotation matrices (det = +1).</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Calculator.solve_effective_medium_equations">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">solve_effective_medium_equations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_distribution_sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix_permittivity_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concentration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bubble_vf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bubble_radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">previous_solution_shared</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#solve_effective_medium_equations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.solve_effective_medium_equations" title="Link to this definition">¶</a></dt>
+<dd><p>Solve the effective medium equations.</p>
+<section id="id121">
+<h3>Parameters<a class="headerlink" href="#id121" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>method<span class="classifier">str</span></dt><dd><p>The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity,
+maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie.</p>
 </dd>
 <dt>vf<span class="classifier">float</span></dt><dd><p>The volume fraction of dielectric.</p>
 </dd>
@@ -1802,7 +2048,7 @@ BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB</p>
 </dd>
 <dt>size_distribution_sigma<span class="classifier">float</span></dt><dd><p>The width of the size distribution.</p>
 </dd>
-<dt>matrixPermittivityFunction<span class="classifier">function</span></dt><dd><p>Function returning the matrix permittivity at a frequency.</p>
+<dt>matrix_permittivity_function<span class="classifier">function</span></dt><dd><p>Function returning the matrix permittivity at a frequency.</p>
 </dd>
 <dt>shape<span class="classifier">str</span></dt><dd><p>The shape of the particles.</p>
 </dd>
@@ -1810,24 +2056,19 @@ BLAS implementations include: MKL, OPENBLAS, OMP, NUMEXPR, BLIS and VECLIB</p>
 </dd>
 <dt>concentration<span class="classifier">float</span></dt><dd><p>The concentration of particles.</p>
 </dd>
-<dt>atrPermittivity<span class="classifier">float</span></dt><dd><p>The permittivity of the ATR substrate.</p>
-</dd>
-<dt>atrTheta<span class="classifier">float</span></dt><dd><p>The ATR angle of incidence.</p>
-</dd>
-<dt>atrSPol<span class="classifier">str</span></dt><dd><p>The ATR polarisation.</p>
-</dd>
 <dt>bubble_vf<span class="classifier">float</span></dt><dd><p>Volume fraction of bubbles.</p>
 </dd>
 <dt>bubble_radius<span class="classifier">float</span></dt><dd><p>The radius of bubbles.</p>
 </dd>
 <dt>previous_solution_shared<span class="classifier">bool</span></dt><dd><p>Use the previous solution to speed up iterations in the case of Bruggeman and coherent methods.</p>
 </dd>
-<dt>atuple<span class="classifier">tuple</span></dt><dd><p>A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of the permittivity of the crystal at a given frequency (crystalPermittivity).</p>
+<dt>atuple<span class="classifier">tuple</span></dt><dd><p>A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of the permittivity of the crystal
+at a given frequency (crystalPermittivity).</p>
 </dd>
 </dl>
 </section>
-<section id="id108">
-<h3>Returns<a class="headerlink" href="#id108" title="Link to this heading">¶</a></h3>
+<section id="id122">
+<h3>Returns<a class="headerlink" href="#id122" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>Tuple of results</dt><dd><p>v_cm1
 method
@@ -1837,8 +2078,7 @@ shape
 data
 trace
 absorption_coefficient
-molar_absorption_coefficient
-spatr</p>
+molar_absorption_coefficient</p>
 </dd>
 </dl>
 </section>
@@ -1848,8 +2088,8 @@ spatr</p>
 <dt class="sig sig-object py" id="PDielec.Calculator.waterman_truell_scattering">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">waterman_truell_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda_vacuum_nm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_nm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_nm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ri_medium</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#waterman_truell_scattering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.waterman_truell_scattering" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the effective wavenumber based on Waterman-Truell scattering model.</p>
-<section id="id109">
-<h3>Parameters<a class="headerlink" href="#id109" title="Link to this heading">¶</a></h3>
+<section id="id123">
+<h3>Parameters<a class="headerlink" href="#id123" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>lambda_vacuum_nm<span class="classifier">float</span></dt><dd><p>Wavelength of the incident light in vacuum, in nanometers.</p>
 </dd>
@@ -1861,8 +2101,8 @@ spatr</p>
 </dd>
 </dl>
 </section>
-<section id="id110">
-<h3>Returns<a class="headerlink" href="#id110" title="Link to this heading">¶</a></h3>
+<section id="id124">
+<h3>Returns<a class="headerlink" href="#id124" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>new_k<span class="classifier">complex</span></dt><dd><p>The complex effective wavenumber calculated based on the Waterman-Truell
 scattering model, which accounts for the multiple scattering effects
@@ -1870,8 +2110,8 @@ among the particles in the medium.</p>
 </dd>
 </dl>
 </section>
-<section id="id111">
-<h3>Notes<a class="headerlink" href="#id111" title="Link to this heading">¶</a></h3>
+<section id="id125">
+<h3>Notes<a class="headerlink" href="#id125" title="Link to this heading">¶</a></h3>
 <p>The Waterman-Truell scattering model is a method to calculate the effective
 wavenumber of a medium containing scatterers. This calculation takes into
 account the size of the scatterers, their number density, and the refractive
@@ -1882,6 +2122,11 @@ wave propagation in the medium. This model is particularly useful in the study
 of wave scattering in composite materials and biological tissues.</p>
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.Calculator.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.Calculator.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -1942,6 +2187,7 @@ of wave scattering in composite materials and biological tissues.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDielec.Calculator</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.Calculator._brug_iter_error"><code class="docutils literal notranslate"><span class="pre">_brug_iter_error()</span></code></a></li>
@@ -1968,10 +2214,14 @@ of wave scattering in composite materials and biological tissues.</p>
 <li><a class="reference internal" href="#PDielec.Calculator.cleanup_symbol"><code class="docutils literal notranslate"><span class="pre">cleanup_symbol()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.coherent"><code class="docutils literal notranslate"><span class="pre">coherent()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.compute_all_sg_permutations"><code class="docutils literal notranslate"><span class="pre">compute_all_sg_permutations()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.compute_internal_field_tensor"><code class="docutils literal notranslate"><span class="pre">compute_internal_field_tensor()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.compute_particle_raman_tensor"><code class="docutils literal notranslate"><span class="pre">compute_particle_raman_tensor()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.compute_powder_raman_intensities"><code class="docutils literal notranslate"><span class="pre">compute_powder_raman_intensities()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.construct_projection_operator"><code class="docutils literal notranslate"><span class="pre">construct_projection_operator()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Calculator.determineEulerAngles"><code class="docutils literal notranslate"><span class="pre">determineEulerAngles()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.determine_euler_angles"><code class="docutils literal notranslate"><span class="pre">determine_euler_angles()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.direction_from_shape"><code class="docutils literal notranslate"><span class="pre">direction_from_shape()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.euler_rotation"><code class="docutils literal notranslate"><span class="pre">euler_rotation()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.euler_rotation_matrix"><code class="docutils literal notranslate"><span class="pre">euler_rotation_matrix()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.get_pool"><code class="docutils literal notranslate"><span class="pre">get_pool()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.hodrick_prescott_filter"><code class="docutils literal notranslate"><span class="pre">hodrick_prescott_filter()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.infrared_intensities"><code class="docutils literal notranslate"><span class="pre">infrared_intensities()</span></code></a></li>
@@ -1990,13 +2240,16 @@ of wave scattering in composite materials and biological tissues.</p>
 <li><a class="reference internal" href="#PDielec.Calculator.normal_modes"><code class="docutils literal notranslate"><span class="pre">normal_modes()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.orthogonalise_projection_operator"><code class="docutils literal notranslate"><span class="pre">orthogonalise_projection_operator()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.oscillator_strengths"><code class="docutils literal notranslate"><span class="pre">oscillator_strengths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.raman_intensities"><code class="docutils literal notranslate"><span class="pre">raman_intensities()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.reflectance_atr"><code class="docutils literal notranslate"><span class="pre">reflectance_atr()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.rodridgues_rotations"><code class="docutils literal notranslate"><span class="pre">rodridgues_rotations()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.set_affinity_on_worker"><code class="docutils literal notranslate"><span class="pre">set_affinity_on_worker()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.set_no_of_threads"><code class="docutils literal notranslate"><span class="pre">set_no_of_threads()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.similarity_transform"><code class="docutils literal notranslate"><span class="pre">similarity_transform()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.sobol_rotations"><code class="docutils literal notranslate"><span class="pre">sobol_rotations()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.solve_effective_medium_equations"><code class="docutils literal notranslate"><span class="pre">solve_effective_medium_equations()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Calculator.waterman_truell_scattering"><code class="docutils literal notranslate"><span class="pre">waterman_truell_scattering()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Calculator.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2010,11 +2263,11 @@ of wave scattering in composite materials and biological tissues.</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     <script>window.MathJax = {"extensions": ["AMSmath.js"], "tex": {"macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

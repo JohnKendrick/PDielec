@@ -125,6 +125,7 @@ class TestB4AbsorbingSaturation:
     Field penetration depth δ ≈ λ / (4π n'') ≈ 500 / (4π × 2) ≈ 20 nm.
 
     Pass criterion:
+
     - Signal does not grow indefinitely (relative change < 1 % from
       320 nm to 640 nm, i.e. 16–32 penetration depths).
     - A layer with even higher absorption gives a smaller or equal

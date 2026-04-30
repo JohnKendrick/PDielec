@@ -24,6 +24,14 @@ PDielec.DielectricFunction
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.DielectricFunction.logger
+
+
 Classes
 -------
 
@@ -109,7 +117,7 @@ Module Contents
 
        permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])
        df = ConstantTensor(permittivity)
-       newMaterial = Material('New material name',permittivityObject=df,cell=UnitCell(2, 2, 2))
+       newMaterial = Material('New material name',permittivity_object=df,cell=UnitCell(2, 2, 2))
 
 
 
@@ -179,7 +187,7 @@ Module Contents
 
 
 
-   .. py:method:: getFrequencies()
+   .. py:method:: get_frequencies()
 
       Return the frequencies of a DFT permittivity.
 
@@ -197,7 +205,7 @@ Module Contents
 
 
 
-   .. py:method:: getOscillatorStrengths()
+   .. py:method:: get_oscillator_strengths()
 
       Return the oscillator strengths of a DFT permittivity.
 
@@ -215,7 +223,7 @@ Module Contents
 
 
 
-   .. py:method:: getSigmas()
+   .. py:method:: get_sigmas()
 
       Return the sigma parameters of a DFT permittivity.
 
@@ -233,7 +241,7 @@ Module Contents
 
 
 
-   .. py:method:: setFrequencies(frequencies)
+   .. py:method:: set_frequencies(frequencies)
 
       Set the frequencies of a DFT permittivity.
 
@@ -251,7 +259,7 @@ Module Contents
 
 
 
-   .. py:method:: setOscillatorStrengths(strengths)
+   .. py:method:: set_oscillator_strengths(strengths)
 
       Set the oscillator strengths of a DFT permittivity.
 
@@ -269,7 +277,7 @@ Module Contents
 
 
 
-   .. py:method:: setSigmas(sigmas)
+   .. py:method:: set_sigmas(sigmas)
 
       Set the sigma parameters of a DFT permittivity.
 
@@ -341,25 +349,25 @@ Module Contents
 
    Methods
    -------
-   setVolume(volume)
+   set_volume(volume)
        Change the unit cell volume.
-   setEpsilonInfinity(eps)
+   set_epsilon_infinity(eps)
        Change epsilon infinity.
    function()
        Return the calculate function for this object.
    calculate(v)
        Return the value of the permittivity at frequency v.
-   setFrequencies(frequencies)
+   set_frequencies(frequencies)
        Set frequencies 
-   getFrequencies()
+   get_frequencies()
        Get frequencies 
-   setSigmas(sigmas)
+   set_sigmas(sigmas)
        Set sigmas 
-   getSigmas()
+   get_sigmas()
        Get sigmas 
-   setOscillatorStrengths(strengths)
+   set_oscillator_strengths(strengths)
        Set strengths 
-   getOscillatorStrengths()
+   get_oscillator_strengths()
        Get strengths 
    dielectricContributionsFromDrude(f, frequency, sigma, volume)
        Calculates permittivity from a Drude Model.
@@ -368,7 +376,7 @@ Module Contents
 
 
 
-   .. py:method:: dielectriContributionsFromDrude(f, frequency, sigma, volume)
+   .. py:method:: dielectric_contributions_from_drude(f, frequency, sigma, volume)
 
       Calculate the dielectric function for a set of a Drude oscillator.
 
@@ -393,7 +401,7 @@ Module Contents
 
 
 
-   .. py:method:: dielectriContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
+   .. py:method:: dielectric_contributions_from_modes(f, modes, frequencies, sigmas, strengths, volume)
 
       Calculate the dielectric function for a set of modes.
 
@@ -435,7 +443,7 @@ Module Contents
 
 
 
-   .. py:method:: getFrequencies()
+   .. py:method:: get_frequencies()
 
       Return the frequencies of a Lorentzian permittivity.
 
@@ -452,7 +460,7 @@ Module Contents
 
 
 
-   .. py:method:: getHighestFrequency()
+   .. py:method:: get_highest_frequency()
 
       Return the highest tabulated frequency in cm-1.
 
@@ -468,7 +476,7 @@ Module Contents
 
 
 
-   .. py:method:: getLowestFrequency()
+   .. py:method:: get_lowest_frequency()
 
       Return the lowest tabulated frequency in cm-1.
 
@@ -483,7 +491,7 @@ Module Contents
 
 
 
-   .. py:method:: getOscillatorStrengths()
+   .. py:method:: get_oscillator_strengths()
 
       Return the oscillator strengths of a Lorentzian permittivity.
 
@@ -500,7 +508,7 @@ Module Contents
 
 
 
-   .. py:method:: getSigmas()
+   .. py:method:: get_sigmas()
 
       Return the sigma parameters of a Lorentzian permittivity.
 
@@ -517,7 +525,7 @@ Module Contents
 
 
 
-   .. py:method:: isScalar()
+   .. py:method:: is_scalar()
 
       Return true if the dielectric function is a scalar.
 
@@ -533,7 +541,7 @@ Module Contents
 
 
 
-   .. py:method:: isTensor()
+   .. py:method:: is_tensor()
 
       Return true if the dielectric function is a tensor.
 
@@ -573,7 +581,7 @@ Module Contents
 
 
 
-   .. py:method:: setEpsilonInfinity(eps)
+   .. py:method:: set_epsilon_infinity(eps)
 
       Set epsilon infinity for dielectric calculations.
 
@@ -589,7 +597,7 @@ Module Contents
 
 
 
-   .. py:method:: setFrequencies(frequencies)
+   .. py:method:: set_frequencies(frequencies)
 
       Set the frequencies of a Lorentzian permittivity.
 
@@ -607,7 +615,7 @@ Module Contents
 
 
 
-   .. py:method:: setOscillatorStrengths(strengths)
+   .. py:method:: set_oscillator_strengths(strengths)
 
       Set the oscillator strengths of a Lorentzian permittivity.
 
@@ -625,7 +633,7 @@ Module Contents
 
 
 
-   .. py:method:: setSigmas(sigmas)
+   .. py:method:: set_sigmas(sigmas)
 
       Set the sigma parameters of a Lorentzian permittivity.
 
@@ -643,7 +651,7 @@ Module Contents
 
 
 
-   .. py:method:: setVolume(volume)
+   .. py:method:: set_volume(volume)
 
       Set the volume for dielectric calculations.
 
@@ -716,7 +724,7 @@ Module Contents
 
 
 
-   .. py:method:: getFrequencies()
+   .. py:method:: get_frequencies()
 
       Return the frequencies of a Drude-Lorentz permittivity.
 
@@ -734,7 +742,7 @@ Module Contents
 
 
 
-   .. py:method:: getOscillatorStrengths()
+   .. py:method:: get_oscillator_strengths()
 
       Return the oscillator strengths of a Drude-Lorentz permittivity.
 
@@ -752,7 +760,7 @@ Module Contents
 
 
 
-   .. py:method:: getSigmas()
+   .. py:method:: get_sigmas()
 
       Return the sigma parameters of a Lorentzian permittivity.
 
@@ -769,7 +777,7 @@ Module Contents
 
 
 
-   .. py:method:: setFrequencies(frequencies)
+   .. py:method:: set_frequencies(frequencies)
 
       Set the frequencies of a Drude-Lorentz permittivity.
 
@@ -787,7 +795,7 @@ Module Contents
 
 
 
-   .. py:method:: setOscillatorStrengths(strengths)
+   .. py:method:: set_oscillator_strengths(strengths)
 
       Set the oscillator strengths of a Drude-Lorentz permittivity.
 
@@ -805,7 +813,7 @@ Module Contents
 
 
 
-   .. py:method:: setSigmas(sigmas)
+   .. py:method:: set_sigmas(sigmas)
 
       Set the sigma parameters of a Drude-Lorentz permittivity.
 
@@ -1121,4 +1129,6 @@ Module Contents
 
    .. py:attribute:: vs_cm1
 
+
+.. py:data:: logger
 

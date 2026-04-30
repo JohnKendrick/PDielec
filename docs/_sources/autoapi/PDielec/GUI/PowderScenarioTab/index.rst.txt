@@ -9,6 +9,14 @@ PDielec.GUI.PowderScenarioTab
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.PowderScenarioTab.logger
+
+
 Classes
 -------
 
@@ -20,15 +28,15 @@ Classes
 Module Contents
 ---------------
 
-.. py:class:: PowderScenarioTab(parent, debug=False)
+.. py:class:: PowderScenarioTab(parent, spectroscopy='Powder Infrared', debug=False)
 
    Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
 
 
-   A class for managing the Powder Scenario Tab.
+   A class for managing the Powder Infrared Scenario Tab.
 
    It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
-   with additional features and settings pertinent to powder scenarios.
+   with additional features and settings pertinent to powder infrared scenarios.
 
    Parameters
    ----------
@@ -39,15 +47,15 @@ Module Contents
 
    Attributes
    ----------
-   scenarioType : str
-       Defines the type of scenario as 'Powder'.
+   spectroscopy : str
+       Defines the type of spectrocopy as 'Powder Infrared'.
    settings : dict
        Dictionary holding various settings related to the scenario.
    methods : list
        List of available effective medium methods.
    shapes : list
        List of available particle shapes.
-   materialNames : list
+   material_names : list
        List of available material names.
    materialDefined : bool
        Indicates whether the material is defined manually or not.
@@ -57,9 +65,9 @@ Module Contents
        Array defining the depolarisation factors.
    scenarioIndex : any
        Index associated with the current scenario.
-   refreshRequired : bool
+   refresh_required : bool
        Indicates if UI refresh is required.
-   calculationRequired : bool
+   calculation_required : bool
        Indicates if recalculation is required due to parameter changes.
    reader : An dft output reader
        Used to read external data.
@@ -76,9 +84,21 @@ Module Contents
 
    Methods
    -------
+   initialise_infrared_gui()
+       Set the gui appropriate for an infrared calculation
+   initialise_atr_gui()
+       Set the gui appropriate for an atr calculation
+   initialise_raman_gui()
+       Set the settings appropriate for an raman calculation
+   initialise_infrared_settings()
+       Set the settings appropriate for an infrared calculation
+   initialise_atr_settings()
+       Set the settings appropriate for an atr calculation
+   initialise_raman_settings()
+       Set the settings appropriate for an raman calculation
    crystal_density()
        Compute and return the density of the crystal based on its volume and mass.
-   openDB_button_clicked()
+   open_db_button_clicked()
        Handler for the event where the database open button is clicked.
    on_h_sb_changed(value)
        Handler for changes in the 'h' dimension parameter of the crystal's unique direction.
@@ -97,7 +117,7 @@ Module Contents
    on_aoverb_sb_changed(value)
        Handler for changes to the ellipsoid a/b ratio or eccentricity.
    on_legend_le_changed(text)
-       Handler for changes to the legend label of the powder scenario.
+       Handler for changes to the legend label of the scenario.
    on_sigma_sb_changed(value)
        Handler for changes to the particle size distribution sigma.
    on_size_sb_changed(value)
@@ -124,22 +144,61 @@ Module Contents
        Handle changes to the ATR incident angle spinbox.
    on_atr_spolfrac_sb_changed(value)
        Handle changes to the ATR s-polarisation fraction spinbox.
+   on_laser_frequency_sb_changed(value)
+       Handle changes to the laser frequency spin box
+   on_polarisation_cb_activated(index)
+       Handle changes to polarisation setting for the experiment
+   on_temperature_sb_changed(value)
+       Handle changes to temperature spin box
    change_greyed_out()
        Enable or disable elements of the GUI based on the current scenario settings.
    calculate(vs_cm1)
-       Calculate the powder absorption for the given frequency range.
+       Calls the _calculate_?? routines based on the spectroscopy 
+   _calculate_atr(vs_cm1)
+       Calculate the ATR spectrum
+   _calculate_infrared(vs_cm1)
+       Calculate the infrared powder absorption for the given frequency range.
+   _calculate_raman(vs_cm1)
+       Calculate the powder Raman scattering for the given frequency range.
+   calculate_depolarisation_tensor()
+       Calculate the depolarisation tensor
    get_result(vs_cm1, plot_type)
        Return the calculation result for the specified plot type.
    get_results(vs_cm1)
        Prepare the necessary results for displaying or processing.
    refresh(force=False)
        Refresh the GUI interface with up to date values.
+   refresh_raman()
+       Refresh the raman gui components
+   refresh_infrared()
+       Refresh the infrared gui components
+   refresh_atr()
+       Refresh the atr gui components
 
 
 
-   .. py:method:: calculate(vs_cm1)
+   .. py:method:: _calculate_atr(vs_cm1)
 
-      Calculate the powder absorption for the range of frequencies in vs_cm1.
+      Calculate the ATR powder spectrum for the range of frequencies in vs_cm1.
+
+      Calls _calculate_infrared to obtain the effective medium permittivity, then
+      computes the ATR reflectance from the stored complex permittivity values.
+
+      Parameters
+      ----------
+      vs_cm1 : array_like
+          Array of frequencies for which to calculate the ATR spectrum.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _calculate_infrared(vs_cm1)
+
+      Calculate the powder infrared absorption for the range of frequencies in vs_cm1.
 
       Parameters
       ----------
@@ -154,11 +213,252 @@ Module Contents
 
 
 
+   .. py:method:: _calculate_infrared_none(vs_cm1)
+
+      Calculate the powder infrared spectrum directly from DFT data, bypassing EMT.
+
+      Used when the matrix material is 'none'.  The isotropic average of the
+      DFT crystal permittivity tensor (trace/3) is used directly as the
+      effective permittivity; no effective medium correction is applied.
+      The absorption coefficient is derived from the imaginary refractive
+      index in the same way as for the normal EMT path.
+
+      Parameters
+      ----------
+      vs_cm1 : array_like
+          Array of frequencies in cm^-1.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _calculate_raman(vs_cm1)
+
+      Calculate the powder Raman spectrum for the range of frequencies in vs_cm1.
+
+      Implements the macroscopic approach (Section 4.2 of Raman-Theory.pdf) for
+      small ellipsoidal particles embedded in a non-absorbing matrix.
+
+      Two code paths are used depending on particle shape:
+
+      * **Sphere** — the depolarisation tensor L = I/3 is rotationally invariant, so
+        R_particle(Ω) = R @ R_particle_crystal @ R.T is a pure rank-2 tensor rotation
+        and the analytical rotational invariants (Eqs. 90-99) are exact.
+      * **Non-sphere** — D^{particle} is diagonalised once in the crystal frame
+        (ΔD is orientation-invariant); for each of ``n_samples`` SO(3) orientations
+        the orientation-dependent N_bg_lab(Ω) is recomputed and used to evaluate the
+        effective particle Raman tensor R_particle(Ω) (Eq. 60), whose contribution is
+        accumulated into the spectrum.
+
+      Parameters
+      ----------
+      vs_cm1 : array_like
+          Array of frequencies for which to calculate the Raman spectrum.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Results are stored in ``self.raman_spectrum`` as a list of intensities in
+      arbitrary units, one per frequency in ``vs_cm1``.
+
+
+
+
+   .. py:method:: _compute_orientation_sampled_spectrum(L, epsilon_e, epsilon_inf_i, I3, raman_tensors, sigmas_cm1, modes_selected, polarisation, nu_L, temperature, n_samples, vs_cm1, progress_callback=None)
+
+      Compute the powder Raman spectrum for non-spherical particles by numerical SO(3) averaging.
+
+      The particle dynamical matrix correction ΔD is orientation-invariant (proof: rotating
+      L, ε_inf, and Z to the lab frame and back always recovers ΔD_crystal), so D^{particle}
+      is diagonalised **once** before the orientation loop.  For each sampled orientation
+      Ω ∈ SO(3) only the orientation-dependent internal field tensor N_bg_lab(Ω) is
+      recomputed; this is used to apply the local-field correction (Eq. 60) to the
+      pre-rotated Raman tensors.  Scattering strengths (Eq. 77) are accumulated as
+      Lorentzian contributions (Eq. 88) and normalised by ``n_samples``.
+
+      Parameters
+      ----------
+      L : ndarray, shape (3, 3)
+          Crystal-frame depolarisation tensor.
+      epsilon_e : float
+          Optical permittivity of the external medium (scalar).
+      epsilon_inf_i : ndarray, shape (3, 3)
+          Optical permittivity tensor of the inclusion (crystal frame).
+      I3 : ndarray, shape (3, 3)
+          3×3 identity matrix.
+      raman_tensors : list of ndarray
+          Bulk TO Raman tensors (crystal frame), one 3×3 array per mode.
+      sigmas_cm1 : list of float
+          Lorentzian half-widths in cm⁻¹ (one per TO mode).
+      modes_selected : list of bool
+          Mode selection flags (one per TO mode).
+      polarisation : str
+          One of ``"VV"``, ``"VH"``, ``"HV"``, ``"Unpolarised"``.
+      nu_L : float
+          Laser frequency in cm⁻¹.
+      temperature : float
+          Sample temperature in K.
+      n_samples : int
+          Number of SO(3) orientations to sample.
+      vs_cm1 : ndarray, shape (n_freqs,)
+          Frequency axis for the spectrum in cm⁻¹.
+      progress_callback : callable or None, optional
+          If provided, called once after each orientation sample to allow the
+          caller to update a progress bar.  The callable takes no arguments.
+
+      Returns
+      -------
+      spectrum : ndarray, shape (n_freqs,)
+          Accumulated and normalised Raman spectrum.
+
+      Notes
+      -----
+      Polarisation vectors follow the backscattering geometry with the laser along Z:
+      VV uses ``e_L = e_S = [0, 1, 0]``; VH uses ``e_S = [1, 0, 0]``; Unpolarised
+      sums both.  The rotation ``R`` maps crystal-frame coordinates to the lab frame.
+
+      The Born-charge α-index transforms as a vector under rotation, i.e.
+      ``Z_lab[α, κβ] = Σ_γ R[α, γ] Z_crystal[γ, κβ]``, so
+      ``Z_mat_lab = R @ Z_mat_crystal``.
+
+      The Lorentzian width and mode-selection flags are inherited from the dominant
+      TO component of each particle mode (same heuristic as ``_compute_particle_modes``).
+
+
+
+
+   .. py:method:: _compute_particle_modes(N_bg, L, epsilon_e, epsilon_inf_i, I3, raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected)
+
+      Compute particle phonon frequencies and Raman tensors in the particle normal-mode basis.
+
+      Implements Eqs. 73-74 of Raman-Theory.pdf.  The particle dynamical matrix
+
+      .. math::
+
+          D^{\mathrm{particle}} = D^{TO} + \frac{4\pi}{\varepsilon_e V}
+              \left(Z^{mw}\right)^T N_{bg} L Z^{mw}
+
+      where :math:`Z^{mw}_{\alpha,\kappa\beta} = Z_{\alpha,\kappa\beta}/\sqrt{M_\kappa}`
+      (Eq. 64) carries **no volume factor**, and :math:`V` is the unit-cell volume
+      (explicit in the :math:`1/V` prefactor, consistent with Eq. 73).
+      The matrix is diagonalised (Eq. 74) to give phonon frequencies and normal modes
+      appropriate for a small particle with depolarisation tensor L embedded in a medium
+      with permittivity ε_e.  The bulk Raman tensors are transformed into the resulting
+      particle normal-mode basis.
+
+      Parameters
+      ----------
+      N_bg : ndarray, shape (3, 3)
+          Background internal field tensor (≈ N from Eqs. 47 and 67-68).
+      L : ndarray, shape (3, 3)
+          Depolarisation tensor for the particle shape.
+      epsilon_e : float
+          Optical permittivity of the external medium (scalar).
+      epsilon_inf_i : ndarray, shape (3, 3)
+          Optical permittivity tensor of the inclusion.
+      I3 : ndarray, shape (3, 3)
+          3×3 identity matrix.
+      raman_tensors : list of ndarray
+          Bulk TO Raman tensors (one per TO mode, each 3×3).
+      frequencies_cm1 : list of float
+          Bulk TO frequencies in cm^{-1}.
+      sigmas_cm1 : list of float
+          Lorentzian half-widths in cm^{-1} (one per TO mode).
+      modes_selected : list of bool
+          Mode selection flags (one per TO mode).
+
+      Returns
+      -------
+      particle_freqs : ndarray, shape (3N,)
+          Particle phonon frequencies in cm^{-1}.
+      particle_raman : list of ndarray
+          Raman tensors in the particle normal-mode basis (one 3×3 array per mode).
+      particle_sigmas : list of float
+          Lorentzian half-widths inherited from the dominant TO component.
+      particle_selected : list of bool
+          Mode selection flags inherited from the dominant TO component.
+
+      Notes
+      -----
+      The correction uses the Gaussian-unit convention ``1/ε₀ → 4π`` that matches
+      the non-analytic correction in :func:`~PDielec.Calculator.longitudinal_modes`.
+      The Born charge matrix Z' = Z*/√M carries **no volume factor**; the volume
+      enters only as ``1/V`` in the prefactor ``4π/(ε_e V)``.  This is consistent
+      with the NAC prefactor ``4π/V`` in ``longitudinal_modes``.  The Born charges
+      are in units of the elementary charge (dimensionless), masses in electron-mass
+      units, and the volume in Bohr³.
+
+
+
+
+   .. py:method:: _get_sobol_rotations(n_samples)
+      :staticmethod:
+
+
+      Return ``n_samples`` rotations in SO(3) drawn uniformly via a Sobol sequence.
+
+      Delegates to :func:`PDielec.Calculator.sobol_rotations` with the fixed
+      seed used for reproducible powder averaging.
+
+      Parameters
+      ----------
+      n_samples : int
+          Number of orientations required.
+
+      Returns
+      -------
+      list of ndarray, each shape (3, 3)
+          Orthogonal rotation matrices (det = +1).
+
+
+
+   .. py:method:: calculate(vs_cm1)
+
+      Calculate the powder spectrum for the range of frequencies in vs_cm1.
+
+      Dispatches to the appropriate calculation method based on the spectroscopy
+      type set in the settings tab.
+
+      Parameters
+      ----------
+      vs_cm1 : array_like
+          Array of frequencies for which to calculate the powder spectrum.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: calculate_depolarisation_tensor()
+
+      Calculate the depolarisation tensor.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      L : np.array 3x3
+
+
+
+
    .. py:method:: change_greyed_out()
 
       Modify UI elements based on the selected effective medium method.
 
-      This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the currently selected effective medium method in the settings. It also updates the particle shape setting if necessary and adjusts the UI to reflect any changes.
+      This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the
+      currently selected effective medium method in the settings. It also updates the particle shape setting if
+      necessary and adjusts the UI to reflect any changes.
 
       Parameters
       ----------
@@ -170,11 +470,13 @@ Module Contents
 
       Notes
       -----
-      - The method checks the 'Effective medium method' and 'Particle shape' in the settings.
-      - For 'Mie' and 'Anisotropic-Mie' methods, it enables size and sigma spinboxes and sets the particle shape to 'Sphere', disabling all other shapes.
-      - For 'Averaged Permittivity', it disables size and sigma spinboxes and sets the particle shape to 'Sphere'.
-      - For 'Maxwell-Garnett' and 'Bruggeman', it enables the size spinbox and disables the sigma spinbox, allowing all shapes to be selected.
-      - If the particle shape is set to 'Ellipsoid', 'Plate', or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere', it disables these spinboxes.
+      - The method checks the 'Effective medium method' and 'Particle shape' in the settings. - For 'Mie' and
+        'Anisotropic-Mie' methods, it enables size and sigma spinboxes and sets the particle shape to 'Sphere',
+        disabling all other shapes. - For 'Averaged Permittivity', it disables size and sigma spinboxes and sets the
+        particle shape to 'Sphere'. - For 'Maxwell-Garnett' and 'Bruggeman', it enables the size spinbox and disables
+        the sigma spinbox, allowing all shapes to be selected. - If the particle shape is set to 'Ellipsoid', 'Plate',
+        or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere',
+        it disables these spinboxes.
 
 
 
@@ -198,10 +500,11 @@ Module Contents
       Parameters
       ----------
       vs_cm1 : list
-          A list of frequencies in cm-1
+          A list of frequencies in cm-1.
       plot_type : str
-          A string indicating the type of result to return.
-          One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR'
+          A string indicating the type of result to return. One of: 'Powder Molar Absorption', 'Powder Absorption',
+          'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR'.
+
 
       Returns
       -------
@@ -230,6 +533,105 @@ Module Contents
 
 
 
+   .. py:method:: initialise_atr_gui(vbox, form)
+
+      Initialise the GUI for atr calculations.
+
+      Parameters
+      ----------
+      vbox : QVBoxLayout
+          vbox is defined by the PowderScenarioTab initialised
+      form : QFormLayout
+          form is defined by the PowderScenarioTab initialised
+
+      Returns
+      -------
+      vbox, form
+
+
+
+
+   .. py:method:: initialise_atr_settings()
+
+      Set the settings attribute for atr calculations.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: initialise_infrared_gui(vbox, form)
+
+      Initialise the GUI for atr calculations.
+
+      Parameters
+      ----------
+      vbox : QVBoxLayout
+          vbox is defined by the PowderScenarioTab initialised
+      form : QFormLayout
+          form is defined by the PowderScenarioTab initialised
+
+      Returns
+      -------
+      vbox, form
+
+
+
+
+   .. py:method:: initialise_infrared_settings()
+
+      Set the settings attribute for infrared calculations.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: initialise_raman_gui(vbox, form)
+
+      Initialise the GUI for atr calculations.
+
+      Parameters
+      ----------
+      vbox : QVBoxLayout
+          vbox is defined by the PowderScenarioTab initialised
+      form : QFormLayout
+          form is defined by the PowderScenarioTab initialised
+
+      Returns
+      -------
+      vbox, form
+
+
+
+
+   .. py:method:: initialise_raman_settings()
+
+      Set the settings attribute for raman calculations.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: on_aoverb_sb_changed(value)
 
       Handle a change to the a/b ratio for an ellipsoid.
@@ -246,7 +648,8 @@ Module Contents
 
       Handle the update to the ATR incident angle situation.
 
-      This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.
+      This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update
+      to ensure the new settings are reflected across the application.
 
       Parameters
       ----------
@@ -296,8 +699,9 @@ Module Contents
 
       Notes
       -----
-      - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S polarisation fraction'.
-      - The refresh flag `self.refreshRequired` is set to `True` to indicate that some action is needed to reflect the change in the application.
+      - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S
+        polarisation fraction'. - The refresh flag `self.refresh_required` is set to `True` to indicate that some
+        action is needed to reflect the change in the application.
 
 
 
@@ -388,6 +792,18 @@ Module Contents
 
 
 
+   .. py:method:: on_laser_frequency_sb_changed(value)
+
+      Handle a change to the Raman laser frequency.
+
+      Parameters
+      ----------
+      value : float
+          The laser wavelength in nm.
+
+
+
+
    .. py:method:: on_legend_le_changed(text)
 
       Handle a legend change.
@@ -447,6 +863,18 @@ Module Contents
 
 
 
+   .. py:method:: on_orientation_samples_cb_activated(index)
+
+      Handle a change to the number of orientation samples.
+
+      Parameters
+      ----------
+      index : int
+          Index into the orientation sample count list.
+
+
+
+
    .. py:method:: on_permittivity_i_sb_changed(value)
 
       Update the imaginary part of the permittivity in the matrix material settings and trigger a refresh.
@@ -462,9 +890,10 @@ Module Contents
 
       Notes
       -----
-      - Updates the imaginary part of the `Matrix permittivity` in the settings dictionary with the new value, keeping the real part unchanged.
-      - Replaces the permittivity object of the matrix material with a new constant scalar permittivity object created using the updated `Matrix permittivity`.
-      - Marks the matrix material as manually defined and triggers a required refresh to update any dependent calculations or displays.
+      - Updates the imaginary part of the `Matrix permittivity` in the settings dictionary with the new value, keeping
+        the real part unchanged. - Replaces the permittivity object of the matrix material with a new constant scalar
+        permittivity object created using the updated `Matrix permittivity`. - Marks the matrix material as manually
+        defined and triggers a required refresh to update any dependent calculations or displays.
 
 
 
@@ -485,9 +914,21 @@ Module Contents
 
 
 
+   .. py:method:: on_polarisation_cb_activated(index)
+
+      Handle a change to the Raman polarisation configuration.
+
+      Parameters
+      ----------
+      index : int
+          Index into the polarisation list ["VV", "VH", "HV", "Unpolarised"].
+
+
+
+
    .. py:method:: on_shape_cb_activated(index)
 
-      Handle changes to the shape of the powder particles.
+      Handle changes to the shape of the particles.
 
       Parameters
       ----------
@@ -521,6 +962,18 @@ Module Contents
 
 
 
+   .. py:method:: on_temperature_sb_changed(value)
+
+      Handle a change to the sample temperature.
+
+      Parameters
+      ----------
+      value : float
+          The temperature in K.
+
+
+
+
    .. py:method:: on_vf_sb_changed(value)
 
       Handle a volume fraction change, alter the mass fraction accordingly.
@@ -533,7 +986,7 @@ Module Contents
 
 
 
-   .. py:method:: openDB_button_clicked()
+   .. py:method:: open_db_button_clicked()
 
       Open a new materials' database.
 
@@ -552,6 +1005,51 @@ Module Contents
       ----------
       force : bool
           If True, then a refresh is forced regardless of the state of the scenario.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: refresh_atr()
+
+      Refresh the atr settings in the GUI.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: refresh_infrared()
+
+      Refresh the infrared settings in the GUI.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: refresh_raman()
+
+      Refresh the raman settings in the GUI.
+
+      Parameters
+      ----------
+      None
 
       Returns
       -------
@@ -582,153 +1080,13 @@ Module Contents
 
 
 
-   .. py:attribute:: absorptionCoefficient
-      :value: []
-
-
-
-   .. py:attribute:: aoverb_sb
-
-
-   .. py:attribute:: atr_incident_ang_sb
-
-
-   .. py:attribute:: atr_index_sb
-
-
-   .. py:attribute:: atr_spolfrac_sb
-
-
-   .. py:attribute:: bubble_radius_sb
-
-
-   .. py:attribute:: bubble_vf_sb
-
-
-   .. py:attribute:: calculationRequired
-      :value: False
-
-
-
-   .. py:attribute:: density_sb
-
-
-   .. py:attribute:: depolarisation
-
-
-   .. py:attribute:: direction
-
-
-   .. py:attribute:: h_sb
-
-
-   .. py:attribute:: hkl_label
-
-
-   .. py:attribute:: imagPermittivity
-      :value: []
-
-
-
-   .. py:attribute:: k_sb
-
-
-   .. py:attribute:: l_sb
-
-
    .. py:attribute:: legend_le
 
 
-   .. py:attribute:: materialDefinedManually
-      :value: False
+   .. py:attribute:: spectroscopy
+      :value: 'Powder Infrared'
 
 
 
-   .. py:attribute:: materialNames
-      :value: []
-
-
-
-   .. py:attribute:: matrixPermittivityFunction
-
-
-   .. py:attribute:: matrix_cb
-
-
-   .. py:attribute:: matrix_info_le
-
-
-   .. py:attribute:: methods
-      :value: ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
-
-
-
-   .. py:attribute:: methods_cb
-
-
-   .. py:attribute:: mf_sb
-
-
-   .. py:attribute:: molarAbsorptionCoefficient
-      :value: []
-
-
-
-   .. py:attribute:: noCalculationsRequired
-      :value: 1
-
-
-
-   .. py:attribute:: permittivity_i_sb
-
-
-   .. py:attribute:: permittivity_r_sb
-
-
-   .. py:attribute:: reader
-      :value: None
-
-
-
-   .. py:attribute:: realPermittivity
-      :value: []
-
-
-
-   .. py:attribute:: refreshRequired
-      :value: True
-
-
-
-   .. py:attribute:: scenarioIndex
-      :value: None
-
-
-
-   .. py:attribute:: scenarioType
-      :value: 'Powder'
-
-
-
-   .. py:attribute:: shape_cb
-
-
-   .. py:attribute:: shapes
-      :value: ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
-
-
-
-   .. py:attribute:: sigma_sb
-
-
-   .. py:attribute:: size_sb
-
-
-   .. py:attribute:: sp_atr
-      :value: []
-
-
-
-   .. py:attribute:: vf_sb
-
+.. py:data:: logger
 

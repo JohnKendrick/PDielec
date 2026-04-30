@@ -9,6 +9,14 @@ PDielec.SuperCell
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.SuperCell.logger
+
+
 Classes
 -------
 
@@ -44,7 +52,7 @@ Module Contents
 
    Notes
    -----
-   This method automatically invokes the createImages method at the end of initialization.
+   This method automatically invokes the create_images method at the end of initialization.
 
    See Also
    --------
@@ -52,7 +60,7 @@ Module Contents
 
 
 
-   .. py:method:: calculateBonds()
+   .. py:method:: calculate_bonds()
 
       Calculate the bonding in the supercell.
 
@@ -73,7 +81,7 @@ Module Contents
 
 
 
-   .. py:method:: calculateCentreOfBox()
+   .. py:method:: calculate_centre_of_box()
 
       Calculate the centre of the super-cell in cartesian coordinates.
 
@@ -91,7 +99,7 @@ Module Contents
 
 
 
-   .. py:method:: calculateCentreOfMass(output='xyz')
+   .. py:method:: calculate_centre_of_mass(output='xyz')
 
       Calculate the center of mass for a molecular structure.
 
@@ -116,7 +124,7 @@ Module Contents
 
 
 
-   .. py:method:: calculateNormalModes(modes)
+   .. py:method:: calculate_normal_modes(modes)
 
       Calculate and return the normal modes of the supercell.
 
@@ -140,7 +148,7 @@ Module Contents
 
 
 
-   .. py:method:: calculateXYZ()
+   .. py:method:: calculate_xyz()
 
       Calculate and return the cartesian coordinates of the supercell.
 
@@ -158,7 +166,7 @@ Module Contents
 
 
 
-   .. py:method:: createImages(anImageSpecifier)
+   .. py:method:: create_images(anImageSpecifier)
 
       Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].
 
@@ -177,7 +185,7 @@ Module Contents
 
 
 
-   .. py:method:: getBoundingBox(originABC=None)
+   .. py:method:: get_bounding_box(originABC=None)
 
       Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
 
@@ -208,12 +216,13 @@ Module Contents
 
       Notes
       -----
-      The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
+      The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then
+      builds edges between these corners in XYZ space.
 
 
 
 
-   .. py:method:: getElementNames()
+   .. py:method:: get_element_names()
 
       Calculate and return the element names of the supercell.
 
@@ -276,4 +285,6 @@ Module Contents
 
    .. py:attribute:: unitCell
 
+
+.. py:data:: logger
 

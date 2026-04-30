@@ -20,9 +20,9 @@
 """Layered Raman scattering calculator using GTMcore for optical field propagation.
 
 The Raman amplitude for phonon mode m is computed as a source-overlap integral
-over the Raman-active layers in a multilayer stack:
+over the Raman-active layers in a multilayer stack::
 
-    A_m = Σ_ℓ ∫ E_S(z)^T R_{ℓ,m}^lab E_L(z) dz
+    A_m = sum_l integral E_S(z)^T R_{l,m}^lab E_L(z) dz
 
 where E_L is the incident laser field (evaluated at the laser frequency ν_L)
 and E_S is the reciprocal scattered field (launched back from the detector
@@ -30,6 +30,7 @@ channel, evaluated at the scattered frequency ν_S = ν_L − ν_m).  R_{ℓ,m}^
 is the Raman tensor of mode m in layer ℓ rotated into the laboratory frame.
 
 Phase 2 features (all enabled by default):
+
 - E_S evaluated at ν_S per mode (set ``approximate_es=True`` for the Phase 1
   approximation E_S ≈ E_L).
 - Forward scattering: set ``collection_side='substrate'`` to launch E_S from
@@ -40,10 +41,11 @@ Phase 2 features (all enabled by default):
   across Raman-active layers before squaring.
 
 Phase 3c Jones-vector polarisation:
+
 - Incident and detected channels are internally represented as Jones vectors
   ``[cp, cs]`` (complex coefficients for p- and s-pol field components).  The
   string shortcuts ``incident_pol='p'`` → ``[1, 0]``, ``'s'`` → ``[0, 1]``,
-  and ``detected_pol='unpolarised'`` → incoherent sum of |A_p|² + |A_s|² are
+  and ``detected_pol='unpolarised'`` → incoherent sum of \|A_p\|² + \|A_s\|² are
   converted automatically.  Direct Jones vector control can be added later via
   a subclass or optional parameter.
 
@@ -189,8 +191,8 @@ class LayeredRamanCalculator:
 
           and integrate with the GL weights to obtain A_{ℓ,m}.
        c. Combine layer contributions:
-          - ``coherent_layers=False`` (default): I_m ∝ Σ_ℓ |A_{ℓ,m}|²
-          - ``coherent_layers=True``:            I_m ∝ |Σ_ℓ A_{ℓ,m}|²
+          - ``coherent_layers=False`` (default): I_m ∝ Σ_ℓ \|A_{ℓ,m}\|²
+          - ``coherent_layers=True``:            I_m ∝ \|Σ_ℓ A_{ℓ,m}\|²
        d. Apply the Bose-Einstein prefactor: I_m ← (n(ν_m)+1)/ν_m × I_m.
 
     4. Broaden all mode intensities with Lorentzian lineshapes and sum.

@@ -9,6 +9,14 @@ PDielec.GUI.OpenGLWidget
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.OpenGLWidget.logger
+
+
 Classes
 -------
 
@@ -84,31 +92,21 @@ Module Contents
 
    Parameters
    ----------
-   colour : array_like
-       The colour of the cylinder, expected to be a list or array of three elements (R, G, B) where each value is in the range 0-255.
-   radius : float
-       The radius of the cylinder.
-   pos1 : array_like
-       The 3D coordinates (as a list or array) of one end of the cylinder's central axis.
-   pos2 : array_like
-       The 3D coordinates (as a list or array) of the other end of the cylinder's central axis.
+   colour : array_like The colour of the cylinder, expected to be a list or array of three elements (R, G, B) where
+   each value is in the range 0-255. radius : float The radius of the cylinder. pos1 : array_like The 3D coordinates
+   (as a list or array) of one end of the cylinder's central axis. pos2 : array_like The 3D coordinates (as a list or
+   array) of the other end of the cylinder's central axis.
+
 
    Attributes
    ----------
-   colour : ndarray
-       The normalized colour of the cylinder (R, G, B) with values ranging from 0.0 to 1.0.
-   radius : float
-       The radius of the cylinder.
-   position1 : ndarray
-       The 3D position of one end of the cylinder's central axis.
-   position2 : ndarray
-       The 3D position of the other end of the cylinder's central axis.
-   angle : float
-       The angle in degrees between the cylinder's central axis and the z-axis.
-   height : float
-       The height of the cylinder, determined as the distance between `pos1` and `pos2`.
-   rotation : ndarray
-       The 3D vector representing the axis of rotation to align the cylinder with the z-axis (used together with `angle` for setting the cylinder's orientation in 3D space).
+   colour : ndarray The normalized colour of the cylinder (R, G, B) with values ranging from 0.0 to 1.0. radius : float
+   The radius of the cylinder. position1 : ndarray The 3D position of one end of the cylinder's central axis. position2
+   : ndarray The 3D position of the other end of the cylinder's central axis. angle : float The angle in degrees
+   between the cylinder's central axis and the z-axis. height : float The height of the cylinder, determined as the
+   distance between `pos1` and `pos2`. rotation : ndarray The 3D vector representing the axis of rotation to align the
+   cylinder with the z-axis (used together with `angle` for setting the cylinder's orientation in 3D space).
+
 
 
 
@@ -174,13 +172,13 @@ Module Contents
    -------
    enterEvent(event)
        Handles the mouse entering the widget's area.
-   showArrows(show)
+   show_arrows(show)
        Toggles the visibility of arrows.
-   timeoutHandler()
+   timeout_handler()
        Advances the current animation phase or shifts direction at bounds.
-   myMakeCurrent()
+   my_make_current()
        Ensures the OpenGL context is current and checks for errors.
-   moleculeRotate(scale, x, y, z)
+   molecule_rotate(scale, x, y, z)
        Applies a rotation to the molecule model.
    keyPressEvent(event)
        Custom key press event handler for zooming and rotating the model.
@@ -196,42 +194,42 @@ Module Contents
        Handles mouse interactions for rotating and translating the scene.
    zoom(zoom)
        Applies zoom to the scene based on input.
-   stopAnimation()
+   stop_animation()
        Stops the animation timer.
-   startAnimation()
+   start_animation()
        Starts or restarts the animation timer.
    paintGL()
        The main rendering function called by the Qt framework to draw the OpenGL scene.
-   drawSpheres(), drawCylinders(), drawArrows(), drawTexts()
+   draw_spheres(), draw_cylinders(), draw_arrows(), draw_texts()
        Functions responsible for drawing the respective geometric objects.
    resizeGL(w, h)
        Adjusts the viewport and projection matrix on widget resize.
    initializeGL()
        Initializes OpenGL states and geometry.
-   setImageSize()
+   set_image_size()
        Calculates the ideal image size for the viewport.
-   setProjectionMatrix()
+   set_projection_matrix()
        Sets up the projection matrix based on the current image size and viewport dimensions.
-   defineLights()
+   define_lights()
        Configures the light sources.
-   setRotationCentre(pos)
+   set_rotation_centre(pos)
        Sets the center of rotation for the scene.
-   createArrays(nphases)
+   create_arrays(nphases)
        Initializes storage for drawable objects across animation phases.
-   deleteSpheres(), deleteCylinders(), deleteArrows(), deleteTexts()
+   delete_spheres(), delete_cylinders(), delete_arrows(), delete_texts()
        Convenience methods for clearing the drawable objects.
-   addArrows(colour, radius, direction, length, phase=0)
+   add_arrows(colour, radius, direction, length, phase=0)
        Adds an arrow to the scene.
-   addCylinder(colour, radius, pos1, pos2, phase=0)
+   add_cylinder(colour, radius, pos1, pos2, phase=0)
        Adds a cylinder to the scene.
-   addSphere(colour, radius, pos, phase=0)
+   add_sphere(colour, radius, pos, phase=0)
        Adds a sphere to the scene.
-   addText(colour, size, pos, phase=0)
+   add_text(colour, size, pos, phase=0)
        Adds a text to the scene.
 
 
 
-   .. py:method:: addArrows(colour, radius, direction, length, phase=0)
+   .. py:method:: add_arrows(colour, radius, direction, length, phase=0)
 
       Add an arrow to the list of arrows.
 
@@ -255,7 +253,7 @@ Module Contents
 
 
 
-   .. py:method:: addCylinder(colour, radius, pos1, pos2, phase=0)
+   .. py:method:: add_cylinder(colour, radius, pos1, pos2, phase=0)
 
       Add a Cylinder object to the specified phase collection of cylinders.
 
@@ -279,7 +277,7 @@ Module Contents
 
 
 
-   .. py:method:: addSphere(colour, radius, pos, phase=0)
+   .. py:method:: add_sphere(colour, radius, pos, phase=0)
 
       Add a sphere to a collection within an object.
 
@@ -301,7 +299,7 @@ Module Contents
 
 
 
-   .. py:method:: addText(string, colour, size, pos, phase=0)
+   .. py:method:: add_text(string, colour, size, pos, phase=0)
 
       Add a text object to the specified phase collection of texts.
 
@@ -325,11 +323,13 @@ Module Contents
 
 
 
-   .. py:method:: createArrays(nphases)
+   .. py:method:: create_arrays(nphases)
 
       Create or reinitialize arrays for spheres and cylinders for each phase.
 
-      This method creates or clears and then repopulates `self.spheres` and `self.cylinders` with an empty `deque` for each phase. It also sets `self.number_of_phases` to the given `nphases` and initializes `self.current_phase` to the midpoint of the range of phases (rounded down if `nphases` is an odd number).
+      This method creates or clears and then repopulates `self.spheres` and `self.cylinders` with an empty `deque` for
+      each phase. It also sets `self.number_of_phases` to the given `nphases` and initializes `self.current_phase` to
+      the midpoint of the range of phases (rounded down if `nphases` is an odd number).
 
       Parameters
       ----------
@@ -348,11 +348,13 @@ Module Contents
 
 
 
-   .. py:method:: defineLights()
+   .. py:method:: define_lights()
 
       Define light configurations for the viewer.
 
-      This method sets up the lighting for a 3D viewer by configuring ambient, diffuse, and specular light properties, as well as light positions. It also controls which lights are enabled or disabled based on the object's `light_switches` attribute.
+      This method sets up the lighting for a 3D viewer by configuring ambient, diffuse, and specular light properties,
+      as well as light positions. It also controls which lights are enabled or disabled based on the object's
+      `light_switches` attribute.
 
       Parameters
       ----------
@@ -364,15 +366,15 @@ Module Contents
 
       Notes
       -----
-      - `self.light_switches` needs to be initially set or inherited from `self.viewerTab.light_switches` if `self.light_switches` is None.
-      - Lighting is enabled globally with `glEnable(GL_LIGHTING)`.
-      - For each light defined by the `self.light_positions`, `self.light_switches`, and `self.lights` attributes, this method sets up:
-        - Ambient light properties with `glLightfv(light, GL_AMBIENT, [...])`.
-        - Diffuse light properties with `glLightfv(light, GL_DIFFUSE, [...])`.
-        - Specular light properties with `glLightfv(light, GL_SPECULAR, [...])`.
-        - The position of each light with `glLightfv(light, GL_POSITION, position)`.
-      - If `self.linearAttenuation` is True, linear attenuation is set for each light with `glLight(light, GL_LINEAR_ATTENUATION, 1.0)`.
-      - Each light in `self.lights` is either enabled or disabled based on its corresponding status in `self.light_switches`.
+      - `self.light_switches` needs to be initially set or inherited from `self.viewerTab.light_switches` if
+        `self.light_switches` is None. - Lighting is enabled globally with `glEnable(GL_LIGHTING)`. - For each light
+        defined by the `self.light_positions`, `self.light_switches`, and `self.lights` attributes, this method sets
+        up: - Ambient light properties with `glLightfv(light, GL_AMBIENT, [...])`. - Diffuse light properties with
+        `glLightfv(light, GL_DIFFUSE, [...])`. - Specular light properties with `glLightfv(light, GL_SPECULAR,
+        [...])`. - The position of each light with `glLightfv(light, GL_POSITION, position)`. - If
+        `self.linearAttenuation` is True, linear attenuation is set for each light with `glLight(light,
+        GL_LINEAR_ATTENUATION, 1.0)`. - Each light in `self.lights` is either enabled or disabled based on its
+        corresponding status in `self.light_switches`.
 
 
 
@@ -433,7 +435,7 @@ Module Contents
 
 
 
-   .. py:method:: deleteArrows()
+   .. py:method:: delete_arrows()
 
       Delete all arrows from a collection.
 
@@ -450,7 +452,7 @@ Module Contents
 
 
 
-   .. py:method:: deleteCylinders()
+   .. py:method:: delete_cylinders()
 
       Delete all cylinder objects from the storage.
 
@@ -473,7 +475,7 @@ Module Contents
 
 
 
-   .. py:method:: deleteSpheres()
+   .. py:method:: delete_spheres()
 
       Delete all spheres from the current context.
 
@@ -490,7 +492,7 @@ Module Contents
 
 
 
-   .. py:method:: deleteTexts()
+   .. py:method:: delete_texts()
 
       Delete all texts from the current context.
 
@@ -507,11 +509,15 @@ Module Contents
 
 
 
-   .. py:method:: drawArrows()
+   .. py:method:: draw_arrows()
 
       Draw the designated arrows with specified properties.
 
-      This method draws a series of arrows based on the properties stored within instances of the class. The arrows are displayed on the viewer associated with `self`. Each arrow has an associated sphere from which it originates. These spheres have positional data that dictate where the arrow is drawn. Furthermore, arrows have several visual properties such as color and size that are applied when rendering. Error handling for absent arrows is included, halting the function early if no arrows are to be drawn.
+      This method draws a series of arrows based on the properties stored within instances of the class. The arrows
+      are displayed on the viewer associated with `self`. Each arrow has an associated sphere from which it
+      originates. These spheres have positional data that dictate where the arrow is drawn. Furthermore, arrows have
+      several visual properties such as color and size that are applied when rendering. Error handling for absent
+      arrows is included, halting the function early if no arrows are to be drawn.
 
       Parameters
       ----------
@@ -524,15 +530,20 @@ Module Contents
 
       Notes
       -----
-      - The arrow drawing process involves translating and rotating the OpenGL context to the appropriate position and orientation before drawing cylinders to represent the arrows.
-      - Material properties such as diffuse, ambient, and specular colors are calculated from the arrow's color and applied to the OpenGL material.
-      - Arrows consist of a cylindrical shaft and a conical tip, whose dimensions and orientations are based on the properties of each arrow (e.g., direction, length, angle, rotation, colour, and radius).
-      - This method depends on the `self.arrows` list and the corresponding `self.spheres` for the current phase stored in `self.current_phase`. It leverages OpenGL functions and assumes that `self.viewerTab.settings['Arrow colour']`, along with other properties like `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`, and `self.glintMaterialFactor` are predefined and correctly configured.
+      - The arrow drawing process involves translating and rotating the OpenGL context to the appropriate position and
+        orientation before drawing cylinders to represent the arrows. - Material properties such as diffuse, ambient,
+        and specular colors are calculated from the arrow's color and applied to the OpenGL material. - Arrows consist
+        of a cylindrical shaft and a conical tip, whose dimensions and orientations are based on the properties of
+        each arrow (e.g., direction, length, angle, rotation, colour, and radius). - This method depends on the
+        `self.arrows` list and the corresponding `self.spheres` for the current phase stored in `self.current_phase`.
+        It leverages OpenGL functions and assumes that `self.viewerTab.settings['Arrow colour']`, along with other
+        properties like `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`, and
+        `self.glintMaterialFactor` are predefined and correctly configured.
 
 
 
 
-   .. py:method:: drawCylinders()
+   .. py:method:: draw_cylinders()
 
       Draw the cylinders stored in the object.
 
@@ -567,11 +578,13 @@ Module Contents
 
 
 
-   .. py:method:: drawSpheres()
+   .. py:method:: draw_spheres()
 
       Draw spheres based on the object's current phase and spheres attributes.
 
-      This method iterates through the spheres assigned to the current phase of the invoking object. For each sphere, it sets the material properties based on the sphere's color and predefined material factors. Then, it translates the drawing location to the sphere's position and draws the sphere using OpenGL functions.
+      This method iterates through the spheres assigned to the current phase of the invoking object. For each sphere,
+      it sets the material properties based on the sphere's color and predefined material factors. Then, it translates
+      the drawing location to the sphere's position and draws the sphere using OpenGL functions.
 
       Parameters
       ----------
@@ -584,12 +597,15 @@ Module Contents
 
       Notes
       -----
-      Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`, `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.
+      Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified
+      locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`,
+      `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering
+      parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.
 
 
 
 
-   .. py:method:: drawTexts()
+   .. py:method:: draw_texts()
 
       Draw the texts stored in the object.
 
@@ -608,7 +624,7 @@ Module Contents
 
 
 
-   .. py:method:: drawUVWInfo()
+   .. py:method:: draw_uvw_info()
 
       Draw the uvw info on the screen.
 
@@ -640,7 +656,8 @@ Module Contents
 
       Notes
       -----
-      This function primarily ensures that the focus is set accordingly when an event occurs, and then it passes the event on to the viewerTab's own enterEvent handler for further processing.
+      This function primarily ensures that the focus is set accordingly when an event occurs, and then it passes the
+      event on to the viewerTab's own enterEvent handler for further processing.
 
 
 
@@ -649,7 +666,9 @@ Module Contents
 
       Initialise OpenGL rendering context.
 
-      This function sets up various OpenGL attributes and states including lighting, depth test, smooth shading, and anti-aliasing features to prepare for rendering in a GL context. It configures the viewport settings based on the associated viewer tab's background color settings.
+      This function sets up various OpenGL attributes and states including lighting, depth test, smooth shading, and
+      anti-aliasing features to prepare for rendering in a GL context. It configures the viewport settings based on
+      the associated viewer tab's background color settings.
 
       Parameters
       ----------
@@ -681,10 +700,10 @@ Module Contents
 
       Notes
       -----
-      This function checks for specific keys and their combinations with modifiers like Shift and Control to determine the required action. 
-      For rotation and zoom actions, the amount of change is determined based on whether 
-      any modifiers are pressed (larger rotation if Shift or Control is held). 
-      Saving, toggling the full screen mode, and resetting the view do not require modifiers.
+      This function checks for specific keys and their combinations with modifiers like Shift and Control to determine
+      the required action.  For rotation and zoom actions, the amount of change is determined based on whether  any
+      modifiers are pressed (larger rotation if Shift or Control is held).  Saving, toggling the full screen mode, and
+      resetting the view do not require modifiers.
 
       The following keys perform actions as described:
       - Left/Right Arrow: Rotate the molecule along the Y-axis.
@@ -698,14 +717,14 @@ Module Contents
       - Shift: Increases the rotation amount.
       - Control: Increases the rotation amount.
 
-      Attributes modified:
-      - This method modifies various attributes of the instance based on the key pressed, including rotation angles, zoom levels, screen mode, and view matrix.
+      Attributes modified: - This method modifies various attributes of the instance based on the key pressed,
+      including rotation angles, zoom levels, screen mode, and view matrix.
 
       Requires
       --------
-      This function requires `Qt`, `GL_MODELVIEW`, `glLoadIdentity`, `np`, and the instance methods 
-      `myMakeCurrent`, `moleculeRotate`, `zoom`, `save_movie`, `showFullScreen`, and `showNormal` to be properly defined. 
-      It also assumes an external debugger tool for logging.
+      This function requires `Qt`, `GL_MODELVIEW`, `glLoadIdentity`, `np`, and the instance methods
+      `my_make_current`, `molecule_rotate`, `zoom`, `save_movie`, `showFullScreen`, and `showNormal` to be properly
+      defined.  It also assumes an external debugger tool for logging.
 
       Raises
       ------
@@ -714,7 +733,7 @@ Module Contents
 
 
 
-   .. py:method:: moleculeRotate(scale, x, y, z)
+   .. py:method:: molecule_rotate(scale, x, y, z)
 
       Rotate a molecule object around the specified axes.
 
@@ -738,16 +757,17 @@ Module Contents
 
       Notes
       -----
-      - This function assumes that the GL_MODELVIEW matrix mode is active and manipulates the current matrix stack accordingly.
-      - It first saves the current model view matrix, then resets it to the identity.
-      - Rotations for the x and y axes are applied in sequence, scaled by the provided `scale` factor.
-      - Finally, the original matrix is restored and multiplied by the new rotation transformations.
-      - The function uses OpenGL calls like `glRotatef` and `glMultMatrixf`, making sure the graphical representation of the molecule is updated to reflect the rotation.
+      - This function assumes that the GL_MODELVIEW matrix mode is active and manipulates the current matrix stack
+        accordingly. - It first saves the current model view matrix, then resets it to the identity. - Rotations for
+        the x and y axes are applied in sequence, scaled by the provided `scale` factor. - Finally, the original
+        matrix is restored and multiplied by the new rotation transformations. - The function uses OpenGL calls like
+        `glRotatef` and `glMultMatrixf`, making sure the graphical representation of the molecule is updated to
+        reflect the rotation.
 
       Examples
       --------
       >>> mol_object = Molecule()
-      >>> mol_object.moleculeRotate(45, 1, 0, 0)
+      >>> mol_object.molecule_rotate(45, 1, 0, 0)
       This would rotate the molecule 45 degrees around the x-axis.
 
       See Also
@@ -758,7 +778,8 @@ Module Contents
 
       Raises
       ------
-      This function does not explicitly raise exceptions but relies on the OpenGL context and the `update` method's implementation.
+      This function does not explicitly raise exceptions but relies on the OpenGL context and the `update` method's
+      implementation.
 
 
 
@@ -778,11 +799,11 @@ Module Contents
 
       Notes
       -----
-      This method checks if the left or middle mouse button is pressed and applies different transformations (zoom, rotate, or translate) based on the mouse movement and whether certain modifier keys (Shift or Control) are pressed.
-      - If the left mouse button is pressed:
-      - With no modifiers or with Shift or Control modifier pressed: Performs rotation.
-      - With Shift or Control modifier pressed: Performs zoom.
-      - If the middle mouse button is pressed: Performs translation.
+      This method checks if the left or middle mouse button is pressed and applies different transformations (zoom,
+      rotate, or translate) based on the mouse movement and whether certain modifier keys (Shift or Control) are
+      pressed. - If the left mouse button is pressed: - With no modifiers or with Shift or Control modifier pressed:
+      Performs rotation. - With Shift or Control modifier pressed: Performs zoom. - If the middle mouse button is
+      pressed: Performs translation.
 
       Mouse coordinates are updated at the end of the method to reflect the current position.
 
@@ -825,7 +846,7 @@ Module Contents
 
 
 
-   .. py:method:: myMakeCurrent()
+   .. py:method:: my_make_current()
 
       Make the current OpenGL context active and clear any errors.
 
@@ -905,7 +926,8 @@ Module Contents
 
       Notes
       -----
-      This is typically overridden in a subclass and used to adjust the OpenGL viewport or projection matrix when the widget is resized.
+      This is typically overridden in a subclass and used to adjust the OpenGL viewport or projection matrix when the
+      widget is resized.
 
       Parameters
       ----------
@@ -947,11 +969,14 @@ Module Contents
 
 
 
-   .. py:method:: setImageSize()
+   .. py:method:: set_image_size()
 
       Set the maximum image size based on the furthest object from the rotation center.
 
-      This method evaluates the position of spheres and cylinders in the current phase, calculates their distance from a fixed point (rotation center), and updates the `image_size` attribute to the maximum distance found. It ensures the all objects will fit within the rendered image. Finally, it updates the projection matrix and logs the new image size.
+      This method evaluates the position of spheres and cylinders in the current phase, calculates their distance from
+      a fixed point (rotation center), and updates the `image_size` attribute to the maximum distance found. It
+      ensures the all objects will fit within the rendered image. Finally, it updates the projection matrix and logs
+      the new image size.
 
       Parameters
       ----------
@@ -963,46 +988,9 @@ Module Contents
 
       Notes
       -----
-      The `self` parameter represents the instance of the class in which the function is called. This function relies on the `math.sqrt`, `np.dot` for calculations, and expects `self.spheres`, `self.cylinders`, `self.current_phase`, `self.rotation_centre`, and `self.setProjectionMatrix` to be defined.
-
-
-
-
-   .. py:method:: setProjectionMatrix()
-
-      Set the projection matrix for rendering.
-
-      This method configures the projection matrix based on the current image size, width, and height attributes of the object. It's intended to set up an orthographic projection suited to the object's dimensions. If any of the required attributes (`image_size`, `my_width`, or `my_height`) are not set, the method will exit early. The method also sets the view to the middle phase of an unspecified number of total phases and resets the model view matrix.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current.
-      It also updates the rotation with `self.matrix` and sets `self.current_phase` based on the total number of phases.
-
-
-
-
-   .. py:method:: setRotationCentre(pos)
-
-      Set the rotation centre to a specified position.
-
-      Parameters
-      ----------
-      pos : array_like
-          The position to set the rotation centre. Expected to be an iterable
-          with numerical values that can be converted to a NumPy array.
-
-      Returns
-      -------
-      None
+      The `self` parameter represents the instance of the class in which the function is called. This function relies
+      on the `math.sqrt`, `np.dot` for calculations, and expects `self.spheres`, `self.cylinders`,
+      `self.current_phase`, `self.rotation_centre`, and `self.set_projection_matrix` to be defined.
 
 
 
@@ -1039,7 +1027,51 @@ Module Contents
 
 
 
-   .. py:method:: showArrows(show)
+   .. py:method:: set_projection_matrix()
+
+      Set the projection matrix for rendering.
+
+      This method configures the projection matrix based on the current image size, width, and height attributes of
+      the object. It's intended to set up an orthographic projection suited to the object's dimensions. If any of the
+      required attributes (`image_size`, `my_width`, or `my_height`) are not set, the method will exit early. The
+      method also sets the view to the middle phase of an unspecified number of total phases and resets the model view
+      matrix.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method makes several OpenGL calls to configure the projection and model view matrices and assumes that
+      `self.my_make_current()` makes the required OpenGL context current. It also updates the rotation with
+      `self.matrix` and sets `self.current_phase` based on the total number of phases.
+
+
+
+
+   .. py:method:: set_rotation_centre(pos)
+
+      Set the rotation centre to a specified position.
+
+      Parameters
+      ----------
+      pos : array_like
+          The position to set the rotation centre. Expected to be an iterable
+          with numerical values that can be converted to a NumPy array.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: show_arrows(show)
 
       Set the visibility of arrows.
 
@@ -1054,7 +1086,8 @@ Module Contents
 
       Notes
       -----
-      This function updates the `show_arrows` attribute based on the "show" parameter and prints the current status to the debugger.
+      This function updates the `show_arrows` attribute based on the "show" parameter and prints the current status to
+      the debugger.
 
 
 
@@ -1100,14 +1133,14 @@ Module Contents
 
 
 
-   .. py:method:: startAnimation()
+   .. py:method:: start_animation()
 
       Start or restarts an animation timer.
 
       This method checks if an animation timer is already running.
       If so, it stops the current timer. If not, it initializes and starts a new timer
       with the interval specified in `self.timer_interval`. When the timer times out,
-      it triggers `self.timeoutHandler`.
+      it triggers `self.timeout_handler`.
 
       Parameters
       ----------
@@ -1130,7 +1163,7 @@ Module Contents
 
 
 
-   .. py:method:: stopAnimation()
+   .. py:method:: stop_animation()
 
       Stop the ongoing animation.
 
@@ -1146,12 +1179,13 @@ Module Contents
 
       Notes
       -----
-      This function assumes that `self.timer` is an instance with a `stop` method, which is called to halt any ongoing animation. If `self.timer` is `None`, indicating no animation is currently active, this method does nothing.
+      This function assumes that `self.timer` is an instance with a `stop` method, which is called to halt any ongoing
+      animation. If `self.timer` is `None`, indicating no animation is currently active, this method does nothing.
 
 
 
 
-   .. py:method:: timeoutHandler()
+   .. py:method:: timeout_handler()
 
       Handle the timeout event in a cyclic phase system by updating the current phase and direction.
 
@@ -1170,10 +1204,10 @@ Module Contents
 
       Notes
       -----
-      - `self.current_phase` is the index of the current phase in the cycle.
-      - `self.number_of_phases` indicates the total number of available phases.
-      - `self.phase_direction` is either +1 or -1, indicating the direction of phase progression.
-      - The `update` method is called at the end to apply any changes made to the state as a result of this timeout event.
+      - `self.current_phase` is the index of the current phase in the cycle. - `self.number_of_phases` indicates the
+        total number of available phases. - `self.phase_direction` is either +1 or -1, indicating the direction of
+        phase progression. - The `update` method is called at the end to apply any changes made to the state as a
+        result of this timeout event.
 
 
 
@@ -1195,9 +1229,12 @@ Module Contents
 
       Notes
       -----
-      This method updates the current position of the object by adding the specified distances along the x and y axes, respectively. It does not return a value.
+      This method updates the current position of the object by adding the specified distances along the x and y axes,
+      respectively. It does not return a value.
 
-      This function involves a call to `glTranslatef`, which applies a translation transformation to the current matrix. Ensure that the appropriate OpenGL context is made current before calling this function by using `self.myMakeCurrent()`.
+      This function involves a call to `glTranslatef`, which applies a translation transformation to the current
+      matrix. Ensure that the appropriate OpenGL context is made current before calling this function by using
+      `self.my_make_current()`.
 
 
 
@@ -1243,8 +1280,14 @@ Module Contents
       - This function requires a current context and will make itself the current one before applying transformations.
       - Updates the object's state after zooming.
 
-      Uses `glScalef` from OpenGL for scaling transformations and assumes that `debugger` and `glScalef` are accessible in the current context, with `debugger.print` used for debug logging.
+      Uses `glScalef` from OpenGL for scaling transformations and assumes that `debugger` and `glScalef` are
+      accessible in the current context, with `debugger.print` used for debug logging.
 
+
+
+
+   .. py:attribute:: _show_arrows
+      :value: True
 
 
 
@@ -1385,11 +1428,6 @@ Module Contents
    .. py:attribute:: rotation_centre
 
 
-   .. py:attribute:: show_arrows
-      :value: True
-
-
-
    .. py:attribute:: show_full_screen
       :value: False
 
@@ -1479,4 +1517,6 @@ Module Contents
 
    .. py:attribute:: radius
 
+
+.. py:data:: logger
 

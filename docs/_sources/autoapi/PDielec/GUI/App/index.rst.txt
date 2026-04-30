@@ -15,6 +15,7 @@ Attributes
 .. autoapisummary::
 
    PDielec.GUI.App.app
+   PDielec.GUI.App.logger
    PDielec.GUI.App.version
 
 
@@ -36,7 +37,9 @@ Module Contents
 
    A class representing the main application window.
 
-   This class initializes the main application window with various configurations based on command line arguments and environment variables. It includes functionalities to read scripts, handle command line inputs, set up multiprocessing or threading as needed, and manage application events.
+   This class initializes the main application window with various configurations based on command line arguments and
+   environment variables. It includes functionalities to read scripts, handle command line inputs, set up
+   multiprocessing or threading as needed, and manage application events.
 
    Parameters
    ----------
@@ -74,9 +77,9 @@ Module Contents
    -------
    print_usage()
        Prints usage information for the command line interface.
-   setMyWindowTitle(title)
+   set_my_window_title(title)
        Sets the window title to a formatted string including the version and the given title.
-   readScript(scriptname, spreadsheet_name='')
+   read_script(scriptname, spreadsheet_name='')
        Executes the commands from a script file and optionally sets the spreadsheet file name.
    closeEvent(event)
        Handles the close event, ensuring that multiprocessing pools are properly closed.
@@ -122,7 +125,8 @@ Module Contents
 
       Print usage information for the PDielec package's graphical user interface.
 
-      This function prints the general usage information, available commands, and options for the graphical user interface to the PDielec package.
+      This function prints the general usage information, available commands, and options for the graphical user
+      interface to the PDielec package.
 
       Parameters
       ----------
@@ -136,26 +140,27 @@ Module Contents
       -----
       The usage information includes:
 
-      - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy', 'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified.
-      - `filename`: The name of the output file.
-      - `spreadsheet file`: An optional name of a spreadsheet file (must end with .xlsx). If provided, both program and filename must be specified.
-      - `-scenario type`: Changes the default scenario to "type", which can be either "powder" or "crystal".
-      - `-spreadsheet file`: An alternative way to specify the spreadsheet file.
-      - `-program`: An alternative way to specify the program.
-      - `-script file`: Specifies that initial commands are read from a script file.
-      - `-nosplash`: No splash screen is presented, which is useful for batch running.
-      - `-threading`: Use threads instead of multiprocessing.
-      - `-threads 1`: Specify the number of threads to use for each cpu
-      - `-cpus 0`: Specify the number of processors or tasks; 0 uses all available.
-      - `-version`: Prints the version of the code.
-      - `-exit`: Exit the program after executing any script.
-      - `-help`: Prints out help information.
+      - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy',
+        'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified. - `filename`:
+        The name of the output file. - `spreadsheet file`: An optional name of a spreadsheet file (must end with
+        .xlsx). If provided, both program and filename must be specified. - `-scenario type`: Changes the default
+        scenario to "type", which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or
+        "Crystal_Raman" - `-spreadsheet file`: An alternative way to specify the spreadsheet file. - `-program`: An
+        alternative way to specify the program. - `-script file`: Specifies that initial commands are read from a
+        script file. - `-nosplash`: No splash screen is presented, which is useful for batch running. - `-threading`:
+        Use threads instead of multiprocessing. - `-threads 1`: Specify the number of threads to use for each cpu -
+        `-cpus 0`: Specify the number of processors or tasks; 0 uses all available. - `-version`: Prints the version
+        of the code. - `-exit`: Exit the program after executing any script. - `-help`: Prints out help information.
+
+
+
+
       - `-debug`: Switches on debugging information.
 
 
 
 
-   .. py:method:: readScript(scriptname, spreadsheet_name='')
+   .. py:method:: read_script(scriptname, spreadsheet_name='')
 
       Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
 
@@ -168,19 +173,23 @@ Module Contents
 
       Returns
       -------
-      None
-          The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no spreadsheet name will be set.
+      None The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no
+      spreadsheet name will be set.
 
       Notes
       -----
-      This function changes the current working directory to the directory of the script if its directory part is non-empty. It executes the script in the current Python environment using `exec()`. It also sets various notebook flags such as `scripting` and `overwriting`.
+      This function changes the current working directory to the directory of the script if its directory part is
+      non-empty. It executes the script in the current Python environment using `exec()`. It also sets various
+      notebook flags such as `scripting` and `overwriting`.
 
-      After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with `QCoreApplication.processEvents()`.
+      After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a
+      non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with
+      `QCoreApplication.processEvents()`.
 
 
 
 
-   .. py:method:: setMyWindowTitle(title)
+   .. py:method:: set_my_window_title(title)
 
       Set the window title with the provided title appended to the PDGui version.
 
@@ -196,7 +205,8 @@ Module Contents
 
       Notes
       -----
-      This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
+      This function modifies the window title attribute of the instance and then updates the actual window title to
+      reflect this change. The version of the PDGui is prefixed to the given title.
 
 
 
@@ -235,8 +245,6 @@ Module Contents
 
 
    .. py:attribute:: title
-      :value: 'PDGui - Using PDielec library Uninferable '
-
 
 
    .. py:attribute:: top
@@ -253,6 +261,8 @@ Module Contents
 
 
 .. py:data:: app
+
+.. py:data:: logger
 
 .. py:data:: version
 

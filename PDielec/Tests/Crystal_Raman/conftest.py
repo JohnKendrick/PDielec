@@ -30,8 +30,7 @@ def iso_eps(n):
 
 
 def make_layer(thickness_m, eps_func):
-    """Create a GTMcore Layer with the coherent-mode flags required by
-    ``calculate_GammaStar``.
+    """Create a GTMcore Layer with the coherent-mode flags required by ``calculate_GammaStar``.
 
     Plain ``Layer`` objects lack the ``inCoherentIntensity`` etc. flags that
     ``CoherentLayer`` sets; this helper adds them directly so the layer can be
@@ -97,7 +96,9 @@ def run_calc(
     Parameters
     ----------
     system : TransferMatrixSystem
+        The multilayer optical system.
     raman_layers : list of RamanLayer
+        Raman-active layer descriptors.
     phonon_freqs_cm1 : array_like
         All phonon frequencies including acoustic (> 10 cm⁻¹ are kept).
     """
@@ -126,6 +127,7 @@ def make_raman_layer(layer_index, R_crystal, nu_cm1, G=None):
     Parameters
     ----------
     layer_index : int
+        Zero-based index into the system's finite-thickness layers list.
     R_crystal : ndarray, shape (3, 3)
         Raman tensor in the crystal frame.
     nu_cm1 : float

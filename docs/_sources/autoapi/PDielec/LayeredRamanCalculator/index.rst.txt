@@ -1,0 +1,479 @@
+PDielec.LayeredRamanCalculator
+==============================
+
+.. py:module:: PDielec.LayeredRamanCalculator
+
+.. autoapi-nested-parse::
+
+   Layered Raman scattering calculator using GTMcore for optical field propagation.
+
+   The Raman amplitude for phonon mode m is computed as a source-overlap integral
+   over the Raman-active layers in a multilayer stack::
+
+       A_m = sum_l integral E_S(z)^T R_{l,m}^lab E_L(z) dz
+
+   where E_L is the incident laser field (evaluated at the laser frequency ν_L)
+   and E_S is the reciprocal scattered field (launched back from the detector
+   channel, evaluated at the scattered frequency ν_S = ν_L − ν_m).  R_{ℓ,m}^lab
+   is the Raman tensor of mode m in layer ℓ rotated into the laboratory frame.
+
+   Phase 2 features (all enabled by default):
+
+   - E_S evaluated at ν_S per mode (set ``approximate_es=True`` for the Phase 1
+     approximation E_S ≈ E_L).
+   - Forward scattering: set ``collection_side='substrate'`` to launch E_S from
+     the substrate side using a reversed stack (GTMcore.System.reversed_system).
+   - Independent collection angle: ``collection_angle_rad`` for E_S (defaults to
+     the incident angle for backscattering).
+   - Coherent layer summation: set ``coherent_layers=True`` to sum amplitudes
+     across Raman-active layers before squaring.
+
+   Phase 3c Jones-vector polarisation:
+
+   - Incident and detected channels are internally represented as Jones vectors
+     ``[cp, cs]`` (complex coefficients for p- and s-pol field components).  The
+     string shortcuts ``incident_pol='p'`` → ``[1, 0]``, ``'s'`` → ``[0, 1]``,
+     and ``detected_pol='unpolarised'`` → incoherent sum of \|A_p\|² + \|A_s\|² are
+     converted automatically.  Direct Jones vector control can be added later via
+     a subclass or optional parameter.
+
+   The integral is evaluated numerically using Gauss-Legendre quadrature within
+   each Raman-active layer.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1
+   PDielec.LayeredRamanCalculator.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.LayeredRamanCalculator.LayeredRamanCalculator
+   PDielec.LayeredRamanCalculator.RamanLayer
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.LayeredRamanCalculator.bose_factor
+   PDielec.LayeredRamanCalculator.lorentzian_broaden
+
+
+Module Contents
+---------------
+
+.. py:class:: LayeredRamanCalculator(system, raman_layers, laser_frequency_cm1, incident_angle_rad, incident_pol, detected_pol, temperature_K, linewidths_cm1, n_gauss=20, collection_side='superstrate', collection_angle_rad=None, coherent_layers=False, approximate_es=False)
+
+   Calculate the Raman spectrum of a multilayer system via depth integration.
+
+   The calculation proceeds as follows:
+
+   1. Build Gauss-Legendre quadrature grids within each Raman-active layer.
+   2. Compute the electric field E_L at the laser frequency for both p and s
+      incidence in a single call to ``system.calculate_Efield``.
+   3. For each phonon mode m (skipping acoustic modes):
+
+      a. Compute E_S at the scattered frequency ν_S = ν_L − ν_m on the
+         appropriate system (original for backscattering, reversed for
+         forward scattering).  When ``approximate_es=True`` the Phase 1
+         approximation E_S ≈ E_L is used instead (one field call total).
+      b. For each Raman-active layer ℓ, evaluate the integrand
+
+             a_{ℓ,m}(z_j) = E_S(z_j)^T R_{ℓ,m}^lab E_L(z_j)
+
+         and integrate with the GL weights to obtain A_{ℓ,m}.
+      c. Combine layer contributions:
+         - ``coherent_layers=False`` (default): I_m ∝ Σ_ℓ \|A_{ℓ,m}\|²
+         - ``coherent_layers=True``:            I_m ∝ \|Σ_ℓ A_{ℓ,m}\|²
+      d. Apply the Bose-Einstein prefactor: I_m ← (n(ν_m)+1)/ν_m × I_m.
+
+   4. Broaden all mode intensities with Lorentzian lineshapes and sum.
+
+   Parameters
+   ----------
+   system : GTMcore.System or GTMcore.ScatteringMatrixSystem
+       Fully constructed GTM multilayer system.  The layers must already have
+       their Euler orientations set (via ``layer.set_euler`` or equivalent)
+       before this class is used.
+   raman_layers : list of RamanLayer
+       Descriptors for Raman-active layers, in any order.  Each
+       ``RamanLayer.layer_index`` must be a valid index into ``system.layers``.
+   laser_frequency_cm1 : float
+       Laser frequency in cm⁻¹.
+   incident_angle_rad : float
+       Angle of incidence in radians, measured from the surface normal.
+   incident_pol : {'p', 's'}
+       Incident polarisation channel.
+   detected_pol : {'p', 's', 'unpolarised'}
+       Detected polarisation channel.  'unpolarised' sums the p and s
+       intensities incoherently (no analyser on the detector side).
+   temperature_K : float
+       Sample temperature in Kelvin for the Bose-Einstein factor.
+   linewidths_cm1 : array_like, shape (n_modes,)
+       Lorentzian half-widths in cm⁻¹, one entry per phonon mode (including
+       acoustic modes; those are skipped internally).
+   n_gauss : int, optional
+       Number of Gauss-Legendre quadrature points per Raman-active layer.
+       Default is 20, which is accurate for smooth fields in thin layers.
+   collection_side : {'superstrate', 'substrate'}, optional
+       Which side the detector is on.  ``'superstrate'`` (default) gives
+       backscattering geometry; ``'substrate'`` gives forward scattering and
+       causes E_S to be computed on the reversed stack.
+   collection_angle_rad : float or None, optional
+       Collection (detector) angle in radians from the surface normal.
+       Defaults to ``incident_angle_rad`` (appropriate for backscattering).
+   coherent_layers : bool, optional
+       If ``True``, amplitudes are summed across Raman-active layers before
+       squaring (coherent combination).  Default is ``False`` (incoherent:
+       intensities are summed).
+   approximate_es : bool, optional
+       If ``True``, use the Phase 1 approximation E_S ≈ E_L (both fields at
+       the laser frequency).  Default is ``False``.
+
+   Notes
+   -----
+   The E-field returned by ``calculate_Efield`` has shape ``(6, N)`` where
+   rows 0–2 are the x, y, z components for p-polarised incidence and rows 3–5
+   are the components for s-polarised incidence.  The laboratory frame uses the
+   GTMcore convention: x in the plane of incidence, y along the slit (s-pol
+   direction), z normal to the layers (depth axis).
+
+   The Raman tensor contraction uses an ordinary (non-conjugate) transpose for
+   E_S, consistent with the optical-reciprocity formulation of layered Raman:
+
+       A = Σ_j w_j  E_S(z_j)^T  R_lab  E_L(z_j)
+
+   For forward scattering (``collection_side='substrate'``), the z-coordinates
+   for E_S are remapped as ``z_rev = total_thickness − z_orig`` before being
+   passed to ``calculate_Efield`` on the reversed system; the GL quadrature
+   weights are unchanged.
+
+
+
+   .. py:method:: _build_gl_grid()
+
+      Map GL quadrature points onto each Raman-active layer interval.
+
+      Uses ``system.get_layers_boundaries()`` to find each layer's z extent.
+      Boundaries are in metres with z = 0 at the superstrate/first-layer
+      interface (the convention used by ``calculate_Efield``).
+
+      Populates
+      ---------
+      _gl_z : ndarray
+          Concatenated GL z coordinates for all Raman-active layers, in metres
+          (the unit ``calculate_Efield`` expects).
+      _gl_phys_weights : ndarray
+          Corresponding integration weights in Ångström (GL weight × half-thickness × 1e10).
+          The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
+          keeping intensity magnitudes in a readable range.
+      _gl_layer_slices : list of slice
+          One slice per ``RamanLayer`` indexing into ``_gl_z`` / ``_gl_phys_weights``.
+
+
+
+   .. py:method:: _get_field_at_gl_points(freq_cm1, system, angle_rad, z_arr)
+
+      Compute the electric field at the given z positions.
+
+      Parameters
+      ----------
+      freq_cm1 : float
+          Frequency in cm⁻¹ at which to evaluate the field.
+      system : GTMcore.System
+          The optical system to use for the field calculation.
+      angle_rad : float
+          Angle of incidence on ``system``'s superstrate, in radians.
+      z_arr : ndarray
+          z-coordinates (metres) at which to evaluate the field.  Must be
+          in the coordinate system of ``system`` (z = 0 at superstrate/
+          first-layer interface).
+
+      Returns
+      -------
+      E_out : ndarray, shape (6, len(z_arr))
+          Electric field: rows 0–2 for p-pol incidence, rows 3–5 for s-pol.
+
+
+
+
+   .. py:method:: _layer_amplitude(E_L_out, E_S_out, R_lab, sl)
+
+      Compute the Raman amplitude for one mode in one layer.
+
+      Evaluates the numerical quadrature:
+
+          A = Σ_j w_j  E_S(z_j)^T  R_lab  E_L(z_j)
+
+      Parameters
+      ----------
+      E_L_out : ndarray, shape (6, N_total)
+          Incident laser field array from ``calculate_Efield`` at ν_L.
+      E_S_out : ndarray, shape (6, N_total)
+          Reciprocal scattered field array from ``calculate_Efield`` at ν_S.
+          May be equal to ``E_L_out`` when ``approximate_es=True`` in
+          backscattering geometry.
+      R_lab : ndarray, shape (3, 3)
+          Raman tensor in the lab frame.
+      sl : slice
+          Slice selecting the GL points for this layer.
+
+      Returns
+      -------
+      amplitude_p : complex
+          Amplitude for the p-detected channel.
+      amplitude_s : complex or None
+          Amplitude for the s-detected channel when ``detected_pol ==
+          'unpolarised'``; ``None`` otherwise.
+
+
+
+
+   .. py:method:: _rotate_raman_tensor(R_crystal, G)
+      :staticmethod:
+
+
+      Rotate a Raman tensor from crystal frame to lab frame.
+
+      Parameters
+      ----------
+      R_crystal : ndarray, shape (3, 3)
+          Raman tensor in the DFT crystal frame.
+      G : ndarray, shape (3, 3)
+          Rotation matrix satisfying ``v_lab = G @ v_crystal``.
+
+      Returns
+      -------
+      ndarray, shape (3, 3)
+          Raman tensor in the lab frame: ``G @ R_crystal @ G.T``.
+
+
+
+
+   .. py:method:: calculate_mode_intensities(progress_callback=None)
+
+      Compute the per-mode Raman intensities (before broadening).
+
+      Modes below ``_ACOUSTIC_THRESHOLD_CM1`` are excluded.  Layer
+      contributions are combined incoherently or coherently depending on
+      ``self.coherent_layers``.
+
+      Parameters
+      ----------
+      progress_callback : callable, optional
+          If supplied, called once per phonon-mode iteration (including modes
+          that are skipped as acoustic), so the caller can drive a progress
+          bar.  The callback takes no arguments.
+
+      Returns
+      -------
+      active_frequencies : ndarray, shape (M,)
+          Frequencies of the active (non-acoustic) modes in cm⁻¹.
+      active_intensities : ndarray, shape (M,)
+          Corresponding Raman intensities I_m (real, non-negative).
+      active_linewidths : ndarray, shape (M,)
+          Linewidths of the active modes in cm⁻¹.
+
+      Notes
+      -----
+      This method assumes all ``RamanLayer`` objects in ``self.raman_layers``
+      have the same set of phonon modes (same DFT calculation).  If layers
+      have different materials this method must be extended.
+
+      When ``approximate_es=False`` (default), ``calculate_Efield`` is called
+      once per active mode for E_S at ν_S = ν_L − ν_m, plus once for E_L.
+      For systems with many modes this can be slow; set ``approximate_es=True``
+      to recover the single-field-call behaviour at the cost of accuracy.
+
+
+
+
+   .. py:method:: calculate_spectrum(freq_axis_cm1, progress_callback=None)
+
+      Compute the broadened Raman spectrum on the given frequency axis.
+
+      Parameters
+      ----------
+      freq_axis_cm1 : array_like, shape (N,)
+          Raman-shift axis in cm⁻¹ on which to evaluate the spectrum.
+      progress_callback : callable, optional
+          Forwarded to :meth:`calculate_mode_intensities` so a caller can
+          drive a progress bar.  Called once per phonon mode.
+
+      Returns
+      -------
+      spectrum : ndarray, shape (N,)
+          Raman intensity I(Δν) on the requested axis.
+
+
+
+
+   .. py:attribute:: _detected_jones
+      :value: None
+
+
+
+   .. py:attribute:: _gl_layer_slices
+      :value: None
+
+
+
+   .. py:attribute:: _gl_phys_weights
+      :value: None
+
+
+
+   .. py:attribute:: _gl_z
+      :value: None
+
+
+
+   .. py:attribute:: _incident_jones
+
+
+   .. py:attribute:: approximate_es
+      :value: False
+
+
+
+   .. py:attribute:: coherent_layers
+      :value: False
+
+
+
+   .. py:attribute:: collection_angle_rad
+
+
+   .. py:attribute:: collection_side
+      :value: 'superstrate'
+
+
+
+   .. py:attribute:: detected_pol
+
+
+   .. py:attribute:: incident_angle_rad
+
+
+   .. py:attribute:: incident_pol
+
+
+   .. py:attribute:: laser_frequency_cm1
+
+
+   .. py:attribute:: linewidths_cm1
+
+
+   .. py:attribute:: n_gauss
+      :value: 20
+
+
+
+   .. py:attribute:: raman_layers
+
+
+   .. py:attribute:: system
+
+
+   .. py:attribute:: temperature_K
+
+
+.. py:class:: RamanLayer(layer_index, phonon_frequencies_cm1, raman_tensors, rotation_matrix)
+
+   A Raman-active layer descriptor for LayeredRamanCalculator.
+
+   Parameters
+   ----------
+   layer_index : int
+       Zero-based index into ``System.layers`` (the list of finite-thickness
+       layers, excluding the semi-infinite superstrate and substrate).
+   phonon_frequencies_cm1 : array_like, shape (n_modes,)
+       All phonon frequencies in cm⁻¹, including acoustic branches.
+   raman_tensors : list of ndarray, shape (n_modes, 3, 3)
+       3×3 Raman susceptibility tensors in the DFT crystal frame, one per
+       mode.  The stored reader tensors have units (Å/amu)^0.5 (i.e. they
+       are divided by √V_cell); multiply by ``np.sqrt(volume_ang3)`` before
+       passing here so that intensities are proportional to Å² × V / amu.
+   rotation_matrix : ndarray, shape (3, 3)
+       Combined rotation G that maps crystal-frame vectors to the lab frame:
+       ``v_lab = G @ v_crystal``.  Typically this is the product of the
+       global azimuthal rotation and the HKL surface-normal rotation, i.e.
+       ``G = R_z(psi_global) @ layer.euler`` where ``layer.euler`` is the
+       rotation computed by ``SingleCrystalLayer.calculate_euler_matrix()``.
+
+   Notes
+   -----
+   For a rank-2 tensor the lab-frame rotation is:
+       ``R_lab = G @ R_crystal @ G.T``
+
+
+
+   .. py:attribute:: layer_index
+
+
+   .. py:attribute:: phonon_frequencies_cm1
+
+
+   .. py:attribute:: raman_tensors
+
+
+   .. py:attribute:: rotation_matrix
+
+
+.. py:function:: bose_factor(nu_cm1, temperature_K)
+
+   Return the Stokes Bose-Einstein thermal prefactor (n+1)/ν.
+
+   Parameters
+   ----------
+   nu_cm1 : float
+       Phonon frequency in cm⁻¹.  Must be positive.
+   temperature_K : float
+       Temperature in Kelvin.
+
+   Returns
+   -------
+   float
+       ``(n(ν) + 1) / ν`` where ``n(ν) = 1 / (exp(hcν / kT) - 1)``.
+       At T = 0 the limit ``1/ν`` is returned.
+
+
+
+.. py:function:: lorentzian_broaden(mode_frequencies_cm1, mode_intensities, linewidths_cm1, freq_axis_cm1)
+
+   Broaden a set of delta-function Raman intensities with Lorentzian lineshapes.
+
+   Parameters
+   ----------
+   mode_frequencies_cm1 : array_like, shape (M,)
+       Mode frequencies in cm⁻¹ (only active modes, after acoustic filtering).
+   mode_intensities : array_like, shape (M,)
+       Integrated mode intensities before broadening.
+   linewidths_cm1 : array_like, shape (M,)
+       Lorentzian half-widths at half-maximum σ_m in cm⁻¹.
+   freq_axis_cm1 : array_like, shape (N,)
+       Output Raman-shift axis in cm⁻¹.
+
+   Returns
+   -------
+   spectrum : ndarray, shape (N,)
+       Broadened Raman spectrum I(Δν).
+
+
+
+.. py:data:: _ACOUSTIC_THRESHOLD_CM1
+   :value: 10.0
+
+
+.. py:data:: logger
+
