@@ -1,0 +1,594 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="PDielec package crystal Raman theory" name="description" />
+<meta content="Raman, Crystal, Layer, Transfer Matrix, Scattering Matrix, Reciprocity" name="keywords" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Phonon Analysis" href="analysis.html"><link rel="prev" title="Theory for Powder Raman" href="PowderRaman.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Theory for Crystal Layer Raman - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Theory for Crystal Layer Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/aims_pdielec_born/index.html">PDielec.aims_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_complex_values/index.html">test_F_complex_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/CrystalRaman.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="theory-for-crystal-layer-raman">
+<span id="crystal-raman-theory"></span><h1>Theory for Crystal Layer Raman<a class="headerlink" href="#theory-for-crystal-layer-raman" title="Link to this heading">¶</a></h1>
+<p>The <em>Crystal Raman</em> calculation models Raman scattering from a crystal slab or a multilayer
+stack.  It combines the Raman tensors and phonon frequencies from a lattice-dynamical
+calculation with the optical electric fields calculated by the transfer matrix or scattering
+matrix methods described in <a class="reference internal" href="theory_single_crystal.html#single-crystal-theory"><span class="std std-ref">Theory for Single Crystal Infrared Optics</span></a>.</p>
+<p>The method is intended for non-resonant Raman scattering from homogeneous Raman-active
+layers.  The incident laser field and the reciprocal scattered field may be modified by
+refraction, reflection, absorption and interference within the stack.  These effects are
+included by evaluating the electric fields throughout each Raman-active layer and
+integrating the Raman source over the layer thickness.</p>
+<section id="geometry">
+<h2>Geometry<a class="headerlink" href="#geometry" title="Link to this heading">¶</a></h2>
+<p>The crystal layer uses the same laboratory frame as the single-crystal infrared calculation.
+The layer surface lies in the <span class="math notranslate nohighlight">\(XY\)</span> plane and the surface normal is the laboratory
+<span class="math notranslate nohighlight">\(Z\)</span> direction.  The incident radiation lies in the <span class="math notranslate nohighlight">\(XZ\)</span> plane; p-polarised light
+is polarised in this plane and s-polarised light is polarised along <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+<figure class="align-default" id="id1">
+<span id="fig-crystal-raman-layers"></span><a class="reference internal image-reference" href="_images/Raman_Multi_Layers.png"><img alt="_images/Raman_Multi_Layers.png" height="576" src="_images/Raman_Multi_Layers.png" width="1024" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Raman scattering from a multilayer system.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The laser is incident with angle <span class="math notranslate nohighlight">\(\theta_L\)</span>.  The detector may be on the superstrate
+side for backscattering or on the substrate side for forward scattering.  The detected
+scattered radiation has frequency</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-scattered-frequency">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-scattered-frequency">
+<span class="eqno">(88)<a class="headerlink" href="#equation-eq-crystal-raman-scattered-frequency" title="Link to this equation">¶</a></span>\[\nu_S = \nu_L - \nu_m\]</div>
+</div>
+<p>for Stokes scattering from mode <span class="math notranslate nohighlight">\(m\)</span>.</p>
+</section>
+<section id="layer-raman-amplitude">
+<h2>Layer Raman Amplitude<a class="headerlink" href="#layer-raman-amplitude" title="Link to this heading">¶</a></h2>
+<p>At a point <span class="math notranslate nohighlight">\(z_s\)</span> inside a Raman-active layer the scattering amplitude of mode
+<span class="math notranslate nohighlight">\(m\)</span> is</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-local-amplitude">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-local-amplitude">
+<span class="eqno">(89)<a class="headerlink" href="#equation-eq-crystal-raman-local-amplitude" title="Link to this equation">¶</a></span>\[A_m(z_s) \propto
+\mathbf{E}_S(z_s,\nu_S)^T
+\tensorbf{R}^{(m)}_{lab}
+\mathbf{E}_L(z_s,\nu_L)\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{E}_L\)</span> is the local electric field produced by the incident laser,
+<span class="math notranslate nohighlight">\(\mathbf{E}_S\)</span> is the reciprocal field associated with the detected scattered channel,
+and <span class="math notranslate nohighlight">\(\tensorbf{R}^{(m)}_{lab}\)</span> is the Raman tensor rotated into the laboratory frame.
+The transpose on <span class="math notranslate nohighlight">\(\mathbf{E}_S\)</span> is not a Hermitian conjugate; this is the usual
+reciprocity overlap used for Raman scattering from layered optical systems.</p>
+<p>For a homogeneous layer <span class="math notranslate nohighlight">\(\ell\)</span>, the layer amplitude is obtained by integrating through
+the layer thickness,</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-layer-amplitude">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-layer-amplitude">
+<span class="eqno">(90)<a class="headerlink" href="#equation-eq-crystal-raman-layer-amplitude" title="Link to this equation">¶</a></span>\[A_{\ell m} =
+\int_{z_\ell}^{z_{\ell+1}}
+\mathbf{E}_S(z,\nu_S)^T
+\tensorbf{R}^{(m)}_{\ell,lab}
+\mathbf{E}_L(z,\nu_L)\,dz\]</div>
+</div>
+<p>PDielec evaluates this integral numerically using Gauss-Legendre quadrature points inside
+each Raman-active layer.</p>
+</section>
+<section id="optical-fields">
+<h2>Optical Fields<a class="headerlink" href="#optical-fields" title="Link to this heading">¶</a></h2>
+<p>The fields <span class="math notranslate nohighlight">\(\mathbf{E}_L\)</span> and <span class="math notranslate nohighlight">\(\mathbf{E}_S\)</span> are calculated from the same
+transfer matrix or scattering matrix machinery used for single-crystal infrared spectra.
+At optical laser frequencies the phonon contribution to the permittivity is not included;
+the high-frequency optical permittivity of each material is used for propagation through
+the stack.</p>
+<p>The incident field <span class="math notranslate nohighlight">\(\mathbf{E}_L(z,\nu_L)\)</span> is calculated in the original multilayer
+system at the laser frequency.  The scattered field is calculated at the shifted frequency
+<span class="math notranslate nohighlight">\(\nu_S\)</span>.  For backscattering the reciprocal field is launched from the superstrate
+side.  For forward scattering it is launched from the substrate side, which is implemented
+by using the reversed stack and mapping each integration point to the corresponding
+position in that reversed system.</p>
+<p>The detected channel can be p-polarised, s-polarised, or unpolarised.  In the unpolarised
+case the p- and s-detected intensities are summed incoherently.</p>
+</section>
+<section id="raman-tensor-orientation">
+<h2>Raman Tensor Orientation<a class="headerlink" href="#raman-tensor-orientation" title="Link to this heading">¶</a></h2>
+<p>The Raman tensor from the quantum mechanical calculation is defined in the crystal
+coordinate frame.  If <span class="math notranslate nohighlight">\(\tensorbf{G}\)</span> maps vectors from the crystal frame to the
+laboratory frame,</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-vector-rotation">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-vector-rotation">
+<span class="eqno">(91)<a class="headerlink" href="#equation-eq-crystal-raman-vector-rotation" title="Link to this equation">¶</a></span>\[\mathbf{v}_{lab} = \tensorbf{G}\mathbf{v}_{crystal}\]</div>
+</div>
+<p>then the laboratory Raman tensor is</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-tensor-rotation">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-tensor-rotation">
+<span class="eqno">(92)<a class="headerlink" href="#equation-eq-crystal-raman-tensor-rotation" title="Link to this equation">¶</a></span>\[\tensorbf{R}^{(m)}_{lab} =
+\tensorbf{G}\tensorbf{R}^{(m)}_{crystal}\tensorbf{G}^{T}\]</div>
+</div>
+<p>The rotation includes the surface orientation, specified by the layer Miller indices, and the
+azimuthal rotation about the laboratory <span class="math notranslate nohighlight">\(Z\)</span> axis.  This allows the Raman intensity to
+be calculated as a function of azimuthal angle.</p>
+</section>
+<section id="combining-layers-and-modes">
+<h2>Combining Layers and Modes<a class="headerlink" href="#combining-layers-and-modes" title="Link to this heading">¶</a></h2>
+<p>For one mode, the layer amplitudes may be combined coherently or incoherently.  Coherent
+combination sums amplitudes before squaring,</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-coherent">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-coherent">
+<span class="eqno">(93)<a class="headerlink" href="#equation-eq-crystal-raman-coherent" title="Link to this equation">¶</a></span>\[I_m \propto \left|\sum_\ell A_{\ell m}\right|^2\]</div>
+</div>
+<p>whereas incoherent combination sums the layer intensities,</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-incoherent">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-incoherent">
+<span class="eqno">(94)<a class="headerlink" href="#equation-eq-crystal-raman-incoherent" title="Link to this equation">¶</a></span>\[I_m \propto \sum_\ell \left|A_{\ell m}\right|^2\]</div>
+</div>
+<p>The mode intensity is then multiplied by the Stokes thermal factor,</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-bose-factor">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-bose-factor">
+<span class="eqno">(95)<a class="headerlink" href="#equation-eq-crystal-raman-bose-factor" title="Link to this equation">¶</a></span>\[\frac{n(\nu_m)+1}{\nu_m}\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(n(\nu_m)\)</span> is the Bose-Einstein occupation factor.  The final spectrum is
+formed by applying Lorentzian broadening to each active mode,</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-spectrum">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-spectrum">
+<span class="eqno">(96)<a class="headerlink" href="#equation-eq-crystal-raman-spectrum" title="Link to this equation">¶</a></span>\[I(\Delta\nu) =
+\sum_m
+I_m
+\frac{\sigma_m}{(\Delta\nu-\nu_m)^2+\sigma_m^2}\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_m\)</span> is the Lorentzian half-width at half maximum.</p>
+</section>
+<section id="layer-phonon-frequencies">
+<h2>Layer Phonon Frequencies<a class="headerlink" href="#layer-phonon-frequencies" title="Link to this heading">¶</a></h2>
+<p>The optical field calculation and the lattice-dynamical calculation are separate problems.
+The electric fields are obtained from the optical permittivity of the multilayer stack, while
+the phonon frequencies and Raman tensors are obtained from the vibrational problem of the
+Raman-active layer material.</p>
+<p>For a laterally infinite homogeneous slab, the boundary condition for the phonon-induced
+macroscopic field can be represented with a slab depolarisation tensor</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-slab-depolarisation">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-slab-depolarisation">
+<span class="eqno">(97)<a class="headerlink" href="#equation-eq-crystal-raman-slab-depolarisation" title="Link to this equation">¶</a></span>\[\tensorbf{L}_{slab} = \hat{\mathbf{n}}\hat{\mathbf{n}}^T\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\mathbf{n}}\)</span> is the surface normal.  With the mass-weighted Born charge
+tensor <span class="math notranslate nohighlight">\(\tensorbf{Z}^{mw}\)</span>, the phonon-induced polarisation is</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-phonon-polarisation">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-phonon-polarisation">
+<span class="eqno">(98)<a class="headerlink" href="#equation-eq-crystal-raman-phonon-polarisation" title="Link to this equation">¶</a></span>\[\mathbf{P}_{ph} = \frac{1}{V}\tensorbf{Z}^{mw}\mathbf{x}\]</div>
+</div>
+<p>The corresponding correction to the transverse-optic dynamical matrix can be written as</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-layer-dynamical">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-layer-dynamical">
+<span class="eqno">(99)<a class="headerlink" href="#equation-eq-crystal-raman-layer-dynamical" title="Link to this equation">¶</a></span>\[\tensorbf{D}^{layer} =
+\tensorbf{D}^{TO} +
+\frac{1}{\epsilon_0 V}
+\left(\tensorbf{Z}^{mw}\right)^T
+\tensorbf{S}_{bg}
+\tensorbf{Z}^{mw}\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\tensorbf{S}_{bg}\)</span> is the screening tensor for the depolarisation field.  For a
+simple slab in identical isotropic surroundings this reduces to the particle-style
+depolarisation correction with <span class="math notranslate nohighlight">\(\tensorbf{L}_{slab}\)</span>.</p>
+<p>For more complicated multilayers, PDielec can instead use the leading non-analytic
+correction along the slab normal,</p>
+<div class="math-wrapper docutils container" id="equation-eq-crystal-raman-nac-layer">
+<div class="math notranslate nohighlight" id="equation-eq-crystal-raman-nac-layer">
+<span class="eqno">(100)<a class="headerlink" href="#equation-eq-crystal-raman-nac-layer" title="Link to this equation">¶</a></span>\[\tensorbf{D}^{layer} =
+\tensorbf{D}^{TO} +
+\frac{1}{\epsilon_0}
+\frac{\left(\tensorbf{Z}^{mw}\right)^T
+      \hat{\mathbf{n}}\hat{\mathbf{n}}^T
+      \tensorbf{Z}^{mw}}
+     {\hat{\mathbf{n}}^T\tensorbs{\varepsilon}_{b}\hat{\mathbf{n}}}\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\tensorbs{\varepsilon}_{b}\)</span> is the background, approximately optical,
+permittivity of the layer material.  Diagonalising this corrected matrix gives the slab
+phonon frequencies used in the Raman spectrum.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="analysis.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Phonon Analysis</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="PowderRaman.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Theory for Powder Raman</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Theory for Crystal Layer Raman</a><ul>
+<li><a class="reference internal" href="#geometry">Geometry</a></li>
+<li><a class="reference internal" href="#layer-raman-amplitude">Layer Raman Amplitude</a></li>
+<li><a class="reference internal" href="#optical-fields">Optical Fields</a></li>
+<li><a class="reference internal" href="#raman-tensor-orientation">Raman Tensor Orientation</a></li>
+<li><a class="reference internal" href="#combining-layers-and-modes">Combining Layers and Modes</a></li>
+<li><a class="reference internal" href="#layer-phonon-frequencies">Layer Phonon Frequencies</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=335988e4"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script>window.MathJax = {"extensions": ["AMSmath.js"], "tex": {"macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    </body>
+</html>
