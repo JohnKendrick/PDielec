@@ -75,6 +75,14 @@ jquery-3.5.1.js
 *.qti~
 ~$*
 Sphinx/autoapi
+CLAUDE.md
+GEMINI.md
+graphify-out
+Raman-Theory.pdf
+crystal_raman_changes.md
+crystal_raman_notes.md
+layered_raman_pygtm_implementation_plan_marktext.md
+raman_notes.md
 
 # Andrew Burnett
 Data/
