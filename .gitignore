@@ -81,5 +81,6 @@ Data/
 *test*
 !PDielec/Tests/
 !PDielec/Tests/**
+PDielec/Tests/**/__pycache__/
 *.code-workspace
 
