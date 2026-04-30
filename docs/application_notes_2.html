@@ -204,8 +204,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -342,12 +344,12 @@
 <p>This example looks at an isotropic system.  The results of a CASTEP calculation of MgO have provided the frequency-dependent permittivity and this is used to look at the effect of crystal thickness on the reflectance, transmittance and absorptance.
 The examples shown here were calculated using the scripts mgo_coherent_size_effects.py in the Examples/SingleCrystal/MgO directory of the GitHub distribution.
 A 45<sup>o</sup> incident beam on the (001) surface of MgO is used to calculate the transmittance, reflectance and absorbtance of thin films with thickness of 0.1, 1, 10 and 100 microns.
-The results of the coherent calculations are shown in <a class="reference internal" href="#fig-mgo-coherent"><span class="std std-numref">Fig. 40</span></a></p>
+The results of the coherent calculations are shown in <a class="reference internal" href="#fig-mgo-coherent"><span class="std std-numref">Fig. 41</span></a></p>
 <figure class="align-default" id="id11">
 <span id="fig-mgo-coherent"></span><a class="reference internal image-reference" href="_images/MgO_Coherent_Size_Effects.svg"><img alt="_images/MgO_Coherent_Size_Effects.svg" height="376" src="_images/MgO_Coherent_Size_Effects.svg" width="1189" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 40 </span><span class="caption-text">Effects of Film Thickness of MgO in Coherent Light, a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id11" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 41 </span><span class="caption-text">Effects of Film Thickness of MgO in Coherent Light, a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id11" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The results for the ‘thick slab’ case are shown only for reflectance and absorbtance.  It can be seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 <span class="math notranslate nohighlight">\(cm^{-1}\)</span>) is almost total with also very little absorbtance.
@@ -357,7 +359,7 @@ The 1μm thickness shows considerable broadening of these signals, with the TO r
 At 10μm, below the TO frequency there are oscillations in the reflectance, transmittance and absorptance which are a result of interference between the internally reflected waves.  They occur because the light is coherent.  The oscillations continue until they meet the ‘thick slab’ limit and they then follow this limit until frequencies above the LO frequency.
 At 100μm, the oscillations below the TO frequency are very fast and they reach the ‘thick slab’ limiting case at lower frequencies than for the 10μm case.
 Similarly at higher frequencies they follow the ‘thick slab’ limiting case.</p>
-<p>The effect of thickness on the “Incoherent (intensity)” method is shown in <a class="reference internal" href="#fig-mgo-incoherent"><span class="std std-numref">Fig. 41</span></a>.
+<p>The effect of thickness on the “Incoherent (intensity)” method is shown in <a class="reference internal" href="#fig-mgo-incoherent"><span class="std std-numref">Fig. 42</span></a>.
 This method uses intensities rather than amplitudes for the transfer matrix and as a result, all the phase information is lost, resulting in no interferences after internal reflections.
 The calculations shown are for p- polarised incident radiation.</p>
 <p>The incoherent method deviates from the ‘thick slab’ results at very low frequencies, but as the film thickness increases the deviations become smaller.
@@ -369,18 +371,18 @@ In such cases it is recommended to use the ‘Incoherent (non-reflective)’ met
 <span id="fig-mgo-incoherent"></span><a class="reference internal image-reference" href="_images/MgO_Incoherent_Size_Effects.svg"><img alt="_images/MgO_Incoherent_Size_Effects.svg" height="382" src="_images/MgO_Incoherent_Size_Effects.svg" width="405" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 41 </span><span class="caption-text">Incoherent (intensity) mode - a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 42 </span><span class="caption-text">Incoherent (intensity) mode - a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Komandin et al <span id="id1">[<a class="reference internal" href="zreferences.html#id78" title="G. A. Komandin, O. E. Porodinkov, I. E. Spector, and A. A. Volkov. Multiphonon absorption in a MgO single crystal in the terahertz range. Physics of the Solid State, 51(10):2045–2050, 2009. doi:10.1134/S1063783409100096.">75</a>]</span> have reported terahertz spectra of 0.5μm thick MgO crystals which are dominated by interference at low frequencies.
-In <a class="reference internal" href="#fig-mgo-experiment"><span class="std std-numref">Fig. 42</span></a> a digitised spectrum obtained from this publication is compared with calculations.
+In <a class="reference internal" href="#fig-mgo-experiment"><span class="std std-numref">Fig. 43</span></a> a digitised spectrum obtained from this publication is compared with calculations.
 Considering only calculated information (refractive index, LO and TO frequencies, etc.) is being used, it can be seen that, despite the rather poor digitisation, the agreement is very good.
 Agreement with the number of interference bands and the amplitude of the bands is also good.</p>
 <figure class="align-default" id="id13">
 <span id="fig-mgo-experiment"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg"><img alt="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" height="382" src="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" width="405" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 42 </span><span class="caption-text">Comparison of calculated and experimental transmittance terahertz spectra</span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 43 </span><span class="caption-text">Comparison of calculated and experimental transmittance terahertz spectra</span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Finally, we compare a digitised spectrum of the reflectance measured over the range 0 - 800 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> with the spectrum calculated using PDGui and Castep.
@@ -391,7 +393,7 @@ The shoulder on the experimental result is due to two phonon processes that are 
 <span id="fig-mgo-experiment-reflectance"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_Experiment_Reflectance.svg"><img alt="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" height="382" src="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" width="409" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 43 </span><span class="caption-text">Comparison of calculated and experimental reflectance infrared spectra</span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 44 </span><span class="caption-text">Comparison of calculated and experimental reflectance infrared spectra</span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -401,7 +403,7 @@ The shoulder on the experimental result is due to two phonon processes that are 
 The FPSQ model is defined by the following equation.</p>
 <div class="math-wrapper docutils container" id="equation-eq-fpsqa">
 <div class="math notranslate nohighlight" id="equation-eq-fpsqa">
-<span class="eqno">(92)<a class="headerlink" href="#equation-eq-fpsqa" title="Link to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
+<span class="eqno">(118)<a class="headerlink" href="#equation-eq-fpsqa" title="Link to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
 </div>
 <p>Forsterite is an orthosilicate belonging to an orthorhombic space group.  The permittivity matrix is diagonal when the x, y and z axes of the crystal are aligned with a, b and c axes of the unit cell.  The parameters for the FPSQ model are summarised in the tables below.</p>
 <div class="table-wrapper styled-table docutils container" id="tab-optical">
@@ -650,7 +652,7 @@ The arrangement described is shown in the Figure below where <span class="math n
 <span id="fig-lab-coords"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" height="648" src="_images/SingleCrystalGeometry.png" width="1152" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 44 </span><span class="caption-text">Definition of the single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 45 </span><span class="caption-text">Definition of the single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>As can be seen <span class="math notranslate nohighlight">\(E_s\)</span> is parallel to the laboratory Y-axis, so it is necessary to line up the crystal unit cell so that the cell direction being investigated is parallel to the Y-axis.
@@ -692,7 +694,7 @@ The data for this calculation can be found by looking in the <a class="reference
 <a class="reference internal image-reference" href="_images/forsterite-350-600.png"><img alt="_images/forsterite-350-600.png" height="432" src="_images/forsterite-350-600.png" width="576" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 45 </span><span class="caption-text">Forsterite a-axis reflectance (upper figure 100 - 1200 cm<sup>-1</sup>, lower figure 350 - 600 cm<sup>-1</sup>)</span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 46 </span><span class="caption-text">Forsterite a-axis reflectance (upper figure 100 - 1200 cm<sup>-1</sup>, lower figure 350 - 600 cm<sup>-1</sup>)</span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -721,7 +723,7 @@ To initialise PDGui with the results of the DFT calculation and starting the GUI
 <span id="fig-lalanine-maintab"></span><a class="reference internal image-reference" href="_images/lalanine-maintab.png"><img alt="_images/lalanine-maintab.png" height="879" src="_images/lalanine-maintab.png" width="616" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 46 </span><span class="caption-text">L-alanine Main Tab</span><a class="headerlink" href="#id17" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 47 </span><span class="caption-text">L-alanine Main Tab</span><a class="headerlink" href="#id17" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The <em>Settings Tab</em> (see below) shows those settings which affect the calculation of the permittivity.  By default, the frequencies are modified by projecting out any translational degrees of freedom.
@@ -737,7 +739,7 @@ The resulting spectrum is not very sensitive to these settings.</p>
 <span id="fig-lalanine-settingstab"></span><a class="reference internal image-reference" href="_images/lalanine-settingstab.png"><img alt="_images/lalanine-settingstab.png" height="884" src="_images/lalanine-settingstab.png" width="612" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 47 </span><span class="caption-text">L-alanine Settings Tab</span><a class="headerlink" href="#id18" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 48 </span><span class="caption-text">L-alanine Settings Tab</span><a class="headerlink" href="#id18" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The next tab is the <em>Scenario tab</em> which is used to reflect the experimental parameters that are possible.
@@ -757,7 +759,7 @@ To start with we will use the <em>Coherent</em> mode and a thickness of 0.2mm.  
 <span id="fig-lalanine-scenariotab"></span><a class="reference internal image-reference" href="_images/lalanine-scenariotab.png"><img alt="_images/lalanine-scenariotab.png" height="883" src="_images/lalanine-scenariotab.png" width="817" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 48 </span><span class="caption-text">L-alanine Scenario Tab</span><a class="headerlink" href="#id19" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 49 </span><span class="caption-text">L-alanine Scenario Tab</span><a class="headerlink" href="#id19" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The resulting spectrum is shown below.
@@ -767,7 +769,7 @@ These are due to interference of the directly transmitted light and light that h
 <span id="fig-lalanine-plottertab-coherent"></span><a class="reference internal image-reference" href="_images/lalanine-plottingtab-coherent.png"><img alt="_images/lalanine-plottingtab-coherent.png" height="878" src="_images/lalanine-plottingtab-coherent.png" width="615" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 49 </span><span class="caption-text">L-alanine Plotter Tab showing coherent light transmittance</span><a class="headerlink" href="#id20" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 50 </span><span class="caption-text">L-alanine Plotter Tab showing coherent light transmittance</span><a class="headerlink" href="#id20" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>To see if we can remove this we will change the option for this layer in the <em>Scenario tab</em> to <em>Incoherent (intensity)</em>.
@@ -783,7 +785,7 @@ This also shows the cross-correlation between experiment and calculation, for th
 <span id="fig-lalanine-fittertab-incoherent-aaxis"></span><a class="reference internal image-reference" href="_images/lalanine-fittertab-incoherent-aaxis.png"><img alt="_images/lalanine-fittertab-incoherent-aaxis.png" height="883" src="_images/lalanine-fittertab-incoherent-aaxis.png" width="817" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 50 </span><span class="caption-text">L-alanine Plotter Tab showing incoherent light transmittance for a-axis polarised light</span><a class="headerlink" href="#id21" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 51 </span><span class="caption-text">L-alanine Plotter Tab showing incoherent light transmittance for a-axis polarised light</span><a class="headerlink" href="#id21" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Plots for the b-axis and c-axis electric fields are shown below.  The b-axis example is given by using the same (001) surface but using an azimuthal angle of 0<sup>o</sup>.  The thickness used for the b-axis example is 0.1mm, smaller than the 0.2mm used for the a-axis example.
@@ -792,14 +794,14 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
 <span id="fig-lalanine-plottertab-incoherent-baxis"></span><a class="reference internal image-reference" href="_images/lalanine-fittertab-incoherent-baxis.png"><img alt="_images/lalanine-fittertab-incoherent-baxis.png" height="883" src="_images/lalanine-fittertab-incoherent-baxis.png" width="817" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 51 </span><span class="caption-text">L-alanine Plotter Tab showing incoherent light transmittance for b-axis polarised light</span><a class="headerlink" href="#id22" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 52 </span><span class="caption-text">L-alanine Plotter Tab showing incoherent light transmittance for b-axis polarised light</span><a class="headerlink" href="#id22" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id23">
 <span id="fig-lalanine-plottertab-coherent-caxis"></span><a class="reference internal image-reference" href="_images/lalanine-fittertab-incoherent-caxis.png"><img alt="_images/lalanine-fittertab-incoherent-caxis.png" height="883" src="_images/lalanine-fittertab-incoherent-caxis.png" width="817" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 52 </span><span class="caption-text">L-alanine Plotter Tab showing incoherent light transmittance for c-axis polarised light</span><a class="headerlink" href="#id23" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 53 </span><span class="caption-text">L-alanine Plotter Tab showing incoherent light transmittance for c-axis polarised light</span><a class="headerlink" href="#id23" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -821,7 +823,7 @@ The scenario is shown below:</p>
 <span id="fig-aln-on-si-etalons-scenario"></span><a class="reference internal image-reference" href="_images/AlN-on-Si-Etalons-Scenario.png"><img alt="_images/AlN-on-Si-Etalons-Scenario.png" height="883" src="_images/AlN-on-Si-Etalons-Scenario.png" width="817" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 53 </span><span class="caption-text">AlN on Silicon Scenario Tab</span><a class="headerlink" href="#id24" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 54 </span><span class="caption-text">AlN on Silicon Scenario Tab</span><a class="headerlink" href="#id24" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Two comparisons are made with the calculated results of the published paper after digitising Figures 1 and 2 of the paper.
@@ -832,14 +834,14 @@ The agreement is excellent.</p>
 <span id="fig-aln-on-si-etalons"></span><a class="reference internal image-reference" href="_images/AlN-on-Si-Etalons.svg"><img alt="_images/AlN-on-Si-Etalons.svg" height="382" src="_images/AlN-on-Si-Etalons.svg" width="405" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 54 </span><span class="caption-text">AlN on Silicon reflectance comparison with experiment</span><a class="headerlink" href="#id25" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 55 </span><span class="caption-text">AlN on Silicon reflectance comparison with experiment</span><a class="headerlink" href="#id25" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id26">
 <span id="fig-aln-on-si-close-up"></span><a class="reference internal image-reference" href="_images/AlN-on-Si-Close-Up.svg"><img alt="_images/AlN-on-Si-Close-Up.svg" height="382" src="_images/AlN-on-Si-Close-Up.svg" width="405" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 55 </span><span class="caption-text">AlN on Silicon reflectance low frequency comparison with experiment</span><a class="headerlink" href="#id26" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 56 </span><span class="caption-text">AlN on Silicon reflectance low frequency comparison with experiment</span><a class="headerlink" href="#id26" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Figure 3 of the paper shows the reflectance of a 0.98μm film of AlN on the (0001) surface of 6H_SiC.
@@ -850,7 +852,7 @@ The top layer (the superstrate) is air below which is the <em>Dielectric layer</
 <span id="fig-aln-on-sic-layereditor"></span><a class="reference internal image-reference" href="_images/AlN_on_SiC_LayerEditor.png"><img alt="_images/AlN_on_SiC_LayerEditor.png" height="826" src="_images/AlN_on_SiC_LayerEditor.png" width="754" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 56 </span><span class="caption-text">AlN on SiC Scenario Tab</span><a class="headerlink" href="#id27" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 57 </span><span class="caption-text">AlN on SiC Scenario Tab</span><a class="headerlink" href="#id27" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>A comparison is given below between the calculated spectrum reported in the paper and that produced by PDGui.</p>
@@ -858,7 +860,7 @@ The top layer (the superstrate) is air below which is the <em>Dielectric layer</
 <span id="fig-aln-on-sic"></span><a class="reference internal image-reference" href="_images/AlN-on-6H-SiC.svg"><img alt="_images/AlN-on-6H-SiC.svg" height="382" src="_images/AlN-on-6H-SiC.svg" width="405" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 57 </span><span class="caption-text">AlN on SiC reflectance compared with experiment</span><a class="headerlink" href="#id28" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 58 </span><span class="caption-text">AlN on SiC reflectance compared with experiment</span><a class="headerlink" href="#id28" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>A final comparison is made between Figure 4 of the paper and the results of PDGui.
@@ -869,7 +871,7 @@ The ScenarioTab for this system is shown below.</p>
 <span id="fig-sic-on-aln-layereditor"></span><a class="reference internal image-reference" href="_images/SiC_on_AlN-LayerEditor.png"><img alt="_images/SiC_on_AlN-LayerEditor.png" height="883" src="_images/SiC_on_AlN-LayerEditor.png" width="817" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 58 </span><span class="caption-text">SiC on AlN on Silicon Scenario Tab</span><a class="headerlink" href="#id29" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 59 </span><span class="caption-text">SiC on AlN on Silicon Scenario Tab</span><a class="headerlink" href="#id29" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>A comparison is given below between the calculated spectrum reported in the paper and that produced by PDGui.</p>
@@ -877,7 +879,7 @@ The ScenarioTab for this system is shown below.</p>
 <span id="fig-sic-on-aln"></span><a class="reference internal image-reference" href="_images/6H-SiC-on-AlN.svg"><img alt="_images/6H-SiC-on-AlN.svg" height="382" src="_images/6H-SiC-on-AlN.svg" width="405" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 59 </span><span class="caption-text">SiC on AlN on Silicon reflectance comparison with experiment</span><a class="headerlink" href="#id30" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 60 </span><span class="caption-text">SiC on AlN on Silicon reflectance comparison with experiment</span><a class="headerlink" href="#id30" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -904,7 +906,7 @@ The layer was added using the <em>Layer Editor</em>.</p>
 <span id="fig-sapphire-scenario"></span><a class="reference internal image-reference" href="_images/Sapphire-scenario-tab.png"><img alt="_images/Sapphire-scenario-tab.png" height="883" src="_images/Sapphire-scenario-tab.png" width="817" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 60 </span><span class="caption-text">Sapphire scenario tab</span><a class="headerlink" href="#id31" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 61 </span><span class="caption-text">Sapphire scenario tab</span><a class="headerlink" href="#id31" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The a-plane family of surfaces are described by (11-20) and its permutations: (1-210), (-2110) (-1-120), (-12-10) and (2-1-10).
@@ -916,7 +918,7 @@ Once the correct orientation has been chosen the azimuthal angle of the complete
 <span id="fig-sapphire-a-layer-editor"></span><a class="reference internal image-reference" href="_images/Sapphire-a-layer-editor.png"><img alt="_images/Sapphire-a-layer-editor.png" height="333" src="_images/Sapphire-a-layer-editor.png" width="481" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 61 </span><span class="caption-text">Sapphire layer editor</span><a class="headerlink" href="#id32" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 62 </span><span class="caption-text">Sapphire layer editor</span><a class="headerlink" href="#id32" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The r-plane family of surfaces are described by (1-102), (10-12), (01-12), (-110-2), (-101-2) and (0-11-2).
@@ -933,21 +935,21 @@ Again the <em>Global azimuthal angle</em> can be used to rotate the whole system
 <span id="fig-sapphire-c-reflectance"></span><a class="reference internal image-reference" href="_images/Sapphire-c-plane-reflectance.svg"><img alt="_images/Sapphire-c-plane-reflectance.svg" height="706" src="_images/Sapphire-c-plane-reflectance.svg" width="634" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 62 </span><span class="caption-text">c-plane reflectance</span><a class="headerlink" href="#id33" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 63 </span><span class="caption-text">c-plane reflectance</span><a class="headerlink" href="#id33" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id34">
 <span id="fig-sapphire-a-reflectance"></span><a class="reference internal image-reference" href="_images/Sapphire-a-plane-reflectance.svg"><img alt="_images/Sapphire-a-plane-reflectance.svg" height="867" src="_images/Sapphire-a-plane-reflectance.svg" width="776" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 63 </span><span class="caption-text">a-plane reflectance</span><a class="headerlink" href="#id34" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 64 </span><span class="caption-text">a-plane reflectance</span><a class="headerlink" href="#id34" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id35">
 <span id="fig-sapphire-r-reflectance"></span><a class="reference internal image-reference" href="_images/Sapphire-r-plane-reflectance.svg"><img alt="_images/Sapphire-r-plane-reflectance.svg" height="867" src="_images/Sapphire-r-plane-reflectance.svg" width="778" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 64 </span><span class="caption-text">r-plane reflectance</span><a class="headerlink" href="#id35" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 65 </span><span class="caption-text">r-plane reflectance</span><a class="headerlink" href="#id35" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>

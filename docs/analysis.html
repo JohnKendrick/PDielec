@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE" name="keywords" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Applications of Effective Medium Theory" href="application_notes_1.html"><link rel="prev" title="Theory for Single Crystal Optics" href="theory_single_crystal.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Applications of Effective Medium Theory" href="application_notes_1.html"><link rel="prev" title="Theory for Crystal Layer Raman" href="CrystalRaman.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Phonon Analysis - PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -204,8 +204,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -347,45 +349,45 @@ the second derivative matrix to a set of coordinates that no longer include cent
 <p>Defining a projection operator as;</p>
 <div class="math-wrapper docutils container" id="equation-eq-projectionop">
 <div class="math notranslate nohighlight" id="equation-eq-projectionop">
-<span class="eqno">(75)<a class="headerlink" href="#equation-eq-projectionop" title="Link to this equation">¶</a></span>\[\tensorbf{P} = \tensorbf{1} - \fieldbf{V} \fieldbf{V}^{T}\]</div>
+<span class="eqno">(101)<a class="headerlink" href="#equation-eq-projectionop" title="Link to this equation">¶</a></span>\[\tensorbf{P} = \tensorbf{1} - \fieldbf{V} \fieldbf{V}^{T}\]</div>
 </div>
 <p>where <span class="math notranslate nohighlight">\(\fieldbf{V}\)</span> is an orthonormal column vector with length <span class="math notranslate nohighlight">\(3N\)</span> (<span class="math notranslate nohighlight">\(N\)</span> is the number of atoms), the centre-of-mass motion
 can be described in Cartesian space as all atoms moving along the x, y or
 z axis with the same displacement. So considering the projection of the centre-of-mass motion along the x-axis, for each atom <span class="math notranslate nohighlight">\(a\)</span> we can write;</p>
 <div class="math-wrapper docutils container" id="equation-eq-cmx1">
 <div class="math notranslate nohighlight" id="equation-eq-cmx1">
-<span class="eqno">(76)<a class="headerlink" href="#equation-eq-cmx1" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x}_{a} = \left(\begin{matrix} 1 \\ 0 \\ 0 \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(102)<a class="headerlink" href="#equation-eq-cmx1" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x}_{a} = \left(\begin{matrix} 1 \\ 0 \\ 0 \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>For the projection operator which will project out all components of translation along the x-axis for every atom in the molecule we have;</p>
 <div class="math-wrapper docutils container" id="equation-eq-cmx2">
 <div class="math notranslate nohighlight" id="equation-eq-cmx2">
-<span class="eqno">(77)<a class="headerlink" href="#equation-eq-cmx2" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
+<span class="eqno">(103)<a class="headerlink" href="#equation-eq-cmx2" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
 </div>
 <p>There are two other projection operators describing translation along the y- and z-axis.</p>
 <p>In a similar fashion, it is possible to describe an infinitesimal molecular rotation using a vector V and therefore constructing a projection operator to remove rigid-body rotation.  If the coordinates of atom <span class="math notranslate nohighlight">\(a\)</span> relative to the centre-of-mass of the molecule are <span class="math notranslate nohighlight">\(x, y \text{ and } z\)</span>, the component of the projection vector, <span class="math notranslate nohighlight">\(\tensorbf{V}\)</span> representing rotation about the x-axis in the yz-plane is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotyz">
 <div class="math notranslate nohighlight" id="equation-eq-rotyz">
-<span class="eqno">(78)<a class="headerlink" href="#equation-eq-rotyz" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz}_{a} = \left(\begin{matrix} 0 \\ -z \\ +y \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(104)<a class="headerlink" href="#equation-eq-rotyz" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz}_{a} = \left(\begin{matrix} 0 \\ -z \\ +y \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>In a similar fashion rotations about the y- and z-axis are respectively;</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotxz">
 <div class="math notranslate nohighlight" id="equation-eq-rotxz">
-<span class="eqno">(79)<a class="headerlink" href="#equation-eq-rotxz" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xz}_{a} = \left(\begin{matrix} +z \\ 0 \\ -x \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(105)<a class="headerlink" href="#equation-eq-rotxz" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xz}_{a} = \left(\begin{matrix} +z \\ 0 \\ -x \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>and</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotxy">
 <div class="math notranslate nohighlight" id="equation-eq-rotxy">
-<span class="eqno">(80)<a class="headerlink" href="#equation-eq-rotxy" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xy}_{a} = \left(\begin{matrix} -y \\ +x \\ 0 \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(106)<a class="headerlink" href="#equation-eq-rotxy" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xy}_{a} = \left(\begin{matrix} -y \\ +x \\ 0 \end{matrix}\right)\end{split}\]</div>
 </div>
-<p>In a similar fashion to Equation <a class="reference internal" href="#equation-eq-cmx2">(77)</a> the complete projection operators for the 3 rotational modes can be assembled (using rotation about the x-axis as an example)</p>
+<p>In a similar fashion to Equation <a class="reference internal" href="#equation-eq-cmx2">(103)</a> the complete projection operators for the 3 rotational modes can be assembled (using rotation about the x-axis as an example)</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotyz2">
 <div class="math notranslate nohighlight" id="equation-eq-rotyz2">
-<span class="eqno">(81)<a class="headerlink" href="#equation-eq-rotyz2" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz} = \begin{pmatrix} \fieldbf{V}^{yz}_{1} \\ \fieldbf{V}^{yz}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
+<span class="eqno">(107)<a class="headerlink" href="#equation-eq-rotyz2" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz} = \begin{pmatrix} \fieldbf{V}^{yz}_{1} \\ \fieldbf{V}^{yz}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
 </div>
 <p>In practice, the projection operators will be defined using mass-weighted cartesian coordinates as this simplifies the expressions used later.  As an example the transformation to mass-weighted coordinates for atom <span class="math notranslate nohighlight">\(a\)</span> translating along the x-axis is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-mass-weight">
 <div class="math notranslate nohighlight" id="equation-eq-mass-weight">
-<span class="eqno">(82)<a class="headerlink" href="#equation-eq-mass-weight" title="Link to this equation">¶</a></span>\[\sqrt{m_a} \fieldbf{V}^{x}_{a}\]</div>
+<span class="eqno">(108)<a class="headerlink" href="#equation-eq-mass-weight" title="Link to this equation">¶</a></span>\[\sqrt{m_a} \fieldbf{V}^{x}_{a}\]</div>
 </div>
 </section>
 <section id="periodic-systems">
@@ -400,7 +402,7 @@ be a projection operator for each external mode in the system.</p>
 <p>Hug and Haesler have shown <span id="id2">[<a class="reference internal" href="zreferences.html#id66" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">56</a>]</span> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kep">
 <div class="math notranslate nohighlight" id="equation-eq-kep">
-<span class="eqno">(83)<a class="headerlink" href="#equation-eq-kep" title="Link to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
+<span class="eqno">(109)<a class="headerlink" href="#equation-eq-kep" title="Link to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
 \sum\limits_{a}{T_{a,p}} =
 \frac{1}{2}\sum\limits_{a}{m_a \fieldbf{\Delta\dot{x}}^T_{a,p}\fieldbf{\Delta \dot{x}}_{a,p} } =
 \frac{1}{2} \dot{Q^2_p} \sum\limits_{a} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
@@ -415,7 +417,7 @@ Derivation of this expression has made use of the following
 relationship between the mass-weighted normal mode;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy">
-<span class="eqno">(84)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Link to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
+<span class="eqno">(110)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Link to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
 </div>
 <p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id66" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">56</a>]</span>, since the kinetic energy can be expressed as
 atomic contributions, consideration of the Virial theorem indicates that
@@ -426,31 +428,31 @@ mode, <span class="math notranslate nohighlight">\(p\)</span>,  will have its to
 molecules in the unit-cell according to;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy-total">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-total">
-<span class="eqno">(85)<a class="headerlink" href="#equation-eq-kinetic-energy-total" title="Link to this equation">¶</a></span>\[ E^{total}_p = \sum\limits_{mol} {E^{mol}_p }\]</div>
+<span class="eqno">(111)<a class="headerlink" href="#equation-eq-kinetic-energy-total" title="Link to this equation">¶</a></span>\[ E^{total}_p = \sum\limits_{mol} {E^{mol}_p }\]</div>
 </div>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy-molecular">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-molecular">
-<span class="eqno">(86)<a class="headerlink" href="#equation-eq-kinetic-energy-molecular" title="Link to this equation">¶</a></span>\[E^{mol}_p = \dot{Q^2_p} \sum\limits_{a \in mol} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
+<span class="eqno">(112)<a class="headerlink" href="#equation-eq-kinetic-energy-molecular" title="Link to this equation">¶</a></span>\[E^{mol}_p = \dot{Q^2_p} \sum\limits_{a \in mol} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
 </div>
-<p>To calculate the contribution a particular mode has to the centre-of-mass kinetic energy we use the projection operators given in Equation <a class="reference internal" href="#equation-eq-cmx2">(77)</a> (now in mass-weighted Cartesian coordinates) where only the atoms in that molecule are used to construct the operator;</p>
+<p>To calculate the contribution a particular mode has to the centre-of-mass kinetic energy we use the projection operators given in Equation <a class="reference internal" href="#equation-eq-cmx2">(103)</a> (now in mass-weighted Cartesian coordinates) where only the atoms in that molecule are used to construct the operator;</p>
 <div class="math-wrapper docutils container" id="equation-eq-finaloperator">
 <div class="math notranslate nohighlight" id="equation-eq-finaloperator">
-<span class="eqno">(87)<a class="headerlink" href="#equation-eq-finaloperator" title="Link to this equation">¶</a></span>\[\tensorbf{P}^x_{mol} = \tensorbf{1} - \fieldbf{V}^x_{mol} (\fieldbf{V}^x_{mol})^T\]</div>
+<span class="eqno">(113)<a class="headerlink" href="#equation-eq-finaloperator" title="Link to this equation">¶</a></span>\[\tensorbf{P}^x_{mol} = \tensorbf{1} - \fieldbf{V}^x_{mol} (\fieldbf{V}^x_{mol})^T\]</div>
 </div>
 <p>This approach is used to define  6 projection operators for each molecule. The centre-of-mass energy contained in the <span class="math notranslate nohighlight">\(p_{th}\)</span> mode can be written as;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-cm">
 <div class="math notranslate nohighlight" id="equation-eq-energy-cm">
-<span class="eqno">(88)<a class="headerlink" href="#equation-eq-energy-cm" title="Link to this equation">¶</a></span>\[E^{cm}_p = \dot{Q^2_p} \sum\limits_{i=x,y,z}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
+<span class="eqno">(114)<a class="headerlink" href="#equation-eq-energy-cm" title="Link to this equation">¶</a></span>\[E^{cm}_p = \dot{Q^2_p} \sum\limits_{i=x,y,z}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
 </div>
 <p>and the rigid-body rotational energy associated with the mode is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-rot">
 <div class="math notranslate nohighlight" id="equation-eq-energy-rot">
-<span class="eqno">(89)<a class="headerlink" href="#equation-eq-energy-rot" title="Link to this equation">¶</a></span>\[E^{rot}_p = \dot{Q^2_p} \sum\limits_{i=xy,yz,xz}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
+<span class="eqno">(115)<a class="headerlink" href="#equation-eq-energy-rot" title="Link to this equation">¶</a></span>\[E^{rot}_p = \dot{Q^2_p} \sum\limits_{i=xy,yz,xz}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
 </div>
 <p>The molecular vibrational contribution, which can be used to classify the internal modes of the system, can be obtained by subtracting the centre-of-mass and rigid-body rotational; energies from the total;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-vib">
 <div class="math notranslate nohighlight" id="equation-eq-energy-vib">
-<span class="eqno">(90)<a class="headerlink" href="#equation-eq-energy-vib" title="Link to this equation">¶</a></span>\[E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p\]</div>
+<span class="eqno">(116)<a class="headerlink" href="#equation-eq-energy-vib" title="Link to this equation">¶</a></span>\[E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p\]</div>
 </div>
 <p>Since all of the energy terms depend in the same way on <span class="math notranslate nohighlight">\(\dot{Q}_p\)</span>, it is not required in the calculation of the relative contributions to the energy coming from the external (molecular centre-of-mass and rigid-body rotation) and the internal modes (vibrational contributions)</p>
 </section>
@@ -459,12 +461,12 @@ molecules in the unit-cell according to;</p>
 <p>In order to calculate the relative internal and external contributions to each phonon mode it is first necessary to identify the molecules in the crystal.  In many cases, the unit-cell is packed with atoms in such a way that the cell is filled, rather than in a way reflecting the bondedness of the molecules.  The program first replicates the atoms in all cells neighbouring the central unit-cell.  Within this supercell the bonds are determined by calculating the distances between all atoms in the supercell.  In practice, an order N method is used whereby instead of searching all the supercell only the space around each atom is searched for potentially bonded partners.  The criterion of the presence of a bond between atoms <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> is given by the requirement that the distance between the atoms <span class="math notranslate nohighlight">\(r{ij}\)</span> is less than the bonding requirement;</p>
 <div class="math-wrapper docutils container" id="equation-eq-bond">
 <div class="math notranslate nohighlight" id="equation-eq-bond">
-<span class="eqno">(91)<a class="headerlink" href="#equation-eq-bond" title="Link to this equation">¶</a></span>\[r_{ij} &lt; scale (radius_i+radius_j)+toler\]</div>
+<span class="eqno">(117)<a class="headerlink" href="#equation-eq-bond" title="Link to this equation">¶</a></span>\[r_{ij} &lt; scale (radius_i+radius_j)+toler\]</div>
 </div>
 <p>Here <span class="math notranslate nohighlight">\(radius_i\)</span> is the covalent radius of atom <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(scale\)</span> and <span class="math notranslate nohighlight">\(toler\)</span> are factors that can be altered when running the program.</p>
 <p>Once the bonding in the supercell has been determined the program starts with the first atom in the central cell and determines all atoms which are connected to the molecule that it is in.  If there are any remaining atoms in the central cell which are not bonded yet then further molecules are added until all atoms in the central cell have been allocated to a molecule.</p>
 <p>Finally a new cell with the same dimensions as the original is constructed.  Where necessary each molecule is shifted into the cell so that the molecule’s centre-of-mass lies within it.</p>
-<p>The projection operators, Equation <a class="reference internal" href="#equation-eq-finaloperator">(87)</a>, can now be constructed and the relative energies calculated using Equations <a class="reference internal" href="#equation-eq-energy-cm">(88)</a>, <a class="reference internal" href="#equation-eq-energy-rot">(89)</a> and <a class="reference internal" href="#equation-eq-energy-vib">(90)</a>.</p>
+<p>The projection operators, Equation <a class="reference internal" href="#equation-eq-finaloperator">(113)</a>, can now be constructed and the relative energies calculated using Equations <a class="reference internal" href="#equation-eq-energy-cm">(114)</a>, <a class="reference internal" href="#equation-eq-energy-rot">(115)</a> and <a class="reference internal" href="#equation-eq-energy-vib">(116)</a>.</p>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
 </section>
@@ -866,12 +868,12 @@ For this example, the default covalent radius of the Barium atoms has been chang
 </tbody>
 </table>
 </div>
-<p>The visualisation of the internal and external contributions to the phonon modes is shown in the <a class="reference internal" href="#fig-batio3-analysis"><span class="std std-numref">Fig. 17</span></a></p>
+<p>The visualisation of the internal and external contributions to the phonon modes is shown in the <a class="reference internal" href="#fig-batio3-analysis"><span class="std std-numref">Fig. 18</span></a></p>
 <figure class="align-default" id="id4">
 <span id="fig-batio3-analysis"></span><a class="reference internal image-reference" href="_images/batio3_internal_external.png"><img alt="_images/batio3_internal_external.png" height="847" src="_images/batio3_internal_external.png" width="612" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Internal and external contributions to the phonon modes of BaTiO<sub>3</sub></span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Internal and external contributions to the phonon modes of BaTiO<sub>3</sub></span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -891,14 +893,14 @@ For this example, the default covalent radius of the Barium atoms has been chang
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="theory_single_crystal.html">
+          <a class="prev-page" href="CrystalRaman.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Theory for Single Crystal Optics</div>
+                <div class="title">Theory for Crystal Layer Raman</div>
                 
               </div>
             </a>

@@ -102,6 +102,7 @@ autoapi_template_dir="_template/autoapi"
 autoapi_keep_files = True
 autoapi_add_toctree_entry = True
 autoapi_ignore = [
+                  '*conf.py*',
                   '*test_qdialog*',
                   '*error_with_QForm*',
                   '*test_ttm*',

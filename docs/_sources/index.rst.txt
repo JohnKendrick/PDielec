@@ -32,6 +32,8 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 
    theory_powder
    theory_single_crystal
+   PowderRaman
+   CrystalRaman
    analysis
 
 .. toctree::

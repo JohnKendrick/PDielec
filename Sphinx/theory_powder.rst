@@ -11,9 +11,9 @@
    :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE
 
 
-========================================
-Theory for Light Scattering from Powders
-========================================
+=========================================
+Theory for Infrared Absorption in Powders
+=========================================
 
 The theory underlying the Python package PDielec is described.  PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non-absorbing medium.  PDielec post processes solid-state quantum mechanical and molecular mechanical calculations of the phonons and dielectric response of the crystalline material. The molecular and solid-state quantum mechanical (QM) calculations of response properties, such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption, have become generally available in many molecular and solid-state computer programs.
 A common approach is to assume the harmonic approximation and calculate the mass-weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids). Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids). The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode. For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology. 
