@@ -279,6 +279,10 @@ def usage():
     print("           run all the powder raman tests" , file=sys.stderr)
     print("  test-pytest-powder_raman" , file=sys.stderr)
     print("           run the pytest suite in PDielec/Tests/Powder_Raman/" , file=sys.stderr)
+    print("  test-pytest-crystal_raman" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Crystal_Raman/" , file=sys.stderr)
+    print("  test-pytests" , file=sys.stderr)
+    print("           run all pytest suites (Powder_Raman and Crystal_Raman)" , file=sys.stderr)
     print("  test-atr" , file=sys.stderr)
     print("           run all the powder atr tests" , file=sys.stderr)
     print("  test-p2cif" , file=sys.stderr)
@@ -1250,6 +1254,11 @@ def main():
             actions.append("test powder_raman")
         elif token == "test-pytest-powder_raman":
             actions.append("test pytest_powder_raman")
+        elif token == "test-pytest-crystal_raman":
+            actions.append("test pytest_crystal_raman")
+        elif token == "test-pytests":
+            actions.append("test pytest_powder_raman")
+            actions.append("test pytest_crystal_raman")
         elif token == "test-atr":
             actions.append("test powder_atr")
         elif token == "test-preader":
@@ -1361,6 +1370,8 @@ def main():
             run_tests(test_powder_raman      ,"powder_raman"      ,regenerate)
         elif action == "test pytest_powder_raman":
             run_pytest_suite(os.path.join("PDielec", "Tests", "Powder_Raman"), "Pytest Powder Raman")
+        elif action == "test pytest_crystal_raman":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Crystal_Raman"), "Pytest Crystal Raman")
         elif action == "test powder_atr":
             run_tests(test_powder_atr      ,"powder_atr"      ,regenerate)
         elif action == "test vibanalysis":

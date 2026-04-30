@@ -101,7 +101,7 @@ class RamanLayer:
         """Initialise a RamanLayer descriptor."""
         self.layer_index = layer_index
         self.phonon_frequencies_cm1 = np.asarray(phonon_frequencies_cm1, dtype=float)
-        self.raman_tensors = [np.asarray(R, dtype=float) for R in raman_tensors]
+        self.raman_tensors = [np.asarray(R, dtype=complex) for R in raman_tensors]
         self.rotation_matrix = np.asarray(rotation_matrix, dtype=float)
 
 
