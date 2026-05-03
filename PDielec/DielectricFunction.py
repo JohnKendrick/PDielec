@@ -273,6 +273,28 @@ class DielectricFunction:
         self.epsilon_infinity     = np.array(eps)
         return
 
+    def optical_permittivity(self):
+        """Return the optical (high-frequency) permittivity.
+
+        For tensor dielectric functions the optical permittivity is
+        ``epsilon_infinity`` (a 3×3 real tensor).  For scalar functions it
+        is the frequency-independent scalar value obtained by evaluating
+        the permittivity at 0 cm⁻¹.
+
+        Subclasses may override this method when these defaults are not
+        appropriate (e.g. Sellmeier).
+
+        Returns
+        -------
+        float or ndarray
+            Scalar permittivity for scalar functions, 3×3 real tensor for
+            tensor functions.
+
+        """
+        if self.isScalarFunction:
+            return float(np.real(self.calculate(0.0)))
+        return np.array(self.epsilon_infinity, dtype=float)
+
     def function(self):
         """Return the function used to calculate the permittivity.
 
@@ -1213,29 +1235,51 @@ class Sellmeier(DielectricFunction):
         return
 
     def calculate(self, v):
-        """Calculate the diagonal permittivity 3x3 tensor at a given frequency.
+        """Calculate the scalar permittivity (n²) at a given frequency.
 
         Parameters
         ----------
         v : float
-            The frequency in cm-1.
+            The frequency in cm⁻¹.  If v is 0 the infinite-wavelength
+            limit is returned: n² = 1 + ΣBᵢ.
 
         Returns
         -------
-        ndarray
-            The diagonal permittivity 3x3 tensor at frequency v.
+        float
+            The permittivity (n²) at frequency v.
 
         Notes
         -----
-        The Sellmeier parameters are in microns^2.
+        The Sellmeier equation is n² = 1 + Σ Bᵢ λ²/(λ² − Cᵢ),
+        where the Sellmeier parameters Bᵢ (dimensionless) and Cᵢ (μm²)
+        are stored in ``self.Bs`` and ``self.Cs``.
 
         """
-        f_cm1 = v
-        # Convert to wavelength in microns
-        wavelength_mu = f_cm1 * 1.0E+6 *1.0E-2            # convert cm-1 to microns
-        wavelength2 = wavelength_mu*wavelength_mu
+        if v == 0.0:
+            # Infinite wavelength limit: each term → Bᵢ
+            return 1.0 + sum(self.Bs)
+        # Convert wavenumber (cm⁻¹) to wavelength in microns: λ(μm) = 10000 / ν(cm⁻¹)
+        wavelength_mu = 1.0e4 / v
+        wavelength2 = wavelength_mu * wavelength_mu
         n2 = 1.0
-        for B,C in zip(self.Bs,self.Cs):
-            n2 += B*wavelength2/(wavelength2-C) 
-        return n2 
+        for B, C in zip(self.Bs, self.Cs):
+            n2 += B * wavelength2 / (wavelength2 - C)
+        return n2
+
+    def optical_permittivity(self):
+        """Return the Sellmeier permittivity at the sodium D-line (589 nm).
+
+        The Sellmeier equation is frequency-dependent, so the optical
+        permittivity is evaluated at a standard optical wavelength
+        (589 nm, sodium D-line, 16978 cm⁻¹).
+
+        Returns
+        -------
+        float
+            n² at 589 nm.
+
+        """
+        logger.info("Sellmeier optical permittivity evaluated at 589 nm (sodium D-line)")
+        # 589 nm = 16978.0 cm⁻¹
+        return float(np.real(self.calculate(1.0e4 / 0.589)))
 

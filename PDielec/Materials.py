@@ -866,6 +866,22 @@ class Material:
         """
         return self.permittivity_object.function()
 
+    def get_optical_permittivity(self):
+        """Return the optical (high-frequency) permittivity of this material.
+
+        Delegates to the underlying permittivity object's
+        :meth:`~PDielec.DielectricFunction.DielectricFunction.optical_permittivity`
+        method.  For tensor materials this returns a 3×3 real tensor; for
+        scalar materials it returns a float.
+
+        Returns
+        -------
+        float or ndarray
+            The optical permittivity.
+
+        """
+        return self.permittivity_object.optical_permittivity()
+
     def set_frequencies(self,frequencies):
         """Set the frequencies for a Lorentzian permittivity.
 

@@ -399,11 +399,11 @@ class PowderScenarioTab(ScenarioTab):
         hbox.addWidget(self.matrix_info_le)
         form.addRow(label, hbox)
         #
-        # Set the Matrix density and permittivity at 0cm-1
+        # Set the Matrix density and optical permittivity
         #
         self.settings["Matrix density"] = self.matrixMaterial.get_density()
         self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
-        self.settings["Matrix permittivity"] = self.matrixPermittivityFunction(0.0)
+        self.settings["Matrix permittivity"] = self.matrixMaterial.get_optical_permittivity()
         #
         # Support matrix permittivity
         #
@@ -988,9 +988,9 @@ class PowderScenarioTab(ScenarioTab):
                 self.settings["Matrix"] = matrix
             else:
                 logger.error("Error: matrix material must have a scalar permittivity")
-        # The permittivity may be frequency dependent, show the value at 0 cm-1
+        # Use the optical permittivity of the matrix material
         self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
-        self.settings["Matrix permittivity"] = self.matrixPermittivityFunction(0.0)
+        self.settings["Matrix permittivity"] = self.matrixMaterial.get_optical_permittivity()
         self.settings["Matrix density"] = self.matrixMaterial.get_density()
         self.density_sb.setValue(self.settings["Matrix density"])
         # Update the matrix material information
@@ -1460,7 +1460,7 @@ class PowderScenarioTab(ScenarioTab):
             is_sphere = True
         else:
             # Matrix optical permittivity ε_e^∞ (scalar)
-            epsilon_e = float(np.real(self.matrixPermittivityFunction(0.0)))
+            epsilon_e = float(np.real(self.matrixMaterial.get_optical_permittivity()))
             # Depolarisation tensor L from particle shape (same logic as _calculate_infrared)
             L = self.calculate_depolarisation_tensor()
             # Internal field tensor N (Eq. 47)
@@ -2330,7 +2330,7 @@ class PowderScenarioTab(ScenarioTab):
         elif self.settings["Matrix"] in self.material_names:
             self.matrixMaterial = self.DataBase.get_material(self.settings["Matrix"])
             self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
-            self.settings["Matrix permittivity"] = self.matrixPermittivityFunction(0.0)
+            self.settings["Matrix permittivity"] = self.matrixMaterial.get_optical_permittivity()
             self.settings["Matrix density"] = self.matrixMaterial.get_density()
         else:
             logger.error(f"Error: matrix {self.settings['Matrix']} not available in database; available materials are: {self.material_names}")

@@ -396,7 +396,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
         self.settings["Coherent layer summation"] = False
         self.settings["Approximate ES"] = False
-        self.settings["Phonon boundary correction"] = "none"  # 'none' or 'slab'
+        self.settings["Phonon boundary correction"] = "none"  # 'none', 'NAC', or 'slab-environment'
         self.settings["Azimuthal sweep points"] = 36
         # store the notebook
         self.notebook = parent
@@ -1556,12 +1556,22 @@ class CrystalScenarioTab(ScenarioTab):
 
         # Phonon boundary correction (Phase 3a)
         self.phonon_bc_cb = QComboBox(self)
-        self.phonon_bc_cb.addItems(["none", "slab"])
-        idx = self.phonon_bc_cb.findText(self.settings["Phonon boundary correction"], Qt.MatchFixedString)
+        self.phonon_bc_cb.addItems(["none", "NAC", "slab-environment"])
+        # Handle legacy 'slab' setting from older saved sessions
+        bc_text = self.settings["Phonon boundary correction"]
+        if bc_text == "slab":
+            bc_text = "slab-environment"
+            self.settings["Phonon boundary correction"] = bc_text
+        idx = self.phonon_bc_cb.findText(bc_text, Qt.MatchFixedString)
         if idx >= 0:
             self.phonon_bc_cb.setCurrentIndex(idx)
         self.phonon_bc_cb.activated.connect(self.on_phonon_bc_cb_activated)
-        self.phonon_bc_cb.setToolTip("Phonon boundary correction:\n'none' — use bulk TO frequencies\n'slab' — apply slab depolarisation correction (requires Born charges and hessian)")
+        self.phonon_bc_cb.setToolTip(
+            "Phonon boundary correction:\n"
+            "'none' — use bulk TO frequencies\n"
+            "'NAC' — non-analytic correction using the layer's optical dielectric (eq 111)\n"
+            "'slab-environment' — slab depolarisation with screening from surrounding layers (eqs 112–114)"
+        )
         label = QLabel("Phonon boundary correction")
         label.setToolTip(self.phonon_bc_cb.toolTip())
         self.form.addRow(label, self.phonon_bc_cb)
@@ -2388,17 +2398,27 @@ class CrystalScenarioTab(ScenarioTab):
         else:
             logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {self.spectroscopy}")
 
-    def _compute_slab_modes(self, G_total, scaled_tensors, frequencies_cm1, sigmas_cm1):
-        """Compute slab-corrected phonon frequencies and Raman tensors.
+    def _compute_slab_modes(self, G_total, scaled_tensors, frequencies_cm1, sigmas_cm1,
+                            method="NAC", epsilon_above=None, epsilon_below=None):
+        """Compute corrected phonon frequencies and Raman tensors for a crystal layer.
 
-        Applies the slab depolarisation correction (Phase 3a) to the bulk TO
-        dynamical matrix.  The slab surface normal is the lab z-axis ``[0,0,1]``;
-        in the crystal frame this is ``n̂ = G_total.T @ [0,0,1]``.  The correction
-        term is identical in form to the particle boundary correction in
-        PowderScenarioTab, but the depolarisation tensor ``L = n̂ ⊗ n̂`` is
-        orientation-dependent and specific to this layer's crystallographic face.
+        Two methods are supported:
 
-        The surrounding medium is assumed to be vacuum (ε_e = 1).
+        **NAC** (non-analytic correction, eq 111):
+            The screening tensor uses only the layer's own optical dielectric.
+            ``S_bg = n̂ n̂^T / (n̂^T ε_i^b n̂)``
+            This is the standard NAC with the wave-vector direction replaced by
+            the slab normal.
+
+        **slab-environment** (eqs 112–114):
+            The screening accounts for the permittivities of the materials above
+            and below the active layer.
+            ``ε_e^b = ½ n̂^T (ε_above^b + ε_below^b) n̂``
+            ``N_bg = [I + (1/ε_e^b) L (ε_i^b − ε_e^b I)]⁻¹``
+            ``S_bg = (1/ε_e^b) N_bg L``
+
+        In both cases the corrected dynamical matrix is (eq 109):
+            ``D_layer = D_TO + (1/(ε₀ V)) (Z^mw)^T S_bg Z^mw``
 
         Parameters
         ----------
@@ -2410,20 +2430,23 @@ class CrystalScenarioTab(ScenarioTab):
             Bulk TO phonon frequencies in cm⁻¹ (including acoustic zeros).
         sigmas_cm1 : array_like, shape (n_to_modes,)
             Bulk TO Lorentzian linewidths in cm⁻¹.
+        method : {'NAC', 'slab-environment'}
+            Which phonon boundary correction to apply.
+        epsilon_above : float or None
+            Scalar background permittivity of the layer above (superstrate side).
+            Required for 'slab-environment'; ignored for 'NAC'.
+        epsilon_below : float or None
+            Scalar background permittivity of the layer below (substrate side).
+            Required for 'slab-environment'; ignored for 'NAC'.
 
         Returns
         -------
         slab_freqs : ndarray, shape (3N,)
-            Slab phonon frequencies in cm⁻¹ (all 3N modes, including acoustic).
+            Corrected phonon frequencies in cm⁻¹ (all 3N modes, including acoustic).
         slab_tensors : list of ndarray, each (3, 3)
-            Slab Raman tensors in crystal frame (3N total).
+            Corrected Raman tensors in crystal frame (3N total).
         slab_sigmas : ndarray, shape (3N,)
             Linewidths inherited from the dominant TO component.
-
-        Notes
-        -----
-        Requires ``self.reader.hessian``, ``self.reader.born_charges``,
-        ``self.reader.mass_weighted_normal_modes``, ``self.reader.zerof_optical_dielectric``.
 
         """
         nAtoms = self.reader.nions
@@ -2437,23 +2460,33 @@ class CrystalScenarioTab(ScenarioTab):
         if norm > 0.0:
             n_hat_crystal /= norm
 
-        # Depolarisation tensor for a thin slab: L = n̂ ⊗ n̂
+        # Depolarisation tensor for a thin slab: L = n̂ ⊗ n̂  (eq 106)
         L = np.outer(n_hat_crystal, n_hat_crystal)
 
-        # Optical dielectric tensor ε_∞ in crystal frame
+        # Optical dielectric tensor ε_i^b (layer material) in crystal frame
         eps_inf = np.array(self.reader.zerof_optical_dielectric, dtype=float)
         if eps_inf.ndim == 1:
             eps_inf = np.diag(eps_inf)
 
-        # External medium: vacuum (ε_e = 1)
-        epsilon_e = 1.0
         I3 = np.eye(3)
 
-        # Background internal field tensor: N_bg = (I + (1/ε_e) L (ε_∞ − ε_e I))⁻¹
-        N_bg = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (eps_inf - epsilon_e * I3))
-        NbgL = N_bg @ L
+        if method == "NAC":
+            # NAC approximation (eq 111):
+            # S_bg^NAC = L / (n̂^T ε_i^b n̂)
+            eps_b_normal = n_hat_crystal @ eps_inf @ n_hat_crystal
+            S_bg = L / eps_b_normal
+        else:
+            # Slab-environment approximation (eqs 112–114):
+            # ε_e^b = ½ n̂^T (ε_above^b + ε_below^b) n̂  (eq 112)
+            eps_e_above = epsilon_above if epsilon_above is not None else 1.0
+            eps_e_below = epsilon_below if epsilon_below is not None else 1.0
+            epsilon_e = 0.5 * (eps_e_above + eps_e_below)
+            # N_bg^slab = [I + (1/ε_e^b) L (ε_i^b − ε_e^b I)]⁻¹  (eq 113)
+            N_bg = np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (eps_inf - epsilon_e * I3))
+            # S_bg^slab = (1/ε_e^b) N_bg L  (eq 114)
+            S_bg = (1.0 / epsilon_e) * N_bg @ L
 
-        # Mass-weighted Born charges Z'[α, κβ] = Z*[κ, α, β] / √M_κ  (no volume factor)
+        # Mass-weighted Born charges Z'[α, κβ] = Z*[κ, α, β] / √M_κ
         born_charges = np.array(self.reader.born_charges)
         Z_mat = np.zeros((3, n_modes))
         for kappa in range(nAtoms):
@@ -2461,14 +2494,16 @@ class CrystalScenarioTab(ScenarioTab):
             for beta in range(3):
                 Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
 
-        # Dynamical matrix correction: ΔD = (4π / (ε_e V)) Z'^T (N_bg L) Z'
-        delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
+        # Dynamical matrix correction (eq 109):
+        # D_layer = D_TO + (1/(ε₀ V)) (Z^mw)^T S_bg Z^mw
+        # In Gaussian units: ε₀ → 1/(4π), so factor is 4π/V
+        delta_D = (4.0 * np.pi / volume_au) * (Z_mat.T @ S_bg @ Z_mat)
         D_TO = np.array(self.reader.hessian, dtype=float)
 
-        # Diagonalize the slab dynamical matrix
+        # Diagonalize the corrected dynamical matrix
         eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
 
-        # Slab frequencies in cm⁻¹ (preserve sign for unstable modes)
+        # Frequencies in cm⁻¹ (preserve sign for unstable modes)
         slab_freqs = np.array([
             (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
             for ev in eig_val
@@ -2504,8 +2539,9 @@ class CrystalScenarioTab(ScenarioTab):
         """Build and return a configured LayeredRamanCalculator for the given azimuthal angle.
 
         Constructs the GTMcore multilayer system, applies global azimuthal rotation,
-        builds the list of RamanLayer descriptors (with optional slab NAC), and returns
-        a fully configured LayeredRamanCalculator ready to call calculate_mode_intensities().
+        builds the list of RamanLayer descriptors (with optional phonon boundary
+        correction: NAC or slab-environment), and returns a fully configured
+        LayeredRamanCalculator ready to call calculate_mode_intensities().
 
         Parameters
         ----------
@@ -2573,33 +2609,68 @@ class CrystalScenarioTab(ScenarioTab):
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         sigmas_cm1      = self.notebook.settingsTab.sigmas_cm1
 
-        # Phase 3a: check whether slab NAC correction is possible
+        # Phonon boundary correction: 'none', 'NAC', or 'slab-environment'
         phonon_bc = self.settings.get("Phonon boundary correction", "none")
+        # Handle legacy 'slab' setting
+        if phonon_bc == "slab":
+            phonon_bc = "slab-environment"
         has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
         has_born    = len(self.reader.born_charges) > 0
         has_modes   = np.any(self.reader.mass_weighted_normal_modes)
         has_optical = (hasattr(self.reader, "zerof_optical_dielectric")
                        and self.reader.zerof_optical_dielectric is not None)
-        can_slab_nac = (phonon_bc == "slab" and has_hessian and has_born
-                        and has_modes and has_optical)
-        if phonon_bc == "slab" and not can_slab_nac:
+        can_correct = (phonon_bc in ("NAC", "slab-environment")
+                       and has_hessian and has_born and has_modes and has_optical)
+        if phonon_bc in ("NAC", "slab-environment") and not can_correct:
             logger.warning(
-                f"{self.settings['Legend']} _build_raman_calculator: slab NAC requested but "
+                f"{self.settings['Legend']} _build_raman_calculator: '{phonon_bc}' requested but "
                 "Born charges / hessian / optical dielectric not available — "
                 "falling back to bulk TO frequencies"
             )
 
-        slab_freqs_shared = None
-        slab_sigmas_shared = None
-        if can_slab_nac:
+        # For slab-environment, determine the normal-component permittivity of
+        # the layers above and below each dielectric layer.  Use the full layer
+        # list (including superstrate [0] and substrate [-1]).
+        all_layers = self.layers  # [superstrate, layer1, ..., layerN, substrate]
+
+        def _get_layer_scalar_permittivity(layer):
+            """Return a scalar optical permittivity for a layer.
+
+            Uses the material's ``get_optical_permittivity()`` method.
+            For scalar materials this returns the scalar value directly.
+            For tensor materials the isotropic average (trace/3) is returned.
+            """
+            mat = layer.get_material()
+            try:
+                eps = mat.get_optical_permittivity()
+            except Exception:
+                return 1.0
+            if np.isscalar(eps) or (hasattr(eps, "ndim") and eps.ndim == 0):
+                return float(np.real(eps))
+            # Tensor: return trace/3 as isotropic average
+            return float(np.real(np.trace(eps))) / 3.0
+
+        corrected_freqs_shared = None
+        corrected_sigmas_shared = None
+        if can_correct:
             first_G = None
-            for scl in selected_layers:
+            first_env = (None, None)
+            for i, scl in enumerate(selected_layers):
                 if scl.is_dielectric():
                     first_G = G_psi @ scl.euler
+                    if phonon_bc == "slab-environment":
+                        # Layer above: previous in all_layers (index i in selected = index i+1 in all_layers)
+                        above_layer = all_layers[i] if i >= 0 else all_layers[0]
+                        # Layer below: next in all_layers
+                        below_layer = all_layers[i + 2] if (i + 2) < len(all_layers) else all_layers[-1]
+                        first_env = (_get_layer_scalar_permittivity(above_layer),
+                                     _get_layer_scalar_permittivity(below_layer))
                     break
             if first_G is not None:
-                slab_freqs_shared, _, slab_sigmas_shared = self._compute_slab_modes(
-                    first_G, scaled_tensors, frequencies_cm1, sigmas_cm1
+                corrected_freqs_shared, _, corrected_sigmas_shared = self._compute_slab_modes(
+                    first_G, scaled_tensors, frequencies_cm1, sigmas_cm1,
+                    method=phonon_bc,
+                    epsilon_above=first_env[0], epsilon_below=first_env[1],
                 )
 
         # Build RamanLayer descriptors for each Raman-active (dielectric) layer
@@ -2608,14 +2679,23 @@ class CrystalScenarioTab(ScenarioTab):
             if not scl.is_dielectric():
                 continue
             G_total = G_psi @ scl.euler
-            if can_slab_nac and slab_freqs_shared is not None:
-                _, layer_slab_tensors, _ = self._compute_slab_modes(
-                    G_total, scaled_tensors, frequencies_cm1, sigmas_cm1
+            if can_correct and corrected_freqs_shared is not None:
+                # Determine environment permittivities for this specific layer
+                eps_above, eps_below = None, None
+                if phonon_bc == "slab-environment":
+                    above_layer = all_layers[sys_idx] if sys_idx >= 0 else all_layers[0]
+                    below_layer = all_layers[sys_idx + 2] if (sys_idx + 2) < len(all_layers) else all_layers[-1]
+                    eps_above = _get_layer_scalar_permittivity(above_layer)
+                    eps_below = _get_layer_scalar_permittivity(below_layer)
+                _, layer_corrected_tensors, _ = self._compute_slab_modes(
+                    G_total, scaled_tensors, frequencies_cm1, sigmas_cm1,
+                    method=phonon_bc,
+                    epsilon_above=eps_above, epsilon_below=eps_below,
                 )
                 rl = RamanLayer(
                     layer_index=sys_idx,
-                    phonon_frequencies_cm1=slab_freqs_shared,
-                    raman_tensors=layer_slab_tensors,
+                    phonon_frequencies_cm1=corrected_freqs_shared,
+                    raman_tensors=layer_corrected_tensors,
                     rotation_matrix=G_total,
                 )
             else:
@@ -2631,8 +2711,8 @@ class CrystalScenarioTab(ScenarioTab):
             logger.warning(f"{self.settings['Legend']} _build_raman_calculator: no Raman-active dielectric layers in stack")
             return None
 
-        # Linewidths: use slab-corrected sigmas when slab NAC is active
-        linewidths = slab_sigmas_shared if (can_slab_nac and slab_sigmas_shared is not None) else sigmas_cm1
+        # Linewidths: use corrected sigmas when phonon correction is active
+        linewidths = corrected_sigmas_shared if (can_correct and corrected_sigmas_shared is not None) else sigmas_cm1
 
         laser_wavelength_nm = self.settings.get("Laser wavelength nm", 532.0)
         laser_freq_cm1    = 1.0e7 / laser_wavelength_nm

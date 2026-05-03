@@ -205,24 +205,54 @@ The corresponding correction to the transverse-optic dynamical matrix can be wri
    \tensorbf{S}_{bg}
    \tensorbf{Z}^{mw}
 
-where :math:`\tensorbf{S}_{bg}` is the screening tensor for the depolarisation field.  For a
-simple slab in identical isotropic surroundings this reduces to the particle-style
-depolarisation correction with :math:`\tensorbf{L}_{slab}`.
+where :math:`\tensorbf{S}_{bg}` is the screening tensor for the depolarisation field.
 
-For more complicated multilayers, PDielec can instead use the leading non-analytic
-correction along the slab normal,
+PDielec offers three choices for the phonon boundary correction, selectable via the
+*Phonon boundary correction* combo box:
+
+**none** — use the bulk TO phonon frequencies directly, with no correction.
+
+**NAC** — the non-analytic correction (NAC) approximation.  The screening depends only
+on the layer's own background optical permittivity :math:`\tensorbs{\varepsilon}^b_i`:
 
 .. math::
-   :label: eq-crystal-raman-nac-layer
+   :label: eq-crystal-raman-nac-screening
 
-   \tensorbf{D}^{layer} =
-   \tensorbf{D}^{TO} +
-   \frac{1}{\epsilon_0}
-   \frac{\left(\tensorbf{Z}^{mw}\right)^T
-         \hat{\mathbf{n}}\hat{\mathbf{n}}^T
-         \tensorbf{Z}^{mw}}
-        {\hat{\mathbf{n}}^T\tensorbs{\varepsilon}_{b}\hat{\mathbf{n}}}
+   \tensorbf{S}^{NAC}_{bg} =
+   \frac{\hat{\mathbf{n}}\hat{\mathbf{n}}^T}
+        {\hat{\mathbf{n}}^T\tensorbs{\varepsilon}^b_i\hat{\mathbf{n}}}
 
-where :math:`\tensorbs{\varepsilon}_{b}` is the background, approximately optical,
-permittivity of the layer material.  Diagonalising this corrected matrix gives the slab
-phonon frequencies used in the Raman spectrum.
+This is the standard non-analytic correction to the dynamical matrix with the phonon
+wave-vector direction replaced by the slab normal :math:`\hat{\mathbf{n}}`.
+
+**slab-environment** — the slab-environment approximation.  The screening accounts for the
+permittivities of the materials above and below the active layer.  An effective scalar
+external permittivity is defined as:
+
+.. math::
+   :label: eq-crystal-raman-slab-env-epsilon
+
+   \epsilon^b_e = \tfrac{1}{2}\hat{\mathbf{n}}^T
+   \left(\tensorbs{\varepsilon}^b_{above} + \tensorbs{\varepsilon}^b_{below}\right)
+   \hat{\mathbf{n}}
+
+The background internal field tensor and screening tensor are then:
+
+.. math::
+   :label: eq-crystal-raman-slab-env-nbg
+
+   \tensorbf{N}^{slab}_{bg} =
+   \left[\tensorbf{I} +
+   \frac{1}{\epsilon^b_e}\tensorbf{L}_{slab}
+   \left(\tensorbs{\varepsilon}^b_i - \epsilon^b_e\tensorbf{I}\right)\right]^{-1}
+
+.. math::
+   :label: eq-crystal-raman-slab-env-sbg
+
+   \tensorbf{S}^{slab}_{bg} =
+   \frac{1}{\epsilon^b_e}\tensorbf{N}^{slab}_{bg}\tensorbf{L}_{slab}
+
+In all cases where a correction is applied, diagonalising
+:eq:`eq-crystal-raman-layer-dynamical` with the appropriate
+:math:`\tensorbf{S}_{bg}` gives the corrected phonon frequencies and
+eigenvectors used in the Raman spectrum.
