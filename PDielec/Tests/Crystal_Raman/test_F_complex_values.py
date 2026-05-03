@@ -84,7 +84,7 @@ class TestF1ComplexPermittivitySign:
     """F1: Positive imaginary n'' means absorption → field decay → saturation."""
 
     def test_signal_does_not_grow_with_more_absorption(self):
-        """Increasing n'' from 2 to 10 must monotonically decrease the signal.
+        r"""Increasing n'' from 2 to 10 must monotonically decrease the signal.
 
         For moderate n'' (0.1–1.0) the coherent Raman integral is non-monotonic
         because the complex k shifts the system between constructive/destructive

@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 #
-"""Layered Raman scattering calculator using GTMcore for optical field propagation.
+r"""Layered Raman scattering calculator using GTMcore for optical field propagation.
 
 The Raman amplitude for phonon mode m is computed as a source-overlap integral
 over the Raman-active layers in a multilayer stack::
@@ -172,7 +172,7 @@ def lorentzian_broaden(mode_frequencies_cm1, mode_intensities, linewidths_cm1, f
 # ---------------------------------------------------------------------------
 
 class LayeredRamanCalculator:
-    """Calculate the Raman spectrum of a multilayer system via depth integration.
+    r"""Calculate the Raman spectrum of a multilayer system via depth integration.
 
     The calculation proceeds as follows:
 

@@ -879,7 +879,7 @@ def run_pytest_suite(suite_dir, label):
     print(label, "starting")
     start_time = time.time()
     target = os.path.join(rootDirectory, suite_dir)
-    result = subprocess.run(["pytest", target], check=False)
+    result = subprocess.run([sys.executable, "-m", "pytest", target], check=False)
     elapsed_time = time.time() - start_time
     print("--------------------------------------------------")
     status = "completed" if result.returncode == 0 else "FAILED"

@@ -1,4 +1,4 @@
-"""Tests E1-E4: Orientation averaging and SO(3) Sobol sampling.
+r"""Tests E1-E4: Orientation averaging and SO(3) Sobol sampling.
 
 Plan sections: E1, E2, E3, E4, J8, J9, M6, M7, M10.
 

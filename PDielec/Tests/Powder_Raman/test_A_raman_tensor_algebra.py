@@ -55,7 +55,7 @@ def test_a1_isotropic_scaling():
 
 
 def test_a1_negative_isotropic():
-    """A1: Negative a gives same VV as positive a (intensity is \|a\|^2-based)."""
+    r"""A1: Negative a gives same VV as positive a (intensity is \|a\|^2-based)."""
     a = 2.0
     vv_pos, _ = compute_powder_raman_intensities(a * np.eye(3))
     vv_neg, _ = compute_powder_raman_intensities(-a * np.eye(3))
