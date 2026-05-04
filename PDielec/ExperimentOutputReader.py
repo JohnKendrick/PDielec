@@ -21,7 +21,8 @@ import re
 import numpy as np
 
 from PDielec import DielectricFunction
-from PDielec.Calculator import initialise_diagonal_tensor
+from PDielec.Calculator import initialise_diagonal_tensor, normal_modes, oscillator_strengths
+from PDielec.Constants import amu, wavenumber
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
 
@@ -146,9 +147,11 @@ class ExperimentOutputReader(GenericOutputReader):
         self.manage["interpolate"]   = (re.compile("interpolate"),      self._read_interpolate1_model)
         self.manage["raman_tensors"] = (re.compile("raman_tensors"),    self._read_raman_tensors)
         self.manage["normal_modes"]  = (re.compile("normal_modes"),     self._read_normal_modes)
+        self.manage["born_charges"]  = (re.compile("born_charges"),     self._read_born_charges)
         self.manage["frequencies"]   = (re.compile("frequencies"),      self._read_frequencies)
         for f in self._outputfiles:
             self._read_output_file(f)
+        self._calculate_oscillator_strengths_from_born_charges()
         return
 
     def _read_constant_model(self, line):
@@ -492,7 +495,7 @@ class ExperimentOutputReader(GenericOutputReader):
         self.oscillator_strengths = []
         for _i in range(nfreq):
             line = self._read_line()
-            parts = line.split()
+            parts = line.split("#", maxsplit=1)[0].split()
             self.frequencies.append(float(parts[0]))
             if len(parts) >= 4:
                 sxx, syy, szz = float(parts[1]), float(parts[2]), float(parts[3])
@@ -501,6 +504,80 @@ class ExperimentOutputReader(GenericOutputReader):
             else:
                 sxx = syy = szz = 0.0
             self.oscillator_strengths.append(initialise_diagonal_tensor( [sxx, syy, szz] ) )
+        return
+
+    def _read_born_charges(self, line):
+        """Read Born effective charge tensors.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line, expected format: ``born_charges N`` where
+            ``N`` is the number of atom tensors to read.
+
+        Notes
+        -----
+        Each atom tensor is read from three non-comment lines containing
+        the 3x3 Born effective charge matrix in electron units.  An optional
+        atom label line may precede each tensor; labels are ignored.
+
+        Example::
+
+            born_charges 2
+            # Cd1
+              2.172 -0.052 -0.077
+              0.064  2.024 -0.004
+              0.059  0.065  2.244
+            # N1
+             -2.713  0.415  0.133
+              0.402 -3.058  0.114
+              0.218  0.069 -2.376
+
+        """
+        n = int(line.split()[1])
+        charges = []
+        while len(charges) < n:
+            first = self._read_line()
+            parts = first.split()
+            try:
+                row0 = [float(x) for x in parts[:3]]
+            except ValueError:
+                row0 = [float(x) for x in self._read_line().split()[:3]]
+            row1 = [float(x) for x in self._read_line().split()[:3]]
+            row2 = [float(x) for x in self._read_line().split()[:3]]
+            charges.append([row0, row1, row2])
+        self.born_charges = charges
+        return
+
+    def _calculate_oscillator_strengths_from_born_charges(self):
+        """Calculate oscillator strengths when Born charges and normal modes are present."""
+        if len(self.born_charges) != self.nions:
+            return
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray):
+            return
+        if self.mass_weighted_normal_modes.shape != (3*self.nions, self.nions, 3):
+            return
+        if not np.any(self.mass_weighted_normal_modes):
+            return
+        masses = np.array(self.masses) * amu
+        xyz_normal_modes = normal_modes(masses, self.mass_weighted_normal_modes)
+        self.oscillator_strengths = oscillator_strengths(xyz_normal_modes, np.array(self.born_charges))
+        self._calculate_hessian_from_frequencies_and_normal_modes()
+        return
+
+    def _calculate_hessian_from_frequencies_and_normal_modes(self):
+        """Reconstruct a mass-weighted Hessian from read frequencies and normal modes."""
+        if len(self.frequencies) != 3*self.nions:
+            return
+        if self.mass_weighted_normal_modes.shape != (3*self.nions, self.nions, 3):
+            return
+        ncoords = 3*self.nions
+        ut = np.zeros((ncoords, ncoords))
+        for imode, mode in enumerate(self.mass_weighted_normal_modes):
+            ut[imode, :] = np.array(mode, dtype=float).reshape(ncoords)
+        frequencies_au = np.array(self.frequencies, dtype=float) * wavenumber
+        f2 = np.diag(np.sign(frequencies_au) * np.real(frequencies_au * frequencies_au))
+        self.hessian = np.real(ut.T @ f2 @ ut)
         return
 
     def _read_species(self, line):
