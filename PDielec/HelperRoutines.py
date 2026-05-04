@@ -88,8 +88,8 @@ def calculate_dft_permittivity_object(reader,sigma=5.0,eckart=True,mass_definiti
     sigmas_cm1 = [ sigma for i in frequencies_cm1 ]
     sigmas_au = wavenumber*np.array(sigmas_cm1)
     born_charges = np.array(reader.born_charges)
-    if reader.type == "Experimental output":
-        # Obtain oscillator strength from reader
+    if reader.type == "Experimental output" and reader.oscillator_strengths is not None and np.any(reader.oscillator_strengths):
+        # Obtain oscillator strength from reader, or from ExperimentOutputReader's Born-charge calculation.
         oscillator_strengths = np.array(reader.oscillator_strengths)
     else:
         # Calculate oscillator strengths
