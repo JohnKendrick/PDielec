@@ -30,6 +30,14 @@ Command line options
     - `test-p2cif`: Runs tests for the p2cif component.
     - `test-pdgui`: Runs tests for the PDGUI component.
     - `test-vibanalysis`: Runs tests for vibrational analysis.
+    - `test-pytest-powder_raman`: Runs pytest suite in PDielec/Tests/Powder_Raman/.
+    - `test-pytest-crystal_raman`: Runs pytest suite in PDielec/Tests/Crystal_Raman/.
+    - `test-pytest-materials`: Runs pytest suite in PDielec/Tests/Materials/.
+    - `test-pytest-calculator`: Runs pytest suite in PDielec/Tests/Calculator/.
+    - `test-pytest-unitcell`: Runs pytest suite in PDielec/Tests/UnitCell/.
+    - `test-pytest-gtmcore`: Runs pytest suite in PDielec/Tests/GTMcore/.
+    - `test-pytest-constants`: Runs pytest suite in PDielec/Tests/Constants/.
+    - `test-pytests`: Runs all pytest suites.
     - `benchmarks`: Executes benchmark tests.
     - `pypi`: Runs commands for PyPI distribution.
     - `clean`: Cleans up directories.
@@ -281,8 +289,18 @@ def usage():
     print("           run the pytest suite in PDielec/Tests/Powder_Raman/" , file=sys.stderr)
     print("  test-pytest-crystal_raman" , file=sys.stderr)
     print("           run the pytest suite in PDielec/Tests/Crystal_Raman/" , file=sys.stderr)
+    print("  test-pytest-materials" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Materials/" , file=sys.stderr)
+    print("  test-pytest-calculator" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Calculator/" , file=sys.stderr)
+    print("  test-pytest-unitcell" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/UnitCell/" , file=sys.stderr)
+    print("  test-pytest-gtmcore" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/GTMcore/" , file=sys.stderr)
+    print("  test-pytest-constants" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Constants/" , file=sys.stderr)
     print("  test-pytests" , file=sys.stderr)
-    print("           run all pytest suites (Powder_Raman and Crystal_Raman)" , file=sys.stderr)
+    print("           run all pytest suites" , file=sys.stderr)
     print("  test-atr" , file=sys.stderr)
     print("           run all the powder atr tests" , file=sys.stderr)
     print("  test-p2cif" , file=sys.stderr)
@@ -1193,6 +1211,14 @@ def main():
     - `test-p2cif`: Runs tests for the p2cif component.
     - `test-pdgui`: Runs tests for the PDGUI component.
     - `test-vibanalysis`: Runs tests for vibrational analysis.
+    - `test-pytest-powder_raman`: Runs pytest suite in PDielec/Tests/Powder_Raman/.
+    - `test-pytest-crystal_raman`: Runs pytest suite in PDielec/Tests/Crystal_Raman/.
+    - `test-pytest-materials`: Runs pytest suite in PDielec/Tests/Materials/.
+    - `test-pytest-calculator`: Runs pytest suite in PDielec/Tests/Calculator/.
+    - `test-pytest-unitcell`: Runs pytest suite in PDielec/Tests/UnitCell/.
+    - `test-pytest-gtmcore`: Runs pytest suite in PDielec/Tests/GTMcore/.
+    - `test-pytest-constants`: Runs pytest suite in PDielec/Tests/Constants/.
+    - `test-pytests`: Runs all pytest suites.
     - `benchmarks`: Executes benchmark tests.
     - `pypi`: Runs commands for PyPI distribution.
     - `clean`: Cleans up directories.
@@ -1256,9 +1282,24 @@ def main():
             actions.append("test pytest_powder_raman")
         elif token == "test-pytest-crystal_raman":
             actions.append("test pytest_crystal_raman")
+        elif token == "test-pytest-materials":
+            actions.append("test pytest_materials")
+        elif token == "test-pytest-calculator":
+            actions.append("test pytest_calculator")
+        elif token == "test-pytest-unitcell":
+            actions.append("test pytest_unitcell")
+        elif token == "test-pytest-gtmcore":
+            actions.append("test pytest_gtmcore")
+        elif token == "test-pytest-constants":
+            actions.append("test pytest_constants")
         elif token == "test-pytests":
             actions.append("test pytest_powder_raman")
             actions.append("test pytest_crystal_raman")
+            actions.append("test pytest_materials")
+            actions.append("test pytest_calculator")
+            actions.append("test pytest_unitcell")
+            actions.append("test pytest_gtmcore")
+            actions.append("test pytest_constants")
         elif token == "test-atr":
             actions.append("test powder_atr")
         elif token == "test-preader":
@@ -1372,6 +1413,16 @@ def main():
             run_pytest_suite(os.path.join("PDielec", "Tests", "Powder_Raman"), "Pytest Powder Raman")
         elif action == "test pytest_crystal_raman":
             run_pytest_suite(os.path.join("PDielec", "Tests", "Crystal_Raman"), "Pytest Crystal Raman")
+        elif action == "test pytest_materials":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Materials"), "Pytest Materials")
+        elif action == "test pytest_calculator":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Calculator"), "Pytest Calculator")
+        elif action == "test pytest_unitcell":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "UnitCell"), "Pytest UnitCell")
+        elif action == "test pytest_gtmcore":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "GTMcore"), "Pytest GTMcore")
+        elif action == "test pytest_constants":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Constants"), "Pytest Constants")
         elif action == "test powder_atr":
             run_tests(test_powder_atr      ,"powder_atr"      ,regenerate)
         elif action == "test vibanalysis":

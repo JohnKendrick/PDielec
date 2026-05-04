@@ -2477,24 +2477,19 @@ def determine_euler_angles(R):
         The Euler angles
 
      """
-     R11=R[0,0]
-     R12=R[0,1]
-     R13=R[0,2]
-     R21=R[1,0]
-     R31=R[2,0]
-     R32=R[2,1]
-     R33=R[2,2]
-     phi = 0.0
-     if R31 > 0.9999999999:
-         theta = -np.pi/2.0
-         psi   = -phi + np.arctan2(-R12,-R13)
-     elif R31 < -0.9999999999:
-         theta = np.pi/2.0
-         psi   = phi + np.arctan2(R12,R13)
+     # Convention: R = Rz(phi) * Rx(theta) * Rz(psi)
+     # R[2,2] = cos(theta)
+     # R[2,0] = sin(theta)*sin(psi),  R[2,1] = sin(theta)*cos(psi)
+     # R[0,2] = sin(phi)*sin(theta),  R[1,2] = -cos(phi)*sin(theta)
+     theta = np.arccos(np.clip(R[2, 2], -1.0, 1.0))
+     sin_theta = np.sin(theta)
+     if abs(sin_theta) > 1e-9:
+         psi = np.arctan2(R[2, 0], R[2, 1])
+         phi = np.arctan2(R[0, 2], -R[1, 2])
      else:
-         theta = theta1 = -np.arcsin(R31)
-         psi = np.arctan2(R32/np.cos(theta1), R33/np.cos(theta1))
-         phi = np.arctan2(R21/np.cos(theta1), R11/np.cos(theta1))
+         # Gimbal lock (theta ≈ 0 or π): only phi ± psi is determined; set psi = 0
+         psi = 0.0
+         phi = np.arctan2(R[1, 0], R[0, 0])
      return theta, phi, psi
 
 def euler_rotation_matrix(theta, phi, psi):

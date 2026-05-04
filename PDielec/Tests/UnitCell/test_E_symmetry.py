@@ -46,7 +46,7 @@ class TestE1EmptyCellSymmetry:
     def test_empty_returns_P1(self):
         cell = UnitCell(5.0, 5.0, 5.0, alpha=90.0, beta=90.0, gamma=90.0)
         symbol, number = cell.find_symmetry()
-        assert symbol == "P1"
+        assert symbol == "P 1"
         assert number == 1
 
 

@@ -20,6 +20,7 @@ An interface to the spreadsheet which holds materials data
 import logging
 import math
 import os
+import warnings
 
 import numpy as np
 import openpyxl as xl
@@ -118,7 +119,9 @@ class MaterialsDataBase:
         logger.debug("Start:: initialise")
         if len(filename)> 5 and (filename.endswith("xlsx") or filename.endswith("XLSX")) and os.path.isfile(filename):
             self.filename = os.path.relpath(filename)
-            self.workbook = xl.load_workbook(self.filename,data_only=True)
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", "Workbook contains no default style", UserWarning)
+                self.workbook = xl.load_workbook(self.filename,data_only=True)
             self.sheetNames = self.workbook.sheetnames
             logger.debug(f"Sheet names:: {self.sheetNames}")
             # Close the work book while it is not in use
@@ -130,7 +133,9 @@ class MaterialsDataBase:
             filename  = os.path.relpath(filename)
             if os.path.isfile(filename):
                 self.filename = filename
-                self.workbook = xl.load_workbook(self.filename,data_only=True)
+                with warnings.catch_warnings():
+                    warnings.filterwarnings("ignore", "Workbook contains no default style", UserWarning)
+                    self.workbook = xl.load_workbook(self.filename,data_only=True)
                 self.sheetNames = self.workbook.sheetnames
                 logger.debug(f"Sheet names from default database {self.sheetNames}")
                 # Close the work book while it is not in use
