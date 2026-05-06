@@ -831,6 +831,9 @@ class GenericOutputReader:
             hessian = self.project(hessian)
         if self.debug:
             logger.debug(f"projected hessian {hessian[0:4][0]}")
+        # Store the mass-weighted hessian so that Raman particle-frequency
+        # corrections (which need self.hessian) work for all readers.
+        self.hessian = hessian
         self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(hessian)
         if self.debug:
             logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")

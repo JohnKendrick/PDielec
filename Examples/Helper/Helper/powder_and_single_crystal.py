@@ -50,12 +50,12 @@ def singleCrystalTest():
     # Prepare the layers
     layers = []
     # Add a substrate
-    layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+    layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thickness_unit='um'))
      # Add the dielectric layer
-    layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+    layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thickness_unit='um',
                                      incoherentOption='Coherent'))
      # Add the superstrate
-    layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+    layers.append(SingleCrystalLayer(air,thickness=1.0,thickness_unit='um'))
     frequencies_cm1 = np.arange( 0, 200, 0.2 )
     incident_angle = 80.0
     global_azimuthal_angle = 0.0
