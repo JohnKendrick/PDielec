@@ -22,12 +22,19 @@ import logging
 
 import numpy as np
 
+import PDielec.GTMcore as GTM
 from PDielec import Calculator, DielectricFunction, Utilities
-from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
+from PDielec.Constants import amu, average_masses, boltzmann_si, isotope_masses, planck_si, speed_light_si, wavenumber
 from PDielec.GUI.CrystalScenarioTab import solve_single_crystal_equations
+from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer, lorentzian_broaden
 from PDielec.Materials import External, MaterialsDataBase
 
 logger = logging.getLogger(__name__)
+gtm_methods = {"Coherent": GTM.CoherentLayer,
+               "Incoherent (intensity)": GTM.IncoherentIntensityLayer,
+               "Incoherent (phase cancelling)": GTM.IncoherentPhaseLayer,
+               "Incoherent (phase averaging)": GTM.IncoherentAveragePhaseLayer,
+               "Incoherent (non-reflective)": GTM.IncoherentThickLayer}
 
 
 
@@ -185,8 +192,9 @@ def get_material(name,dataBaseName="MaterialsDataBase.xlsx",eckart=True,mass_def
             material = None
     return material
 
-def calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method="Scattering matrix"):
-    """Calculate a single crystal spectrum.
+def calculate_crystal_infrared_spectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle,
+                                        method="Scattering matrix"):
+    """Calculate a crystal infrared spectrum.
 
     Calculate a single crystal spectrum from the frequencies, a list of layers
     (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle the global azimuthal angle and
@@ -237,7 +245,8 @@ def calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, g
         frequencies_cm1 = np.arange( 0, 200, 0.2 )
         incident_angle = 80.0
         global_azimuthal_angle = 0.0
-        (reflectance, transmittance, absorptance) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method='Scattering matrix')
+        (reflectance, transmittance, absorptance) = calculate_crystal_infrared_spectrum(
+            frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
 
     """
     theta = np.radians(0.0)
@@ -263,7 +272,7 @@ def calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, g
         absos.append( 1.0 - R[1] - R[3] - T[1] )
     return np.array([reflp,refls]), np.array([tranp,trans]), np.array([absop,absos])
 
-def calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method="Maxwell-Garnett"):
+def calculate_powder_infrared_spectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method="Maxwell-Garnett"):
     """Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
 
     Parameters
@@ -293,7 +302,7 @@ def calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fracti
     dielectric = get_material('Sapphire')
     method = 'Maxwell-Garnett' 
     volume_fraction = 0.1
-    absorption,permittivity = calculate_powder_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+    absorption,permittivity = calculate_powder_infrared_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
     ```
 
     """
@@ -331,6 +340,219 @@ def calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fracti
          absorptionCoefficient.append(absorption_coefficient)
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)
     return np.array(absorptionCoefficient), np.array(permittivity)
+
+def _raman_linewidths(reader, sigma):
+    """Return per-mode Raman linewidths in cm-1."""
+    frequencies_cm1 = np.asarray(reader.frequencies, dtype=float)
+    if np.isscalar(sigma):
+        return np.full(len(frequencies_cm1), float(sigma))
+    sigmas_cm1 = np.asarray(sigma, dtype=float)
+    if len(sigmas_cm1) != len(frequencies_cm1):
+        raise ValueError("sigma must be a scalar or have one value per reader frequency")
+    return sigmas_cm1
+
+def _raman_modes_selected(reader, raman_tensors, modes_selected):
+    """Return a boolean mask selecting Raman-active optical modes."""
+    frequencies_cm1 = np.asarray(reader.frequencies, dtype=float)
+    if modes_selected is not None:
+        selected = np.asarray(modes_selected, dtype=bool)
+        if len(selected) != len(frequencies_cm1):
+            raise ValueError("modes_selected must have one value per reader frequency")
+        return selected
+    activities = Calculator.raman_intensities(raman_tensors, reader.volume)[:, 0]
+    return np.asarray([frequency > 10.0 and activity > 1.0e-6
+                       for frequency, activity in zip(frequencies_cm1, activities)], dtype=bool)
+
+def _matrix_optical_permittivity(matrix):
+    """Return the scalar optical permittivity of a matrix material."""
+    if matrix is None or matrix == "none":
+        return None
+    eps = matrix.get_optical_permittivity()
+    if np.isscalar(eps) or (hasattr(eps, "ndim") and eps.ndim == 0):
+        return float(np.real(eps))
+    return float(np.real(np.trace(eps))) / 3.0
+
+def calculate_powder_raman_spectrum(frequencies_cm1, reader, matrix=None, volume_fraction=1.0, sigma=5.0,
+                                    laser_wavelength_nm=785.0, polarisation="HV", temperature=298.0,
+                                    modes_selected=None):
+    """Calculate a powder Raman spectrum for spherical particles.
+
+    Parameters
+    ----------
+    frequencies_cm1 : array_like
+        Raman-shift axis in cm-1.
+    reader : outputReader object
+        Reader containing phonon frequencies, optical permittivity and Raman tensors.
+    matrix : material or None
+        Matrix material.  If ``None`` or ``"none"``, no particle-field correction is applied.
+    volume_fraction : float
+        Crystal volume fraction in the sample.
+    sigma : float or array_like
+        Lorentzian half-width(s) in cm-1.
+    laser_wavelength_nm : float
+        Laser wavelength in nm.
+    polarisation : {"VV", "VH", "HV", "Unpolarised"}
+        Raman polarisation geometry.
+    temperature : float
+        Temperature in K.
+    modes_selected : array_like of bool, optional
+        Optional per-mode selection mask.  If omitted, Raman-active optical modes are selected automatically.
+
+    Returns
+    -------
+    spectrum : np.ndarray
+        Raman intensity on ``frequencies_cm1`` in arbitrary units.
+
+    """
+    raman_tensors = reader.get_raman_tensors()
+    if raman_tensors is None or len(raman_tensors) == 0:
+        return np.zeros(len(frequencies_cm1))
+
+    frequencies_cm1 = np.asarray(frequencies_cm1, dtype=float)
+    mode_frequencies = np.asarray(reader.frequencies, dtype=float)
+    sigmas_cm1 = _raman_linewidths(reader, sigma)
+    selected = _raman_modes_selected(reader, raman_tensors, modes_selected)
+
+    epsilon_e = _matrix_optical_permittivity(matrix)
+    no_matrix = epsilon_e is None
+    epsilon_inf_i = np.asarray(reader.zerof_optical_dielectric, dtype=complex)
+    I3 = np.eye(3, dtype=complex)
+    L = I3 / 3.0
+    N = I3 if no_matrix else Calculator.compute_internal_field_tensor(L, epsilon_inf_i, epsilon_e)
+
+    nu_L = 1.0e7 / laser_wavelength_nm
+    hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
+    spectrum = np.zeros(len(frequencies_cm1))
+
+    for frequency, linewidth, is_selected, raman_tensor in zip(
+            mode_frequencies, sigmas_cm1, selected, raman_tensors):
+        if not is_selected or abs(frequency) < 1.0:
+            continue
+        R_eps = np.asarray(raman_tensor, dtype=complex)
+        if no_matrix:
+            R_particle = R_eps
+        else:
+            R_particle = Calculator.compute_particle_raman_tensor(R_eps, N, L, epsilon_inf_i, epsilon_e)
+
+        if polarisation in ("VV", "VH", "HV"):
+            vv, vh = Calculator.compute_powder_raman_intensities(R_particle)
+            intensity_factor = vv if polarisation == "VV" else vh
+        elif polarisation == "Unpolarised":
+            alpha = np.trace(R_particle) / 3.0
+            gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
+            kappa_t = 0.5 * (R_particle - R_particle.T)
+            alpha2 = float(np.real(alpha * np.conj(alpha)))
+            gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
+            kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
+            intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
+        else:
+            raise ValueError("polarisation must be one of 'VV', 'VH', 'HV' or 'Unpolarised'")
+
+        x = hc_over_k * frequency / temperature if temperature > 0 else 1.0e18
+        n_bose = 1.0 / np.expm1(x) if x > 1.0e-6 else 1.0 / x
+        nu_s = nu_L - frequency
+        if nu_s <= 0.0:
+            continue
+        strength = (nu_s ** 4) * (n_bose + 1.0) * intensity_factor / frequency
+        spectrum += strength * linewidth / ((frequencies_cm1 - frequency) ** 2 + linewidth ** 2)
+
+    return spectrum * volume_fraction
+
+def calculate_crystal_raman_spectrum(frequencies_cm1, reader, layers, incident_angle, global_azimuthal_angle,
+                                     method="Scattering matrix", sigma=5.0, laser_wavelength_nm=532.0,
+                                     incident_polarisation="p", detected_polarisation="unpolarised",
+                                     temperature=298.0, n_gauss=20, collection_side="superstrate",
+                                     collection_angle=-1.0, coherent_layers=False, approximate_es=False):
+    """Calculate a layered crystal Raman spectrum.
+
+    Parameters are intentionally close to :func:`calculate_crystal_infrared_spectrum`, with Raman-specific laser,
+    polarisation and quadrature options added.
+
+    Returns
+    -------
+    spectrum, mode_frequencies, mode_intensities, mode_sigmas : tuple of np.ndarray
+        Broadened Raman spectrum and the active-mode data used to generate it.
+
+    """
+    raman_tensors = reader.get_raman_tensors()
+    if raman_tensors is None or len(raman_tensors) == 0:
+        zeros = np.zeros(len(frequencies_cm1))
+        return zeros, np.array([]), np.array([]), np.array([])
+
+    theta = 0.0
+    phi = 0.0
+    psi = np.radians(global_azimuthal_angle)
+    incident_angle_rad = np.radians(incident_angle)
+    exponent_threshold = 700
+
+    for layer in layers:
+        if layer.is_tensor():
+            hkl = layer.get_hkl()
+            if hkl[0] == 0 and hkl[1] == 0 and hkl[2] == 0:
+                raise ValueError("Cannot calculate crystal Raman spectrum for a tensor layer with hkl=[0, 0, 0]")
+            layer.calculate_euler_matrix()
+
+    superstrate = GTM.SemiInfiniteLayer(layers[0], exponent_threshold=exponent_threshold)
+    substrate = GTM.SemiInfiniteLayer(layers[-1], exponent_threshold=exponent_threshold)
+    selected_layers = layers[1:-1]
+    gtm_layers = []
+    for layer in selected_layers:
+        incoherent_option = layer.get_incoherent_option()
+        gtm_layers.append(gtm_methods[incoherent_option](layer, exponent_threshold=exponent_threshold))
+    if method == "Scattering matrix":
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
+    else:
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
+
+    system.superstrate.set_euler(theta, phi, psi)
+    system.substrate.set_euler(theta, phi, psi)
+    for gtm_layer in system.layers:
+        gtm_layer.set_euler(theta, phi, psi)
+
+    G_psi = np.array([
+        [np.cos(psi), -np.sin(psi), 0.0],
+        [np.sin(psi),  np.cos(psi), 0.0],
+        [0.0,          0.0,         1.0],
+    ])
+    scaled_tensors = [np.sqrt(reader.volume) * np.asarray(raman_tensor, dtype=float) for raman_tensor in raman_tensors]
+    phonon_frequencies = np.asarray(reader.frequencies, dtype=float)
+    sigmas_cm1 = _raman_linewidths(reader, sigma)
+
+    raman_layers = []
+    for sys_idx, layer in enumerate(selected_layers):
+        if not layer.is_dielectric():
+            continue
+        raman_layers.append(RamanLayer(
+            layer_index=sys_idx,
+            phonon_frequencies_cm1=phonon_frequencies,
+            raman_tensors=scaled_tensors,
+            rotation_matrix=G_psi @ layer.euler,
+        ))
+    if not raman_layers:
+        raise ValueError("No Raman-active dielectric layers were found in the crystal layer stack")
+
+    collection_angle_rad = incident_angle_rad if collection_angle < 0.0 else np.radians(collection_angle)
+    calculator = LayeredRamanCalculator(
+        system=system,
+        raman_layers=raman_layers,
+        laser_frequency_cm1=1.0e7 / laser_wavelength_nm,
+        incident_angle_rad=incident_angle_rad,
+        incident_pol=incident_polarisation,
+        detected_pol=detected_polarisation,
+        temperature_K=temperature,
+        linewidths_cm1=sigmas_cm1,
+        n_gauss=n_gauss,
+        collection_side=collection_side,
+        collection_angle_rad=collection_angle_rad,
+        coherent_layers=coherent_layers,
+        approximate_es=approximate_es,
+    )
+    mode_frequencies, mode_intensities, mode_sigmas = calculator.calculate_mode_intensities()
+    if len(mode_frequencies) > 0:
+        spectrum = lorentzian_broaden(mode_frequencies, mode_intensities, mode_sigmas, np.asarray(frequencies_cm1))
+    else:
+        spectrum = np.zeros(len(frequencies_cm1))
+    return spectrum, mode_frequencies, mode_intensities, mode_sigmas
 
 def maxwell_garnett(em, ei, f):
     """Calculate the dielectric constant of a mixture using Maxwell-Garnett.

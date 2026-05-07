@@ -1,11 +1,14 @@
 # Examples/Helper/Helper
 ## Examples of various small scripts using helper functions
 
-### powder_and_single_crystal.py
+### powder_and_crystal_infrared.py
 Performs a powder absorption and single crystal calculation on materials that are in the default database.
 
-### single_crystal_multilayer.py
+### crystal_infrared_multilayer.py
 Performs a single crystal calcuaton on a multi-layer system with materials that are in the database.
+
+### raman_spectra.py
+Calculates powder and crystal Raman spectra using existing Raman-capable example output files.
 
 ### unit_cell.py
 Uses a calculation on aspartic acid by CASTEP to illustrate the features of the unitCell class.

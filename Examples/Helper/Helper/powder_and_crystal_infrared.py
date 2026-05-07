@@ -21,8 +21,8 @@ sys.path.insert(0,home_directory)
 import numpy                      as np
 # Helper routines
 from PDielec.HelperRoutines   import get_material
-from PDielec.HelperRoutines   import calculate_powder_spectrum
-from PDielec.HelperRoutines   import calculate_single_crystal_spectrum
+from PDielec.HelperRoutines   import calculate_powder_infrared_spectrum
+from PDielec.HelperRoutines   import calculate_crystal_infrared_spectrum
 # Utility routines
 from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer
 
@@ -34,7 +34,7 @@ def powderTest():
     method = 'Maxwell-Garnett' 
     shape = 'Sphere'
     volume_fraction = 0.1
-    absorption,permittivity = calculate_powder_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+    absorption,permittivity = calculate_powder_infrared_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
     print('')
     print('Powder absorption results')
     print('      freq', ' absorption (cm-1)')
@@ -59,7 +59,7 @@ def singleCrystalTest():
     frequencies_cm1 = np.arange( 0, 200, 0.2 )
     incident_angle = 80.0
     global_azimuthal_angle = 0.0
-    (reflectance, transmittance, absorptance) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
+    (reflectance, transmittance, absorptance) = calculate_crystal_infrared_spectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
     rps = reflectance[0]
     rss = reflectance[1]
     tps = transmittance[0]

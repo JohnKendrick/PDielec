@@ -22,8 +22,8 @@ sys.path.insert(0,home_directory)
 import numpy                      as np
 # Helper routines
 from PDielec.HelperRoutines   import get_material
-from PDielec.HelperRoutines   import calculate_powder_spectrum
-from PDielec.HelperRoutines   import calculate_single_crystal_spectrum
+from PDielec.HelperRoutines   import calculate_powder_infrared_spectrum
+from PDielec.HelperRoutines   import calculate_crystal_infrared_spectrum
 import PDielec.Utilities      as Utilities
 import PDielec.Calculator     as Calculator
 from PDielec.Constants  import angs2bohr, amu, wavenumber

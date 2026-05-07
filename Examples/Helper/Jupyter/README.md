@@ -5,7 +5,7 @@
 Transforms the unit cell aspartic acid to a cell which has whole molecules in it.
 Calculates the bond lengths, bond angles and torsion angles.
 
-### calculatePowderSpectrum.ipynb
+### calculate_powder_infrared_spectrum.ipynb
 Calculate the powder spectrum of a VASP calculation on ZnO.
 Compares absorption for Maxwell-Garnett and Bruggeman methods at two volume fractions.
 
@@ -31,9 +31,9 @@ Modify the drude-Lorentz permittivity function by changing the sigmas and by sca
 Illustrates the use of readers to read DFT output files.
 The permittivity of a Vasp calculation on ZnO is calculated using the permittivity function of the material
 
-### singleCrystalSpectrum.ipynb
+### calculate_crystal_infrared_spectrum.ipynb
 Calculate a single crystal spectrum of a multilayered system.  
-This uses the calculateSingleCrystalSpectrum() helper function.
+This uses the calculate_crystal_infrared_spectrum() helper function.
 
 ### SuperCell.ipynb
 Illustrate the properties of the SuperCell class.

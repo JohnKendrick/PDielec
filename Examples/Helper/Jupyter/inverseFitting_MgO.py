@@ -10,7 +10,7 @@ home_directory = os.path.join("..","..","..")
 examples_directory = os.path.join(home_directory,'Examples')
 sys.path.insert(0, home_directory)
 from PDielec.HelperRoutines   import get_material
-from PDielec.HelperRoutines   import calculate_powder_spectrum
+from PDielec.HelperRoutines   import calculate_powder_infrared_spectrum
 from PDielec.GUI.FitterTab    import read_experimental_file
 from PDielec.Materials        import Tabulated
 import matplotlib.pyplot as plt
@@ -76,7 +76,7 @@ crystal = Tabulated("Guess", vs_cm1=frequencies, permittivities=crystal_eps_3.T,
 crystal_epsilon_infinity = np.zeros( (3,3) )
 crystal.set_epsilon_infinity(crystal_epsilon_infinity)
 # Calculate the effective medium theory permittivity
-absorption,emt_eps_1 = calculate_powder_spectrum(frequencies,crystal,matrix,vf)
+absorption,emt_eps_1 = calculate_powder_infrared_spectrum(frequencies,crystal,matrix,vf)
 plt.figure(figsize = (10,5)) # set the size of the figure
 plt.plot(frequencies, np.real(reference_eps_1),label='reference') 
 plt.plot(frequencies, np.real(emt_eps_1),label='emt') 

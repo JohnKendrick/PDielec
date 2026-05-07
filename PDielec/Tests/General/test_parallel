@@ -13,7 +13,7 @@ import PDielec
 import PDielec.GTMcore as GTM
 import PDielec.DielectricFunction as DielectricFunction
 from PDielec.Constants import wavenumber, speed_light_si
-from PDielec.HelperRoutines import getMaterial
+from PDielec.HelperRoutines import get_material
 from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer
 from functools import partial
 import time
@@ -292,9 +292,9 @@ def init_global():
     AngleOfIncidence      = 85.0 * np.pi / 180.0
     Mode = 'Scattering matrix'
     # Prepare layers ................................................................
-    air = getMaterial("air")
-    ptfe = getMaterial("ptfe")
-    sapphire = getMaterial("Sapphire")
+    air = get_material("air")
+    ptfe = get_material("ptfe")
+    sapphire = get_material("Sapphire")
     Layers = []
     # Add a substrate
     Layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
@@ -317,9 +317,9 @@ def setup_partial_func():
     angleOfIncidence      = 85.0 * np.pi / 180.0
     mode = 'Scattering matrix'
     # Prepare layers ................................................................
-    air = getMaterial("air")
-    ptfe = getMaterial("ptfe")
-    sapphire = getMaterial("Sapphire")
+    air = get_material("air")
+    ptfe = get_material("ptfe")
+    sapphire = get_material("Sapphire")
     layers = []
     # Add a substrate
     layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
@@ -347,9 +347,9 @@ def setup_local_args():
     angleOfIncidence      = 85 * np.pi / 180.0
     mode = 'Scattering matrix'
     # Prepare layers ................................................................
-    air = getMaterial("air")
-    ptfe = getMaterial("ptfe")
-    sapphire = getMaterial("Sapphire")
+    air = get_material("air")
+    ptfe = get_material("ptfe")
+    sapphire = get_material("Sapphire")
     layers = []
     # Add a substrate
     layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
