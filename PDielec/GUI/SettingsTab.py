@@ -25,6 +25,8 @@ from qtpy.QtWidgets import (
     QDoubleSpinBox,
     QFormLayout,
     QLabel,
+    QMessageBox,
+    QPushButton,
     QSizePolicy,
     QTableWidget,
     QTableWidgetItem,
@@ -34,6 +36,7 @@ from qtpy.QtWidgets import (
 
 from PDielec import Calculator, DielectricFunction
 from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
+from PDielec.RamanPolarCalculator import raman_active_mode_indices
 
 logger = logging.getLogger(__name__)
 class FixedQTableWidget(QTableWidget):
@@ -352,6 +355,16 @@ class SettingsTab(QWidget):
         self.output_tw.setRowCount(1)
         self.output_tw.blockSignals(True)
         vbox.addWidget(self.output_tw)
+        #
+        # Raman polar mode simulator
+        self.raman_polar_button = QPushButton("Raman polar plot", self)
+        self.raman_polar_button.setToolTip(
+            "Open a tensor-level Raman polar plot simulator for the Raman-active modes"
+        )
+        self.raman_polar_button.clicked.connect(self.on_raman_polar_button_clicked)
+        self.raman_polar_label = QLabel("Raman polar simulator:", self)
+        form.addRow(self.raman_polar_label, self.raman_polar_button)
+        self.update_raman_polar_button()
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
@@ -1143,8 +1156,74 @@ class SettingsTab(QWidget):
         self.settings["Spectroscopy type"] = spectroscopy_type
         self.recalculate_selected_modes = True
         self.refresh_required = True
+        self.update_raman_polar_button()
         self.notebook.set_spectroscopy_type(spectroscopy_type)
         logger.debug(f"Finished:: on_spectroscopy_type_cb_activated {index}")
+
+    def update_raman_polar_button(self):
+        """Show the Raman polar plot button only for Raman spectroscopy."""
+        if not hasattr(self, "raman_polar_button"):
+            return
+        is_raman = self.settings.get("Spectroscopy type") in ("Powder Raman", "Crystal Raman")
+        self.raman_polar_label.setVisible(is_raman)
+        self.raman_polar_button.setVisible(is_raman)
+        self.raman_polar_button.setEnabled(is_raman)
+        if is_raman:
+            self.raman_polar_button.setToolTip(
+                "Open a tensor-level Raman polar plot simulator for the Raman-active modes"
+            )
+        else:
+            self.raman_polar_button.setToolTip("Available only for Powder Raman and Crystal Raman")
+
+    def _collect_raman_polar_data(self):
+        """Collect Raman tensor and SettingsTab mode data for the polar plot window."""
+        if self.reader is None:
+            return None, "No file has been read."
+        raman_tensors = self.reader.get_raman_tensors()
+        if raman_tensors is None or len(raman_tensors) == 0:
+            return None, "No Raman tensors are available for the current file."
+        if len(self.frequencies_cm1) == 0 or len(self.raman_intensities) == 0:
+            self.create_intensity_table()
+        active_indices = raman_active_mode_indices(
+            self.frequencies_cm1,
+            self.raman_intensities,
+            raman_tensors,
+        )
+        if not active_indices:
+            return None, "No Raman-active modes were found."
+
+        modes = []
+        for index in active_indices:
+            selected = index < len(self.modes_selected) and self.modes_selected[index]
+            modes.append({
+                "index": index,
+                "display_mode": index + 1,
+                "frequency_cm1": float(self.frequencies_cm1[index]),
+                "raman_total": float(self.raman_intensities[index]),
+                "selected": selected,
+            })
+        if not any(mode["selected"] for mode in modes):
+            for mode in modes:
+                mode["selected"] = True
+        return {"raman_tensors": raman_tensors, "modes": modes}, None
+
+    def on_raman_polar_button_clicked(self):
+        """Open the tensor-level Raman polar plot simulator."""
+        data, message = self._collect_raman_polar_data()
+        if data is None:
+            QMessageBox.warning(self, "Raman polar plot", message)
+            return
+        from PDielec.GUI.RamanPolarWindow import RamanPolarWindow
+
+        window = RamanPolarWindow(
+            data,
+            title="Raman polar mode simulator",
+            parent=None,
+        )
+        window.show()
+        if not hasattr(self, "_raman_polar_windows"):
+            self._raman_polar_windows = []
+        self._raman_polar_windows.append(window)
 
     def refresh(self, force=False):
         """Refresh the current state based on notebook content changes or user request.
@@ -1197,6 +1276,7 @@ class SettingsTab(QWidget):
         index = self.spectroscopy_type_cb.findText(self.settings["Spectroscopy type"], Qt.MatchFixedString)
         if index >= 0:
             self.spectroscopy_type_cb.setCurrentIndex(index)
+        self.update_raman_polar_button()
         if self.settings["Eckart flag"]:
             self.eckart_cb.setCheckState(Qt.Checked)
         else:
@@ -1420,4 +1500,3 @@ class SettingsTab(QWidget):
             self.calculate(self.vs_cm1)
         logger.debug(f"Finished:: get_crystal_permittivity_object {self.refresh_required}")
         return self.CrystalPermittivityObject
-

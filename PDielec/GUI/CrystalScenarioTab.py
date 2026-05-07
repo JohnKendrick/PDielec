@@ -49,7 +49,13 @@ from PDielec import Materials
 from PDielec.Constants import amu, angs2bohr, speed_light_si, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
-from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer, lorentzian_broaden
+from PDielec.LayeredRamanCalculator import (
+    DEPTH_INTEGRATION_COHERENT,
+    DEPTH_INTEGRATION_INCOHERENT,
+    LayeredRamanCalculator,
+    RamanLayer,
+    lorentzian_broaden,
+)
 from PDielec.Materials import MaterialsDataBase
 
 logger = logging.getLogger(__name__)
@@ -391,10 +397,11 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Incident polarisation"] = "p"
         self.settings["Detected polarisation"] = "unpolarised"
         self.settings["Temperature K"] = 298.0
-        self.settings["GL point density"] = 20.0  # Simpson points per µm
+        self.settings["GL point density"] = 20.0  # Gauss-Legendre points per µm
         self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
         self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
         self.settings["Coherent layer summation"] = False
+        self.settings["Raman depth integration"] = DEPTH_INTEGRATION_COHERENT
         self.settings["Approximate ES"] = False
         self.settings["Phonon boundary correction"] = "none"  # 'none', 'NAC', or 'slab-environment'
         self.settings["Azimuthal sweep points"] = 36
@@ -1485,10 +1492,9 @@ class CrystalScenarioTab(ScenarioTab):
         self.gl_density_sb.setValue(self.settings["GL point density"])
         self.gl_density_sb.valueChanged.connect(self.on_gl_density_sb_changed)
         self.gl_density_sb.setToolTip(
-            "Composite Simpson integration point density (points per µm of layer thickness).\n"
+            "Composite Gauss-Legendre integration point density (points per µm of layer thickness).\n"
             "20–60 pts/µm is recommended for accuracy.\n"
-            "The actual number of points is density × layer thickness, clamped to [5, 1 000 000].\n"
-            "The count is rounded up to the nearest odd integer (required by Simpson's rule)."
+            "The actual number of points is density × layer thickness, clamped to [5, 1 000 000]."
         )
         label = QLabel("Integration density (pts/µm)")
         label.setToolTip(self.gl_density_sb.toolTip())
@@ -1550,6 +1556,23 @@ class CrystalScenarioTab(ScenarioTab):
         label = QLabel("Coherent layer summation")
         label.setToolTip(self.coherent_cb.toolTip())
         self.form.addRow(label, self.coherent_cb)
+
+        # Depth integration
+        self.depth_integration_cb = QComboBox(self)
+        self.depth_integration_cb.addItems([DEPTH_INTEGRATION_COHERENT, DEPTH_INTEGRATION_INCOHERENT])
+        idx = self.depth_integration_cb.findText(
+            self.settings["Raman depth integration"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.depth_integration_cb.setCurrentIndex(idx)
+        self.depth_integration_cb.activated.connect(self.on_depth_integration_cb_activated)
+        self.depth_integration_cb.setToolTip(
+            "How Raman sources are combined through layer depth:\n"
+            "'Coherent amplitude' integrates the complex amplitude before squaring; use for thin coherent films.\n"
+            "'Incoherent intensity' integrates local intensity; use for thick or bulk samples such as mm/cm layers."
+        )
+        label = QLabel("Raman depth integration")
+        label.setToolTip(self.depth_integration_cb.toolTip())
+        self.form.addRow(label, self.depth_integration_cb)
 
         # Approximate E_S = E_L
         self.approximate_cb = QCheckBox(self)
@@ -1904,6 +1927,12 @@ class CrystalScenarioTab(ScenarioTab):
                 self.collection_side_cb.setCurrentIndex(idx)
             self.collection_angle_sb.setValue(self.settings["Collection angle"])
             self.coherent_cb.setChecked(self.settings["Coherent layer summation"])
+            idx = self.depth_integration_cb.findText(
+                self.settings.get("Raman depth integration", DEPTH_INTEGRATION_COHERENT),
+                Qt.MatchFixedString,
+            )
+            if idx >= 0:
+                self.depth_integration_cb.setCurrentIndex(idx)
             self.approximate_cb.setChecked(self.settings["Approximate ES"])
             idx = self.phonon_bc_cb.findText(self.settings["Phonon boundary correction"], Qt.MatchFixedString)
             if idx >= 0:
@@ -2049,6 +2078,12 @@ class CrystalScenarioTab(ScenarioTab):
     def on_coherent_cb_toggled(self, checked):
         """Handle a toggle of the coherent layer summation checkbox."""
         self.settings["Coherent layer summation"] = checked
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_depth_integration_cb_activated(self, index):
+        """Handle a change in the Raman depth integration mode."""
+        self.settings["Raman depth integration"] = self.depth_integration_cb.currentText()
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2748,13 +2783,11 @@ class CrystalScenarioTab(ScenarioTab):
             n_gauss = _max_points
         else:
             n_gauss = n_gauss_raw
-        # Simpson's rule requires an odd point count
-        if n_gauss % 2 == 0:
-            n_gauss += 1
         collection_side   = self.settings.get("Collection side", "superstrate")
         collection_angle  = self.settings.get("Collection angle", -1.0)
         coherent_layers   = self.settings.get("Coherent layer summation", False)
         approximate_es    = self.settings.get("Approximate ES", False)
+        depth_integration = self.settings.get("Raman depth integration", DEPTH_INTEGRATION_COHERENT)
 
         collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
 
@@ -2772,6 +2805,7 @@ class CrystalScenarioTab(ScenarioTab):
             collection_angle_rad=collection_angle_rad,
             coherent_layers=coherent_layers,
             approximate_es=approximate_es,
+            depth_integration=depth_integration,
         )
 
     def _calculate_raman(self, vs_cm1):
@@ -3081,4 +3115,3 @@ class CrystalScenarioTab(ScenarioTab):
             #self.notebook.progressbars_update(increment=len(vs_cm1))
         logger.debug(f"{self.settings['Legend']} Finished:: get_results {len(vs_cm1)} {self.refresh_required}")
         return
-

@@ -88,6 +88,7 @@ def run_calc(
     n_gauss=20,
     approximate_es=True,
     coherent_layers=False,
+    depth_integration="Coherent amplitude",
     incident_angle_rad=0.0,
     collection_side="superstrate",
 ):
@@ -115,6 +116,7 @@ def run_calc(
         n_gauss=n_gauss,
         approximate_es=approximate_es,
         coherent_layers=coherent_layers,
+        depth_integration=depth_integration,
         collection_side=collection_side,
     )
     freqs, intensities, _ = calc.calculate_mode_intensities()

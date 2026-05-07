@@ -49,7 +49,7 @@ Phase 3c Jones-vector polarisation:
   converted automatically.  Direct Jones vector control can be added later via
   a subclass or optional parameter.
 
-The integral is evaluated numerically using composite Simpson quadrature within
+The integral is evaluated numerically using Gauss-Legendre quadrature within
 each Raman-active layer.
 """
 
@@ -62,6 +62,10 @@ from PDielec.Constants import boltzmann_si, planck_si, speed_light_si
 
 logger = logging.getLogger(__name__)
 
+DEPTH_INTEGRATION_COHERENT = "Coherent amplitude"
+DEPTH_INTEGRATION_INCOHERENT = "Incoherent intensity"
+DEPTH_INTEGRATION_OPTIONS = (DEPTH_INTEGRATION_COHERENT, DEPTH_INTEGRATION_INCOHERENT)
+
 # Modes below this frequency (cm⁻¹) are treated as acoustic and skipped.
 _ACOUSTIC_THRESHOLD_CM1 = 10.0
 
@@ -69,45 +73,54 @@ _ACOUSTIC_THRESHOLD_CM1 = 10.0
 # Larger values reduce dispatch overhead; smaller values increase parallelism.
 _EFIELD_CHUNK_SIZE = 1000
 
+# Maximum order for one Gauss-Legendre panel.  Larger requested point counts
+# are implemented as a composite rule made from repeated panels of this order.
+_MAX_GAUSS_LEGENDRE_PANEL_ORDER = 64
 
-def _simpson_nodes_weights(n):
-    """Return composite Simpson quadrature nodes and weights on [-1, 1].
 
-    Compared with Gauss-Legendre, composite Simpson uses equally-spaced nodes
-    which:
+def _gauss_legendre_nodes_weights(n):
+    """Return Gauss-Legendre quadrature nodes and weights on [-1, 1].
 
-    * require zero setup cost (no eigenvalue decomposition),
-    * map naturally to a physical sampling density (points per µm), and
-    * give equivalent accuracy when the integrand must be resolved at the
-      optical wavelength scale (as is the case for the Raman depth integral).
+    For moderate point counts this is one ordinary Gauss-Legendre rule.  For
+    large point counts it becomes a composite Gauss-Legendre rule with repeated
+    fixed-order panels.  The composite form keeps setup cost and numerical
+    conditioning practical for mm/cm-thick layers where the GUI can request
+    hundreds of thousands of integration points.
 
     Parameters
     ----------
     n : int
-        Number of quadrature points.  Must be odd and ≥ 3; if even it is
-        silently incremented by 1.
+        Number of quadrature points.  Must be at least 1.
 
     Returns
     -------
     nodes : ndarray, shape (n,)
-        Equally-spaced abscissas on [-1, 1].
+        Gauss-Legendre abscissas on [-1, 1].
     weights : ndarray, shape (n,)
-        Composite Simpson weights.  Their sum equals 2.0 (= length of [-1,1]),
-        consistent with the Gauss-Legendre convention used in ``_build_gl_grid``.
+        Gauss-Legendre weights.  Their sum equals 2.0 (= length of [-1, 1]).
 
     """
-    if n < 3:
-        n = 3
-    if n % 2 == 0:
-        n += 1
-    nodes = np.linspace(-1.0, 1.0, n)
-    h = 2.0 / (n - 1)
-    weights = np.empty(n)
-    weights[0] = 1.0
-    weights[-1] = 1.0
-    weights[1:-1:2] = 4.0   # odd interior indices
-    weights[2:-2:2] = 2.0   # even interior indices
-    weights *= h / 3.0
+    n = max(1, int(n))
+    if n <= _MAX_GAUSS_LEGENDRE_PANEL_ORDER:
+        return np.polynomial.legendre.leggauss(n)
+
+    order = _MAX_GAUSS_LEGENDRE_PANEL_ORDER
+    n_panels = int(np.ceil(n / order))
+    panel_nodes, panel_weights = np.polynomial.legendre.leggauss(order)
+    edges = np.linspace(-1.0, 1.0, n_panels + 1)
+    nodes = np.empty(n_panels * order, dtype=float)
+    weights = np.empty(n_panels * order, dtype=float)
+
+    for panel in range(n_panels):
+        left = edges[panel]
+        right = edges[panel + 1]
+        half_width = 0.5 * (right - left)
+        midpoint = 0.5 * (right + left)
+        start = panel * order
+        end = start + order
+        nodes[start:end] = midpoint + half_width * panel_nodes
+        weights[start:end] = half_width * panel_weights
+
     return nodes, weights
 
 
@@ -153,7 +166,8 @@ def _compute_raman_mode_worker(shared, mode_args):
     shared : tuple
         ``(es_system, collection_angle_rad, z_s_arr, E_L_out, E_S_fixed,
         gl_phys_weights, gl_layer_slices, rotation_matrices,
-        incident_jones, detected_jones, coherent_layers, temperature_K)``
+        incident_jones, detected_jones, coherent_layers, depth_integration,
+        temperature_K)``
 
         ``es_system`` is ``None`` when ``E_S_fixed`` is provided (approximate-ES
         or pre-computed forward-scatter field).  ``E_S_fixed`` is ``None`` when
@@ -178,7 +192,7 @@ def _compute_raman_mode_worker(shared, mode_args):
      gl_phys_weights, gl_layer_slices,
      rotation_matrices,
      incident_jones, detected_jones,
-     coherent_layers, temperature_K) = shared
+     coherent_layers, depth_integration, temperature_K) = shared
 
     (mode_idx, nu_m, sigma, nu_S, mode_raman_tensors) = mode_args
 
@@ -198,7 +212,23 @@ def _compute_raman_mode_worker(shared, mode_args):
 
     cp_L, cs_L = incident_jones
 
-    if coherent_layers:
+    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+        I_m = 0.0
+        for sl, R_crystal, G in zip(gl_layer_slices, mode_raman_tensors, rotation_matrices):
+            R_lab = G @ np.asarray(R_crystal, dtype=complex) @ G.T
+            E_L = cp_L * E_L_out[0:3, sl] + cs_L * E_L_out[3:6, sl]
+            R_E_L = R_lab @ E_L
+            w = gl_phys_weights[sl]
+            if detected_jones is None:
+                integrand_p = np.einsum("ij,ij->j", E_S_out[0:3, sl], R_E_L)
+                integrand_s = np.einsum("ij,ij->j", E_S_out[3:6, sl], R_E_L)
+                I_m += np.dot(w, np.abs(integrand_p) ** 2 + np.abs(integrand_s) ** 2)
+            else:
+                cp_S, cs_S = detected_jones
+                E_S = cp_S * E_S_out[0:3, sl] + cs_S * E_S_out[3:6, sl]
+                integrand = np.einsum("ij,ij->j", E_S, R_E_L)
+                I_m += np.dot(w, np.abs(integrand) ** 2)
+    elif coherent_layers:
         total_amp_p = 0.0 + 0.0j
         total_amp_s = 0.0 + 0.0j
         for sl, R_crystal, G in zip(gl_layer_slices, mode_raman_tensors, rotation_matrices):
@@ -213,10 +243,7 @@ def _compute_raman_mode_worker(shared, mode_args):
                 cp_S, cs_S = detected_jones
                 E_S = cp_S * E_S_out[0:3, sl] + cs_S * E_S_out[3:6, sl]
                 total_amp_p += np.dot(w, np.einsum("ij,ij->j", E_S, R_E_L))
-        if detected_jones is None:
-            I_m = abs(total_amp_p) ** 2 + abs(total_amp_s) ** 2
-        else:
-            I_m = abs(total_amp_p) ** 2
+        I_m = abs(total_amp_p) ** 2 + abs(total_amp_s) ** 2 if detected_jones is None else abs(total_amp_p) ** 2
     else:
         I_m = 0.0
         for sl, R_crystal, G in zip(gl_layer_slices, mode_raman_tensors, rotation_matrices):
@@ -347,7 +374,7 @@ class LayeredRamanCalculator:
 
     The calculation proceeds as follows:
 
-    1. Build composite Simpson quadrature grids within each Raman-active layer.
+    1. Build Gauss-Legendre quadrature grids within each Raman-active layer.
     2. Compute the electric field E_L at the laser frequency for both p and s
        incidence in a single call to ``system.calculate_Efield``.
     3. For each phonon mode m (skipping acoustic modes):
@@ -392,8 +419,8 @@ class LayeredRamanCalculator:
         Lorentzian half-widths in cm⁻¹, one entry per phonon mode (including
         acoustic modes; those are skipped internally).
     n_gauss : int, optional
-        Number of composite Simpson quadrature points per Raman-active layer
-        (must be odd; incremented by 1 if even).  Default is 21.
+        Number of Gauss-Legendre quadrature points per Raman-active layer.
+        Default is 21.
     collection_side : {'superstrate', 'substrate'}, optional
         Which side the detector is on.  ``'superstrate'`` (default) gives
         backscattering geometry; ``'substrate'`` gives forward scattering and
@@ -408,6 +435,12 @@ class LayeredRamanCalculator:
     approximate_es : bool, optional
         If ``True``, use the Phase 1 approximation E_S ≈ E_L (both fields at
         the laser frequency).  Default is ``False``.
+    depth_integration : {'Coherent amplitude', 'Incoherent intensity'}, optional
+        How to combine the source along the depth of each Raman-active layer.
+        ``'Coherent amplitude'`` integrates the complex amplitude before
+        squaring and is appropriate for thin coherent films.  ``'Incoherent
+        intensity'`` integrates the local intensity and is more stable for
+        thick or bulk samples where long-range phase coherence is not physical.
 
     Notes
     -----
@@ -444,6 +477,7 @@ class LayeredRamanCalculator:
         collection_angle_rad=None,
         coherent_layers=False,
         approximate_es=False,
+        depth_integration=DEPTH_INTEGRATION_COHERENT,
     ):
         """Initialise LayeredRamanCalculator with system, layers and calculation parameters."""
         if incident_pol not in ("p", "s"):
@@ -452,6 +486,10 @@ class LayeredRamanCalculator:
             raise ValueError(f"detected_pol must be 'p', 's', or 'unpolarised', got '{detected_pol}'")
         if collection_side not in ("superstrate", "substrate"):
             raise ValueError(f"collection_side must be 'superstrate' or 'substrate', got '{collection_side}'")
+        if depth_integration not in DEPTH_INTEGRATION_OPTIONS:
+            raise ValueError(
+                f"depth_integration must be one of {DEPTH_INTEGRATION_OPTIONS}, got {depth_integration}"
+            )
 
         self.system = system
         self.raman_layers = list(raman_layers)
@@ -461,11 +499,12 @@ class LayeredRamanCalculator:
         self.detected_pol = detected_pol
         self.temperature_K = float(temperature_K)
         self.linewidths_cm1 = np.asarray(linewidths_cm1, dtype=float)
-        self.n_gauss = int(n_gauss)
+        self.n_gauss = max(1, int(n_gauss))
         self.collection_side = collection_side
         self.collection_angle_rad = float(collection_angle_rad) if collection_angle_rad is not None else float(incident_angle_rad)
         self.coherent_layers = bool(coherent_layers)
         self.approximate_es = bool(approximate_es)
+        self.depth_integration = depth_integration
 
         # Phase 3c: internal Jones vectors for incident and detected channels.
         # _incident_jones : (cp, cs) complex pair — determines the linear combination
@@ -476,11 +515,10 @@ class LayeredRamanCalculator:
         self._incident_jones = _pol_to_jones[incident_pol]
         self._detected_jones = None if detected_pol == "unpolarised" else _pol_to_jones[detected_pol]
 
-        # Composite Simpson nodes and weights on [-1, 1].
-        # O(n) setup with no eigenvalue computation — far cheaper than
-        # Gauss-Legendre for the large point counts that arise when integrating
-        # over thick layers at physical sampling densities (pts/µm).
-        self._quad_nodes, self._quad_weights = _simpson_nodes_weights(self.n_gauss)
+        # Gauss-Legendre nodes and weights on [-1, 1].  Large point counts use
+        # a composite fixed-order Gauss rule so thick layers remain practical.
+        self._quad_nodes, self._quad_weights = _gauss_legendre_nodes_weights(self.n_gauss)
+        self.n_gauss = len(self._quad_nodes)
 
         # Built by _build_gl_grid()
         self._gl_z = None               # ndarray: concatenated z points (m) for E_L
@@ -494,7 +532,7 @@ class LayeredRamanCalculator:
     # ------------------------------------------------------------------
 
     def _build_gl_grid(self):
-        """Map Simpson quadrature points onto each Raman-active layer interval.
+        """Map Gauss-Legendre quadrature points onto each Raman-active layer interval.
 
         Uses ``system.get_layers_boundaries()`` to find each layer's z extent.
         Boundaries are in metres with z = 0 at the superstrate/first-layer
@@ -503,10 +541,10 @@ class LayeredRamanCalculator:
         Populates
         ---------
         _gl_z : ndarray
-            Concatenated Simpson z coordinates for all Raman-active layers, in metres
+            Concatenated quadrature z coordinates for all Raman-active layers, in metres
             (the unit ``calculate_Efield`` expects).
         _gl_phys_weights : ndarray
-            Corresponding integration weights in Ångström (Simpson weight × half-thickness × 1e10).
+            Corresponding integration weights in Ångström (quadrature weight × half-thickness × 1e10).
             The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
             keeping intensity magnitudes in a readable range.
         _gl_layer_slices : list of slice
@@ -639,6 +677,23 @@ class LayeredRamanCalculator:
         integrand = np.einsum("ij,ij->j", E_S, R_E_L)
         return np.dot(w, integrand), None
 
+    def _layer_depth_intensity(self, E_L_out, E_S_out, R_lab, sl):
+        """Compute the incoherent depth-integrated Raman intensity for one layer."""
+        cp_L, cs_L = self._incident_jones
+        E_L = cp_L * E_L_out[0:3, sl] + cs_L * E_L_out[3:6, sl]
+        R_E_L = R_lab @ E_L
+        w = self._gl_phys_weights[sl]
+
+        if self._detected_jones is None:
+            integrand_p = np.einsum("ij,ij->j", E_S_out[0:3, sl], R_E_L)
+            integrand_s = np.einsum("ij,ij->j", E_S_out[3:6, sl], R_E_L)
+            return np.dot(w, np.abs(integrand_p) ** 2 + np.abs(integrand_s) ** 2)
+
+        cp_S, cs_S = self._detected_jones
+        E_S = cp_S * E_S_out[0:3, sl] + cs_S * E_S_out[3:6, sl]
+        integrand = np.einsum("ij,ij->j", E_S, R_E_L)
+        return np.dot(w, np.abs(integrand) ** 2)
+
     # ------------------------------------------------------------------
     # Public interface
     # ------------------------------------------------------------------
@@ -763,8 +818,14 @@ class LayeredRamanCalculator:
                     nu_S, es_system, self.collection_angle_rad, z_s
                 )
 
-            # Accumulate amplitude contributions from all Raman-active layers
-            if self.coherent_layers:
+            # Accumulate contributions from all Raman-active layers
+            if self.depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+                I_m = 0.0
+                for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
+                    R_crystal = rl.raman_tensors[mode_idx]
+                    R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
+                    I_m += self._layer_depth_intensity(E_L_out, E_S_out, R_lab, sl)
+            elif self.coherent_layers:
                 # Coherent: sum amplitudes first
                 total_amp_p = 0.0 + 0.0j
                 total_amp_s = 0.0 + 0.0j
@@ -816,6 +877,8 @@ class LayeredRamanCalculator:
         Parameters
         ----------
         pool : multiprocessing.Pool or compatible
+            Worker pool used to distribute field calculations over chunks of
+            z-coordinates.
         freq_cm1 : float
             Evaluation frequency in cm⁻¹.
         system : GTMcore.System
@@ -908,6 +971,7 @@ class LayeredRamanCalculator:
             self._incident_jones,
             self._detected_jones,
             self.coherent_layers,
+            self.depth_integration,
             self.temperature_K,
         )
         worker_fn = partial(_compute_raman_mode_worker, shared)
