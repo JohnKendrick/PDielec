@@ -23,6 +23,7 @@ dependencies = [
     "openpyxl",
     "imageio",
     "imageio-ffmpeg",
+    "pytest",
 ]
 requires-python = ">=3.8"
 authors = [
