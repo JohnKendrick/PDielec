@@ -49,14 +49,14 @@ Phase 3c Jones-vector polarisation:
   converted automatically.  Direct Jones vector control can be added later via
   a subclass or optional parameter.
 
-The integral is evaluated numerically using Gauss-Legendre quadrature within
+The integral is evaluated numerically using composite Simpson quadrature within
 each Raman-active layer.
 """
 
 import logging
+from functools import partial
 
 import numpy as np
-from numpy.polynomial.legendre import leggauss
 
 from PDielec.Constants import boltzmann_si, planck_si, speed_light_si
 
@@ -64,6 +64,177 @@ logger = logging.getLogger(__name__)
 
 # Modes below this frequency (cm⁻¹) are treated as acoustic and skipped.
 _ACOUSTIC_THRESHOLD_CM1 = 10.0
+
+# Target z-points per pool chunk for the parallel E-field computation.
+# Larger values reduce dispatch overhead; smaller values increase parallelism.
+_EFIELD_CHUNK_SIZE = 1000
+
+
+def _simpson_nodes_weights(n):
+    """Return composite Simpson quadrature nodes and weights on [-1, 1].
+
+    Compared with Gauss-Legendre, composite Simpson uses equally-spaced nodes
+    which:
+
+    * require zero setup cost (no eigenvalue decomposition),
+    * map naturally to a physical sampling density (points per µm), and
+    * give equivalent accuracy when the integrand must be resolved at the
+      optical wavelength scale (as is the case for the Raman depth integral).
+
+    Parameters
+    ----------
+    n : int
+        Number of quadrature points.  Must be odd and ≥ 3; if even it is
+        silently incremented by 1.
+
+    Returns
+    -------
+    nodes : ndarray, shape (n,)
+        Equally-spaced abscissas on [-1, 1].
+    weights : ndarray, shape (n,)
+        Composite Simpson weights.  Their sum equals 2.0 (= length of [-1,1]),
+        consistent with the Gauss-Legendre convention used in ``_build_gl_grid``.
+
+    """
+    if n < 3:
+        n = 3
+    if n % 2 == 0:
+        n += 1
+    nodes = np.linspace(-1.0, 1.0, n)
+    h = 2.0 / (n - 1)
+    weights = np.empty(n)
+    weights[0] = 1.0
+    weights[-1] = 1.0
+    weights[1:-1:2] = 4.0   # odd interior indices
+    weights[2:-2:2] = 2.0   # even interior indices
+    weights *= h / 3.0
+    return nodes, weights
+
+
+def _compute_efield_chunk_worker(shared, z_chunk):
+    """Compute the GTM electric field for a contiguous chunk of z-positions.
+
+    Used to parallelise the E_L (and approximate E_S) field computation across
+    pool workers.  Each worker handles an independent, contiguous sub-array of
+    the full GL z-grid.
+
+    Parameters
+    ----------
+    shared : tuple
+        ``(system, freq_cm1, angle_rad)`` — the optical system, evaluation
+        frequency in cm⁻¹, and angle of incidence in radians.  The system is
+        pickled once per ``functools.partial`` binding.
+    z_chunk : ndarray, shape (M,)
+        Sorted z-coordinates (metres) for this chunk.
+
+    Returns
+    -------
+    E_chunk : ndarray, shape (6, M)
+        Electric field at the requested z-positions.
+
+    """
+    system, freq_cm1, angle_rad = shared
+    freq_hz = freq_cm1 * speed_light_si * 1e2
+    system.initialize_sys(freq_hz)
+    zeta = np.sin(angle_rad) * np.sqrt(system.superstrate.epsilon[0, 0])
+    _, E_chunk, _ = system.calculate_Efield(freq_hz, zeta, z_vect=z_chunk)
+    return E_chunk
+
+
+def _compute_raman_mode_worker(shared, mode_args):
+    """Compute the Raman intensity for a single phonon mode.
+
+    Designed to be called via ``pool.imap(partial(_compute_raman_mode_worker, shared),
+    mode_args_list)`` so that the large shared arrays (E_L, GL grid) are bound once
+    to the partial function and only the small per-mode data is iterated.
+
+    Parameters
+    ----------
+    shared : tuple
+        ``(es_system, collection_angle_rad, z_s_arr, E_L_out, E_S_fixed,
+        gl_phys_weights, gl_layer_slices, rotation_matrices,
+        incident_jones, detected_jones, coherent_layers, temperature_K)``
+
+        ``es_system`` is ``None`` when ``E_S_fixed`` is provided (approximate-ES
+        or pre-computed forward-scatter field).  ``E_S_fixed`` is ``None`` when
+        ``es_system`` should be used to compute E_S fresh at ``nu_S``.
+    mode_args : tuple
+        ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors)``
+
+        ``nu_S`` is the scattered frequency in cm⁻¹ (ignored when ``E_S_fixed``
+        is not ``None``).  ``mode_raman_tensors`` is a list of (3, 3) complex
+        arrays, one per Raman-active layer, for this mode.
+
+    Returns
+    -------
+    tuple or None
+        ``(mode_idx, nu_m, I_m, sigma)`` for an active mode, or ``None`` if
+        the mode is below the acoustic threshold or the scattered frequency is
+        non-positive.
+
+    """
+    (es_system, collection_angle_rad, z_s_arr,
+     E_L_out, E_S_fixed,
+     gl_phys_weights, gl_layer_slices,
+     rotation_matrices,
+     incident_jones, detected_jones,
+     coherent_layers, temperature_K) = shared
+
+    (mode_idx, nu_m, sigma, nu_S, mode_raman_tensors) = mode_args
+
+    if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+        return None
+
+    # Obtain E_S: either precomputed or freshly evaluated at nu_S
+    if E_S_fixed is not None:
+        E_S_out = E_S_fixed
+    else:
+        if nu_S <= 0.0:
+            return None
+        freq_hz = nu_S * speed_light_si * 1e2
+        es_system.initialize_sys(freq_hz)
+        zeta = np.sin(collection_angle_rad) * np.sqrt(es_system.superstrate.epsilon[0, 0])
+        _, E_S_out, _ = es_system.calculate_Efield(freq_hz, zeta, z_vect=z_s_arr)
+
+    cp_L, cs_L = incident_jones
+
+    if coherent_layers:
+        total_amp_p = 0.0 + 0.0j
+        total_amp_s = 0.0 + 0.0j
+        for sl, R_crystal, G in zip(gl_layer_slices, mode_raman_tensors, rotation_matrices):
+            R_lab = G @ np.asarray(R_crystal, dtype=complex) @ G.T
+            E_L = cp_L * E_L_out[0:3, sl] + cs_L * E_L_out[3:6, sl]
+            R_E_L = R_lab @ E_L
+            w = gl_phys_weights[sl]
+            if detected_jones is None:
+                total_amp_p += np.dot(w, np.einsum("ij,ij->j", E_S_out[0:3, sl], R_E_L))
+                total_amp_s += np.dot(w, np.einsum("ij,ij->j", E_S_out[3:6, sl], R_E_L))
+            else:
+                cp_S, cs_S = detected_jones
+                E_S = cp_S * E_S_out[0:3, sl] + cs_S * E_S_out[3:6, sl]
+                total_amp_p += np.dot(w, np.einsum("ij,ij->j", E_S, R_E_L))
+        if detected_jones is None:
+            I_m = abs(total_amp_p) ** 2 + abs(total_amp_s) ** 2
+        else:
+            I_m = abs(total_amp_p) ** 2
+    else:
+        I_m = 0.0
+        for sl, R_crystal, G in zip(gl_layer_slices, mode_raman_tensors, rotation_matrices):
+            R_lab = G @ np.asarray(R_crystal, dtype=complex) @ G.T
+            E_L = cp_L * E_L_out[0:3, sl] + cs_L * E_L_out[3:6, sl]
+            R_E_L = R_lab @ E_L
+            w = gl_phys_weights[sl]
+            if detected_jones is None:
+                amp_p = np.dot(w, np.einsum("ij,ij->j", E_S_out[0:3, sl], R_E_L))
+                amp_s = np.dot(w, np.einsum("ij,ij->j", E_S_out[3:6, sl], R_E_L))
+                I_m += abs(amp_p) ** 2 + abs(amp_s) ** 2
+            else:
+                cp_S, cs_S = detected_jones
+                E_S = cp_S * E_S_out[0:3, sl] + cs_S * E_S_out[3:6, sl]
+                I_m += abs(np.dot(w, np.einsum("ij,ij->j", E_S, R_E_L))) ** 2
+
+    I_m *= bose_factor(nu_m, temperature_K)
+    return (mode_idx, nu_m, I_m, sigma)
 
 
 # ---------------------------------------------------------------------------
@@ -176,7 +347,7 @@ class LayeredRamanCalculator:
 
     The calculation proceeds as follows:
 
-    1. Build Gauss-Legendre quadrature grids within each Raman-active layer.
+    1. Build composite Simpson quadrature grids within each Raman-active layer.
     2. Compute the electric field E_L at the laser frequency for both p and s
        incidence in a single call to ``system.calculate_Efield``.
     3. For each phonon mode m (skipping acoustic modes):
@@ -221,8 +392,8 @@ class LayeredRamanCalculator:
         Lorentzian half-widths in cm⁻¹, one entry per phonon mode (including
         acoustic modes; those are skipped internally).
     n_gauss : int, optional
-        Number of Gauss-Legendre quadrature points per Raman-active layer.
-        Default is 20, which is accurate for smooth fields in thin layers.
+        Number of composite Simpson quadrature points per Raman-active layer
+        (must be odd; incremented by 1 if even).  Default is 21.
     collection_side : {'superstrate', 'substrate'}, optional
         Which side the detector is on.  ``'superstrate'`` (default) gives
         backscattering geometry; ``'substrate'`` gives forward scattering and
@@ -253,7 +424,7 @@ class LayeredRamanCalculator:
 
     For forward scattering (``collection_side='substrate'``), the z-coordinates
     for E_S are remapped as ``z_rev = total_thickness − z_orig`` before being
-    passed to ``calculate_Efield`` on the reversed system; the GL quadrature
+    passed to ``calculate_Efield`` on the reversed system; the quadrature
     weights are unchanged.
 
     """
@@ -268,7 +439,7 @@ class LayeredRamanCalculator:
         detected_pol,
         temperature_K,
         linewidths_cm1,
-        n_gauss=20,
+        n_gauss=21,
         collection_side="superstrate",
         collection_angle_rad=None,
         coherent_layers=False,
@@ -305,8 +476,11 @@ class LayeredRamanCalculator:
         self._incident_jones = _pol_to_jones[incident_pol]
         self._detected_jones = None if detected_pol == "unpolarised" else _pol_to_jones[detected_pol]
 
-        # Gauss-Legendre nodes and weights on [-1, 1]
-        self._gl_nodes, self._gl_weights = leggauss(self.n_gauss)
+        # Composite Simpson nodes and weights on [-1, 1].
+        # O(n) setup with no eigenvalue computation — far cheaper than
+        # Gauss-Legendre for the large point counts that arise when integrating
+        # over thick layers at physical sampling densities (pts/µm).
+        self._quad_nodes, self._quad_weights = _simpson_nodes_weights(self.n_gauss)
 
         # Built by _build_gl_grid()
         self._gl_z = None               # ndarray: concatenated z points (m) for E_L
@@ -320,7 +494,7 @@ class LayeredRamanCalculator:
     # ------------------------------------------------------------------
 
     def _build_gl_grid(self):
-        """Map GL quadrature points onto each Raman-active layer interval.
+        """Map Simpson quadrature points onto each Raman-active layer interval.
 
         Uses ``system.get_layers_boundaries()`` to find each layer's z extent.
         Boundaries are in metres with z = 0 at the superstrate/first-layer
@@ -329,10 +503,10 @@ class LayeredRamanCalculator:
         Populates
         ---------
         _gl_z : ndarray
-            Concatenated GL z coordinates for all Raman-active layers, in metres
+            Concatenated Simpson z coordinates for all Raman-active layers, in metres
             (the unit ``calculate_Efield`` expects).
         _gl_phys_weights : ndarray
-            Corresponding integration weights in Ångström (GL weight × half-thickness × 1e10).
+            Corresponding integration weights in Ångström (Simpson weight × half-thickness × 1e10).
             The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
             keeping intensity magnitudes in a readable range.
         _gl_layer_slices : list of slice
@@ -354,8 +528,8 @@ class LayeredRamanCalculator:
             z_end   = boundaries[idx + 2]
             half    = 0.5 * (z_end - z_start)
             mid     = 0.5 * (z_start + z_end)
-            z_j = mid + half * self._gl_nodes              # metres (for calculate_Efield)
-            w_j = half * self._gl_weights * 1.0e10         # Å (for the intensity integral)
+            z_j = mid + half * self._quad_nodes             # metres (for calculate_Efield)
+            w_j = half * self._quad_weights * 1.0e10       # Å (for the intensity integral)
             z_parts.append(z_j)
             w_parts.append(w_j)
             slices.append(slice(offset, offset + self.n_gauss))
@@ -469,7 +643,7 @@ class LayeredRamanCalculator:
     # Public interface
     # ------------------------------------------------------------------
 
-    def calculate_mode_intensities(self, progress_callback=None):
+    def calculate_mode_intensities(self, progress_callback=None, pool=None):
         """Compute the per-mode Raman intensities (before broadening).
 
         Modes below ``_ACOUSTIC_THRESHOLD_CM1`` are excluded.  Layer
@@ -482,6 +656,12 @@ class LayeredRamanCalculator:
             If supplied, called once per phonon-mode iteration (including modes
             that are skipped as acoustic), so the caller can drive a progress
             bar.  The callback takes no arguments.
+        pool : multiprocessing.Pool or multiprocessing.dummy.Pool, optional
+            Worker pool for parallel execution.  When provided, each phonon mode
+            (i.e. each E_S field evaluation at its own scattered frequency) is
+            dispatched to a pool worker.  E_L is computed once on the calling
+            process and broadcast to all workers via ``functools.partial``.
+            When ``None`` (default), the calculation runs sequentially.
 
         Returns
         -------
@@ -508,12 +688,7 @@ class LayeredRamanCalculator:
             logger.warning("calculate_mode_intensities: no Raman-active layers defined")
             return np.array([]), np.array([]), np.array([])
 
-        # --- E_L: incident laser field on the original system ---
-        E_L_out = self._get_field_at_gl_points(
-            self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
-        )
-
-        # --- Set up the system and z-array for E_S ---
+        # --- Set up the system and z-array for E_S (common to both paths) ---
         if self.collection_side == "substrate":
             # Forward scattering: launch E_S from the substrate side
             total_thick = sum(layer.thick for layer in self.system.layers)
@@ -524,7 +699,31 @@ class LayeredRamanCalculator:
             z_s = self._gl_z
             es_system = self.system
 
+        # Use frequencies from the first RamanLayer (all layers share the same DFT modes)
+        ref_layer = self.raman_layers[0]
+        n_modes = len(ref_layer.phonon_frequencies_cm1)
+
+        # Precompute per-layer rotation matrices (shared across modes)
+        rotation_matrices = [rl.rotation_matrix for rl in self.raman_layers]
+
+        if pool is not None:
+            # Parallel path: E_L (and E_S_fixed when needed) are computed
+            # inside _calculate_modes_parallel using the pool.
+            return self._calculate_modes_parallel(
+                pool, ref_layer, n_modes,
+                es_system, z_s,
+                rotation_matrices,
+                progress_callback,
+            )
+
+        # Sequential path -------------------------------------------------
+        # Compute E_L once on the calling process.
+        E_L_out = self._get_field_at_gl_points(
+            self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
+        )
+
         # If approximate_es, compute E_S once at the laser frequency
+        E_S_out_fixed = None
         if self.approximate_es:
             if self.collection_side == "substrate":
                 E_S_out_fixed = self._get_field_at_gl_points(
@@ -533,10 +732,6 @@ class LayeredRamanCalculator:
             else:
                 # Pure Phase-1 approximation: E_S = E_L (no extra call)
                 E_S_out_fixed = E_L_out
-
-        # Use frequencies from the first RamanLayer (all layers share the same DFT modes)
-        ref_layer = self.raman_layers[0]
-        n_modes = len(ref_layer.phonon_frequencies_cm1)
 
         active_freqs = []
         active_intensities = []
@@ -599,6 +794,144 @@ class LayeredRamanCalculator:
             # Apply Bose-Einstein thermal prefactor
             I_m *= bose_factor(nu_m, self.temperature_K)
 
+            active_freqs.append(nu_m)
+            active_intensities.append(I_m)
+            active_sigmas.append(sigma)
+
+        return (
+            np.array(active_freqs),
+            np.array(active_intensities),
+            np.array(active_sigmas),
+        )
+
+    def _get_field_parallel(self, pool, freq_cm1, system, angle_rad, z_arr):
+        """Compute the GTM E-field at *z_arr* in parallel using *pool*.
+
+        Splits ``z_arr`` into contiguous chunks of at most ``_EFIELD_CHUNK_SIZE``
+        z-positions, dispatches each chunk to a pool worker, then reassembles
+        the full ``(6, N)`` field array.  This avoids the long single-threaded
+        Python loop inside ``calculate_Efield`` by distributing the z-iteration
+        across pool workers.
+
+        Parameters
+        ----------
+        pool : multiprocessing.Pool or compatible
+        freq_cm1 : float
+            Evaluation frequency in cm⁻¹.
+        system : GTMcore.System
+            Optical system (copied to each worker via pickling).
+        angle_rad : float
+            Angle of incidence in radians.
+        z_arr : ndarray, shape (N,)
+            Sorted z-coordinates in metres.
+
+        Returns
+        -------
+        E_out : ndarray, shape (6, N)
+
+        """
+        n_chunks = max(1, len(z_arr) // _EFIELD_CHUNK_SIZE)
+        chunks = np.array_split(z_arr, n_chunks)
+        shared_ef = (system, freq_cm1, angle_rad)
+        worker_fn = partial(_compute_efield_chunk_worker, shared_ef)
+        E_parts = list(pool.imap(worker_fn, chunks, chunksize=1))
+        return np.concatenate(E_parts, axis=1)
+
+    def _calculate_modes_parallel(
+        self, pool, ref_layer, n_modes,
+        es_system, z_s,
+        rotation_matrices,
+        progress_callback,
+    ):
+        """Parallel implementation of mode-intensity calculation via pool.imap.
+
+        E_L is computed in parallel by splitting the GL z-grid into chunks and
+        dispatching each chunk to a pool worker.  Each phonon-mode E_S call is
+        also dispatched to a pool worker.  This eliminates both the pre-pool
+        single-threaded bottleneck (E_L chunk computation is parallelised)
+        and the per-mode E_S bottleneck.
+
+        Parameters
+        ----------
+        pool : multiprocessing.Pool or compatible
+            Active worker pool.
+        ref_layer : RamanLayer
+            First Raman-active layer (source of phonon frequencies).
+        n_modes : int
+            Total number of phonon modes (including acoustic).
+        es_system : GTMcore.System
+            System used to evaluate E_S (original or reversed).
+        z_s : ndarray
+            z-coordinates (m) for the E_S field evaluation.
+        rotation_matrices : list of ndarray
+            Crystal-to-lab rotation matrices, one per RamanLayer.
+        progress_callback : callable or None
+            Called once per mode (in result-collection order) if not ``None``.
+
+        Returns
+        -------
+        tuple of ndarray
+            ``(active_frequencies, active_intensities, active_linewidths)``
+
+        """
+        # --- E_L: compute in parallel by splitting z-array into chunks ----------
+        E_L_out = self._get_field_parallel(
+            pool, self.laser_frequency_cm1, self.system, self.incident_angle_rad,
+            self._gl_z,
+        )
+
+        # --- E_S_out_fixed: computed in parallel when approximate_es=True -------
+        if self.approximate_es:
+            if self.collection_side == "substrate":
+                E_S_out_fixed = self._get_field_parallel(
+                    pool, self.laser_frequency_cm1, es_system, self.collection_angle_rad,
+                    z_s,
+                )
+            else:
+                # Pure Phase-1 approximation: E_S = E_L
+                E_S_out_fixed = E_L_out
+        else:
+            E_S_out_fixed = None
+
+        # Shared data bound via partial — pickled once per pool worker process.
+        # When E_S_out_fixed is already available, es_system is never used in
+        # the worker, so pass None to avoid unnecessary serialisation.
+        shared = (
+            None if E_S_out_fixed is not None else es_system,
+            self.collection_angle_rad,
+            z_s,
+            E_L_out,
+            E_S_out_fixed,
+            self._gl_phys_weights,
+            self._gl_layer_slices,
+            rotation_matrices,
+            self._incident_jones,
+            self._detected_jones,
+            self.coherent_layers,
+            self.temperature_K,
+        )
+        worker_fn = partial(_compute_raman_mode_worker, shared)
+
+        # Per-mode args: only small data iterated per task
+        mode_args_list = []
+        for mode_idx in range(n_modes):
+            nu_m = float(ref_layer.phonon_frequencies_cm1[mode_idx])
+            sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
+            nu_S = self.laser_frequency_cm1 - nu_m if E_S_out_fixed is None else 0.0
+            # Raman tensors for this mode across all layers
+            mode_raman_tensors = [rl.raman_tensors[mode_idx] for rl in self.raman_layers]
+            mode_args_list.append((mode_idx, nu_m, sigma, nu_S, mode_raman_tensors))
+
+        active_freqs = []
+        active_intensities = []
+        active_sigmas = []
+
+        for result in pool.imap(worker_fn, mode_args_list, chunksize=1):
+            if progress_callback is not None:
+                progress_callback()
+            if result is None:
+                continue
+            _mode_idx, nu_m, I_m, sigma = result
             active_freqs.append(nu_m)
             active_intensities.append(I_m)
             active_sigmas.append(sigma)

@@ -391,7 +391,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Incident polarisation"] = "p"
         self.settings["Detected polarisation"] = "unpolarised"
         self.settings["Temperature K"] = 298.0
-        self.settings["GL point density"] = 20.0
+        self.settings["GL point density"] = 20.0  # Simpson points per µm
         self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
         self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
         self.settings["Coherent layer summation"] = False
@@ -1485,11 +1485,12 @@ class CrystalScenarioTab(ScenarioTab):
         self.gl_density_sb.setValue(self.settings["GL point density"])
         self.gl_density_sb.valueChanged.connect(self.on_gl_density_sb_changed)
         self.gl_density_sb.setToolTip(
-            "Gauss-Legendre quadrature point density (points per µm of layer thickness).\n"
+            "Composite Simpson integration point density (points per µm of layer thickness).\n"
             "20–60 pts/µm is recommended for accuracy.\n"
-            "The actual number of points is density × layer thickness, clamped to [5, 1 000 000]."
+            "The actual number of points is density × layer thickness, clamped to [5, 1 000 000].\n"
+            "The count is rounded up to the nearest odd integer (required by Simpson's rule)."
         )
-        label = QLabel("GL quadrature density (pts/µm)")
+        label = QLabel("Integration density (pts/µm)")
         label.setToolTip(self.gl_density_sb.toolTip())
         self.form.addRow(label, self.gl_density_sb)
 
@@ -2735,18 +2736,21 @@ class CrystalScenarioTab(ScenarioTab):
         n_gauss_raw = int(round(density * max_thick_um))
         if n_gauss_raw < _min_points:
             print(
-                f"Crystal Raman: GL density {density} pts/µm × {max_thick_um:.4g} µm = "
+                f"Crystal Raman: density {density} pts/µm × {max_thick_um:.4g} µm = "
                 f"{n_gauss_raw} points; using minimum of {_min_points}."
             )
             n_gauss = _min_points
         elif n_gauss_raw > _max_points:
             print(
-                f"Crystal Raman: GL density {density} pts/µm × {max_thick_um:.4g} µm = "
+                f"Crystal Raman: density {density} pts/µm × {max_thick_um:.4g} µm = "
                 f"{n_gauss_raw} points; using maximum of {_max_points:,}."
             )
             n_gauss = _max_points
         else:
             n_gauss = n_gauss_raw
+        # Simpson's rule requires an odd point count
+        if n_gauss % 2 == 0:
+            n_gauss += 1
         collection_side   = self.settings.get("Collection side", "superstrate")
         collection_angle  = self.settings.get("Collection angle", -1.0)
         coherent_layers   = self.settings.get("Coherent layer summation", False)
@@ -2836,9 +2840,13 @@ class CrystalScenarioTab(ScenarioTab):
                 self.notebook.progressbars_update(increment=target - _updated[0])
                 _updated[0] = target
 
+        if self.notebook.pool is None:
+            self.notebook.start_pool()
+
         try:
             active_freqs, active_ints, active_sigmas = calculator.calculate_mode_intensities(
-                progress_callback=_progress_callback
+                progress_callback=_progress_callback,
+                pool=self.notebook.pool,
             )
         finally:
             remaining = n_freqs - _updated[0]
@@ -2887,6 +2895,9 @@ class CrystalScenarioTab(ScenarioTab):
                     logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: hkl=[0,0,0]")
                     return None
 
+        if self.notebook.pool is None:
+            self.notebook.start_pool()
+
         vs = np.asarray(vs_cm1)
         all_intensities = []
         all_spectra = []
@@ -2897,7 +2908,9 @@ class CrystalScenarioTab(ScenarioTab):
             if calculator is None:
                 logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: calculator failed at psi={psi_deg:.1f}")
                 return None
-            freqs, ints, sigmas = calculator.calculate_mode_intensities()
+            freqs, ints, sigmas = calculator.calculate_mode_intensities(
+                pool=self.notebook.pool,
+            )
             if mode_freqs is None:
                 mode_freqs = freqs
             spectrum = lorentzian_broaden(freqs, ints, sigmas, vs) if len(freqs) > 0 else np.zeros(len(vs))
