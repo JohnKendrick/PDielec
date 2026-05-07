@@ -391,7 +391,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Incident polarisation"] = "p"
         self.settings["Detected polarisation"] = "unpolarised"
         self.settings["Temperature K"] = 298.0
-        self.settings["Number of GL points"] = 20
+        self.settings["GL point density"] = 20.0
         self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
         self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
         self.settings["Coherent layer summation"] = False
@@ -1477,16 +1477,21 @@ class CrystalScenarioTab(ScenarioTab):
         label.setToolTip(self.temperature_sb.toolTip())
         self.form.addRow(label, self.temperature_sb)
 
-        # Number of Gauss-Legendre quadrature points
-        self.n_gauss_sb = QSpinBox(self)
-        self.n_gauss_sb.setRange(4, 200)
-        self.n_gauss_sb.setSingleStep(2)
-        self.n_gauss_sb.setValue(self.settings["Number of GL points"])
-        self.n_gauss_sb.valueChanged.connect(self.on_n_gauss_sb_changed)
-        self.n_gauss_sb.setToolTip("Number of Gauss-Legendre quadrature points per Raman-active layer\n(higher = more accurate but slower)")
-        label = QLabel("GL quadrature points")
-        label.setToolTip(self.n_gauss_sb.toolTip())
-        self.form.addRow(label, self.n_gauss_sb)
+        # GL quadrature point density (points per micron)
+        self.gl_density_sb = QDoubleSpinBox(self)
+        self.gl_density_sb.setRange(0.001, 1000.0)
+        self.gl_density_sb.setSingleStep(1.0)
+        self.gl_density_sb.setDecimals(3)
+        self.gl_density_sb.setValue(self.settings["GL point density"])
+        self.gl_density_sb.valueChanged.connect(self.on_gl_density_sb_changed)
+        self.gl_density_sb.setToolTip(
+            "Gauss-Legendre quadrature point density (points per µm of layer thickness).\n"
+            "20–60 pts/µm is recommended for accuracy.\n"
+            "The actual number of points is density × layer thickness, clamped to [5, 1 000 000]."
+        )
+        label = QLabel("GL quadrature density (pts/µm)")
+        label.setToolTip(self.gl_density_sb.toolTip())
+        self.form.addRow(label, self.gl_density_sb)
 
         # Incident polarisation
         self.incident_pol_cb = QComboBox(self)
@@ -1886,7 +1891,7 @@ class CrystalScenarioTab(ScenarioTab):
         if self.spectroscopy == "Crystal Raman":
             self.laser_wavelength_sb.setValue(self.settings["Laser wavelength nm"])
             self.temperature_sb.setValue(self.settings["Temperature K"])
-            self.n_gauss_sb.setValue(self.settings["Number of GL points"])
+            self.gl_density_sb.setValue(self.settings.get("GL point density", 20.0))
             idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
             if idx >= 0:
                 self.incident_pol_cb.setCurrentIndex(idx)
@@ -2010,9 +2015,9 @@ class CrystalScenarioTab(ScenarioTab):
         self.calculation_required = True
         self.refresh_required = True
 
-    def on_n_gauss_sb_changed(self, value):
-        """Handle a change in the GL quadrature points spin box."""
-        self.settings["Number of GL points"] = value
+    def on_gl_density_sb_changed(self, value):
+        """Handle a change in the GL quadrature density spin box."""
+        self.settings["GL point density"] = value
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2719,7 +2724,29 @@ class CrystalScenarioTab(ScenarioTab):
         incident_pol      = self.settings.get("Incident polarisation", "p")
         detected_pol      = self.settings.get("Detected polarisation", "unpolarised")
         temperature_K     = self.settings.get("Temperature K", 298.0)
-        n_gauss           = self.settings.get("Number of GL points", 20)
+        density           = self.settings.get("GL point density", 20.0)
+        # Compute n_gauss from density (pts/µm) and the thickest Raman-active layer
+        _min_points = 5
+        _max_points = 1_000_000
+        max_thick_um = max(
+            (system.layers[rl.layer_index].thick * 1.0e6 for rl in raman_layer_list),
+            default=1.0,
+        )
+        n_gauss_raw = int(round(density * max_thick_um))
+        if n_gauss_raw < _min_points:
+            print(
+                f"Crystal Raman: GL density {density} pts/µm × {max_thick_um:.4g} µm = "
+                f"{n_gauss_raw} points; using minimum of {_min_points}."
+            )
+            n_gauss = _min_points
+        elif n_gauss_raw > _max_points:
+            print(
+                f"Crystal Raman: GL density {density} pts/µm × {max_thick_um:.4g} µm = "
+                f"{n_gauss_raw} points; using maximum of {_max_points:,}."
+            )
+            n_gauss = _max_points
+        else:
+            n_gauss = n_gauss_raw
         collection_side   = self.settings.get("Collection side", "superstrate")
         collection_angle  = self.settings.get("Collection angle", -1.0)
         coherent_layers   = self.settings.get("Coherent layer summation", False)
