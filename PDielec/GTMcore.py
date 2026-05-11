@@ -2114,6 +2114,118 @@ class System:
             eps[:,:,ii] = L.epsilon
         return eps
 
+    def calculate_modal_amplitudes(self, f, zeta_sys):
+        """Expose the per-layer Berreman modal amplitudes at the front of each layer.
+
+        Extracts the F_bk bookkeeping from ``calculate_Efield`` and returns the
+        four complex modal amplitudes (for p-pol and s-pol incidence) at the
+        front interface of every finite-thickness layer.  The field at any depth z
+        inside layer k is then ``dKiz(z) @ F_bk[k+1, :]`` where dKiz is the
+        partial-depth propagation matrix, exactly as used inside
+        ``calculate_Efield``.
+
+        Both ``TransferMatrixSystem`` and ``ScatteringMatrixSystem`` are
+        supported.  For the scattering-matrix path, ``layer.Ki`` is rebuilt by
+        calling ``layer.calculate_propagation_matrix()`` before the F_bk
+        propagation (the same approach used in
+        ``ScatteringMatrixSystem.calculate_Efield``).
+
+        Parameters
+        ----------
+        f : float
+            Frequency in Hz.
+        zeta_sys : complex
+            Normalised in-plane wavevector (sin θ × √ε_superstrate).
+
+        Returns
+        -------
+        modal_amps : dict of {int: ndarray(8,)}
+            Keyed by finite-layer index k (0-based into ``self.layers``).
+            ``modal_amps[k][0:4]`` = modal amplitudes for p-pol incidence;
+            ``modal_amps[k][4:8]`` = modal amplitudes for s-pol incidence.
+            Mode ordering matches ``layer.qs``: [trans-p, trans-s, refl-p, refl-s].
+        zn : ndarray, shape (laynum+2,)
+            Layer boundary positions in metres, shifted so z=0 is the
+            incident (superstrate/first-layer) interface.
+        """
+        # Populate GammaStar, Ai, qs, gamma for all layers.
+        # ScatteringMatrixSystem overrides this with the SM version.
+        self.calculate_GammaStar(f, zeta_sys)
+        # Populate Ki on every layer.  ScatteringMatrixSystem.update_sm skips Ki
+        # to avoid overflow in global propagation; we need it here for the
+        # interface-boundary step — same approach as in
+        # ScatteringMatrixSystem.calculate_Efield.
+        self.superstrate.calculate_propagation_matrix(f)
+        for layer in self.layers:
+            layer.calculate_propagation_matrix(f)
+        self.substrate.calculate_propagation_matrix(f)
+
+        r_out, R_out, t, T = self.calculate_r_t(zeta_sys)
+
+        laynum = len(self.layers)
+        zn = np.zeros(laynum + 2, dtype=float)
+        # 8-component amplitude vectors: [0:4] p-pol incidence, [4:8] s-pol incidence
+        F_ft = np.zeros((laynum + 2, 8), dtype=np.complex128)
+        F_bk = np.zeros((laynum + 2, 8), dtype=np.complex128)
+
+        zn[-1] = 0.0  # initially with the substrate
+
+        # Initialise at the substrate surface (mirrors calculate_Efield lines 1822–1831)
+        F_ft[-1, 0] = t[0]   # t_pp
+        F_ft[-1, 1] = t[1]   # t_ps
+        F_ft[-1, 4] = t[2]   # t_sp
+        F_ft[-1, 5] = t[3]   # t_ss
+
+        F_bk[-1, :4] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1, :4])
+        F_bk[-1, 4:] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1, 4:])
+
+        if laynum > 0:
+            zn[-2] = zn[-1] - self.substrate.thick
+            Aim1 = self.layers[-1].Ai
+            Ai = self.substrate.Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            F_bk[-2, :4] = np.matmul(Li, F_ft[-1, :4])
+            F_bk[-2, 4:] = np.matmul(Li, F_ft[-1, 4:])
+            F_ft[-2, :4] = np.matmul(self.layers[-1].Ki, F_bk[-2, :4])
+            F_ft[-2, 4:] = np.matmul(self.layers[-1].Ki, F_bk[-2, 4:])
+
+            for kl in range(1, laynum)[::-1]:
+                zn[kl] = zn[kl + 1] - self.layers[kl].thick
+                Aim1 = self.layers[kl - 1].Ai
+                Ai = self.layers[kl].Ai
+                Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+                F_bk[kl, :4] = np.matmul(Li, F_ft[kl + 1, :4])
+                F_bk[kl, 4:] = np.matmul(Li, F_ft[kl + 1, 4:])
+                F_ft[kl, :4] = np.matmul(self.layers[kl - 1].Ki, F_bk[kl, :4])
+                F_ft[kl, 4:] = np.matmul(self.layers[kl - 1].Ki, F_bk[kl, 4:])
+
+            zn[0] = zn[1] - self.layers[0].thick
+            Aim1 = self.superstrate.Ai
+            Ai = self.layers[0].Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            F_bk[0, :4] = np.matmul(Li, F_ft[1, :4])
+            F_bk[0, 4:] = np.matmul(Li, F_ft[1, 4:])
+            F_ft[0, :4] = np.matmul(self.superstrate.Ki, F_bk[0, :4])
+            F_ft[0, 4:] = np.matmul(self.superstrate.Ki, F_bk[0, 4:])
+        else:
+            zn[0] = -self.substrate.thick
+            Aim1 = self.superstrate.Ai
+            Ai = self.substrate.Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            F_bk[0, :4] = np.matmul(Li, F_ft[1, :4])
+            F_bk[0, 4:] = np.matmul(Li, F_ft[1, 4:])
+            F_ft[0, :4] = np.matmul(self.superstrate.Ki, F_bk[0, :4])
+            F_ft[0, 4:] = np.matmul(self.superstrate.Ki, F_bk[0, 4:])
+
+        # Shift so that z=0 is the superstrate/first-layer interface
+        zn = zn - zn[0]
+
+        # modal_amps[k] = F_bk[k+1, :] — the amplitude vector at the front of layer k.
+        # At any depth z in layer k: Eprop = dKiz(z) @ F_bk[k+1, :4] (p-pol)
+        #                                           @ F_bk[k+1, 4:] (s-pol)
+        modal_amps = {k: F_bk[k + 1, :].copy() for k in range(laynum)}
+        return modal_amps, zn
+
     def overflow_errors(self):
         """Return the total number of overflow errors encountered.
 
