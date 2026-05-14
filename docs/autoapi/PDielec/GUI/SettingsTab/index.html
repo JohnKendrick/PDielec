@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="PDielec.GUI.SingleCrystalLayer" href="../SingleCrystalLayer/index.html"><link rel="prev" title="PDielec.GUI.ScenarioTab" href="../ScenarioTab/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.GUI.SettingsTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -368,7 +405,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.FixedQTableWidget">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SettingsTab.</span></span><span class="sig-name descname"><span class="pre">FixedQTableWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#FixedQTableWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.FixedQTableWidget" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SettingsTab.</span></span><span class="sig-name descname"><span class="pre">FixedQTableWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#FixedQTableWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.FixedQTableWidget" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QTableWidget</span></code></p>
 <p>A custom QTableWidget with fixed number of rows and columns.</p>
 <p>This widget is designed to have a fixed size based on a specified number of rows and columns, rather than adjusting
@@ -416,12 +453,12 @@ height, and twice the frame width.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.FixedQTableWidget.columns">
-<span class="sig-name descname"><span class="pre">columns</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.FixedQTableWidget.columns" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.FixedQTableWidget.columns" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.FixedQTableWidget.rows">
-<span class="sig-name descname"><span class="pre">rows</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.FixedQTableWidget.rows" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rows</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.FixedQTableWidget.rows" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -429,7 +466,7 @@ height, and twice the frame width.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SettingsTab.</span></span><span class="sig-name descname"><span class="pre">SettingsTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.SettingsTab.</span></span><span class="sig-name descname"><span class="pre">SettingsTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>A class for managing and displaying settings related to optical permittivity, mass calculation, and vibrational calculations for crystal structures within a GUI application.</p>
 <p>This class allows for the configuration of various simulation parameters, such as Eckart conditions, Born charge
@@ -511,6 +548,12 @@ notebook, used for accessing and manipulating input data.</p>
 <dt>get_crystal_permittivity_object()</dt><dd><p>Returns the crystal permittivity object used for calculations.</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab._collect_raman_polar_data">
+<span class="sig-name descname"><span class="pre">_collect_raman_polar_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab._collect_raman_polar_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab._collect_raman_polar_data" title="Link to this definition">¶</a></dt>
+<dd><p>Collect Raman tensor and SettingsTab mode data for the polar plot window.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.calculate" title="Link to this definition">¶</a></dt>
@@ -809,6 +852,12 @@ refresh : Refreshes the internal state based on the latest changes.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.on_raman_polar_button_clicked">
+<span class="sig-name descname"><span class="pre">on_raman_polar_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_raman_polar_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_raman_polar_button_clicked" title="Link to this definition">¶</a></dt>
+<dd><p>Open the tensor-level Raman polar plot simulator.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.on_sigma_changed">
 <span class="sig-name descname"><span class="pre">on_sigma_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_sigma_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_sigma_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Update the sigma value in settings and apply it across the frequency range, then refreshes the output.</p>
@@ -1022,6 +1071,12 @@ processed to keep the application responsive.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.update_raman_polar_button">
+<span class="sig-name descname"><span class="pre">update_raman_polar_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.update_raman_polar_button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.update_raman_polar_button" title="Link to this definition">¶</a></dt>
+<dd><p>Show the Raman polar plot button only for Raman spectroscopy.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.write_spreadsheet">
 <span class="sig-name descname"><span class="pre">write_spreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.write_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.write_spreadsheet" title="Link to this definition">¶</a></dt>
 <dd><p>Write the configuration and calculation results to the associated spreadsheet.</p>
@@ -1041,7 +1096,7 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.CrystalPermittivityObject">
-<span class="sig-name descname"><span class="pre">CrystalPermittivityObject</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.CrystalPermittivityObject" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CrystalPermittivityObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.CrystalPermittivityObject" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1051,12 +1106,12 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.calculation_required">
-<span class="sig-name descname"><span class="pre">calculation_required</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.calculation_required" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculation_required</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.calculation_required" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.crystal_permittivity">
-<span class="sig-name descname"><span class="pre">crystal_permittivity</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.crystal_permittivity" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">crystal_permittivity</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.crystal_permittivity" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1076,17 +1131,17 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.frequencies_cm1">
-<span class="sig-name descname"><span class="pre">frequencies_cm1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.frequencies_cm1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">frequencies_cm1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.frequencies_cm1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.frequencies_have_been_edited">
-<span class="sig-name descname"><span class="pre">frequencies_have_been_edited</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.frequencies_have_been_edited" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">frequencies_have_been_edited</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.frequencies_have_been_edited" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.intensities">
-<span class="sig-name descname"><span class="pre">intensities</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.intensities" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">intensities</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.intensities" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1096,12 +1151,12 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.mass_definition_options">
-<span class="sig-name descname"><span class="pre">mass_definition_options</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['average',</span> <span class="pre">'program',</span> <span class="pre">'isotope',</span> <span class="pre">'gui']</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.mass_definition_options" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mass_definition_options</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['average',</span> <span class="pre">'program',</span> <span class="pre">'isotope',</span> <span class="pre">'gui']</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.mass_definition_options" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.mass_weighted_normal_modes">
-<span class="sig-name descname"><span class="pre">mass_weighted_normal_modes</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.mass_weighted_normal_modes" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mass_weighted_normal_modes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.mass_weighted_normal_modes" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1111,7 +1166,7 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.modes_selected">
-<span class="sig-name descname"><span class="pre">modes_selected</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.modes_selected" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">modes_selected</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.modes_selected" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1126,7 +1181,7 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.oscillator_strengths">
-<span class="sig-name descname"><span class="pre">oscillator_strengths</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.oscillator_strengths" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">oscillator_strengths</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.oscillator_strengths" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1136,17 +1191,27 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.raman_intensities">
-<span class="sig-name descname"><span class="pre">raman_intensities</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">raman_intensities</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_par">
-<span class="sig-name descname"><span class="pre">raman_intensities_par</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_par" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">raman_intensities_par</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_par" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_perp">
-<span class="sig-name descname"><span class="pre">raman_intensities_perp</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_perp" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">raman_intensities_perp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_perp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.raman_polar_button">
+<span class="sig-name descname"><span class="pre">raman_polar_button</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_polar_button" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.raman_polar_label">
+<span class="sig-name descname"><span class="pre">raman_polar_label</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_polar_label" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1156,12 +1221,12 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.recalculate_selected_modes">
-<span class="sig-name descname"><span class="pre">recalculate_selected_modes</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.recalculate_selected_modes" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">recalculate_selected_modes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.recalculate_selected_modes" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.refresh_required">
-<span class="sig-name descname"><span class="pre">refresh_required</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.refresh_required" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">refresh_required</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.refresh_required" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1176,7 +1241,7 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.sigmas_cm1">
-<span class="sig-name descname"><span class="pre">sigmas_cm1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.sigmas_cm1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sigmas_cm1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.sigmas_cm1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1186,12 +1251,12 @@ worksheet, which this function selects and updates with the provided values.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.spectroscopy_types">
-<span class="sig-name descname"><span class="pre">spectroscopy_types</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Powder</span> <span class="pre">Infrared',</span> <span class="pre">'Powder</span> <span class="pre">ATR',</span> <span class="pre">'Powder</span> <span class="pre">Raman',</span> <span class="pre">'Crystal</span> <span class="pre">Infrared',</span> <span class="pre">'Crystal</span> <span class="pre">Raman']</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.spectroscopy_types" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">spectroscopy_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Powder</span> <span class="pre">Infrared',</span> <span class="pre">'Powder</span> <span class="pre">ATR',</span> <span class="pre">'Powder</span> <span class="pre">Raman',</span> <span class="pre">'Crystal</span> <span class="pre">Infrared',</span> <span class="pre">'Crystal</span> <span class="pre">Raman']</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.spectroscopy_types" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.vs_cm1">
-<span class="sig-name descname"><span class="pre">vs_cm1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.vs_cm1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vs_cm1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.vs_cm1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1271,6 +1336,7 @@ worksheet, which this function selects and updates with the provided values.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab"><code class="docutils literal notranslate"><span class="pre">SettingsTab</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab._collect_raman_polar_data"><code class="docutils literal notranslate"><span class="pre">SettingsTab._collect_raman_polar_data()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.calculate"><code class="docutils literal notranslate"><span class="pre">SettingsTab.calculate()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.create_intensity_table"><code class="docutils literal notranslate"><span class="pre">SettingsTab.create_intensity_table()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.get_crystal_permittivity"><code class="docutils literal notranslate"><span class="pre">SettingsTab.get_crystal_permittivity()</span></code></a></li>
@@ -1283,6 +1349,7 @@ worksheet, which this function selects and updates with the provided values.</p>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.on_optical_tw_itemChanged"><code class="docutils literal notranslate"><span class="pre">SettingsTab.on_optical_tw_itemChanged()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.on_optical_tw_itemClicked"><code class="docutils literal notranslate"><span class="pre">SettingsTab.on_optical_tw_itemClicked()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.on_output_tw_itemChanged"><code class="docutils literal notranslate"><span class="pre">SettingsTab.on_output_tw_itemChanged()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.on_raman_polar_button_clicked"><code class="docutils literal notranslate"><span class="pre">SettingsTab.on_raman_polar_button_clicked()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.on_sigma_changed"><code class="docutils literal notranslate"><span class="pre">SettingsTab.on_sigma_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.on_spectroscopy_type_cb_activated"><code class="docutils literal notranslate"><span class="pre">SettingsTab.on_spectroscopy_type_cb_activated()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.redraw_output_tw"><code class="docutils literal notranslate"><span class="pre">SettingsTab.redraw_output_tw()</span></code></a></li>
@@ -1292,6 +1359,7 @@ worksheet, which this function selects and updates with the provided values.</p>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.set_element_mass"><code class="docutils literal notranslate"><span class="pre">SettingsTab.set_element_mass()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.set_masses_tw"><code class="docutils literal notranslate"><span class="pre">SettingsTab.set_masses_tw()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.set_optical_permittivity_tw"><code class="docutils literal notranslate"><span class="pre">SettingsTab.set_optical_permittivity_tw()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.update_raman_polar_button"><code class="docutils literal notranslate"><span class="pre">SettingsTab.update_raman_polar_button()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.write_spreadsheet"><code class="docutils literal notranslate"><span class="pre">SettingsTab.write_spreadsheet()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.CrystalPermittivityObject"><code class="docutils literal notranslate"><span class="pre">SettingsTab.CrystalPermittivityObject</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.born_cb"><code class="docutils literal notranslate"><span class="pre">SettingsTab.born_cb</span></code></a></li>
@@ -1315,6 +1383,8 @@ worksheet, which this function selects and updates with the provided values.</p>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities"><code class="docutils literal notranslate"><span class="pre">SettingsTab.raman_intensities</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_par"><code class="docutils literal notranslate"><span class="pre">SettingsTab.raman_intensities_par</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_intensities_perp"><code class="docutils literal notranslate"><span class="pre">SettingsTab.raman_intensities_perp</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_polar_button"><code class="docutils literal notranslate"><span class="pre">SettingsTab.raman_polar_button</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.raman_polar_label"><code class="docutils literal notranslate"><span class="pre">SettingsTab.raman_polar_label</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.reader"><code class="docutils literal notranslate"><span class="pre">SettingsTab.reader</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.recalculate_selected_modes"><code class="docutils literal notranslate"><span class="pre">SettingsTab.recalculate_selected_modes</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.SettingsTab.SettingsTab.refresh_required"><code class="docutils literal notranslate"><span class="pre">SettingsTab.refresh_required</span></code></a></li>
@@ -1341,8 +1411,8 @@ worksheet, which this function selects and updates with the provided values.</p>
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

@@ -4,11 +4,12 @@ Plan sections B1, B2, B3, B4.
 
 Each tabulated DielectricFunction wraps a cubic-spline interpolator.
 Tests verify:
-  - Values at tabulation points are reproduced (within spline tolerance).
-  - Correct scalar/tensor flags.
-  - epsilon_infinity is (or is not) added correctly.
-  - Symmetry constraints on the tensor classes.
-  - Frequency range helpers return the correct bounds.
+
+- Values at tabulation points are reproduced (within spline tolerance).
+- Correct scalar/tensor flags.
+- epsilon_infinity is (or is not) added correctly.
+- Symmetry constraints on the tensor classes.
+- Frequency range helpers return the correct bounds.
 """
 import sys
 import os

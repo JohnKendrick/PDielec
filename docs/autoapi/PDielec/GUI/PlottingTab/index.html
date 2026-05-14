@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="PDielec.GUI.PowderScenarioTab" href="../PowderScenarioTab/index.html"><link rel="prev" title="PDielec.GUI.OpenGLWidget" href="../OpenGLWidget/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.GUI.PlottingTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -383,7 +420,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">PlottingTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">PlottingTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.</p>
 <p>This class is responsible for handling plotting functionalities like:
@@ -973,7 +1010,7 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.legends">
-<span class="sig-name descname"><span class="pre">legends</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.legends" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">legends</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.legends" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -983,12 +1020,12 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.molar_cb_current_index">
-<span class="sig-name descname"><span class="pre">molar_cb_current_index</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.molar_cb_current_index" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">molar_cb_current_index</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.molar_cb_current_index" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.molar_definitions">
-<span class="sig-name descname"><span class="pre">molar_definitions</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Unit</span> <span class="pre">cells',</span> <span class="pre">'Atoms',</span> <span class="pre">'Molecules']</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.molar_definitions" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">molar_definitions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Unit</span> <span class="pre">cells',</span> <span class="pre">'Atoms',</span> <span class="pre">'Molecules']</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.molar_definitions" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1033,7 +1070,7 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.refresh_required">
-<span class="sig-name descname"><span class="pre">refresh_required</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh_required" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">refresh_required</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh_required" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1053,7 +1090,7 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.subplot">
-<span class="sig-name descname"><span class="pre">subplot</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.subplot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">subplot</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.subplot" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1063,7 +1100,7 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.vinc">
-<span class="sig-name descname"><span class="pre">vinc</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vinc" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vinc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vinc" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1073,7 +1110,7 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.vmax">
-<span class="sig-name descname"><span class="pre">vmax</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vmax" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vmax</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vmax" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1083,7 +1120,7 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.vmin">
-<span class="sig-name descname"><span class="pre">vmin</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vmin" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vmin</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vmin" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1093,7 +1130,7 @@ handles the calculation of molar absorption coefficients with unit conversion wh
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.vs_cm1">
-<span class="sig-name descname"><span class="pre">vs_cm1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vs_cm1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vs_cm1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.vs_cm1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1150,7 +1187,7 @@ Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.possible_frequency_units">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">possible_frequency_units</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['wavenumber',</span> <span class="pre">'THz',</span> <span class="pre">'GHz',</span> <span class="pre">'ang',</span> <span class="pre">'nm',</span> <span class="pre">'um',</span> <span class="pre">'mm',</span> <span class="pre">'cm',</span> <span class="pre">'m']</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.possible_frequency_units" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">possible_frequency_units</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['wavenumber',</span> <span class="pre">'THz',</span> <span class="pre">'GHz',</span> <span class="pre">'ang',</span> <span class="pre">'nm',</span> <span class="pre">'um',</span> <span class="pre">'mm',</span> <span class="pre">'cm',</span> <span class="pre">'m']</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.possible_frequency_units" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1286,8 +1323,8 @@ Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

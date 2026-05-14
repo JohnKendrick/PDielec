@@ -180,6 +180,12 @@ Module Contents
 
 
 
+   .. py:method:: _collect_raman_polar_data()
+
+      Collect Raman tensor and SettingsTab mode data for the polar plot window.
+
+
+
    .. py:method:: calculate(vs_cm1)
 
       Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.
@@ -468,6 +474,12 @@ Module Contents
 
 
 
+   .. py:method:: on_raman_polar_button_clicked()
+
+      Open the tensor-level Raman polar plot simulator.
+
+
+
    .. py:method:: on_sigma_changed()
 
       Update the sigma value in settings and apply it across the frequency range, then refreshes the output.
@@ -680,6 +692,12 @@ Module Contents
 
 
 
+   .. py:method:: update_raman_polar_button()
+
+      Show the Raman polar plot button only for Raman spectroscopy.
+
+
+
    .. py:method:: write_spreadsheet()
 
       Write the configuration and calculation results to the associated spreadsheet.
@@ -790,6 +808,12 @@ Module Contents
    .. py:attribute:: raman_intensities_perp
       :value: []
 
+
+
+   .. py:attribute:: raman_polar_button
+
+
+   .. py:attribute:: raman_polar_label
 
 
    .. py:attribute:: reader

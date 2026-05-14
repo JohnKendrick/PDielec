@@ -1,0 +1,140 @@
+PDielec.GUI.RamanPolarWindow
+============================
+
+.. py:module:: PDielec.GUI.RamanPolarWindow
+
+.. autoapi-nested-parse::
+
+   Qt window for tensor-level Raman polar mode plots.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.RamanPolarWindow.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.RamanPolarWindow.RamanPolarWindow
+
+
+Module Contents
+---------------
+
+.. py:class:: RamanPolarWindow(polar_data, title='Raman polar mode simulator', parent=None)
+
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
+
+
+   Non-modal Raman polar plot simulator window.
+
+
+   .. py:method:: _add_vector_controls(layout, values)
+
+      Add x/y/z spin boxes to a layout.
+
+
+
+   .. py:method:: _clear_modes()
+
+      Clear every selected mode.
+
+
+
+   .. py:method:: _on_mode_item_changed(_item)
+
+      Redraw after a mode selection change.
+
+
+
+   .. py:method:: _populate_mode_table()
+
+      Populate the mode table.
+
+
+
+   .. py:method:: _select_all_modes()
+
+      Select every Raman-active mode.
+
+
+
+   .. py:method:: _selected_mode_indices()
+
+      Return selected zero-based mode indices.
+
+
+
+   .. py:method:: _show_acknowledgement()
+
+      Show a compact citation acknowledgement.
+
+
+
+   .. py:method:: _update_plot()
+
+      Redraw the polar plot.
+
+
+
+   .. py:method:: _vector_from_spins(spins)
+
+      Return a vector from three spin boxes.
+
+
+
+   .. py:attribute:: _ack_btn
+
+
+   .. py:attribute:: _angles_rad
+
+
+   .. py:attribute:: _clear_btn
+
+
+   .. py:attribute:: _mode_table
+
+
+   .. py:attribute:: _modes
+
+
+   .. py:attribute:: _orthogonality_label
+
+
+   .. py:attribute:: _pza_spins
+      :value: []
+
+
+
+   .. py:attribute:: _raman_tensors
+
+
+   .. py:attribute:: _raw_max_label
+
+
+   .. py:attribute:: _rz_spins
+      :value: []
+
+
+
+   .. py:attribute:: _select_all_btn
+
+
+   .. py:attribute:: canvas
+
+
+   .. py:attribute:: figure
+
+
+   .. py:attribute:: toolbar
+
+
+.. py:data:: logger
+

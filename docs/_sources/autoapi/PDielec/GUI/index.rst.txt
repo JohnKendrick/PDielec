@@ -47,6 +47,7 @@ Submodules
    /autoapi/PDielec/GUI/OpenGLWidget/index
    /autoapi/PDielec/GUI/PlottingTab/index
    /autoapi/PDielec/GUI/PowderScenarioTab/index
+   /autoapi/PDielec/GUI/RamanPolarWindow/index
    /autoapi/PDielec/GUI/ScenarioTab/index
    /autoapi/PDielec/GUI/SettingsTab/index
    /autoapi/PDielec/GUI/SingleCrystalLayer/index

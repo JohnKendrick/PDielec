@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.LayeredRamanCalculator - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -237,6 +237,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -255,6 +256,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
@@ -275,16 +277,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -347,7 +384,7 @@
 <span class="c1"># along with this program; if not, write to the Free Software</span>
 <span class="c1"># Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;Layered Raman scattering calculator using GTMcore for optical field propagation.</span>
+<span class="sa">r</span><span class="sd">&quot;&quot;&quot;Layered Raman scattering calculator using GTMcore for optical field propagation.</span>
 
 <span class="sd">The Raman amplitude for phonon mode m is computed as a source-overlap integral</span>
 <span class="sd">over the Raman-active layers in a multilayer stack::</span>
@@ -384,16 +421,223 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.polynomial.legendre</span><span class="w"> </span><span class="kn">import</span> <span class="n">leggauss</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">boltzmann_si</span><span class="p">,</span> <span class="n">planck_si</span><span class="p">,</span> <span class="n">speed_light_si</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+<span class="n">DEPTH_INTEGRATION_COHERENT</span> <span class="o">=</span> <span class="s2">&quot;Coherent amplitude&quot;</span>
+<span class="n">DEPTH_INTEGRATION_INCOHERENT</span> <span class="o">=</span> <span class="s2">&quot;Incoherent intensity&quot;</span>
+<span class="n">DEPTH_INTEGRATION_OPTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="n">DEPTH_INTEGRATION_COHERENT</span><span class="p">,</span> <span class="n">DEPTH_INTEGRATION_INCOHERENT</span><span class="p">)</span>
+
 <span class="c1"># Modes below this frequency (cm⁻¹) are treated as acoustic and skipped.</span>
 <span class="n">_ACOUSTIC_THRESHOLD_CM1</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="c1"># Target z-points per pool chunk for the parallel E-field computation.</span>
+<span class="c1"># Larger values reduce dispatch overhead; smaller values increase parallelism.</span>
+<span class="n">_EFIELD_CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Maximum order for one Gauss-Legendre panel.  Larger requested point counts</span>
+<span class="c1"># are implemented as a composite rule made from repeated panels of this order.</span>
+<span class="n">_MAX_GAUSS_LEGENDRE_PANEL_ORDER</span> <span class="o">=</span> <span class="mi">64</span>
+
+
+<div class="viewcode-block" id="_gauss_legendre_nodes_weights">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_gauss_legendre_nodes_weights</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return Gauss-Legendre quadrature nodes and weights on [-1, 1].</span>
+
+<span class="sd">    For moderate point counts this is one ordinary Gauss-Legendre rule.  For</span>
+<span class="sd">    large point counts it becomes a composite Gauss-Legendre rule with repeated</span>
+<span class="sd">    fixed-order panels.  The composite form keeps setup cost and numerical</span>
+<span class="sd">    conditioning practical for mm/cm-thick layers where the GUI can request</span>
+<span class="sd">    hundreds of thousands of integration points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Number of quadrature points.  Must be at least 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nodes : ndarray, shape (n,)</span>
+<span class="sd">        Gauss-Legendre abscissas on [-1, 1].</span>
+<span class="sd">    weights : ndarray, shape (n,)</span>
+<span class="sd">        Gauss-Legendre weights.  Their sum equals 2.0 (= length of [-1, 1]).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">_MAX_GAUSS_LEGENDRE_PANEL_ORDER</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">order</span> <span class="o">=</span> <span class="n">_MAX_GAUSS_LEGENDRE_PANEL_ORDER</span>
+    <span class="n">n_panels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="n">order</span><span class="p">))</span>
+    <span class="n">panel_nodes</span><span class="p">,</span> <span class="n">panel_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_panels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_panels</span> <span class="o">*</span> <span class="n">order</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_panels</span> <span class="o">*</span> <span class="n">order</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">panel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_panels</span><span class="p">):</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">panel</span><span class="p">]</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">panel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">half_width</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span>
+        <span class="n">midpoint</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="n">left</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">panel</span> <span class="o">*</span> <span class="n">order</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">order</span>
+        <span class="n">nodes</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">midpoint</span> <span class="o">+</span> <span class="n">half_width</span> <span class="o">*</span> <span class="n">panel_nodes</span>
+        <span class="n">weights</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">half_width</span> <span class="o">*</span> <span class="n">panel_weights</span>
+
+    <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">weights</span></div>
+
+
+
+<div class="viewcode-block" id="_compute_efield_chunk_worker">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator._compute_efield_chunk_worker">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_efield_chunk_worker</span><span class="p">(</span><span class="n">shared</span><span class="p">,</span> <span class="n">z_chunk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the GTM electric field for a contiguous chunk of z-positions.</span>
+
+<span class="sd">    Used to parallelise the E_L (and approximate E_S) field computation across</span>
+<span class="sd">    pool workers.  Each worker handles an independent, contiguous sub-array of</span>
+<span class="sd">    the full GL z-grid.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shared : tuple</span>
+<span class="sd">        ``(system, freq_cm1, angle_rad)`` — the optical system, evaluation</span>
+<span class="sd">        frequency in cm⁻¹, and angle of incidence in radians.  The system is</span>
+<span class="sd">        pickled once per ``functools.partial`` binding.</span>
+<span class="sd">    z_chunk : ndarray, shape (M,)</span>
+<span class="sd">        Sorted z-coordinates (metres) for this chunk.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    E_chunk : ndarray, shape (6, M)</span>
+<span class="sd">        Electric field at the requested z-positions.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">system</span><span class="p">,</span> <span class="n">freq_cm1</span><span class="p">,</span> <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">shared</span>
+    <span class="n">freq_hz</span> <span class="o">=</span> <span class="n">freq_cm1</span> <span class="o">*</span> <span class="n">speed_light_si</span> <span class="o">*</span> <span class="mf">1e2</span>
+    <span class="n">system</span><span class="o">.</span><span class="n">initialize_sys</span><span class="p">(</span><span class="n">freq_hz</span><span class="p">)</span>
+    <span class="n">zeta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">E_chunk</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">calculate_Efield</span><span class="p">(</span><span class="n">freq_hz</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">z_vect</span><span class="o">=</span><span class="n">z_chunk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">E_chunk</span></div>
+
+
+
+<div class="viewcode-block" id="_compute_raman_mode_worker">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator._compute_raman_mode_worker">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_raman_mode_worker</span><span class="p">(</span><span class="n">shared</span><span class="p">,</span> <span class="n">mode_args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the Raman intensity for a single phonon mode.</span>
+
+<span class="sd">    Designed to be called via ``pool.imap(partial(_compute_raman_mode_worker, shared),</span>
+<span class="sd">    mode_args_list)`` so that the large shared arrays (E_L, GL grid) are bound once</span>
+<span class="sd">    to the partial function and only the small per-mode data is iterated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shared : tuple</span>
+<span class="sd">        ``(es_system, collection_angle_rad, z_s_arr, E_L_out, E_S_fixed,</span>
+<span class="sd">        gl_phys_weights, gl_layer_slices, rotation_matrices,</span>
+<span class="sd">        incident_jones, detected_jones, coherent_layers, depth_integration,</span>
+<span class="sd">        temperature_K)``</span>
+
+<span class="sd">        ``es_system`` is ``None`` when ``E_S_fixed`` is provided (approximate-ES</span>
+<span class="sd">        or pre-computed forward-scatter field).  ``E_S_fixed`` is ``None`` when</span>
+<span class="sd">        ``es_system`` should be used to compute E_S fresh at ``nu_S``.</span>
+<span class="sd">    mode_args : tuple</span>
+<span class="sd">        ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors)``</span>
+
+<span class="sd">        ``nu_S`` is the scattered frequency in cm⁻¹ (ignored when ``E_S_fixed``</span>
+<span class="sd">        is not ``None``).  ``mode_raman_tensors`` is a list of (3, 3) complex</span>
+<span class="sd">        arrays, one per Raman-active layer, for this mode.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple or None</span>
+<span class="sd">        ``(mode_idx, nu_m, I_m, sigma)`` for an active mode, or ``None`` if</span>
+<span class="sd">        the mode is below the acoustic threshold or the scattered frequency is</span>
+<span class="sd">        non-positive.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">(</span><span class="n">es_system</span><span class="p">,</span> <span class="n">collection_angle_rad</span><span class="p">,</span> <span class="n">z_s_arr</span><span class="p">,</span>
+     <span class="n">E_L_out</span><span class="p">,</span> <span class="n">E_S_fixed</span><span class="p">,</span>
+     <span class="n">gl_phys_weights</span><span class="p">,</span> <span class="n">gl_layer_slices</span><span class="p">,</span>
+     <span class="n">rotation_matrices</span><span class="p">,</span>
+     <span class="n">incident_jones</span><span class="p">,</span> <span class="n">detected_jones</span><span class="p">,</span>
+     <span class="n">coherent_layers</span><span class="p">,</span> <span class="n">depth_integration</span><span class="p">,</span> <span class="n">temperature_K</span><span class="p">)</span> <span class="o">=</span> <span class="n">shared</span>
+
+    <span class="p">(</span><span class="n">mode_idx</span><span class="p">,</span> <span class="n">nu_m</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu_S</span><span class="p">,</span> <span class="n">mode_raman_tensors</span><span class="p">)</span> <span class="o">=</span> <span class="n">mode_args</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">nu_m</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">_ACOUSTIC_THRESHOLD_CM1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Obtain E_S: either precomputed or freshly evaluated at nu_S</span>
+    <span class="k">if</span> <span class="n">E_S_fixed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">E_S_out</span> <span class="o">=</span> <span class="n">E_S_fixed</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nu_S</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">freq_hz</span> <span class="o">=</span> <span class="n">nu_S</span> <span class="o">*</span> <span class="n">speed_light_si</span> <span class="o">*</span> <span class="mf">1e2</span>
+        <span class="n">es_system</span><span class="o">.</span><span class="n">initialize_sys</span><span class="p">(</span><span class="n">freq_hz</span><span class="p">)</span>
+        <span class="n">zeta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">collection_angle_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">es_system</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">es_system</span><span class="o">.</span><span class="n">calculate_Efield</span><span class="p">(</span><span class="n">freq_hz</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">z_vect</span><span class="o">=</span><span class="n">z_s_arr</span><span class="p">)</span>
+
+    <span class="n">cp_L</span><span class="p">,</span> <span class="n">cs_L</span> <span class="o">=</span> <span class="n">incident_jones</span>
+
+    <span class="k">if</span> <span class="n">depth_integration</span> <span class="o">==</span> <span class="n">DEPTH_INTEGRATION_INCOHERENT</span><span class="p">:</span>
+        <span class="n">I_m</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">sl</span><span class="p">,</span> <span class="n">R_crystal</span><span class="p">,</span> <span class="n">G</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gl_layer_slices</span><span class="p">,</span> <span class="n">mode_raman_tensors</span><span class="p">,</span> <span class="n">rotation_matrices</span><span class="p">):</span>
+            <span class="n">R_lab</span> <span class="o">=</span> <span class="n">G</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">R_crystal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span> <span class="o">@</span> <span class="n">G</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">E_L</span> <span class="o">=</span> <span class="n">cp_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+            <span class="n">R_E_L</span> <span class="o">=</span> <span class="n">R_lab</span> <span class="o">@</span> <span class="n">E_L</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">gl_phys_weights</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">detected_jones</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">integrand_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">)</span>
+                <span class="n">integrand_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">)</span>
+                <span class="n">I_m</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">integrand_p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">integrand_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cp_S</span><span class="p">,</span> <span class="n">cs_S</span> <span class="o">=</span> <span class="n">detected_jones</span>
+                <span class="n">E_S</span> <span class="o">=</span> <span class="n">cp_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+                <span class="n">integrand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S</span><span class="p">,</span> <span class="n">R_E_L</span><span class="p">)</span>
+                <span class="n">I_m</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">integrand</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">coherent_layers</span><span class="p">:</span>
+        <span class="n">total_amp_p</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span>
+        <span class="n">total_amp_s</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span>
+        <span class="k">for</span> <span class="n">sl</span><span class="p">,</span> <span class="n">R_crystal</span><span class="p">,</span> <span class="n">G</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gl_layer_slices</span><span class="p">,</span> <span class="n">mode_raman_tensors</span><span class="p">,</span> <span class="n">rotation_matrices</span><span class="p">):</span>
+            <span class="n">R_lab</span> <span class="o">=</span> <span class="n">G</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">R_crystal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span> <span class="o">@</span> <span class="n">G</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">E_L</span> <span class="o">=</span> <span class="n">cp_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+            <span class="n">R_E_L</span> <span class="o">=</span> <span class="n">R_lab</span> <span class="o">@</span> <span class="n">E_L</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">gl_phys_weights</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">detected_jones</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">total_amp_p</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">))</span>
+                <span class="n">total_amp_s</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cp_S</span><span class="p">,</span> <span class="n">cs_S</span> <span class="o">=</span> <span class="n">detected_jones</span>
+                <span class="n">E_S</span> <span class="o">=</span> <span class="n">cp_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+                <span class="n">total_amp_p</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S</span><span class="p">,</span> <span class="n">R_E_L</span><span class="p">))</span>
+        <span class="n">I_m</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">total_amp_p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">total_amp_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">detected_jones</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">abs</span><span class="p">(</span><span class="n">total_amp_p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">I_m</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">sl</span><span class="p">,</span> <span class="n">R_crystal</span><span class="p">,</span> <span class="n">G</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gl_layer_slices</span><span class="p">,</span> <span class="n">mode_raman_tensors</span><span class="p">,</span> <span class="n">rotation_matrices</span><span class="p">):</span>
+            <span class="n">R_lab</span> <span class="o">=</span> <span class="n">G</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">R_crystal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span> <span class="o">@</span> <span class="n">G</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">E_L</span> <span class="o">=</span> <span class="n">cp_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+            <span class="n">R_E_L</span> <span class="o">=</span> <span class="n">R_lab</span> <span class="o">@</span> <span class="n">E_L</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">gl_phys_weights</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">detected_jones</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">amp_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">))</span>
+                <span class="n">amp_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">))</span>
+                <span class="n">I_m</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">amp_p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">amp_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cp_S</span><span class="p">,</span> <span class="n">cs_S</span> <span class="o">=</span> <span class="n">detected_jones</span>
+                <span class="n">E_S</span> <span class="o">=</span> <span class="n">cp_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+                <span class="n">I_m</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S</span><span class="p">,</span> <span class="n">R_E_L</span><span class="p">)))</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="n">I_m</span> <span class="o">*=</span> <span class="n">bose_factor</span><span class="p">(</span><span class="n">nu_m</span><span class="p">,</span> <span class="n">temperature_K</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mode_idx</span><span class="p">,</span> <span class="n">nu_m</span><span class="p">,</span> <span class="n">I_m</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span></div>
+
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
@@ -431,12 +675,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_index</span><span class="p">,</span> <span class="n">phonon_frequencies_cm1</span><span class="p">,</span> <span class="n">raman_tensors</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_index</span><span class="p">,</span> <span class="n">phonon_frequencies_cm1</span><span class="p">,</span> <span class="n">raman_tensors</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="p">,</span>
+                 <span class="n">nac_function</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a RamanLayer descriptor.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layer_index</span> <span class="o">=</span> <span class="n">layer_index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phonon_frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">phonon_frequencies_cm1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">raman_tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">raman_tensors</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rotation_matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rotation_matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="c1"># Optional closure for on-demand NAC computation (Level 3 modal_pairs).</span>
+        <span class="c1"># Contract: f(q_hat_lab: ndarray[3]) -&gt; (nac_freqs, nac_tensors, nac_sigmas)</span>
+        <span class="c1">#           or (None, None, None) when |q_ph| is negligible.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nac_function</span> <span class="o">=</span> <span class="n">nac_function</span></div>
 
 
 
@@ -513,7 +762,7 @@
 <div class="viewcode-block" id="LayeredRamanCalculator">
 <a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LayeredRamanCalculator</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Raman spectrum of a multilayer system via depth integration.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Raman spectrum of a multilayer system via depth integration.</span>
 
 <span class="sd">    The calculation proceeds as follows:</span>
 
@@ -563,7 +812,7 @@
 <span class="sd">        acoustic modes; those are skipped internally).</span>
 <span class="sd">    n_gauss : int, optional</span>
 <span class="sd">        Number of Gauss-Legendre quadrature points per Raman-active layer.</span>
-<span class="sd">        Default is 20, which is accurate for smooth fields in thin layers.</span>
+<span class="sd">        Default is 21.</span>
 <span class="sd">    collection_side : {&#39;superstrate&#39;, &#39;substrate&#39;}, optional</span>
 <span class="sd">        Which side the detector is on.  ``&#39;superstrate&#39;`` (default) gives</span>
 <span class="sd">        backscattering geometry; ``&#39;substrate&#39;`` gives forward scattering and</span>
@@ -578,6 +827,12 @@
 <span class="sd">    approximate_es : bool, optional</span>
 <span class="sd">        If ``True``, use the Phase 1 approximation E_S ≈ E_L (both fields at</span>
 <span class="sd">        the laser frequency).  Default is ``False``.</span>
+<span class="sd">    depth_integration : {&#39;Coherent amplitude&#39;, &#39;Incoherent intensity&#39;}, optional</span>
+<span class="sd">        How to combine the source along the depth of each Raman-active layer.</span>
+<span class="sd">        ``&#39;Coherent amplitude&#39;`` integrates the complex amplitude before</span>
+<span class="sd">        squaring and is appropriate for thin coherent films.  ``&#39;Incoherent</span>
+<span class="sd">        intensity&#39;`` integrates the local intensity and is more stable for</span>
+<span class="sd">        thick or bulk samples where long-range phase coherence is not physical.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -594,7 +849,7 @@
 
 <span class="sd">    For forward scattering (``collection_side=&#39;substrate&#39;``), the z-coordinates</span>
 <span class="sd">    for E_S are remapped as ``z_rev = total_thickness − z_orig`` before being</span>
-<span class="sd">    passed to ``calculate_Efield`` on the reversed system; the GL quadrature</span>
+<span class="sd">    passed to ``calculate_Efield`` on the reversed system; the quadrature</span>
 <span class="sd">    weights are unchanged.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -609,11 +864,13 @@
         <span class="n">detected_pol</span><span class="p">,</span>
         <span class="n">temperature_K</span><span class="p">,</span>
         <span class="n">linewidths_cm1</span><span class="p">,</span>
-        <span class="n">n_gauss</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">n_gauss</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
         <span class="n">collection_side</span><span class="o">=</span><span class="s2">&quot;superstrate&quot;</span><span class="p">,</span>
         <span class="n">collection_angle_rad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">coherent_layers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">approximate_es</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">depth_integration</span><span class="o">=</span><span class="n">DEPTH_INTEGRATION_COHERENT</span><span class="p">,</span>
+        <span class="n">modal_pairs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise LayeredRamanCalculator with system, layers and calculation parameters.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">incident_pol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">):</span>
@@ -622,6 +879,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;detected_pol must be &#39;p&#39;, &#39;s&#39;, or &#39;unpolarised&#39;, got &#39;</span><span class="si">{</span><span class="n">detected_pol</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">collection_side</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;superstrate&quot;</span><span class="p">,</span> <span class="s2">&quot;substrate&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;collection_side must be &#39;superstrate&#39; or &#39;substrate&#39;, got &#39;</span><span class="si">{</span><span class="n">collection_side</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">depth_integration</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">DEPTH_INTEGRATION_OPTIONS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;depth_integration must be one of </span><span class="si">{</span><span class="n">DEPTH_INTEGRATION_OPTIONS</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">depth_integration</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">system</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">raman_layers</span><span class="p">)</span>
@@ -631,11 +892,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">detected_pol</span> <span class="o">=</span> <span class="n">detected_pol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temperature_K</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">temperature_K</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">linewidths_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">linewidths_cm1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_gauss</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_gauss</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_side</span> <span class="o">=</span> <span class="n">collection_side</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_angle_rad</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">collection_angle_rad</span><span class="p">)</span> <span class="k">if</span> <span class="n">collection_angle_rad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">incident_angle_rad</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coherent_layers</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">coherent_layers</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">approximate_es</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">approximate_es</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration</span> <span class="o">=</span> <span class="n">depth_integration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modal_pairs</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">modal_pairs</span><span class="p">)</span>
+        <span class="c1"># NAC cache for Level 3 modal_pairs: keyed by (layer_index, i_mode, j_mode)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nac_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># Phase 3c: internal Jones vectors for incident and detected channels.</span>
         <span class="c1"># _incident_jones : (cp, cs) complex pair — determines the linear combination</span>
@@ -646,8 +911,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_incident_jones</span> <span class="o">=</span> <span class="n">_pol_to_jones</span><span class="p">[</span><span class="n">incident_pol</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_detected_jones</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">detected_pol</span> <span class="o">==</span> <span class="s2">&quot;unpolarised&quot;</span> <span class="k">else</span> <span class="n">_pol_to_jones</span><span class="p">[</span><span class="n">detected_pol</span><span class="p">]</span>
 
-        <span class="c1"># Gauss-Legendre nodes and weights on [-1, 1]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_gl_nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_weights</span> <span class="o">=</span> <span class="n">leggauss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_gauss</span><span class="p">)</span>
+        <span class="c1"># Gauss-Legendre nodes and weights on [-1, 1].  Large point counts use</span>
+        <span class="c1"># a composite fixed-order Gauss rule so thick layers remain practical.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quad_nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_weights</span> <span class="o">=</span> <span class="n">_gauss_legendre_nodes_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_gauss</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quad_nodes</span><span class="p">)</span>
 
         <span class="c1"># Built by _build_gl_grid()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span> <span class="o">=</span> <span class="kc">None</span>               <span class="c1"># ndarray: concatenated z points (m) for E_L</span>
@@ -663,7 +930,7 @@
 <div class="viewcode-block" id="LayeredRamanCalculator._build_gl_grid">
 <a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._build_gl_grid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_gl_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map GL quadrature points onto each Raman-active layer interval.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map Gauss-Legendre quadrature points onto each Raman-active layer interval.</span>
 
 <span class="sd">        Uses ``system.get_layers_boundaries()`` to find each layer&#39;s z extent.</span>
 <span class="sd">        Boundaries are in metres with z = 0 at the superstrate/first-layer</span>
@@ -672,10 +939,10 @@
 <span class="sd">        Populates</span>
 <span class="sd">        ---------</span>
 <span class="sd">        _gl_z : ndarray</span>
-<span class="sd">            Concatenated GL z coordinates for all Raman-active layers, in metres</span>
+<span class="sd">            Concatenated quadrature z coordinates for all Raman-active layers, in metres</span>
 <span class="sd">            (the unit ``calculate_Efield`` expects).</span>
 <span class="sd">        _gl_phys_weights : ndarray</span>
-<span class="sd">            Corresponding integration weights in Ångström (GL weight × half-thickness × 1e10).</span>
+<span class="sd">            Corresponding integration weights in Ångström (quadrature weight × half-thickness × 1e10).</span>
 <span class="sd">            The Å unit cancels the Å² in the Raman tensor more cleanly than metres,</span>
 <span class="sd">            keeping intensity magnitudes in a readable range.</span>
 <span class="sd">        _gl_layer_slices : list of slice</span>
@@ -697,8 +964,8 @@
             <span class="n">z_end</span>   <span class="o">=</span> <span class="n">boundaries</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
             <span class="n">half</span>    <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">z_end</span> <span class="o">-</span> <span class="n">z_start</span><span class="p">)</span>
             <span class="n">mid</span>     <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">z_start</span> <span class="o">+</span> <span class="n">z_end</span><span class="p">)</span>
-            <span class="n">z_j</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">half</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_nodes</span>              <span class="c1"># metres (for calculate_Efield)</span>
-            <span class="n">w_j</span> <span class="o">=</span> <span class="n">half</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_weights</span> <span class="o">*</span> <span class="mf">1.0e10</span>         <span class="c1"># Å (for the intensity integral)</span>
+            <span class="n">z_j</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">half</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_nodes</span>             <span class="c1"># metres (for calculate_Efield)</span>
+            <span class="n">w_j</span> <span class="o">=</span> <span class="n">half</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_weights</span> <span class="o">*</span> <span class="mf">1.0e10</span>       <span class="c1"># Å (for the intensity integral)</span>
             <span class="n">z_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_j</span><span class="p">)</span>
             <span class="n">w_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_j</span><span class="p">)</span>
             <span class="n">slices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss</span><span class="p">))</span>
@@ -818,13 +1085,343 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">integrand</span><span class="p">),</span> <span class="kc">None</span></div>
 
 
+<div class="viewcode-block" id="LayeredRamanCalculator._layer_depth_intensity">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._layer_depth_intensity">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_layer_depth_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E_L_out</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">,</span> <span class="n">R_lab</span><span class="p">,</span> <span class="n">sl</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the incoherent depth-integrated Raman intensity for one layer.&quot;&quot;&quot;</span>
+        <span class="n">cp_L</span><span class="p">,</span> <span class="n">cs_L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incident_jones</span>
+        <span class="n">E_L</span> <span class="o">=</span> <span class="n">cp_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_L</span> <span class="o">*</span> <span class="n">E_L_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+        <span class="n">R_E_L</span> <span class="o">=</span> <span class="n">R_lab</span> <span class="o">@</span> <span class="n">E_L</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_phys_weights</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detected_jones</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">integrand_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">)</span>
+            <span class="n">integrand_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">R_E_L</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">integrand_p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">integrand_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">cp_S</span><span class="p">,</span> <span class="n">cs_S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detected_jones</span>
+        <span class="n">E_S</span> <span class="o">=</span> <span class="n">cp_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span> <span class="o">+</span> <span class="n">cs_S</span> <span class="o">*</span> <span class="n">E_S_out</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">sl</span><span class="p">]</span>
+        <span class="n">integrand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S</span><span class="p">,</span> <span class="n">R_E_L</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">integrand</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Level 3 (modal_pairs) helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="LayeredRamanCalculator._get_active_modal_pairs">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_active_modal_pairs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_active_modal_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the list of (i_L, j_S) Berreman mode-index pairs.</span>
+
+<span class="sd">        Each Berreman eigenmode has both a forward (kz &gt; 0) and a backward</span>
+<span class="sd">        (kz &lt; 0) variant per polarisation:</span>
+
+<span class="sd">          Mode 0: forward p-pol  (kz &gt; 0)</span>
+<span class="sd">          Mode 1: forward s-pol  (kz &gt; 0)</span>
+<span class="sd">          Mode 2: backward p-pol (kz &lt; 0)</span>
+<span class="sd">          Mode 3: backward s-pol (kz &lt; 0)</span>
+
+<span class="sd">        Both propagation directions contribute to the total field, so the</span>
+<span class="sd">        physically complete Level-3 sum includes all forward/backward pairs</span>
+<span class="sd">        for the appropriate polarisation.</span>
+
+<span class="sd">        For p-pol incidence: i_modes = {0, 2}  (both p modes, fwd and bwd).</span>
+<span class="sd">        For s-pol incidence: i_modes = {1, 3}.</span>
+<span class="sd">        Detected modes follow the same convention.</span>
+
+<span class="sd">        In backscattering the dominant amplitude comes from pair (0, 2) because</span>
+<span class="sd">        ``qs_L[0] + qs_S[2] ≈ 0`` gives a non-oscillating integrand.  Pairs</span>
+<span class="sd">        with both modes forward or both backward produce rapidly oscillating</span>
+<span class="sd">        integrands that are suppressed for thick layers, so the incoherent sum</span>
+<span class="sd">        ``Σ|A^{ij}|²`` is still dominated by the correct backscattering terms.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of (int, int)</span>
+<span class="sd">            Cartesian product of incident × detected mode sets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># incident_pol is restricted to &#39;p&#39; or &#39;s&#39; by __init__ validation.</span>
+        <span class="n">i_modes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incident_pol</span> <span class="o">==</span> <span class="s2">&quot;p&quot;</span> <span class="k">else</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="c1"># Detected modes from detected_pol (&#39;p&#39;, &#39;s&#39;, or &#39;unpolarised&#39;).</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detected_pol</span> <span class="o">==</span> <span class="s2">&quot;p&quot;</span><span class="p">:</span>
+            <span class="n">j_modes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">detected_pol</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span>
+            <span class="n">j_modes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">j_modes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">i_modes</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">j_modes</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="LayeredRamanCalculator._get_modal_fields_at_gl_points">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_modal_fields_at_gl_points">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_modal_fields_at_gl_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq_cm1</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">angle_rad</span><span class="p">,</span> <span class="n">z_arr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute per-Berreman-mode electric field contributions at GL quadrature points.</span>
+
+<span class="sd">        For each Raman-active layer and each of its GL z-points, the field</span>
+<span class="sd">        contribution from each of the 4 Berreman modes is evaluated separately.</span>
+<span class="sd">        The total field at any z-point equals the sum of all 4 modal contributions,</span>
+<span class="sd">        which reproduces ``calculate_Efield`` exactly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        freq_cm1 : float</span>
+<span class="sd">            Frequency in cm⁻¹ at which to solve the GTM system.</span>
+<span class="sd">        system : GTMcore.System</span>
+<span class="sd">            Optical system (TransferMatrixSystem or ScatteringMatrixSystem).</span>
+<span class="sd">        angle_rad : float</span>
+<span class="sd">            Angle of incidence on ``system``&#39;s superstrate, in radians.</span>
+<span class="sd">        z_arr : ndarray</span>
+<span class="sd">            GL z-coordinates in metres (in system&#39;s coordinate frame).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        modal_fields : ndarray, shape (4, 2, 3, N_gl_total)</span>
+<span class="sd">            ``modal_fields[mode_n, pol_idx, xyz, z_pt]``</span>
+<span class="sd">            mode_n: 0..3 (trans-p, trans-s, refl-p, refl-s).</span>
+<span class="sd">            pol_idx: 0 = p-pol incidence on system, 1 = s-pol incidence.</span>
+<span class="sd">            xyz: Ex, Ey, Ez components.</span>
+<span class="sd">        qs_by_layer : dict of {int: ndarray(4,)}</span>
+<span class="sd">            Maps rl.layer_index → layer.qs (4 kz eigenvalues) from ``system``.</span>
+<span class="sd">            Note: for forward scatter (reversed system), rl.layer_index is</span>
+<span class="sd">            used directly as an index into system.layers, which is an</span>
+<span class="sd">            approximation; the physical-layer correspondence is exact only</span>
+<span class="sd">            for backscattering (es_system == self.system).</span>
+<span class="sd">        zeta : complex</span>
+<span class="sd">            In-plane wavevector used for this system/frequency/angle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">speed_light_si</span>  <span class="c1"># already imported at module level</span>
+
+        <span class="n">freq_hz</span> <span class="o">=</span> <span class="n">freq_cm1</span> <span class="o">*</span> <span class="n">speed_light_si</span> <span class="o">*</span> <span class="mf">1e2</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">initialize_sys</span><span class="p">(</span><span class="n">freq_hz</span><span class="p">)</span>
+        <span class="n">zeta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">modal_amps</span><span class="p">,</span> <span class="n">zn</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">calculate_modal_amplitudes</span><span class="p">(</span><span class="n">freq_hz</span><span class="p">,</span> <span class="n">zeta</span><span class="p">)</span>
+
+        <span class="c1"># Layer boundaries in system&#39;s coordinate frame</span>
+        <span class="n">boundaries</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get_layers_boundaries</span><span class="p">()</span>
+
+        <span class="n">N_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_arr</span><span class="p">)</span>
+        <span class="n">modal_fields</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">N_total</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">qs_by_layer</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">rl_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">rl</span><span class="p">,</span> <span class="n">sl</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_layer_slices</span><span class="p">)):</span>
+            <span class="n">sys_k</span> <span class="o">=</span> <span class="n">rl</span><span class="o">.</span><span class="n">layer_index</span>
+            <span class="k">if</span> <span class="n">sys_k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">modal_amps</span> <span class="ow">or</span> <span class="n">sys_k</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">layer</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">sys_k</span><span class="p">]</span>
+            <span class="n">z_front</span> <span class="o">=</span> <span class="n">boundaries</span><span class="p">[</span><span class="n">sys_k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># z at the front (incident side) of this layer</span>
+
+            <span class="n">amps</span> <span class="o">=</span> <span class="n">modal_amps</span><span class="p">[</span><span class="n">sys_k</span><span class="p">]</span>  <span class="c1"># shape (8,): [0:4] p-pol, [4:8] s-pol</span>
+            <span class="n">qs_by_layer</span><span class="p">[</span><span class="n">rl</span><span class="o">.</span><span class="n">layer_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">qs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="n">z_pts</span> <span class="o">=</span> <span class="n">z_arr</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">pt_offset</span><span class="p">,</span> <span class="n">z_j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">z_pts</span><span class="p">):</span>
+                <span class="n">global_idx</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">pt_offset</span>
+                <span class="c1"># Partial-depth propagation factors (same formula as calculate_Efield)</span>
+                <span class="n">dKiz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">propagation_exponents</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">z_j</span> <span class="o">-</span> <span class="n">z_front</span><span class="p">)</span> <span class="o">/</span> <span class="n">layer</span><span class="o">.</span><span class="n">thick</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+                <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                    <span class="n">Eprop_p</span> <span class="o">=</span> <span class="n">dKiz</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">amps</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>      <span class="c1"># p-pol incidence, mode n</span>
+                    <span class="n">Eprop_s</span> <span class="o">=</span> <span class="n">dKiz</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">amps</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span>  <span class="c1"># s-pol incidence, mode n</span>
+                    <span class="n">modal_fields</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="n">global_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">Eprop_p</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="n">modal_fields</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="n">global_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">Eprop_s</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">modal_fields</span><span class="p">,</span> <span class="n">qs_by_layer</span><span class="p">,</span> <span class="n">zeta</span></div>
+
+
+<div class="viewcode-block" id="LayeredRamanCalculator._calculate_mode_intensities_modal_pairs">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_mode_intensities_modal_pairs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_mode_intensities_modal_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Level 3 modal-pairs Raman intensity calculation.</span>
+
+<span class="sd">        For each phonon mode, sums ``|A^{ij}|²`` over all active (i_L, j_S) Berreman</span>
+<span class="sd">        mode pairs incoherently.  The phonon wavevector for each pair is</span>
+<span class="sd">        q_ph = k_L^i − k_S^j, giving a distinct NAC-corrected phonon frequency</span>
+<span class="sd">        and Raman tensor per pair.  NAC results are cached per</span>
+<span class="sd">        (layer_index, i_mode, j_mode) and reused across all phonon modes.</span>
+
+<span class="sd">        Pool parallelism is disabled for this path (closures in RamanLayer.nac_function</span>
+<span class="sd">        are not picklable in Phase 1).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        active_frequencies : ndarray</span>
+<span class="sd">        active_intensities : ndarray</span>
+<span class="sd">        active_linewidths : ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># --- Set up ES system and z-array (mirrors calculate_mode_intensities) ---</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;substrate&quot;</span><span class="p">:</span>
+            <span class="n">total_thick</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">thick</span> <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+            <span class="n">z_s</span> <span class="o">=</span> <span class="n">total_thick</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span>
+            <span class="n">es_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">reversed_system</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">z_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span>
+            <span class="n">es_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span>
+
+        <span class="n">ref_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_layer</span><span class="o">.</span><span class="n">phonon_frequencies_cm1</span><span class="p">)</span>
+
+        <span class="n">pairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_active_modal_pairs</span><span class="p">()</span>
+
+        <span class="c1"># Laser modal fields at laser frequency + incident angle</span>
+        <span class="n">modal_fields_L</span><span class="p">,</span> <span class="n">qs_L_dict</span><span class="p">,</span> <span class="n">zeta_L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_modal_fields_at_gl_points</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">incident_angle_rad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span>
+        <span class="p">)</span>
+        <span class="n">zeta_L_re</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">zeta_L</span><span class="p">))</span>
+
+        <span class="c1"># ES modal fields at laser frequency (used for q_ph / NAC computation,</span>
+        <span class="c1"># and also for the field integral when approximate_es=True)</span>
+        <span class="n">modal_fields_S_base</span><span class="p">,</span> <span class="n">qs_S_dict</span><span class="p">,</span> <span class="n">zeta_S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_modal_fields_at_gl_points</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span><span class="p">,</span> <span class="n">es_system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_angle_rad</span><span class="p">,</span> <span class="n">z_s</span>
+        <span class="p">)</span>
+        <span class="n">zeta_S_re</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">zeta_S</span><span class="p">))</span>
+
+        <span class="c1"># Build NAC cache upfront (one call per pair per layer, independent of mode)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nac_cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i_mode</span><span class="p">,</span> <span class="n">j_mode</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">rl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">:</span>
+                <span class="n">cache_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">rl</span><span class="o">.</span><span class="n">layer_index</span><span class="p">,</span> <span class="n">i_mode</span><span class="p">,</span> <span class="n">j_mode</span><span class="p">)</span>
+                <span class="n">qs_L_arr</span> <span class="o">=</span> <span class="n">qs_L_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rl</span><span class="o">.</span><span class="n">layer_index</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">))</span>
+                <span class="n">qs_S_arr</span> <span class="o">=</span> <span class="n">qs_S_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rl</span><span class="o">.</span><span class="n">layer_index</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">))</span>
+                <span class="n">qs_L_n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">qs_L_arr</span><span class="p">[</span><span class="n">i_mode</span><span class="p">]))</span> <span class="k">if</span> <span class="n">i_mode</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">qs_L_arr</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+                <span class="n">qs_S_m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">qs_S_arr</span><span class="p">[</span><span class="n">j_mode</span><span class="p">]))</span> <span class="k">if</span> <span class="n">j_mode</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">qs_S_arr</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+                <span class="c1"># q_ph = k_laser − k_scattered.  qs_S_m is the kz of the</span>
+                <span class="c1"># scattered photon mode in the ES system, with its own sign:</span>
+                <span class="c1"># forward modes (kz &gt; 0) and backward modes (kz &lt; 0).</span>
+                <span class="c1"># For backscattering with pair (i=0, j=2):</span>
+                <span class="c1">#   q_ph_z = qs_L[0] − qs_S[2] ≈ n − (−n) = 2n  ✓</span>
+                <span class="c1"># For forward scatter with pair (i=0, j=0 in reversed system):</span>
+                <span class="c1">#   q_ph_z = n − n = 0  ✓</span>
+                <span class="n">q_ph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zeta_L_re</span> <span class="o">-</span> <span class="n">zeta_S_re</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">qs_L_n</span> <span class="o">-</span> <span class="n">qs_S_m</span><span class="p">])</span>
+
+                <span class="n">q_ph_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">q_ph</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">q_ph_norm</span> <span class="o">&lt;</span> <span class="mf">1e-8</span> <span class="ow">or</span> <span class="n">rl</span><span class="o">.</span><span class="n">nac_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_nac_cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># use TO baseline</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">q_hat_lab</span> <span class="o">=</span> <span class="n">q_ph</span> <span class="o">/</span> <span class="n">q_ph_norm</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_nac_cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">rl</span><span class="o">.</span><span class="n">nac_function</span><span class="p">(</span><span class="n">q_hat_lab</span><span class="p">)</span>
+
+        <span class="c1"># Build a reference NAC frequency/sigma array from the first pair (on the first</span>
+        <span class="c1"># Raman layer) that actually produced a non-None NAC result.  Pairs with zero</span>
+        <span class="c1"># q_ph (e.g., forward×forward at normal incidence, same system for ES) are</span>
+        <span class="c1"># stored as None in the cache and are skipped here.</span>
+        <span class="c1"># The NAC returns modes sorted by eigenvalue (ascending), so nac_freqs_ref[k]</span>
+        <span class="c1"># is the frequency of the k-th NAC eigenmode — NOT necessarily the TO mode</span>
+        <span class="c1"># originally at index k.  Using nac_freqs_ref[mode_idx] ensures both frequency</span>
+        <span class="c1"># and tensor (nac_tensors[mode_idx]) refer to the same NAC eigenmode.</span>
+        <span class="n">nac_freqs_ref</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">nac_sigmas_ref</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">_i_try</span><span class="p">,</span> <span class="n">_j_try</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="n">_try_key</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">layer_index</span><span class="p">,</span> <span class="n">_i_try</span><span class="p">,</span> <span class="n">_j_try</span><span class="p">)</span>
+            <span class="n">_try_cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nac_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_try_key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_try_cv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_try_cv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">nac_freqs_ref</span> <span class="o">=</span> <span class="n">_try_cv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># shape (n_modes,), NAC-eigenvalue-sorted</span>
+                <span class="n">nac_sigmas_ref</span> <span class="o">=</span> <span class="n">_try_cv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">break</span>
+
+        <span class="n">active_freqs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">active_intensities</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">active_sigmas</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">mode_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">progress_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">progress_callback</span><span class="p">()</span>
+
+            <span class="c1"># Use the NAC-corrected frequency for this eigenmode position.  When NAC is</span>
+            <span class="c1"># unavailable fall back to the TO frequency stored in ref_layer.</span>
+            <span class="k">if</span> <span class="n">nac_freqs_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mode_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">nac_freqs_ref</span><span class="p">):</span>
+                <span class="n">nu_m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">nac_freqs_ref</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nu_m</span> <span class="o">=</span> <span class="n">ref_layer</span><span class="o">.</span><span class="n">phonon_frequencies_cm1</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">nu_m</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">_ACOUSTIC_THRESHOLD_CM1</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">nu_S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span> <span class="o">-</span> <span class="n">nu_m</span>
+            <span class="k">if</span> <span class="n">nu_S</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;modal_pairs: mode </span><span class="si">%.1f</span><span class="s2"> cm⁻¹ exceeds laser freq; skipping.&quot;</span><span class="p">,</span> <span class="n">nu_m</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">nac_sigmas_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mode_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">nac_sigmas_ref</span><span class="p">):</span>
+                <span class="n">sigma</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">nac_sigmas_ref</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linewidths_cm1</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]</span> <span class="k">if</span> <span class="n">mode_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linewidths_cm1</span><span class="p">)</span> <span class="k">else</span> <span class="mf">5.0</span>
+
+            <span class="c1"># ES modal fields: recompute at nu_S if not using approximate_es</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approximate_es</span><span class="p">:</span>
+                <span class="n">modal_fields_S</span> <span class="o">=</span> <span class="n">modal_fields_S_base</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">modal_fields_S</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_modal_fields_at_gl_points</span><span class="p">(</span>
+                    <span class="n">nu_S</span><span class="p">,</span> <span class="n">es_system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_angle_rad</span><span class="p">,</span> <span class="n">z_s</span>
+                <span class="p">)</span>
+
+            <span class="n">I_m</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+            <span class="k">for</span> <span class="n">i_mode</span><span class="p">,</span> <span class="n">j_mode</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+                <span class="c1"># When coherent_layers=True: sum amplitudes across layers first, then square.</span>
+                <span class="c1"># When coherent_layers=False: sum |amp|² per layer (incoherent).</span>
+                <span class="n">total_amp_ij</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coherent_layers</span> <span class="k">else</span> <span class="kc">None</span>
+
+                <span class="k">for</span> <span class="n">rl</span><span class="p">,</span> <span class="n">sl</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_layer_slices</span><span class="p">):</span>
+                    <span class="n">cache_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">rl</span><span class="o">.</span><span class="n">layer_index</span><span class="p">,</span> <span class="n">i_mode</span><span class="p">,</span> <span class="n">j_mode</span><span class="p">)</span>
+                    <span class="n">cache_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nac_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cache_key</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">cache_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cache_val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">nac_tensors</span> <span class="o">=</span> <span class="n">cache_val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">nac_tensors</span> <span class="o">=</span> <span class="n">rl</span><span class="o">.</span><span class="n">raman_tensors</span>
+
+                    <span class="k">if</span> <span class="n">mode_idx</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nac_tensors</span><span class="p">):</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">R_crystal</span> <span class="o">=</span> <span class="n">nac_tensors</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]</span>
+                    <span class="n">R_lab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rotate_raman_tensor</span><span class="p">(</span><span class="n">R_crystal</span><span class="p">,</span> <span class="n">rl</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">)</span>
+
+                    <span class="c1"># Per-mode fields: mode i from laser system, mode j from ES system.</span>
+                    <span class="c1"># Modes 0,2 are p-pol; modes 1,3 are s-pol → pol = mode % 2.</span>
+                    <span class="n">pol_L</span> <span class="o">=</span> <span class="n">i_mode</span> <span class="o">%</span> <span class="mi">2</span>  <span class="c1"># 0,2 → 0 (p-pol); 1,3 → 1 (s-pol)</span>
+                    <span class="n">pol_S</span> <span class="o">=</span> <span class="n">j_mode</span> <span class="o">%</span> <span class="mi">2</span>
+                    <span class="n">E_L_mode</span> <span class="o">=</span> <span class="n">modal_fields_L</span><span class="p">[</span><span class="n">i_mode</span><span class="p">,</span> <span class="n">pol_L</span><span class="p">,</span> <span class="p">:,</span> <span class="n">sl</span><span class="p">]</span>   <span class="c1"># (3, n_gauss)</span>
+                    <span class="n">E_S_mode</span> <span class="o">=</span> <span class="n">modal_fields_S</span><span class="p">[</span><span class="n">j_mode</span><span class="p">,</span> <span class="n">pol_S</span><span class="p">,</span> <span class="p">:,</span> <span class="n">sl</span><span class="p">]</span>   <span class="c1"># (3, n_gauss)</span>
+
+                    <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_phys_weights</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+                    <span class="n">R_E_L</span> <span class="o">=</span> <span class="n">R_lab</span> <span class="o">@</span> <span class="n">E_L_mode</span>                                   <span class="c1"># (3, n_gauss)</span>
+                    <span class="n">integrand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">E_S_mode</span><span class="p">,</span> <span class="n">R_E_L</span><span class="p">)</span>        <span class="c1"># (n_gauss,)</span>
+                    <span class="n">amp_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">integrand</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coherent_layers</span><span class="p">:</span>
+                        <span class="n">total_amp_ij</span> <span class="o">+=</span> <span class="n">amp_ij</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">I_m</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">amp_ij</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coherent_layers</span><span class="p">:</span>
+                    <span class="n">I_m</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">total_amp_ij</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+            <span class="n">I_m</span> <span class="o">*=</span> <span class="n">bose_factor</span><span class="p">(</span><span class="n">nu_m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_K</span><span class="p">)</span>
+
+            <span class="n">active_freqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nu_m</span><span class="p">)</span>
+            <span class="n">active_intensities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">I_m</span><span class="p">)</span>
+            <span class="n">active_sigmas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">active_freqs</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">active_intensities</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">active_sigmas</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
     <span class="c1"># ------------------------------------------------------------------</span>
     <span class="c1"># Public interface</span>
     <span class="c1"># ------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="LayeredRamanCalculator.calculate_mode_intensities">
 <a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_mode_intensities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_mode_intensities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the per-mode Raman intensities (before broadening).</span>
 
 <span class="sd">        Modes below ``_ACOUSTIC_THRESHOLD_CM1`` are excluded.  Layer</span>
@@ -837,6 +1434,12 @@
 <span class="sd">            If supplied, called once per phonon-mode iteration (including modes</span>
 <span class="sd">            that are skipped as acoustic), so the caller can drive a progress</span>
 <span class="sd">            bar.  The callback takes no arguments.</span>
+<span class="sd">        pool : multiprocessing.Pool or multiprocessing.dummy.Pool, optional</span>
+<span class="sd">            Worker pool for parallel execution.  When provided, each phonon mode</span>
+<span class="sd">            (i.e. each E_S field evaluation at its own scattered frequency) is</span>
+<span class="sd">            dispatched to a pool worker.  E_L is computed once on the calling</span>
+<span class="sd">            process and broadcast to all workers via ``functools.partial``.</span>
+<span class="sd">            When ``None`` (default), the calculation runs sequentially.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -863,12 +1466,13 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;calculate_mode_intensities: no Raman-active layers defined&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
 
-        <span class="c1"># --- E_L: incident laser field on the original system ---</span>
-        <span class="n">E_L_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_at_gl_points</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">incident_angle_rad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span>
-        <span class="p">)</span>
+        <span class="c1"># Level 3 dispatch: modal_pairs disables pool (closures are not picklable)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modal_pairs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pool</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;modal_pairs mode: disabling pool (closures not picklable in Phase 1)&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_mode_intensities_modal_pairs</span><span class="p">(</span><span class="n">progress_callback</span><span class="p">)</span>
 
-        <span class="c1"># --- Set up the system and z-array for E_S ---</span>
+        <span class="c1"># --- Set up the system and z-array for E_S (common to both paths) ---</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;substrate&quot;</span><span class="p">:</span>
             <span class="c1"># Forward scattering: launch E_S from the substrate side</span>
             <span class="n">total_thick</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">thick</span> <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
@@ -879,7 +1483,31 @@
             <span class="n">z_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span>
             <span class="n">es_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span>
 
+        <span class="c1"># Use frequencies from the first RamanLayer (all layers share the same DFT modes)</span>
+        <span class="n">ref_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_layer</span><span class="o">.</span><span class="n">phonon_frequencies_cm1</span><span class="p">)</span>
+
+        <span class="c1"># Precompute per-layer rotation matrices (shared across modes)</span>
+        <span class="n">rotation_matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">rl</span><span class="o">.</span><span class="n">rotation_matrix</span> <span class="k">for</span> <span class="n">rl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">pool</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Parallel path: E_L (and E_S_fixed when needed) are computed</span>
+            <span class="c1"># inside _calculate_modes_parallel using the pool.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_modes_parallel</span><span class="p">(</span>
+                <span class="n">pool</span><span class="p">,</span> <span class="n">ref_layer</span><span class="p">,</span> <span class="n">n_modes</span><span class="p">,</span>
+                <span class="n">es_system</span><span class="p">,</span> <span class="n">z_s</span><span class="p">,</span>
+                <span class="n">rotation_matrices</span><span class="p">,</span>
+                <span class="n">progress_callback</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Sequential path -------------------------------------------------</span>
+        <span class="c1"># Compute E_L once on the calling process.</span>
+        <span class="n">E_L_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_at_gl_points</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">incident_angle_rad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span>
+        <span class="p">)</span>
+
         <span class="c1"># If approximate_es, compute E_S once at the laser frequency</span>
+        <span class="n">E_S_out_fixed</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approximate_es</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;substrate&quot;</span><span class="p">:</span>
                 <span class="n">E_S_out_fixed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_at_gl_points</span><span class="p">(</span>
@@ -888,10 +1516,6 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Pure Phase-1 approximation: E_S = E_L (no extra call)</span>
                 <span class="n">E_S_out_fixed</span> <span class="o">=</span> <span class="n">E_L_out</span>
-
-        <span class="c1"># Use frequencies from the first RamanLayer (all layers share the same DFT modes)</span>
-        <span class="n">ref_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">n_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_layer</span><span class="o">.</span><span class="n">phonon_frequencies_cm1</span><span class="p">)</span>
 
         <span class="n">active_freqs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">active_intensities</span> <span class="o">=</span> <span class="p">[]</span>
@@ -923,8 +1547,14 @@
                     <span class="n">nu_S</span><span class="p">,</span> <span class="n">es_system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_angle_rad</span><span class="p">,</span> <span class="n">z_s</span>
                 <span class="p">)</span>
 
-            <span class="c1"># Accumulate amplitude contributions from all Raman-active layers</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coherent_layers</span><span class="p">:</span>
+            <span class="c1"># Accumulate contributions from all Raman-active layers</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration</span> <span class="o">==</span> <span class="n">DEPTH_INTEGRATION_INCOHERENT</span><span class="p">:</span>
+                <span class="n">I_m</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">for</span> <span class="n">rl</span><span class="p">,</span> <span class="n">sl</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gl_layer_slices</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                    <span class="n">R_crystal</span> <span class="o">=</span> <span class="n">rl</span><span class="o">.</span><span class="n">raman_tensors</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]</span>
+                    <span class="n">R_lab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rotate_raman_tensor</span><span class="p">(</span><span class="n">R_crystal</span><span class="p">,</span> <span class="n">rl</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">)</span>
+                    <span class="n">I_m</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layer_depth_intensity</span><span class="p">(</span><span class="n">E_L_out</span><span class="p">,</span> <span class="n">E_S_out</span><span class="p">,</span> <span class="n">R_lab</span><span class="p">,</span> <span class="n">sl</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">coherent_layers</span><span class="p">:</span>
                 <span class="c1"># Coherent: sum amplitudes first</span>
                 <span class="n">total_amp_p</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span>
                 <span class="n">total_amp_s</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="n">j</span>
@@ -954,6 +1584,153 @@
             <span class="c1"># Apply Bose-Einstein thermal prefactor</span>
             <span class="n">I_m</span> <span class="o">*=</span> <span class="n">bose_factor</span><span class="p">(</span><span class="n">nu_m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_K</span><span class="p">)</span>
 
+            <span class="n">active_freqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nu_m</span><span class="p">)</span>
+            <span class="n">active_intensities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">I_m</span><span class="p">)</span>
+            <span class="n">active_sigmas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">active_freqs</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">active_intensities</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">active_sigmas</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LayeredRamanCalculator._get_field_parallel">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_field_parallel">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_field_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pool</span><span class="p">,</span> <span class="n">freq_cm1</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">angle_rad</span><span class="p">,</span> <span class="n">z_arr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the GTM E-field at *z_arr* in parallel using *pool*.</span>
+
+<span class="sd">        Splits ``z_arr`` into contiguous chunks of at most ``_EFIELD_CHUNK_SIZE``</span>
+<span class="sd">        z-positions, dispatches each chunk to a pool worker, then reassembles</span>
+<span class="sd">        the full ``(6, N)`` field array.  This avoids the long single-threaded</span>
+<span class="sd">        Python loop inside ``calculate_Efield`` by distributing the z-iteration</span>
+<span class="sd">        across pool workers.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pool : multiprocessing.Pool or compatible</span>
+<span class="sd">            Worker pool used to distribute field calculations over chunks of</span>
+<span class="sd">            z-coordinates.</span>
+<span class="sd">        freq_cm1 : float</span>
+<span class="sd">            Evaluation frequency in cm⁻¹.</span>
+<span class="sd">        system : GTMcore.System</span>
+<span class="sd">            Optical system (copied to each worker via pickling).</span>
+<span class="sd">        angle_rad : float</span>
+<span class="sd">            Angle of incidence in radians.</span>
+<span class="sd">        z_arr : ndarray, shape (N,)</span>
+<span class="sd">            Sorted z-coordinates in metres.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        E_out : ndarray, shape (6, N)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_chunks</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_arr</span><span class="p">)</span> <span class="o">//</span> <span class="n">_EFIELD_CHUNK_SIZE</span><span class="p">)</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">z_arr</span><span class="p">,</span> <span class="n">n_chunks</span><span class="p">)</span>
+        <span class="n">shared_ef</span> <span class="o">=</span> <span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">freq_cm1</span><span class="p">,</span> <span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">worker_fn</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_compute_efield_chunk_worker</span><span class="p">,</span> <span class="n">shared_ef</span><span class="p">)</span>
+        <span class="n">E_parts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">imap</span><span class="p">(</span><span class="n">worker_fn</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">E_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LayeredRamanCalculator._calculate_modes_parallel">
+<a class="viewcode-back" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_modes_parallel">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_modes_parallel</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">pool</span><span class="p">,</span> <span class="n">ref_layer</span><span class="p">,</span> <span class="n">n_modes</span><span class="p">,</span>
+        <span class="n">es_system</span><span class="p">,</span> <span class="n">z_s</span><span class="p">,</span>
+        <span class="n">rotation_matrices</span><span class="p">,</span>
+        <span class="n">progress_callback</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parallel implementation of mode-intensity calculation via pool.imap.</span>
+
+<span class="sd">        E_L is computed in parallel by splitting the GL z-grid into chunks and</span>
+<span class="sd">        dispatching each chunk to a pool worker.  Each phonon-mode E_S call is</span>
+<span class="sd">        also dispatched to a pool worker.  This eliminates both the pre-pool</span>
+<span class="sd">        single-threaded bottleneck (E_L chunk computation is parallelised)</span>
+<span class="sd">        and the per-mode E_S bottleneck.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pool : multiprocessing.Pool or compatible</span>
+<span class="sd">            Active worker pool.</span>
+<span class="sd">        ref_layer : RamanLayer</span>
+<span class="sd">            First Raman-active layer (source of phonon frequencies).</span>
+<span class="sd">        n_modes : int</span>
+<span class="sd">            Total number of phonon modes (including acoustic).</span>
+<span class="sd">        es_system : GTMcore.System</span>
+<span class="sd">            System used to evaluate E_S (original or reversed).</span>
+<span class="sd">        z_s : ndarray</span>
+<span class="sd">            z-coordinates (m) for the E_S field evaluation.</span>
+<span class="sd">        rotation_matrices : list of ndarray</span>
+<span class="sd">            Crystal-to-lab rotation matrices, one per RamanLayer.</span>
+<span class="sd">        progress_callback : callable or None</span>
+<span class="sd">            Called once per mode (in result-collection order) if not ``None``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple of ndarray</span>
+<span class="sd">            ``(active_frequencies, active_intensities, active_linewidths)``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># --- E_L: compute in parallel by splitting z-array into chunks ----------</span>
+        <span class="n">E_L_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_parallel</span><span class="p">(</span>
+            <span class="n">pool</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">incident_angle_rad</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gl_z</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># --- E_S_out_fixed: computed in parallel when approximate_es=True -------</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approximate_es</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;substrate&quot;</span><span class="p">:</span>
+                <span class="n">E_S_out_fixed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_parallel</span><span class="p">(</span>
+                    <span class="n">pool</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span><span class="p">,</span> <span class="n">es_system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_angle_rad</span><span class="p">,</span>
+                    <span class="n">z_s</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Pure Phase-1 approximation: E_S = E_L</span>
+                <span class="n">E_S_out_fixed</span> <span class="o">=</span> <span class="n">E_L_out</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">E_S_out_fixed</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Shared data bound via partial — pickled once per pool worker process.</span>
+        <span class="c1"># When E_S_out_fixed is already available, es_system is never used in</span>
+        <span class="c1"># the worker, so pass None to avoid unnecessary serialisation.</span>
+        <span class="n">shared</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="n">E_S_out_fixed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">es_system</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collection_angle_rad</span><span class="p">,</span>
+            <span class="n">z_s</span><span class="p">,</span>
+            <span class="n">E_L_out</span><span class="p">,</span>
+            <span class="n">E_S_out_fixed</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gl_phys_weights</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gl_layer_slices</span><span class="p">,</span>
+            <span class="n">rotation_matrices</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_incident_jones</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_detected_jones</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coherent_layers</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temperature_K</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">worker_fn</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_compute_raman_mode_worker</span><span class="p">,</span> <span class="n">shared</span><span class="p">)</span>
+
+        <span class="c1"># Per-mode args: only small data iterated per task</span>
+        <span class="n">mode_args_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">mode_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">):</span>
+            <span class="n">nu_m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ref_layer</span><span class="o">.</span><span class="n">phonon_frequencies_cm1</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">])</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linewidths_cm1</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">])</span> <span class="k">if</span> <span class="n">mode_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linewidths_cm1</span><span class="p">)</span> <span class="k">else</span> <span class="mf">5.0</span>
+            <span class="n">nu_S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">laser_frequency_cm1</span> <span class="o">-</span> <span class="n">nu_m</span> <span class="k">if</span> <span class="n">E_S_out_fixed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+            <span class="c1"># Raman tensors for this mode across all layers</span>
+            <span class="n">mode_raman_tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">rl</span><span class="o">.</span><span class="n">raman_tensors</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">rl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">raman_layers</span><span class="p">]</span>
+            <span class="n">mode_args_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mode_idx</span><span class="p">,</span> <span class="n">nu_m</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu_S</span><span class="p">,</span> <span class="n">mode_raman_tensors</span><span class="p">))</span>
+
+        <span class="n">active_freqs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">active_intensities</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">active_sigmas</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">pool</span><span class="o">.</span><span class="n">imap</span><span class="p">(</span><span class="n">worker_fn</span><span class="p">,</span> <span class="n">mode_args_list</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">progress_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">progress_callback</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">_mode_idx</span><span class="p">,</span> <span class="n">nu_m</span><span class="p">,</span> <span class="n">I_m</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">result</span>
             <span class="n">active_freqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nu_m</span><span class="p">)</span>
             <span class="n">active_intensities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">I_m</span><span class="p">)</span>
             <span class="n">active_sigmas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
@@ -1026,8 +1803,8 @@
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

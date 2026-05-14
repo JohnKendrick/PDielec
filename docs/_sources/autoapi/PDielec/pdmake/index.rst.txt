@@ -22,6 +22,14 @@ PDielec.pdmake
        - `test-p2cif`: Runs tests for the p2cif component.
        - `test-pdgui`: Runs tests for the PDGUI component.
        - `test-vibanalysis`: Runs tests for vibrational analysis.
+       - `test-pytest-powder_raman`: Runs pytest suite in PDielec/Tests/Powder_Raman/.
+       - `test-pytest-crystal_raman`: Runs pytest suite in PDielec/Tests/Crystal_Raman/.
+       - `test-pytest-materials`: Runs pytest suite in PDielec/Tests/Materials/.
+       - `test-pytest-calculator`: Runs pytest suite in PDielec/Tests/Calculator/.
+       - `test-pytest-unitcell`: Runs pytest suite in PDielec/Tests/UnitCell/.
+       - `test-pytest-gtmcore`: Runs pytest suite in PDielec/Tests/GTMcore/.
+       - `test-pytest-constants`: Runs pytest suite in PDielec/Tests/Constants/.
+       - `test-pytests`: Runs all pytest suites.
        - `benchmarks`: Executes benchmark tests.
        - `pypi`: Runs commands for PyPI distribution.
        - `clean`: Cleans up directories.
@@ -254,6 +262,14 @@ Module Contents
    - `test-p2cif`: Runs tests for the p2cif component.
    - `test-pdgui`: Runs tests for the PDGUI component.
    - `test-vibanalysis`: Runs tests for vibrational analysis.
+   - `test-pytest-powder_raman`: Runs pytest suite in PDielec/Tests/Powder_Raman/.
+   - `test-pytest-crystal_raman`: Runs pytest suite in PDielec/Tests/Crystal_Raman/.
+   - `test-pytest-materials`: Runs pytest suite in PDielec/Tests/Materials/.
+   - `test-pytest-calculator`: Runs pytest suite in PDielec/Tests/Calculator/.
+   - `test-pytest-unitcell`: Runs pytest suite in PDielec/Tests/UnitCell/.
+   - `test-pytest-gtmcore`: Runs pytest suite in PDielec/Tests/GTMcore/.
+   - `test-pytest-constants`: Runs pytest suite in PDielec/Tests/Constants/.
+   - `test-pytests`: Runs all pytest suites.
    - `benchmarks`: Executes benchmark tests.
    - `pypi`: Runs commands for PyPI distribution.
    - `clean`: Cleans up directories.

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.HelperRoutines - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -237,6 +237,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -255,6 +256,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
@@ -275,16 +277,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -352,12 +389,19 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">PDielec.GTMcore</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">GTM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Calculator</span><span class="p">,</span> <span class="n">DielectricFunction</span><span class="p">,</span> <span class="n">Utilities</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">average_masses</span><span class="p">,</span> <span class="n">isotope_masses</span><span class="p">,</span> <span class="n">wavenumber</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">average_masses</span><span class="p">,</span> <span class="n">boltzmann_si</span><span class="p">,</span> <span class="n">isotope_masses</span><span class="p">,</span> <span class="n">planck_si</span><span class="p">,</span> <span class="n">speed_light_si</span><span class="p">,</span> <span class="n">wavenumber</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GUI.CrystalScenarioTab</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_single_crystal_equations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.LayeredRamanCalculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">LayeredRamanCalculator</span><span class="p">,</span> <span class="n">RamanLayer</span><span class="p">,</span> <span class="n">lorentzian_broaden</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">External</span><span class="p">,</span> <span class="n">MaterialsDataBase</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">gtm_methods</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Coherent&quot;</span><span class="p">:</span> <span class="n">GTM</span><span class="o">.</span><span class="n">CoherentLayer</span><span class="p">,</span>
+               <span class="s2">&quot;Incoherent (intensity)&quot;</span><span class="p">:</span> <span class="n">GTM</span><span class="o">.</span><span class="n">IncoherentIntensityLayer</span><span class="p">,</span>
+               <span class="s2">&quot;Incoherent (phase cancelling)&quot;</span><span class="p">:</span> <span class="n">GTM</span><span class="o">.</span><span class="n">IncoherentPhaseLayer</span><span class="p">,</span>
+               <span class="s2">&quot;Incoherent (phase averaging)&quot;</span><span class="p">:</span> <span class="n">GTM</span><span class="o">.</span><span class="n">IncoherentAveragePhaseLayer</span><span class="p">,</span>
+               <span class="s2">&quot;Incoherent (non-reflective)&quot;</span><span class="p">:</span> <span class="n">GTM</span><span class="o">.</span><span class="n">IncoherentThickLayer</span><span class="p">}</span>
 
 
 
@@ -420,8 +464,8 @@
     <span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">sigma</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">frequencies_cm1</span> <span class="p">]</span>
     <span class="n">sigmas_au</span> <span class="o">=</span> <span class="n">wavenumber</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sigmas_cm1</span><span class="p">)</span>
     <span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">born_charges</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">reader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Experimental output&quot;</span><span class="p">:</span>
-        <span class="c1"># Obtain oscillator strength from reader</span>
+    <span class="k">if</span> <span class="n">reader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Experimental output&quot;</span> <span class="ow">and</span> <span class="n">reader</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">):</span>
+        <span class="c1"># Obtain oscillator strength from reader, or from ExperimentOutputReader&#39;s Born-charge calculation.</span>
         <span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Calculate oscillator strengths</span>
@@ -521,10 +565,11 @@
     <span class="k">return</span> <span class="n">material</span></div>
 
 
-<div class="viewcode-block" id="calculate_single_crystal_spectrum">
-<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculate_single_crystal_spectrum">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">calculate_single_crystal_spectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">incident_angle</span><span class="p">,</span> <span class="n">global_azimuthal_angle</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Scattering matrix&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a single crystal spectrum.</span>
+<div class="viewcode-block" id="calculate_crystal_infrared_spectrum">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculate_crystal_infrared_spectrum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_crystal_infrared_spectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">incident_angle</span><span class="p">,</span> <span class="n">global_azimuthal_angle</span><span class="p">,</span>
+                                        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Scattering matrix&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a crystal infrared spectrum.</span>
 
 <span class="sd">    Calculate a single crystal spectrum from the frequencies, a list of layers</span>
 <span class="sd">    (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle the global azimuthal angle and</span>
@@ -575,7 +620,8 @@
 <span class="sd">        frequencies_cm1 = np.arange( 0, 200, 0.2 )</span>
 <span class="sd">        incident_angle = 80.0</span>
 <span class="sd">        global_azimuthal_angle = 0.0</span>
-<span class="sd">        (reflectance, transmittance, absorptance) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method=&#39;Scattering matrix&#39;)</span>
+<span class="sd">        (reflectance, transmittance, absorptance) = calculate_crystal_infrared_spectrum(</span>
+<span class="sd">            frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method=&#39;Scattering matrix&#39;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
@@ -602,9 +648,9 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">reflp</span><span class="p">,</span><span class="n">refls</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tranp</span><span class="p">,</span><span class="n">trans</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">absop</span><span class="p">,</span><span class="n">absos</span><span class="p">])</span></div>
 
 
-<div class="viewcode-block" id="calculate_powder_spectrum">
-<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculate_powder_spectrum">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">calculate_powder_spectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">dielectric</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">volume_fraction</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Maxwell-Garnett&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="calculate_powder_infrared_spectrum">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculate_powder_infrared_spectrum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_powder_infrared_spectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">dielectric</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">volume_fraction</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Maxwell-Garnett&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.</span>
 
 <span class="sd">    Parameters</span>
@@ -634,7 +680,7 @@
 <span class="sd">    dielectric = get_material(&#39;Sapphire&#39;)</span>
 <span class="sd">    method = &#39;Maxwell-Garnett&#39; </span>
 <span class="sd">    volume_fraction = 0.1</span>
-<span class="sd">    absorption,permittivity = calculate_powder_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)</span>
+<span class="sd">    absorption,permittivity = calculate_powder_infrared_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)</span>
 <span class="sd">    ```</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -672,6 +718,234 @@
          <span class="n">absorptionCoefficient</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">absorption_coefficient</span><span class="p">)</span>
          <span class="n">molarAbsorptionCoefficient</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molar_absorption_coefficient</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">absorptionCoefficient</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">permittivity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_raman_linewidths">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines._raman_linewidths">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_raman_linewidths</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return per-mode Raman linewidths in cm-1.&quot;&quot;&quot;</span>
+    <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">sigma</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+    <span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sigmas_cm1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sigma must be a scalar or have one value per reader frequency&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sigmas_cm1</span></div>
+
+
+<div class="viewcode-block" id="_raman_modes_selected">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines._raman_modes_selected">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_raman_modes_selected</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">raman_tensors</span><span class="p">,</span> <span class="n">modes_selected</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a boolean mask selecting Raman-active optical modes.&quot;&quot;&quot;</span>
+    <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">modes_selected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">modes_selected</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;modes_selected must have one value per reader frequency&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">selected</span>
+    <span class="n">activities</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">raman_intensities</span><span class="p">(</span><span class="n">raman_tensors</span><span class="p">,</span> <span class="n">reader</span><span class="o">.</span><span class="n">volume</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">frequency</span> <span class="o">&gt;</span> <span class="mf">10.0</span> <span class="ow">and</span> <span class="n">activity</span> <span class="o">&gt;</span> <span class="mf">1.0e-6</span>
+                       <span class="k">for</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">activity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">activities</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_matrix_optical_permittivity">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines._matrix_optical_permittivity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_matrix_optical_permittivity</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the scalar optical permittivity of a matrix material.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">matrix</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">get_optical_permittivity</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="s2">&quot;ndim&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">eps</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">eps</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">eps</span><span class="p">)))</span> <span class="o">/</span> <span class="mf">3.0</span></div>
+
+
+<div class="viewcode-block" id="calculate_powder_raman_spectrum">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculate_powder_raman_spectrum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_powder_raman_spectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">reader</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">volume_fraction</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+                                    <span class="n">laser_wavelength_nm</span><span class="o">=</span><span class="mf">785.0</span><span class="p">,</span> <span class="n">polarisation</span><span class="o">=</span><span class="s2">&quot;HV&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">298.0</span><span class="p">,</span>
+                                    <span class="n">modes_selected</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a powder Raman spectrum for spherical particles.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frequencies_cm1 : array_like</span>
+<span class="sd">        Raman-shift axis in cm-1.</span>
+<span class="sd">    reader : outputReader object</span>
+<span class="sd">        Reader containing phonon frequencies, optical permittivity and Raman tensors.</span>
+<span class="sd">    matrix : material or None</span>
+<span class="sd">        Matrix material.  If ``None`` or ``&quot;none&quot;``, no particle-field correction is applied.</span>
+<span class="sd">    volume_fraction : float</span>
+<span class="sd">        Crystal volume fraction in the sample.</span>
+<span class="sd">    sigma : float or array_like</span>
+<span class="sd">        Lorentzian half-width(s) in cm-1.</span>
+<span class="sd">    laser_wavelength_nm : float</span>
+<span class="sd">        Laser wavelength in nm.</span>
+<span class="sd">    polarisation : {&quot;VV&quot;, &quot;VH&quot;, &quot;HV&quot;, &quot;Unpolarised&quot;}</span>
+<span class="sd">        Raman polarisation geometry.</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        Temperature in K.</span>
+<span class="sd">    modes_selected : array_like of bool, optional</span>
+<span class="sd">        Optional per-mode selection mask.  If omitted, Raman-active optical modes are selected automatically.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    spectrum : np.ndarray</span>
+<span class="sd">        Raman intensity on ``frequencies_cm1`` in arbitrary units.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">raman_tensors</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_raman_tensors</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">raman_tensors</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">raman_tensors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">))</span>
+
+    <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">mode_frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="n">_raman_linewidths</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">selected</span> <span class="o">=</span> <span class="n">_raman_modes_selected</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">raman_tensors</span><span class="p">,</span> <span class="n">modes_selected</span><span class="p">)</span>
+
+    <span class="n">epsilon_e</span> <span class="o">=</span> <span class="n">_matrix_optical_permittivity</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">no_matrix</span> <span class="o">=</span> <span class="n">epsilon_e</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="n">epsilon_inf_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="n">I3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">I3</span> <span class="o">/</span> <span class="mf">3.0</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">I3</span> <span class="k">if</span> <span class="n">no_matrix</span> <span class="k">else</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">compute_internal_field_tensor</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">epsilon_inf_i</span><span class="p">,</span> <span class="n">epsilon_e</span><span class="p">)</span>
+
+    <span class="n">nu_L</span> <span class="o">=</span> <span class="mf">1.0e7</span> <span class="o">/</span> <span class="n">laser_wavelength_nm</span>
+    <span class="n">hc_over_k</span> <span class="o">=</span> <span class="n">planck_si</span> <span class="o">*</span> <span class="n">speed_light_si</span> <span class="o">*</span> <span class="mf">100.0</span> <span class="o">/</span> <span class="n">boltzmann_si</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">linewidth</span><span class="p">,</span> <span class="n">is_selected</span><span class="p">,</span> <span class="n">raman_tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">mode_frequencies</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">raman_tensors</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_selected</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">frequency</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">R_eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raman_tensor</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">no_matrix</span><span class="p">:</span>
+            <span class="n">R_particle</span> <span class="o">=</span> <span class="n">R_eps</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">R_particle</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">compute_particle_raman_tensor</span><span class="p">(</span><span class="n">R_eps</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">epsilon_inf_i</span><span class="p">,</span> <span class="n">epsilon_e</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">polarisation</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;VV&quot;</span><span class="p">,</span> <span class="s2">&quot;VH&quot;</span><span class="p">,</span> <span class="s2">&quot;HV&quot;</span><span class="p">):</span>
+            <span class="n">vv</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">compute_powder_raman_intensities</span><span class="p">(</span><span class="n">R_particle</span><span class="p">)</span>
+            <span class="n">intensity_factor</span> <span class="o">=</span> <span class="n">vv</span> <span class="k">if</span> <span class="n">polarisation</span> <span class="o">==</span> <span class="s2">&quot;VV&quot;</span> <span class="k">else</span> <span class="n">vh</span>
+        <span class="k">elif</span> <span class="n">polarisation</span> <span class="o">==</span> <span class="s2">&quot;Unpolarised&quot;</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">R_particle</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span>
+            <span class="n">gamma_t</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">R_particle</span> <span class="o">+</span> <span class="n">R_particle</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">I3</span>
+            <span class="n">kappa_t</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">R_particle</span> <span class="o">-</span> <span class="n">R_particle</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">alpha2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">alpha</span><span class="p">)))</span>
+            <span class="n">gamma2</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gamma_t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">gamma_t</span><span class="p">))))</span>
+            <span class="n">kappa2</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kappa_t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">kappa_t</span><span class="p">))))</span>
+            <span class="n">intensity_factor</span> <span class="o">=</span> <span class="mf">45.0</span> <span class="o">*</span> <span class="n">alpha2</span> <span class="o">+</span> <span class="mf">7.0</span> <span class="o">*</span> <span class="n">gamma2</span> <span class="o">+</span> <span class="mf">5.0</span> <span class="o">*</span> <span class="n">kappa2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;polarisation must be one of &#39;VV&#39;, &#39;VH&#39;, &#39;HV&#39; or &#39;Unpolarised&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">hc_over_k</span> <span class="o">*</span> <span class="n">frequency</span> <span class="o">/</span> <span class="n">temperature</span> <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0e18</span>
+        <span class="n">n_bose</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">1.0e-6</span> <span class="k">else</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+        <span class="n">nu_s</span> <span class="o">=</span> <span class="n">nu_L</span> <span class="o">-</span> <span class="n">frequency</span>
+        <span class="k">if</span> <span class="n">nu_s</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">strength</span> <span class="o">=</span> <span class="p">(</span><span class="n">nu_s</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_bose</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">intensity_factor</span> <span class="o">/</span> <span class="n">frequency</span>
+        <span class="n">spectrum</span> <span class="o">+=</span> <span class="n">strength</span> <span class="o">*</span> <span class="n">linewidth</span> <span class="o">/</span> <span class="p">((</span><span class="n">frequencies_cm1</span> <span class="o">-</span> <span class="n">frequency</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">linewidth</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">spectrum</span> <span class="o">*</span> <span class="n">volume_fraction</span></div>
+
+
+<div class="viewcode-block" id="calculate_crystal_raman_spectrum">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculate_crystal_raman_spectrum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_crystal_raman_spectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">reader</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">incident_angle</span><span class="p">,</span> <span class="n">global_azimuthal_angle</span><span class="p">,</span>
+                                     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Scattering matrix&quot;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">laser_wavelength_nm</span><span class="o">=</span><span class="mf">532.0</span><span class="p">,</span>
+                                     <span class="n">incident_polarisation</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">detected_polarisation</span><span class="o">=</span><span class="s2">&quot;unpolarised&quot;</span><span class="p">,</span>
+                                     <span class="n">temperature</span><span class="o">=</span><span class="mf">298.0</span><span class="p">,</span> <span class="n">n_gauss</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">collection_side</span><span class="o">=</span><span class="s2">&quot;superstrate&quot;</span><span class="p">,</span>
+                                     <span class="n">collection_angle</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">coherent_layers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">approximate_es</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a layered crystal Raman spectrum.</span>
+
+<span class="sd">    Parameters are intentionally close to :func:`calculate_crystal_infrared_spectrum`, with Raman-specific laser,</span>
+<span class="sd">    polarisation and quadrature options added.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    spectrum, mode_frequencies, mode_intensities, mode_sigmas : tuple of np.ndarray</span>
+<span class="sd">        Broadened Raman spectrum and the active-mode data used to generate it.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">raman_tensors</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_raman_tensors</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">raman_tensors</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">raman_tensors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">zeros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="n">theta</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">global_azimuthal_angle</span><span class="p">)</span>
+    <span class="n">incident_angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">incident_angle</span><span class="p">)</span>
+    <span class="n">exponent_threshold</span> <span class="o">=</span> <span class="mi">700</span>
+
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">():</span>
+            <span class="n">hkl</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">get_hkl</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot calculate crystal Raman spectrum for a tensor layer with hkl=[0, 0, 0]&quot;</span><span class="p">)</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">calculate_euler_matrix</span><span class="p">()</span>
+
+    <span class="n">superstrate</span> <span class="o">=</span> <span class="n">GTM</span><span class="o">.</span><span class="n">SemiInfiniteLayer</span><span class="p">(</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="n">exponent_threshold</span><span class="p">)</span>
+    <span class="n">substrate</span> <span class="o">=</span> <span class="n">GTM</span><span class="o">.</span><span class="n">SemiInfiniteLayer</span><span class="p">(</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="n">exponent_threshold</span><span class="p">)</span>
+    <span class="n">selected_layers</span> <span class="o">=</span> <span class="n">layers</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">gtm_layers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">selected_layers</span><span class="p">:</span>
+        <span class="n">incoherent_option</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">get_incoherent_option</span><span class="p">()</span>
+        <span class="n">gtm_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gtm_methods</span><span class="p">[</span><span class="n">incoherent_option</span><span class="p">](</span><span class="n">layer</span><span class="p">,</span> <span class="n">exponent_threshold</span><span class="o">=</span><span class="n">exponent_threshold</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Scattering matrix&quot;</span><span class="p">:</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="n">GTM</span><span class="o">.</span><span class="n">ScatteringMatrixSystem</span><span class="p">(</span><span class="n">substrate</span><span class="o">=</span><span class="n">substrate</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="n">superstrate</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="n">gtm_layers</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="n">GTM</span><span class="o">.</span><span class="n">TransferMatrixSystem</span><span class="p">(</span><span class="n">substrate</span><span class="o">=</span><span class="n">substrate</span><span class="p">,</span> <span class="n">superstrate</span><span class="o">=</span><span class="n">superstrate</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="n">gtm_layers</span><span class="p">)</span>
+
+    <span class="n">system</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">set_euler</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+    <span class="n">system</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">set_euler</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">gtm_layer</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+        <span class="n">gtm_layer</span><span class="o">.</span><span class="n">set_euler</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+
+    <span class="n">G_psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span>          <span class="mf">0.0</span><span class="p">,</span>         <span class="mf">1.0</span><span class="p">],</span>
+    <span class="p">])</span>
+    <span class="n">scaled_tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raman_tensor</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">raman_tensor</span> <span class="ow">in</span> <span class="n">raman_tensors</span><span class="p">]</span>
+    <span class="n">phonon_frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="n">_raman_linewidths</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+
+    <span class="n">raman_layers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sys_idx</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">selected_layers</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">layer</span><span class="o">.</span><span class="n">is_dielectric</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="n">raman_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RamanLayer</span><span class="p">(</span>
+            <span class="n">layer_index</span><span class="o">=</span><span class="n">sys_idx</span><span class="p">,</span>
+            <span class="n">phonon_frequencies_cm1</span><span class="o">=</span><span class="n">phonon_frequencies</span><span class="p">,</span>
+            <span class="n">raman_tensors</span><span class="o">=</span><span class="n">scaled_tensors</span><span class="p">,</span>
+            <span class="n">rotation_matrix</span><span class="o">=</span><span class="n">G_psi</span> <span class="o">@</span> <span class="n">layer</span><span class="o">.</span><span class="n">euler</span><span class="p">,</span>
+        <span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">raman_layers</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No Raman-active dielectric layers were found in the crystal layer stack&quot;</span><span class="p">)</span>
+
+    <span class="n">collection_angle_rad</span> <span class="o">=</span> <span class="n">incident_angle_rad</span> <span class="k">if</span> <span class="n">collection_angle</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">collection_angle</span><span class="p">)</span>
+    <span class="n">calculator</span> <span class="o">=</span> <span class="n">LayeredRamanCalculator</span><span class="p">(</span>
+        <span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
+        <span class="n">raman_layers</span><span class="o">=</span><span class="n">raman_layers</span><span class="p">,</span>
+        <span class="n">laser_frequency_cm1</span><span class="o">=</span><span class="mf">1.0e7</span> <span class="o">/</span> <span class="n">laser_wavelength_nm</span><span class="p">,</span>
+        <span class="n">incident_angle_rad</span><span class="o">=</span><span class="n">incident_angle_rad</span><span class="p">,</span>
+        <span class="n">incident_pol</span><span class="o">=</span><span class="n">incident_polarisation</span><span class="p">,</span>
+        <span class="n">detected_pol</span><span class="o">=</span><span class="n">detected_polarisation</span><span class="p">,</span>
+        <span class="n">temperature_K</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+        <span class="n">linewidths_cm1</span><span class="o">=</span><span class="n">sigmas_cm1</span><span class="p">,</span>
+        <span class="n">n_gauss</span><span class="o">=</span><span class="n">n_gauss</span><span class="p">,</span>
+        <span class="n">collection_side</span><span class="o">=</span><span class="n">collection_side</span><span class="p">,</span>
+        <span class="n">collection_angle_rad</span><span class="o">=</span><span class="n">collection_angle_rad</span><span class="p">,</span>
+        <span class="n">coherent_layers</span><span class="o">=</span><span class="n">coherent_layers</span><span class="p">,</span>
+        <span class="n">approximate_es</span><span class="o">=</span><span class="n">approximate_es</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">mode_frequencies</span><span class="p">,</span> <span class="n">mode_intensities</span><span class="p">,</span> <span class="n">mode_sigmas</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">calculate_mode_intensities</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mode_frequencies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">lorentzian_broaden</span><span class="p">(</span><span class="n">mode_frequencies</span><span class="p">,</span> <span class="n">mode_intensities</span><span class="p">,</span> <span class="n">mode_sigmas</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">mode_frequencies</span><span class="p">,</span> <span class="n">mode_intensities</span><span class="p">,</span> <span class="n">mode_sigmas</span></div>
 
 
 <div class="viewcode-block" id="maxwell_garnett">
@@ -729,8 +1003,8 @@
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

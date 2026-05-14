@@ -557,6 +557,27 @@ Module Contents
 
 
 
+   .. py:method:: optical_permittivity()
+
+      Return the optical (high-frequency) permittivity.
+
+      For tensor dielectric functions the optical permittivity is
+      ``epsilon_infinity`` (a 3×3 real tensor).  For scalar functions it
+      is the frequency-independent scalar value obtained by evaluating
+      the permittivity at 0 cm⁻¹.
+
+      Subclasses may override this method when these defaults are not
+      appropriate (e.g. Sellmeier).
+
+      Returns
+      -------
+      float or ndarray
+          Scalar permittivity for scalar functions, 3×3 real tensor for
+          tensor functions.
+
+
+
+
    .. py:method:: print(v1_cm1, v2_cm1, v_inc=1, diagonal_only=True, file=None)
 
       Print the permittivity over a range of frequencies to a file.
@@ -884,21 +905,40 @@ Module Contents
 
    .. py:method:: calculate(v)
 
-      Calculate the diagonal permittivity 3x3 tensor at a given frequency.
+      Calculate the scalar permittivity (n²) at a given frequency.
 
       Parameters
       ----------
       v : float
-          The frequency in cm-1.
+          The frequency in cm⁻¹.  If v is 0 the infinite-wavelength
+          limit is returned: n² = 1 + ΣBᵢ.
 
       Returns
       -------
-      ndarray
-          The diagonal permittivity 3x3 tensor at frequency v.
+      float
+          The permittivity (n²) at frequency v.
 
       Notes
       -----
-      The Sellmeier parameters are in microns^2.
+      The Sellmeier equation is n² = 1 + Σ Bᵢ λ²/(λ² − Cᵢ),
+      where the Sellmeier parameters Bᵢ (dimensionless) and Cᵢ (μm²)
+      are stored in ``self.Bs`` and ``self.Cs``.
+
+
+
+
+   .. py:method:: optical_permittivity()
+
+      Return the Sellmeier permittivity at the sodium D-line (589 nm).
+
+      The Sellmeier equation is frequency-dependent, so the optical
+      permittivity is evaluated at a standard optical wavelength
+      (589 nm, sodium D-line, 16978 cm⁻¹).
+
+      Returns
+      -------
+      float
+          n² at 589 nm.
 
 
 

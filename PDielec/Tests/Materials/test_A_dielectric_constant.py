@@ -4,11 +4,12 @@ Plan sections A1, A2, A3.
 
 Pure algebra — no file I/O or DFT data required.
 Tests verify:
-  - ConstantScalar returns the same value at all frequencies and has the
-    correct scalar/tensor flags.
-  - ConstantTensor returns value*I + eps_inf and has the correct flags.
-  - Base class helpers (set_volume, set_epsilon_infinity,
-    dielectric_contributions_from_modes/drude) behave correctly.
+
+- ConstantScalar returns the same value at all frequencies and has the
+  correct scalar/tensor flags.
+- ConstantTensor returns value*I + eps_inf and has the correct flags.
+- Base class helpers (set_volume, set_epsilon_infinity,
+  dielectric_contributions_from_modes/drude) behave correctly.
 """
 import sys
 import os

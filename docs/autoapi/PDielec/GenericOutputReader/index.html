@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.GulpOutputReader" href="../GulpOutputReader/index.html"><link rel="prev" title="PDielec.GUI.ViewerTab" href="../GUI/ViewerTab/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.GenericOutputReader - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -365,7 +402,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">GenericOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">GenericOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader" title="Link to this definition">¶</a></dt>
 <dd><p>Generic reader of output files. Actual reader should inherit from this class.</p>
 <p>Examples of readers with this base class:</p>
 <ul class="simple">
@@ -434,6 +471,9 @@ computational results related to the object. Initialized as empty lists.</p>
 </dd>
 <dt>raman_tensors<span class="classifier">list or None</span></dt><dd><p>A list of 3×3 Raman susceptibility tensors, one per normal mode, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
 the output reader does not provide Raman data.</p>
+</dd>
+<dt>nonlinear_optical_susceptibility<span class="classifier">ndarray or None</span></dt><dd><p>Second-order nonlinear optical susceptibility tensor χ^(2), shape (3, 3, 3),
+units pm/V; <code class="docutils literal notranslate"><span class="pre">None</span></code> if not available.</p>
 </dd>
 <dt>original_born_charges_are_being_used<span class="classifier">bool</span></dt><dd><p>Signifies whether original Born charges are in use, defaults to True.</p>
 </dd>
@@ -698,15 +738,28 @@ Debugging messages are conditionally printed based on the boolean attribute <cit
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.get_nonlinear_optical_susceptibility">
+<span class="sig-name descname"><span class="pre">get_nonlinear_optical_susceptibility</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_nonlinear_optical_susceptibility"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_nonlinear_optical_susceptibility" title="Link to this definition">¶</a></dt>
+<dd><p>Return the second-order nonlinear optical susceptibility tensor χ^(2).</p>
+<section id="id28">
+<h4>Returns<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>ndarray or None</dt><dd><p>χ^(2) tensor, shape (3, 3, 3), units pm/V; None if not available.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.get_raman_tensors">
 <span class="sig-name descname"><span class="pre">get_raman_tensors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_raman_tensors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_raman_tensors" title="Link to this definition">¶</a></dt>
 <dd><p>Return the Raman susceptibility tensors.</p>
-<section id="id28">
-<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<section id="id29">
+<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id29">
-<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<section id="id30">
+<h4>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>list or None</dt><dd><p>A list of 3×3 Raman susceptibility tensors, one per normal mode, or
 <code class="docutils literal notranslate"><span class="pre">None</span></code> if the reader does not provide Raman data.</p>
@@ -721,12 +774,12 @@ Debugging messages are conditionally printed based on the boolean attribute <cit
 <dd><p>Return a list of cleaned species symbols.</p>
 <p>This method applies a specified cleanup function to each element of
 the <cite>species</cite> attribute and returns the resulting list.</p>
-<section id="id30">
-<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<section id="id31">
+<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id31">
-<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<section id="id32">
+<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>list</dt><dd><p>A list of cleaned species symbols.</p>
 </dd>
@@ -740,12 +793,12 @@ the <cite>species</cite> attribute and returns the resulting list.</p>
 <dd><p>Return the last unit cell in the reader.</p>
 <p>The routine adds the current set of masses to the unit cell.
 It returns None if no unit cells have been read.</p>
-<section id="id32">
-<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<section id="id33">
+<h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id33">
-<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<section id="id34">
+<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>unitCell object</dt><dd><p>The last unit cell read by the reader</p>
 </dd>
@@ -757,19 +810,19 @@ It returns None if no unit cells have been read.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.mass_dictionary">
 <span class="sig-name descname"><span class="pre">mass_dictionary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.mass_dictionary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.mass_dictionary" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a dictionary mapping chemical species symbols to their masses.</p>
-<section id="id34">
-<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<section id="id35">
+<h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id35">
-<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id36">
+<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>dictionary<span class="classifier">dict</span></dt><dd><p>A dictionary where keys are cleaned up species symbols and values are their corresponding masses.</p>
 </dd>
 </dl>
 </section>
-<section id="id36">
-<h4>Notes<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<section id="id37">
+<h4>Notes<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
 <p>The function uses a helper function <cite>cleanup_symbol</cite> to clean up the species symbols before using them as keys
 in the dictionary. If the instance’s <cite>debug</cite> attribute is set to True, the function will print the newly created
 mass dictionary.</p>
@@ -791,16 +844,16 @@ to False and saves the current <cite>born_charges</cite> as <cite>original_born_
 <cite>original_born_charges_are_being_used</cite> is True, indicating that the
 original Born charges are no longer being used directly. It then applies
 the Born charge sum rule by calling the <cite>_born_charge_sum_rule</cite> method.</p>
-<section id="id37">
-<h4>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id38">
-<h4>Returns<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id39">
-<h4>Notes<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id40">
+<h4>Notes<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
 <p>This method is intended to be used within a context where Born charges
 (representative of the polarization of ions in a solid under an electric field)
 need to be neutralized or altered from their original state.</p>
@@ -811,16 +864,16 @@ need to be neutralized or altered from their original state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.print" title="Link to this definition">¶</a></dt>
 <dd><p>Print information about the reader.</p>
-<section id="id40">
-<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id41">
-<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id42">
-<h4>Notes<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id43">
+<h4>Notes<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
 <p>This function prints out detailed information about the reader it is run on.</p>
 </section>
 </dd></dl>
@@ -829,15 +882,15 @@ need to be neutralized or altered from their original state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.project">
 <span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.project" title="Link to this definition">¶</a></dt>
 <dd><p>Apply projection operators to remove translation.</p>
-<section id="id43">
-<h4>Parameters<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<section id="id44">
+<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>hessian<span class="classifier">np.array</span></dt><dd><p>The given matrix.</p>
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h4>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<section id="id45">
+<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>np.array</dt><dd><p>The matrix with translational modes projected out.</p>
 </dd>
@@ -849,12 +902,12 @@ need to be neutralized or altered from their original state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.read_output">
 <span class="sig-name descname"><span class="pre">read_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.read_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.read_output" title="Link to this definition">¶</a></dt>
 <dd><p>Interface to the private read output files methods.</p>
-<section id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<section id="id46">
+<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<section id="id47">
+<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -865,16 +918,16 @@ need to be neutralized or altered from their original state.</p>
 <dd><p>Reset the born charges to their original values if they are not currently being used.</p>
 <p>This method restores the <cite>born_charges</cite> attribute of the instance to the value stored in
 <cite>original_born_charges</cite>, but only if <cite>original_born_charges_are_being_used</cite> is <cite>False</cite>.</p>
-<section id="id47">
-<h4>Parameters<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id48">
-<h4>Returns<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id49">
-<h4>Notes<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id50">
+<h4>Notes<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
 <p>This method changes the state of the reader by modifying its <cite>born_charges</cite> attribute to match
 <cite>original_born_charges</cite>, under the condition that <cite>original_born_charges_are_being_used</cite> is <cite>False</cite>.</p>
 </section>
@@ -887,23 +940,23 @@ need to be neutralized or altered from their original state.</p>
 <p>This function resets the mass dictionary of an object to the values specified
 by the object’s <cite>program_mass_dictionary</cite>. Typically used when needing to revert
 any runtime changes to the object’s mass values to their original state.</p>
-<section id="id50">
-<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id51">
-<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id52">
-<h4>Notes<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id53">
+<h4>Notes<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
 <p>If <cite>debug</cite> attribute of the object is True, it prints a message indicating
 that the masses are being reset. This function does not return any value
 but modifies the object’s state by changing its mass dictionary to match
 the <cite>program_mass_dictionary</cite>.</p>
 </section>
-<section id="id53">
-<h4>Examples<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<section id="id54">
+<h4>Examples<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
 <p>Assuming an object <cite>obj</cite> of a class that has <cite>reset_masses</cite> method, <cite>debug</cite> attribute,
 and <cite>program_mass_dictionary</cite>:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
@@ -920,37 +973,37 @@ method to avoid setting the masses to an unintended state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses">
 <span class="sig-name descname"><span class="pre">set_edited_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.set_edited_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses" title="Link to this definition">¶</a></dt>
 <dd><p>Set the edited masses attribute if the length matches the original masses attribute.</p>
-<section id="id54">
-<h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<section id="id55">
+<h4>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>masses<span class="classifier">list</span></dt><dd><p>A list of mass values to be set as the edited masses.</p>
 </dd>
 </dl>
 </section>
-<section id="id55">
-<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<section id="id56">
+<h4>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id56">
-<h4>Notes<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<section id="id57">
+<h4>Notes<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
 <p>The method updates the <cite>edited_masses</cite> attribute only if the length of the input list matches the length of the
 <cite>masses</cite> attribute of the object. If they do not match, an error message is printed, and <cite>edited_masses</cite> is set
 to <cite>None</cite>.</p>
 </section>
-<section id="id57">
-<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
+<section id="id58">
+<h4>Returns<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.CrystalPermittivity">
-<span class="sig-name descname"><span class="pre">CrystalPermittivity</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.CrystalPermittivity" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CrystalPermittivity</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.CrystalPermittivity" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._old_masses">
-<span class="sig-name descname"><span class="pre">_old_masses</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._old_masses" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_old_masses</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._old_masses" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -960,97 +1013,97 @@ to <cite>None</cite>.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.atom_type_list">
-<span class="sig-name descname"><span class="pre">atom_type_list</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.atom_type_list" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">atom_type_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.atom_type_list" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.born_charges">
-<span class="sig-name descname"><span class="pre">born_charges</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.born_charges" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">born_charges</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.born_charges" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.debug">
-<span class="sig-name descname"><span class="pre">debug</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.debug" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">debug</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.debug" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.eckart">
-<span class="sig-name descname"><span class="pre">eckart</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.eckart" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">eckart</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.eckart" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.edited_masses">
-<span class="sig-name descname"><span class="pre">edited_masses</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.edited_masses" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">edited_masses</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.edited_masses" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.elastic_constants">
-<span class="sig-name descname"><span class="pre">elastic_constants</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,...</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.elastic_constants" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">elastic_constants</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,...</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.elastic_constants" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.electrons">
-<span class="sig-name descname"><span class="pre">electrons</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.electrons" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">electrons</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.electrons" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.energiesDFT">
-<span class="sig-name descname"><span class="pre">energiesDFT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.energiesDFT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">energiesDFT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.energiesDFT" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.energiesDFT_disp">
-<span class="sig-name descname"><span class="pre">energiesDFT_disp</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.energiesDFT_disp" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">energiesDFT_disp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.energiesDFT_disp" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.energy_cutoff">
-<span class="sig-name descname"><span class="pre">energy_cutoff</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.energy_cutoff" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">energy_cutoff</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.energy_cutoff" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.file_descriptor">
-<span class="sig-name descname"><span class="pre">file_descriptor</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.file_descriptor" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">file_descriptor</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.file_descriptor" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.final_energies_without_entropy">
-<span class="sig-name descname"><span class="pre">final_energies_without_entropy</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_energies_without_entropy" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">final_energies_without_entropy</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_energies_without_entropy" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.final_energy_without_entropy">
-<span class="sig-name descname"><span class="pre">final_energy_without_entropy</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_energy_without_entropy" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">final_energy_without_entropy</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_energy_without_entropy" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.final_free_energies">
-<span class="sig-name descname"><span class="pre">final_free_energies</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_free_energies" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">final_free_energies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_free_energies" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.final_free_energy">
-<span class="sig-name descname"><span class="pre">final_free_energy</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_free_energy" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">final_free_energy</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.final_free_energy" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.frequencies">
-<span class="sig-name descname"><span class="pre">frequencies</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.frequencies" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">frequencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.frequencies" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.geomsteps">
-<span class="sig-name descname"><span class="pre">geomsteps</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.geomsteps" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">geomsteps</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.geomsteps" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.hessian_symmetrisation">
-<span class="sig-name descname"><span class="pre">hessian_symmetrisation</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'symm'</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.hessian_symmetrisation" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">hessian_symmetrisation</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'symm'</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.hessian_symmetrisation" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.ions_per_type">
-<span class="sig-name descname"><span class="pre">ions_per_type</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.ions_per_type" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ions_per_type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.ions_per_type" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1060,17 +1113,17 @@ to <cite>None</cite>.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.kpoint_grid">
-<span class="sig-name descname"><span class="pre">kpoint_grid</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">1]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.kpoint_grid" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">kpoint_grid</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">1]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.kpoint_grid" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.kpoints">
-<span class="sig-name descname"><span class="pre">kpoints</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.kpoints" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">kpoints</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.kpoints" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.magnetization">
-<span class="sig-name descname"><span class="pre">magnetization</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.magnetization" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">magnetization</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.magnetization" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1080,17 +1133,17 @@ to <cite>None</cite>.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.mass_weighted_normal_modes">
-<span class="sig-name descname"><span class="pre">mass_weighted_normal_modes</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.mass_weighted_normal_modes" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mass_weighted_normal_modes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.mass_weighted_normal_modes" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.masses">
-<span class="sig-name descname"><span class="pre">masses</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.masses" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">masses</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.masses" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.masses_per_type">
-<span class="sig-name descname"><span class="pre">masses_per_type</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.masses_per_type" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">masses_per_type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.masses_per_type" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1100,77 +1153,82 @@ to <cite>None</cite>.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.nbands">
-<span class="sig-name descname"><span class="pre">nbands</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nbands" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">nbands</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nbands" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.ncells">
-<span class="sig-name descname"><span class="pre">ncells</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.ncells" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ncells</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.ncells" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.nions">
-<span class="sig-name descname"><span class="pre">nions</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nions" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">nions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nions" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian">
-<span class="sig-name descname"><span class="pre">nomass_hessian</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">nomass_hessian</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian_has_been_set">
-<span class="sig-name descname"><span class="pre">nomass_hessian_has_been_set</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian_has_been_set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">nomass_hessian_has_been_set</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian_has_been_set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.nonlinear_optical_susceptibility">
+<span class="sig-name descname"><span class="pre">nonlinear_optical_susceptibility</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nonlinear_optical_susceptibility" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.nspecies">
-<span class="sig-name descname"><span class="pre">nspecies</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nspecies" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">nspecies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nspecies" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.nsteps">
-<span class="sig-name descname"><span class="pre">nsteps</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nsteps" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">nsteps</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.nsteps" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.open_directory">
-<span class="sig-name descname"><span class="pre">open_directory</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.open_directory" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">open_directory</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.open_directory" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.open_filename">
-<span class="sig-name descname"><span class="pre">open_filename</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.open_filename" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">open_filename</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.open_filename" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.original_born_charges">
-<span class="sig-name descname"><span class="pre">original_born_charges</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.original_born_charges" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">original_born_charges</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.original_born_charges" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.original_born_charges_are_being_used">
-<span class="sig-name descname"><span class="pre">original_born_charges_are_being_used</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.original_born_charges_are_being_used" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">original_born_charges_are_being_used</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.original_born_charges_are_being_used" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.oscillator_strengths">
-<span class="sig-name descname"><span class="pre">oscillator_strengths</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.oscillator_strengths" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">oscillator_strengths</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.oscillator_strengths" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.pressure">
-<span class="sig-name descname"><span class="pre">pressure</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.pressure" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pressure</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.pressure" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.pressures">
-<span class="sig-name descname"><span class="pre">pressures</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.pressures" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pressures</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.pressures" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.primitive_transformation">
-<span class="sig-name descname"><span class="pre">primitive_transformation</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.primitive_transformation" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">primitive_transformation</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.primitive_transformation" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1180,52 +1238,52 @@ to <cite>None</cite>.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.raman_tensors">
-<span class="sig-name descname"><span class="pre">raman_tensors</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.raman_tensors" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">raman_tensors</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.raman_tensors" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.species">
-<span class="sig-name descname"><span class="pre">species</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.species" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">species</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.species" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.species_list">
-<span class="sig-name descname"><span class="pre">species_list</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.species_list" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">species_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.species_list" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.spin">
-<span class="sig-name descname"><span class="pre">spin</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.spin" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">spin</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.spin" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.type">
-<span class="sig-name descname"><span class="pre">type</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Unkown'</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.type" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Unkown'</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.type" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.unit_cells">
-<span class="sig-name descname"><span class="pre">unit_cells</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.unit_cells" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit_cells</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.unit_cells" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.volume">
-<span class="sig-name descname"><span class="pre">volume</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.volume" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.volume" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.volumes">
-<span class="sig-name descname"><span class="pre">volumes</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.volumes" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">volumes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.volumes" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.zerof_optical_dielectric">
-<span class="sig-name descname"><span class="pre">zerof_optical_dielectric</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.zerof_optical_dielectric" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">zerof_optical_dielectric</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.zerof_optical_dielectric" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.zerof_static_dielectric">
-<span class="sig-name descname"><span class="pre">zerof_static_dielectric</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]]</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.zerof_static_dielectric" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">zerof_static_dielectric</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]]</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.zerof_static_dielectric" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1310,6 +1368,7 @@ to <cite>None</cite>.</p>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.calculate_mass_weighted_normal_modes"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.calculate_mass_weighted_normal_modes()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.change_masses"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.change_masses()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.get_crystal_density"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.get_crystal_density()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.get_nonlinear_optical_susceptibility"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.get_nonlinear_optical_susceptibility()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.get_raman_tensors"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.get_raman_tensors()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.get_species"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.get_species()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.get_unit_cell"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.get_unit_cell()</span></code></a></li>
@@ -1357,6 +1416,7 @@ to <cite>None</cite>.</p>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.nions"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.nions</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.nomass_hessian</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.nomass_hessian_has_been_set"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.nomass_hessian_has_been_set</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.nonlinear_optical_susceptibility"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.nonlinear_optical_susceptibility</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.nspecies"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.nspecies</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.nsteps"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.nsteps</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.open_directory"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.open_directory</span></code></a></li>
@@ -1395,8 +1455,8 @@ to <cite>None</cite>.</p>
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

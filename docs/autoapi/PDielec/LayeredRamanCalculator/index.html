@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.Materials" href="../Materials/index.html"><link rel="prev" title="PDielec.IO" href="../IO/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.LayeredRamanCalculator - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -373,10 +410,25 @@ each Raman-active layer.</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1" title="PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_ACOUSTIC_THRESHOLD_CM1</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT" title="PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_COHERENT</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.logger" title="PDielec.LayeredRamanCalculator.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT" title="PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_INCOHERENT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS" title="PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_OPTIONS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1" title="PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_ACOUSTIC_THRESHOLD_CM1</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._EFIELD_CHUNK_SIZE" title="PDielec.LayeredRamanCalculator._EFIELD_CHUNK_SIZE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_EFIELD_CHUNK_SIZE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._MAX_GAUSS_LEGENDRE_PANEL_ORDER" title="PDielec.LayeredRamanCalculator._MAX_GAUSS_LEGENDRE_PANEL_ORDER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_MAX_GAUSS_LEGENDRE_PANEL_ORDER</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.logger" title="PDielec.LayeredRamanCalculator.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -403,10 +455,19 @@ each Raman-active layer.</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.bose_factor" title="PDielec.LayeredRamanCalculator.bose_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bose_factor</span></code></a>(nu_cm1, temperature_K)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._compute_efield_chunk_worker" title="PDielec.LayeredRamanCalculator._compute_efield_chunk_worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compute_efield_chunk_worker</span></code></a>(shared, z_chunk)</p></td>
+<td><p>Compute the GTM electric field for a contiguous chunk of z-positions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._compute_raman_mode_worker" title="PDielec.LayeredRamanCalculator._compute_raman_mode_worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compute_raman_mode_worker</span></code></a>(shared, mode_args)</p></td>
+<td><p>Compute the Raman intensity for a single phonon mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights" title="PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_gauss_legendre_nodes_weights</span></code></a>(n)</p></td>
+<td><p>Return Gauss-Legendre quadrature nodes and weights on [-1, 1].</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.bose_factor" title="PDielec.LayeredRamanCalculator.bose_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bose_factor</span></code></a>(nu_cm1, temperature_K)</p></td>
 <td><p>Return the Stokes Bose-Einstein thermal prefactor (n+1)/ν.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.lorentzian_broaden" title="PDielec.LayeredRamanCalculator.lorentzian_broaden"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lorentzian_broaden</span></code></a>(mode_frequencies_cm1, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.lorentzian_broaden" title="PDielec.LayeredRamanCalculator.lorentzian_broaden"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lorentzian_broaden</span></code></a>(mode_frequencies_cm1, ...)</p></td>
 <td><p>Broaden a set of delta-function Raman intensities with Lorentzian lineshapes.</p></td>
 </tr>
 </tbody>
@@ -417,7 +478,7 @@ each Raman-active layer.</p>
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">LayeredRamanCalculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raman_layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_frequency_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle_rad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_pol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_pol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_gauss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'superstrate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_angle_rad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coherent_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approximate_es</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">LayeredRamanCalculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raman_layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_frequency_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle_rad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_pol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_pol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_gauss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">21</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'superstrate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_angle_rad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coherent_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approximate_es</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth_integration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DEPTH_INTEGRATION_COHERENT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modal_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the Raman spectrum of a multilayer system via depth integration.</p>
 <p>The calculation proceeds as follows:</p>
 <ol class="arabic">
@@ -469,7 +530,7 @@ intensities incoherently (no analyser on the detector side).</p>
 acoustic modes; those are skipped internally).</p>
 </dd>
 <dt>n_gauss<span class="classifier">int, optional</span></dt><dd><p>Number of Gauss-Legendre quadrature points per Raman-active layer.
-Default is 20, which is accurate for smooth fields in thin layers.</p>
+Default is 21.</p>
 </dd>
 <dt>collection_side<span class="classifier">{‘superstrate’, ‘substrate’}, optional</span></dt><dd><p>Which side the detector is on.  <code class="docutils literal notranslate"><span class="pre">'superstrate'</span></code> (default) gives
 backscattering geometry; <code class="docutils literal notranslate"><span class="pre">'substrate'</span></code> gives forward scattering and
@@ -484,6 +545,12 @@ intensities are summed).</p>
 </dd>
 <dt>approximate_es<span class="classifier">bool, optional</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the Phase 1 approximation E_S ≈ E_L (both fields at
 the laser frequency).  Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt>depth_integration<span class="classifier">{‘Coherent amplitude’, ‘Incoherent intensity’}, optional</span></dt><dd><p>How to combine the source along the depth of each Raman-active layer.
+<code class="docutils literal notranslate"><span class="pre">'Coherent</span> <span class="pre">amplitude'</span></code> integrates the complex amplitude before
+squaring and is appropriate for thin coherent films.  <code class="docutils literal notranslate"><span class="pre">'Incoherent</span>
+<span class="pre">intensity'</span></code> integrates the local intensity and is more stable for
+thick or bulk samples where long-range phase coherence is not physical.</p>
 </dd>
 </dl>
 </section>
@@ -501,22 +568,22 @@ E_S, consistent with the optical-reciprocity formulation of layered Raman:</p>
 </div></blockquote>
 <p>For forward scattering (<code class="docutils literal notranslate"><span class="pre">collection_side='substrate'</span></code>), the z-coordinates
 for E_S are remapped as <code class="docutils literal notranslate"><span class="pre">z_rev</span> <span class="pre">=</span> <span class="pre">total_thickness</span> <span class="pre">−</span> <span class="pre">z_orig</span></code> before being
-passed to <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> on the reversed system; the GL quadrature
+passed to <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> on the reversed system; the quadrature
 weights are unchanged.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._build_gl_grid">
 <span class="sig-name descname"><span class="pre">_build_gl_grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._build_gl_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._build_gl_grid" title="Link to this definition">¶</a></dt>
-<dd><p>Map GL quadrature points onto each Raman-active layer interval.</p>
+<dd><p>Map Gauss-Legendre quadrature points onto each Raman-active layer interval.</p>
 <p>Uses <code class="docutils literal notranslate"><span class="pre">system.get_layers_boundaries()</span></code> to find each layer’s z extent.
 Boundaries are in metres with z = 0 at the superstrate/first-layer
 interface (the convention used by <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code>).</p>
 <section id="populates">
 <h4>Populates<a class="headerlink" href="#populates" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>_gl_z<span class="classifier">ndarray</span></dt><dd><p>Concatenated GL z coordinates for all Raman-active layers, in metres
+<dt>_gl_z<span class="classifier">ndarray</span></dt><dd><p>Concatenated quadrature z coordinates for all Raman-active layers, in metres
 (the unit <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> expects).</p>
 </dd>
-<dt>_gl_phys_weights<span class="classifier">ndarray</span></dt><dd><p>Corresponding integration weights in Ångström (GL weight × half-thickness × 1e10).
+<dt>_gl_phys_weights<span class="classifier">ndarray</span></dt><dd><p>Corresponding integration weights in Ångström (quadrature weight × half-thickness × 1e10).
 The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
 keeping intensity magnitudes in a readable range.</p>
 </dd>
@@ -527,11 +594,99 @@ keeping intensity magnitudes in a readable range.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_mode_intensities_modal_pairs">
+<span class="sig-name descname"><span class="pre">_calculate_mode_intensities_modal_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._calculate_mode_intensities_modal_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_mode_intensities_modal_pairs" title="Link to this definition">¶</a></dt>
+<dd><p>Level 3 modal-pairs Raman intensity calculation.</p>
+<p>For each phonon mode, sums <code class="docutils literal notranslate"><span class="pre">|A^{ij}|²</span></code> over all active (i_L, j_S) Berreman
+mode pairs incoherently.  The phonon wavevector for each pair is
+q_ph = k_L^i − k_S^j, giving a distinct NAC-corrected phonon frequency
+and Raman tensor per pair.  NAC results are cached per
+(layer_index, i_mode, j_mode) and reused across all phonon modes.</p>
+<p>Pool parallelism is disabled for this path (closures in RamanLayer.nac_function
+are not picklable in Phase 1).</p>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<p>active_frequencies : ndarray
+active_intensities : ndarray
+active_linewidths : ndarray</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_modes_parallel">
+<span class="sig-name descname"><span class="pre">_calculate_modes_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">es_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_matrices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._calculate_modes_parallel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_modes_parallel" title="Link to this definition">¶</a></dt>
+<dd><p>Parallel implementation of mode-intensity calculation via pool.imap.</p>
+<p>E_L is computed in parallel by splitting the GL z-grid into chunks and
+dispatching each chunk to a pool worker.  Each phonon-mode E_S call is
+also dispatched to a pool worker.  This eliminates both the pre-pool
+single-threaded bottleneck (E_L chunk computation is parallelised)
+and the per-mode E_S bottleneck.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>pool<span class="classifier">multiprocessing.Pool or compatible</span></dt><dd><p>Active worker pool.</p>
+</dd>
+<dt>ref_layer<span class="classifier">RamanLayer</span></dt><dd><p>First Raman-active layer (source of phonon frequencies).</p>
+</dd>
+<dt>n_modes<span class="classifier">int</span></dt><dd><p>Total number of phonon modes (including acoustic).</p>
+</dd>
+<dt>es_system<span class="classifier">GTMcore.System</span></dt><dd><p>System used to evaluate E_S (original or reversed).</p>
+</dd>
+<dt>z_s<span class="classifier">ndarray</span></dt><dd><p>z-coordinates (m) for the E_S field evaluation.</p>
+</dd>
+<dt>rotation_matrices<span class="classifier">list of ndarray</span></dt><dd><p>Crystal-to-lab rotation matrices, one per RamanLayer.</p>
+</dd>
+<dt>progress_callback<span class="classifier">callable or None</span></dt><dd><p>Called once per mode (in result-collection order) if not <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>tuple of ndarray</dt><dd><p><code class="docutils literal notranslate"><span class="pre">(active_frequencies,</span> <span class="pre">active_intensities,</span> <span class="pre">active_linewidths)</span></code></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_active_modal_pairs">
+<span class="sig-name descname"><span class="pre">_get_active_modal_pairs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._get_active_modal_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_active_modal_pairs" title="Link to this definition">¶</a></dt>
+<dd><p>Return the list of (i_L, j_S) Berreman mode-index pairs.</p>
+<p>Each Berreman eigenmode has both a forward (kz &gt; 0) and a backward
+(kz &lt; 0) variant per polarisation:</p>
+<blockquote>
+<div><p>Mode 0: forward p-pol  (kz &gt; 0)
+Mode 1: forward s-pol  (kz &gt; 0)
+Mode 2: backward p-pol (kz &lt; 0)
+Mode 3: backward s-pol (kz &lt; 0)</p>
+</div></blockquote>
+<p>Both propagation directions contribute to the total field, so the
+physically complete Level-3 sum includes all forward/backward pairs
+for the appropriate polarisation.</p>
+<p>For p-pol incidence: i_modes = {0, 2}  (both p modes, fwd and bwd).
+For s-pol incidence: i_modes = {1, 3}.
+Detected modes follow the same convention.</p>
+<p>In backscattering the dominant amplitude comes from pair (0, 2) because
+<code class="docutils literal notranslate"><span class="pre">qs_L[0]</span> <span class="pre">+</span> <span class="pre">qs_S[2]</span> <span class="pre">≈</span> <span class="pre">0</span></code> gives a non-oscillating integrand.  Pairs
+with both modes forward or both backward produce rapidly oscillating
+integrands that are suppressed for thick layers, so the incoherent sum
+<code class="docutils literal notranslate"><span class="pre">Σ|A^{ij}|²</span></code> is still dominated by the correct backscattering terms.</p>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>list of (int, int)</dt><dd><p>Cartesian product of incident × detected mode sets.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_field_at_gl_points">
 <span class="sig-name descname"><span class="pre">_get_field_at_gl_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_rad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._get_field_at_gl_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_field_at_gl_points" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the electric field at the given z positions.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>freq_cm1<span class="classifier">float</span></dt><dd><p>Frequency in cm⁻¹ at which to evaluate the field.</p>
 </dd>
@@ -545,10 +700,82 @@ first-layer interface).</p>
 </dd>
 </dl>
 </section>
-<section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<section id="id5">
+<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>E_out<span class="classifier">ndarray, shape (6, len(z_arr))</span></dt><dd><p>Electric field: rows 0–2 for p-pol incidence, rows 3–5 for s-pol.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_field_parallel">
+<span class="sig-name descname"><span class="pre">_get_field_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_rad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._get_field_parallel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_field_parallel" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the GTM E-field at <em>z_arr</em> in parallel using <em>pool</em>.</p>
+<p>Splits <code class="docutils literal notranslate"><span class="pre">z_arr</span></code> into contiguous chunks of at most <code class="docutils literal notranslate"><span class="pre">_EFIELD_CHUNK_SIZE</span></code>
+z-positions, dispatches each chunk to a pool worker, then reassembles
+the full <code class="docutils literal notranslate"><span class="pre">(6,</span> <span class="pre">N)</span></code> field array.  This avoids the long single-threaded
+Python loop inside <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> by distributing the z-iteration
+across pool workers.</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>pool<span class="classifier">multiprocessing.Pool or compatible</span></dt><dd><p>Worker pool used to distribute field calculations over chunks of
+z-coordinates.</p>
+</dd>
+<dt>freq_cm1<span class="classifier">float</span></dt><dd><p>Evaluation frequency in cm⁻¹.</p>
+</dd>
+<dt>system<span class="classifier">GTMcore.System</span></dt><dd><p>Optical system (copied to each worker via pickling).</p>
+</dd>
+<dt>angle_rad<span class="classifier">float</span></dt><dd><p>Angle of incidence in radians.</p>
+</dd>
+<dt>z_arr<span class="classifier">ndarray, shape (N,)</span></dt><dd><p>Sorted z-coordinates in metres.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<p>E_out : ndarray, shape (6, N)</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_modal_fields_at_gl_points">
+<span class="sig-name descname"><span class="pre">_get_modal_fields_at_gl_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_rad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._get_modal_fields_at_gl_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_modal_fields_at_gl_points" title="Link to this definition">¶</a></dt>
+<dd><p>Compute per-Berreman-mode electric field contributions at GL quadrature points.</p>
+<p>For each Raman-active layer and each of its GL z-points, the field
+contribution from each of the 4 Berreman modes is evaluated separately.
+The total field at any z-point equals the sum of all 4 modal contributions,
+which reproduces <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> exactly.</p>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>freq_cm1<span class="classifier">float</span></dt><dd><p>Frequency in cm⁻¹ at which to solve the GTM system.</p>
+</dd>
+<dt>system<span class="classifier">GTMcore.System</span></dt><dd><p>Optical system (TransferMatrixSystem or ScatteringMatrixSystem).</p>
+</dd>
+<dt>angle_rad<span class="classifier">float</span></dt><dd><p>Angle of incidence on <code class="docutils literal notranslate"><span class="pre">system</span></code>’s superstrate, in radians.</p>
+</dd>
+<dt>z_arr<span class="classifier">ndarray</span></dt><dd><p>GL z-coordinates in metres (in system’s coordinate frame).</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>modal_fields<span class="classifier">ndarray, shape (4, 2, 3, N_gl_total)</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">modal_fields[mode_n,</span> <span class="pre">pol_idx,</span> <span class="pre">xyz,</span> <span class="pre">z_pt]</span></code>
+mode_n: 0..3 (trans-p, trans-s, refl-p, refl-s).
+pol_idx: 0 = p-pol incidence on system, 1 = s-pol incidence.
+xyz: Ex, Ey, Ez components.</p>
+</dd>
+<dt>qs_by_layer<span class="classifier">dict of {int: ndarray(4,)}</span></dt><dd><p>Maps rl.layer_index → layer.qs (4 kz eigenvalues) from <code class="docutils literal notranslate"><span class="pre">system</span></code>.
+Note: for forward scatter (reversed system), rl.layer_index is
+used directly as an index into system.layers, which is an
+approximation; the physical-layer correspondence is exact only
+for backscattering (es_system == self.system).</p>
+</dd>
+<dt>zeta<span class="classifier">complex</span></dt><dd><p>In-plane wavevector used for this system/frequency/angle.</p>
 </dd>
 </dl>
 </section>
@@ -562,8 +789,8 @@ first-layer interface).</p>
 <blockquote>
 <div><p>A = Σ_j w_j  E_S(z_j)^T  R_lab  E_L(z_j)</p>
 </div></blockquote>
-<section id="id2">
-<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>E_L_out<span class="classifier">ndarray, shape (6, N_total)</span></dt><dd><p>Incident laser field array from <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> at ν_L.</p>
 </dd>
@@ -577,8 +804,8 @@ backscattering geometry.</p>
 </dd>
 </dl>
 </section>
-<section id="id3">
-<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>amplitude_p<span class="classifier">complex</span></dt><dd><p>Amplitude for the p-detected channel.</p>
 </dd>
@@ -590,11 +817,17 @@ backscattering geometry.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._layer_depth_intensity">
+<span class="sig-name descname"><span class="pre">_layer_depth_intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_L_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_S_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_lab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._layer_depth_intensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._layer_depth_intensity" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the incoherent depth-integrated Raman intensity for one layer.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._rotate_raman_tensor">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">_rotate_raman_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R_crystal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._rotate_raman_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._rotate_raman_tensor" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_rotate_raman_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R_crystal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._rotate_raman_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._rotate_raman_tensor" title="Link to this definition">¶</a></dt>
 <dd><p>Rotate a Raman tensor from crystal frame to lab frame.</p>
-<section id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<section id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>R_crystal<span class="classifier">ndarray, shape (3, 3)</span></dt><dd><p>Raman tensor in the DFT crystal frame.</p>
 </dd>
@@ -602,8 +835,8 @@ backscattering geometry.</p>
 </dd>
 </dl>
 </section>
-<section id="id5">
-<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<section id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>ndarray, shape (3, 3)</dt><dd><p>Raman tensor in the lab frame: <code class="docutils literal notranslate"><span class="pre">G</span> <span class="pre">&#64;</span> <span class="pre">R_crystal</span> <span class="pre">&#64;</span> <span class="pre">G.T</span></code>.</p>
 </dd>
@@ -613,22 +846,28 @@ backscattering geometry.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities">
-<span class="sig-name descname"><span class="pre">calculate_mode_intensities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator.calculate_mode_intensities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_mode_intensities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator.calculate_mode_intensities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the per-mode Raman intensities (before broadening).</p>
 <p>Modes below <code class="docutils literal notranslate"><span class="pre">_ACOUSTIC_THRESHOLD_CM1</span></code> are excluded.  Layer
 contributions are combined incoherently or coherently depending on
 <code class="docutils literal notranslate"><span class="pre">self.coherent_layers</span></code>.</p>
-<section id="id6">
-<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<section id="id14">
+<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>progress_callback<span class="classifier">callable, optional</span></dt><dd><p>If supplied, called once per phonon-mode iteration (including modes
 that are skipped as acoustic), so the caller can drive a progress
 bar.  The callback takes no arguments.</p>
 </dd>
+<dt>pool<span class="classifier">multiprocessing.Pool or multiprocessing.dummy.Pool, optional</span></dt><dd><p>Worker pool for parallel execution.  When provided, each phonon mode
+(i.e. each E_S field evaluation at its own scattered frequency) is
+dispatched to a pool worker.  E_L is computed once on the calling
+process and broadcast to all workers via <code class="docutils literal notranslate"><span class="pre">functools.partial</span></code>.
+When <code class="docutils literal notranslate"><span class="pre">None</span></code> (default), the calculation runs sequentially.</p>
+</dd>
 </dl>
 </section>
-<section id="id7">
-<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<section id="id15">
+<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>active_frequencies<span class="classifier">ndarray, shape (M,)</span></dt><dd><p>Frequencies of the active (non-acoustic) modes in cm⁻¹.</p>
 </dd>
@@ -638,8 +877,8 @@ bar.  The callback takes no arguments.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h4>Notes<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<section id="id16">
+<h4>Notes<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <p>This method assumes all <code class="docutils literal notranslate"><span class="pre">RamanLayer</span></code> objects in <code class="docutils literal notranslate"><span class="pre">self.raman_layers</span></code>
 have the same set of phonon modes (same DFT calculation).  If layers
 have different materials this method must be extended.</p>
@@ -654,8 +893,8 @@ to recover the single-field-call behaviour at the cost of accuracy.</p>
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_spectrum">
 <span class="sig-name descname"><span class="pre">calculate_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq_axis_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator.calculate_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_spectrum" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the broadened Raman spectrum on the given frequency axis.</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<section id="id17">
+<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>freq_axis_cm1<span class="classifier">array_like, shape (N,)</span></dt><dd><p>Raman-shift axis in cm⁻¹ on which to evaluate the spectrum.</p>
 </dd>
@@ -664,8 +903,8 @@ drive a progress bar.  Called once per phonon mode.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<section id="id18">
+<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>spectrum<span class="classifier">ndarray, shape (N,)</span></dt><dd><p>Raman intensity I(Δν) on the requested axis.</p>
 </dd>
@@ -675,22 +914,22 @@ drive a progress bar.  Called once per phonon mode.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._detected_jones">
-<span class="sig-name descname"><span class="pre">_detected_jones</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._detected_jones" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_detected_jones</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._detected_jones" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_layer_slices">
-<span class="sig-name descname"><span class="pre">_gl_layer_slices</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_layer_slices" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_gl_layer_slices</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_layer_slices" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_phys_weights">
-<span class="sig-name descname"><span class="pre">_gl_phys_weights</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_phys_weights" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_gl_phys_weights</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_phys_weights" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_z">
-<span class="sig-name descname"><span class="pre">_gl_z</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_z" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_gl_z</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_z" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -699,13 +938,18 @@ drive a progress bar.  Called once per phonon mode.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._nac_cache">
+<span class="sig-name descname"><span class="pre">_nac_cache</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._nac_cache" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.approximate_es">
-<span class="sig-name descname"><span class="pre">approximate_es</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.approximate_es" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">approximate_es</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.approximate_es" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.coherent_layers">
-<span class="sig-name descname"><span class="pre">coherent_layers</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.coherent_layers" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">coherent_layers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.coherent_layers" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -715,7 +959,12 @@ drive a progress bar.  Called once per phonon mode.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.collection_side">
-<span class="sig-name descname"><span class="pre">collection_side</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'superstrate'</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.collection_side" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">collection_side</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'superstrate'</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.collection_side" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.depth_integration">
+<span class="sig-name descname"><span class="pre">depth_integration</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Coherent</span> <span class="pre">amplitude'</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.depth_integration" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -744,8 +993,13 @@ drive a progress bar.  Called once per phonon mode.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.modal_pairs">
+<span class="sig-name descname"><span class="pre">modal_pairs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.modal_pairs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.n_gauss">
-<span class="sig-name descname"><span class="pre">n_gauss</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.n_gauss" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">n_gauss</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.n_gauss" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -768,10 +1022,10 @@ drive a progress bar.  Called once per phonon mode.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.RamanLayer">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">RamanLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonon_frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raman_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#RamanLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.RamanLayer" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">RamanLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonon_frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raman_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nac_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#RamanLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.RamanLayer" title="Link to this definition">¶</a></dt>
 <dd><p>A Raman-active layer descriptor for LayeredRamanCalculator.</p>
-<section id="id11">
-<h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<section id="id19">
+<h3>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>layer_index<span class="classifier">int</span></dt><dd><p>Zero-based index into <code class="docutils literal notranslate"><span class="pre">System.layers</span></code> (the list of finite-thickness
 layers, excluding the semi-infinite superstrate and substrate).</p>
@@ -791,8 +1045,8 @@ rotation computed by <code class="docutils literal notranslate"><span class="pre
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h3>Notes<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<section id="id20">
+<h3>Notes<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>For a rank-2 tensor the lab-frame rotation is:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">R_lab</span> <span class="pre">=</span> <span class="pre">G</span> <span class="pre">&#64;</span> <span class="pre">R_crystal</span> <span class="pre">&#64;</span> <span class="pre">G.T</span></code></p>
 </dd>
@@ -800,6 +1054,11 @@ rotation computed by <code class="docutils literal notranslate"><span class="pre
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.RamanLayer.layer_index">
 <span class="sig-name descname"><span class="pre">layer_index</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.RamanLayer.layer_index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.RamanLayer.nac_function">
+<span class="sig-name descname"><span class="pre">nac_function</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.RamanLayer.nac_function" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -821,11 +1080,101 @@ rotation computed by <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._compute_efield_chunk_worker">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_compute_efield_chunk_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_chunk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_compute_efield_chunk_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._compute_efield_chunk_worker" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the GTM electric field for a contiguous chunk of z-positions.</p>
+<p>Used to parallelise the E_L (and approximate E_S) field computation across
+pool workers.  Each worker handles an independent, contiguous sub-array of
+the full GL z-grid.</p>
+<section id="id21">
+<h3>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>shared<span class="classifier">tuple</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">(system,</span> <span class="pre">freq_cm1,</span> <span class="pre">angle_rad)</span></code> — the optical system, evaluation
+frequency in cm⁻¹, and angle of incidence in radians.  The system is
+pickled once per <code class="docutils literal notranslate"><span class="pre">functools.partial</span></code> binding.</p>
+</dd>
+<dt>z_chunk<span class="classifier">ndarray, shape (M,)</span></dt><dd><p>Sorted z-coordinates (metres) for this chunk.</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h3>Returns<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>E_chunk<span class="classifier">ndarray, shape (6, M)</span></dt><dd><p>Electric field at the requested z-positions.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._compute_raman_mode_worker">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_compute_raman_mode_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_compute_raman_mode_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._compute_raman_mode_worker" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the Raman intensity for a single phonon mode.</p>
+<p>Designed to be called via <code class="docutils literal notranslate"><span class="pre">pool.imap(partial(_compute_raman_mode_worker,</span> <span class="pre">shared),</span>
+<span class="pre">mode_args_list)</span></code> so that the large shared arrays (E_L, GL grid) are bound once
+to the partial function and only the small per-mode data is iterated.</p>
+<section id="id23">
+<h3>Parameters<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<dl>
+<dt>shared<span class="classifier">tuple</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">(es_system,</span> <span class="pre">collection_angle_rad,</span> <span class="pre">z_s_arr,</span> <span class="pre">E_L_out,</span> <span class="pre">E_S_fixed,</span>
+<span class="pre">gl_phys_weights,</span> <span class="pre">gl_layer_slices,</span> <span class="pre">rotation_matrices,</span>
+<span class="pre">incident_jones,</span> <span class="pre">detected_jones,</span> <span class="pre">coherent_layers,</span> <span class="pre">depth_integration,</span>
+<span class="pre">temperature_K)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">es_system</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> when <code class="docutils literal notranslate"><span class="pre">E_S_fixed</span></code> is provided (approximate-ES
+or pre-computed forward-scatter field).  <code class="docutils literal notranslate"><span class="pre">E_S_fixed</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> when
+<code class="docutils literal notranslate"><span class="pre">es_system</span></code> should be used to compute E_S fresh at <code class="docutils literal notranslate"><span class="pre">nu_S</span></code>.</p>
+</dd>
+<dt>mode_args<span class="classifier">tuple</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">(mode_idx,</span> <span class="pre">nu_m,</span> <span class="pre">sigma,</span> <span class="pre">nu_S,</span> <span class="pre">mode_raman_tensors)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">nu_S</span></code> is the scattered frequency in cm⁻¹ (ignored when <code class="docutils literal notranslate"><span class="pre">E_S_fixed</span></code>
+is not <code class="docutils literal notranslate"><span class="pre">None</span></code>).  <code class="docutils literal notranslate"><span class="pre">mode_raman_tensors</span></code> is a list of (3, 3) complex
+arrays, one per Raman-active layer, for this mode.</p>
+</dd>
+</dl>
+</section>
+<section id="id24">
+<h3>Returns<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple or None</dt><dd><p><code class="docutils literal notranslate"><span class="pre">(mode_idx,</span> <span class="pre">nu_m,</span> <span class="pre">I_m,</span> <span class="pre">sigma)</span></code> for an active mode, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
+the mode is below the acoustic threshold or the scattered frequency is
+non-positive.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_gauss_legendre_nodes_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_gauss_legendre_nodes_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights" title="Link to this definition">¶</a></dt>
+<dd><p>Return Gauss-Legendre quadrature nodes and weights on [-1, 1].</p>
+<p>For moderate point counts this is one ordinary Gauss-Legendre rule.  For
+large point counts it becomes a composite Gauss-Legendre rule with repeated
+fixed-order panels.  The composite form keeps setup cost and numerical
+conditioning practical for mm/cm-thick layers where the GUI can request
+hundreds of thousands of integration points.</p>
+<section id="id25">
+<h3>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>Number of quadrature points.  Must be at least 1.</p>
+</dd>
+</dl>
+</section>
+<section id="id26">
+<h3>Returns<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>nodes<span class="classifier">ndarray, shape (n,)</span></dt><dd><p>Gauss-Legendre abscissas on [-1, 1].</p>
+</dd>
+<dt>weights<span class="classifier">ndarray, shape (n,)</span></dt><dd><p>Gauss-Legendre weights.  Their sum equals 2.0 (= length of [-1, 1]).</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.bose_factor">
 <span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">bose_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_K</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#bose_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.bose_factor" title="Link to this definition">¶</a></dt>
 <dd><p>Return the Stokes Bose-Einstein thermal prefactor (n+1)/ν.</p>
-<section id="id13">
-<h3>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<section id="id27">
+<h3>Parameters<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>nu_cm1<span class="classifier">float</span></dt><dd><p>Phonon frequency in cm⁻¹.  Must be positive.</p>
 </dd>
@@ -833,8 +1182,8 @@ rotation computed by <code class="docutils literal notranslate"><span class="pre
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h3>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<section id="id28">
+<h3>Returns<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>float</dt><dd><p><code class="docutils literal notranslate"><span class="pre">(n(ν)</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">ν</span></code> where <code class="docutils literal notranslate"><span class="pre">n(ν)</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">/</span> <span class="pre">(exp(hcν</span> <span class="pre">/</span> <span class="pre">kT)</span> <span class="pre">-</span> <span class="pre">1)</span></code>.
 At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">1/ν</span></code> is returned.</p>
@@ -847,8 +1196,8 @@ At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.lorentzian_broaden">
 <span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">lorentzian_broaden</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_intensities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_axis_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#lorentzian_broaden"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.lorentzian_broaden" title="Link to this definition">¶</a></dt>
 <dd><p>Broaden a set of delta-function Raman intensities with Lorentzian lineshapes.</p>
-<section id="id15">
-<h3>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<section id="id29">
+<h3>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>mode_frequencies_cm1<span class="classifier">array_like, shape (M,)</span></dt><dd><p>Mode frequencies in cm⁻¹ (only active modes, after acoustic filtering).</p>
 </dd>
@@ -860,8 +1209,8 @@ At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h3>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<section id="id30">
+<h3>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>spectrum<span class="classifier">ndarray, shape (N,)</span></dt><dd><p>Broadened Raman spectrum I(Δν).</p>
 </dd>
@@ -870,8 +1219,33 @@ At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">
 </dd></dl>
 
 <dl class="py data">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">DEPTH_INTEGRATION_COHERENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Coherent</span> <span class="pre">amplitude'</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">DEPTH_INTEGRATION_INCOHERENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Incoherent</span> <span class="pre">intensity'</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">DEPTH_INTEGRATION_OPTIONS</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1">
-<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_ACOUSTIC_THRESHOLD_CM1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10.0</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_ACOUSTIC_THRESHOLD_CM1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10.0</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._EFIELD_CHUNK_SIZE">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_EFIELD_CHUNK_SIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1000</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator._EFIELD_CHUNK_SIZE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._MAX_GAUSS_LEGENDRE_PANEL_ORDER">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_MAX_GAUSS_LEGENDRE_PANEL_ORDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">64</span></em><a class="headerlink" href="#PDielec.LayeredRamanCalculator._MAX_GAUSS_LEGENDRE_PANEL_ORDER" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -944,8 +1318,14 @@ At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._build_gl_grid"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._build_gl_grid()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_mode_intensities_modal_pairs"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._calculate_mode_intensities_modal_pairs()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_modes_parallel"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._calculate_modes_parallel()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_active_modal_pairs"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._get_active_modal_pairs()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_field_at_gl_points"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._get_field_at_gl_points()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_field_parallel"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._get_field_parallel()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._get_modal_fields_at_gl_points"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._get_modal_fields_at_gl_points()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._layer_amplitude"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._layer_amplitude()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._layer_depth_intensity"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._layer_depth_intensity()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._rotate_raman_tensor"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._rotate_raman_tensor()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.calculate_mode_intensities()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_spectrum"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.calculate_spectrum()</span></code></a></li>
@@ -954,15 +1334,18 @@ At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_phys_weights"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._gl_phys_weights</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_z"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._gl_z</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._incident_jones"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._incident_jones</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._nac_cache"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._nac_cache</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.approximate_es"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.approximate_es</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.coherent_layers"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.coherent_layers</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.collection_angle_rad"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.collection_angle_rad</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.collection_side"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.collection_side</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.depth_integration"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.depth_integration</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.detected_pol"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.detected_pol</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.incident_angle_rad"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.incident_angle_rad</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.incident_pol"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.incident_pol</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.laser_frequency_cm1"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.laser_frequency_cm1</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.linewidths_cm1"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.linewidths_cm1</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.modal_pairs"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.modal_pairs</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.n_gauss"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.n_gauss</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.raman_layers"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.raman_layers</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.system"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.system</span></code></a></li>
@@ -971,14 +1354,23 @@ At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">
 </li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.RamanLayer"><code class="docutils literal notranslate"><span class="pre">RamanLayer</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.RamanLayer.layer_index"><code class="docutils literal notranslate"><span class="pre">RamanLayer.layer_index</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.RamanLayer.nac_function"><code class="docutils literal notranslate"><span class="pre">RamanLayer.nac_function</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.RamanLayer.phonon_frequencies_cm1"><code class="docutils literal notranslate"><span class="pre">RamanLayer.phonon_frequencies_cm1</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.RamanLayer.raman_tensors"><code class="docutils literal notranslate"><span class="pre">RamanLayer.raman_tensors</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.RamanLayer.rotation_matrix"><code class="docutils literal notranslate"><span class="pre">RamanLayer.rotation_matrix</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._compute_efield_chunk_worker"><code class="docutils literal notranslate"><span class="pre">_compute_efield_chunk_worker()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._compute_raman_mode_worker"><code class="docutils literal notranslate"><span class="pre">_compute_raman_mode_worker()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights"><code class="docutils literal notranslate"><span class="pre">_gauss_legendre_nodes_weights()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.bose_factor"><code class="docutils literal notranslate"><span class="pre">bose_factor()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.lorentzian_broaden"><code class="docutils literal notranslate"><span class="pre">lorentzian_broaden()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT"><code class="docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_COHERENT</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT"><code class="docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_INCOHERENT</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS"><code class="docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_OPTIONS</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1"><code class="docutils literal notranslate"><span class="pre">_ACOUSTIC_THRESHOLD_CM1</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._EFIELD_CHUNK_SIZE"><code class="docutils literal notranslate"><span class="pre">_EFIELD_CHUNK_SIZE</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._MAX_GAUSS_LEGENDRE_PANEL_ORDER"><code class="docutils literal notranslate"><span class="pre">_MAX_GAUSS_LEGENDRE_PANEL_ORDER</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
@@ -994,8 +1386,8 @@ At T = 0 the limit <code class="docutils literal notranslate"><span class="pre">
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

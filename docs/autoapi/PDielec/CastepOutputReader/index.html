@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.Constants" href="../Constants/index.html"><link rel="prev" title="PDielec.Calculator" href="../Calculator/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.CastepOutputReader - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -365,7 +402,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.CastepOutputReader.</span></span><span class="sig-name descname"><span class="pre">CastepOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.CastepOutputReader.</span></span><span class="sig-name descname"><span class="pre">CastepOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a Castep output file.</p>
 <p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
@@ -793,15 +830,46 @@ variable <cite>electrons</cite>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_output_files">
-<span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_output_files" title="Link to this definition">¶</a></dt>
-<dd><p>Define the strings needed for searching the files process the output files.</p>
+<dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_nlo_susceptibility">
+<span class="sig-name descname"><span class="pre">_read_nlo_susceptibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_nlo_susceptibility"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nlo_susceptibility" title="Link to this definition">¶</a></dt>
+<dd><p>Read the nonlinear optical susceptibility tensor from the .castep file.</p>
+<p>CASTEP prints the d-tensor (d = χ^(2)/2) in a 3×6 Voigt-format block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Nonlinear</span> <span class="n">Optical</span> <span class="n">Susceptibility</span> <span class="p">(</span><span class="n">pm</span><span class="o">/</span><span class="n">V</span><span class="p">)</span>
+<span class="o">---------------------------------------</span>
+  <span class="o">-</span><span class="mf">0.01384</span>    <span class="o">-</span><span class="mf">0.00493</span>     <span class="mf">0.00060</span>    <span class="o">-</span><span class="mf">0.00001</span>    <span class="mf">21.65509</span>    <span class="o">-</span><span class="mf">0.00057</span>
+  <span class="o">-</span><span class="mf">0.00057</span>    <span class="o">-</span><span class="mf">0.00261</span>     <span class="mf">0.00002</span>    <span class="mf">21.65875</span>    <span class="o">-</span><span class="mf">0.00001</span>    <span class="o">-</span><span class="mf">0.00493</span>
+  <span class="mf">21.65509</span>    <span class="mf">21.65875</span>   <span class="o">-</span><span class="mf">38.35388</span>     <span class="mf">0.00002</span>     <span class="mf">0.00060</span>    <span class="o">-</span><span class="mf">0.00001</span>
+</pre></div>
+</div>
+<p>Voigt column mapping: 0→(0,0), 1→(1,1), 2→(2,2), 3→(1,2)=(2,1),
+4→(0,2)=(2,0), 5→(0,1)=(1,0).</p>
+<p>The stored attribute <code class="docutils literal notranslate"><span class="pre">nonlinear_optical_susceptibility</span></code> is χ^(2) = 2d (pm/V).</p>
 <section id="id43">
 <h4>Parameters<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The trigger line (already consumed by the manage loop).</p>
+</dd>
+</dl>
 </section>
 <section id="id44">
 <h4>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>bool</dt><dd><p>True on success.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_output_files">
+<span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_output_files" title="Link to this definition">¶</a></dt>
+<dd><p>Define the strings needed for searching the files process the output files.</p>
+<section id="id45">
+<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id46">
+<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -810,19 +878,19 @@ variable <cite>electrons</cite>.</p>
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_pseudoatom">
 <span class="sig-name descname"><span class="pre">_read_pseudoatom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_pseudoatom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_pseudoatom" title="Link to this definition">¶</a></dt>
 <dd><p>Read and process a pseudoatom line from a data file.</p>
-<section id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<section id="id47">
+<h4>Parameters<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string representing a line from a data file that contains information about a pseudoatom.</p>
 </dd>
 </dl>
 </section>
-<section id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<section id="id48">
+<h4>Returns<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id47">
-<h4>Notes<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<section id="id49">
+<h4>Notes<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
 <p>This method processes a line from a data file, extracting the species from the sixth (index 5) position in the
 whitespace-separated list. The species name is capitalized and stored, and indices related to the species and
 ion types are updated accordingly.</p>
@@ -836,16 +904,16 @@ ion types are updated accordingly.</p>
 <p>This method reads a specific number of lines determined by the <cite>nspecies</cite> attribute from
 the file associated with <cite>file_descriptor</cite>, processes them to extract potential spot
 identifiers and their corresponding values, and stores them in the <cite>_pspots</cite> attribute.</p>
-<section id="id48">
-<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<section id="id50">
+<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the reading starts. This initial line is often a header or
 an indicator that the following lines contain the potential spots data.</p>
 </dd>
 </dl>
 </section>
-<section id="id49">
-<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<section id="id51">
+<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -865,32 +933,12 @@ cannot be read without a Fortran binary parser).</p>
 <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code> NumPy arrays, one per mode in frequency order.  No eigenvector
 projection is required because CASTEP writes the already-projected
 per-mode tensors.</p>
-<section id="id50">
-<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line that triggered this method (containing
 <code class="docutils literal notranslate"><span class="pre">&quot;Raman</span> <span class="pre">Susceptibility</span> <span class="pre">Tensors&quot;</span></code>).  Not used directly; reading
 continues from the current position of <code class="docutils literal notranslate"><span class="pre">self.file_descriptor</span></code>.</p>
-</dd>
-</dl>
-</section>
-<section id="id51">
-<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_skip4">
-<span class="sig-name descname"><span class="pre">_read_skip4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_skip4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_skip4" title="Link to this definition">¶</a></dt>
-<dd><p>Read and skip the next four lines from the current file position.</p>
-<p>This method reads and discards the next four lines from the file
-associated with this object’s file_descriptor attribute.</p>
-<section id="id52">
-<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>This parameter is not used in the function body and serves no purpose
-in the context of this method’s operation.</p>
 </dd>
 </dl>
 </section>
@@ -901,19 +949,39 @@ in the context of this method’s operation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_spin">
-<span class="sig-name descname"><span class="pre">_read_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_spin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_spin" title="Link to this definition">¶</a></dt>
-<dd><p>Read and set the spin value from a given line of text.</p>
-<p>The spin is extracted from the sixth element (index 5) of the splitted line.</p>
+<dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_skip4">
+<span class="sig-name descname"><span class="pre">_read_skip4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_skip4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_skip4" title="Link to this definition">¶</a></dt>
+<dd><p>Read and skip the next four lines from the current file position.</p>
+<p>This method reads and discards the next four lines from the file
+associated with this object’s file_descriptor attribute.</p>
 <section id="id54">
 <h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>The input line from which the spin is extracted. Expected to have at least six space-separated elements, with the sixth element being a string representation of the spin value.</p>
+<dt>line<span class="classifier">str</span></dt><dd><p>This parameter is not used in the function body and serves no purpose
+in the context of this method’s operation.</p>
 </dd>
 </dl>
 </section>
 <section id="id55">
 <h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_spin">
+<span class="sig-name descname"><span class="pre">_read_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_spin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_spin" title="Link to this definition">¶</a></dt>
+<dd><p>Read and set the spin value from a given line of text.</p>
+<p>The spin is extracted from the sixth element (index 5) of the splitted line.</p>
+<section id="id56">
+<h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The input line from which the spin is extracted. Expected to have at least six space-separated elements, with the sixth element being a string representation of the spin value.</p>
+</dd>
+</dl>
+</section>
+<section id="id57">
+<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -925,17 +993,17 @@ in the context of this method’s operation.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._ediff">
-<span class="sig-name descname"><span class="pre">_ediff</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._ediff" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_ediff</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._ediff" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._epsilon">
-<span class="sig-name descname"><span class="pre">_epsilon</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._epsilon" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_epsilon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._epsilon" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._intensities">
-<span class="sig-name descname"><span class="pre">_intensities</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._intensities" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_intensities</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._intensities" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -950,7 +1018,7 @@ in the context of this method’s operation.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._nbranches">
-<span class="sig-name descname"><span class="pre">_nbranches</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._nbranches" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_nbranches</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._nbranches" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -970,22 +1038,22 @@ in the context of this method’s operation.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._pulay">
-<span class="sig-name descname"><span class="pre">_pulay</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._pulay" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_pulay</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._pulay" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader.de_ion">
-<span class="sig-name descname"><span class="pre">de_ion</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.de_ion" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">de_ion</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.de_ion" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader.dr_max">
-<span class="sig-name descname"><span class="pre">dr_max</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.dr_max" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">dr_max</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.dr_max" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader.fmax">
-<span class="sig-name descname"><span class="pre">fmax</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.fmax" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fmax</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.fmax" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -995,12 +1063,12 @@ in the context of this method’s operation.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader.smax">
-<span class="sig-name descname"><span class="pre">smax</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.smax" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">smax</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.smax" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader.type">
-<span class="sig-name descname"><span class="pre">type</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Castep</span> <span class="pre">output'</span></span><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.type" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Castep</span> <span class="pre">output'</span></em><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader.type" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1091,6 +1159,7 @@ in the context of this method’s operation.</p>
 <li><a class="reference internal" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nbands"><code class="docutils literal notranslate"><span class="pre">CastepOutputReader._read_nbands()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nbranches"><code class="docutils literal notranslate"><span class="pre">CastepOutputReader._read_nbranches()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nelect"><code class="docutils literal notranslate"><span class="pre">CastepOutputReader._read_nelect()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nlo_susceptibility"><code class="docutils literal notranslate"><span class="pre">CastepOutputReader._read_nlo_susceptibility()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CastepOutputReader.CastepOutputReader._read_output_files"><code class="docutils literal notranslate"><span class="pre">CastepOutputReader._read_output_files()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CastepOutputReader.CastepOutputReader._read_pseudoatom"><code class="docutils literal notranslate"><span class="pre">CastepOutputReader._read_pseudoatom()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CastepOutputReader.CastepOutputReader._read_pspot"><code class="docutils literal notranslate"><span class="pre">CastepOutputReader._read_pspot()</span></code></a></li>
@@ -1131,8 +1200,8 @@ in the context of this method’s operation.</p>
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

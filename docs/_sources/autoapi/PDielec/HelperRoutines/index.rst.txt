@@ -16,6 +16,7 @@ Attributes
 
 .. autoapisummary::
 
+   PDielec.HelperRoutines.gtm_methods
    PDielec.HelperRoutines.logger
 
 
@@ -24,9 +25,14 @@ Functions
 
 .. autoapisummary::
 
+   PDielec.HelperRoutines._matrix_optical_permittivity
+   PDielec.HelperRoutines._raman_linewidths
+   PDielec.HelperRoutines._raman_modes_selected
+   PDielec.HelperRoutines.calculate_crystal_infrared_spectrum
+   PDielec.HelperRoutines.calculate_crystal_raman_spectrum
    PDielec.HelperRoutines.calculate_dft_permittivity_object
-   PDielec.HelperRoutines.calculate_powder_spectrum
-   PDielec.HelperRoutines.calculate_single_crystal_spectrum
+   PDielec.HelperRoutines.calculate_powder_infrared_spectrum
+   PDielec.HelperRoutines.calculate_powder_raman_spectrum
    PDielec.HelperRoutines.get_material
    PDielec.HelperRoutines.maxwell_garnett
 
@@ -34,76 +40,24 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: calculate_dft_permittivity_object(reader, sigma=5.0, eckart=True, mass_definition='Average')
+.. py:function:: _matrix_optical_permittivity(matrix)
 
-   Define a permittivity object for the DFT calculation from the given reader.
-
-   This routine reads in the details of the DFT calculation
-   Calculates the hessian and normal modes
-   Calculates the oscillator strength
-   Finally it defines a permittivity object from which the permittivity can be calculated
-
-   Parameters
-   ----------
-   reader : outputReader object
-       An output reader object, see :class:`~PDielec.GenericOutputReader` and its sub-classes.
-   sigma  : float
-       Default Lorentzian widths in cm-1
-   eckart  : boolean
-       If true apply eckart conditions in the reader
-   mass_definition : string or list of floats
-       Default is 'Average'
-       If a list of floats it is a list of the masses to be used.
-       If a string it must be one of 'Average', 'Isotope' or 'Program' (case is irrelevant)
-       - Average causes the average weight for the element to be used
-       - Isotope causes the most common isotope weight to be used
-       - Program means use the mass used by the program
-
-   Returns
-   -------
-   permittivity_object (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
+   Return the scalar optical permittivity of a matrix material.
 
 
+.. py:function:: _raman_linewidths(reader, sigma)
 
-.. py:function:: calculate_powder_spectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method='Maxwell-Garnett')
-
-   Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
-
-   Parameters
-   ----------
-   frequencies_cm1 : list
-       A list of frequencies in cm-1.
-   dielectric : material
-       A material with a tensor permittivity.
-   matrix : material
-       A material with a scalar permittivity.
-   volume_fraction : float
-       The volume fraction of dielectric.
-   method : str
-       One of 'Maxwell-Garnett', 'Bruggeman'.
-
-   Returns
-   -------
-   absorption,permittivity : tuple of np.arrays
-       absorption: Absorption coefficients in cm-1.
-       permittivity: Complex permittivities
-
-   Example
-   -------
-   ```
-   frequencies_cm1 = np.arange( 0, 200, 0.2 )
-   matrix = get_material('ptfe')
-   dielectric = get_material('Sapphire')
-   method = 'Maxwell-Garnett' 
-   volume_fraction = 0.1
-   absorption,permittivity = calculate_powder_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
-   ```
+   Return per-mode Raman linewidths in cm-1.
 
 
+.. py:function:: _raman_modes_selected(reader, raman_tensors, modes_selected)
 
-.. py:function:: calculate_single_crystal_spectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method='Scattering matrix')
+   Return a boolean mask selecting Raman-active optical modes.
 
-   Calculate a single crystal spectrum.
+
+.. py:function:: calculate_crystal_infrared_spectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method='Scattering matrix')
+
+   Calculate a crystal infrared spectrum.
 
    Calculate a single crystal spectrum from the frequencies, a list of layers
    (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle the global azimuthal angle and
@@ -154,7 +108,121 @@ Module Contents
        frequencies_cm1 = np.arange( 0, 200, 0.2 )
        incident_angle = 80.0
        global_azimuthal_angle = 0.0
-       (reflectance, transmittance, absorptance) = calculate_single_crystal_spectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method='Scattering matrix')
+       (reflectance, transmittance, absorptance) = calculate_crystal_infrared_spectrum(
+           frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
+
+
+
+.. py:function:: calculate_crystal_raman_spectrum(frequencies_cm1, reader, layers, incident_angle, global_azimuthal_angle, method='Scattering matrix', sigma=5.0, laser_wavelength_nm=532.0, incident_polarisation='p', detected_polarisation='unpolarised', temperature=298.0, n_gauss=20, collection_side='superstrate', collection_angle=-1.0, coherent_layers=False, approximate_es=False)
+
+   Calculate a layered crystal Raman spectrum.
+
+   Parameters are intentionally close to :func:`calculate_crystal_infrared_spectrum`, with Raman-specific laser,
+   polarisation and quadrature options added.
+
+   Returns
+   -------
+   spectrum, mode_frequencies, mode_intensities, mode_sigmas : tuple of np.ndarray
+       Broadened Raman spectrum and the active-mode data used to generate it.
+
+
+
+.. py:function:: calculate_dft_permittivity_object(reader, sigma=5.0, eckart=True, mass_definition='Average')
+
+   Define a permittivity object for the DFT calculation from the given reader.
+
+   This routine reads in the details of the DFT calculation
+   Calculates the hessian and normal modes
+   Calculates the oscillator strength
+   Finally it defines a permittivity object from which the permittivity can be calculated
+
+   Parameters
+   ----------
+   reader : outputReader object
+       An output reader object, see :class:`~PDielec.GenericOutputReader` and its sub-classes.
+   sigma  : float
+       Default Lorentzian widths in cm-1
+   eckart  : boolean
+       If true apply eckart conditions in the reader
+   mass_definition : string or list of floats
+       Default is 'Average'
+       If a list of floats it is a list of the masses to be used.
+       If a string it must be one of 'Average', 'Isotope' or 'Program' (case is irrelevant)
+       - Average causes the average weight for the element to be used
+       - Isotope causes the most common isotope weight to be used
+       - Program means use the mass used by the program
+
+   Returns
+   -------
+   permittivity_object (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
+
+
+
+.. py:function:: calculate_powder_infrared_spectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method='Maxwell-Garnett')
+
+   Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
+
+   Parameters
+   ----------
+   frequencies_cm1 : list
+       A list of frequencies in cm-1.
+   dielectric : material
+       A material with a tensor permittivity.
+   matrix : material
+       A material with a scalar permittivity.
+   volume_fraction : float
+       The volume fraction of dielectric.
+   method : str
+       One of 'Maxwell-Garnett', 'Bruggeman'.
+
+   Returns
+   -------
+   absorption,permittivity : tuple of np.arrays
+       absorption: Absorption coefficients in cm-1.
+       permittivity: Complex permittivities
+
+   Example
+   -------
+   ```
+   frequencies_cm1 = np.arange( 0, 200, 0.2 )
+   matrix = get_material('ptfe')
+   dielectric = get_material('Sapphire')
+   method = 'Maxwell-Garnett' 
+   volume_fraction = 0.1
+   absorption,permittivity = calculate_powder_infrared_spectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+   ```
+
+
+
+.. py:function:: calculate_powder_raman_spectrum(frequencies_cm1, reader, matrix=None, volume_fraction=1.0, sigma=5.0, laser_wavelength_nm=785.0, polarisation='HV', temperature=298.0, modes_selected=None)
+
+   Calculate a powder Raman spectrum for spherical particles.
+
+   Parameters
+   ----------
+   frequencies_cm1 : array_like
+       Raman-shift axis in cm-1.
+   reader : outputReader object
+       Reader containing phonon frequencies, optical permittivity and Raman tensors.
+   matrix : material or None
+       Matrix material.  If ``None`` or ``"none"``, no particle-field correction is applied.
+   volume_fraction : float
+       Crystal volume fraction in the sample.
+   sigma : float or array_like
+       Lorentzian half-width(s) in cm-1.
+   laser_wavelength_nm : float
+       Laser wavelength in nm.
+   polarisation : {"VV", "VH", "HV", "Unpolarised"}
+       Raman polarisation geometry.
+   temperature : float
+       Temperature in K.
+   modes_selected : array_like of bool, optional
+       Optional per-mode selection mask.  If omitted, Raman-active optical modes are selected automatically.
+
+   Returns
+   -------
+   spectrum : np.ndarray
+       Raman intensity on ``frequencies_cm1`` in arbitrary units.
 
 
 
@@ -217,6 +285,8 @@ Module Contents
        The dielectric constant of the mixture
 
 
+
+.. py:data:: gtm_methods
 
 .. py:data:: logger
 

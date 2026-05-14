@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.phonopy_pdielec_born" href="../phonopy_pdielec_born/index.html"><link rel="prev" title="PDielec.pdgui" href="../pdgui/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.pdmake - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -353,6 +390,14 @@ cleaning build directories, and installing scripts.</p>
 <li><p><cite>test-p2cif</cite>: Runs tests for the p2cif component.</p></li>
 <li><p><cite>test-pdgui</cite>: Runs tests for the PDGUI component.</p></li>
 <li><p><cite>test-vibanalysis</cite>: Runs tests for vibrational analysis.</p></li>
+<li><p><cite>test-pytest-powder_raman</cite>: Runs pytest suite in PDielec/Tests/Powder_Raman/.</p></li>
+<li><p><cite>test-pytest-crystal_raman</cite>: Runs pytest suite in PDielec/Tests/Crystal_Raman/.</p></li>
+<li><p><cite>test-pytest-materials</cite>: Runs pytest suite in PDielec/Tests/Materials/.</p></li>
+<li><p><cite>test-pytest-calculator</cite>: Runs pytest suite in PDielec/Tests/Calculator/.</p></li>
+<li><p><cite>test-pytest-unitcell</cite>: Runs pytest suite in PDielec/Tests/UnitCell/.</p></li>
+<li><p><cite>test-pytest-gtmcore</cite>: Runs pytest suite in PDielec/Tests/GTMcore/.</p></li>
+<li><p><cite>test-pytest-constants</cite>: Runs pytest suite in PDielec/Tests/Constants/.</p></li>
+<li><p><cite>test-pytests</cite>: Runs all pytest suites.</p></li>
 <li><p><cite>benchmarks</cite>: Executes benchmark tests.</p></li>
 <li><p><cite>pypi</cite>: Runs commands for PyPI distribution.</p></li>
 <li><p><cite>clean</cite>: Cleans up directories.</p></li>
@@ -687,6 +732,14 @@ cleaning build directories, and installing scripts.</p>
 <li><p><cite>test-p2cif</cite>: Runs tests for the p2cif component.</p></li>
 <li><p><cite>test-pdgui</cite>: Runs tests for the PDGUI component.</p></li>
 <li><p><cite>test-vibanalysis</cite>: Runs tests for vibrational analysis.</p></li>
+<li><p><cite>test-pytest-powder_raman</cite>: Runs pytest suite in PDielec/Tests/Powder_Raman/.</p></li>
+<li><p><cite>test-pytest-crystal_raman</cite>: Runs pytest suite in PDielec/Tests/Crystal_Raman/.</p></li>
+<li><p><cite>test-pytest-materials</cite>: Runs pytest suite in PDielec/Tests/Materials/.</p></li>
+<li><p><cite>test-pytest-calculator</cite>: Runs pytest suite in PDielec/Tests/Calculator/.</p></li>
+<li><p><cite>test-pytest-unitcell</cite>: Runs pytest suite in PDielec/Tests/UnitCell/.</p></li>
+<li><p><cite>test-pytest-gtmcore</cite>: Runs pytest suite in PDielec/Tests/GTMcore/.</p></li>
+<li><p><cite>test-pytest-constants</cite>: Runs pytest suite in PDielec/Tests/Constants/.</p></li>
+<li><p><cite>test-pytests</cite>: Runs all pytest suites.</p></li>
 <li><p><cite>benchmarks</cite>: Executes benchmark tests.</p></li>
 <li><p><cite>pypi</cite>: Runs commands for PyPI distribution.</p></li>
 <li><p><cite>clean</cite>: Cleans up directories.</p></li>
@@ -1051,12 +1104,12 @@ options. It also handles platform-specific instructions for Linux systems.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.benchmarks">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">benchmarks</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Castep/AsparticAcid',</span> <span class="pre">'Castep/Isoleucine',</span> <span class="pre">'Castep/MgO',</span> <span class="pre">'Castep/Bubbles',</span> <span class="pre">'Castep/Na2SO42',...</span></span><a class="headerlink" href="#PDielec.pdmake.benchmarks" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">benchmarks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Castep/AsparticAcid',</span> <span class="pre">'Castep/Isoleucine',</span> <span class="pre">'Castep/MgO',</span> <span class="pre">'Castep/Bubbles',</span> <span class="pre">'Castep/Na2SO42',...</span></em><a class="headerlink" href="#PDielec.pdmake.benchmarks" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.debug">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.pdmake.debug" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.pdmake.debug" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -1076,57 +1129,57 @@ options. It also handles platform-specific instructions for Linux systems.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_crystal_infrared">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_crystal_infrared</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Experiment/fpsq',</span> <span class="pre">'Experiment/Mayerhofer',</span> <span class="pre">'SingleCrystal/Bi2Se3',...</span></span><a class="headerlink" href="#PDielec.pdmake.test_crystal_infrared" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_crystal_infrared</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Experiment/fpsq',</span> <span class="pre">'Experiment/Mayerhofer',</span> <span class="pre">'SingleCrystal/Bi2Se3',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_crystal_infrared" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_crystal_raman">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_crystal_raman</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.pdmake.test_crystal_raman" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_crystal_raman</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.pdmake.test_crystal_raman" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_p2cif">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_p2cif</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['P2Cif/']</span></span><a class="headerlink" href="#PDielec.pdmake.test_p2cif" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_p2cif</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['P2Cif/']</span></em><a class="headerlink" href="#PDielec.pdmake.test_p2cif" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_pdgui">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_pdgui</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ATR/AlAs',</span> <span class="pre">'ATR/Na2SO42',</span> <span class="pre">'ATR/Na2SO42_fit',</span> <span class="pre">'AbInit/AlAs',</span> <span class="pre">'AbInit/BaTiO3',</span> <span class="pre">'AbInit/Na2SO42',...</span></span><a class="headerlink" href="#PDielec.pdmake.test_pdgui" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_pdgui</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ATR/AlAs',</span> <span class="pre">'ATR/Na2SO42',</span> <span class="pre">'ATR/Na2SO42_fit',</span> <span class="pre">'AbInit/AlAs',</span> <span class="pre">'AbInit/BaTiO3',</span> <span class="pre">'AbInit/Na2SO42',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_pdgui" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_powder_atr">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_powder_atr</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ATR/AlAs',</span> <span class="pre">'ATR/Na2SO42',</span> <span class="pre">'ATR/Na2SO42_fit']</span></span><a class="headerlink" href="#PDielec.pdmake.test_powder_atr" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_powder_atr</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ATR/AlAs',</span> <span class="pre">'ATR/Na2SO42',</span> <span class="pre">'ATR/Na2SO42_fit']</span></em><a class="headerlink" href="#PDielec.pdmake.test_powder_atr" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_powder_infrared">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_powder_infrared</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['AbInit/AlAs',</span> <span class="pre">'AbInit/BaTiO3',</span> <span class="pre">'AbInit/Na2SO42',</span> <span class="pre">'FHI-Aims/Na2SO42',</span> <span class="pre">'Castep/AsparticAcid',...</span></span><a class="headerlink" href="#PDielec.pdmake.test_powder_infrared" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_powder_infrared</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['AbInit/AlAs',</span> <span class="pre">'AbInit/BaTiO3',</span> <span class="pre">'AbInit/Na2SO42',</span> <span class="pre">'FHI-Aims/Na2SO42',</span> <span class="pre">'Castep/AsparticAcid',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_powder_infrared" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_powder_raman">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_powder_raman</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Powder_Raman/AbInit',</span> <span class="pre">'Powder_Raman/Castep',</span> <span class="pre">'Powder_Raman/Crystal',</span> <span class="pre">'Powder_Raman/QE',...</span></span><a class="headerlink" href="#PDielec.pdmake.test_powder_raman" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_powder_raman</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Powder_Raman/AbInit',</span> <span class="pre">'Powder_Raman/Castep',</span> <span class="pre">'Powder_Raman/Crystal',</span> <span class="pre">'Powder_Raman/QE',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_powder_raman" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_preader">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_preader</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Castep/preader',</span> <span class="pre">'Vasp/preader',</span> <span class="pre">'Phonopy/preader',</span> <span class="pre">'FHI-Aims/preader',</span> <span class="pre">'Gulp/preader',...</span></span><a class="headerlink" href="#PDielec.pdmake.test_preader" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_preader</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Castep/preader',</span> <span class="pre">'Vasp/preader',</span> <span class="pre">'Phonopy/preader',</span> <span class="pre">'FHI-Aims/preader',</span> <span class="pre">'Gulp/preader',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_preader" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_vibanalysis">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_vibanalysis</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['VibAnalysis/AsparticAcid',</span> <span class="pre">'VibAnalysis/BaTiO3',</span> <span class="pre">'VibAnalysis/Cocaine',...</span></span><a class="headerlink" href="#PDielec.pdmake.test_vibanalysis" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_vibanalysis</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['VibAnalysis/AsparticAcid',</span> <span class="pre">'VibAnalysis/BaTiO3',</span> <span class="pre">'VibAnalysis/Cocaine',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_vibanalysis" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.useLocal">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">useLocal</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.pdmake.useLocal" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">useLocal</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.pdmake.useLocal" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.viewing">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">viewing</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.pdmake.viewing" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">viewing</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.pdmake.viewing" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1244,8 +1297,8 @@ options. It also handles platform-specific instructions for Linux systems.</p>
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

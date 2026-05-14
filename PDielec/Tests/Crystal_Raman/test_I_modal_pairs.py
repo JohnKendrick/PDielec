@@ -489,9 +489,9 @@ class TestI7NACFrequencyShift:
         """Return a nac_function that swaps the eigenvalue order.
 
         TO modes:  [NU_TO_LOW=300, NU_TO_HIGH=700]
-        NAC modes: [NU_LO=550, NU_TO_HIGH=700]  ← order preserved in this case
-                   The tensor for NAC mode 0 (at 550) = R_PP (Raman active).
-                   The tensor for NAC mode 1 (at 700) = zero tensor.
+        NAC modes: [NU_LO=550, NU_TO_HIGH=700] — order preserved in this case.
+        The tensor for NAC mode 0 (at 550) = R_PP (Raman active).
+        The tensor for NAC mode 1 (at 700) = zero tensor.
 
         This mimics a LO-TO shift: the Raman-active mode moves from 300→550.
         The old (buggy) code would look up nac_tensors[0] and report freq 300;

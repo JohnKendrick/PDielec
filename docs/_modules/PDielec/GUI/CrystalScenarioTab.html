@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.GUI.CrystalScenarioTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -237,6 +237,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -255,6 +256,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
@@ -275,16 +277,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -379,7 +416,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">amu</span><span class="p">,</span> <span class="n">angs2bohr</span><span class="p">,</span> <span class="n">speed_light_si</span><span class="p">,</span> <span class="n">wavenumber</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GUI.ScenarioTab</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScenarioTab</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GUI.SingleCrystalLayer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShowLayerWindow</span><span class="p">,</span> <span class="n">SingleCrystalLayer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.LayeredRamanCalculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">LayeredRamanCalculator</span><span class="p">,</span> <span class="n">RamanLayer</span><span class="p">,</span> <span class="n">lorentzian_broaden</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.LayeredRamanCalculator</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DEPTH_INTEGRATION_COHERENT</span><span class="p">,</span>
+    <span class="n">DEPTH_INTEGRATION_INCOHERENT</span><span class="p">,</span>
+    <span class="n">LayeredRamanCalculator</span><span class="p">,</span>
+    <span class="n">RamanLayer</span><span class="p">,</span>
+    <span class="n">lorentzian_broaden</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialsDataBase</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -471,6 +514,127 @@
     <span class="n">epsilon</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">epsilon</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">system</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">epsilon</span>
     <span class="n">errors</span><span class="p">,</span><span class="n">largest_exponent</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">overflow_errors</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">v</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">epsilon</span><span class="p">,</span><span class="n">errors</span><span class="p">,</span><span class="n">largest_exponent</span></div>
+
+
+<div class="viewcode-block" id="_compute_nac_dynamical_matrix_standalone">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab._compute_nac_dynamical_matrix_standalone">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_nac_dynamical_matrix_standalone</span><span class="p">(</span><span class="n">q_hat_crystal</span><span class="p">,</span> <span class="n">hessian</span><span class="p">,</span> <span class="n">born_charges</span><span class="p">,</span> <span class="n">eps_inf</span><span class="p">,</span>
+                                              <span class="n">volume_au</span><span class="p">,</span> <span class="n">masses_au</span><span class="p">,</span> <span class="n">U_TO</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span>
+                                              <span class="n">to_sigmas</span><span class="p">,</span> <span class="n">chi2_pm_per_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Module-level NAC computation for a given phonon wavevector direction.</span>
+
+<span class="sd">    Applies the standard non-analytic correction (NAC) to the bulk TO dynamical</span>
+<span class="sd">    matrix using the supplied unit phonon wavevector in the crystal frame::</span>
+
+<span class="sd">        D_NAC(q̂) = D_TO + (4π/V) Z^mw,T (q̂ q̂^T / q̂^T ε_∞ q̂) Z^mw</span>
+
+<span class="sd">    Optionally applies the electro-optic (EO) correction to each Raman tensor</span>
+<span class="sd">    (Eq. 21 of Raman-Theory.pdf) when the second-order NLO susceptibility χ^(2)</span>
+<span class="sd">    is supplied.</span>
+
+<span class="sd">    This function is factored out of ``CrystalScenarioTab._compute_nac_dynamical_matrix``</span>
+<span class="sd">    so that it can be called from a closure without capturing ``self``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q_hat_crystal : ndarray, shape (3,)</span>
+<span class="sd">        Unit phonon wavevector in the crystal frame.</span>
+<span class="sd">    hessian : ndarray, shape (3N, 3N)</span>
+<span class="sd">        Mass-weighted TO dynamical (Hessian) matrix.</span>
+<span class="sd">    born_charges : ndarray, shape (N, 3, 3)</span>
+<span class="sd">        Born effective charge tensors.</span>
+<span class="sd">    eps_inf : ndarray, shape (3, 3)</span>
+<span class="sd">        High-frequency optical dielectric tensor in the crystal frame.</span>
+<span class="sd">    volume_au : float</span>
+<span class="sd">        Unit cell volume in atomic units (Bohr³).</span>
+<span class="sd">    masses_au : ndarray, shape (N,)</span>
+<span class="sd">        Atomic masses in atomic units (a.u., i.e. mass * amu_to_au).</span>
+<span class="sd">    U_TO : ndarray, shape (n_to_modes, 3N)</span>
+<span class="sd">        Mass-weighted TO eigenvectors (rows), pre-computed from</span>
+<span class="sd">        ``reader.mass_weighted_normal_modes``.</span>
+<span class="sd">    scaled_tensors : list of ndarray, each (3, 3)</span>
+<span class="sd">        Bulk TO Raman tensors scaled by sqrt(V_cell).</span>
+<span class="sd">    to_sigmas : ndarray, shape (n_to_modes,)</span>
+<span class="sd">        Bulk TO linewidths in cm⁻¹.</span>
+<span class="sd">    chi2_pm_per_v : ndarray, shape (3, 3, 3) or None</span>
+<span class="sd">        Second-order NLO susceptibility χ^(2) in pm/V (= 2d from DFT output).</span>
+<span class="sd">        When provided, the electro-optic correction is applied to each NAC Raman</span>
+<span class="sd">        tensor.  Pass None to skip the correction.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nac_freqs : ndarray, shape (3N,)</span>
+<span class="sd">    nac_tensors : list of ndarray, each (3, 3)</span>
+<span class="sd">    nac_sigmas : ndarray, shape (3N,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+    <span class="n">nAtoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">masses_au</span><span class="p">)</span>
+    <span class="n">n_modes</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">nAtoms</span>
+    <span class="n">n_to_modes</span> <span class="o">=</span> <span class="n">U_TO</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Mass-weighted Born charges: Z&#39;[α, κβ] = Z*[κ, α, β] / √M_κ</span>
+    <span class="n">Z_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_modes</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">kappa</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nAtoms</span><span class="p">):</span>
+        <span class="n">inv_sqrtM</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">masses_au</span><span class="p">[</span><span class="n">kappa</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">Z_mat</span><span class="p">[:,</span> <span class="n">kappa</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">beta</span><span class="p">]</span> <span class="o">=</span> <span class="n">born_charges</span><span class="p">[</span><span class="n">kappa</span><span class="p">,</span> <span class="p">:,</span> <span class="n">beta</span><span class="p">]</span> <span class="o">*</span> <span class="n">inv_sqrtM</span>
+
+    <span class="c1"># NAC screening tensor: S = q̂ q̂^T / (q̂^T ε_∞ q̂)</span>
+    <span class="n">eps_b_q</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">q_hat_crystal</span> <span class="o">@</span> <span class="n">eps_inf</span> <span class="o">@</span> <span class="n">q_hat_crystal</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">eps_b_q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+        <span class="n">eps_b_q</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">S_nac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">q_hat_crystal</span><span class="p">,</span> <span class="n">q_hat_crystal</span><span class="p">)</span> <span class="o">/</span> <span class="n">eps_b_q</span>
+
+    <span class="c1"># Dynamical matrix with NAC</span>
+    <span class="n">delta_D</span> <span class="o">=</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">volume_au</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Z_mat</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">S_nac</span> <span class="o">@</span> <span class="n">Z_mat</span><span class="p">)</span>
+    <span class="n">D_TO</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hessian</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">eig_val</span><span class="p">,</span> <span class="n">eig_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">D_TO</span> <span class="o">+</span> <span class="n">delta_D</span><span class="p">)</span>
+
+    <span class="c1"># Frequencies in cm⁻¹ (preserve sign for unstable modes)</span>
+    <span class="n">nac_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ev</span><span class="p">))</span> <span class="o">/</span> <span class="n">wavenumber</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">ev</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">eig_val</span>
+    <span class="p">])</span>
+
+    <span class="c1"># Overlap matrix C[n, m] = &lt;u_n^TO | u_m^NAC&gt;</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">U_TO</span> <span class="o">@</span> <span class="n">eig_vec</span>  <span class="c1"># (n_to_modes, 3N)</span>
+
+    <span class="n">sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">to_sigmas</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">nac_tensors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">nac_sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_modes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">):</span>
+        <span class="n">R_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n_to</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_to_modes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">n_to</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">scaled_tensors</span><span class="p">):</span>
+                <span class="n">R_p</span> <span class="o">+=</span> <span class="n">C</span><span class="p">[</span><span class="n">n_to</span><span class="p">,</span> <span class="n">p_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">scaled_tensors</span><span class="p">[</span><span class="n">n_to</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">nac_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R_p</span><span class="p">)</span>
+        <span class="n">dominant_to</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">C</span><span class="p">[:,</span> <span class="n">p_idx</span><span class="p">])))</span>
+        <span class="n">nac_sigmas</span><span class="p">[</span><span class="n">p_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigmas</span><span class="p">[</span><span class="n">dominant_to</span><span class="p">]</span> <span class="k">if</span> <span class="n">dominant_to</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sigmas</span><span class="p">)</span> <span class="k">else</span> <span class="mf">5.0</span>
+
+    <span class="c1"># Electro-optic (EO) correction to Raman tensors (Eq. 21, Raman-Theory.pdf).</span>
+    <span class="c1"># Applied only when χ^(2) is available (non-centrosymmetric polar materials).</span>
+    <span class="k">if</span> <span class="n">chi2_pm_per_v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># TODO: Verify unit conversion and prefactor against ZnO CASTEP/Abinit example.</span>
+        <span class="c1"># EO correction should be a small fraction (~1–20%) of the uncorrected tensor.</span>
+        <span class="c1"># χ^(2) in pm/V → internal Bohr/V_atomic units:</span>
+        <span class="c1">#   1 pm = 1e-12 m;  1 Bohr ≈ 5.292e-11 m  =&gt;  pm_to_bohr ≈ 0.01890</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">bohr_si</span>
+        <span class="n">pm_to_bohr</span> <span class="o">=</span> <span class="mf">1.0e-12</span> <span class="o">/</span> <span class="n">bohr_si</span>
+        <span class="n">chi2_au</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">chi2_pm_per_v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">pm_to_bohr</span>
+
+        <span class="c1"># f_ij[i,j] = Σ_l χ^(2)_ijl * q̂_l   (3×3 matrix, contraction on last index)</span>
+        <span class="n">f_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijl,l-&gt;ij&quot;</span><span class="p">,</span> <span class="n">chi2_au</span><span class="p">,</span> <span class="n">q_hat_crystal</span><span class="p">)</span>
+
+        <span class="c1"># Z_q[n_modes] = Z_mat^T @ q̂  — project mass-weighted Born charges onto q</span>
+        <span class="n">Z_q</span> <span class="o">=</span> <span class="n">Z_mat</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">q_hat_crystal</span>   <span class="c1"># shape (n_modes,)</span>
+
+        <span class="k">for</span> <span class="n">p_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">):</span>
+            <span class="c1"># scalar_p = (Z_mat^T q̂) · eig_vec[:,p]</span>
+            <span class="n">scalar_p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Z_q</span><span class="p">,</span> <span class="n">eig_vec</span><span class="p">[:,</span> <span class="n">p_idx</span><span class="p">]))</span>
+            <span class="n">nac_tensors</span><span class="p">[</span><span class="n">p_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">nac_tensors</span><span class="p">[</span><span class="n">p_idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">f_ij</span> <span class="o">*</span> <span class="n">scalar_p</span> <span class="o">/</span> <span class="n">eps_b_q</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nac_freqs</span><span class="p">,</span> <span class="n">nac_tensors</span><span class="p">,</span> <span class="n">nac_sigmas</span></div>
+
 
 
 <div class="viewcode-block" id="CrystalScenarioTab">
@@ -726,12 +890,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Incident polarisation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;p&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Detected polarisation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unpolarised&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Temperature K&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">298.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Number of GL points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;GL point density&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>  <span class="c1"># Gauss-Legendre points per µm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Collection side&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;superstrate&quot;</span>  <span class="c1"># &#39;superstrate&#39; = backscatter, &#39;substrate&#39; = forward</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Collection angle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>          <span class="c1"># negative sentinel: default to angle of incidence</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Coherent layer summation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Raman depth integration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEPTH_INTEGRATION_COHERENT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Approximate ES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>  <span class="c1"># &#39;none&#39; or &#39;slab&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Layer NAC mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>  <span class="c1"># &#39;none&#39;, &#39;geometry&#39;, &#39;dominant_mode&#39;, &#39;modal_pairs&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Azimuthal sweep points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">36</span>
         <span class="c1"># store the notebook</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span> <span class="o">=</span> <span class="n">parent</span>
@@ -1898,16 +2063,21 @@
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature_sb</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_sb</span><span class="p">)</span>
 
-        <span class="c1"># Number of Gauss-Legendre quadrature points</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Number of GL points&quot;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_n_gauss_sb_changed</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Number of Gauss-Legendre quadrature points per Raman-active layer</span><span class="se">\n</span><span class="s2">(higher = more accurate but slower)&quot;</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;GL quadrature points&quot;</span><span class="p">)</span>
-        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="p">)</span>
+        <span class="c1"># GL quadrature point density (points per micron)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;GL point density&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_gl_density_sb_changed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="s2">&quot;Composite Gauss-Legendre integration point density (points per µm of layer thickness).</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;20–60 pts/µm is recommended for accuracy.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;The actual number of points is density × layer thickness, clamped to [5, 1 000 000].&quot;</span>
+        <span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Integration density (pts/µm)&quot;</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="p">)</span>
 
         <span class="c1"># Incident polarisation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">incident_pol_cb</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -1966,6 +2136,23 @@
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coherent_cb</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coherent_cb</span><span class="p">)</span>
 
+        <span class="c1"># Depth integration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="n">DEPTH_INTEGRATION_COHERENT</span><span class="p">,</span> <span class="n">DEPTH_INTEGRATION_INCOHERENT</span><span class="p">])</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Raman depth integration&quot;</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchFixedString</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">activated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_depth_integration_cb_activated</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="s2">&quot;How Raman sources are combined through layer depth:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&#39;Coherent amplitude&#39; integrates the complex amplitude before squaring; use for thin coherent films.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&#39;Incoherent intensity&#39; integrates local intensity; use for thick or bulk samples such as mm/cm layers.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Raman depth integration&quot;</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="p">)</span>
+
         <span class="c1"># Approximate E_S = E_L</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">approximate_cb</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">approximate_cb</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Approximate ES&quot;</span><span class="p">])</span>
@@ -1975,15 +2162,29 @@
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">approximate_cb</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">approximate_cb</span><span class="p">)</span>
 
-        <span class="c1"># Phonon boundary correction (Phase 3a)</span>
+        <span class="c1"># Layer NAC mode</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;slab&quot;</span><span class="p">])</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchFixedString</span><span class="p">)</span>
+        <span class="n">nac_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Layer NAC mode&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+        <span class="c1"># Handle legacy &#39;Phonon boundary correction&#39; values from older sessions</span>
+        <span class="k">if</span> <span class="n">nac_text</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+            <span class="n">old_bc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_bc</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;NAC&quot;</span><span class="p">,</span> <span class="s2">&quot;slab-environment&quot;</span><span class="p">,</span> <span class="s2">&quot;slab&quot;</span><span class="p">):</span>
+                <span class="n">nac_text</span> <span class="o">=</span> <span class="s2">&quot;geometry&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Layer NAC mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nac_text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_populate_nac_combo</span><span class="p">(</span><span class="n">has_eo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">findData</span><span class="p">(</span><span class="n">nac_text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">activated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_phonon_bc_cb_activated</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Phonon boundary correction:</span><span class="se">\n</span><span class="s2">&#39;none&#39; — use bulk TO frequencies</span><span class="se">\n</span><span class="s2">&#39;slab&#39; — apply slab depolarisation correction (requires Born charges and hessian)&quot;</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span>
+            <span class="s2">&quot;Layer NAC mode — phonon frequency correction for layered crystal Raman:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&#39;TO&#39; — use bulk TO frequencies (no correction)</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&#39;Snell&#39;s law&#39; — NAC q from macroscopic scattering geometry</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&#39;Dominant mode&#39; — NAC q from dominant Berreman eigenmode in the active layer</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&#39;All modes&#39; — per Berreman mode-pair NAC: sums |A^ij|² over (i_L, j_S) pairs</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Labels show &#39;(EO)&#39; when χ⁽²⁾ is available and the electro-optic correction is active.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Layer NAC mode&quot;</span><span class="p">)</span>
         <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="p">)</span>
 
@@ -2327,7 +2528,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectroscopy</span> <span class="o">==</span> <span class="s2">&quot;Crystal Raman&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">laser_wavelength_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Laser wavelength nm&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">temperature_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Temperature K&quot;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_gauss_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Number of GL points&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gl_density_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GL point density&quot;</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">))</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">incident_pol_cb</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Incident polarisation&quot;</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchFixedString</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">incident_pol_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
@@ -2339,8 +2540,16 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">collection_side_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">collection_angle_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Collection angle&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">coherent_cb</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Coherent layer summation&quot;</span><span class="p">])</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Raman depth integration&quot;</span><span class="p">,</span> <span class="n">DEPTH_INTEGRATION_COHERENT</span><span class="p">),</span>
+                <span class="n">Qt</span><span class="o">.</span><span class="n">MatchFixedString</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">approximate_cb</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Approximate ES&quot;</span><span class="p">])</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchFixedString</span><span class="p">)</span>
+            <span class="n">has_eo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="s2">&quot;nonlinear_optical_susceptibility&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populate_nac_combo</span><span class="p">(</span><span class="n">has_eo</span><span class="o">=</span><span class="n">has_eo</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">findData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Layer NAC mode&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
         <span class="c1">#</span>
@@ -2464,11 +2673,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_required</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="CrystalScenarioTab.on_n_gauss_sb_changed">
-<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab.on_n_gauss_sb_changed">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">on_n_gauss_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in the GL quadrature points spin box.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Number of GL points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<div class="viewcode-block" id="CrystalScenarioTab.on_gl_density_sb_changed">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab.on_gl_density_sb_changed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_gl_density_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in the GL quadrature density spin box.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;GL point density&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculation_required</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_required</span> <span class="o">=</span> <span class="kc">True</span></div>
 
@@ -2518,6 +2727,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_required</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
+<div class="viewcode-block" id="CrystalScenarioTab.on_depth_integration_cb_activated">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab.on_depth_integration_cb_activated">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_depth_integration_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in the Raman depth integration mode.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Raman depth integration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_integration_cb</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculation_required</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_required</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
 <div class="viewcode-block" id="CrystalScenarioTab.on_approximate_cb_toggled">
 <a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab.on_approximate_cb_toggled">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_approximate_cb_toggled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
@@ -2527,11 +2745,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_required</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
+    <span class="c1"># Internal value → base display label (without EO suffix)</span>
+    <span class="n">_NAC_MODE_LABELS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>          <span class="s2">&quot;TO&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span>      <span class="s2">&quot;Snell&#39;s law&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;dominant_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;Dominant mode&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;modal_pairs&quot;</span><span class="p">,</span>   <span class="s2">&quot;All modes&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+
+<div class="viewcode-block" id="CrystalScenarioTab._populate_nac_combo">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab._populate_nac_combo">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_populate_nac_combo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">has_eo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Repopulate the Layer NAC mode combo box with appropriate labels.</span>
+
+<span class="sd">        Preserves the currently selected item across repopulation.  When *has_eo*</span>
+<span class="sd">        is True the three NAC levels receive an &#39;(EO)&#39; suffix to indicate that</span>
+<span class="sd">        the electro-optic correction will be applied.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        has_eo : bool</span>
+<span class="sd">            Whether χ^(2) is available from the DFT reader.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">currentData</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">internal</span><span class="p">,</span> <span class="n">base_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NAC_MODE_LABELS</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot; (EO)&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">has_eo</span> <span class="ow">and</span> <span class="n">internal</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">base_label</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">internal</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">findData</span><span class="p">(</span><span class="n">current_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="CrystalScenarioTab.on_phonon_bc_cb_activated">
 <a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab.on_phonon_bc_cb_activated">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_phonon_bc_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in the phonon boundary correction combo box.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a change in the layer NAC mode combo box.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;Layer NAC mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phonon_bc_cb</span><span class="o">.</span><span class="n">currentData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculation_required</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_required</span> <span class="o">=</span> <span class="kc">True</span></div>
 
@@ -2894,95 +3146,40 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> calculate: unknown spectroscopy type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spectroscopy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="CrystalScenarioTab._compute_slab_modes">
-<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab._compute_slab_modes">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_slab_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G_total</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute slab-corrected phonon frequencies and Raman tensors.</span>
+<div class="viewcode-block" id="CrystalScenarioTab._compute_nac_dynamical_matrix">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab._compute_nac_dynamical_matrix">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_nac_dynamical_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">,</span>
+                                       <span class="n">q_hat_crystal</span><span class="p">,</span> <span class="n">eps_inf</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build NAC dynamical matrix for a given phonon wavevector direction and diagonalize.</span>
 
-<span class="sd">        Applies the slab depolarisation correction (Phase 3a) to the bulk TO</span>
-<span class="sd">        dynamical matrix.  The slab surface normal is the lab z-axis ``[0,0,1]``;</span>
-<span class="sd">        in the crystal frame this is ``n̂ = G_total.T @ [0,0,1]``.  The correction</span>
-<span class="sd">        term is identical in form to the particle boundary correction in</span>
-<span class="sd">        PowderScenarioTab, but the depolarisation tensor ``L = n̂ ⊗ n̂`` is</span>
-<span class="sd">        orientation-dependent and specific to this layer&#39;s crystallographic face.</span>
-
-<span class="sd">        The surrounding medium is assumed to be vacuum (ε_e = 1).</span>
+<span class="sd">        Thin wrapper around the module-level ``_compute_nac_dynamical_matrix_standalone``</span>
+<span class="sd">        that supplies reader data automatically.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        G_total : ndarray, shape (3, 3)</span>
-<span class="sd">            Combined crystal-to-lab rotation (G_psi @ layer.euler).</span>
 <span class="sd">        scaled_tensors : list of ndarray, each (3, 3)</span>
 <span class="sd">            Bulk TO Raman tensors in the crystal frame, scaled by sqrt(V_cell).</span>
 <span class="sd">        frequencies_cm1 : array_like, shape (n_to_modes,)</span>
-<span class="sd">            Bulk TO phonon frequencies in cm⁻¹ (including acoustic zeros).</span>
+<span class="sd">            Bulk TO phonon frequencies in cm⁻¹.</span>
 <span class="sd">        sigmas_cm1 : array_like, shape (n_to_modes,)</span>
 <span class="sd">            Bulk TO Lorentzian linewidths in cm⁻¹.</span>
+<span class="sd">        q_hat_crystal : ndarray, shape (3,)</span>
+<span class="sd">            Unit phonon wavevector direction in the crystal frame.</span>
+<span class="sd">        eps_inf : ndarray, shape (3, 3)</span>
+<span class="sd">            High-frequency optical dielectric tensor in the crystal frame.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        slab_freqs : ndarray, shape (3N,)</span>
-<span class="sd">            Slab phonon frequencies in cm⁻¹ (all 3N modes, including acoustic).</span>
-<span class="sd">        slab_tensors : list of ndarray, each (3, 3)</span>
-<span class="sd">            Slab Raman tensors in crystal frame (3N total).</span>
-<span class="sd">        slab_sigmas : ndarray, shape (3N,)</span>
-<span class="sd">            Linewidths inherited from the dominant TO component.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        Requires ``self.reader.hessian``, ``self.reader.born_charges``,</span>
-<span class="sd">        ``self.reader.mass_weighted_normal_modes``, ``self.reader.zerof_optical_dielectric``.</span>
-
+<span class="sd">        nac_freqs : ndarray, shape (3N,)</span>
+<span class="sd">        nac_tensors : list of ndarray, each (3, 3)</span>
+<span class="sd">        nac_sigmas : ndarray, shape (3N,)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nAtoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nions</span>
         <span class="n">n_modes</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">nAtoms</span>
         <span class="n">volume_au</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="n">angs2bohr</span> <span class="o">**</span> <span class="mi">3</span>
         <span class="n">masses_au</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span> <span class="o">*</span> <span class="n">amu</span>
-
-        <span class="c1"># Slab normal in lab frame → crystal frame</span>
-        <span class="n">n_hat_crystal</span> <span class="o">=</span> <span class="n">G_total</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n_hat_crystal</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">norm</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-            <span class="n">n_hat_crystal</span> <span class="o">/=</span> <span class="n">norm</span>
-
-        <span class="c1"># Depolarisation tensor for a thin slab: L = n̂ ⊗ n̂</span>
-        <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">n_hat_crystal</span><span class="p">,</span> <span class="n">n_hat_crystal</span><span class="p">)</span>
-
-        <span class="c1"># Optical dielectric tensor ε_∞ in crystal frame</span>
-        <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">eps_inf</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">eps_inf</span><span class="p">)</span>
-
-        <span class="c1"># External medium: vacuum (ε_e = 1)</span>
-        <span class="n">epsilon_e</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="n">I3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-
-        <span class="c1"># Background internal field tensor: N_bg = (I + (1/ε_e) L (ε_∞ − ε_e I))⁻¹</span>
-        <span class="n">N_bg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">I3</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">epsilon_e</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span> <span class="o">@</span> <span class="p">(</span><span class="n">eps_inf</span> <span class="o">-</span> <span class="n">epsilon_e</span> <span class="o">*</span> <span class="n">I3</span><span class="p">))</span>
-        <span class="n">NbgL</span> <span class="o">=</span> <span class="n">N_bg</span> <span class="o">@</span> <span class="n">L</span>
-
-        <span class="c1"># Mass-weighted Born charges Z&#39;[α, κβ] = Z*[κ, α, β] / √M_κ  (no volume factor)</span>
         <span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">born_charges</span><span class="p">)</span>
-        <span class="n">Z_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_modes</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">kappa</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nAtoms</span><span class="p">):</span>
-            <span class="n">inv_sqrtM</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">masses_au</span><span class="p">[</span><span class="n">kappa</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-                <span class="n">Z_mat</span><span class="p">[:,</span> <span class="n">kappa</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">beta</span><span class="p">]</span> <span class="o">=</span> <span class="n">born_charges</span><span class="p">[</span><span class="n">kappa</span><span class="p">,</span> <span class="p">:,</span> <span class="n">beta</span><span class="p">]</span> <span class="o">*</span> <span class="n">inv_sqrtM</span>
 
-        <span class="c1"># Dynamical matrix correction: ΔD = (4π / (ε_e V)) Z&#39;^T (N_bg L) Z&#39;</span>
-        <span class="n">delta_D</span> <span class="o">=</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">epsilon_e</span> <span class="o">*</span> <span class="n">volume_au</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">Z_mat</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">NbgL</span> <span class="o">@</span> <span class="n">Z_mat</span><span class="p">)</span>
-        <span class="n">D_TO</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">hessian</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-
-        <span class="c1"># Diagonalize the slab dynamical matrix</span>
-        <span class="n">eig_val</span><span class="p">,</span> <span class="n">eig_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">D_TO</span> <span class="o">+</span> <span class="n">delta_D</span><span class="p">)</span>
-
-        <span class="c1"># Slab frequencies in cm⁻¹ (preserve sign for unstable modes)</span>
-        <span class="n">slab_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ev</span><span class="p">))</span> <span class="o">/</span> <span class="n">wavenumber</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">ev</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">eig_val</span>
-        <span class="p">])</span>
-
-        <span class="c1"># Build U_TO: rows = TO eigenvectors flattened, shape (n_to_modes, 3N)</span>
         <span class="n">n_to_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">)</span>
         <span class="n">U_TO</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_to_modes</span><span class="p">,</span> <span class="n">n_modes</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">imode</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">):</span>
@@ -2991,22 +3188,270 @@
                 <span class="n">U_TO</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span><span class="n">col</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom</span>
                 <span class="n">col</span> <span class="o">+=</span> <span class="mi">3</span>
 
-        <span class="c1"># Overlap matrix C[n, m] = &lt;u_n^TO | u_m^slab&gt;</span>
-        <span class="n">C</span> <span class="o">=</span> <span class="n">U_TO</span> <span class="o">@</span> <span class="n">eig_vec</span>  <span class="c1"># (n_to_modes, 3N)</span>
+        <span class="n">chi2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="s2">&quot;nonlinear_optical_susceptibility&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_compute_nac_dynamical_matrix_standalone</span><span class="p">(</span>
+            <span class="n">q_hat_crystal</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">hessian</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+            <span class="n">born_charges</span><span class="p">,</span>
+            <span class="n">eps_inf</span><span class="p">,</span>
+            <span class="n">volume_au</span><span class="p">,</span>
+            <span class="n">masses_au</span><span class="p">,</span>
+            <span class="n">U_TO</span><span class="p">,</span>
+            <span class="n">scaled_tensors</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sigmas_cm1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+            <span class="n">chi2_pm_per_v</span><span class="o">=</span><span class="n">chi2</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
-        <span class="c1"># Transform Raman tensors and inherit linewidths from dominant TO component</span>
+
+<div class="viewcode-block" id="CrystalScenarioTab._compute_nac_modes_geometry">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab._compute_nac_modes_geometry">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_nac_modes_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G_total</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">,</span>
+                                     <span class="n">incident_angle_rad</span><span class="p">,</span> <span class="n">scatter_angle_rad</span><span class="p">,</span> <span class="n">collection_side</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Level 1: Compute NAC-corrected phonon modes using q from macroscopic scattering geometry.</span>
+
+<span class="sd">        The phonon wavevector direction is determined from the Raman momentum transfer</span>
+<span class="sd">        ``q_ph = k_L − k_S`` in the lab frame, where k_L and k_S are the incident and</span>
+<span class="sd">        scattered beam directions refracted into the active layer by Snell&#39;s law using</span>
+<span class="sd">        the isotropic-average refractive index of that layer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        G_total : ndarray, shape (3, 3)</span>
+<span class="sd">            Crystal-to-lab rotation matrix (G_psi @ layer.euler).</span>
+<span class="sd">        scaled_tensors : list of ndarray, each (3, 3)</span>
+<span class="sd">            Bulk TO Raman tensors scaled by sqrt(V_cell).</span>
+<span class="sd">        frequencies_cm1 : array_like</span>
+<span class="sd">            Bulk TO phonon frequencies in cm⁻¹.</span>
+<span class="sd">        sigmas_cm1 : array_like</span>
+<span class="sd">            Bulk TO linewidths in cm⁻¹.</span>
+<span class="sd">        incident_angle_rad : float</span>
+<span class="sd">            Angle of incidence (from surface normal) in the superstrate, in radians.</span>
+<span class="sd">        scatter_angle_rad : float</span>
+<span class="sd">            Collection angle (from surface normal) in radians.</span>
+<span class="sd">        collection_side : str</span>
+<span class="sd">            ``&#39;superstrate&#39;`` for backscattering; ``&#39;substrate&#39;`` for forward scattering.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nac_freqs : ndarray or None</span>
+<span class="sd">            NAC-corrected phonon frequencies in cm⁻¹, or None when ``|q_ph|`` is below</span>
+<span class="sd">            the threshold (forward-scattering: use TO phonons instead).</span>
+<span class="sd">        nac_tensors : list or None</span>
+<span class="sd">            NAC-corrected Raman tensors, or None.</span>
+<span class="sd">        nac_sigmas : ndarray or None</span>
+<span class="sd">            NAC-corrected linewidths in cm⁻¹, or None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">eps_inf</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">eps_inf</span><span class="p">)</span>
+
+        <span class="c1"># Isotropic refractive index from trace/3 average of ε_∞</span>
+        <span class="n">n_layer</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">eps_inf</span><span class="p">))</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+
+        <span class="c1"># Snell&#39;s law: sin(θ_int) = sin(θ_ext) / n_layer  (assuming n_superstrate = 1)</span>
+        <span class="n">sin_inc_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">incident_angle_rad</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_layer</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">sin_scat_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">scatter_angle_rad</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_layer</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">cos_inc_int</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">sin_inc_int</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">cos_scat_int</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">sin_scat_int</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1"># k_L direction: incident beam propagating in +z (into the layer)</span>
+        <span class="n">k_L_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sin_inc_int</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">cos_inc_int</span><span class="p">])</span>
+
+        <span class="c1"># k_S direction: scattered photon propagation direction</span>
+        <span class="k">if</span> <span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;substrate&quot;</span><span class="p">:</span>
+            <span class="c1"># Forward scattering: scattered beam also propagates in +z</span>
+            <span class="n">k_S_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sin_scat_int</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">cos_scat_int</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Backscattering: scattered beam exits in −z (toward superstrate)</span>
+            <span class="n">k_S_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sin_scat_int</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">cos_scat_int</span><span class="p">])</span>
+
+        <span class="c1"># Phonon momentum transfer q = k_L − k_S</span>
+        <span class="n">q_ph</span> <span class="o">=</span> <span class="n">k_L_hat</span> <span class="o">-</span> <span class="n">k_S_hat</span>
+        <span class="n">q_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">q_ph</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">q_norm</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+            <span class="c1"># Near-zero momentum transfer: use bulk TO phonons</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">q_hat_lab</span> <span class="o">=</span> <span class="n">q_ph</span> <span class="o">/</span> <span class="n">q_norm</span>
+        <span class="c1"># Rotate to crystal frame: G_total maps crystal→lab, G_total.T maps lab→crystal</span>
+        <span class="n">q_hat_crystal</span> <span class="o">=</span> <span class="n">G_total</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">q_hat_lab</span>
+        <span class="n">q_c_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">q_hat_crystal</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">q_c_norm</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">q_hat_crystal</span> <span class="o">/=</span> <span class="n">q_c_norm</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_nac_dynamical_matrix</span><span class="p">(</span>
+            <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">,</span> <span class="n">q_hat_crystal</span><span class="p">,</span> <span class="n">eps_inf</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CrystalScenarioTab._compute_nac_modes_dominant">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab._compute_nac_modes_dominant">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_nac_modes_dominant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G_total</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">,</span>
+                                     <span class="n">system</span><span class="p">,</span> <span class="n">layer_idx</span><span class="p">,</span> <span class="n">incident_angle_rad</span><span class="p">,</span> <span class="n">scatter_angle_rad</span><span class="p">,</span>
+                                     <span class="n">collection_side</span><span class="p">,</span> <span class="n">laser_freq_cm1</span><span class="p">,</span> <span class="n">incident_pol</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Level 2: Compute NAC-corrected phonon modes using the dominant Berreman eigenmode.</span>
+
+<span class="sd">        Instead of the macroscopic Snell&#39;s-law estimate, the phonon wavevector direction</span>
+<span class="sd">        is taken from the actual kz eigenvalue of the dominant forward-propagating Berreman</span>
+<span class="sd">        mode in the active GTM layer.  This accounts for optical anisotropy and birefringence.</span>
+
+<span class="sd">        The GTM system is solved at the laser frequency to obtain the sorted eigenvalues</span>
+<span class="sd">        ``layer.qs = [trans-p, trans-s, refl-p, refl-s]``, and the dominant transmitted</span>
+<span class="sd">        mode is selected according to the incident polarisation (p → qs[0], s → qs[1]).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        G_total : ndarray, shape (3, 3)</span>
+<span class="sd">            Crystal-to-lab rotation matrix.</span>
+<span class="sd">        scaled_tensors : list of ndarray, each (3, 3)</span>
+<span class="sd">            Bulk TO Raman tensors scaled by sqrt(V_cell).</span>
+<span class="sd">        frequencies_cm1 : array_like</span>
+<span class="sd">            Bulk TO phonon frequencies in cm⁻¹.</span>
+<span class="sd">        sigmas_cm1 : array_like</span>
+<span class="sd">            Bulk TO linewidths in cm⁻¹.</span>
+<span class="sd">        system : GTMcore.System</span>
+<span class="sd">            Fully constructed GTM system (superstrate + layers + substrate).</span>
+<span class="sd">        layer_idx : int</span>
+<span class="sd">            Index into ``system.layers`` for the active dielectric layer.</span>
+<span class="sd">        incident_angle_rad : float</span>
+<span class="sd">            Angle of incidence in radians.</span>
+<span class="sd">        scatter_angle_rad : float</span>
+<span class="sd">            Collection angle in radians.</span>
+<span class="sd">        collection_side : str</span>
+<span class="sd">            ``&#39;superstrate&#39;`` for backscattering; ``&#39;substrate&#39;`` for forward scattering.</span>
+<span class="sd">        laser_freq_cm1 : float</span>
+<span class="sd">            Laser frequency in cm⁻¹.</span>
+<span class="sd">        incident_pol : str</span>
+<span class="sd">            ``&#39;p&#39;`` or ``&#39;s&#39;`` incident polarisation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nac_freqs : ndarray or None</span>
+<span class="sd">        nac_tensors : list or None</span>
+<span class="sd">        nac_sigmas : ndarray or None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">eps_inf</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">eps_inf</span><span class="p">)</span>
+
+        <span class="n">laser_freq_hz</span> <span class="o">=</span> <span class="n">laser_freq_cm1</span> <span class="o">*</span> <span class="n">speed_light_si</span> <span class="o">*</span> <span class="mf">1e2</span>
+
+        <span class="c1"># Solve GTM at laser frequency/incident geometry to populate layer.qs</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">initialize_sys</span><span class="p">(</span><span class="n">laser_freq_hz</span><span class="p">)</span>
+        <span class="n">zeta_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">incident_angle_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">calculate_GammaStar</span><span class="p">(</span><span class="n">laser_freq_hz</span><span class="p">,</span> <span class="n">zeta_L</span><span class="p">)</span>
+
+        <span class="c1"># Dominant transmitted mode index: p → 0, s → 1  (GTMcore order: trans-p, trans-s, ...)</span>
+        <span class="n">active_layer</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]</span>
+        <span class="n">dom_idx</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">incident_pol</span> <span class="o">==</span> <span class="s2">&quot;p&quot;</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">qs_L</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">active_layer</span><span class="o">.</span><span class="n">qs</span><span class="p">[</span><span class="n">dom_idx</span><span class="p">]))</span>
+        <span class="n">zeta_L_re</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">zeta_L</span><span class="p">))</span>
+
+        <span class="c1"># Solve at collection geometry for the scatter kz</span>
+        <span class="c1"># Use laser frequency as approximation (Raman shift is small)</span>
+        <span class="n">zeta_S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">scatter_angle_rad</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">calculate_GammaStar</span><span class="p">(</span><span class="n">laser_freq_hz</span><span class="p">,</span> <span class="n">zeta_S</span><span class="p">)</span>
+        <span class="n">qs_S</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">active_layer</span><span class="o">.</span><span class="n">qs</span><span class="p">[</span><span class="n">dom_idx</span><span class="p">]))</span>
+        <span class="n">zeta_S_re</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">zeta_S</span><span class="p">))</span>
+
+        <span class="c1"># Phonon momentum transfer in reduced wavevector space (direction only)</span>
+        <span class="k">if</span> <span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;substrate&quot;</span><span class="p">:</span>
+            <span class="c1"># Forward: k_S also propagates in +z</span>
+            <span class="n">q_dir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zeta_L_re</span> <span class="o">-</span> <span class="n">zeta_S_re</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">qs_L</span> <span class="o">-</span> <span class="n">qs_S</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Backscattering: k_S travels in −z (sign flip on both kx and kz)</span>
+            <span class="n">q_dir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zeta_L_re</span> <span class="o">+</span> <span class="n">zeta_S_re</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">qs_L</span> <span class="o">+</span> <span class="n">qs_S</span><span class="p">])</span>
+
+        <span class="n">q_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">q_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">q_norm</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">q_hat_lab</span> <span class="o">=</span> <span class="n">q_dir</span> <span class="o">/</span> <span class="n">q_norm</span>
+        <span class="c1"># Rotate to crystal frame</span>
+        <span class="n">q_hat_crystal</span> <span class="o">=</span> <span class="n">G_total</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">q_hat_lab</span>
+        <span class="n">q_c_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">q_hat_crystal</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">q_c_norm</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">q_hat_crystal</span> <span class="o">/=</span> <span class="n">q_c_norm</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_nac_dynamical_matrix</span><span class="p">(</span>
+            <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">,</span> <span class="n">q_hat_crystal</span><span class="p">,</span> <span class="n">eps_inf</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CrystalScenarioTab._make_nac_function">
+<a class="viewcode-back" href="../../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html#PDielec.GUI.CrystalScenarioTab.CrystalScenarioTab._make_nac_function">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_nac_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G_total</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a closure for on-demand NAC computation for any phonon wavevector direction.</span>
+
+<span class="sd">        The returned callable takes a unit phonon wavevector in the lab frame and</span>
+<span class="sd">        returns NAC-corrected phonon frequencies, Raman tensors, and linewidths for</span>
+<span class="sd">        that q-direction.  It captures only numpy arrays (no ``self`` reference) for</span>
+<span class="sd">        safety, enabling future parallelism.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        G_total : ndarray, shape (3, 3)</span>
+<span class="sd">            Crystal-to-lab rotation matrix (G_psi @ layer.euler).</span>
+<span class="sd">        scaled_tensors : list of ndarray, each (3, 3)</span>
+<span class="sd">            Bulk TO Raman tensors scaled by sqrt(V_cell), in crystal frame.</span>
+<span class="sd">        frequencies_cm1 : ndarray</span>
+<span class="sd">            Bulk TO phonon frequencies in cm⁻¹.</span>
+<span class="sd">        sigmas_cm1 : ndarray</span>
+<span class="sd">            Bulk TO linewidths in cm⁻¹.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        callable</span>
+<span class="sd">            ``f(q_hat_lab: ndarray[3]) -&gt; (nac_freqs, nac_tensors, nac_sigmas)``</span>
+<span class="sd">            or ``(None, None, None)`` when ``|q_ph|`` is negligible.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">eps_inf</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">eps_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">eps_inf</span><span class="p">)</span>
+
+        <span class="n">nAtoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nions</span>
+        <span class="n">n_modes</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">nAtoms</span>
+        <span class="n">volume_au</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="n">angs2bohr</span> <span class="o">**</span> <span class="mi">3</span>
+        <span class="n">masses_au</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span> <span class="o">*</span> <span class="n">amu</span>
+        <span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">born_charges</span><span class="p">)</span>
+
+        <span class="n">n_to_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">)</span>
+        <span class="n">U_TO</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_to_modes</span><span class="p">,</span> <span class="n">n_modes</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">imode</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">):</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+                <span class="n">U_TO</span><span class="p">[</span><span class="n">imode</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span><span class="n">col</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom</span>
+                <span class="n">col</span> <span class="o">+=</span> <span class="mi">3</span>
+
+        <span class="c1"># Capture only plain numpy arrays (no self reference)</span>
+        <span class="n">hessian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">hessian</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">G_total</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">scaled_tensors</span><span class="p">]</span>
         <span class="n">sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sigmas_cm1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">slab_tensors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">slab_sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_modes</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">p_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">):</span>
-            <span class="n">R_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">n_to</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_to_modes</span><span class="p">):</span>
-                <span class="n">R_p</span> <span class="o">+=</span> <span class="n">C</span><span class="p">[</span><span class="n">n_to</span><span class="p">,</span> <span class="n">p_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">scaled_tensors</span><span class="p">[</span><span class="n">n_to</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-            <span class="n">slab_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R_p</span><span class="p">)</span>
-            <span class="n">dominant_to</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">C</span><span class="p">[:,</span> <span class="n">p_idx</span><span class="p">])))</span>
-            <span class="n">slab_sigmas</span><span class="p">[</span><span class="n">p_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigmas</span><span class="p">[</span><span class="n">dominant_to</span><span class="p">]</span> <span class="k">if</span> <span class="n">dominant_to</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sigmas</span><span class="p">)</span> <span class="k">else</span> <span class="mf">5.0</span>
+        <span class="n">chi2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="s2">&quot;nonlinear_optical_susceptibility&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">slab_freqs</span><span class="p">,</span> <span class="n">slab_tensors</span><span class="p">,</span> <span class="n">slab_sigmas</span></div>
+        <span class="k">def</span><span class="w"> </span><span class="nf">nac_function</span><span class="p">(</span><span class="n">q_hat_lab</span><span class="p">):</span>
+            <span class="n">q_hat_crystal</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">q_hat_lab</span>
+            <span class="n">qn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">q_hat_crystal</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">qn</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="n">q_hat_crystal</span> <span class="o">=</span> <span class="n">q_hat_crystal</span> <span class="o">/</span> <span class="n">qn</span>
+            <span class="k">return</span> <span class="n">_compute_nac_dynamical_matrix_standalone</span><span class="p">(</span>
+                <span class="n">q_hat_crystal</span><span class="p">,</span>
+                <span class="n">hessian</span><span class="p">,</span>
+                <span class="n">born_charges</span><span class="p">,</span>
+                <span class="n">eps_inf</span><span class="p">,</span>
+                <span class="n">volume_au</span><span class="p">,</span>
+                <span class="n">masses_au</span><span class="p">,</span>
+                <span class="n">U_TO</span><span class="p">,</span>
+                <span class="n">tensors</span><span class="p">,</span>
+                <span class="n">sigmas</span><span class="p">,</span>
+                <span class="n">chi2_pm_per_v</span><span class="o">=</span><span class="n">chi2</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">nac_function</span></div>
 
 
 <div class="viewcode-block" id="CrystalScenarioTab._build_raman_calculator">
@@ -3015,8 +3460,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build and return a configured LayeredRamanCalculator for the given azimuthal angle.</span>
 
 <span class="sd">        Constructs the GTMcore multilayer system, applies global azimuthal rotation,</span>
-<span class="sd">        builds the list of RamanLayer descriptors (with optional slab NAC), and returns</span>
-<span class="sd">        a fully configured LayeredRamanCalculator ready to call calculate_mode_intensities().</span>
+<span class="sd">        builds the list of RamanLayer descriptors (with optional NAC phonon frequency</span>
+<span class="sd">        correction), and returns a fully configured LayeredRamanCalculator ready to</span>
+<span class="sd">        call calculate_mode_intensities().</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -3084,34 +3530,109 @@
         <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">frequencies_cm1</span>
         <span class="n">sigmas_cm1</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">sigmas_cm1</span>
 
-        <span class="c1"># Phase 3a: check whether slab NAC correction is possible</span>
-        <span class="n">phonon_bc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+        <span class="c1"># Extract all settings needed for NAC and for the final LayeredRamanCalculator</span>
+        <span class="n">laser_wavelength_nm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Laser wavelength nm&quot;</span><span class="p">,</span> <span class="mf">532.0</span><span class="p">)</span>
+        <span class="n">laser_freq_cm1</span>      <span class="o">=</span> <span class="mf">1.0e7</span> <span class="o">/</span> <span class="n">laser_wavelength_nm</span>
+        <span class="n">incident_pol</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Incident polarisation&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">)</span>
+        <span class="n">detected_pol</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Detected polarisation&quot;</span><span class="p">,</span> <span class="s2">&quot;unpolarised&quot;</span><span class="p">)</span>
+        <span class="n">temperature_K</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Temperature K&quot;</span><span class="p">,</span> <span class="mf">298.0</span><span class="p">)</span>
+        <span class="n">density</span>             <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GL point density&quot;</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>
+        <span class="n">collection_side</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Collection side&quot;</span><span class="p">,</span> <span class="s2">&quot;superstrate&quot;</span><span class="p">)</span>
+        <span class="n">collection_angle</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Collection angle&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">coherent_layers</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Coherent layer summation&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">approximate_es</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Approximate ES&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">depth_integration</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Raman depth integration&quot;</span><span class="p">,</span> <span class="n">DEPTH_INTEGRATION_COHERENT</span><span class="p">)</span>
+        <span class="n">collection_angle_rad</span> <span class="o">=</span> <span class="n">angle_of_incidence</span> <span class="k">if</span> <span class="n">collection_angle</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">collection_angle</span><span class="p">)</span>
+
+        <span class="c1"># Layer NAC mode: &#39;none&#39;, &#39;geometry&#39;, &#39;dominant_mode&#39;, &#39;modal_pairs&#39;</span>
+        <span class="n">layer_nac_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Layer NAC mode&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+        <span class="c1"># Handle legacy &#39;Phonon boundary correction&#39; values from old sessions</span>
+        <span class="k">if</span> <span class="n">layer_nac_mode</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+            <span class="n">old_bc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Phonon boundary correction&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_bc</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;NAC&quot;</span><span class="p">,</span> <span class="s2">&quot;slab-environment&quot;</span><span class="p">,</span> <span class="s2">&quot;slab&quot;</span><span class="p">):</span>
+                <span class="n">layer_nac_mode</span> <span class="o">=</span> <span class="s2">&quot;geometry&quot;</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> _build_raman_calculator: legacy phonon BC &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">old_bc</span><span class="si">}</span><span class="s2">&#39; mapped to &#39;geometry&#39;&quot;</span>
+                <span class="p">)</span>
+
+        <span class="n">has_chi2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="s2">&quot;nonlinear_optical_susceptibility&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nonlinear_optical_susceptibility</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">has_chi2</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> _build_raman_calculator: &quot;</span>
+                        <span class="s2">&quot;electro-optic correction will be applied to Raman tensors (χ^(2) available)&quot;</span><span class="p">)</span>
+
         <span class="n">has_hessian</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="s2">&quot;hessian&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="n">has_born</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">born_charges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="n">has_modes</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">)</span>
         <span class="n">has_optical</span> <span class="o">=</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="s2">&quot;zerof_optical_dielectric&quot;</span><span class="p">)</span>
                        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">can_slab_nac</span> <span class="o">=</span> <span class="p">(</span><span class="n">phonon_bc</span> <span class="o">==</span> <span class="s2">&quot;slab&quot;</span> <span class="ow">and</span> <span class="n">has_hessian</span> <span class="ow">and</span> <span class="n">has_born</span>
-                        <span class="ow">and</span> <span class="n">has_modes</span> <span class="ow">and</span> <span class="n">has_optical</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">phonon_bc</span> <span class="o">==</span> <span class="s2">&quot;slab&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">can_slab_nac</span><span class="p">:</span>
+        <span class="n">can_correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer_nac_mode</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span>
+                       <span class="ow">and</span> <span class="n">has_hessian</span> <span class="ow">and</span> <span class="n">has_born</span> <span class="ow">and</span> <span class="n">has_modes</span> <span class="ow">and</span> <span class="n">has_optical</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">layer_nac_mode</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">can_correct</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> _build_raman_calculator: slab NAC requested but &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> _build_raman_calculator: &#39;</span><span class="si">{</span><span class="n">layer_nac_mode</span><span class="si">}</span><span class="s2">&#39; requested but &quot;</span>
                 <span class="s2">&quot;Born charges / hessian / optical dielectric not available — &quot;</span>
                 <span class="s2">&quot;falling back to bulk TO frequencies&quot;</span>
             <span class="p">)</span>
 
-        <span class="n">slab_freqs_shared</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">slab_sigmas_shared</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">can_slab_nac</span><span class="p">:</span>
-            <span class="n">first_G</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">for</span> <span class="n">scl</span> <span class="ow">in</span> <span class="n">selected_layers</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">scl</span><span class="o">.</span><span class="n">is_dielectric</span><span class="p">():</span>
-                    <span class="n">first_G</span> <span class="o">=</span> <span class="n">G_psi</span> <span class="o">@</span> <span class="n">scl</span><span class="o">.</span><span class="n">euler</span>
-                    <span class="k">break</span>
-            <span class="k">if</span> <span class="n">first_G</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">slab_freqs_shared</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">slab_sigmas_shared</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_slab_modes</span><span class="p">(</span>
-                    <span class="n">first_G</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span>
-                <span class="p">)</span>
+        <span class="c1"># Compute NAC-corrected modes independently per dielectric layer.</span>
+        <span class="c1"># Each layer may have a different crystal orientation (G_total), so q_hat</span>
+        <span class="c1"># in the crystal frame differs between layers.</span>
+        <span class="n">corrected_by_layer</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># maps sys_idx -&gt; (nac_freqs, nac_tensors, nac_sigmas)</span>
+        <span class="n">nac_fn_by_layer</span> <span class="o">=</span> <span class="p">{}</span>      <span class="c1"># maps sys_idx -&gt; nac_function closure (Level 3 only)</span>
+        <span class="n">corrected_sigmas_shared</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">can_correct</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">scl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">selected_layers</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">scl</span><span class="o">.</span><span class="n">is_dielectric</span><span class="p">():</span>
+                    <span class="k">continue</span>
+                <span class="n">G_total</span> <span class="o">=</span> <span class="n">G_psi</span> <span class="o">@</span> <span class="n">scl</span><span class="o">.</span><span class="n">euler</span>
+
+                <span class="k">if</span> <span class="n">layer_nac_mode</span> <span class="o">==</span> <span class="s2">&quot;modal_pairs&quot;</span><span class="p">:</span>
+                    <span class="c1"># Level 3: store TO baseline as fallback and build nac_function closure.</span>
+                    <span class="n">corrected_by_layer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">sigmas_cm1</span><span class="p">)</span>
+                    <span class="n">nac_fn_by_layer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_nac_function</span><span class="p">(</span>
+                        <span class="n">G_total</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">corrected_sigmas_shared</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">corrected_sigmas_shared</span> <span class="o">=</span> <span class="n">sigmas_cm1</span>
+                <span class="k">elif</span> <span class="n">layer_nac_mode</span> <span class="o">==</span> <span class="s2">&quot;dominant_mode&quot;</span><span class="p">:</span>
+                    <span class="n">nac_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_nac_modes_dominant</span><span class="p">(</span>
+                        <span class="n">G_total</span><span class="o">=</span><span class="n">G_total</span><span class="p">,</span>
+                        <span class="n">scaled_tensors</span><span class="o">=</span><span class="n">scaled_tensors</span><span class="p">,</span>
+                        <span class="n">frequencies_cm1</span><span class="o">=</span><span class="n">frequencies_cm1</span><span class="p">,</span>
+                        <span class="n">sigmas_cm1</span><span class="o">=</span><span class="n">sigmas_cm1</span><span class="p">,</span>
+                        <span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
+                        <span class="n">layer_idx</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+                        <span class="n">incident_angle_rad</span><span class="o">=</span><span class="n">angle_of_incidence</span><span class="p">,</span>
+                        <span class="n">scatter_angle_rad</span><span class="o">=</span><span class="n">collection_angle_rad</span><span class="p">,</span>
+                        <span class="n">collection_side</span><span class="o">=</span><span class="n">collection_side</span><span class="p">,</span>
+                        <span class="n">laser_freq_cm1</span><span class="o">=</span><span class="n">laser_freq_cm1</span><span class="p">,</span>
+                        <span class="n">incident_pol</span><span class="o">=</span><span class="n">incident_pol</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">nac_freqs</span><span class="p">,</span> <span class="n">nac_tensors</span><span class="p">,</span> <span class="n">nac_sigmas</span> <span class="o">=</span> <span class="n">nac_result</span>
+                    <span class="k">if</span> <span class="n">nac_freqs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">corrected_by_layer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nac_freqs</span><span class="p">,</span> <span class="n">nac_tensors</span><span class="p">,</span> <span class="n">nac_sigmas</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">corrected_sigmas_shared</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">corrected_sigmas_shared</span> <span class="o">=</span> <span class="n">nac_sigmas</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># &#39;geometry&#39;</span>
+                    <span class="n">nac_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_nac_modes_geometry</span><span class="p">(</span>
+                        <span class="n">G_total</span><span class="o">=</span><span class="n">G_total</span><span class="p">,</span>
+                        <span class="n">scaled_tensors</span><span class="o">=</span><span class="n">scaled_tensors</span><span class="p">,</span>
+                        <span class="n">frequencies_cm1</span><span class="o">=</span><span class="n">frequencies_cm1</span><span class="p">,</span>
+                        <span class="n">sigmas_cm1</span><span class="o">=</span><span class="n">sigmas_cm1</span><span class="p">,</span>
+                        <span class="n">incident_angle_rad</span><span class="o">=</span><span class="n">angle_of_incidence</span><span class="p">,</span>
+                        <span class="n">scatter_angle_rad</span><span class="o">=</span><span class="n">collection_angle_rad</span><span class="p">,</span>
+                        <span class="n">collection_side</span><span class="o">=</span><span class="n">collection_side</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">nac_freqs</span><span class="p">,</span> <span class="n">nac_tensors</span><span class="p">,</span> <span class="n">nac_sigmas</span> <span class="o">=</span> <span class="n">nac_result</span>
+                    <span class="k">if</span> <span class="n">nac_freqs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">corrected_by_layer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nac_freqs</span><span class="p">,</span> <span class="n">nac_tensors</span><span class="p">,</span> <span class="n">nac_sigmas</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">corrected_sigmas_shared</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">corrected_sigmas_shared</span> <span class="o">=</span> <span class="n">nac_sigmas</span>
 
         <span class="c1"># Build RamanLayer descriptors for each Raman-active (dielectric) layer</span>
         <span class="n">raman_layer_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3119,15 +3640,14 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">scl</span><span class="o">.</span><span class="n">is_dielectric</span><span class="p">():</span>
                 <span class="k">continue</span>
             <span class="n">G_total</span> <span class="o">=</span> <span class="n">G_psi</span> <span class="o">@</span> <span class="n">scl</span><span class="o">.</span><span class="n">euler</span>
-            <span class="k">if</span> <span class="n">can_slab_nac</span> <span class="ow">and</span> <span class="n">slab_freqs_shared</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">layer_slab_tensors</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_slab_modes</span><span class="p">(</span>
-                    <span class="n">G_total</span><span class="p">,</span> <span class="n">scaled_tensors</span><span class="p">,</span> <span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">sigmas_cm1</span>
-                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">can_correct</span> <span class="ow">and</span> <span class="n">sys_idx</span> <span class="ow">in</span> <span class="n">corrected_by_layer</span><span class="p">:</span>
+                <span class="n">nac_freqs</span><span class="p">,</span> <span class="n">nac_tensors</span><span class="p">,</span> <span class="n">nac_sigmas</span> <span class="o">=</span> <span class="n">corrected_by_layer</span><span class="p">[</span><span class="n">sys_idx</span><span class="p">]</span>
                 <span class="n">rl</span> <span class="o">=</span> <span class="n">RamanLayer</span><span class="p">(</span>
                     <span class="n">layer_index</span><span class="o">=</span><span class="n">sys_idx</span><span class="p">,</span>
-                    <span class="n">phonon_frequencies_cm1</span><span class="o">=</span><span class="n">slab_freqs_shared</span><span class="p">,</span>
-                    <span class="n">raman_tensors</span><span class="o">=</span><span class="n">layer_slab_tensors</span><span class="p">,</span>
+                    <span class="n">phonon_frequencies_cm1</span><span class="o">=</span><span class="n">nac_freqs</span><span class="p">,</span>
+                    <span class="n">raman_tensors</span><span class="o">=</span><span class="n">nac_tensors</span><span class="p">,</span>
                     <span class="n">rotation_matrix</span><span class="o">=</span><span class="n">G_total</span><span class="p">,</span>
+                    <span class="n">nac_function</span><span class="o">=</span><span class="n">nac_fn_by_layer</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sys_idx</span><span class="p">),</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">rl</span> <span class="o">=</span> <span class="n">RamanLayer</span><span class="p">(</span>
@@ -3142,21 +3662,33 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> _build_raman_calculator: no Raman-active dielectric layers in stack&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="c1"># Linewidths: use slab-corrected sigmas when slab NAC is active</span>
-        <span class="n">linewidths</span> <span class="o">=</span> <span class="n">slab_sigmas_shared</span> <span class="k">if</span> <span class="p">(</span><span class="n">can_slab_nac</span> <span class="ow">and</span> <span class="n">slab_sigmas_shared</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">sigmas_cm1</span>
+        <span class="c1"># Linewidths: use corrected sigmas (from first dielectric layer) when NAC is active</span>
+        <span class="n">linewidths</span> <span class="o">=</span> <span class="n">corrected_sigmas_shared</span> <span class="k">if</span> <span class="p">(</span><span class="n">can_correct</span> <span class="ow">and</span> <span class="n">corrected_sigmas_shared</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">sigmas_cm1</span>
 
-        <span class="n">laser_wavelength_nm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Laser wavelength nm&quot;</span><span class="p">,</span> <span class="mf">532.0</span><span class="p">)</span>
-        <span class="n">laser_freq_cm1</span>    <span class="o">=</span> <span class="mf">1.0e7</span> <span class="o">/</span> <span class="n">laser_wavelength_nm</span>
-        <span class="n">incident_pol</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Incident polarisation&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">)</span>
-        <span class="n">detected_pol</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Detected polarisation&quot;</span><span class="p">,</span> <span class="s2">&quot;unpolarised&quot;</span><span class="p">)</span>
-        <span class="n">temperature_K</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Temperature K&quot;</span><span class="p">,</span> <span class="mf">298.0</span><span class="p">)</span>
-        <span class="n">n_gauss</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Number of GL points&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-        <span class="n">collection_side</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Collection side&quot;</span><span class="p">,</span> <span class="s2">&quot;superstrate&quot;</span><span class="p">)</span>
-        <span class="n">collection_angle</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Collection angle&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
-        <span class="n">coherent_layers</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Coherent layer summation&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="n">approximate_es</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Approximate ES&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Compute n_gauss from density (pts/µm) and the thickest Raman-active layer</span>
+        <span class="n">_min_points</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">_max_points</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+        <span class="n">max_thick_um</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">rl</span><span class="o">.</span><span class="n">layer_index</span><span class="p">]</span><span class="o">.</span><span class="n">thick</span> <span class="o">*</span> <span class="mf">1.0e6</span> <span class="k">for</span> <span class="n">rl</span> <span class="ow">in</span> <span class="n">raman_layer_list</span><span class="p">),</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">n_gauss_raw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">density</span> <span class="o">*</span> <span class="n">max_thick_um</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">n_gauss_raw</span> <span class="o">&lt;</span> <span class="n">_min_points</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Crystal Raman: density </span><span class="si">{</span><span class="n">density</span><span class="si">}</span><span class="s2"> pts/µm × </span><span class="si">{</span><span class="n">max_thick_um</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2"> µm = &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_gauss_raw</span><span class="si">}</span><span class="s2"> points; using minimum of </span><span class="si">{</span><span class="n">_min_points</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">n_gauss</span> <span class="o">=</span> <span class="n">_min_points</span>
+        <span class="k">elif</span> <span class="n">n_gauss_raw</span> <span class="o">&gt;</span> <span class="n">_max_points</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Crystal Raman: density </span><span class="si">{</span><span class="n">density</span><span class="si">}</span><span class="s2"> pts/µm × </span><span class="si">{</span><span class="n">max_thick_um</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2"> µm = &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_gauss_raw</span><span class="si">}</span><span class="s2"> points; using maximum of </span><span class="si">{</span><span class="n">_max_points</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">n_gauss</span> <span class="o">=</span> <span class="n">_max_points</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_gauss</span> <span class="o">=</span> <span class="n">n_gauss_raw</span>
 
-        <span class="n">collection_angle_rad</span> <span class="o">=</span> <span class="n">angle_of_incidence</span> <span class="k">if</span> <span class="n">collection_angle</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">collection_angle</span><span class="p">)</span>
+        <span class="n">modal_pairs_enabled</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer_nac_mode</span> <span class="o">==</span> <span class="s2">&quot;modal_pairs&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">can_correct</span>
 
         <span class="k">return</span> <span class="n">LayeredRamanCalculator</span><span class="p">(</span>
             <span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
@@ -3172,6 +3704,8 @@
             <span class="n">collection_angle_rad</span><span class="o">=</span><span class="n">collection_angle_rad</span><span class="p">,</span>
             <span class="n">coherent_layers</span><span class="o">=</span><span class="n">coherent_layers</span><span class="p">,</span>
             <span class="n">approximate_es</span><span class="o">=</span><span class="n">approximate_es</span><span class="p">,</span>
+            <span class="n">depth_integration</span><span class="o">=</span><span class="n">depth_integration</span><span class="p">,</span>
+            <span class="n">modal_pairs</span><span class="o">=</span><span class="n">modal_pairs_enabled</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -3243,9 +3777,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">progressbars_update</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="n">target</span> <span class="o">-</span> <span class="n">_updated</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">_updated</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">pool</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">start_pool</span><span class="p">()</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">active_freqs</span><span class="p">,</span> <span class="n">active_ints</span><span class="p">,</span> <span class="n">active_sigmas</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">calculate_mode_intensities</span><span class="p">(</span>
-                <span class="n">progress_callback</span><span class="o">=</span><span class="n">_progress_callback</span>
+                <span class="n">progress_callback</span><span class="o">=</span><span class="n">_progress_callback</span><span class="p">,</span>
+                <span class="n">pool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">remaining</span> <span class="o">=</span> <span class="n">n_freqs</span> <span class="o">-</span> <span class="n">_updated</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -3297,6 +3835,9 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> _run_azimuthal_sweep: hkl=[0,0,0]&quot;</span><span class="p">)</span>
                     <span class="k">return</span> <span class="kc">None</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">pool</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">start_pool</span><span class="p">()</span>
+
         <span class="n">vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vs_cm1</span><span class="p">)</span>
         <span class="n">all_intensities</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">all_spectra</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3307,7 +3848,9 @@
             <span class="k">if</span> <span class="n">calculator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> _run_azimuthal_sweep: calculator failed at psi=</span><span class="si">{</span><span class="n">psi_deg</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
-            <span class="n">freqs</span><span class="p">,</span> <span class="n">ints</span><span class="p">,</span> <span class="n">sigmas</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">calculate_mode_intensities</span><span class="p">()</span>
+            <span class="n">freqs</span><span class="p">,</span> <span class="n">ints</span><span class="p">,</span> <span class="n">sigmas</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">calculate_mode_intensities</span><span class="p">(</span>
+                <span class="n">pool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">mode_freqs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">mode_freqs</span> <span class="o">=</span> <span class="n">freqs</span>
             <span class="n">spectrum</span> <span class="o">=</span> <span class="n">lorentzian_broaden</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">ints</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">vs</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vs</span><span class="p">))</span>
@@ -3489,7 +4032,6 @@
         <span class="k">return</span></div>
 </div>
 
-
 </pre></div>
         </article>
       </div>
@@ -3523,8 +4065,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

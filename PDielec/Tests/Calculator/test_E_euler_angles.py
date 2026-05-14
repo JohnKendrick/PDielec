@@ -68,7 +68,7 @@ class TestE2DetermineEulerAngles:
         np.testing.assert_allclose(R_back, np.eye(3), atol=1e-10)
 
     def test_round_trip_random_angles(self):
-        """euler_rotation_matrix(*determine_euler_angles(R)) ≈ R."""
+        """``euler_rotation_matrix(*determine_euler_angles(R))`` ≈ R."""
         rng = np.random.default_rng(42)
         for _ in range(10):
             # Random rotation via QR decomposition

@@ -2680,7 +2680,9 @@ class CrystalScenarioTab(ScenarioTab):
             NAC-corrected phonon frequencies in cm⁻¹, or None when ``|q_ph|`` is below
             the threshold (forward-scattering: use TO phonons instead).
         nac_tensors : list or None
+            NAC-corrected Raman tensors, or None.
         nac_sigmas : ndarray or None
+            NAC-corrected linewidths in cm⁻¹, or None.
 
         """
         eps_inf = np.array(self.reader.zerof_optical_dielectric, dtype=float)
@@ -2840,7 +2842,7 @@ class CrystalScenarioTab(ScenarioTab):
         -------
         callable
             ``f(q_hat_lab: ndarray[3]) -> (nac_freqs, nac_tensors, nac_sigmas)``
-            or ``(None, None, None)`` when |q_ph| is negligible.
+            or ``(None, None, None)`` when ``|q_ph|`` is negligible.
         """
         eps_inf = np.array(self.reader.zerof_optical_dielectric, dtype=float)
         if eps_inf.ndim == 1:

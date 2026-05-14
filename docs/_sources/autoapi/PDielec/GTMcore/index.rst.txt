@@ -1275,6 +1275,43 @@ Module Contents
 
 
 
+   .. py:method:: calculate_modal_amplitudes(f, zeta_sys)
+
+      Expose the per-layer Berreman modal amplitudes at the front of each layer.
+
+      Extracts the F_bk bookkeeping from ``calculate_Efield`` and returns the
+      four complex modal amplitudes (for p-pol and s-pol incidence) at the
+      front interface of every finite-thickness layer.  The field at any depth z
+      inside layer k is then ``dKiz(z) @ F_bk[k+1, :]`` where dKiz is the
+      partial-depth propagation matrix, exactly as used inside
+      ``calculate_Efield``.
+
+      Both ``TransferMatrixSystem`` and ``ScatteringMatrixSystem`` are
+      supported.  For the scattering-matrix path, ``layer.Ki`` is rebuilt by
+      calling ``layer.calculate_propagation_matrix()`` before the F_bk
+      propagation (the same approach used in
+      ``ScatteringMatrixSystem.calculate_Efield``).
+
+      Parameters
+      ----------
+      f : float
+          Frequency in Hz.
+      zeta_sys : complex
+          Normalised in-plane wavevector (sin θ × √ε_superstrate).
+
+      Returns
+      -------
+      modal_amps : dict of {int: ndarray(8,)}
+          Keyed by finite-layer index k (0-based into ``self.layers``).
+          ``modal_amps[k][0:4]`` = modal amplitudes for p-pol incidence;
+          ``modal_amps[k][4:8]`` = modal amplitudes for s-pol incidence.
+          Mode ordering matches ``layer.qs``: [trans-p, trans-s, refl-p, refl-s].
+      zn : ndarray, shape (laynum+2,)
+          Layer boundary positions in metres, shifted so z=0 is the
+          incident (superstrate/first-layer) interface.
+
+
+
    .. py:method:: calculate_r_t(zeta_sys)
 
       Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.

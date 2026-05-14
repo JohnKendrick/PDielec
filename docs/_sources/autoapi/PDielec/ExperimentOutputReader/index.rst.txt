@@ -59,6 +59,49 @@ Module Contents
 
 
 
+   .. py:method:: _calculate_hessian_from_frequencies_and_normal_modes()
+
+      Reconstruct a mass-weighted Hessian from read frequencies and normal modes.
+
+
+
+   .. py:method:: _calculate_oscillator_strengths_from_born_charges()
+
+      Calculate oscillator strengths when Born charges and normal modes are present.
+
+
+
+   .. py:method:: _read_born_charges(line)
+
+      Read Born effective charge tensors.
+
+      Parameters
+      ----------
+      line : str
+          The trigger line, expected format: ``born_charges N`` where
+          ``N`` is the number of atom tensors to read.
+
+      Notes
+      -----
+      Each atom tensor is read from three non-comment lines containing
+      the 3x3 Born effective charge matrix in electron units.  An optional
+      atom label line may precede each tensor; labels are ignored.
+
+      Example::
+
+          born_charges 2
+          # Cd1
+            2.172 -0.052 -0.077
+            0.064  2.024 -0.004
+            0.059  0.065  2.244
+          # N1
+           -2.713  0.415  0.133
+            0.402 -3.058  0.114
+            0.218  0.069 -2.376
+
+
+
+
    .. py:method:: _read_constant_model(line)
 
       Read in a full constant dielectric tensor 3 values on each line.

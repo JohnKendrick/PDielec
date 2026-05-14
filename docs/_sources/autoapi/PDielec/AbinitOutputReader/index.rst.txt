@@ -356,6 +356,34 @@ Module Contents
 
 
 
+   .. py:method:: _read_nlo_susceptibility(line)
+
+      Read the nonlinear optical susceptibility tensor d from Abinit output.
+
+      Abinit writes the d-tensor (d = χ^(2)/2) in a 27-row table with 1-based
+      integer indices for all three Cartesian directions::
+
+          Non-linear optical susceptibility tensor d (pm/V)
+          in cartesian coordinates
+           i1dir  i2dir  i3dir             d
+              1      1      1         -0.000000000
+              ...
+              3      3      3        -33.368821342
+
+      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+
+      Parameters
+      ----------
+      line : str
+          The trigger line (already consumed by the manage loop).
+
+      Returns
+      -------
+      bool
+          True on success.
+
+
+
    .. py:method:: _read_ntypat(line)
 
       Read and set the number of species from a given line.

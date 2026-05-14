@@ -115,6 +115,10 @@ Module Contents
        A list of 3×3 Raman susceptibility tensors, one per normal mode, or ``None`` if
        the output reader does not provide Raman data.
 
+   nonlinear_optical_susceptibility : ndarray or None
+       Second-order nonlinear optical susceptibility tensor χ^(2), shape (3, 3, 3),
+       units pm/V; ``None`` if not available.
+
    original_born_charges_are_being_used : bool
        Signifies whether original Born charges are in use, defaults to True.
 
@@ -367,6 +371,17 @@ Module Contents
       float
           Density in g/cc
 
+
+
+
+   .. py:method:: get_nonlinear_optical_susceptibility()
+
+      Return the second-order nonlinear optical susceptibility tensor χ^(2).
+
+      Returns
+      -------
+      ndarray or None
+          χ^(2) tensor, shape (3, 3, 3), units pm/V; None if not available.
 
 
 
@@ -787,6 +802,11 @@ Module Contents
 
    .. py:attribute:: nomass_hessian_has_been_set
       :value: False
+
+
+
+   .. py:attribute:: nonlinear_optical_susceptibility
+      :value: None
 
 
 

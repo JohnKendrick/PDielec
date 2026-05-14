@@ -47,7 +47,12 @@ Attributes
 
 .. autoapisummary::
 
+   PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT
+   PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT
+   PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS
    PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1
+   PDielec.LayeredRamanCalculator._EFIELD_CHUNK_SIZE
+   PDielec.LayeredRamanCalculator._MAX_GAUSS_LEGENDRE_PANEL_ORDER
    PDielec.LayeredRamanCalculator.logger
 
 
@@ -65,6 +70,9 @@ Functions
 
 .. autoapisummary::
 
+   PDielec.LayeredRamanCalculator._compute_efield_chunk_worker
+   PDielec.LayeredRamanCalculator._compute_raman_mode_worker
+   PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights
    PDielec.LayeredRamanCalculator.bose_factor
    PDielec.LayeredRamanCalculator.lorentzian_broaden
 
@@ -72,7 +80,7 @@ Functions
 Module Contents
 ---------------
 
-.. py:class:: LayeredRamanCalculator(system, raman_layers, laser_frequency_cm1, incident_angle_rad, incident_pol, detected_pol, temperature_K, linewidths_cm1, n_gauss=20, collection_side='superstrate', collection_angle_rad=None, coherent_layers=False, approximate_es=False)
+.. py:class:: LayeredRamanCalculator(system, raman_layers, laser_frequency_cm1, incident_angle_rad, incident_pol, detected_pol, temperature_K, linewidths_cm1, n_gauss=21, collection_side='superstrate', collection_angle_rad=None, coherent_layers=False, approximate_es=False, depth_integration=DEPTH_INTEGRATION_COHERENT, modal_pairs=False)
 
    Calculate the Raman spectrum of a multilayer system via depth integration.
 
@@ -124,7 +132,7 @@ Module Contents
        acoustic modes; those are skipped internally).
    n_gauss : int, optional
        Number of Gauss-Legendre quadrature points per Raman-active layer.
-       Default is 20, which is accurate for smooth fields in thin layers.
+       Default is 21.
    collection_side : {'superstrate', 'substrate'}, optional
        Which side the detector is on.  ``'superstrate'`` (default) gives
        backscattering geometry; ``'substrate'`` gives forward scattering and
@@ -139,6 +147,12 @@ Module Contents
    approximate_es : bool, optional
        If ``True``, use the Phase 1 approximation E_S ≈ E_L (both fields at
        the laser frequency).  Default is ``False``.
+   depth_integration : {'Coherent amplitude', 'Incoherent intensity'}, optional
+       How to combine the source along the depth of each Raman-active layer.
+       ``'Coherent amplitude'`` integrates the complex amplitude before
+       squaring and is appropriate for thin coherent films.  ``'Incoherent
+       intensity'`` integrates the local intensity and is more stable for
+       thick or bulk samples where long-range phase coherence is not physical.
 
    Notes
    -----
@@ -155,14 +169,14 @@ Module Contents
 
    For forward scattering (``collection_side='substrate'``), the z-coordinates
    for E_S are remapped as ``z_rev = total_thickness − z_orig`` before being
-   passed to ``calculate_Efield`` on the reversed system; the GL quadrature
+   passed to ``calculate_Efield`` on the reversed system; the quadrature
    weights are unchanged.
 
 
 
    .. py:method:: _build_gl_grid()
 
-      Map GL quadrature points onto each Raman-active layer interval.
+      Map Gauss-Legendre quadrature points onto each Raman-active layer interval.
 
       Uses ``system.get_layers_boundaries()`` to find each layer's z extent.
       Boundaries are in metres with z = 0 at the superstrate/first-layer
@@ -171,14 +185,103 @@ Module Contents
       Populates
       ---------
       _gl_z : ndarray
-          Concatenated GL z coordinates for all Raman-active layers, in metres
+          Concatenated quadrature z coordinates for all Raman-active layers, in metres
           (the unit ``calculate_Efield`` expects).
       _gl_phys_weights : ndarray
-          Corresponding integration weights in Ångström (GL weight × half-thickness × 1e10).
+          Corresponding integration weights in Ångström (quadrature weight × half-thickness × 1e10).
           The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
           keeping intensity magnitudes in a readable range.
       _gl_layer_slices : list of slice
           One slice per ``RamanLayer`` indexing into ``_gl_z`` / ``_gl_phys_weights``.
+
+
+
+   .. py:method:: _calculate_mode_intensities_modal_pairs(progress_callback=None)
+
+      Level 3 modal-pairs Raman intensity calculation.
+
+      For each phonon mode, sums ``|A^{ij}|²`` over all active (i_L, j_S) Berreman
+      mode pairs incoherently.  The phonon wavevector for each pair is
+      q_ph = k_L^i − k_S^j, giving a distinct NAC-corrected phonon frequency
+      and Raman tensor per pair.  NAC results are cached per
+      (layer_index, i_mode, j_mode) and reused across all phonon modes.
+
+      Pool parallelism is disabled for this path (closures in RamanLayer.nac_function
+      are not picklable in Phase 1).
+
+      Returns
+      -------
+      active_frequencies : ndarray
+      active_intensities : ndarray
+      active_linewidths : ndarray
+
+
+
+   .. py:method:: _calculate_modes_parallel(pool, ref_layer, n_modes, es_system, z_s, rotation_matrices, progress_callback)
+
+      Parallel implementation of mode-intensity calculation via pool.imap.
+
+      E_L is computed in parallel by splitting the GL z-grid into chunks and
+      dispatching each chunk to a pool worker.  Each phonon-mode E_S call is
+      also dispatched to a pool worker.  This eliminates both the pre-pool
+      single-threaded bottleneck (E_L chunk computation is parallelised)
+      and the per-mode E_S bottleneck.
+
+      Parameters
+      ----------
+      pool : multiprocessing.Pool or compatible
+          Active worker pool.
+      ref_layer : RamanLayer
+          First Raman-active layer (source of phonon frequencies).
+      n_modes : int
+          Total number of phonon modes (including acoustic).
+      es_system : GTMcore.System
+          System used to evaluate E_S (original or reversed).
+      z_s : ndarray
+          z-coordinates (m) for the E_S field evaluation.
+      rotation_matrices : list of ndarray
+          Crystal-to-lab rotation matrices, one per RamanLayer.
+      progress_callback : callable or None
+          Called once per mode (in result-collection order) if not ``None``.
+
+      Returns
+      -------
+      tuple of ndarray
+          ``(active_frequencies, active_intensities, active_linewidths)``
+
+
+
+
+   .. py:method:: _get_active_modal_pairs()
+
+      Return the list of (i_L, j_S) Berreman mode-index pairs.
+
+      Each Berreman eigenmode has both a forward (kz > 0) and a backward
+      (kz < 0) variant per polarisation:
+
+        Mode 0: forward p-pol  (kz > 0)
+        Mode 1: forward s-pol  (kz > 0)
+        Mode 2: backward p-pol (kz < 0)
+        Mode 3: backward s-pol (kz < 0)
+
+      Both propagation directions contribute to the total field, so the
+      physically complete Level-3 sum includes all forward/backward pairs
+      for the appropriate polarisation.
+
+      For p-pol incidence: i_modes = {0, 2}  (both p modes, fwd and bwd).
+      For s-pol incidence: i_modes = {1, 3}.
+      Detected modes follow the same convention.
+
+      In backscattering the dominant amplitude comes from pair (0, 2) because
+      ``qs_L[0] + qs_S[2] ≈ 0`` gives a non-oscillating integrand.  Pairs
+      with both modes forward or both backward produce rapidly oscillating
+      integrands that are suppressed for thick layers, so the incoherent sum
+      ``Σ|A^{ij}|²`` is still dominated by the correct backscattering terms.
+
+      Returns
+      -------
+      list of (int, int)
+          Cartesian product of incident × detected mode sets.
 
 
 
@@ -204,6 +307,75 @@ Module Contents
       E_out : ndarray, shape (6, len(z_arr))
           Electric field: rows 0–2 for p-pol incidence, rows 3–5 for s-pol.
 
+
+
+
+   .. py:method:: _get_field_parallel(pool, freq_cm1, system, angle_rad, z_arr)
+
+      Compute the GTM E-field at *z_arr* in parallel using *pool*.
+
+      Splits ``z_arr`` into contiguous chunks of at most ``_EFIELD_CHUNK_SIZE``
+      z-positions, dispatches each chunk to a pool worker, then reassembles
+      the full ``(6, N)`` field array.  This avoids the long single-threaded
+      Python loop inside ``calculate_Efield`` by distributing the z-iteration
+      across pool workers.
+
+      Parameters
+      ----------
+      pool : multiprocessing.Pool or compatible
+          Worker pool used to distribute field calculations over chunks of
+          z-coordinates.
+      freq_cm1 : float
+          Evaluation frequency in cm⁻¹.
+      system : GTMcore.System
+          Optical system (copied to each worker via pickling).
+      angle_rad : float
+          Angle of incidence in radians.
+      z_arr : ndarray, shape (N,)
+          Sorted z-coordinates in metres.
+
+      Returns
+      -------
+      E_out : ndarray, shape (6, N)
+
+
+
+
+   .. py:method:: _get_modal_fields_at_gl_points(freq_cm1, system, angle_rad, z_arr)
+
+      Compute per-Berreman-mode electric field contributions at GL quadrature points.
+
+      For each Raman-active layer and each of its GL z-points, the field
+      contribution from each of the 4 Berreman modes is evaluated separately.
+      The total field at any z-point equals the sum of all 4 modal contributions,
+      which reproduces ``calculate_Efield`` exactly.
+
+      Parameters
+      ----------
+      freq_cm1 : float
+          Frequency in cm⁻¹ at which to solve the GTM system.
+      system : GTMcore.System
+          Optical system (TransferMatrixSystem or ScatteringMatrixSystem).
+      angle_rad : float
+          Angle of incidence on ``system``'s superstrate, in radians.
+      z_arr : ndarray
+          GL z-coordinates in metres (in system's coordinate frame).
+
+      Returns
+      -------
+      modal_fields : ndarray, shape (4, 2, 3, N_gl_total)
+          ``modal_fields[mode_n, pol_idx, xyz, z_pt]``
+          mode_n: 0..3 (trans-p, trans-s, refl-p, refl-s).
+          pol_idx: 0 = p-pol incidence on system, 1 = s-pol incidence.
+          xyz: Ex, Ey, Ez components.
+      qs_by_layer : dict of {int: ndarray(4,)}
+          Maps rl.layer_index → layer.qs (4 kz eigenvalues) from ``system``.
+          Note: for forward scatter (reversed system), rl.layer_index is
+          used directly as an index into system.layers, which is an
+          approximation; the physical-layer correspondence is exact only
+          for backscattering (es_system == self.system).
+      zeta : complex
+          In-plane wavevector used for this system/frequency/angle.
 
 
 
@@ -239,6 +411,12 @@ Module Contents
 
 
 
+   .. py:method:: _layer_depth_intensity(E_L_out, E_S_out, R_lab, sl)
+
+      Compute the incoherent depth-integrated Raman intensity for one layer.
+
+
+
    .. py:method:: _rotate_raman_tensor(R_crystal, G)
       :staticmethod:
 
@@ -260,7 +438,7 @@ Module Contents
 
 
 
-   .. py:method:: calculate_mode_intensities(progress_callback=None)
+   .. py:method:: calculate_mode_intensities(progress_callback=None, pool=None)
 
       Compute the per-mode Raman intensities (before broadening).
 
@@ -274,6 +452,12 @@ Module Contents
           If supplied, called once per phonon-mode iteration (including modes
           that are skipped as acoustic), so the caller can drive a progress
           bar.  The callback takes no arguments.
+      pool : multiprocessing.Pool or multiprocessing.dummy.Pool, optional
+          Worker pool for parallel execution.  When provided, each phonon mode
+          (i.e. each E_S field evaluation at its own scattered frequency) is
+          dispatched to a pool worker.  E_L is computed once on the calling
+          process and broadcast to all workers via ``functools.partial``.
+          When ``None`` (default), the calculation runs sequentially.
 
       Returns
       -------
@@ -341,6 +525,9 @@ Module Contents
    .. py:attribute:: _incident_jones
 
 
+   .. py:attribute:: _nac_cache
+
+
    .. py:attribute:: approximate_es
       :value: False
 
@@ -359,6 +546,11 @@ Module Contents
 
 
 
+   .. py:attribute:: depth_integration
+      :value: 'Coherent amplitude'
+
+
+
    .. py:attribute:: detected_pol
 
 
@@ -374,9 +566,12 @@ Module Contents
    .. py:attribute:: linewidths_cm1
 
 
-   .. py:attribute:: n_gauss
-      :value: 20
+   .. py:attribute:: modal_pairs
+      :value: False
 
+
+
+   .. py:attribute:: n_gauss
 
 
    .. py:attribute:: raman_layers
@@ -388,7 +583,7 @@ Module Contents
    .. py:attribute:: temperature_K
 
 
-.. py:class:: RamanLayer(layer_index, phonon_frequencies_cm1, raman_tensors, rotation_matrix)
+.. py:class:: RamanLayer(layer_index, phonon_frequencies_cm1, raman_tensors, rotation_matrix, nac_function=None)
 
    A Raman-active layer descriptor for LayeredRamanCalculator.
 
@@ -421,6 +616,11 @@ Module Contents
    .. py:attribute:: layer_index
 
 
+   .. py:attribute:: nac_function
+      :value: None
+
+
+
    .. py:attribute:: phonon_frequencies_cm1
 
 
@@ -428,6 +628,89 @@ Module Contents
 
 
    .. py:attribute:: rotation_matrix
+
+
+.. py:function:: _compute_efield_chunk_worker(shared, z_chunk)
+
+   Compute the GTM electric field for a contiguous chunk of z-positions.
+
+   Used to parallelise the E_L (and approximate E_S) field computation across
+   pool workers.  Each worker handles an independent, contiguous sub-array of
+   the full GL z-grid.
+
+   Parameters
+   ----------
+   shared : tuple
+       ``(system, freq_cm1, angle_rad)`` — the optical system, evaluation
+       frequency in cm⁻¹, and angle of incidence in radians.  The system is
+       pickled once per ``functools.partial`` binding.
+   z_chunk : ndarray, shape (M,)
+       Sorted z-coordinates (metres) for this chunk.
+
+   Returns
+   -------
+   E_chunk : ndarray, shape (6, M)
+       Electric field at the requested z-positions.
+
+
+
+.. py:function:: _compute_raman_mode_worker(shared, mode_args)
+
+   Compute the Raman intensity for a single phonon mode.
+
+   Designed to be called via ``pool.imap(partial(_compute_raman_mode_worker, shared),
+   mode_args_list)`` so that the large shared arrays (E_L, GL grid) are bound once
+   to the partial function and only the small per-mode data is iterated.
+
+   Parameters
+   ----------
+   shared : tuple
+       ``(es_system, collection_angle_rad, z_s_arr, E_L_out, E_S_fixed,
+       gl_phys_weights, gl_layer_slices, rotation_matrices,
+       incident_jones, detected_jones, coherent_layers, depth_integration,
+       temperature_K)``
+
+       ``es_system`` is ``None`` when ``E_S_fixed`` is provided (approximate-ES
+       or pre-computed forward-scatter field).  ``E_S_fixed`` is ``None`` when
+       ``es_system`` should be used to compute E_S fresh at ``nu_S``.
+   mode_args : tuple
+       ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors)``
+
+       ``nu_S`` is the scattered frequency in cm⁻¹ (ignored when ``E_S_fixed``
+       is not ``None``).  ``mode_raman_tensors`` is a list of (3, 3) complex
+       arrays, one per Raman-active layer, for this mode.
+
+   Returns
+   -------
+   tuple or None
+       ``(mode_idx, nu_m, I_m, sigma)`` for an active mode, or ``None`` if
+       the mode is below the acoustic threshold or the scattered frequency is
+       non-positive.
+
+
+
+.. py:function:: _gauss_legendre_nodes_weights(n)
+
+   Return Gauss-Legendre quadrature nodes and weights on [-1, 1].
+
+   For moderate point counts this is one ordinary Gauss-Legendre rule.  For
+   large point counts it becomes a composite Gauss-Legendre rule with repeated
+   fixed-order panels.  The composite form keeps setup cost and numerical
+   conditioning practical for mm/cm-thick layers where the GUI can request
+   hundreds of thousands of integration points.
+
+   Parameters
+   ----------
+   n : int
+       Number of quadrature points.  Must be at least 1.
+
+   Returns
+   -------
+   nodes : ndarray, shape (n,)
+       Gauss-Legendre abscissas on [-1, 1].
+   weights : ndarray, shape (n,)
+       Gauss-Legendre weights.  Their sum equals 2.0 (= length of [-1, 1]).
+
 
 
 .. py:function:: bose_factor(nu_cm1, temperature_K)
@@ -471,8 +754,26 @@ Module Contents
 
 
 
+.. py:data:: DEPTH_INTEGRATION_COHERENT
+   :value: 'Coherent amplitude'
+
+
+.. py:data:: DEPTH_INTEGRATION_INCOHERENT
+   :value: 'Incoherent intensity'
+
+
+.. py:data:: DEPTH_INTEGRATION_OPTIONS
+
 .. py:data:: _ACOUSTIC_THRESHOLD_CM1
    :value: 10.0
+
+
+.. py:data:: _EFIELD_CHUNK_SIZE
+   :value: 1000
+
+
+.. py:data:: _MAX_GAUSS_LEGENDRE_PANEL_ORDER
+   :value: 64
 
 
 .. py:data:: logger

@@ -1,0 +1,108 @@
+PDielec.RamanPolarCalculator
+============================
+
+.. py:module:: PDielec.RamanPolarCalculator
+
+.. autoapi-nested-parse::
+
+   Tensor-level Raman polar plot calculations.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.RamanPolarCalculator.ACOUSTIC_THRESHOLD_CM1
+   PDielec.RamanPolarCalculator.POLAR_GEOMETRIES
+   PDielec.RamanPolarCalculator.RAMAN_ACTIVE_THRESHOLD
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.RamanPolarCalculator.build_polarisation_basis
+   PDielec.RamanPolarCalculator.calculate_polar_curves
+   PDielec.RamanPolarCalculator.intensity_for_modes
+   PDielec.RamanPolarCalculator.normalise_vector
+   PDielec.RamanPolarCalculator.polarisation_vectors
+   PDielec.RamanPolarCalculator.raman_active_mode_indices
+   PDielec.RamanPolarCalculator.rotate_around_axis
+
+
+Module Contents
+---------------
+
+.. py:function:: build_polarisation_basis(rotation_axis, zero_angle_polarisation)
+
+   Build the polar plot basis from the light direction and zero-angle polarisation.
+
+   Parameters
+   ----------
+   rotation_axis : array_like, shape (3,)
+       Light propagation direction.
+   zero_angle_polarisation : array_like, shape (3,)
+       Incoming polarisation direction at zero polar angle.
+
+   Returns
+   -------
+   tuple
+       ``(rz, pza, pp, orthogonality)`` where all vectors are normalised and
+       ``orthogonality = dot(rz, pza_input_normalised)``.
+
+
+
+.. py:function:: calculate_polar_curves(raman_tensors, mode_indices, rotation_axis=(0.0, 0.0, 1.0), zero_angle_polarisation=(1.0, 0.0, 0.0), angles_rad=None, geometries=POLAR_GEOMETRIES, normalise=True)
+
+   Calculate Raman polar curves for selected modes and geometries.
+
+   Returns
+   -------
+   dict
+       Keys are ``angles_rad``, ``raw_curves``, ``curves``,
+       ``raw_max_intensity`` and ``orthogonality``.
+
+
+
+.. py:function:: intensity_for_modes(raman_tensors, mode_indices, rotation_axis, zero_angle_polarisation, angles_rad, geometry)
+
+   Calculate a polar intensity curve for selected Raman modes.
+
+   Contributions from multiple modes are summed incoherently.
+
+
+.. py:function:: normalise_vector(vector, name='vector')
+
+   Return a normalised 3-vector.
+
+
+.. py:function:: polarisation_vectors(rotation_axis, zero_angle_polarisation, angle_rad, geometry)
+
+   Return incident and scattered polarisation vectors for one polar angle.
+
+
+.. py:function:: raman_active_mode_indices(frequencies_cm1, raman_activities, raman_tensors, threshold=RAMAN_ACTIVE_THRESHOLD)
+
+   Return zero-based indices for Raman-active modes, preserving table order.
+
+
+.. py:function:: rotate_around_axis(vector, axis, angle_rad)
+
+   Rotate a vector around an axis using Rodrigues' rotation formula.
+
+
+.. py:data:: ACOUSTIC_THRESHOLD_CM1
+   :value: 10.0
+
+
+.. py:data:: POLAR_GEOMETRIES
+   :value: ('VV', 'HV', 'theta')
+
+
+.. py:data:: RAMAN_ACTIVE_THRESHOLD
+   :value: 1e-06
+
+

@@ -337,6 +337,23 @@ Module Contents
 
 
 
+   .. py:method:: get_optical_permittivity()
+
+      Return the optical (high-frequency) permittivity of this material.
+
+      Delegates to the underlying permittivity object's
+      :meth:`~PDielec.DielectricFunction.DielectricFunction.optical_permittivity`
+      method.  For tensor materials this returns a 3×3 real tensor; for
+      scalar materials it returns a float.
+
+      Returns
+      -------
+      float or ndarray
+          The optical permittivity.
+
+
+
+
    .. py:method:: get_oscillator_strengths()
 
       Get the oscillator strengths for a Lorentzian permittivity.

@@ -58,6 +58,7 @@ Submodules
    /autoapi/PDielec/Plotter/index
    /autoapi/PDielec/PrimitiveCell/index
    /autoapi/PDielec/QEOutputReader/index
+   /autoapi/PDielec/RamanPolarCalculator/index
    /autoapi/PDielec/SuperCell/index
    /autoapi/PDielec/UnitCell/index
    /autoapi/PDielec/Utilities/index

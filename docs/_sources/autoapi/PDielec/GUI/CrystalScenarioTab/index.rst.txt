@@ -34,6 +34,7 @@ Functions
 
 .. autoapisummary::
 
+   PDielec.GUI.CrystalScenarioTab._compute_nac_dynamical_matrix_standalone
    PDielec.GUI.CrystalScenarioTab.solve_single_crystal_equations
 
 
@@ -194,8 +195,9 @@ Module Contents
       Build and return a configured LayeredRamanCalculator for the given azimuthal angle.
 
       Constructs the GTMcore multilayer system, applies global azimuthal rotation,
-      builds the list of RamanLayer descriptors (with optional slab NAC), and returns
-      a fully configured LayeredRamanCalculator ready to call calculate_mode_intensities().
+      builds the list of RamanLayer descriptors (with optional NAC phonon frequency
+      correction), and returns a fully configured LayeredRamanCalculator ready to
+      call calculate_mode_intensities().
 
       Parameters
       ----------
@@ -278,44 +280,159 @@ Module Contents
 
 
 
-   .. py:method:: _compute_slab_modes(G_total, scaled_tensors, frequencies_cm1, sigmas_cm1)
+   .. py:method:: _compute_nac_dynamical_matrix(scaled_tensors, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf)
 
-      Compute slab-corrected phonon frequencies and Raman tensors.
+      Build NAC dynamical matrix for a given phonon wavevector direction and diagonalize.
 
-      Applies the slab depolarisation correction (Phase 3a) to the bulk TO
-      dynamical matrix.  The slab surface normal is the lab z-axis ``[0,0,1]``;
-      in the crystal frame this is ``n̂ = G_total.T @ [0,0,1]``.  The correction
-      term is identical in form to the particle boundary correction in
-      PowderScenarioTab, but the depolarisation tensor ``L = n̂ ⊗ n̂`` is
-      orientation-dependent and specific to this layer's crystallographic face.
+      Thin wrapper around the module-level ``_compute_nac_dynamical_matrix_standalone``
+      that supplies reader data automatically.
 
-      The surrounding medium is assumed to be vacuum (ε_e = 1).
+      Parameters
+      ----------
+      scaled_tensors : list of ndarray, each (3, 3)
+          Bulk TO Raman tensors in the crystal frame, scaled by sqrt(V_cell).
+      frequencies_cm1 : array_like, shape (n_to_modes,)
+          Bulk TO phonon frequencies in cm⁻¹.
+      sigmas_cm1 : array_like, shape (n_to_modes,)
+          Bulk TO Lorentzian linewidths in cm⁻¹.
+      q_hat_crystal : ndarray, shape (3,)
+          Unit phonon wavevector direction in the crystal frame.
+      eps_inf : ndarray, shape (3, 3)
+          High-frequency optical dielectric tensor in the crystal frame.
+
+      Returns
+      -------
+      nac_freqs : ndarray, shape (3N,)
+      nac_tensors : list of ndarray, each (3, 3)
+      nac_sigmas : ndarray, shape (3N,)
+
+
+
+   .. py:method:: _compute_nac_modes_dominant(G_total, scaled_tensors, frequencies_cm1, sigmas_cm1, system, layer_idx, incident_angle_rad, scatter_angle_rad, collection_side, laser_freq_cm1, incident_pol)
+
+      Level 2: Compute NAC-corrected phonon modes using the dominant Berreman eigenmode.
+
+      Instead of the macroscopic Snell's-law estimate, the phonon wavevector direction
+      is taken from the actual kz eigenvalue of the dominant forward-propagating Berreman
+      mode in the active GTM layer.  This accounts for optical anisotropy and birefringence.
+
+      The GTM system is solved at the laser frequency to obtain the sorted eigenvalues
+      ``layer.qs = [trans-p, trans-s, refl-p, refl-s]``, and the dominant transmitted
+      mode is selected according to the incident polarisation (p → qs[0], s → qs[1]).
 
       Parameters
       ----------
       G_total : ndarray, shape (3, 3)
-          Combined crystal-to-lab rotation (G_psi @ layer.euler).
+          Crystal-to-lab rotation matrix.
       scaled_tensors : list of ndarray, each (3, 3)
-          Bulk TO Raman tensors in the crystal frame, scaled by sqrt(V_cell).
-      frequencies_cm1 : array_like, shape (n_to_modes,)
-          Bulk TO phonon frequencies in cm⁻¹ (including acoustic zeros).
-      sigmas_cm1 : array_like, shape (n_to_modes,)
-          Bulk TO Lorentzian linewidths in cm⁻¹.
+          Bulk TO Raman tensors scaled by sqrt(V_cell).
+      frequencies_cm1 : array_like
+          Bulk TO phonon frequencies in cm⁻¹.
+      sigmas_cm1 : array_like
+          Bulk TO linewidths in cm⁻¹.
+      system : GTMcore.System
+          Fully constructed GTM system (superstrate + layers + substrate).
+      layer_idx : int
+          Index into ``system.layers`` for the active dielectric layer.
+      incident_angle_rad : float
+          Angle of incidence in radians.
+      scatter_angle_rad : float
+          Collection angle in radians.
+      collection_side : str
+          ``'superstrate'`` for backscattering; ``'substrate'`` for forward scattering.
+      laser_freq_cm1 : float
+          Laser frequency in cm⁻¹.
+      incident_pol : str
+          ``'p'`` or ``'s'`` incident polarisation.
 
       Returns
       -------
-      slab_freqs : ndarray, shape (3N,)
-          Slab phonon frequencies in cm⁻¹ (all 3N modes, including acoustic).
-      slab_tensors : list of ndarray, each (3, 3)
-          Slab Raman tensors in crystal frame (3N total).
-      slab_sigmas : ndarray, shape (3N,)
-          Linewidths inherited from the dominant TO component.
+      nac_freqs : ndarray or None
+      nac_tensors : list or None
+      nac_sigmas : ndarray or None
 
-      Notes
-      -----
-      Requires ``self.reader.hessian``, ``self.reader.born_charges``,
-      ``self.reader.mass_weighted_normal_modes``, ``self.reader.zerof_optical_dielectric``.
 
+
+
+   .. py:method:: _compute_nac_modes_geometry(G_total, scaled_tensors, frequencies_cm1, sigmas_cm1, incident_angle_rad, scatter_angle_rad, collection_side)
+
+      Level 1: Compute NAC-corrected phonon modes using q from macroscopic scattering geometry.
+
+      The phonon wavevector direction is determined from the Raman momentum transfer
+      ``q_ph = k_L − k_S`` in the lab frame, where k_L and k_S are the incident and
+      scattered beam directions refracted into the active layer by Snell's law using
+      the isotropic-average refractive index of that layer.
+
+      Parameters
+      ----------
+      G_total : ndarray, shape (3, 3)
+          Crystal-to-lab rotation matrix (G_psi @ layer.euler).
+      scaled_tensors : list of ndarray, each (3, 3)
+          Bulk TO Raman tensors scaled by sqrt(V_cell).
+      frequencies_cm1 : array_like
+          Bulk TO phonon frequencies in cm⁻¹.
+      sigmas_cm1 : array_like
+          Bulk TO linewidths in cm⁻¹.
+      incident_angle_rad : float
+          Angle of incidence (from surface normal) in the superstrate, in radians.
+      scatter_angle_rad : float
+          Collection angle (from surface normal) in radians.
+      collection_side : str
+          ``'superstrate'`` for backscattering; ``'substrate'`` for forward scattering.
+
+      Returns
+      -------
+      nac_freqs : ndarray or None
+          NAC-corrected phonon frequencies in cm⁻¹, or None when ``|q_ph|`` is below
+          the threshold (forward-scattering: use TO phonons instead).
+      nac_tensors : list or None
+          NAC-corrected Raman tensors, or None.
+      nac_sigmas : ndarray or None
+          NAC-corrected linewidths in cm⁻¹, or None.
+
+
+
+
+   .. py:method:: _make_nac_function(G_total, scaled_tensors, frequencies_cm1, sigmas_cm1)
+
+      Build a closure for on-demand NAC computation for any phonon wavevector direction.
+
+      The returned callable takes a unit phonon wavevector in the lab frame and
+      returns NAC-corrected phonon frequencies, Raman tensors, and linewidths for
+      that q-direction.  It captures only numpy arrays (no ``self`` reference) for
+      safety, enabling future parallelism.
+
+      Parameters
+      ----------
+      G_total : ndarray, shape (3, 3)
+          Crystal-to-lab rotation matrix (G_psi @ layer.euler).
+      scaled_tensors : list of ndarray, each (3, 3)
+          Bulk TO Raman tensors scaled by sqrt(V_cell), in crystal frame.
+      frequencies_cm1 : ndarray
+          Bulk TO phonon frequencies in cm⁻¹.
+      sigmas_cm1 : ndarray
+          Bulk TO linewidths in cm⁻¹.
+
+      Returns
+      -------
+      callable
+          ``f(q_hat_lab: ndarray[3]) -> (nac_freqs, nac_tensors, nac_sigmas)``
+          or ``(None, None, None)`` when ``|q_ph|`` is negligible.
+
+
+
+   .. py:method:: _populate_nac_combo(has_eo)
+
+      Repopulate the Layer NAC mode combo box with appropriate labels.
+
+      Preserves the currently selected item across repopulation.  When *has_eo*
+      is True the three NAC levels receive an '(EO)' suffix to indicate that
+      the electro-optic correction will be applied.
+
+      Parameters
+      ----------
+      has_eo : bool
+          Whether χ^(2) is available from the DFT reader.
 
 
 
@@ -815,6 +932,12 @@ Module Contents
 
 
 
+   .. py:method:: on_depth_integration_cb_activated(index)
+
+      Handle a change in the Raman depth integration mode.
+
+
+
    .. py:method:: on_detected_pol_cb_activated(index)
 
       Handle a change in the detected polarisation combo box.
@@ -840,6 +963,12 @@ Module Contents
       -------
       None
 
+
+
+
+   .. py:method:: on_gl_density_sb_changed(value)
+
+      Handle a change in the GL quadrature density spin box.
 
 
 
@@ -968,12 +1097,6 @@ Module Contents
 
 
 
-   .. py:method:: on_n_gauss_sb_changed(value)
-
-      Handle a change in the GL quadrature points spin box.
-
-
-
    .. py:method:: on_new_layer_cb_activated(index)
 
       Handle a new layer button click.
@@ -1088,7 +1211,7 @@ Module Contents
 
    .. py:method:: on_phonon_bc_cb_activated(index)
 
-      Handle a change in the phonon boundary correction combo box.
+      Handle a change in the layer NAC mode combo box.
 
 
 
@@ -1373,6 +1496,11 @@ Module Contents
    .. py:attribute:: DataBase
 
 
+   .. py:attribute:: _NAC_MODE_LABELS
+      :value: [('none', 'TO'), ('geometry', "Snell's law"), ('dominant_mode', 'Dominant mode'),...
+
+
+
    .. py:attribute:: calculation_required
       :value: True
 
@@ -1480,6 +1608,55 @@ Module Contents
    .. py:attribute:: spectroscopy
       :value: 'Crystal Infrared'
 
+
+
+.. py:function:: _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, scaled_tensors, to_sigmas, chi2_pm_per_v=None)
+
+   Module-level NAC computation for a given phonon wavevector direction.
+
+   Applies the standard non-analytic correction (NAC) to the bulk TO dynamical
+   matrix using the supplied unit phonon wavevector in the crystal frame::
+
+       D_NAC(q̂) = D_TO + (4π/V) Z^mw,T (q̂ q̂^T / q̂^T ε_∞ q̂) Z^mw
+
+   Optionally applies the electro-optic (EO) correction to each Raman tensor
+   (Eq. 21 of Raman-Theory.pdf) when the second-order NLO susceptibility χ^(2)
+   is supplied.
+
+   This function is factored out of ``CrystalScenarioTab._compute_nac_dynamical_matrix``
+   so that it can be called from a closure without capturing ``self``.
+
+   Parameters
+   ----------
+   q_hat_crystal : ndarray, shape (3,)
+       Unit phonon wavevector in the crystal frame.
+   hessian : ndarray, shape (3N, 3N)
+       Mass-weighted TO dynamical (Hessian) matrix.
+   born_charges : ndarray, shape (N, 3, 3)
+       Born effective charge tensors.
+   eps_inf : ndarray, shape (3, 3)
+       High-frequency optical dielectric tensor in the crystal frame.
+   volume_au : float
+       Unit cell volume in atomic units (Bohr³).
+   masses_au : ndarray, shape (N,)
+       Atomic masses in atomic units (a.u., i.e. mass * amu_to_au).
+   U_TO : ndarray, shape (n_to_modes, 3N)
+       Mass-weighted TO eigenvectors (rows), pre-computed from
+       ``reader.mass_weighted_normal_modes``.
+   scaled_tensors : list of ndarray, each (3, 3)
+       Bulk TO Raman tensors scaled by sqrt(V_cell).
+   to_sigmas : ndarray, shape (n_to_modes,)
+       Bulk TO linewidths in cm⁻¹.
+   chi2_pm_per_v : ndarray, shape (3, 3, 3) or None
+       Second-order NLO susceptibility χ^(2) in pm/V (= 2d from DFT output).
+       When provided, the electro-optic correction is applied to each NAC Raman
+       tensor.  Pass None to skip the correction.
+
+   Returns
+   -------
+   nac_freqs : ndarray, shape (3N,)
+   nac_tensors : list of ndarray, each (3, 3)
+   nac_sigmas : ndarray, shape (3N,)
 
 
 .. py:function:: solve_single_crystal_equations(layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold, v)

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.IO" href="../IO/index.html"><link rel="prev" title="PDielec.GulpOutputReader" href="../GulpOutputReader/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.HelperRoutines - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -343,7 +380,10 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.logger" title="PDielec.HelperRoutines.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.gtm_methods" title="PDielec.HelperRoutines.gtm_methods"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gtm_methods</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.logger" title="PDielec.HelperRoutines.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -355,19 +395,34 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_dft_permittivity_object" title="PDielec.HelperRoutines.calculate_dft_permittivity_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_dft_permittivity_object</span></code></a>(reader[, sigma, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines._matrix_optical_permittivity" title="PDielec.HelperRoutines._matrix_optical_permittivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matrix_optical_permittivity</span></code></a>(matrix)</p></td>
+<td><p>Return the scalar optical permittivity of a matrix material.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines._raman_linewidths" title="PDielec.HelperRoutines._raman_linewidths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_raman_linewidths</span></code></a>(reader, sigma)</p></td>
+<td><p>Return per-mode Raman linewidths in cm-1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines._raman_modes_selected" title="PDielec.HelperRoutines._raman_modes_selected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_raman_modes_selected</span></code></a>(reader, raman_tensors, ...)</p></td>
+<td><p>Return a boolean mask selecting Raman-active optical modes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_crystal_infrared_spectrum" title="PDielec.HelperRoutines.calculate_crystal_infrared_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_crystal_infrared_spectrum</span></code></a>(frequencies_cm1, ...)</p></td>
+<td><p>Calculate a crystal infrared spectrum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_crystal_raman_spectrum" title="PDielec.HelperRoutines.calculate_crystal_raman_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_crystal_raman_spectrum</span></code></a>(frequencies_cm1, ...)</p></td>
+<td><p>Calculate a layered crystal Raman spectrum.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_dft_permittivity_object" title="PDielec.HelperRoutines.calculate_dft_permittivity_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_dft_permittivity_object</span></code></a>(reader[, sigma, ...])</p></td>
 <td><p>Define a permittivity object for the DFT calculation from the given reader.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_powder_spectrum" title="PDielec.HelperRoutines.calculate_powder_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_powder_spectrum</span></code></a>(frequencies_cm1, dielectric, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_powder_infrared_spectrum" title="PDielec.HelperRoutines.calculate_powder_infrared_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_powder_infrared_spectrum</span></code></a>(frequencies_cm1, ...)</p></td>
 <td><p>Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_single_crystal_spectrum" title="PDielec.HelperRoutines.calculate_single_crystal_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_single_crystal_spectrum</span></code></a>(frequencies_cm1, ...)</p></td>
-<td><p>Calculate a single crystal spectrum.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculate_powder_raman_spectrum" title="PDielec.HelperRoutines.calculate_powder_raman_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_powder_raman_spectrum</span></code></a>(frequencies_cm1, reader)</p></td>
+<td><p>Calculate a powder Raman spectrum for spherical particles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.get_material" title="PDielec.HelperRoutines.get_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_material</span></code></a>(name[, dataBaseName, eckart, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.get_material" title="PDielec.HelperRoutines.get_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_material</span></code></a>(name[, dataBaseName, eckart, ...])</p></td>
 <td><p>Get a material with the given name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.maxwell_garnett" title="PDielec.HelperRoutines.maxwell_garnett"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxwell_garnett</span></code></a>(em, ei, f)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.maxwell_garnett" title="PDielec.HelperRoutines.maxwell_garnett"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxwell_garnett</span></code></a>(em, ei, f)</p></td>
 <td><p>Calculate the dielectric constant of a mixture using Maxwell-Garnett.</p></td>
 </tr>
 </tbody>
@@ -377,6 +432,101 @@
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="PDielec.HelperRoutines._matrix_optical_permittivity">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">_matrix_optical_permittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#_matrix_optical_permittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines._matrix_optical_permittivity" title="Link to this definition">¶</a></dt>
+<dd><p>Return the scalar optical permittivity of a matrix material.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.HelperRoutines._raman_linewidths">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">_raman_linewidths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#_raman_linewidths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines._raman_linewidths" title="Link to this definition">¶</a></dt>
+<dd><p>Return per-mode Raman linewidths in cm-1.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.HelperRoutines._raman_modes_selected">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">_raman_modes_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raman_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modes_selected</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#_raman_modes_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines._raman_modes_selected" title="Link to this definition">¶</a></dt>
+<dd><p>Return a boolean mask selecting Raman-active optical modes.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.HelperRoutines.calculate_crystal_infrared_spectrum">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculate_crystal_infrared_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_azimuthal_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculate_crystal_infrared_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculate_crystal_infrared_spectrum" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate a crystal infrared spectrum.</p>
+<p>Calculate a single crystal spectrum from the frequencies, a list of layers
+(<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>), the incident angle the global azimuthal angle and
+optional specification of the method of calculation. Information about the layer class can be found here
+(<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>)</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>frequencies_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1.</p>
+</dd>
+<dt>layers<span class="classifier">list</span></dt><dd><p>A list of layers (<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>).</p>
+</dd>
+<dt>incident_angle<span class="classifier">float</span></dt><dd><p>The incident angle in degrees.</p>
+</dd>
+<dt>global_azimuthal_angle<span class="classifier">float</span></dt><dd><p>The global azimuthal angle in degrees.</p>
+</dd>
+<dt>method<span class="classifier">str</span></dt><dd><p>The method for solving Maxwell’s equation, either ‘Scattering matrix’ (the default) or ‘Transfer matrix’.
+See (<a class="reference internal" href="../GTMcore/index.html#PDielec.GTMcore.ScatteringMatrixSystem" title="PDielec.GTMcore.ScatteringMatrixSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScatteringMatrixSystem</span></code></a> or <a class="reference internal" href="../GTMcore/index.html#PDielec.GTMcore.TransferMatrixSystem" title="PDielec.GTMcore.TransferMatrixSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferMatrixSystem</span></code></a>)
+for more information.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>((reflp,refls) (tranp, trans) (absop, absos))<span class="classifier">list of nd.arrrays</span></dt><dd><ul class="simple">
+<li><p>reflp the p- polarised reflection at each frequency as an np.array</p></li>
+<li><p>refls the s- polarised reflection at each frequency as an np.array</p></li>
+<li><p>tranp the p- polarised transmittance at each frequency as an np.array</p></li>
+<li><p>trans the s- polarised transmittance at each frequency as an np.array</p></li>
+<li><p>absop the p- polarised absorptance at each frequency as an np.array</p></li>
+<li><p>absos the s- polarised absorptance at each frequency as an np.array</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">air</span> <span class="o">=</span> <span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;air&#39;</span><span class="p">)</span>
+<span class="n">ptfe</span> <span class="o">=</span> <span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;ptfe&#39;</span><span class="p">)</span>
+<span class="n">Sapphire</span> <span class="o">=</span> <span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;Sapphire&#39;</span><span class="p">)</span>
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Add a substrate</span>
+<span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">ptfe</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thickness_unit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">))</span>
+ <span class="c1"># Add the dielectric layer</span>
+<span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">Sapphire</span><span class="p">,</span><span class="n">hkl</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">azimuthal</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thickness_unit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">,</span>
+                                 <span class="n">incoherentOption</span><span class="o">=</span><span class="s1">&#39;Coherent&#39;</span><span class="p">))</span>
+ <span class="c1"># Add the superstrate</span>
+<span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">air</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thickness_unit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">))</span>
+<span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.2</span> <span class="p">)</span>
+<span class="n">incident_angle</span> <span class="o">=</span> <span class="mf">80.0</span>
+<span class="n">global_azimuthal_angle</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="p">(</span><span class="n">reflectance</span><span class="p">,</span> <span class="n">transmittance</span><span class="p">,</span> <span class="n">absorptance</span><span class="p">)</span> <span class="o">=</span> <span class="n">calculate_crystal_infrared_spectrum</span><span class="p">(</span>
+    <span class="n">frequencies_cm1</span><span class="p">,</span><span class="n">layers</span><span class="p">,</span><span class="n">incident_angle</span><span class="p">,</span> <span class="n">global_azimuthal_angle</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Scattering matrix&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.HelperRoutines.calculate_crystal_raman_spectrum">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculate_crystal_raman_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_azimuthal_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_wavelength_nm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">532.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_polarisation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'p'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_polarisation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unpolarised'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">298.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_gauss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'superstrate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coherent_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approximate_es</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculate_crystal_raman_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculate_crystal_raman_spectrum" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate a layered crystal Raman spectrum.</p>
+<p>Parameters are intentionally close to <a class="reference internal" href="#PDielec.HelperRoutines.calculate_crystal_infrared_spectrum" title="PDielec.HelperRoutines.calculate_crystal_infrared_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_crystal_infrared_spectrum()</span></code></a>, with Raman-specific laser,
+polarisation and quadrature options added.</p>
+<section id="id1">
+<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>spectrum, mode_frequencies, mode_intensities, mode_sigmas<span class="classifier">tuple of np.ndarray</span></dt><dd><p>Broadened Raman spectrum and the active-mode data used to generate it.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.calculate_dft_permittivity_object">
 <span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculate_dft_permittivity_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eckart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Average'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculate_dft_permittivity_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculate_dft_permittivity_object" title="Link to this definition">¶</a></dt>
 <dd><p>Define a permittivity object for the DFT calculation from the given reader.</p>
@@ -384,8 +534,8 @@
 Calculates the hessian and normal modes
 Calculates the oscillator strength
 Finally it defines a permittivity object from which the permittivity can be calculated</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<section id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>reader<span class="classifier">outputReader object</span></dt><dd><p>An output reader object, see <a class="reference internal" href="../GenericOutputReader/index.html#module-PDielec.GenericOutputReader" title="PDielec.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a> and its sub-classes.</p>
 </dd>
@@ -402,18 +552,18 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </dd>
 </dl>
 </section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
+<section id="id3">
+<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <p>permittivity_object (see <a class="reference internal" href="../DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a> and its sub-classes)</p>
 </section>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.calculate_powder_spectrum">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculate_powder_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Maxwell-Garnett'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculate_powder_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculate_powder_spectrum" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.HelperRoutines.calculate_powder_infrared_spectrum">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculate_powder_infrared_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Maxwell-Garnett'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculate_powder_infrared_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculate_powder_infrared_spectrum" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.</p>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<section id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>frequencies_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1.</p>
 </dd>
@@ -427,85 +577,60 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<section id="id5">
+<h3>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>absorption,permittivity<span class="classifier">tuple of np.arrays</span></dt><dd><p>absorption: Absorption coefficients in cm-1.
 permittivity: Complex permittivities</p>
 </dd>
 </dl>
 </section>
-<section id="example">
-<h3>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h3>
+<section id="id6">
+<h3>Example<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">frequencies_cm1</span> <span class="pre">=</span> <span class="pre">np.arange(</span> <span class="pre">0,</span> <span class="pre">200,</span> <span class="pre">0.2</span> <span class="pre">)</span>
 <span class="pre">matrix</span> <span class="pre">=</span> <span class="pre">get_material('ptfe')</span>
 <span class="pre">dielectric</span> <span class="pre">=</span> <span class="pre">get_material('Sapphire')</span>
 <span class="pre">method</span> <span class="pre">=</span> <span class="pre">'Maxwell-Garnett'</span>
 <span class="pre">volume_fraction</span> <span class="pre">=</span> <span class="pre">0.1</span>
-<span class="pre">absorption,permittivity</span> <span class="pre">=</span> <span class="pre">calculate_powder_spectrum(frequencies_cm1,dielectric,</span> <span class="pre">matrix,</span> <span class="pre">volume_fraction)</span>
+<span class="pre">absorption,permittivity</span> <span class="pre">=</span> <span class="pre">calculate_powder_infrared_spectrum(frequencies_cm1,dielectric,</span> <span class="pre">matrix,</span> <span class="pre">volume_fraction)</span>
 <span class="pre">`</span></code></p>
 </section>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PDielec.HelperRoutines.calculate_single_crystal_spectrum">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculate_single_crystal_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_azimuthal_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculate_single_crystal_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculate_single_crystal_spectrum" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate a single crystal spectrum.</p>
-<p>Calculate a single crystal spectrum from the frequencies, a list of layers
-(<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>), the incident angle the global azimuthal angle and
-optional specification of the method of calculation. Information about the layer class can be found here
-(<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>)</p>
-<section id="id3">
-<h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<dt class="sig sig-object py" id="PDielec.HelperRoutines.calculate_powder_raman_spectrum">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">calculate_powder_raman_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_wavelength_nm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">785.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarisation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'HV'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">298.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modes_selected</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#calculate_powder_raman_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.calculate_powder_raman_spectrum" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate a powder Raman spectrum for spherical particles.</p>
+<section id="id7">
+<h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>frequencies_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1.</p>
+<dt>frequencies_cm1<span class="classifier">array_like</span></dt><dd><p>Raman-shift axis in cm-1.</p>
 </dd>
-<dt>layers<span class="classifier">list</span></dt><dd><p>A list of layers (<a class="reference internal" href="../GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer" title="PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCrystalLayer</span></code></a>).</p>
+<dt>reader<span class="classifier">outputReader object</span></dt><dd><p>Reader containing phonon frequencies, optical permittivity and Raman tensors.</p>
 </dd>
-<dt>incident_angle<span class="classifier">float</span></dt><dd><p>The incident angle in degrees.</p>
+<dt>matrix<span class="classifier">material or None</span></dt><dd><p>Matrix material.  If <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;none&quot;</span></code>, no particle-field correction is applied.</p>
 </dd>
-<dt>global_azimuthal_angle<span class="classifier">float</span></dt><dd><p>The global azimuthal angle in degrees.</p>
+<dt>volume_fraction<span class="classifier">float</span></dt><dd><p>Crystal volume fraction in the sample.</p>
 </dd>
-<dt>method<span class="classifier">str</span></dt><dd><p>The method for solving Maxwell’s equation, either ‘Scattering matrix’ (the default) or ‘Transfer matrix’.
-See (<a class="reference internal" href="../GTMcore/index.html#PDielec.GTMcore.ScatteringMatrixSystem" title="PDielec.GTMcore.ScatteringMatrixSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScatteringMatrixSystem</span></code></a> or <a class="reference internal" href="../GTMcore/index.html#PDielec.GTMcore.TransferMatrixSystem" title="PDielec.GTMcore.TransferMatrixSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferMatrixSystem</span></code></a>)
-for more information.</p>
+<dt>sigma<span class="classifier">float or array_like</span></dt><dd><p>Lorentzian half-width(s) in cm-1.</p>
+</dd>
+<dt>laser_wavelength_nm<span class="classifier">float</span></dt><dd><p>Laser wavelength in nm.</p>
+</dd>
+<dt>polarisation<span class="classifier">{“VV”, “VH”, “HV”, “Unpolarised”}</span></dt><dd><p>Raman polarisation geometry.</p>
+</dd>
+<dt>temperature<span class="classifier">float</span></dt><dd><p>Temperature in K.</p>
+</dd>
+<dt>modes_selected<span class="classifier">array_like of bool, optional</span></dt><dd><p>Optional per-mode selection mask.  If omitted, Raman-active optical modes are selected automatically.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>((reflp,refls) (tranp, trans) (absop, absos))<span class="classifier">list of nd.arrrays</span></dt><dd><ul class="simple">
-<li><p>reflp the p- polarised reflection at each frequency as an np.array</p></li>
-<li><p>refls the s- polarised reflection at each frequency as an np.array</p></li>
-<li><p>tranp the p- polarised transmittance at each frequency as an np.array</p></li>
-<li><p>trans the s- polarised transmittance at each frequency as an np.array</p></li>
-<li><p>absop the p- polarised absorptance at each frequency as an np.array</p></li>
-<li><p>absos the s- polarised absorptance at each frequency as an np.array</p></li>
-</ul>
+<dt>spectrum<span class="classifier">np.ndarray</span></dt><dd><p>Raman intensity on <code class="docutils literal notranslate"><span class="pre">frequencies_cm1</span></code> in arbitrary units.</p>
 </dd>
 </dl>
-</section>
-<section id="id5">
-<h3>Example<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">air</span> <span class="o">=</span> <span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;air&#39;</span><span class="p">)</span>
-<span class="n">ptfe</span> <span class="o">=</span> <span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;ptfe&#39;</span><span class="p">)</span>
-<span class="n">Sapphire</span> <span class="o">=</span> <span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;Sapphire&#39;</span><span class="p">)</span>
-<span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="c1"># Add a substrate</span>
-<span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">ptfe</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thickness_unit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">))</span>
- <span class="c1"># Add the dielectric layer</span>
-<span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">Sapphire</span><span class="p">,</span><span class="n">hkl</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">azimuthal</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thickness_unit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">,</span>
-                                 <span class="n">incoherentOption</span><span class="o">=</span><span class="s1">&#39;Coherent&#39;</span><span class="p">))</span>
- <span class="c1"># Add the superstrate</span>
-<span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">air</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thickness_unit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">))</span>
-<span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.2</span> <span class="p">)</span>
-<span class="n">incident_angle</span> <span class="o">=</span> <span class="mf">80.0</span>
-<span class="n">global_azimuthal_angle</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="p">(</span><span class="n">reflectance</span><span class="p">,</span> <span class="n">transmittance</span><span class="p">,</span> <span class="n">absorptance</span><span class="p">)</span> <span class="o">=</span> <span class="n">calculate_single_crystal_spectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span><span class="n">layers</span><span class="p">,</span><span class="n">incident_angl</span> <span class="n">e</span><span class="p">,</span> <span class="n">global_azimuthal_angle</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Scattering matrix&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 </section>
 </dd></dl>
 
@@ -516,8 +641,8 @@ for more information.</p>
 <p>If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
 If the name is a material name in the material database, this is used instead.
 Information about the material class can be found here (<a class="reference internal" href="../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>)</p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<section id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>name<span class="classifier">str</span></dt><dd><p>The name of the material, which can be a file name or a material name existing in the database.</p>
 </dd>
@@ -536,8 +661,8 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </dd>
 </dl>
 </section>
-<section id="id7">
-<h3>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<section id="id10">
+<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>Material (see <a class="reference internal" href="../Materials/index.html#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>)</dt><dd><p>The material obtained based on the given name.</p>
 </dd>
@@ -556,8 +681,8 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.maxwell_garnett">
 <span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">maxwell_garnett</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">em</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ei</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#maxwell_garnett"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.maxwell_garnett" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the dielectric constant of a mixture using Maxwell-Garnett.</p>
-<section id="id8">
-<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>em<span class="classifier">float</span></dt><dd><p>The dielectric constant of the host</p>
 </dd>
@@ -567,14 +692,19 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h3>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<section id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>float</dt><dd><p>The dielectric constant of the mixture</p>
 </dd>
 </dl>
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.HelperRoutines.gtm_methods">
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">gtm_methods</span></span><a class="headerlink" href="#PDielec.HelperRoutines.gtm_methods" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.logger">
@@ -643,11 +773,17 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
 <li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#PDielec.HelperRoutines._matrix_optical_permittivity"><code class="docutils literal notranslate"><span class="pre">_matrix_optical_permittivity()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines._raman_linewidths"><code class="docutils literal notranslate"><span class="pre">_raman_linewidths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines._raman_modes_selected"><code class="docutils literal notranslate"><span class="pre">_raman_modes_selected()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines.calculate_crystal_infrared_spectrum"><code class="docutils literal notranslate"><span class="pre">calculate_crystal_infrared_spectrum()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines.calculate_crystal_raman_spectrum"><code class="docutils literal notranslate"><span class="pre">calculate_crystal_raman_spectrum()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.calculate_dft_permittivity_object"><code class="docutils literal notranslate"><span class="pre">calculate_dft_permittivity_object()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.calculate_powder_spectrum"><code class="docutils literal notranslate"><span class="pre">calculate_powder_spectrum()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.HelperRoutines.calculate_single_crystal_spectrum"><code class="docutils literal notranslate"><span class="pre">calculate_single_crystal_spectrum()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines.calculate_powder_infrared_spectrum"><code class="docutils literal notranslate"><span class="pre">calculate_powder_infrared_spectrum()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines.calculate_powder_raman_spectrum"><code class="docutils literal notranslate"><span class="pre">calculate_powder_raman_spectrum()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.get_material"><code class="docutils literal notranslate"><span class="pre">get_material()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.maxwell_garnett"><code class="docutils literal notranslate"><span class="pre">maxwell_garnett()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.HelperRoutines.gtm_methods"><code class="docutils literal notranslate"><span class="pre">gtm_methods</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.HelperRoutines.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
@@ -663,8 +799,8 @@ If a string it must be one of ‘Average’, ‘Isotope’ or ‘Program’ (cas
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

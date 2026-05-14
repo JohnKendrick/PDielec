@@ -459,6 +459,35 @@ Module Contents
 
 
 
+   .. py:method:: _read_nlo_susceptibility(line)
+
+      Read the nonlinear optical susceptibility tensor from the .castep file.
+
+      CASTEP prints the d-tensor (d = χ^(2)/2) in a 3×6 Voigt-format block::
+
+          Nonlinear Optical Susceptibility (pm/V)
+          ---------------------------------------
+            -0.01384    -0.00493     0.00060    -0.00001    21.65509    -0.00057
+            -0.00057    -0.00261     0.00002    21.65875    -0.00001    -0.00493
+            21.65509    21.65875   -38.35388     0.00002     0.00060    -0.00001
+
+      Voigt column mapping: 0→(0,0), 1→(1,1), 2→(2,2), 3→(1,2)=(2,1),
+      4→(0,2)=(2,0), 5→(0,1)=(1,0).
+
+      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+
+      Parameters
+      ----------
+      line : str
+          The trigger line (already consumed by the manage loop).
+
+      Returns
+      -------
+      bool
+          True on success.
+
+
+
    .. py:method:: _read_output_files()
 
       Define the strings needed for searching the files process the output files.

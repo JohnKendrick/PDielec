@@ -245,6 +245,8 @@ Module Contents
 
 
    .. py:attribute:: title
+      :value: 'PDGui - Using PDielec library Uninferable '
+
 
 
    .. py:attribute:: top

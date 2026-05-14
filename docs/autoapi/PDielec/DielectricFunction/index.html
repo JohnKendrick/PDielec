@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.ExperimentOutputReader" href="../ExperimentOutputReader/index.html"><link rel="prev" title="PDielec.CrystalOutputReader" href="../CrystalOutputReader/index.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.DielectricFunction - PDielec: John Kendrick &amp; Andrew Burnett</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -238,6 +238,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
@@ -256,6 +257,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
@@ -276,16 +278,51 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../conftest/index.html">conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_geometry/index.html">test_B_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_frequency/index.html">test_E_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_reciprocity/index.html">test_D_reciprocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_modal_pairs/index.html">test_I_modal_pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_single_layer/index.html">test_B_single_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_euler_angles/index.html">test_E_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_normal_modes/index.html">test_F_normal_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_F_complex_values/index.html">test_F_complex_values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_depolarisation/index.html">test_C_depolarisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_tensor_utilities/index.html">test_A_tensor_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_effective_medium/index.html">test_G_effective_medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_depth_integration/index.html">test_H_depth_integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_anisotropic_sphere/index.html">test_C_anisotropic_sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_local_field_sphere/index.html">test_B_local_field_sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_layered_consistency/index.html">test_C_layered_consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_absorption_spectrum/index.html">test_H_absorption_spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_I_numerical_stability/index.html">test_I_numerical_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_polar_mode_simulator/index.html">test_G_polar_mode_simulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_raman_tensor_algebra/index.html">test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_E_orientation_averaging/index.html">test_E_orientation_averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_J_electro_optic_correction/index.html">test_J_electro_optic_correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_permittivity_conversions/index.html">test_D_permittivity_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_ellipsoid_depolarisation/index.html">test_D_ellipsoid_depolarisation</a></li>
 </ul>
 </li>
@@ -414,7 +451,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantScalar">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantScalar" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex constant scalar permittivity.</p>
 <p>Inherits from DielectricFunction. Provides a calculate() function to return
@@ -447,7 +484,7 @@ the permittivity.  Epsilon infinity is not used for this function.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantScalar.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.DielectricFunction.ConstantScalar.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.DielectricFunction.ConstantScalar.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -460,7 +497,7 @@ the permittivity.  Epsilon infinity is not used for this function.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantTensor">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantTensor" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantTensor" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex constant tensor permittivity.</p>
 <p>Inherits from DielectricFunction.
@@ -502,7 +539,7 @@ Epsilon infinity is used to calculate the total permittivity</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantTensor.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.DielectricFunction.ConstantTensor.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.DielectricFunction.ConstantTensor.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -515,7 +552,7 @@ Epsilon infinity is used to calculate the total permittivity</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DFT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_oscillator_strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_plasma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DFT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_oscillator_strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_plasma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex tensor permittivity from a DFT calculation.</p>
 <p>Inherits from DielectricFunction.
@@ -683,7 +720,7 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.DielectricFunction.DFT.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.DielectricFunction.DFT.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -711,7 +748,7 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DielectricFunction</span></span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DielectricFunction</span></span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction" title="Link to this definition">¶</a></dt>
 <dd><p>A base class to different dielectric functions.</p>
 <p>There is a close relationship between the dielectric function and a material.
 The Material module allows data to be read in for different dielectric models.
@@ -943,11 +980,31 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.optical_permittivity">
+<span class="sig-name descname"><span class="pre">optical_permittivity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.optical_permittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.optical_permittivity" title="Link to this definition">¶</a></dt>
+<dd><p>Return the optical (high-frequency) permittivity.</p>
+<p>For tensor dielectric functions the optical permittivity is
+<code class="docutils literal notranslate"><span class="pre">epsilon_infinity</span></code> (a 3×3 real tensor).  For scalar functions it
+is the frequency-independent scalar value obtained by evaluating
+the permittivity at 0 cm⁻¹.</p>
+<p>Subclasses may override this method when these defaults are not
+appropriate (e.g. Sellmeier).</p>
+<section id="id41">
+<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>float or ndarray</dt><dd><p>Scalar permittivity for scalar functions, 3×3 real tensor for
+tensor functions.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v1_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.print" title="Link to this definition">¶</a></dt>
 <dd><p>Print the permittivity over a range of frequencies to a file.</p>
-<section id="id41">
-<h4>Parameters<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<section id="id42">
+<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>v1_cm1<span class="classifier">float</span></dt><dd><p>Starting frequency</p>
 </dd>
@@ -961,8 +1018,8 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 </dd>
 </dl>
 </section>
-<section id="id42">
-<h4>Returns<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<section id="id43">
+<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -971,15 +1028,15 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.set_epsilon_infinity">
 <span class="sig-name descname"><span class="pre">set_epsilon_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.set_epsilon_infinity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.set_epsilon_infinity" title="Link to this definition">¶</a></dt>
 <dd><p>Set epsilon infinity for dielectric calculations.</p>
-<section id="id43">
-<h4>Parameters<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<section id="id44">
+<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>eps<span class="classifier">tensor (3x3)</span></dt><dd><p>The value of eps_infinity.</p>
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h4>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<section id="id45">
+<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -989,15 +1046,15 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 <span class="sig-name descname"><span class="pre">set_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.set_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.set_frequencies" title="Link to this definition">¶</a></dt>
 <dd><p>Set the frequencies of a Lorentzian permittivity.</p>
 <p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
-<section id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<section id="id46">
+<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>frequencies<span class="classifier">1d array of floats</span></dt><dd><p>The frequencies in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<section id="id47">
+<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1007,15 +1064,15 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 <span class="sig-name descname"><span class="pre">set_oscillator_strengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.set_oscillator_strengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.set_oscillator_strengths" title="Link to this definition">¶</a></dt>
 <dd><p>Set the oscillator strengths of a Lorentzian permittivity.</p>
 <p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
-<section id="id47">
-<h4>Parameters<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<section id="id48">
+<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>strengths<span class="classifier">1d array of floats</span></dt><dd><p>The oscillator strengths in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id48">
-<h4>Returns<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<section id="id49">
+<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1025,15 +1082,15 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 <span class="sig-name descname"><span class="pre">set_sigmas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.set_sigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.set_sigmas" title="Link to this definition">¶</a></dt>
 <dd><p>Set the sigma parameters of a Lorentzian permittivity.</p>
 <p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
-<section id="id49">
-<h4>Parameters<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<section id="id50">
+<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>sigmas<span class="classifier">1d array of floats</span></dt><dd><p>The sigma parameters in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id50">
-<h4>Returns<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<section id="id51">
+<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1042,15 +1099,15 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.set_volume">
 <span class="sig-name descname"><span class="pre">set_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.set_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.set_volume" title="Link to this definition">¶</a></dt>
 <dd><p>Set the volume for dielectric calculations.</p>
-<section id="id51">
-<h4>Parameters<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>volume<span class="classifier">float</span></dt><dd><p>The volume in angs^3.</p>
 </dd>
 </dl>
 </section>
-<section id="id52">
-<h4>Returns<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<section id="id53">
+<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1062,17 +1119,17 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.possible_epsTypes">
-<span class="sig-name descname"><span class="pre">possible_epsTypes</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['dft',</span> <span class="pre">'fpsq',</span> <span class="pre">'drude-lorentz',</span> <span class="pre">'sellmeier']</span></span><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.possible_epsTypes" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">possible_epsTypes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['dft',</span> <span class="pre">'fpsq',</span> <span class="pre">'drude-lorentz',</span> <span class="pre">'sellmeier']</span></em><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.possible_epsTypes" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.vs_cm1">
-<span class="sig-name descname"><span class="pre">vs_cm1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.vs_cm1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">vs_cm1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.vs_cm1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1080,35 +1137,35 @@ epsilon infinity: tensor functions add epsilon infinity to the calculated permit
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DrudeLorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strengths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DrudeLorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strengths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex tensor Drude-Lorentz permittivity.</p>
 <p>Inherits from DielectricFunction.
 Provides a calculate() function to return the permittivity.
 Epsilon infinity is included in the total permittivity</p>
-<section id="id53">
-<h3>Methods<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h3>
+<section id="id54">
+<h3>Methods<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Calculates and returns the permittivity.</p>
 </dd>
 </dl>
 </section>
-<section id="id54">
-<h3>Examples<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
+<section id="id55">
+<h3>Examples<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
 <p>None</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the permittivity at a given frequency.</p>
-<section id="id55">
-<h4>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<section id="id56">
+<h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>f_cm1<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id56">
-<h4>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<section id="id57">
+<h4>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>tensor</dt><dd><p>The permittivity at frequency v as a diagonal 3x3 tensor.</p>
 </dd>
@@ -1121,12 +1178,12 @@ Epsilon infinity is included in the total permittivity</p>
 <span class="sig-name descname"><span class="pre">get_frequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.get_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.get_frequencies" title="Link to this definition">¶</a></dt>
 <dd><p>Return the frequencies of a Drude-Lorentz permittivity.</p>
 <p>The frequencies are in units of cm-1</p>
-<section id="id57">
-<h4>Parameters<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
+<section id="id58">
+<h4>Parameters<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id58">
-<h4>Returns<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
+<section id="id59">
+<h4>Returns<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>1d array of floats</dt><dd><p>The frequencies in cm-1</p>
 </dd>
@@ -1139,12 +1196,12 @@ Epsilon infinity is included in the total permittivity</p>
 <span class="sig-name descname"><span class="pre">get_oscillator_strengths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.get_oscillator_strengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.get_oscillator_strengths" title="Link to this definition">¶</a></dt>
 <dd><p>Return the oscillator strengths of a Drude-Lorentz permittivity.</p>
 <p>The returned strengths are in units of cm-1</p>
-<section id="id59">
-<h4>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
+<section id="id60">
+<h4>Parameters<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id60">
-<h4>Returns<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
+<section id="id61">
+<h4>Returns<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>1d array of floats</dt><dd><p>The oscillator strengths in cm-1</p>
 </dd>
@@ -1157,12 +1214,12 @@ Epsilon infinity is included in the total permittivity</p>
 <span class="sig-name descname"><span class="pre">get_sigmas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.get_sigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.get_sigmas" title="Link to this definition">¶</a></dt>
 <dd><p>Return the sigma parameters of a Lorentzian permittivity.</p>
 <p>The returned sigmas are in units of cm-1</p>
-<section id="id61">
-<h4>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
+<section id="id62">
+<h4>Parameters<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id62">
-<h4>Returns<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
+<section id="id63">
+<h4>Returns<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
 <p>1d array of floats</p>
 </section>
 </dd></dl>
@@ -1172,15 +1229,15 @@ Epsilon infinity is included in the total permittivity</p>
 <span class="sig-name descname"><span class="pre">set_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.set_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.set_frequencies" title="Link to this definition">¶</a></dt>
 <dd><p>Set the frequencies of a Drude-Lorentz permittivity.</p>
 <p>The frequencies are in cm-1</p>
-<section id="id63">
-<h4>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
+<section id="id64">
+<h4>Parameters<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>frequencies<span class="classifier">1d array of floats</span></dt><dd><p>The frequencies in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id64">
-<h4>Returns<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
+<section id="id65">
+<h4>Returns<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1190,15 +1247,15 @@ Epsilon infinity is included in the total permittivity</p>
 <span class="sig-name descname"><span class="pre">set_oscillator_strengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.set_oscillator_strengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.set_oscillator_strengths" title="Link to this definition">¶</a></dt>
 <dd><p>Set the oscillator strengths of a Drude-Lorentz permittivity.</p>
 <p>The oscillator strengths are in cm-1</p>
-<section id="id65">
-<h4>Parameters<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
+<section id="id66">
+<h4>Parameters<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>strengths<span class="classifier">1d array of floats</span></dt><dd><p>The oscillator strengths parameters in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id66">
-<h4>Returns<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
+<section id="id67">
+<h4>Returns<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1208,22 +1265,22 @@ Epsilon infinity is included in the total permittivity</p>
 <span class="sig-name descname"><span class="pre">set_sigmas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.set_sigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.set_sigmas" title="Link to this definition">¶</a></dt>
 <dd><p>Set the sigma parameters of a Drude-Lorentz permittivity.</p>
 <p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
-<section id="id67">
-<h4>Parameters<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
+<section id="id68">
+<h4>Parameters<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>sigmas<span class="classifier">1d array of floats</span></dt><dd><p>The sigma parameters in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id68">
-<h4>Returns<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
+<section id="id69">
+<h4>Returns<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1231,7 +1288,7 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.FPSQ">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">FPSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega_los</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_los</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#FPSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">FPSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega_los</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_los</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#FPSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex tensor FPSQ dielectric function.</p>
 <p>Inherits from DielectricFunction.
@@ -1241,15 +1298,15 @@ Epsilon infinity is included in the total permittivity</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.FPSQ.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#FPSQ.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the diagonal permittivity 3x3 tensor at a given frequency.</p>
-<section id="id69">
-<h3>Parameters<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h3>
+<section id="id70">
+<h3>Parameters<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id70">
-<h3>Returns<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
+<section id="id71">
+<h3>Returns<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The diagonal permittivity 3x3 tensor at frequency v.</p>
 </dd>
@@ -1259,14 +1316,14 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.FPSQ.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Sellmeier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Bs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Sellmeier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Bs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A real tensor Sellmeier permittivity.</p>
 <p>Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
@@ -1274,24 +1331,43 @@ Epsilon infinity is not included in the total permittivity</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier.calculate" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the diagonal permittivity 3x3 tensor at a given frequency.</p>
-<section id="id71">
-<h3>Parameters<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1.</p>
-</dd>
-</dl>
-</section>
+<dd><p>Calculate the scalar permittivity (n²) at a given frequency.</p>
 <section id="id72">
-<h3>Returns<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
+<h3>Parameters<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>ndarray</dt><dd><p>The diagonal permittivity 3x3 tensor at frequency v.</p>
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm⁻¹.  If v is 0 the infinite-wavelength
+limit is returned: n² = 1 + ΣBᵢ.</p>
 </dd>
 </dl>
 </section>
 <section id="id73">
-<h3>Notes<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h3>
-<p>The Sellmeier parameters are in microns^2.</p>
+<h3>Returns<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>float</dt><dd><p>The permittivity (n²) at frequency v.</p>
+</dd>
+</dl>
+</section>
+<section id="id74">
+<h3>Notes<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h3>
+<p>The Sellmeier equation is n² = 1 + Σ Bᵢ λ²/(λ² − Cᵢ),
+where the Sellmeier parameters Bᵢ (dimensionless) and Cᵢ (μm²)
+are stored in <code class="docutils literal notranslate"><span class="pre">self.Bs</span></code> and <code class="docutils literal notranslate"><span class="pre">self.Cs</span></code>.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier.optical_permittivity">
+<span class="sig-name descname"><span class="pre">optical_permittivity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier.optical_permittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier.optical_permittivity" title="Link to this definition">¶</a></dt>
+<dd><p>Return the Sellmeier permittivity at the sodium D-line (589 nm).</p>
+<p>The Sellmeier equation is frequency-dependent, so the optical
+permittivity is evaluated at a standard optical wavelength
+(589 nm, sodium D-line, 16978 cm⁻¹).</p>
+<section id="id75">
+<h3>Returns<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>float</dt><dd><p>n² at 589 nm.</p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
@@ -1307,22 +1383,22 @@ Epsilon infinity is not included in the total permittivity</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate1">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex tabulated isotropic tensor permittivity.</p>
 <p>Inherits from DielectricFunction.
 Represents an isotropic dielectric function.
 Provides a calculate() function to return the permittivity.
 Epsilon infinity is included in the total permittivity</p>
-<section id="id74">
-<h3>Methods<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h3>
+<section id="id76">
+<h3>Methods<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Returns the permittivity of the dielectric function.</p>
 </dd>
@@ -1331,15 +1407,15 @@ Epsilon infinity is included in the total permittivity</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate1.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate1.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the isotropic permittivity at a given frequency.</p>
-<section id="id75">
-<h4>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
+<section id="id77">
+<h4>Parameters<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
 </dd>
 </dl>
 </section>
-<section id="id76">
-<h4>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
+<section id="id78">
+<h4>Returns<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The isotropic permittivity at frequency v as a 3x3 tensor.</p>
 </dd>
@@ -1359,7 +1435,7 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate1.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1372,15 +1448,15 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex tabulated diagonal tensor permittivity.</p>
 <p>Inherits from DielectricFunction.
 Represents an orthorhombic dielectric function.
 Provides a calculate() function to return the permittivity.
 Epsilon infinity is included in the total permittivity</p>
-<section id="id77">
-<h3>Methods<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h3>
+<section id="id79">
+<h3>Methods<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Return the permittivity of the dielectric function.</p>
 </dd>
@@ -1389,15 +1465,15 @@ Epsilon infinity is included in the total permittivity</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate3.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the permittivity at a given frequency.</p>
-<section id="id78">
-<h4>Parameters<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
+<section id="id80">
+<h4>Parameters<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
 </dd>
 </dl>
 </section>
-<section id="id79">
-<h4>Returns<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<section id="id81">
+<h4>Returns<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The permittivity at frequency v as a diagonal 3x3 tensor.</p>
 </dd>
@@ -1407,17 +1483,17 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3.interpolatei">
-<span class="sig-name descname"><span class="pre">interpolatei</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.interpolatei" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">interpolatei</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.interpolatei" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3.interpolater">
-<span class="sig-name descname"><span class="pre">interpolater</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.interpolater" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">interpolater</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.interpolater" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1430,15 +1506,15 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex tabulated, anisotropic tensor permittivity.</p>
 <p>Inherits from DielectricFunction.
 Represents an non-isotropic dielectric function.
 Provides a calculate() function to return the permittivity.
 Epsilon infinity is included in the total permittivity</p>
-<section id="id80">
-<h3>Methods<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h3>
+<section id="id82">
+<h3>Methods<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Returns the permittivity of the dielectric.</p>
 </dd>
@@ -1447,15 +1523,15 @@ Epsilon infinity is included in the total permittivity</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate6.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the symmetric permittivity tensor at a given frequency.</p>
-<section id="id81">
-<h4>Parameters<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
+<section id="id83">
+<h4>Parameters<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1.</p>
 </dd>
 </dl>
 </section>
-<section id="id82">
-<h4>Returns<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
+<section id="id84">
+<h4>Returns<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The full permittivity tensor at frequency v as a 3x3 tensor.</p>
 </dd>
@@ -1465,17 +1541,17 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6.interpolatei">
-<span class="sig-name descname"><span class="pre">interpolatei</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.interpolatei" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">interpolatei</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.interpolatei" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6.interpolater">
-<span class="sig-name descname"><span class="pre">interpolater</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.interpolater" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">interpolater</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.interpolater" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1488,40 +1564,40 @@ Epsilon infinity is included in the total permittivity</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.TabulateScalar">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">TabulateScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#TabulateScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">TabulateScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#TabulateScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A complex tabulated scalar permittivity.</p>
 <p>Inherits from DielectricFunction.
 Represents an isotropic material dielectric function.
 Provides a calculate() function to return the permittivity.
 Epsilon infinity is not used in the calculation.</p>
-<section id="id83">
-<h3>Methods<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h3>
+<section id="id85">
+<h3>Methods<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Compute the permittivity of the material.</p>
 </dd>
 </dl>
 </section>
-<section id="id84">
-<h3>Notes<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h3>
+<section id="id86">
+<h3>Notes<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h3>
 <p>None</p>
 </section>
-<section id="id85">
-<h3>Examples<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h3>
+<section id="id87">
+<h3>Examples<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h3>
 <p>None</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.TabulateScalar.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#TabulateScalar.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the permittivity at a given frequency.</p>
-<section id="id86">
-<h4>Parameters<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
+<section id="id88">
+<h4>Parameters<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
 </dd>
 </dl>
 </section>
-<section id="id87">
-<h4>Returns<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
+<section id="id89">
+<h4>Returns<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>float</dt><dd><p>The permittivity at frequency v as a scalar.</p>
 </dd>
@@ -1541,7 +1617,7 @@ Epsilon infinity is not used in the calculation.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.TabulateScalar.isScalarFunction">
-<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar.isScalarFunction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isScalarFunction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar.isScalarFunction" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1661,6 +1737,7 @@ Epsilon infinity is not used in the calculation.</p>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.get_sigmas"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.get_sigmas()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.is_scalar"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.is_scalar()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.is_tensor"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.is_tensor()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.optical_permittivity"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.optical_permittivity()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.print"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.print()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.set_epsilon_infinity"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.set_epsilon_infinity()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.set_frequencies"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.set_frequencies()</span></code></a></li>
@@ -1691,6 +1768,7 @@ Epsilon infinity is not used in the calculation.</p>
 </li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier"><code class="docutils literal notranslate"><span class="pre">Sellmeier</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier.calculate"><code class="docutils literal notranslate"><span class="pre">Sellmeier.calculate()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier.optical_permittivity"><code class="docutils literal notranslate"><span class="pre">Sellmeier.optical_permittivity()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier.Bs"><code class="docutils literal notranslate"><span class="pre">Sellmeier.Bs</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier.Cs"><code class="docutils literal notranslate"><span class="pre">Sellmeier.Cs</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier.isScalarFunction"><code class="docutils literal notranslate"><span class="pre">Sellmeier.isScalarFunction</span></code></a></li>
@@ -1743,8 +1821,8 @@ Epsilon infinity is not used in the calculation.</p>
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
-    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

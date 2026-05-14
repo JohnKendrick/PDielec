@@ -828,7 +828,7 @@ class LayeredRamanCalculator:
     def _calculate_mode_intensities_modal_pairs(self, progress_callback=None):
         """Level 3 modal-pairs Raman intensity calculation.
 
-        For each phonon mode, sums |A^{ij}|² over all active (i_L, j_S) Berreman
+        For each phonon mode, sums ``|A^{ij}|²`` over all active (i_L, j_S) Berreman
         mode pairs incoherently.  The phonon wavevector for each pair is
         q_ph = k_L^i − k_S^j, giving a distinct NAC-corrected phonon frequency
         and Raman tensor per pair.  NAC results are cached per
