@@ -514,6 +514,7 @@ class LayeredRamanCalculator:
         self.modal_pairs = bool(modal_pairs)
         # NAC cache for Level 3 modal_pairs: keyed by (layer_index, i_mode, j_mode)
         self._nac_cache = {}
+        self._modal_pair_q_keys = {}
 
         # Phase 3c: internal Jones vectors for incident and detected channels.
         # _incident_jones : (cp, cs) complex pair — determines the linear combination
@@ -872,6 +873,7 @@ class LayeredRamanCalculator:
 
         # Build NAC cache upfront (one call per pair per layer, independent of mode)
         self._nac_cache = {}
+        self._modal_pair_q_keys = {}
         for i_mode, j_mode in pairs:
             for rl in self.raman_layers:
                 cache_key = (rl.layer_index, i_mode, j_mode)
@@ -891,9 +893,18 @@ class LayeredRamanCalculator:
 
                 q_ph_norm = np.linalg.norm(q_ph)
                 if q_ph_norm < 1e-8 or rl.nac_function is None:
+                    self._modal_pair_q_keys[cache_key] = ("to", j_mode % 2)
                     self._nac_cache[cache_key] = None  # use TO baseline
                 else:
                     q_hat_lab = q_ph / q_ph_norm
+                    # Modal decompositions inside a degenerate optical subspace are
+                    # not unique.  Amplitudes producing the same phonon wavevector
+                    # must therefore be combined coherently before squaring; distinct
+                    # q states remain incoherent.  Keep p/s detector channels separate
+                    # for unpolarised detection.
+                    q_key = tuple(np.round(q_ph, decimals=10))
+                    det_key = j_mode % 2 if self.detected_pol == "unpolarised" else 0
+                    self._modal_pair_q_keys[cache_key] = (q_key, det_key)
                     self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
 
         # Build a reference NAC frequency/sigma array from the first pair (on the first
@@ -951,12 +962,12 @@ class LayeredRamanCalculator:
                 )
 
             I_m = 0.0
+            coherent_pair_amps = {} if self.coherent_layers else None
+            incoherent_pair_amps = {} if not self.coherent_layers else None
 
             for i_mode, j_mode in pairs:
                 # When coherent_layers=True: sum amplitudes across layers first, then square.
                 # When coherent_layers=False: sum |amp|² per layer (incoherent).
-                total_amp_ij = 0.0 + 0.0j if self.coherent_layers else None
-
                 for rl, sl in zip(self.raman_layers, self._gl_layer_slices):
                     cache_key = (rl.layer_index, i_mode, j_mode)
                     cache_val = self._nac_cache.get(cache_key)
@@ -985,12 +996,17 @@ class LayeredRamanCalculator:
                     amp_ij = np.dot(w, integrand)
 
                     if self.coherent_layers:
-                        total_amp_ij += amp_ij
+                        pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", j_mode % 2))
+                        coherent_pair_amps[pair_group] = coherent_pair_amps.get(pair_group, 0.0 + 0.0j) + amp_ij
                     else:
-                        I_m += abs(amp_ij) ** 2
+                        pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", j_mode % 2))
+                        layer_group = (rl.layer_index, pair_group)
+                        incoherent_pair_amps[layer_group] = incoherent_pair_amps.get(layer_group, 0.0 + 0.0j) + amp_ij
 
-                if self.coherent_layers:
-                    I_m += abs(total_amp_ij) ** 2
+            if self.coherent_layers:
+                I_m = sum(abs(amp) ** 2 for amp in coherent_pair_amps.values())
+            else:
+                I_m = sum(abs(amp) ** 2 for amp in incoherent_pair_amps.values())
 
             I_m *= bose_factor(nu_m, self.temperature_K)
 
