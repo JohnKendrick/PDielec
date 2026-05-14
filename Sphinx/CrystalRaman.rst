@@ -229,11 +229,11 @@ resulting frequencies and eigenvectors are used to form the Raman spectrum.  The
 tensors are transformed consistently with the corrected eigenvectors when mode mixing is
 introduced by the macroscopic field correction.
 
-PDielec provides three levels of treatment for the active-layer phonon frequencies.
+PDielec provides four levels of treatment for the active-layer phonon frequencies.
 These levels should be regarded as separate approximations for the phonon problem, not as
 alternatives for solving the optical propagation problem.
 
-**Level 1: bulk TO frequencies**
+**TO — bulk TO frequencies** (GUI label: *TO*)
    No macroscopic phonon-field correction is applied:
 
    .. math::
@@ -248,7 +248,7 @@ alternatives for solving the optical propagation problem.
    is also the most direct comparison with a conventional Placzek Raman calculation using
    the bulk transverse-optic phonon frequencies.
 
-**Level 2: travelling-wave NAC correction**
+**Snell's law — travelling-wave NAC correction** (GUI label: *Snell's law* or *Snell's law (EO)*)
    The phonon is assigned the momentum carried by the Raman process.  In the laboratory
    frame,
 
@@ -281,71 +281,129 @@ alternatives for solving the optical propagation problem.
    one branch is retained, the corresponding Raman contributions are evaluated and combined
    using the same coherent or incoherent choices as the optical Raman amplitudes.
 
-**Level 3: slab electrostatic correction**
-   The active layer is treated as a laterally infinite slab for the phonon electrostatic
-   problem.  The relevant macroscopic phonon field is then the depolarisation field created
-   by the surface-normal component of the phonon-induced polarisation.  The slab
-   depolarisation tensor is
+**Dominant mode — dominant Berreman eigenmode** (GUI label: *Dominant mode* or *Dominant mode (EO)*)
+   Instead of the macroscopic Snell's-law estimate, the phonon wavevector direction is
+   taken from the actual Berreman eigenvalue of the dominant forward-propagating optical
+   mode in the active layer.  The generalised transfer matrix (GTM) system is solved at
+   the laser frequency :math:`\nu_L` to obtain the four Berreman :math:`k_z` eigenvalues
+   of the layer; the transmitted-p eigenvalue is used for p-polarised incidence and the
+   transmitted-s eigenvalue for s-polarised incidence.  A second GTM solve at the
+   collection geometry gives the corresponding Stokes :math:`k_z`.  The phonon momentum
+   transfer in the reduced wavevector :math:`(\zeta, 0, q_z)` space is then
 
    .. math::
-      :label: eq-crystal-raman-slab-depolarisation
+      :label: eq-crystal-raman-dominant-q
 
-      \tensorbf{L}_{slab} = \hat{\mathbf{n}}\hat{\mathbf{n}}^T
+      \mathbf{q}_{ph} \propto
+      \begin{pmatrix}\zeta_L - \zeta_S \\ 0 \\ q_{z,L} - q_{z,S}\end{pmatrix}
+      \quad\text{(backscattering: } \zeta_L+\zeta_S,\; q_{z,L}+q_{z,S}\text{)}
 
-   where :math:`\hat{\mathbf{n}}` is the surface normal in the laboratory frame.  The
-   simplest isolated-slab form uses the active layer's own background permittivity,
+   where :math:`\zeta = n\sin\theta` is the in-plane reduced wavevector component.
+   This accounts for optical anisotropy and birefringence that are neglected by the
+   isotropic Snell's-law approximation of Level 2.  The resulting unit vector
+   :math:`\hat{\mathbf{q}}_{ph}` is used in the same NAC dynamical-matrix correction
+   as above.
 
-   .. math::
-      :label: eq-crystal-raman-slab-internal-screening
-
-      \tensorbf{S}^{slab}_{ph} =
-      \frac{\hat{\mathbf{n}}\hat{\mathbf{n}}^{T}}
-           {\hat{\mathbf{n}}^{T}
-            \tensorbs{\varepsilon}^{b}_{i,lab}
-            \hat{\mathbf{n}}}
-
-   which is equivalent to the NAC expression with
-   :math:`\hat{\mathbf{q}}_{ph}` replaced by :math:`\hat{\mathbf{n}}`.
-   When the active layer is embedded between other media, PDielec may instead include the
-   dielectric screening of the adjacent layers.  A scalar external background permittivity
-   is formed from the normal components of the media above and below the active layer,
-
-   .. math::
-      :label: eq-crystal-raman-slab-env-epsilon
-
-      \epsilon^b_e = \tfrac{1}{2}\hat{\mathbf{n}}^T
-      \left(\tensorbs{\varepsilon}^{b}_{above,lab}+
-            \tensorbs{\varepsilon}^{b}_{below,lab}\right)
-      \hat{\mathbf{n}}
-
-   and the internal phonon-field factor is
+**All modes — per Berreman mode-pair NAC** (GUI label: *All modes* or *All modes (EO)*)
+   This level evaluates the NAC correction separately for every combination of incident
+   Berreman mode :math:`i_L` and scattered Berreman mode :math:`j_S`.  For each pair a
+   dedicated phonon wavevector :math:`\hat{\mathbf{q}}^{ij}_{ph}` is formed from the
+   corresponding :math:`k_z` eigenvalues, the NAC dynamical matrix is solved, and the
+   resulting Raman amplitude :math:`A^{ij}_m` is computed.  The total intensity for
+   mode :math:`m` is obtained by summing the squared amplitudes incoherently over all
+   mode pairs,
 
    .. math::
-      :label: eq-crystal-raman-slab-env-nbg
+      :label: eq-crystal-raman-modal-pairs
 
-      \tensorbf{N}^{slab}_{ph} =
-      \left[\tensorbf{I}+
-      \frac{1}{\epsilon^b_e}\tensorbf{L}_{slab}
-      \left(\tensorbs{\varepsilon}^{b}_{i,lab}-
-      \epsilon^b_e\tensorbf{I}\right)\right]^{-1}
+      I_m \propto \sum_{i_L,\, j_S} \left|A^{ij}_m\right|^2
 
-   giving
-
-   .. math::
-      :label: eq-crystal-raman-slab-env-sbg
-
-      \tensorbf{S}^{slab-env}_{ph} =
-      \frac{1}{\epsilon^b_e}\tensorbf{N}^{slab}_{ph}\tensorbf{L}_{slab}
-
-   This level is intended for phonon modes whose macroscopic field is controlled mainly by
-   the planar boundaries of the active layer, rather than by the photon momentum transfer.
-   It is therefore the natural correction for polar modes in a thin slab or in a strongly
-   dielectric multilayer environment.
+   This is the most complete treatment available and reduces to the dominant-mode
+   result when only one forward-propagating mode is significant in each geometry.
 
 For an infrared-inactive mode :math:`\tensorbf{Z}^{mw}` gives no macroscopic restoring-force
-correction, so all three levels reduce to the same transverse-optic frequency.  For polar
-modes the corrected frequencies can depend on the surface orientation, the optical
-scattering geometry and, in the slab-environment model, the background permittivities of
-the neighbouring layers.  The optical field enhancement and interference factors are still
-calculated separately at :math:`\nu_L` and :math:`\nu_S`; they should not be interpreted as
-replacing the phonon-frequency correction described here.
+correction, so all four levels reduce to the same transverse-optic frequency.  For polar
+modes the corrected frequencies and Raman tensors depend on the surface orientation and
+the optical scattering geometry.  The optical field enhancement and interference factors
+are still calculated separately at :math:`\nu_L` and :math:`\nu_S`; they should not be
+interpreted as replacing the phonon-frequency correction described here.
+
+Electro-Optic Correction to the Raman Tensor
+---------------------------------------------
+
+For non-centrosymmetric polar crystals the Raman tensor also receives an electro-optic
+(EO) contribution that arises from the macroscopic electric field accompanying each
+infrared-active phonon.  This field, directed along :math:`\hat{\mathbf{q}}`, modulates
+the optical susceptibility through the second-order non-linear susceptibility
+:math:`\tensorbs{\chi}^{(2)}`.  The result is a correction to the Raman tensor of each
+NAC-corrected mode that depends on the phonon wavevector direction.
+
+The EO contribution to the Raman tensor of mode :math:`p` is
+
+.. math::
+   :label: eq-crystal-raman-eo-correction
+
+   \Delta\tensorbf{R}^{(p)}_{ij} =
+   -\frac{2\,f_{ij}\,s_p}
+         {\hat{\mathbf{q}}^T\tensorbs{\varepsilon}^b\hat{\mathbf{q}}}
+
+where the electro-optic factor :math:`\tensorbf{f}` is the contraction of
+:math:`\tensorbs{\chi}^{(2)}` with the phonon unit wavevector,
+
+.. math::
+   :label: eq-crystal-raman-eo-f
+
+   f_{ij} = \sum_l \chi^{(2)}_{ijl}\,\hat{q}_l
+
+and :math:`s_p` is the projection of the Born-charge weighted polarisation onto the
+phonon eigenvector,
+
+.. math::
+   :label: eq-crystal-raman-eo-scalar
+
+   s_p = \left(\tensorbf{Z}^{mw\,T}\hat{\mathbf{q}}\right) \cdot \mathbf{x}_p
+
+with :math:`\mathbf{x}_p` the mass-weighted eigenvector of mode :math:`p` after NAC
+mixing, and :math:`\hat{\mathbf{q}}^T\tensorbs{\varepsilon}^b\hat{\mathbf{q}}` the
+background permittivity along the phonon wavevector direction.  The corrected Raman
+tensor for each mode is
+
+.. math::
+   :label: eq-crystal-raman-eo-total
+
+   \tensorbf{R}^{(p)}_{corrected} =
+   \tensorbf{R}^{(p)}_{TO,mix} + \Delta\tensorbf{R}^{(p)}
+
+where :math:`\tensorbf{R}^{(p)}_{TO,mix}` is the Raman tensor after mode mixing from
+the NAC dynamical-matrix correction.
+
+The EO correction vanishes identically when:
+
+* mode :math:`p` is not infrared active (i.e. :math:`\tensorbf{Z}^{mw\,T}\hat{\mathbf{q}}` is
+  orthogonal to :math:`\mathbf{x}_p`),
+* :math:`\tensorbs{\chi}^{(2)} = 0` (centrosymmetric crystals), or
+* the *TO* level is selected (no NAC correction applied).
+
+**Availability of** :math:`\tensorbs{\chi}^{(2)}` **from DFT codes**
+
+PDielec reads :math:`\tensorbs{\chi}^{(2)}` automatically from the DFT output file when
+it is present.  Both supported codes report the *d*-tensor
+(:math:`\tensorbf{d} = \tfrac{1}{2}\tensorbs{\chi}^{(2)}`); PDielec stores
+:math:`\tensorbs{\chi}^{(2)} = 2\tensorbf{d}` internally.
+
+*CASTEP* writes a 3×6 Voigt-format block labelled
+``Nonlinear Optical Susceptibility (pm/V)`` in the ``.castep`` output file.  The
+Voigt column order is :math:`(11, 22, 33, 23, 13, 12)`, giving the full
+3×3×3 tensor after symmetrisation of the last two indices.
+
+*Abinit* writes a 27-row table labelled
+``Non-linear optical susceptibility tensor d (pm/V)``
+in the ``.abo`` output file, listing all index combinations :math:`(i_1, i_2, i_3)` in
+Cartesian coordinates with 1-based integer indices.
+
+When :math:`\tensorbs{\chi}^{(2)}` data are present and any level other than *TO* is
+selected, PDielec applies the EO correction to every NAC-rotated Raman tensor before
+computing the Raman spectrum.  The GUI labels for the three NAC levels then show an
+*(EO)* suffix (*Snell's law (EO)*, *Dominant mode (EO)*, *All modes (EO)*) to make
+clear that the electro-optic correction is active.  A log message also confirms this
+at calculation time.

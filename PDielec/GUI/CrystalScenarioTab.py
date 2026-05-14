@@ -1703,7 +1703,6 @@ class CrystalScenarioTab(ScenarioTab):
 
         # Layer NAC mode
         self.phonon_bc_cb = QComboBox(self)
-        self.phonon_bc_cb.addItems(["none", "geometry", "dominant_mode", "modal_pairs"])
         nac_text = self.settings.get("Layer NAC mode", "none")
         # Handle legacy 'Phonon boundary correction' values from older sessions
         if nac_text == "none":
@@ -1711,16 +1710,18 @@ class CrystalScenarioTab(ScenarioTab):
             if old_bc in ("NAC", "slab-environment", "slab"):
                 nac_text = "geometry"
                 self.settings["Layer NAC mode"] = nac_text
-        idx = self.phonon_bc_cb.findText(nac_text, Qt.MatchFixedString)
+        self._populate_nac_combo(has_eo=False)
+        idx = self.phonon_bc_cb.findData(nac_text)
         if idx >= 0:
             self.phonon_bc_cb.setCurrentIndex(idx)
         self.phonon_bc_cb.activated.connect(self.on_phonon_bc_cb_activated)
         self.phonon_bc_cb.setToolTip(
             "Layer NAC mode — phonon frequency correction for layered crystal Raman:\n"
-            "'none' — use bulk TO frequencies (no correction)\n"
-            "'geometry' — NAC q from macroscopic scattering geometry (Snell's law)\n"
-            "'dominant_mode' — NAC q from dominant Berreman eigenmode in the active layer\n"
-            "'modal_pairs' — per Berreman mode-pair NAC: sums |A^ij|² over (i_L, j_S) pairs"
+            "'TO' — use bulk TO frequencies (no correction)\n"
+            "'Snell's law' — NAC q from macroscopic scattering geometry\n"
+            "'Dominant mode' — NAC q from dominant Berreman eigenmode in the active layer\n"
+            "'All modes' — per Berreman mode-pair NAC: sums |A^ij|² over (i_L, j_S) pairs\n"
+            "Labels show '(EO)' when χ⁽²⁾ is available and the electro-optic correction is active."
         )
         label = QLabel("Layer NAC mode")
         label.setToolTip(self.phonon_bc_cb.toolTip())
@@ -2055,7 +2056,9 @@ class CrystalScenarioTab(ScenarioTab):
             if idx >= 0:
                 self.depth_integration_cb.setCurrentIndex(idx)
             self.approximate_cb.setChecked(self.settings["Approximate ES"])
-            idx = self.phonon_bc_cb.findText(self.settings.get("Layer NAC mode", "none"), Qt.MatchFixedString)
+            has_eo = getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None
+            self._populate_nac_combo(has_eo=has_eo)
+            idx = self.phonon_bc_cb.findData(self.settings.get("Layer NAC mode", "none"))
             if idx >= 0:
                 self.phonon_bc_cb.setCurrentIndex(idx)
         #
@@ -2214,9 +2217,40 @@ class CrystalScenarioTab(ScenarioTab):
         self.calculation_required = True
         self.refresh_required = True
 
+    # Internal value → base display label (without EO suffix)
+    _NAC_MODE_LABELS = [
+        ("none",          "TO"),
+        ("geometry",      "Snell's law"),
+        ("dominant_mode", "Dominant mode"),
+        ("modal_pairs",   "All modes"),
+    ]
+
+    def _populate_nac_combo(self, has_eo):
+        """Repopulate the Layer NAC mode combo box with appropriate labels.
+
+        Preserves the currently selected item across repopulation.  When *has_eo*
+        is True the three NAC levels receive an '(EO)' suffix to indicate that
+        the electro-optic correction will be applied.
+
+        Parameters
+        ----------
+        has_eo : bool
+            Whether χ^(2) is available from the DFT reader.
+        """
+        current_data = self.phonon_bc_cb.currentData()
+        self.phonon_bc_cb.blockSignals(True)
+        self.phonon_bc_cb.clear()
+        for internal, base_label in self._NAC_MODE_LABELS:
+            suffix = " (EO)" if (has_eo and internal != "none") else ""
+            self.phonon_bc_cb.addItem(base_label + suffix, internal)
+        idx = self.phonon_bc_cb.findData(current_data)
+        if idx >= 0:
+            self.phonon_bc_cb.setCurrentIndex(idx)
+        self.phonon_bc_cb.blockSignals(False)
+
     def on_phonon_bc_cb_activated(self, index):
         """Handle a change in the layer NAC mode combo box."""
-        self.settings["Layer NAC mode"] = self.phonon_bc_cb.currentText()
+        self.settings["Layer NAC mode"] = self.phonon_bc_cb.currentData()
         self.calculation_required = True
         self.refresh_required = True
 
