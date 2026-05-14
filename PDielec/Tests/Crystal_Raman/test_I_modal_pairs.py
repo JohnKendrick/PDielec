@@ -2,6 +2,7 @@
 
 import os
 import sys
+from multiprocessing.dummy import Pool as ThreadPool
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
@@ -286,6 +287,173 @@ class TestI1BModalPairQGrouping:
         first_basis = intensity_for_split(0.2, 0.7)
         second_basis = intensity_for_split(0.8, 0.1)
         np.testing.assert_allclose(first_basis, second_basis, rtol=1e-12, atol=1e-12)
+
+    def test_incoherent_layers_degenerate_subspace_is_basis_invariant(self):
+        """coherent_layers=False must still be basis-invariant within a single layer.
+
+        Within a layer, degenerate-qz contributions share the same pair_group key
+        and are accumulated coherently before squaring.  A different arbitrary
+        basis decomposition of the same physical field must therefore give the
+        same intensity.
+        """
+        system, _ = _make_system_and_layer()
+        r_tensor = np.eye(3)
+        linewidths = np.array([5.0])
+
+        def nac_function(_q_hat_lab):
+            return np.array([NU_MODE]), [r_tensor], linewidths
+
+        def intensity_for_split(forward_a, backward_a):
+            rl = RamanLayer(
+                layer_index=0,
+                phonon_frequencies_cm1=np.array([NU_MODE]),
+                raman_tensors=[r_tensor],
+                rotation_matrix=np.eye(3),
+                nac_function=nac_function,
+            )
+            calc = LayeredRamanCalculator(
+                system=system,
+                raman_layers=[rl],
+                laser_frequency_cm1=LASER_CM1,
+                incident_angle_rad=0.0,
+                incident_pol="p",
+                detected_pol="p",
+                temperature_K=0.0,
+                linewidths_cm1=linewidths,
+                n_gauss=1,
+                approximate_es=True,
+                modal_pairs=True,
+                coherent_layers=False,
+            )
+
+            def fake_modal_fields(_freq_cm1, _system, _angle_rad, z_arr):
+                modal_fields = np.zeros((4, 2, 3, len(z_arr)), dtype=complex)
+                modal_fields[0, 0, 0, :] = forward_a
+                modal_fields[1, 0, 0, :] = 1.0 - forward_a
+                modal_fields[2, 0, 0, :] = backward_a
+                modal_fields[3, 0, 0, :] = 1.0 - backward_a
+                qs_by_layer = {
+                    0: np.array([1.0, 1.0 + 5.0e-10, -1.0, -1.0 - 5.0e-10], dtype=complex)
+                }
+                return modal_fields, qs_by_layer, 0.0
+
+            calc._get_modal_fields_at_gl_points = fake_modal_fields
+            _, intensities, _ = calc.calculate_mode_intensities()
+            return intensities[0]
+
+        first_basis = intensity_for_split(0.2, 0.7)
+        second_basis = intensity_for_split(0.8, 0.1)
+        np.testing.assert_allclose(first_basis, second_basis, rtol=1e-12, atol=1e-12)
+
+
+class TestI1DApproximateESChannelWarning:
+    """Regression test: approximate_es=False warns when Stokes channel count differs."""
+
+    def test_channel_count_mismatch_emits_warning(self, caplog):
+        """A warning must be logged when nu_S channels differ from laser-freq channels.
+
+        The NAC cache is built once at the laser frequency.  If optical dispersion
+        causes a different number of qz channels at the Stokes frequency the cache
+        keys are mismatched and NAC tensors may be silently misassigned.  The code
+        must emit a logger.warning so this is diagnosable.
+        """
+        import logging
+
+        system, _ = _make_system_and_layer()
+        r_tensor = np.eye(3)
+        linewidths = np.array([NU_MODE * 0.01])
+
+        def nac_function(_q_hat_lab):
+            return np.array([NU_MODE]), [r_tensor], linewidths
+
+        rl = RamanLayer(
+            layer_index=0,
+            phonon_frequencies_cm1=np.array([NU_MODE]),
+            raman_tensors=[r_tensor],
+            rotation_matrix=np.eye(3),
+            nac_function=nac_function,
+        )
+        calc = LayeredRamanCalculator(
+            system=system,
+            raman_layers=[rl],
+            laser_frequency_cm1=LASER_CM1,
+            incident_angle_rad=0.0,
+            incident_pol="p",
+            detected_pol="p",
+            temperature_K=0.0,
+            linewidths_cm1=linewidths,
+            n_gauss=1,
+            approximate_es=False,
+            modal_pairs=True,
+        )
+
+        # At laser frequency: modes 0 and 1 share qz ≈ 1.0 (degenerate) → 2 channels.
+        # At Stokes frequency (freq != LASER_CM1): return 4 distinct qz → 4 channels.
+        # This mismatch should trigger the warning.
+        def fake_modal_fields(freq_cm1, _system, _angle_rad, z_arr):
+            modal_fields = np.zeros((4, 2, 3, len(z_arr)), dtype=complex)
+            modal_fields[0, 0, 0, :] = 1.0
+            modal_fields[2, 0, 0, :] = 1.0
+            if freq_cm1 == LASER_CM1:
+                # Two degenerate forward modes → groups into 2 channels
+                qs = np.array([1.0, 1.0 + 5.0e-10, -1.0, -1.0 - 5.0e-10], dtype=complex)
+            else:
+                # Four distinct qz → 4 channels, mismatching the 2-channel cache
+                qs = np.array([1.0, 0.9, -0.9, -1.0], dtype=complex)
+            return modal_fields, {0: qs}, 0.0
+
+        calc._get_modal_fields_at_gl_points = fake_modal_fields
+
+        with caplog.at_level(logging.WARNING, logger="PDielec.LayeredRamanCalculator"):
+            calc.calculate_mode_intensities()
+
+        assert any(
+            "channels" in r.message and "misassigned" in r.message
+            for r in caplog.records
+        ), "Expected a NAC channel-mismatch warning but none was logged"
+
+
+class TestI1CModalPairParallel:
+    """Regression tests for the modal_pairs pool execution path."""
+
+    def test_pool_path_matches_serial(self):
+        """Thread-pool modal_pairs execution must match serial execution."""
+        system, rl = _make_system_and_layer()
+        linewidths = np.array([5.0])
+        calc_serial = LayeredRamanCalculator(
+            system=system,
+            raman_layers=[rl],
+            laser_frequency_cm1=LASER_CM1,
+            incident_angle_rad=0.0,
+            incident_pol="p",
+            detected_pol="p",
+            temperature_K=0.0,
+            linewidths_cm1=linewidths,
+            n_gauss=11,
+            approximate_es=False,
+            modal_pairs=True,
+        )
+        serial = calc_serial.calculate_mode_intensities()
+
+        system_parallel, rl_parallel = _make_system_and_layer()
+        calc_parallel = LayeredRamanCalculator(
+            system=system_parallel,
+            raman_layers=[rl_parallel],
+            laser_frequency_cm1=LASER_CM1,
+            incident_angle_rad=0.0,
+            incident_pol="p",
+            detected_pol="p",
+            temperature_K=0.0,
+            linewidths_cm1=linewidths,
+            n_gauss=11,
+            approximate_es=False,
+            modal_pairs=True,
+        )
+        with ThreadPool(2) as pool:
+            parallel = calc_parallel.calculate_mode_intensities(pool=pool)
+
+        for serial_array, parallel_array in zip(serial, parallel, strict=True):
+            np.testing.assert_allclose(serial_array, parallel_array, rtol=1e-10, atol=1e-10)
 
 
 # ---------------------------------------------------------------------------

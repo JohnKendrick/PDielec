@@ -88,7 +88,7 @@ class AzimuthalSweepWindow(QWidget):
         controls_hbox.addWidget(self._mode_cb)
 
         # --- Matplotlib canvas ---
-        self.figure = matplotlib.figure.Figure()
+        self.figure = matplotlib.figure.Figure(constrained_layout=True)
         self.canvas = FigureCanvasQTAgg(self.figure)
         self.toolbar = NavigationToolbar2QT(self.canvas, self)
 
@@ -103,7 +103,7 @@ class AzimuthalSweepWindow(QWidget):
         self._plot_type_cb.currentIndexChanged.connect(self._on_controls_changed)
         self._mode_cb.currentIndexChanged.connect(self._on_controls_changed)
 
-        self.resize(800, 600)
+        self.resize(720, 660)
         self._update_plot()
 
     # ------------------------------------------------------------------
