@@ -127,6 +127,7 @@ class SpreadSheetManager:
                 "Powder Imaginary Permittivity",
                 "Powder ATR Reflectance",
                 "Powder Raman",
+                "Crystal Raman",
                 "Analysis",
                 "Crystal R_p",
                 "Crystal R_s",

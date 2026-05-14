@@ -1003,6 +1003,8 @@ class PlottingTab(QWidget):
         crystal_legends             = []
         raman_intensities           = []
         raman_legends               = []
+        crystal_raman_intensities   = []
+        crystal_raman_legends       = []
         # Deal with Scenarios
         sp = self.notebook.spreadsheet
         sp.select_work_sheet("Scenarios")
@@ -1059,8 +1061,14 @@ class PlottingTab(QWidget):
                     sp.write_next_row([key, settings[key]],col=1,check=1)
                 raman_intensities.append( scenario.get_result(self.vs_cm1, "Powder Raman") )
                 raman_legends.append(scenario.settings["Legend"])
-            elif scenario.spectroscopy in ("Crystal Raman",):
-                pass
+            elif scenario.spectroscopy == "Crystal Raman":
+                sp.write_next_row([""],col=1)
+                sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
+                settings = scenario.settings
+                for key in sorted(settings,key=str.lower):
+                    sp.write_next_row([key, settings[key]],col=1,check=1)
+                crystal_raman_intensities.append( scenario.get_result(self.vs_cm1, "Crystal Raman") )
+                crystal_raman_legends.append(scenario.settings["Legend"])
             else:
                 logger.error(f"Error in plotting tab: scenario not recognised {scenario.spectroscopy}")
         # Single crystal Permittivity
@@ -1100,6 +1108,9 @@ class PlottingTab(QWidget):
         # Powder Raman results
         if len(raman_intensities) > 0:
             self.write_powder_results(sp, "Powder Raman", self.vs_cm1, raman_legends, raman_intensities)
+        # Crystal Raman results
+        if len(crystal_raman_intensities) > 0:
+            self.write_crystal_results(sp, "Crystal Raman", self.vs_cm1, crystal_raman_legends, crystal_raman_intensities)
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)
