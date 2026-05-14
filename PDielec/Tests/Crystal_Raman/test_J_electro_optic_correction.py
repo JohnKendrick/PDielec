@@ -1,0 +1,348 @@
+"""Tests J1–J8: Electro-optic (EO) correction to NAC Raman tensors.
+
+Covers:
+  J1  GenericOutputReader attribute and accessor.
+  J2  Abinit reader parses χ^(2) = 2d from raman.abo correctly.
+  J3  CASTEP reader parses χ^(2) = 2d from raman.castep correctly.
+  J4  Backward compatibility — chi2_pm_per_v=None leaves tensors unchanged.
+  J5  Zero χ^(2) tensor → EO correction is exactly zero.
+  J6  Non-zero χ^(2) → at least one polar mode Raman tensor changes.
+  J7  EO correction scales linearly with χ^(2) magnitude.
+  J8  Zero Born charges → EO correction is zero for all modes.
+"""
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+
+import math
+import numpy as np
+import pytest
+
+from PDielec.Constants import amu, angs2bohr
+from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standalone
+
+# ---------------------------------------------------------------------------
+# Paths to DFT example files
+# ---------------------------------------------------------------------------
+
+_REPO = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+_ABINIT_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "AbInit", "raman.abo")
+_CASTEP_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Castep", "raman.castep")
+
+_have_abinit = os.path.exists(_ABINIT_FILE)
+_have_castep = os.path.exists(_CASTEP_FILE)
+
+# ---------------------------------------------------------------------------
+# Shared helper: load Abinit reader and extract standalone-function inputs
+# ---------------------------------------------------------------------------
+
+def _load_abinit():
+    """Return an AbinitOutputReader loaded from raman.abo."""
+    from PDielec.AbinitOutputReader import AbinitOutputReader
+    r = AbinitOutputReader([_ABINIT_FILE])
+    r.read_output()
+    return r
+
+
+def _standalone_inputs(r):
+    """Extract all inputs for _compute_nac_dynamical_matrix_standalone from a reader."""
+    nAtoms = r.nions
+    n_modes = 3 * nAtoms
+    volume_au = r.volume * angs2bohr ** 3
+    masses_au = np.array(r.masses) * amu
+    born_charges = np.array(r.born_charges)
+    hessian = np.array(r.hessian, dtype=float)
+    eps_inf = np.array(r.zerof_optical_dielectric, dtype=float)
+    if eps_inf.ndim == 1:
+        eps_inf = np.diag(eps_inf)
+
+    n_to_modes = len(r.mass_weighted_normal_modes)
+    U_TO = np.zeros((n_to_modes, n_modes))
+    for imode, mode in enumerate(r.mass_weighted_normal_modes):
+        col = 0
+        for atom in mode:
+            U_TO[imode, col:col + 3] = atom
+            col += 3
+
+    scale = np.sqrt(r.volume)
+    scaled_tensors = [scale * np.asarray(R, dtype=float) for R in r.raman_tensors]
+    sigmas = np.ones(n_to_modes) * 5.0
+    return hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, scaled_tensors, sigmas
+
+
+# ---------------------------------------------------------------------------
+# J1: GenericOutputReader attribute initialisation and accessor
+# ---------------------------------------------------------------------------
+
+# Note: GenericOutputReader.__init__ returns early when the file doesn't exist,
+# so J1 uses the Abinit reader with a real file to exercise a fully initialised
+# instance.  Tests that only need the accessor are pure class-level checks.
+
+@pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
+class TestJ1Attribute:
+    """J1: nonlinear_optical_susceptibility attribute and accessor."""
+
+    def test_attribute_initialised_to_none(self):
+        """A freshly loaded reader has chi2 = None before any NLO block is parsed.
+
+        We exploit the fact that a reader for a file without an NLO block will
+        initialise the attribute to None.  We verify via the Abinit reader which
+        calls GenericOutputReader.__init__ with a valid file.
+        """
+        from PDielec.AbinitOutputReader import AbinitOutputReader
+        r = AbinitOutputReader([_ABINIT_FILE])
+        # Before read_output() the attribute must already be None
+        assert r.nonlinear_optical_susceptibility is None
+
+    def test_accessor_returns_none_before_read(self):
+        from PDielec.AbinitOutputReader import AbinitOutputReader
+        r = AbinitOutputReader([_ABINIT_FILE])
+        assert r.get_nonlinear_optical_susceptibility() is None
+
+    def test_accessor_returns_set_value(self):
+        from PDielec.AbinitOutputReader import AbinitOutputReader
+        r = AbinitOutputReader([_ABINIT_FILE])
+        chi2 = np.zeros((3, 3, 3))
+        chi2[0, 0, 0] = 5.0
+        r.nonlinear_optical_susceptibility = chi2
+        result = r.get_nonlinear_optical_susceptibility()
+        assert result is chi2
+
+
+# ---------------------------------------------------------------------------
+# J2: Abinit reader parses χ^(2) from raman.abo
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
+class TestJ2AbinitParser:
+    """J2: Abinit _read_nlo_susceptibility reads χ^(2) = 2d correctly."""
+
+    @pytest.fixture(scope="class")
+    def chi2(self):
+        return _load_abinit().nonlinear_optical_susceptibility
+
+    def test_tensor_not_none(self, chi2):
+        assert chi2 is not None
+
+    def test_shape(self, chi2):
+        assert chi2.shape == (3, 3, 3)
+
+    def test_zz_component(self, chi2):
+        # raman.abo: d[2,2,2] = -33.3688; χ^(2) = 2d ≈ -66.74
+        assert abs(chi2[2, 2, 2] - (-66.7376)) < 0.01
+
+    def test_last_two_indices_symmetric(self, chi2):
+        """Abinit χ^(2) stores d[i,j,k]; last two indices must be symmetric."""
+        for i in range(3):
+            for j in range(3):
+                for k in range(3):
+                    assert abs(chi2[i, j, k] - chi2[i, k, j]) < 1e-6, \
+                        f"Symmetry broken at [{i},{j},{k}] vs [{i},{k},{j}]"
+
+    def test_d_to_chi2_factor(self, chi2):
+        """χ^(2) = 2d, so all values should equal exactly 2× the raw d values."""
+        # Verify by re-reading d directly and comparing
+        from PDielec.AbinitOutputReader import AbinitOutputReader
+        r = AbinitOutputReader([_ABINIT_FILE])
+        r.read_output()
+        # The stored tensor is 2d; halving should give the raw d entries
+        d_recovered = chi2 / 2.0
+        assert abs(d_recovered[2, 2, 2] - (-33.3688)) < 0.01
+
+
+# ---------------------------------------------------------------------------
+# J3: CASTEP reader parses χ^(2) from raman.castep
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_castep, reason="raman.castep not present")
+class TestJ3CastepParser:
+    """J3: CASTEP _read_nlo_susceptibility reads χ^(2) = 2d (Voigt) correctly."""
+
+    @pytest.fixture(scope="class")
+    def chi2(self):
+        from PDielec.CastepOutputReader import CastepOutputReader
+        r = CastepOutputReader([_CASTEP_FILE])
+        r.read_output()
+        return r.nonlinear_optical_susceptibility
+
+    def test_tensor_not_none(self, chi2):
+        assert chi2 is not None
+
+    def test_shape(self, chi2):
+        assert chi2.shape == (3, 3, 3)
+
+    def test_zz_component(self, chi2):
+        # raman.castep: d[2,2,2] = -38.3539; χ^(2) = 2d ≈ -76.71
+        assert abs(chi2[2, 2, 2] - (-76.7078)) < 0.01
+
+    def test_last_two_indices_symmetric(self, chi2):
+        """Voigt reconstruction must produce a tensor symmetric in last two indices."""
+        for i in range(3):
+            for j in range(3):
+                for k in range(3):
+                    assert abs(chi2[i, j, k] - chi2[i, k, j]) < 1e-6, \
+                        f"Symmetry broken at [{i},{j},{k}] vs [{i},{k},{j}]"
+
+    def test_d_to_chi2_factor(self, chi2):
+        """χ^(2) = 2d; row i=0 col 4 is Voigt pair (0,2): d[0,0,2] = 21.655 → chi2 = 43.31."""
+        # raman.castep row 0: ... 21.65509 at col 4 → d[0,0,2] = d[0,2,0] = 21.655
+        assert abs(chi2[0, 0, 2] - 43.31) < 0.1
+
+
+# ---------------------------------------------------------------------------
+# J4: Backward compatibility — chi2=None leaves results unchanged
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
+class TestJ4BackwardCompat:
+    """J4: chi2_pm_per_v=None must give identical results to the old call."""
+
+    def test_frequencies_unchanged(self):
+        r = _load_abinit()
+        args = _standalone_inputs(r)
+        hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas = args
+        q = np.array([0.0, 0.0, 1.0])
+
+        freqs_base, tensors_base, sigmas_base = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas)
+        freqs_none, tensors_none, sigmas_none = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+
+        np.testing.assert_array_equal(freqs_base, freqs_none)
+        for R1, R2 in zip(tensors_base, tensors_none):
+            np.testing.assert_array_equal(R1, R2)
+
+    def test_sigmas_unchanged(self):
+        r = _load_abinit()
+        args = _standalone_inputs(r)
+        hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas = args
+        q = np.array([1.0, 0.0, 0.0])
+
+        _, _, sigmas_base = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas)
+        _, _, sigmas_none = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+
+        np.testing.assert_array_equal(sigmas_base, sigmas_none)
+
+
+# ---------------------------------------------------------------------------
+# J5: Zero χ^(2) → EO correction is exactly zero
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
+class TestJ5ZeroChi2:
+    """J5: A zero χ^(2) tensor must leave all Raman tensors unchanged."""
+
+    @pytest.mark.parametrize("q", [
+        np.array([0.0, 0.0, 1.0]),
+        np.array([1.0, 0.0, 0.0]),
+        np.array([1.0, 1.0, 1.0]) / math.sqrt(3),
+    ])
+    def test_zero_chi2_no_change(self, q):
+        r = _load_abinit()
+        args = _standalone_inputs(r)
+        hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas = args
+        chi2_zero = np.zeros((3, 3, 3))
+
+        _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+        _, tensors_z, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2_zero)
+
+        for R_no, R_z in zip(tensors_no, tensors_z):
+            np.testing.assert_allclose(R_z, R_no, atol=1e-14)
+
+
+# ---------------------------------------------------------------------------
+# J6: Non-zero χ^(2) → at least one polar mode tensor changes
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
+class TestJ6NonZeroChi2:
+    """J6: Real χ^(2) from Abinit must change at least one NAC Raman tensor."""
+
+    @pytest.mark.parametrize("q", [
+        np.array([0.0, 0.0, 1.0]),
+        np.array([1.0, 0.0, 0.0]),
+    ])
+    def test_at_least_one_tensor_changes(self, q):
+        r = _load_abinit()
+        args = _standalone_inputs(r)
+        hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas = args
+        chi2 = r.nonlinear_optical_susceptibility
+
+        _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+        _, tensors_eo, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2)
+
+        diffs = [np.max(np.abs(R_eo - R_no))
+                 for R_eo, R_no in zip(tensors_eo, tensors_no)]
+        assert max(diffs) > 1e-10, "Expected at least one tensor to change with non-zero χ^(2)"
+
+
+# ---------------------------------------------------------------------------
+# J7: EO correction scales linearly with χ^(2) magnitude
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
+class TestJ7LinearScaling:
+    """J7: Doubling χ^(2) must double the EO correction ΔR for every mode."""
+
+    @pytest.mark.parametrize("q", [
+        np.array([0.0, 0.0, 1.0]),
+        np.array([1.0, 0.0, 0.0]),
+        np.array([1.0, 1.0, 0.0]) / math.sqrt(2),
+    ])
+    def test_linear_scaling(self, q):
+        r = _load_abinit()
+        args = _standalone_inputs(r)
+        hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas = args
+        chi2 = r.nonlinear_optical_susceptibility
+
+        _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+        _, tensors_1x, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2)
+        _, tensors_2x, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=2.0 * chi2)
+
+        for p, (R_no, R_1x, R_2x) in enumerate(zip(tensors_no, tensors_1x, tensors_2x)):
+            delta_1x = R_1x - R_no
+            delta_2x = R_2x - R_no
+            # delta_2x should equal 2 * delta_1x
+            np.testing.assert_allclose(delta_2x, 2.0 * delta_1x, atol=1e-12,
+                                       err_msg=f"Linear scaling failed for mode {p}")
+
+
+# ---------------------------------------------------------------------------
+# J8: Zero Born charges → EO correction vanishes
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
+class TestJ8ZeroBornCharges:
+    """J8: When Born charges are zero, Z_q = 0 and the EO correction must be zero."""
+
+    def test_zero_born_charges_no_correction(self):
+        r = _load_abinit()
+        args = _standalone_inputs(r)
+        hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas = args
+        chi2 = r.nonlinear_optical_susceptibility
+
+        bc_zero = np.zeros_like(bc)
+        q = np.array([0.0, 0.0, 1.0])
+
+        _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc_zero, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+        _, tensors_eo, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc_zero, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2)
+
+        for p, (R_no, R_eo) in enumerate(zip(tensors_no, tensors_eo)):
+            np.testing.assert_allclose(R_eo, R_no, atol=1e-14,
+                                       err_msg=f"EO correction non-zero for mode {p} with zero Born charges")
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

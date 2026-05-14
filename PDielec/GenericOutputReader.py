@@ -115,6 +115,10 @@ class GenericOutputReader:
         A list of 3×3 Raman susceptibility tensors, one per normal mode, or ``None`` if
         the output reader does not provide Raman data.
 
+    nonlinear_optical_susceptibility : ndarray or None
+        Second-order nonlinear optical susceptibility tensor χ^(2), shape (3, 3, 3),
+        units pm/V; ``None`` if not available.
+
     original_born_charges_are_being_used : bool
         Signifies whether original Born charges are in use, defaults to True.
 
@@ -195,6 +199,7 @@ class GenericOutputReader:
         self.edited_masses              = None
         self.primitive_transformation   = None
         self.raman_tensors              = None
+        self.nonlinear_optical_susceptibility = None   # 3×3×3 ndarray (χ^(2)) in pm/V, or None
         return
 
     def read_output(self):
@@ -500,6 +505,16 @@ class GenericOutputReader:
 
         """
         return self.raman_tensors
+
+    def get_nonlinear_optical_susceptibility(self):
+        """Return the second-order nonlinear optical susceptibility tensor χ^(2).
+
+        Returns
+        -------
+        ndarray or None
+            χ^(2) tensor, shape (3, 3, 3), units pm/V; None if not available.
+        """
+        return self.nonlinear_optical_susceptibility
 
     def get_crystal_density(self):
         """Return the crystal density in g/cc.

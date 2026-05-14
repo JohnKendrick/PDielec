@@ -148,13 +148,17 @@ def solve_single_crystal_equations(
 
 def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf,
                                               volume_au, masses_au, U_TO, scaled_tensors,
-                                              to_sigmas):
+                                              to_sigmas, chi2_pm_per_v=None):
     """Module-level NAC computation for a given phonon wavevector direction.
 
     Applies the standard non-analytic correction (NAC) to the bulk TO dynamical
     matrix using the supplied unit phonon wavevector in the crystal frame::
 
         D_NAC(q̂) = D_TO + (4π/V) Z^mw,T (q̂ q̂^T / q̂^T ε_∞ q̂) Z^mw
+
+    Optionally applies the electro-optic (EO) correction to each Raman tensor
+    (Eq. 21 of Raman-Theory.pdf) when the second-order NLO susceptibility χ^(2)
+    is supplied.
 
     This function is factored out of ``CrystalScenarioTab._compute_nac_dynamical_matrix``
     so that it can be called from a closure without capturing ``self``.
@@ -180,6 +184,10 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
         Bulk TO Raman tensors scaled by sqrt(V_cell).
     to_sigmas : ndarray, shape (n_to_modes,)
         Bulk TO linewidths in cm⁻¹.
+    chi2_pm_per_v : ndarray, shape (3, 3, 3) or None
+        Second-order NLO susceptibility χ^(2) in pm/V (= 2d from DFT output).
+        When provided, the electro-optic correction is applied to each NAC Raman
+        tensor.  Pass None to skip the correction.
 
     Returns
     -------
@@ -230,6 +238,28 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
         nac_tensors.append(R_p)
         dominant_to = int(np.argmax(np.abs(C[:, p_idx])))
         nac_sigmas[p_idx] = sigmas[dominant_to] if dominant_to < len(sigmas) else 5.0
+
+    # Electro-optic (EO) correction to Raman tensors (Eq. 21, Raman-Theory.pdf).
+    # Applied only when χ^(2) is available (non-centrosymmetric polar materials).
+    if chi2_pm_per_v is not None:
+        # TODO: Verify unit conversion and prefactor against ZnO CASTEP/Abinit example.
+        # EO correction should be a small fraction (~1–20%) of the uncorrected tensor.
+        # χ^(2) in pm/V → internal Bohr/V_atomic units:
+        #   1 pm = 1e-12 m;  1 Bohr ≈ 5.292e-11 m  =>  pm_to_bohr ≈ 0.01890
+        from PDielec.Constants import bohr_si
+        pm_to_bohr = 1.0e-12 / bohr_si
+        chi2_au = np.asarray(chi2_pm_per_v, dtype=float) * pm_to_bohr
+
+        # f_ij[i,j] = Σ_l χ^(2)_ijl * q̂_l   (3×3 matrix, contraction on last index)
+        f_ij = np.einsum("ijl,l->ij", chi2_au, q_hat_crystal)
+
+        # Z_q[n_modes] = Z_mat^T @ q̂  — project mass-weighted Born charges onto q
+        Z_q = Z_mat.T @ q_hat_crystal   # shape (n_modes,)
+
+        for p_idx in range(n_modes):
+            # scalar_p = (Z_mat^T q̂) · eig_vec[:,p]
+            scalar_p = float(np.dot(Z_q, eig_vec[:, p_idx]))
+            nac_tensors[p_idx] = nac_tensors[p_idx] + (-2.0 * f_ij * scalar_p / eps_b_q)
 
     return nac_freqs, nac_tensors, nac_sigmas
 
@@ -2570,6 +2600,7 @@ class CrystalScenarioTab(ScenarioTab):
                 U_TO[imode, col:col + 3] = atom
                 col += 3
 
+        chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
         return _compute_nac_dynamical_matrix_standalone(
             q_hat_crystal,
             np.array(self.reader.hessian, dtype=float),
@@ -2580,6 +2611,7 @@ class CrystalScenarioTab(ScenarioTab):
             U_TO,
             scaled_tensors,
             np.asarray(sigmas_cm1, dtype=float),
+            chi2_pm_per_v=chi2,
         )
 
     def _compute_nac_modes_geometry(self, G_total, scaled_tensors, frequencies_cm1, sigmas_cm1,
@@ -2799,6 +2831,7 @@ class CrystalScenarioTab(ScenarioTab):
         G = G_total.copy()
         tensors = [np.array(R, dtype=float) for R in scaled_tensors]
         sigmas = np.asarray(sigmas_cm1, dtype=float)
+        chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
 
         def nac_function(q_hat_lab):
             q_hat_crystal = G.T @ q_hat_lab
@@ -2816,6 +2849,7 @@ class CrystalScenarioTab(ScenarioTab):
                 U_TO,
                 tensors,
                 sigmas,
+                chi2_pm_per_v=chi2,
             )
 
         return nac_function
@@ -2919,6 +2953,14 @@ class CrystalScenarioTab(ScenarioTab):
                     f"{self.settings['Legend']} _build_raman_calculator: legacy phonon BC "
                     f"'{old_bc}' mapped to 'geometry'"
                 )
+
+        has_chi2 = (
+            hasattr(self.reader, "nonlinear_optical_susceptibility")
+            and self.reader.nonlinear_optical_susceptibility is not None
+        )
+        if has_chi2:
+            logger.info(f"{self.settings['Legend']} _build_raman_calculator: "
+                        "electro-optic correction will be applied to Raman tensors (χ^(2) available)")
 
         has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
         has_born    = len(self.reader.born_charges) > 0

@@ -130,6 +130,10 @@ class CastepOutputReader(GenericOutputReader):
         self.manage["frequency"]      = (re.compile("     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$"), self._read_frequencies)
         self.manage["nbranches"]      = (re.compile(" Number of branches"), self._read_nbranches)
         self.manage["ramanTensors"]   = (re.compile(".*Raman Susceptibility Tensors"), self._read_raman_tensors)
+        self.manage["nloSusceptibility"] = (
+            re.compile(r" *Nonlinear Optical Susceptibility"),
+            self._read_nlo_susceptibility,
+        )
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -276,6 +280,46 @@ class CastepOutputReader(GenericOutputReader):
         if self.debug:
             logger.debug(f"_read_raman_tensors: read {len(self.raman_tensors)} Raman tensors")
         return
+
+    def _read_nlo_susceptibility(self, line):
+        """Read the nonlinear optical susceptibility tensor from the .castep file.
+
+        CASTEP prints the d-tensor (d = χ^(2)/2) in a 3×6 Voigt-format block::
+
+            Nonlinear Optical Susceptibility (pm/V)
+            ---------------------------------------
+              -0.01384    -0.00493     0.00060    -0.00001    21.65509    -0.00057
+              -0.00057    -0.00261     0.00002    21.65875    -0.00001    -0.00493
+              21.65509    21.65875   -38.35388     0.00002     0.00060    -0.00001
+
+        Voigt column mapping: 0→(0,0), 1→(1,1), 2→(2,2), 3→(1,2)=(2,1),
+        4→(0,2)=(2,0), 5→(0,1)=(1,0).
+
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (already consumed by the manage loop).
+
+        Returns
+        -------
+        bool
+            True on success.
+        """
+        # skip separator line "  ------..."
+        self.file_descriptor.readline()
+        voigt_pairs = [(0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1)]
+        d = np.zeros((3, 3, 3))
+        for i in range(3):
+            vals = [float(x) for x in self.file_descriptor.readline().split()]
+            for col, (j, k) in enumerate(voigt_pairs):
+                d[i, j, k] = vals[col]
+                d[i, k, j] = vals[col]   # symmetrize last two indices
+        # CASTEP outputs d = χ^(2)/2; convert to χ^(2)
+        self.nonlinear_optical_susceptibility = 2.0 * d
+        logger.info("  Nonlinear optical susceptibility tensor read from CASTEP output (χ^(2) = 2d, pm/V)")
+        return True
 
     def _read_kpoint_grid(self, line):
         """Parse and set the k-point grid dimensions from the given line.

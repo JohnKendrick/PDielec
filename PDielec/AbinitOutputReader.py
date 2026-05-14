@@ -111,6 +111,10 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage["znucl"]    = (re.compile("^  *znucl "), self._read_znucl)
         self.manage["totalenergy"]    = (re.compile("^  *Total energy "), self._read_total_energy)
         self.manage["susceptibility"] = (re.compile("  First-order change in the electronic dielectric"), self._read_susceptibility_derivatives)
+        self.manage["nlo_susceptibility"] = (
+            re.compile(r"  Non-linear optical susceptibility tensor d"),
+            self._read_nlo_susceptibility,
+        )
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -207,6 +211,44 @@ class AbinitOutputReader(GenericOutputReader):
             logger.warning("_read_susceptibility_derivatives: phonon eigenvectors not yet available; "
                            "raw derivatives stored in self._susceptibility_derivatives")
         return
+
+    def _read_nlo_susceptibility(self, line):
+        """Read the nonlinear optical susceptibility tensor d from Abinit output.
+
+        Abinit writes the d-tensor (d = χ^(2)/2) in a 27-row table with 1-based
+        integer indices for all three Cartesian directions::
+
+            Non-linear optical susceptibility tensor d (pm/V)
+            in cartesian coordinates
+             i1dir  i2dir  i3dir             d
+                1      1      1         -0.000000000
+                ...
+                3      3      3        -33.368821342
+
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (already consumed by the manage loop).
+
+        Returns
+        -------
+        bool
+            True on success.
+        """
+        # skip "in cartesian coordinates" and "i1dir  i2dir  i3dir  d" header
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
+        d = np.zeros((3, 3, 3))
+        for _ in range(27):
+            parts = self.file_descriptor.readline().split()
+            i, j, k = int(parts[0]) - 1, int(parts[1]) - 1, int(parts[2]) - 1
+            d[i, j, k] = float(parts[3])
+        # Abinit outputs d = χ^(2)/2; convert to χ^(2)
+        self.nonlinear_optical_susceptibility = 2.0 * d
+        logger.info("  Nonlinear optical susceptibility tensor read from Abinit output (χ^(2) = 2d, pm/V)")
+        return True
 
     def _read_total_energy(self, line):
         """Read and store total energy values from a line.
