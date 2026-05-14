@@ -77,6 +77,12 @@ _EFIELD_CHUNK_SIZE = 1000
 # are implemented as a composite rule made from repeated panels of this order.
 _MAX_GAUSS_LEGENDRE_PANEL_ORDER = 64
 
+# Tolerance for grouping Berreman modes that are numerically split members of
+# the same propagation-q subspace.  Normal-incidence uniaxial modes can differ
+# by ~1e-10 in qz from eigensolver round-off, while physically distinct forward
+# and backward subspaces differ by O(1).
+_MODAL_Q_GROUP_TOL = 1.0e-8
+
 
 def _gauss_legendre_nodes_weights(n):
     """Return Gauss-Legendre quadrature nodes and weights on [-1, 1].
@@ -804,7 +810,11 @@ class LayeredRamanCalculator:
             if sys_k not in modal_amps or sys_k >= len(system.layers):
                 continue
             layer = system.layers[sys_k]
-            z_front = boundaries[sys_k + 1]  # z at the front (incident side) of this layer
+            # calculate_modal_amplitudes returns the F_bk vector indexed as
+            # k+1 in GTMcore.calculate_Efield.  That vector is propagated from
+            # the back interface of finite layer k, so the partial-depth
+            # exponent must use boundaries[sys_k + 2] as its reference.
+            z_reference = boundaries[sys_k + 2]
 
             amps = modal_amps[sys_k]  # shape (8,): [0:4] p-pol, [4:8] s-pol
             qs_by_layer[rl.layer_index] = layer.qs.copy()
@@ -814,7 +824,7 @@ class LayeredRamanCalculator:
                 global_idx = sl.start + pt_offset
                 # Partial-depth propagation factors (same formula as calculate_Efield)
                 dKiz = np.array([
-                    np.exp(layer.propagation_exponents[n] * (z_j - z_front) / layer.thick)
+                    np.exp(layer.propagation_exponents[n] * (z_j - z_reference) / layer.thick)
                     for n in range(4)
                 ], dtype=np.complex128)
 
@@ -826,14 +836,56 @@ class LayeredRamanCalculator:
 
         return modal_fields, qs_by_layer, zeta
 
+    def _get_modal_q_channels(self, modal_fields, qs_by_layer, pol_idx):
+        """Group modal fields into propagation-q subspaces for one polarisation.
+
+        Berreman eigenvectors inside an exactly or nearly degenerate qz
+        subspace are not unique.  At normal incidence in a uniaxial layer, for
+        example, the two forward in-plane optical modes have the same qz and
+        may rotate within that subspace as the crystal azimuth changes.  The
+        physical p/s field contribution is the coherent sum over the whole qz
+        subspace, not an individual eigenvector selected by its modal index.
+        """
+        channels_by_layer = {}
+        for rl, sl in zip(self.raman_layers, self._gl_layer_slices):
+            qs_arr = qs_by_layer.get(rl.layer_index, np.zeros(4, dtype=complex))
+            groups = []
+            for mode_idx, qz in enumerate(qs_arr):
+                qz_re = float(np.real(qz))
+                group = None
+                for candidate in groups:
+                    if abs(qz_re - candidate["qz"]) <= _MODAL_Q_GROUP_TOL:
+                        group = candidate
+                        break
+                if group is None:
+                    group = {
+                        "qz": qz_re,
+                        "field": np.zeros((3, sl.stop - sl.start), dtype=np.complex128),
+                    }
+                    groups.append(group)
+                group["field"] += modal_fields[mode_idx, pol_idx, :, sl]
+
+            # Stable order: forward-like qz first, then backward-like qz.
+            channels_by_layer[rl.layer_index] = [
+                {"qz": data["qz"], "field": data["field"]}
+                for data in sorted(groups, key=lambda item: item["qz"], reverse=True)
+            ]
+        return channels_by_layer
+
     def _calculate_mode_intensities_modal_pairs(self, progress_callback=None):
         """Level 3 modal-pairs Raman intensity calculation.
 
-        For each phonon mode, sums ``|A^{ij}|²`` over all active (i_L, j_S) Berreman
-        mode pairs incoherently.  The phonon wavevector for each pair is
-        q_ph = k_L^i − k_S^j, giving a distinct NAC-corrected phonon frequency
-        and Raman tensor per pair.  NAC results are cached per
-        (layer_index, i_mode, j_mode) and reused across all phonon modes.
+        For each phonon mode, sums over incident and detected propagation-q
+        channels.  Each channel is the coherent field contribution from all
+        Berreman eigenmodes in the same qz subspace for the selected
+        polarisation.  This avoids basis dependence when the optical eigenmodes
+        are degenerate or nearly degenerate, as at normal incidence in a
+        uniaxial layer.
+
+        The phonon wavevector for each channel pair is q_ph = k_L − k_S,
+        giving a distinct NAC-corrected phonon frequency and Raman tensor per
+        pair.  NAC results are cached per layer/channel pair and reused across
+        all phonon modes.
 
         Pool parallelism is disabled for this path (closures in RamanLayer.nac_function
         are not picklable in Phase 1).
@@ -856,13 +908,17 @@ class LayeredRamanCalculator:
         ref_layer = self.raman_layers[0]
         n_modes = len(ref_layer.phonon_frequencies_cm1)
 
-        pairs = self._get_active_modal_pairs()
+        incident_pol_idx = 0 if self.incident_pol == "p" else 1
+        detected_pol_indices = [0, 1] if self.detected_pol == "unpolarised" else [
+            0 if self.detected_pol == "p" else 1
+        ]
 
         # Laser modal fields at laser frequency + incident angle
         modal_fields_L, qs_L_dict, zeta_L = self._get_modal_fields_at_gl_points(
             self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
         )
         zeta_L_re = float(np.real(zeta_L))
+        channels_L = self._get_modal_q_channels(modal_fields_L, qs_L_dict, incident_pol_idx)
 
         # ES modal fields at laser frequency (used for q_ph / NAC computation,
         # and also for the field integral when approximate_es=True)
@@ -870,42 +926,43 @@ class LayeredRamanCalculator:
             self.laser_frequency_cm1, es_system, self.collection_angle_rad, z_s
         )
         zeta_S_re = float(np.real(zeta_S))
+        channels_S_base = {
+            pol_idx: self._get_modal_q_channels(modal_fields_S_base, qs_S_dict, pol_idx)
+            for pol_idx in detected_pol_indices
+        }
 
-        # Build NAC cache upfront (one call per pair per layer, independent of mode)
+        # Build NAC cache upfront (one call per q-channel pair per layer,
+        # independent of phonon mode).  Keys use channel ordinal positions rather
+        # than qz values so the cache remains valid when E_S is recomputed at
+        # the Stokes frequency and qz shifts slightly.
         self._nac_cache = {}
         self._modal_pair_q_keys = {}
-        for i_mode, j_mode in pairs:
-            for rl in self.raman_layers:
-                cache_key = (rl.layer_index, i_mode, j_mode)
-                qs_L_arr = qs_L_dict.get(rl.layer_index, np.zeros(4, dtype=complex))
-                qs_S_arr = qs_S_dict.get(rl.layer_index, np.zeros(4, dtype=complex))
-                qs_L_n = float(np.real(qs_L_arr[i_mode])) if i_mode < len(qs_L_arr) else 0.0
-                qs_S_m = float(np.real(qs_S_arr[j_mode])) if j_mode < len(qs_S_arr) else 0.0
+        for rl in self.raman_layers:
+            layer_channels_L = channels_L.get(rl.layer_index, [])
+            for i_channel, channel_L in enumerate(layer_channels_L):
+                for det_pol_idx in detected_pol_indices:
+                    layer_channels_S = channels_S_base[det_pol_idx].get(rl.layer_index, [])
+                    for j_channel, channel_S in enumerate(layer_channels_S):
+                        cache_key = (rl.layer_index, i_channel, det_pol_idx, j_channel)
 
-                # q_ph = k_laser − k_scattered.  qs_S_m is the kz of the
-                # scattered photon mode in the ES system, with its own sign:
-                # forward modes (kz > 0) and backward modes (kz < 0).
-                # For backscattering with pair (i=0, j=2):
-                #   q_ph_z = qs_L[0] − qs_S[2] ≈ n − (−n) = 2n  ✓
-                # For forward scatter with pair (i=0, j=0 in reversed system):
-                #   q_ph_z = n − n = 0  ✓
-                q_ph = np.array([zeta_L_re - zeta_S_re, 0.0, qs_L_n - qs_S_m])
+                        # q_ph = k_laser − k_scattered.  Channel qz values are
+                        # coherent sums over degenerate Berreman eigenmodes.
+                        q_ph = np.array([
+                            zeta_L_re - zeta_S_re,
+                            0.0,
+                            channel_L["qz"] - channel_S["qz"],
+                        ])
 
-                q_ph_norm = np.linalg.norm(q_ph)
-                if q_ph_norm < 1e-8 or rl.nac_function is None:
-                    self._modal_pair_q_keys[cache_key] = ("to", j_mode % 2)
-                    self._nac_cache[cache_key] = None  # use TO baseline
-                else:
-                    q_hat_lab = q_ph / q_ph_norm
-                    # Modal decompositions inside a degenerate optical subspace are
-                    # not unique.  Amplitudes producing the same phonon wavevector
-                    # must therefore be combined coherently before squaring; distinct
-                    # q states remain incoherent.  Keep p/s detector channels separate
-                    # for unpolarised detection.
-                    q_key = tuple(np.round(q_ph, decimals=10))
-                    det_key = j_mode % 2 if self.detected_pol == "unpolarised" else 0
-                    self._modal_pair_q_keys[cache_key] = (q_key, det_key)
-                    self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
+                        q_ph_norm = np.linalg.norm(q_ph)
+                        det_key = det_pol_idx if self.detected_pol == "unpolarised" else 0
+                        if q_ph_norm < 1e-8 or rl.nac_function is None:
+                            self._modal_pair_q_keys[cache_key] = ("to", det_key)
+                            self._nac_cache[cache_key] = None  # use TO baseline
+                        else:
+                            q_hat_lab = q_ph / q_ph_norm
+                            q_key = tuple(float(x) for x in np.round(q_ph, decimals=10))
+                            self._modal_pair_q_keys[cache_key] = (q_key, det_key)
+                            self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
 
         # Build a reference NAC frequency/sigma array from the first pair (on the first
         # Raman layer) that actually produced a non-None NAC result.  Pairs with zero
@@ -917,9 +974,7 @@ class LayeredRamanCalculator:
         # and tensor (nac_tensors[mode_idx]) refer to the same NAC eigenmode.
         nac_freqs_ref = None
         nac_sigmas_ref = None
-        for _i_try, _j_try in pairs:
-            _try_key = (self.raman_layers[0].layer_index, _i_try, _j_try)
-            _try_cv = self._nac_cache.get(_try_key)
+        for _try_cv in self._nac_cache.values():
             if _try_cv is not None and _try_cv[0] is not None:
                 nac_freqs_ref = _try_cv[0]   # shape (n_modes,), NAC-eigenvalue-sorted
                 nac_sigmas_ref = _try_cv[2]
@@ -955,53 +1010,52 @@ class LayeredRamanCalculator:
 
             # ES modal fields: recompute at nu_S if not using approximate_es
             if self.approximate_es:
-                modal_fields_S = modal_fields_S_base
+                channels_S = channels_S_base
             else:
                 modal_fields_S, _, _ = self._get_modal_fields_at_gl_points(
                     nu_S, es_system, self.collection_angle_rad, z_s
                 )
+                channels_S = {
+                    pol_idx: self._get_modal_q_channels(modal_fields_S, qs_S_dict, pol_idx)
+                    for pol_idx in detected_pol_indices
+                }
 
             I_m = 0.0
             coherent_pair_amps = {} if self.coherent_layers else None
             incoherent_pair_amps = {} if not self.coherent_layers else None
 
-            for i_mode, j_mode in pairs:
-                # When coherent_layers=True: sum amplitudes across layers first, then square.
-                # When coherent_layers=False: sum |amp|² per layer (incoherent).
-                for rl, sl in zip(self.raman_layers, self._gl_layer_slices):
-                    cache_key = (rl.layer_index, i_mode, j_mode)
-                    cache_val = self._nac_cache.get(cache_key)
+            for rl, sl in zip(self.raman_layers, self._gl_layer_slices):
+                layer_channels_L = channels_L.get(rl.layer_index, [])
+                for i_channel, channel_L in enumerate(layer_channels_L):
+                    for det_pol_idx in detected_pol_indices:
+                        layer_channels_S = channels_S[det_pol_idx].get(rl.layer_index, [])
+                        for j_channel, channel_S in enumerate(layer_channels_S):
+                            cache_key = (rl.layer_index, i_channel, det_pol_idx, j_channel)
+                            cache_val = self._nac_cache.get(cache_key)
 
-                    if cache_val is not None and cache_val[0] is not None:
-                        nac_tensors = cache_val[1]
-                    else:
-                        nac_tensors = rl.raman_tensors
+                            if cache_val is not None and cache_val[0] is not None:
+                                nac_tensors = cache_val[1]
+                            else:
+                                nac_tensors = rl.raman_tensors
 
-                    if mode_idx >= len(nac_tensors):
-                        continue
+                            if mode_idx >= len(nac_tensors):
+                                continue
 
-                    R_crystal = nac_tensors[mode_idx]
-                    R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
+                            R_crystal = nac_tensors[mode_idx]
+                            R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
 
-                    # Per-mode fields: mode i from laser system, mode j from ES system.
-                    # Modes 0,2 are p-pol; modes 1,3 are s-pol → pol = mode % 2.
-                    pol_L = i_mode % 2  # 0,2 → 0 (p-pol); 1,3 → 1 (s-pol)
-                    pol_S = j_mode % 2
-                    E_L_mode = modal_fields_L[i_mode, pol_L, :, sl]   # (3, n_gauss)
-                    E_S_mode = modal_fields_S[j_mode, pol_S, :, sl]   # (3, n_gauss)
+                            w = self._gl_phys_weights[sl]
+                            R_E_L = R_lab @ channel_L["field"]
+                            integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
+                            amp_ij = np.dot(w, integrand)
 
-                    w = self._gl_phys_weights[sl]
-                    R_E_L = R_lab @ E_L_mode                                   # (3, n_gauss)
-                    integrand = np.einsum("ij,ij->j", E_S_mode, R_E_L)        # (n_gauss,)
-                    amp_ij = np.dot(w, integrand)
-
-                    if self.coherent_layers:
-                        pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", j_mode % 2))
-                        coherent_pair_amps[pair_group] = coherent_pair_amps.get(pair_group, 0.0 + 0.0j) + amp_ij
-                    else:
-                        pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", j_mode % 2))
-                        layer_group = (rl.layer_index, pair_group)
-                        incoherent_pair_amps[layer_group] = incoherent_pair_amps.get(layer_group, 0.0 + 0.0j) + amp_ij
+                            if self.coherent_layers:
+                                pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                                coherent_pair_amps[pair_group] = coherent_pair_amps.get(pair_group, 0.0 + 0.0j) + amp_ij
+                            else:
+                                pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                                layer_group = (rl.layer_index, pair_group)
+                                incoherent_pair_amps[layer_group] = incoherent_pair_amps.get(layer_group, 0.0 + 0.0j) + amp_ij
 
             if self.coherent_layers:
                 I_m = sum(abs(amp) ** 2 for amp in coherent_pair_amps.values())
