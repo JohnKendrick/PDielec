@@ -37,8 +37,8 @@ Phase 2 features (all enabled by default):
   the substrate side using a reversed stack (GTMcore.System.reversed_system).
 - Independent collection angle: ``collection_angle_rad`` for E_S (defaults to
   the incident angle for backscattering).
-- Coherent layer summation: set ``coherent_layers=True`` to sum amplitudes
-  across Raman-active layers before squaring.
+- Layer combination: set ``coherent_layers=True`` to sum amplitudes
+  across Raman-active layers before squaring (GUI setting: "Coherent amplitudes").
 
 Phase 3c Jones-vector polarisation:
 
@@ -53,6 +53,7 @@ The integral is evaluated numerically using Gauss-Legendre quadrature within
 each Raman-active layer.
 """
 
+import dataclasses
 import logging
 from functools import partial
 
@@ -65,6 +66,65 @@ logger = logging.getLogger(__name__)
 DEPTH_INTEGRATION_COHERENT = "Coherent amplitude"
 DEPTH_INTEGRATION_INCOHERENT = "Incoherent intensity"
 DEPTH_INTEGRATION_OPTIONS = (DEPTH_INTEGRATION_COHERENT, DEPTH_INTEGRATION_INCOHERENT)
+
+# Modal-pair summation policies (only relevant when modal_pairs=True).
+# GROUP_Q  : coherently sum amplitudes that share the same phonon q-vector and
+#            detector channel, across all layers.  Physically recommended default.
+# INCOHERENT: square each (layer, i_L, j_S, det_pol) amplitude independently —
+#            diagnostic / pre-q-grouping-fix compatibility mode.
+# COHERENT_ALL: sum ALL modal-pair amplitudes into a single group before squaring —
+#            debug only; mixes distinct phonon-momentum final states.
+@dataclasses.dataclass
+class RamanContribution:
+    """A single coherent-group amplitude contribution to one phonon mode.
+
+    Returned by ``LayeredRamanCalculator.calculate_mode_intensities`` when
+    ``return_contributions=True``.  Each instance represents one coherent
+    group — the amplitudes inside the group are combined before squaring;
+    groups are summed incoherently (as intensities).
+
+    Attributes
+    ----------
+    mode_idx : int
+        Index into ``raman_layers[0].phonon_frequencies_cm1``.
+    frequency : float
+        Phonon frequency in cm⁻¹.
+    sigma : float
+        Phonon linewidth in cm⁻¹.
+    group_key : object
+        Hashable identifier for the coherent group.  Meaning depends on
+        the calculation path:
+
+        * Modal-pairs ``GROUP_Q``       — ``(q_key_tuple, det_pol_int)``
+        * Modal-pairs ``INCOHERENT``    — ``(layer_idx, i_ch, det_pol, j_ch)``
+        * Modal-pairs ``COHERENT_ALL``  — the string ``"all"``
+        * Standard coherent layers     — ``("all", det_pol_int)``
+        * Standard incoherent layers   — ``(layer_idx, det_pol_int)``
+        * Standard incoherent depth    — ``(layer_idx, "depth")``
+    amplitude : complex
+        Depth-integrated complex Raman amplitude for this group.
+        Zero for the incoherent-depth path (use ``local_intensity`` instead).
+    intensity : float
+        This group's contribution to the final mode intensity ``I_m``
+        (Bose-Einstein factor already applied).
+    local_intensity : float
+        Non-zero only for the incoherent-depth integration path, where
+        ``amplitude`` is not meaningful.  Equal to the raw depth-integrated
+        local intensity before the Bose factor.
+    """
+    mode_idx: int
+    frequency: float
+    sigma: float
+    group_key: object
+    amplitude: complex
+    intensity: float
+    local_intensity: float = 0.0
+
+
+MODAL_PAIR_GROUP_Q      = "Group q channels"
+MODAL_PAIR_INCOHERENT   = "Incoherent pairs"
+MODAL_PAIR_COHERENT_ALL = "Coherent all pairs"
+MODAL_PAIR_OPTIONS = (MODAL_PAIR_GROUP_Q, MODAL_PAIR_INCOHERENT, MODAL_PAIR_COHERENT_ALL)
 
 # Modes below this frequency (cm⁻¹) are treated as acoustic and skipped.
 _ACOUSTIC_THRESHOLD_CM1 = 10.0
@@ -356,7 +416,7 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
         raman_tensors_by_layer,
         nac_cache,
         modal_pair_q_keys,
-        coherent_layers,
+        modal_pair_combination,
         approximate_es,
         temperature_K,
     ) = shared
@@ -378,8 +438,10 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
             detected_pol_indices,
         )
 
-    coherent_pair_amps = {} if coherent_layers else None
-    incoherent_pair_amps = {} if not coherent_layers else None
+    # Accumulate amplitudes into groups according to the summation policy.
+    # The group key determines which amplitudes are coherently combined
+    # before squaring.
+    pair_amps = {}  # group_key → complex amplitude
 
     for layer_pos, (layer_index, sl) in enumerate(zip(layer_indices, gl_layer_slices, strict=True)):
         layer_channels_L = channels_L.get(layer_index, [])
@@ -406,18 +468,22 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                     integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
                     amp_ij = np.dot(w, integrand)
 
-                    if coherent_layers:
-                        pair_group = modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
-                        coherent_pair_amps[pair_group] = coherent_pair_amps.get(pair_group, 0.0 + 0.0j) + amp_ij
-                    else:
-                        pair_group = modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
-                        layer_group = (layer_index, pair_group)
-                        incoherent_pair_amps[layer_group] = incoherent_pair_amps.get(layer_group, 0.0 + 0.0j) + amp_ij
+                    if modal_pair_combination == MODAL_PAIR_GROUP_Q:
+                        # Coherently sum all pairs that share the same phonon
+                        # q-vector and detected-pol channel, across all layers.
+                        group_key = modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                    elif modal_pair_combination == MODAL_PAIR_INCOHERENT:
+                        # Each (layer, i_L, j_S, det_pol) pair is squared
+                        # independently — diagnostic / compatibility mode.
+                        group_key = cache_key
+                    else:  # MODAL_PAIR_COHERENT_ALL
+                        # Single group: sum all amplitudes then square.
+                        # Debug only — mixes distinct phonon-q final states.
+                        group_key = "all"
 
-    if coherent_layers:
-        I_m = sum(abs(amp) ** 2 for amp in coherent_pair_amps.values())
-    else:
-        I_m = sum(abs(amp) ** 2 for amp in incoherent_pair_amps.values())
+                    pair_amps[group_key] = pair_amps.get(group_key, 0.0 + 0.0j) + amp_ij
+
+    I_m = sum(abs(amp) ** 2 for amp in pair_amps.values())
 
     I_m *= bose_factor(nu_m, temperature_K)
     return (mode_idx, nu_m, I_m, sigma)
@@ -643,6 +709,7 @@ class LayeredRamanCalculator:
         approximate_es=False,
         depth_integration=DEPTH_INTEGRATION_COHERENT,
         modal_pairs=False,
+        modal_pair_combination=MODAL_PAIR_GROUP_Q,
     ):
         """Initialise LayeredRamanCalculator with system, layers and calculation parameters."""
         if incident_pol not in ("p", "s"):
@@ -654,6 +721,10 @@ class LayeredRamanCalculator:
         if depth_integration not in DEPTH_INTEGRATION_OPTIONS:
             raise ValueError(
                 f"depth_integration must be one of {DEPTH_INTEGRATION_OPTIONS}, got {depth_integration}"
+            )
+        if modal_pair_combination not in MODAL_PAIR_OPTIONS:
+            raise ValueError(
+                f"modal_pair_combination must be one of {MODAL_PAIR_OPTIONS}, got '{modal_pair_combination}'"
             )
 
         self.system = system
@@ -671,6 +742,7 @@ class LayeredRamanCalculator:
         self.approximate_es = bool(approximate_es)
         self.depth_integration = depth_integration
         self.modal_pairs = bool(modal_pairs)
+        self.modal_pair_combination = modal_pair_combination
         # NAC cache for Level 3 modal_pairs: keyed by (layer_index, i_mode, j_mode)
         self._nac_cache = {}
         self._modal_pair_q_keys = {}
@@ -1008,7 +1080,7 @@ class LayeredRamanCalculator:
             pol_idx,
         )
 
-    def _calculate_mode_intensities_modal_pairs(self, progress_callback=None, pool=None):
+    def _calculate_mode_intensities_modal_pairs(self, progress_callback=None, pool=None, return_contributions=False):
         """Level 3 modal-pairs Raman intensity calculation.
 
         For each phonon mode, sums over incident and detected propagation-q
@@ -1136,7 +1208,7 @@ class LayeredRamanCalculator:
                 raman_tensors_by_layer,
                 self._nac_cache,
                 self._modal_pair_q_keys,
-                self.coherent_layers,
+                self.modal_pair_combination,
                 self.approximate_es,
                 self.temperature_K,
             )
@@ -1177,6 +1249,7 @@ class LayeredRamanCalculator:
         active_freqs = []
         active_intensities = []
         active_sigmas = []
+        contributions: list = []
 
         for mode_idx in range(n_modes):
             if progress_callback is not None:
@@ -1230,9 +1303,7 @@ class LayeredRamanCalculator:
                                 _rl.layer_index, _pol, _n_mode, nu_S, _n_base,
                             )
 
-            I_m = 0.0
-            coherent_pair_amps = {} if self.coherent_layers else None
-            incoherent_pair_amps = {} if not self.coherent_layers else None
+            pair_amps = {}  # group_key → complex amplitude
 
             for rl, sl in zip(self.raman_layers, self._gl_layer_slices):
                 layer_channels_L = channels_L.get(rl.layer_index, [])
@@ -1259,36 +1330,44 @@ class LayeredRamanCalculator:
                             integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
                             amp_ij = np.dot(w, integrand)
 
-                            if self.coherent_layers:
-                                pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
-                                coherent_pair_amps[pair_group] = coherent_pair_amps.get(pair_group, 0.0 + 0.0j) + amp_ij
-                            else:
-                                pair_group = self._modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
-                                layer_group = (rl.layer_index, pair_group)
-                                incoherent_pair_amps[layer_group] = incoherent_pair_amps.get(layer_group, 0.0 + 0.0j) + amp_ij
+                            if self.modal_pair_combination == MODAL_PAIR_GROUP_Q:
+                                group_key = self._modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                            elif self.modal_pair_combination == MODAL_PAIR_INCOHERENT:
+                                group_key = cache_key
+                            else:  # MODAL_PAIR_COHERENT_ALL
+                                group_key = "all"
 
-            if self.coherent_layers:
-                I_m = sum(abs(amp) ** 2 for amp in coherent_pair_amps.values())
-            else:
-                I_m = sum(abs(amp) ** 2 for amp in incoherent_pair_amps.values())
+                            pair_amps[group_key] = pair_amps.get(group_key, 0.0 + 0.0j) + amp_ij
 
-            I_m *= bose_factor(nu_m, self.temperature_K)
+            I_m = sum(abs(amp) ** 2 for amp in pair_amps.values())
+
+            bose = bose_factor(nu_m, self.temperature_K)
+            I_m *= bose
 
             active_freqs.append(nu_m)
             active_intensities.append(I_m)
             active_sigmas.append(sigma)
 
-        return (
+            if return_contributions:
+                for gkey, amp in pair_amps.items():
+                    contributions.append(RamanContribution(
+                        mode_idx=mode_idx, frequency=nu_m, sigma=sigma,
+                        group_key=gkey, amplitude=amp,
+                        intensity=abs(amp) ** 2 * bose,
+                    ))
+
+        result = (
             np.array(active_freqs),
             np.array(active_intensities),
             np.array(active_sigmas),
         )
+        return (*result, contributions) if return_contributions else result
 
     # ------------------------------------------------------------------
     # Public interface
     # ------------------------------------------------------------------
 
-    def calculate_mode_intensities(self, progress_callback=None, pool=None):
+    def calculate_mode_intensities(self, progress_callback=None, pool=None, return_contributions=False):
         """Compute the per-mode Raman intensities (before broadening).
 
         Modes below ``_ACOUSTIC_THRESHOLD_CM1`` are excluded.  Layer
@@ -1308,6 +1387,19 @@ class LayeredRamanCalculator:
             process and broadcast to all workers via ``functools.partial``.
             When ``None`` (default), the calculation runs sequentially.
 
+        Parameters
+        ----------
+        progress_callback : callable, optional
+            Called once per phonon-mode iteration.
+        pool : multiprocessing.Pool or compatible, optional
+            Worker pool for parallel execution.  Incompatible with
+            ``return_contributions=True``.
+        return_contributions : bool, optional
+            When True, return a fourth element — a list of
+            :class:`RamanContribution` objects exposing the per-group complex
+            amplitudes before squaring.  Only available in the sequential path
+            (``pool`` must be ``None``).
+
         Returns
         -------
         active_frequencies : ndarray, shape (M,)
@@ -1316,6 +1408,9 @@ class LayeredRamanCalculator:
             Corresponding Raman intensities I_m (real, non-negative).
         active_linewidths : ndarray, shape (M,)
             Linewidths of the active modes in cm⁻¹.
+        contributions : list of RamanContribution
+            Only present when ``return_contributions=True``.  One entry per
+            (mode, coherent-group) pair, ordered by mode then group.
 
         Notes
         -----
@@ -1329,14 +1424,23 @@ class LayeredRamanCalculator:
         to recover the single-field-call behaviour at the cost of accuracy.
 
         """
+        if return_contributions and pool is not None:
+            raise ValueError(
+                "return_contributions=True is only supported in the sequential path "
+                "(pool must be None)."
+            )
+
         if not self.raman_layers:
             logger.warning("calculate_mode_intensities: no Raman-active layers defined")
-            return np.array([]), np.array([]), np.array([])
+            empty = (np.array([]), np.array([]), np.array([]))
+            return (*empty, []) if return_contributions else empty
 
         # Level 3 dispatch: build NAC cache serially, then use the pool for
         # per-mode field/intensity work when one is available.
         if self.modal_pairs:
-            return self._calculate_mode_intensities_modal_pairs(progress_callback, pool=pool)
+            return self._calculate_mode_intensities_modal_pairs(
+                progress_callback, pool=pool, return_contributions=return_contributions
+            )
 
         # --- Set up the system and z-array for E_S (common to both paths) ---
         if self.collection_side == "substrate":
@@ -1386,6 +1490,7 @@ class LayeredRamanCalculator:
         active_freqs = []
         active_intensities = []
         active_sigmas = []
+        contributions: list = []
 
         for mode_idx in range(n_modes):
             if progress_callback is not None:
@@ -1413,52 +1518,63 @@ class LayeredRamanCalculator:
                     nu_S, es_system, self.collection_angle_rad, z_s
                 )
 
-            # Accumulate contributions from all Raman-active layers
+            # Accumulate contributions from all Raman-active layers.
+            # group_amps maps group_key → complex amplitude; groups are summed
+            # incoherently (as |amp|²).  For the incoherent-depth path, local
+            # intensities (not amplitudes) are collected in local_intens instead.
+            group_amps: dict = {}
+            local_intens: dict = {}
+
             if self.depth_integration == DEPTH_INTEGRATION_INCOHERENT:
-                I_m = 0.0
                 for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
                     R_crystal = rl.raman_tensors[mode_idx]
                     R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
-                    I_m += self._layer_depth_intensity(E_L_out, E_S_out, R_lab, sl)
-            elif self.coherent_layers:
-                # Coherent: sum amplitudes first
-                total_amp_p = 0.0 + 0.0j
-                total_amp_s = 0.0 + 0.0j
-                for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
-                    R_crystal = rl.raman_tensors[mode_idx]
-                    R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
-                    amp_p, amp_s = self._layer_amplitude(E_L_out, E_S_out, R_lab, sl)
-                    total_amp_p += amp_p
-                    if self._detected_jones is None:
-                        total_amp_s += amp_s
-                if self._detected_jones is None:
-                    I_m = abs(total_amp_p) ** 2 + abs(total_amp_s) ** 2
-                else:
-                    I_m = abs(total_amp_p) ** 2
+                    local_intens[(rl.layer_index, "depth")] = (
+                        self._layer_depth_intensity(E_L_out, E_S_out, R_lab, sl)
+                    )
+                I_m = sum(local_intens.values())
             else:
-                # Incoherent: sum intensities
-                I_m = 0.0
+                # layer_key "all" → coherent across layers; int → incoherent per layer
                 for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
                     R_crystal = rl.raman_tensors[mode_idx]
                     R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
                     amp_p, amp_s = self._layer_amplitude(E_L_out, E_S_out, R_lab, sl)
+                    lkey = "all" if self.coherent_layers else rl.layer_index
+                    group_amps[(lkey, 0)] = group_amps.get((lkey, 0), 0.0 + 0.0j) + amp_p
                     if self._detected_jones is None:
-                        I_m += abs(amp_p) ** 2 + abs(amp_s) ** 2
-                    else:
-                        I_m += abs(amp_p) ** 2
+                        group_amps[(lkey, 1)] = group_amps.get((lkey, 1), 0.0 + 0.0j) + amp_s
+                I_m = sum(abs(amp) ** 2 for amp in group_amps.values())
 
             # Apply Bose-Einstein thermal prefactor
-            I_m *= bose_factor(nu_m, self.temperature_K)
+            bose = bose_factor(nu_m, self.temperature_K)
+            I_m *= bose
 
             active_freqs.append(nu_m)
             active_intensities.append(I_m)
             active_sigmas.append(sigma)
 
-        return (
+            if return_contributions:
+                if local_intens:
+                    for gkey, local_I in local_intens.items():
+                        contributions.append(RamanContribution(
+                            mode_idx=mode_idx, frequency=nu_m, sigma=sigma,
+                            group_key=gkey, amplitude=0.0 + 0.0j,
+                            intensity=local_I * bose, local_intensity=local_I,
+                        ))
+                else:
+                    for gkey, amp in group_amps.items():
+                        contributions.append(RamanContribution(
+                            mode_idx=mode_idx, frequency=nu_m, sigma=sigma,
+                            group_key=gkey, amplitude=amp,
+                            intensity=abs(amp) ** 2 * bose,
+                        ))
+
+        result = (
             np.array(active_freqs),
             np.array(active_intensities),
             np.array(active_sigmas),
         )
+        return (*result, contributions) if return_contributions else result
 
     def _get_field_parallel(self, pool, freq_cm1, system, angle_rad, z_arr):
         """Compute the GTM E-field at *z_arr* in parallel using *pool*.

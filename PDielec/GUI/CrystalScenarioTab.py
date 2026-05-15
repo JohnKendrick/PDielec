@@ -52,6 +52,11 @@ from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
 from PDielec.LayeredRamanCalculator import (
     DEPTH_INTEGRATION_COHERENT,
     DEPTH_INTEGRATION_INCOHERENT,
+    MODAL_PAIR_GROUP_Q,
+    MODAL_PAIR_INCOHERENT,
+    MODAL_PAIR_COHERENT_ALL,
+    MODAL_PAIR_OPTIONS,
+    RamanContribution,
     LayeredRamanCalculator,
     RamanLayer,
     lorentzian_broaden,
@@ -518,10 +523,11 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["GL point density"] = 20.0  # Gauss-Legendre points per µm
         self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
         self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
-        self.settings["Coherent layer summation"] = False
-        self.settings["Raman depth integration"] = DEPTH_INTEGRATION_COHERENT
+        self.settings["Layer combination"] = "Incoherent intensities"
+        self.settings["Depth coherence"] = DEPTH_INTEGRATION_COHERENT
         self.settings["Approximate ES"] = False
         self.settings["Layer NAC mode"] = "none"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
+        self.settings["Modal pair combination"] = MODAL_PAIR_GROUP_Q
         self.settings["Azimuthal sweep points"] = 36
         # store the notebook
         self.notebook = parent
@@ -1557,8 +1563,8 @@ class CrystalScenarioTab(ScenarioTab):
 
         Called from __init__ only when spectroscopy == 'Crystal Raman'.
         Creates widgets for laser frequency, temperature, GL quadrature points,
-        incident/detected polarisation, collection geometry, coherent summation,
-        approximate-E_S flag, and phonon boundary correction (Phase 3a).
+        incident/detected polarisation, collection geometry, depth coherence,
+        layer combination, approximate-E_S flag, and phonon boundary correction.
 
         Parameters
         ----------
@@ -1666,31 +1672,44 @@ class CrystalScenarioTab(ScenarioTab):
         label.setToolTip(self.collection_angle_sb.toolTip())
         self.form.addRow(label, self.collection_angle_sb)
 
-        # Coherent layer summation
-        self.coherent_cb = QCheckBox(self)
-        self.coherent_cb.setChecked(self.settings["Coherent layer summation"])
-        self.coherent_cb.toggled.connect(self.on_coherent_cb_toggled)
-        self.coherent_cb.setToolTip("When checked, sum amplitudes across Raman-active layers before squaring\n(coherent combination). Default: incoherent (sum intensities).")
-        label = QLabel("Coherent layer summation")
-        label.setToolTip(self.coherent_cb.toolTip())
-        self.form.addRow(label, self.coherent_cb)
-
-        # Depth integration
+        # Depth coherence (was "Raman depth integration")
         self.depth_integration_cb = QComboBox(self)
         self.depth_integration_cb.addItems([DEPTH_INTEGRATION_COHERENT, DEPTH_INTEGRATION_INCOHERENT])
         idx = self.depth_integration_cb.findText(
-            self.settings["Raman depth integration"], Qt.MatchFixedString)
+            self.settings["Depth coherence"], Qt.MatchFixedString)
         if idx >= 0:
             self.depth_integration_cb.setCurrentIndex(idx)
         self.depth_integration_cb.activated.connect(self.on_depth_integration_cb_activated)
         self.depth_integration_cb.setToolTip(
-            "How Raman sources are combined through layer depth:\n"
-            "'Coherent amplitude' integrates the complex amplitude before squaring; use for thin coherent films.\n"
-            "'Incoherent intensity' integrates local intensity; use for thick or bulk samples such as mm/cm layers."
+            "How Raman sources are combined through the depth of each active layer:\n"
+            "'Coherent amplitude' integrates the complex amplitude before squaring; use for thin phase-stable films.\n"
+            "'Incoherent intensity' integrates local intensity; use for thick or bulk samples such as mm/cm layers.\n"
+            "Note: 'Incoherent intensity' also forces incoherent layer combination."
         )
-        label = QLabel("Raman depth integration")
-        label.setToolTip(self.depth_integration_cb.toolTip())
-        self.form.addRow(label, self.depth_integration_cb)
+        depth_label = QLabel("Depth coherence")
+        depth_label.setToolTip(self.depth_integration_cb.toolTip())
+        self.form.addRow(depth_label, self.depth_integration_cb)
+
+        # Layer combination (replaces "Coherent layer summation" checkbox)
+        self.layer_combination_cb = QComboBox(self)
+        self.layer_combination_cb.addItems(["Incoherent intensities", "Coherent amplitudes"])
+        idx = self.layer_combination_cb.findText(self.settings["Layer combination"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.layer_combination_cb.setCurrentIndex(idx)
+        self.layer_combination_cb.activated.connect(self.on_layer_combination_cb_activated)
+        self.layer_combination_cb.setToolTip(
+            "How separate Raman-active layers are combined:\n"
+            "'Incoherent intensities' — sum |amplitude|² per layer (default).\n"
+            "'Coherent amplitudes' — sum complex amplitudes before squaring;\n"
+            "   use only when layers share a coherent optical phase.\n"
+            "Disabled when 'Depth coherence' is 'Incoherent intensity'."
+        )
+        self.layer_combination_label = QLabel("Layer combination")
+        self.layer_combination_label.setToolTip(self.layer_combination_cb.toolTip())
+        self.form.addRow(self.layer_combination_label, self.layer_combination_cb)
+        _depth_is_incoherent = (self.settings["Depth coherence"] == DEPTH_INTEGRATION_INCOHERENT)
+        self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
+        self.layer_combination_label.setEnabled(not _depth_is_incoherent)
 
         # Approximate E_S = E_L
         self.approximate_cb = QCheckBox(self)
@@ -1726,6 +1745,31 @@ class CrystalScenarioTab(ScenarioTab):
         label = QLabel("Layer NAC mode")
         label.setToolTip(self.phonon_bc_cb.toolTip())
         self.form.addRow(label, self.phonon_bc_cb)
+
+        # Modal-pair combination — visible only when Layer NAC mode = All modes
+        self.modal_pair_combination_cb = QComboBox(self)
+        self.modal_pair_combination_cb.addItems(list(MODAL_PAIR_OPTIONS))
+        idx = self.modal_pair_combination_cb.findText(
+            self.settings["Modal pair combination"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.modal_pair_combination_cb.setCurrentIndex(idx)
+        self.modal_pair_combination_cb.activated.connect(self.on_modal_pair_combination_cb_activated)
+        self.modal_pair_combination_cb.setToolTip(
+            "How Berreman modal-pair amplitudes are combined (only active when Layer NAC mode = All modes):\n"
+            f"'{MODAL_PAIR_GROUP_Q}' — coherently sum pairs that share the same phonon q-vector\n"
+            "   and detector channel. Physically recommended.\n"
+            f"'{MODAL_PAIR_INCOHERENT}' — square each modal-pair amplitude independently.\n"
+            "   Diagnostic / pre-q-grouping compatibility mode.\n"
+            f"'{MODAL_PAIR_COHERENT_ALL}' — sum ALL pair amplitudes before squaring. DEBUG ONLY:\n"
+            "   mixes distinct phonon-momentum final states."
+        )
+        self.modal_pair_combination_label = QLabel("Modal pair combination")
+        self.modal_pair_combination_label.setToolTip(self.modal_pair_combination_cb.toolTip())
+        self.form.addRow(self.modal_pair_combination_label, self.modal_pair_combination_cb)
+        # Only show this row when Layer NAC mode is "All modes"
+        _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
+        self.modal_pair_combination_label.setVisible(_show_modal)
+        self.modal_pair_combination_cb.setVisible(_show_modal)
 
         # Separator: azimuthal sweep
         sweep_label = QLabel("Azimuthal sweep")
@@ -2048,19 +2092,39 @@ class CrystalScenarioTab(ScenarioTab):
             if idx >= 0:
                 self.collection_side_cb.setCurrentIndex(idx)
             self.collection_angle_sb.setValue(self.settings["Collection angle"])
-            self.coherent_cb.setChecked(self.settings["Coherent layer summation"])
             idx = self.depth_integration_cb.findText(
-                self.settings.get("Raman depth integration", DEPTH_INTEGRATION_COHERENT),
+                self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT),
                 Qt.MatchFixedString,
             )
             if idx >= 0:
                 self.depth_integration_cb.setCurrentIndex(idx)
+            idx = self.layer_combination_cb.findText(
+                self.settings.get("Layer combination", "Incoherent intensities"),
+                Qt.MatchFixedString,
+            )
+            if idx >= 0:
+                self.layer_combination_cb.setCurrentIndex(idx)
+            _depth_is_incoherent = (
+                self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
+                == DEPTH_INTEGRATION_INCOHERENT
+            )
+            self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
+            self.layer_combination_label.setEnabled(not _depth_is_incoherent)
             self.approximate_cb.setChecked(self.settings["Approximate ES"])
             has_eo = getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None
             self._populate_nac_combo(has_eo=has_eo)
             idx = self.phonon_bc_cb.findData(self.settings.get("Layer NAC mode", "none"))
             if idx >= 0:
                 self.phonon_bc_cb.setCurrentIndex(idx)
+            idx = self.modal_pair_combination_cb.findText(
+                self.settings.get("Modal pair combination", MODAL_PAIR_GROUP_Q),
+                Qt.MatchFixedString,
+            )
+            if idx >= 0:
+                self.modal_pair_combination_cb.setCurrentIndex(idx)
+            _show_modal = (self.settings.get("Layer NAC mode", "none") == "modal_pairs")
+            self.modal_pair_combination_label.setVisible(_show_modal)
+            self.modal_pair_combination_cb.setVisible(_show_modal)
         #
         # Unblock signals after refresh
         #
@@ -2199,15 +2263,18 @@ class CrystalScenarioTab(ScenarioTab):
         self.calculation_required = True
         self.refresh_required = True
 
-    def on_coherent_cb_toggled(self, checked):
-        """Handle a toggle of the coherent layer summation checkbox."""
-        self.settings["Coherent layer summation"] = checked
+    def on_layer_combination_cb_activated(self, index):
+        """Handle a change in the layer combination combo box."""
+        self.settings["Layer combination"] = self.layer_combination_cb.currentText()
         self.calculation_required = True
         self.refresh_required = True
 
     def on_depth_integration_cb_activated(self, index):
-        """Handle a change in the Raman depth integration mode."""
-        self.settings["Raman depth integration"] = self.depth_integration_cb.currentText()
+        """Handle a change in the depth coherence combo box."""
+        self.settings["Depth coherence"] = self.depth_integration_cb.currentText()
+        _depth_is_incoherent = (self.settings["Depth coherence"] == DEPTH_INTEGRATION_INCOHERENT)
+        self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
+        self.layer_combination_label.setEnabled(not _depth_is_incoherent)
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2251,6 +2318,15 @@ class CrystalScenarioTab(ScenarioTab):
     def on_phonon_bc_cb_activated(self, index):
         """Handle a change in the layer NAC mode combo box."""
         self.settings["Layer NAC mode"] = self.phonon_bc_cb.currentData()
+        _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
+        self.modal_pair_combination_label.setVisible(_show_modal)
+        self.modal_pair_combination_cb.setVisible(_show_modal)
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_modal_pair_combination_cb_activated(self, index):
+        """Handle a change in the modal-pair combination combo box."""
+        self.settings["Modal pair combination"] = self.modal_pair_combination_cb.currentText()
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2973,9 +3049,10 @@ class CrystalScenarioTab(ScenarioTab):
         density             = self.settings.get("GL point density", 20.0)
         collection_side     = self.settings.get("Collection side", "superstrate")
         collection_angle    = self.settings.get("Collection angle", -1.0)
-        coherent_layers     = self.settings.get("Coherent layer summation", False)
-        approximate_es      = self.settings.get("Approximate ES", False)
-        depth_integration   = self.settings.get("Raman depth integration", DEPTH_INTEGRATION_COHERENT)
+        coherent_layers          = (self.settings.get("Layer combination", "Incoherent intensities") == "Coherent amplitudes")
+        approximate_es           = self.settings.get("Approximate ES", False)
+        depth_integration        = self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
+        modal_pair_combination   = self.settings.get("Modal pair combination", MODAL_PAIR_GROUP_Q)
         collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
 
         # Layer NAC mode: 'none', 'geometry', 'dominant_mode', 'modal_pairs'
@@ -3140,6 +3217,7 @@ class CrystalScenarioTab(ScenarioTab):
             approximate_es=approximate_es,
             depth_integration=depth_integration,
             modal_pairs=modal_pairs_enabled,
+            modal_pair_combination=modal_pair_combination,
         )
 
     def _calculate_raman(self, vs_cm1):
