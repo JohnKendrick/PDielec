@@ -160,3 +160,225 @@ def raman_active_mode_indices(frequencies_cm1, raman_activities, raman_tensors, 
         if frequency > ACOUSTIC_THRESHOLD_CM1 and activity > threshold:
             active.append(index)
     return active
+
+
+def compute_lo_frequencies(q_hat_crystal, hessian, U_TO, Z_mat, eps_inf, volume_au):
+    """Return the LO frequency (cm⁻¹) for each TO mode at phonon wavevector q̂.
+
+    Diagonalises ``D_NAC(q̂) = D_TO + ΔD(q̂)`` and maps each NAC eigenmode back
+    to the TO mode with the highest overlap ``C[n,m] = ⟨u_n^TO | u_m^NAC⟩``.
+
+    Parameters
+    ----------
+    q_hat_crystal : ndarray, shape (3,)
+        Unit phonon wavevector in the crystal frame (must be normalised).
+    hessian : ndarray, shape (3N, 3N)
+        Mass-weighted TO dynamical (Hessian) matrix.
+    U_TO : ndarray, shape (n_to_modes, 3N)
+        TO eigenvectors as rows (e.g. ``build_eigvecs_from_normal_modes(...).T``).
+    Z_mat : ndarray, shape (3, 3N)
+        Mass-weighted Born charge matrix from :func:`build_Z_mat`.
+    eps_inf : ndarray, shape (3, 3)
+        High-frequency optical dielectric tensor in the crystal frame.
+    volume_au : float
+        Unit-cell volume in Bohr³.
+
+    Returns
+    -------
+    lo_freqs : ndarray, shape (n_to_modes,)
+        LO frequency in cm⁻¹ for each TO mode (matched by dominant overlap
+        with the NAC eigenmodes).  Modes unaffected by NAC (zero Born-charge
+        projection onto q̂) return a frequency very close to their TO value.
+
+    """
+    import math
+
+    from PDielec.Constants import wavenumber as _wn
+
+    # NAC screening factor and correction matrix
+    eps_b_q = float(q_hat_crystal @ eps_inf @ q_hat_crystal)
+    if abs(eps_b_q) < 1e-12:
+        eps_b_q = 1.0
+    S_nac = np.outer(q_hat_crystal, q_hat_crystal) / eps_b_q
+    delta_D = (4.0 * np.pi / volume_au) * (Z_mat.T @ S_nac @ Z_mat)
+
+    # Diagonalise D_NAC
+    eig_val, eig_vec = np.linalg.eigh(np.array(hessian, dtype=float) + delta_D)
+    nac_freqs = np.array([
+        (math.sqrt(abs(ev)) / _wn) * (1.0 if ev >= 0.0 else -1.0)
+        for ev in eig_val
+    ])
+
+    # Overlap C[n_to, m_nac] = <u_n^TO | u_m^NAC>; pick best-matching NAC mode
+    C = U_TO @ eig_vec   # (n_to_modes, 3N)
+    n_to_modes = U_TO.shape[0]
+    lo_freqs = np.zeros(n_to_modes)
+    for n in range(n_to_modes):
+        m_best = int(np.argmax(np.abs(C[n, :])))
+        lo_freqs[n] = nac_freqs[m_best]
+
+    return lo_freqs
+
+
+def compute_lo_modes(q_hat_crystal, hessian, U_TO, Z_mat, eps_inf, volume_au):
+    """Like :func:`compute_lo_frequencies` but also returns matched LO eigenvectors.
+
+    Parameters
+    ----------
+    q_hat_crystal, hessian, U_TO, Z_mat, eps_inf, volume_au
+        Same as :func:`compute_lo_frequencies`.
+
+    Returns
+    -------
+    lo_freqs : ndarray, shape (n_to_modes,)
+        LO frequency in cm⁻¹ for each TO mode.
+    lo_eigvecs : ndarray, shape (3N, n_to_modes)
+        Columns are the mass-weighted LO eigenvectors best-matched to each TO mode.
+
+    """
+    import math
+
+    from PDielec.Constants import wavenumber as _wn
+
+    eps_b_q = float(q_hat_crystal @ eps_inf @ q_hat_crystal)
+    if abs(eps_b_q) < 1e-12:
+        eps_b_q = 1.0
+    S_nac = np.outer(q_hat_crystal, q_hat_crystal) / eps_b_q
+    delta_D = (4.0 * np.pi / volume_au) * (Z_mat.T @ S_nac @ Z_mat)
+
+    eig_val, eig_vec = np.linalg.eigh(np.array(hessian, dtype=float) + delta_D)
+    nac_freqs = np.array([
+        (math.sqrt(abs(ev)) / _wn) * (1.0 if ev >= 0.0 else -1.0)
+        for ev in eig_val
+    ])
+
+    C = U_TO @ eig_vec   # (n_to_modes, 3N)
+    n_to_modes = U_TO.shape[0]
+    lo_freqs = np.zeros(n_to_modes)
+    lo_eigvecs = np.zeros((eig_vec.shape[0], n_to_modes))
+    for n in range(n_to_modes):
+        m_best = int(np.argmax(np.abs(C[n, :])))
+        lo_freqs[n] = nac_freqs[m_best]
+        lo_eigvecs[:, n] = eig_vec[:, m_best]
+
+    return lo_freqs, lo_eigvecs
+
+
+def build_Z_mat(born_charges, masses_au):
+    """Build the mass-weighted Born charge matrix.
+
+    Parameters
+    ----------
+    born_charges : ndarray, shape (N, 3, 3)
+        Born effective charge tensors.
+    masses_au : ndarray, shape (N,)
+        Atomic masses in atomic units (a.u.).
+
+    Returns
+    -------
+    Z_mat : ndarray, shape (3, 3N)
+        Mass-weighted Born charges: ``Z_mat[α, κβ] = Z*[κ, α, β] / √M_κ``.
+
+    """
+    import math
+    nAtoms = len(masses_au)
+    n_modes = 3 * nAtoms
+    Z_mat = np.zeros((3, n_modes))
+    for kappa in range(nAtoms):
+        inv_sqrtM = 1.0 / math.sqrt(masses_au[kappa])
+        for beta in range(3):
+            Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
+    return Z_mat
+
+
+def build_eigvecs_from_normal_modes(mass_weighted_normal_modes):
+    """Convert ``reader.mass_weighted_normal_modes`` to an eigenvector matrix.
+
+    Parameters
+    ----------
+    mass_weighted_normal_modes : list of array_like, each shape (N, 3)
+        Mass-weighted TO normal modes as stored by the output readers.
+
+    Returns
+    -------
+    eigvecs : ndarray, shape (3N, n_to_modes)
+        Columns are the TO eigenvectors (convention consistent with
+        ``numpy.linalg.eigh`` output), ready for use in
+        :func:`apply_eo_correction`.
+
+    """
+    n_to_modes = len(mass_weighted_normal_modes)
+    if n_to_modes == 0:
+        return np.zeros((0, 0))
+    n_atoms = len(mass_weighted_normal_modes[0])
+    n_dof = 3 * n_atoms
+    U_TO = np.zeros((n_to_modes, n_dof))
+    for imode, mode in enumerate(mass_weighted_normal_modes):
+        col = 0
+        for atom in mode:
+            U_TO[imode, col:col + 3] = atom
+            col += 3
+    return U_TO.T   # (3N, n_to_modes) — columns are TO eigenvectors
+
+
+def apply_eo_correction(tensors, chi2_pm_per_v, q_hat_crystal, Z_mat, eigvecs, eps_inf):
+    """Apply the electro-optic (EO) q-dependent correction to Raman tensors.
+
+    Implements Eq. 21 of Raman-Theory.pdf.  For each mode *p* the correction is::
+
+        ΔR_p = −2 · f(q̂) · [Z^mw(q̂) · u_p] / (q̂ᵀ ε_∞ q̂)
+
+    where ``f_ij(q̂) = Σ_l χ^(2)_ijl q̂_l`` and
+    ``Z^mw(q̂)[n] = (Z_mat^T q̂)[n]``.
+
+    Parameters
+    ----------
+    tensors : list of ndarray, each (3, 3)
+        Input Raman tensors (not modified; corrected copies are returned).
+    chi2_pm_per_v : ndarray, shape (3, 3, 3)
+        Second-order NLO susceptibility χ^(2) in pm/V.
+    q_hat_crystal : ndarray, shape (3,)
+        Unit phonon wavevector in the crystal frame.
+    Z_mat : ndarray, shape (3, 3N)
+        Mass-weighted Born charge matrix from :func:`build_Z_mat`.
+    eigvecs : ndarray, shape (3N, n_modes)
+        Eigenvector matrix — columns are the mode eigenvectors.  For TO modes
+        pass ``U_TO.T`` (i.e. the output of
+        :func:`build_eigvecs_from_normal_modes`); for NAC modes pass the
+        ``eig_vec`` returned by ``numpy.linalg.eigh``.
+    eps_inf : ndarray, shape (3, 3)
+        High-frequency optical dielectric tensor in the crystal frame.
+
+    Returns
+    -------
+    list of ndarray, each (3, 3)
+        EO-corrected copies of *tensors*.
+
+    Notes
+    -----
+    The unit conversion is χ^(2) [pm/V] → [Bohr/V_atomic]:
+    ``1 pm = 1e-12 m``, ``1 Bohr ≈ 5.292e-11 m``, so
+    ``pm_to_bohr ≈ 0.01890``.
+
+    """
+    from PDielec.Constants import bohr_si
+    pm_to_bohr = 1.0e-12 / bohr_si
+    chi2_au = np.asarray(chi2_pm_per_v, dtype=float) * pm_to_bohr
+
+    # f_ij[i,j] = Σ_l χ^(2)_ijl * q̂_l   (3×3 EO tensor contracted with q̂)
+    f_ij = np.einsum("ijl,l->ij", chi2_au, q_hat_crystal)
+
+    # Dielectric screening factor
+    eps_b_q = float(q_hat_crystal @ eps_inf @ q_hat_crystal)
+    if abs(eps_b_q) < 1e-12:
+        eps_b_q = 1.0
+
+    # Z_q[n] = (Z_mat^T q̂)[n]  — project mass-weighted Born charges onto q̂
+    Z_q = Z_mat.T @ q_hat_crystal   # shape (3N,)
+
+    corrected = []
+    n_modes = len(tensors)
+    for p_idx in range(n_modes):
+        scalar_p = float(np.dot(Z_q, eigvecs[:, p_idx]))
+        corrected.append(tensors[p_idx] + (-2.0 * f_ij * scalar_p / eps_b_q))
+    return corrected

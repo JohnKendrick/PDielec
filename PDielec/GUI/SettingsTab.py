@@ -24,6 +24,7 @@ from qtpy.QtWidgets import (
     QComboBox,
     QDoubleSpinBox,
     QFormLayout,
+    QHBoxLayout,
     QLabel,
     QMessageBox,
     QPushButton,
@@ -35,7 +36,7 @@ from qtpy.QtWidgets import (
 )
 
 from PDielec import Calculator, DielectricFunction
-from PDielec.Constants import amu, angstrom, average_masses, isotope_masses, wavenumber
+from PDielec.Constants import amu, angs2bohr, angstrom, average_masses, isotope_masses, wavenumber
 from PDielec.RamanPolarCalculator import raman_active_mode_indices
 
 logger = logging.getLogger(__name__)
@@ -356,13 +357,72 @@ class SettingsTab(QWidget):
         self.output_tw.blockSignals(True)
         vbox.addWidget(self.output_tw)
         #
-        # Raman polar mode simulator
+        # NAC Options row (always visible — applies to both IR and Raman)
+        self._lo_q_label = QLabel("NAC Options:", self)
+        self._lo_q_label.setToolTip(
+            "Non-analytical correction (NAC) options.\n"
+            "When enabled, LO frequencies are computed from the dynamical matrix\n"
+            "with the long-range Coulomb correction at the given phonon wavevector q̂.\n"
+            "Applies to both IR and Raman mode tables."
+        )
+        lo_q_hbox = QHBoxLayout()
+        lo_q_hbox.setContentsMargins(0, 0, 0, 0)
+        lo_q_hbox.setSpacing(2)
+        self._nac_apply_cb = QCheckBox("Apply NAC", self)
+        self._nac_apply_cb.setChecked(False)
+        self._nac_apply_cb.setToolTip(
+            "Apply non-analytical correction (NAC) to compute LO frequencies.\n"
+            "When checked, the LO frequency column is filled for all modes using\n"
+            "the phonon wavevector q̂ below.  Works for both IR and Raman spectroscopy."
+        )
+        self._nac_apply_cb.stateChanged.connect(self._refresh_lo_columns)
+        lo_q_hbox.addWidget(self._nac_apply_cb)
+        lo_q_hbox.addSpacing(8)
+        self._lo_q_spins = []
+        q_tooltips = (
+            "x-component of the phonon wavevector q̂ in crystal coordinates",
+            "y-component of the phonon wavevector q̂ in crystal coordinates",
+            "z-component of the phonon wavevector q̂ in crystal coordinates",
+        )
+        for axis_label, default_val, tip in zip(("x:", "y:", "z:"), (0.0, 0.0, 1.0), q_tooltips):
+            lbl = QLabel(axis_label, self)
+            lbl.setToolTip(tip)
+            lo_q_hbox.addWidget(lbl)
+            spin = QDoubleSpinBox(self)
+            spin.setRange(-1.0, 1.0)
+            spin.setDecimals(4)
+            spin.setSingleStep(0.1)
+            spin.setValue(default_val)
+            spin.setToolTip(tip)
+            spin.valueChanged.connect(self._refresh_lo_columns)
+            lo_q_hbox.addWidget(spin)
+            lo_q_hbox.addSpacing(8)
+            self._lo_q_spins.append(spin)
+        self._lo_eo_cb = QCheckBox("Include EO correction (χ⁽²⁾)", self)
+        self._lo_eo_cb.setChecked(False)
+        self._lo_eo_cb.setToolTip(
+            "Apply the electro-optic (EO) correction to Raman tensors using the\n"
+            "second-order susceptibility χ⁽²⁾ and the phonon wavevector q̂.\n"
+            "Only available for Raman spectroscopy when χ⁽²⁾ data is present (e.g. CRYSTAL)."
+        )
+        self._lo_eo_cb.stateChanged.connect(self._refresh_lo_columns)
+        lo_q_hbox.addWidget(self._lo_eo_cb)
+        lo_q_hbox.addStretch(1)
+        self._lo_q_widget = QWidget(self)
+        self._lo_q_widget.setLayout(lo_q_hbox)
+        self._lo_q_widget.setContentsMargins(0, 0, 0, 0)
+        form.addRow(self._lo_q_label, self._lo_q_widget)
+        # Raman polar mode simulator (Raman only)
         self.raman_polar_button = QPushButton("Raman polar plot", self)
         self.raman_polar_button.setToolTip(
-            "Open a tensor-level Raman polar plot simulator for the Raman-active modes"
+            "Open a tensor-level Raman polar plot simulator for the Raman-active modes.\n"
+            "Displays polar intensity curves for VV, HV, and theta geometries."
         )
         self.raman_polar_button.clicked.connect(self.on_raman_polar_button_clicked)
         self.raman_polar_label = QLabel("Raman polar simulator:", self)
+        self.raman_polar_label.setToolTip(
+            "Open a tensor-level Raman polar plot simulator for the Raman-active modes."
+        )
         form.addRow(self.raman_polar_label, self.raman_polar_button)
         self.update_raman_polar_button()
         # finalise the layout
@@ -555,23 +615,32 @@ class SettingsTab(QWidget):
         self.CrystalPermittivityObject.set_epsilon_infinity(epsilon_inf)
 
         # Prepare to finish and output table
-        ncols = 8 if show_raman_col else 5
+        ncols = 9 if show_raman_col else 6
         self.output_tw.setRowCount(len(self.sigmas_cm1))
         self.output_tw.setColumnCount(ncols)
 
         # Set the table headers
-        self.output_tw.setHorizontalHeaderLabels([
-            "   Sigma   \n(cm-1)", " Frequency \n(cm-1)",
-            "  Intensity  \n(Debye²/Å²/amu)",
-            "Integrated Molar Absorption\n(L/mole/cm²)",
-            "Absorption maximum\n(L/mole/cm)",
-            "Raman total\n(Å⁴/amu)",
-            "Raman ∥\n(Å⁴/amu)",
-            "Raman ⟂\n(Å⁴/amu)",
-        ])
+        if show_raman_col:
+            self.output_tw.setHorizontalHeaderLabels([
+                "   Sigma   \n(cm-1)", " TO freq \n(cm-1)", " LO freq \n(cm-1)",
+                "  Intensity  \n(Debye²/Å²/amu)",
+                "Integrated Molar Absorption\n(L/mole/cm²)",
+                "Absorption maximum\n(L/mole/cm)",
+                "Raman total\n(Å⁴/amu)",
+                "Raman ∥\n(Å⁴/amu)",
+                "Raman ⟂\n(Å⁴/amu)",
+            ])
+        else:
+            self.output_tw.setHorizontalHeaderLabels([
+                "   Sigma   \n(cm-1)", " TO freq \n(cm-1)", " LO freq \n(cm-1)",
+                "  Intensity  \n(Debye²/Å²/amu)",
+                "Integrated Molar Absorption\n(L/mole/cm²)",
+                "Absorption maximum\n(L/mole/cm)",
+            ])
 
-        # Draw the table
+        # Draw the table then fill in the LO frequency column
         self.redraw_output_tw()
+        self._refresh_lo_columns()
         QCoreApplication.processEvents()
         logger.debug("Finished:: create_intensity_table")
         return
@@ -694,7 +763,9 @@ class SettingsTab(QWidget):
 
         """        
         logger.debug("Start:: redraw_output_tw")
-        show_raman_col = self.output_tw.columnCount() == 8
+        ncols = self.output_tw.columnCount()
+        show_lo_col    = ncols >= 6   # col 2 is LO freq for both IR (6-col) and Raman (9-col)
+        show_raman_col = ncols == 9   # Raman-only cols (total/∥/⟂) at cols 6–8
         self.output_tw.blockSignals(True)
 
         # Loop over modes, frequencies, intensities and raman activities
@@ -707,14 +778,14 @@ class SettingsTab(QWidget):
             itemFlags = []
             item = QTableWidgetItem(f"{sigma:.1f}")
             if self.modes_selected[i]:
-                
+
                 # Set selection flags for active modes
                 item.setCheckState(Qt.Checked)
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
                 freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
                 otherFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled
             else:
-                
+
                 # Set selection flags for inactive modes
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled )
                 freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
@@ -723,11 +794,18 @@ class SettingsTab(QWidget):
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
 
-            # Frequency column cm-1
+            # TO frequency column cm-1 (col 1)
             items.append(QTableWidgetItem(f"{f:.4f}" ) )
             itemFlags.append( freqFlags )
 
-            # Intensity column Debye2/Angs2/amu
+            # LO frequency placeholder (col 2; filled by _refresh_lo_columns for both IR and Raman)
+            if show_lo_col:
+                lo_item = QTableWidgetItem("—")
+                lo_item.setFlags(otherFlags)
+                items.append(lo_item)
+                itemFlags.append(otherFlags)
+
+            # Intensity column Debye2/Angs2/amu (col 3 when LO present, col 2 otherwise)
             items.append(QTableWidgetItem(f"{intensity:.4f}" ) )
             itemFlags.append( otherFlags )
 
@@ -739,9 +817,8 @@ class SettingsTab(QWidget):
             items.append(QTableWidgetItem(f"{2*intensity*4225.6/self.sigmas_cm1[i]/np.pi:.2f}" ) )
             itemFlags.append( otherFlags )
 
-            # Show the Raman columns 
+            # Raman columns (Å⁴/amu): total (col 6), parallel (col 7), perpendicular (col 8)
             if show_raman_col:
-                # Raman activities (Å⁴/amu): total, parallel, perpendicular
                 items.append(QTableWidgetItem(f"{raman_act:.6g}"))
                 itemFlags.append(otherFlags)
                 items.append(QTableWidgetItem(f"{raman_par:.6g}"))
@@ -762,6 +839,157 @@ class SettingsTab(QWidget):
         self.output_tw.blockSignals(False)
         QCoreApplication.processEvents()
         logger.debug("Finished:: redraw_output_tw")
+
+    def _refresh_lo_columns(self):
+        """Recompute and display LO frequencies, LO IR intensities, and LO/EO Raman strengths.
+
+        Called whenever the NAC checkbox, q̂ spinboxes, or EO checkbox change, and
+        at the end of :meth:`create_intensity_table`.  Acts when the modes table has
+        6 columns (IR) or 9 columns (Raman).
+
+        Four cases are handled:
+
+        * NAC off, EO off  → TO frequencies (col 2 = "—"), TO IR intensities, TO Raman strengths.
+        * NAC off, EO on   → TO frequencies, TO IR intensities, EO-corrected Raman strengths.
+        * NAC on,  EO off  → LO frequencies, LO IR intensities, LO Raman strengths.
+        * NAC on,  EO on   → LO frequencies, LO IR intensities, EO-corrected LO Raman strengths.
+        """
+        ncols = self.output_tw.columnCount()
+        if ncols < 6:
+            return
+        show_raman_col = (ncols == 9)
+        n_rows = self.output_tw.rowCount()
+
+        nac_on = hasattr(self, "_nac_apply_cb") and self._nac_apply_cb.isChecked()
+        eo_on  = (show_raman_col
+                  and hasattr(self, "_lo_eo_cb") and self._lo_eo_cb.isChecked()
+                  and self.reader is not None
+                  and getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None)
+
+        # Outputs — None means fall back to TO values
+        lo_freqs         = None   # fills col 2; None → "—"
+        lo_ir_intensities = None  # fills cols 3–5; None → self.intensities
+        lo_raman_acts    = None   # fills cols 6–8; None → self.raman_intensities*
+
+        # Check whether NAC/EO ingredients are available
+        has_nac_data = (
+            self.reader is not None
+            and self.mass_weighted_normal_modes
+            and getattr(self.reader, "hessian", None) is not None
+            and len(getattr(self.reader, "born_charges", [])) > 0
+        )
+
+        # Normalise q̂ (needed by both NAC and EO)
+        q_hat = None
+        if (nac_on or eo_on) and has_nac_data:
+            q_raw  = np.array([spin.value() for spin in self._lo_q_spins])
+            q_norm = float(np.linalg.norm(q_raw))
+            if q_norm >= 1e-12:
+                q_hat = q_raw / q_norm
+
+        if q_hat is not None and has_nac_data:
+            from PDielec.RamanPolarCalculator import (
+                apply_eo_correction,
+                build_eigvecs_from_normal_modes,
+                build_Z_mat,
+                compute_lo_modes,
+            )
+
+            # Build shared NAC ingredients
+            masses_au    = np.array(self.reader.masses) * amu
+            born_charges = np.array(self.reader.born_charges)
+            eps_inf      = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+            if eps_inf.ndim == 1:
+                eps_inf = np.diag(eps_inf)
+            Z_mat   = build_Z_mat(born_charges, masses_au)
+            eigvecs = build_eigvecs_from_normal_modes(self.mass_weighted_normal_modes)  # (3N, n_to)
+            U_TO    = eigvecs.T                                                          # (n_to, 3N)
+
+            if nac_on:
+                # --- LO frequencies and eigenvectors ---
+                lo_freqs, lo_eigvecs = compute_lo_modes(
+                    q_hat, np.array(self.reader.hessian, dtype=float),
+                    U_TO, Z_mat, eps_inf, self.reader.volume * angs2bohr ** 3,
+                )
+
+                # --- LO IR intensities ---
+                n_atoms  = len(self.reader.masses)
+                n_to     = lo_eigvecs.shape[1]
+                lo_mwnm  = [lo_eigvecs[:, n].reshape(n_atoms, 3) for n in range(n_to)]
+                lo_nm    = Calculator.normal_modes(masses_au, lo_mwnm)
+                lo_osc   = Calculator.oscillator_strengths(lo_nm, born_charges)
+                lo_ir_intensities = Calculator.infrared_intensities(lo_osc)
+
+                # --- LO Raman strengths (optionally EO-corrected) ---
+                if show_raman_col:
+                    raman_tensors = self.reader.get_raman_tensors()
+                    if raman_tensors and len(raman_tensors) >= n_rows:
+                        # Project TO Raman tensors onto LO mode basis
+                        n_r = min(n_to, len(raman_tensors))
+                        t_stack = np.array(
+                            [np.asarray(raman_tensors[k], dtype=complex) for k in range(n_r)]
+                        )  # (n_r, 3, 3)
+                        lo_raman_tensors = []
+                        for n in range(n_to):
+                            C_n  = U_TO[:n_r, :] @ lo_eigvecs[:, n]   # (n_r,) overlaps
+                            R_lo = np.einsum("k,kij->ij", C_n, t_stack)
+                            lo_raman_tensors.append(R_lo)
+                        if eo_on:
+                            chi2 = self.reader.nonlinear_optical_susceptibility
+                            lo_raman_tensors = apply_eo_correction(
+                                lo_raman_tensors, chi2, q_hat, Z_mat, lo_eigvecs, eps_inf)
+                        lo_raman_acts = Calculator.raman_intensities(lo_raman_tensors, self.reader.volume)
+
+            elif eo_on:
+                # NAC off but EO on — apply EO correction to TO Raman tensors
+                raman_tensors = self.reader.get_raman_tensors()
+                if raman_tensors and len(raman_tensors) == n_rows:
+                    chi2      = self.reader.nonlinear_optical_susceptibility
+                    corrected = apply_eo_correction(raman_tensors, chi2, q_hat, Z_mat, eigvecs, eps_inf)
+                    lo_raman_acts = Calculator.raman_intensities(corrected, self.reader.volume)
+
+        # --- Update the table ---
+        self.output_tw.blockSignals(True)
+        for i in range(n_rows):
+            # col 2: LO frequency
+            lo_item = self.output_tw.item(i, 2)
+            if lo_item is not None:
+                lo_item.setText(
+                    f"{lo_freqs[i]:.4f}" if lo_freqs is not None and i < len(lo_freqs) else "—"
+                )
+
+            # cols 3, 4, 5: IR intensities (LO or TO)
+            ir_val  = (lo_ir_intensities[i]
+                       if lo_ir_intensities is not None and i < len(lo_ir_intensities)
+                       else (self.intensities[i] if i < len(self.intensities) else 0.0))
+            sigma_i = self.sigmas_cm1[i] if i < len(self.sigmas_cm1) else 1.0
+            for col, text in (
+                (3, f"{ir_val:.4f}"),
+                (4, f"{ir_val * 4225.6:.2f}"),
+                (5, f"{2.0 * ir_val * 4225.6 / sigma_i / np.pi:.2f}"),
+            ):
+                item = self.output_tw.item(i, col)
+                if item is not None:
+                    item.setText(text)
+
+            # cols 6, 7, 8: Raman strengths (LO/EO-corrected or TO)
+            if show_raman_col:
+                if lo_raman_acts is not None and i < len(lo_raman_acts):
+                    for col_offset in range(3):
+                        item = self.output_tw.item(i, 6 + col_offset)
+                        if item is not None:
+                            item.setText(f"{lo_raman_acts[i, col_offset]:.6g}")
+                else:
+                    to_vals = (
+                        self.raman_intensities[i]      if i < len(self.raman_intensities)      else 0.0,
+                        self.raman_intensities_par[i]  if i < len(self.raman_intensities_par)  else 0.0,
+                        self.raman_intensities_perp[i] if i < len(self.raman_intensities_perp) else 0.0,
+                    )
+                    for col_offset, val in enumerate(to_vals):
+                        item = self.output_tw.item(i, 6 + col_offset)
+                        if item is not None:
+                            item.setText(f"{val:.6g}")
+        self.output_tw.blockSignals(False)
 
     def on_sigma_changed(self):
         """Update the sigma value in settings and apply it across the frequency range, then refreshes the output.
@@ -1161,19 +1389,19 @@ class SettingsTab(QWidget):
         logger.debug(f"Finished:: on_spectroscopy_type_cb_activated {index}")
 
     def update_raman_polar_button(self):
-        """Show the Raman polar plot button only for Raman spectroscopy."""
+        """Show the Raman polar plot button for Raman spectroscopy; NAC options are always shown."""
         if not hasattr(self, "raman_polar_button"):
             return
         is_raman = self.settings.get("Spectroscopy type") in ("Powder Raman", "Crystal Raman")
         self.raman_polar_label.setVisible(is_raman)
         self.raman_polar_button.setVisible(is_raman)
         self.raman_polar_button.setEnabled(is_raman)
-        if is_raman:
-            self.raman_polar_button.setToolTip(
-                "Open a tensor-level Raman polar plot simulator for the Raman-active modes"
-            )
-        else:
-            self.raman_polar_button.setToolTip("Available only for Powder Raman and Crystal Raman")
+        # EO checkbox — requires Raman AND χ^(2) data
+        if hasattr(self, "_lo_eo_cb"):
+            has_chi2 = (is_raman
+                        and self.reader is not None
+                        and getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None)
+            self._lo_eo_cb.setVisible(has_chi2)
 
     def _collect_raman_polar_data(self):
         """Collect Raman tensor and SettingsTab mode data for the polar plot window."""
@@ -1205,7 +1433,41 @@ class SettingsTab(QWidget):
         if not any(mode["selected"] for mode in modes):
             for mode in modes:
                 mode["selected"] = True
-        return {"raman_tensors": raman_tensors, "modes": modes}, None
+
+        data = {"raman_tensors": raman_tensors, "modes": modes}
+
+        # Pass current q̂ so the polar window initialises aligned with SettingsTab.
+        if hasattr(self, "_lo_q_spins"):
+            data["q_hat_init"] = tuple(spin.value() for spin in self._lo_q_spins)
+
+        # NAC infrastructure — needed for LO frequencies (independent of EO).
+        has_nac = (
+            getattr(self.reader, "hessian", None) is not None
+            and len(getattr(self.reader, "born_charges", [])) > 0
+            and self.mass_weighted_normal_modes is not None
+        )
+        if has_nac:
+            from PDielec.RamanPolarCalculator import build_eigvecs_from_normal_modes, build_Z_mat
+            masses_au    = np.array(self.reader.masses) * amu
+            born_charges = np.array(self.reader.born_charges)
+            eps_inf      = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+            if eps_inf.ndim == 1:
+                eps_inf = np.diag(eps_inf)
+            eigvecs = build_eigvecs_from_normal_modes(self.mass_weighted_normal_modes)
+            data["Z_mat"]           = build_Z_mat(born_charges, masses_au)
+            data["eigvecs"]         = eigvecs
+            data["hessian"]         = np.array(self.reader.hessian, dtype=float)
+            data["U_TO"]            = eigvecs.T
+            data["volume_au"]       = self.reader.volume * angs2bohr ** 3
+            data["volume_angstrom"] = self.reader.volume
+            data["eps_inf"]         = eps_inf
+
+        # EO correction — additionally requires χ^(2).
+        chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
+        if chi2 is not None and has_nac:
+            data["chi2_pm_per_v"] = chi2
+
+        return data, None
 
     def on_raman_polar_button_clicked(self):
         """Open the tensor-level Raman polar plot simulator."""

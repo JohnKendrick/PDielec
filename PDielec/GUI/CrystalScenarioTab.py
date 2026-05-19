@@ -247,24 +247,11 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
     # Electro-optic (EO) correction to Raman tensors (Eq. 21, Raman-Theory.pdf).
     # Applied only when χ^(2) is available (non-centrosymmetric polar materials).
     if chi2_pm_per_v is not None:
+        from PDielec.RamanPolarCalculator import apply_eo_correction
         # TODO: Verify unit conversion and prefactor against ZnO CASTEP/Abinit example.
         # EO correction should be a small fraction (~1–20%) of the uncorrected tensor.
-        # χ^(2) in pm/V → internal Bohr/V_atomic units:
-        #   1 pm = 1e-12 m;  1 Bohr ≈ 5.292e-11 m  =>  pm_to_bohr ≈ 0.01890
-        from PDielec.Constants import bohr_si
-        pm_to_bohr = 1.0e-12 / bohr_si
-        chi2_au = np.asarray(chi2_pm_per_v, dtype=float) * pm_to_bohr
-
-        # f_ij[i,j] = Σ_l χ^(2)_ijl * q̂_l   (3×3 matrix, contraction on last index)
-        f_ij = np.einsum("ijl,l->ij", chi2_au, q_hat_crystal)
-
-        # Z_q[n_modes] = Z_mat^T @ q̂  — project mass-weighted Born charges onto q
-        Z_q = Z_mat.T @ q_hat_crystal   # shape (n_modes,)
-
-        for p_idx in range(n_modes):
-            # scalar_p = (Z_mat^T q̂) · eig_vec[:,p]
-            scalar_p = float(np.dot(Z_q, eig_vec[:, p_idx]))
-            nac_tensors[p_idx] = nac_tensors[p_idx] + (-2.0 * f_ij * scalar_p / eps_b_q)
+        nac_tensors = apply_eo_correction(nac_tensors, chi2_pm_per_v, q_hat_crystal,
+                                          Z_mat, eig_vec, eps_inf)
 
     return nac_freqs, nac_tensors, nac_sigmas
 

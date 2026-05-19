@@ -99,6 +99,10 @@ class CrystalOutputReader(GenericOutputReader):
         tens_raman = os.path.join(self.open_directory, "TENS_RAMAN.DAT")
         if os.path.isfile(tens_raman):
             self._read_tens_raman_dat(tens_raman)
+        # CHI2.DAT is an optional companion file written by Crystal's CPHF chi(2) calculation
+        chi2_dat = os.path.join(self.open_directory, "CHI2.DAT")
+        if os.path.isfile(chi2_dat):
+            self._read_chi2_dat(chi2_dat)
         return
 
     def _read_tens_raman_dat(self, filename):
@@ -185,6 +189,101 @@ class CrystalOutputReader(GenericOutputReader):
 
         if self.debug:
             logger.debug(f"_read_tens_raman_dat: computed Raman tensors for {nmodes} modes from {filename}")
+        return
+
+    def _read_chi2_dat(self, filename):
+        """Read the second-order nonlinear optical susceptibility χ^(2) from CHI2.DAT.
+
+        Crystal23's CPHF chi(2) calculation writes the 10 independent components of
+        the d-tensor (d = χ^(2)/2) as three-character Cartesian labels (e.g. ``XXZ``)
+        together with BETA (a.u.), CHI(2) (a.u.), d(MKS) (pm/V) and d(CGS) columns::
+
+            COMPONENT      BETA                        CHI(2)       d(MKS)       d(cgs)
+            *****...
+                XXZ    6.1371E+02  (  6.1372E+02)   1.2024E+01   1.1691E+01   2.7892E-01
+                ...
+            *****...
+
+        The 10 independent components assume full Kleinman symmetry (all index
+        permutations equivalent).  ``d(MKS)`` is already in pm/V and satisfies
+        d = χ^(2)/2.
+
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V),
+        consistent with the Abinit and CASTEP readers.
+
+        Parameters
+        ----------
+        filename : str
+            Path to the CHI2.DAT file.
+
+        Returns
+        -------
+        None
+
+        """
+        # All Kleinman-equivalent index triples for each 10-component label
+        _component_perms = {
+            "XXX": [(0, 0, 0)],
+            "XXY": [(0, 0, 1), (0, 1, 0), (1, 0, 0)],
+            "XXZ": [(0, 0, 2), (0, 2, 0), (2, 0, 0)],
+            "XYY": [(0, 1, 1), (1, 0, 1), (1, 1, 0)],
+            "XYZ": [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)],
+            "XZZ": [(0, 2, 2), (2, 0, 2), (2, 2, 0)],
+            "YYY": [(1, 1, 1)],
+            "YYZ": [(1, 1, 2), (1, 2, 1), (2, 1, 1)],
+            "YZZ": [(1, 2, 2), (2, 1, 2), (2, 2, 1)],
+            "ZZZ": [(2, 2, 2)],
+        }
+        label_re = re.compile(r"^\s*([XYZ]{3})\s")
+        paren_re = re.compile(r"\([^)]*\)")
+
+        d = np.zeros((3, 3, 3))
+        in_data = False
+        found_any = False
+        fd = pdielec_io(filename, "r")
+        while True:
+            line = fd.readline()
+            if not line:
+                break
+            stripped = line.strip()
+            if not in_data:
+                # The data block starts immediately after the first long **** separator
+                if stripped.startswith("*") and len(stripped) > 10:
+                    in_data = True
+                continue
+            # End of data block at the next **** separator
+            if stripped.startswith("*"):
+                break
+            if not stripped:
+                continue
+            m = label_re.match(line)
+            if not m:
+                continue
+            label = m.group(1)
+            if label not in _component_perms:
+                continue
+            # Remove parenthesised pre-symmetrisation BETA value then split.
+            # Raw columns: LABEL  BETA  ( BETA_presym)  CHI2_au  d_MKS  d_cgs
+            # After removing parens: LABEL  BETA  CHI2_au  d_MKS  d_cgs
+            clean = paren_re.sub("", line)
+            parts = clean.split()
+            if len(parts) < 4:
+                continue
+            try:
+                d_mks = float(parts[3])
+            except ValueError:
+                continue
+            for idx in _component_perms[label]:
+                d[idx] = d_mks
+            found_any = True
+        fd.close()
+
+        if found_any:
+            # Store χ^(2) = 2d (pm/V), matching Abinit/CASTEP convention
+            self.nonlinear_optical_susceptibility = 2.0 * d
+            logger.info("  Nonlinear optical susceptibility tensor read from CHI2.DAT (χ^(2) = 2d, pm/V)")
+        else:
+            logger.warning(f"  No χ^(2) data found in {filename}")
         return
 
     def _read_energy(self, line):
