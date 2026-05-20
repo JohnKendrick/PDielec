@@ -24,6 +24,7 @@ from qtpy.QtWidgets import (
     QAbstractItemView,
     QCheckBox,
     QDoubleSpinBox,
+    QGridLayout,
     QHBoxLayout,
     QHeaderView,
     QLabel,
@@ -81,6 +82,13 @@ class RamanPolarWindow(QWidget):
         self._mode_table.setHorizontalHeaderLabels(
             ["Include", "Mode", "TO freq (cm-1)", "LO freq (cm-1)", "Raman total"]
         )
+        self._mode_table.horizontalHeaderItem(0).setToolTip("Check to include this mode in the polar plot.")
+        self._mode_table.horizontalHeaderItem(1).setToolTip("Mode number.")
+        self._mode_table.horizontalHeaderItem(2).setToolTip("Transverse optical (TO) frequency in cm⁻¹.")
+        self._mode_table.horizontalHeaderItem(3).setToolTip(
+            "Longitudinal optical (LO) frequency in cm⁻¹\nfor the current q̂ direction."
+        )
+        self._mode_table.horizontalHeaderItem(4).setToolTip("Total Raman scattering activity.")
         self._mode_table.verticalHeader().setVisible(False)
         self._mode_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self._mode_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -89,10 +97,10 @@ class RamanPolarWindow(QWidget):
         self._populate_mode_table()
         self._mode_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self._mode_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self._mode_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
-        self._mode_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
-        self._mode_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
-        self._mode_table.setMinimumWidth(530)
+        self._mode_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self._mode_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        self._mode_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
+        self._mode_table.setMinimumWidth(400)
 
         mode_label = QLabel("Raman-active modes", self)
         controls_vbox.addWidget(mode_label)
@@ -100,21 +108,52 @@ class RamanPolarWindow(QWidget):
 
         buttons_hbox = QHBoxLayout()
         self._select_all_btn = QPushButton("Select all active modes", self)
+        self._select_all_btn.setToolTip("Select all Raman-active modes for inclusion in the polar plot.")
         self._select_all_btn.clicked.connect(self._select_all_modes)
         self._clear_btn = QPushButton("Clear selection", self)
+        self._clear_btn.setToolTip("Deselect all modes.")
         self._clear_btn.clicked.connect(self._clear_modes)
         buttons_hbox.addWidget(self._select_all_btn)
         buttons_hbox.addWidget(self._clear_btn)
         controls_vbox.addLayout(buttons_hbox)
 
-        controls_vbox.addWidget(QLabel("Light direction Rz", self))
-        self._rz_spins = self._add_vector_controls(controls_vbox, (0.0, 0.0, 1.0))
-        controls_vbox.addWidget(QLabel("Zero-angle polarisation Pza", self))
-        self._pza_spins = self._add_vector_controls(controls_vbox, (1.0, 0.0, 0.0))
+        # All three direction rows share one grid so x/y/z columns line up.
+        vec_grid = QGridLayout()
+        vec_grid.setColumnStretch(2, 1)
+        vec_grid.setColumnStretch(4, 1)
+        vec_grid.setColumnStretch(6, 1)
+        controls_vbox.addLayout(vec_grid)
+
+        rz_tip = ("The light propagation direction (in and out of the sample),\n"
+                  "or equivalently the crystal rotation axis.")
+        self._rz_spins, _ = self._add_vector_controls(
+            vec_grid, 0, (0.0, 0.0, 1.0), prefix_label="Light direction Rz:", tooltip=rz_tip
+        )
+
+        pza_tip = ("The incoming laser polarisation direction at rotation angle 0°.\n"
+                   "Should be perpendicular to Rz.\n"
+                   "When Rz changes, Pza is automatically made perpendicular to Rz.")
+        self._pza_spins, _ = self._add_vector_controls(
+            vec_grid, 1, (1.0, 0.0, 0.0), prefix_label="Zero-angle pol. Pza:", tooltip=pza_tip
+        )
+
+        q_init = polar_data.get("q_hat_init", (0.0, 0.0, 1.0))
+        q_tip = ("The phonon wavevector direction in the crystal frame.\n"
+                 "Used for LO frequency and electro-optic correction calculations.")
+        self._q_spins, self._q_row_widgets = self._add_vector_controls(
+            vec_grid, 2, q_init, prefix_label="Phonon q̂ direction:", tooltip=q_tip
+        )
+
         # Hide the LO freq column when no NAC data is available.
         if not self._has_lo:
             self._mode_table.setColumnHidden(3, True)
+
         self._orthogonality_label = QLabel("Orthogonality: 0.000000", self)
+        self._orthogonality_label.setToolTip(
+            "Dot product Rz · Pza.\n"
+            "Should be zero for physically meaningful results.\n"
+            "A non-zero value means Pza is not perpendicular to Rz."
+        )
         controls_vbox.addWidget(self._orthogonality_label)
 
         # EO correction controls — only shown when χ^(2) is available.
@@ -122,31 +161,28 @@ class RamanPolarWindow(QWidget):
         self._eo_checkbox.setChecked(True)
         self._eo_checkbox.stateChanged.connect(self._update_plot)
         self._eo_checkbox.setVisible(self._has_eo)
+        self._eo_checkbox.setToolTip(
+            "Apply electro-optic correction to the Raman tensors\n"
+            "using the χ⁽²⁾ tensor (requires CHI2.DAT data)."
+        )
         controls_vbox.addWidget(self._eo_checkbox)
 
-        self._q_label = QLabel("Phonon q̂ direction (crystal frame)", self)
-        self._q_label.setVisible(self._has_eo or self._has_lo)
-        controls_vbox.addWidget(self._q_label)
-        q_init = polar_data.get("q_hat_init", (0.0, 0.0, 1.0))
-        self._q_spins = self._add_vector_controls(controls_vbox, q_init)
         show_q_controls = self._has_eo or self._has_lo
-        for spin in self._q_spins:
-            spin.setVisible(show_q_controls)
+        for w in self._q_row_widgets:
+            w.setVisible(show_q_controls)
         self._sync_q_btn = QPushButton("Sync q̂ to Rz", self)
         self._sync_q_btn.setToolTip(
             "Copy the light direction Rz into q̂.\n"
-            "For backscattering q̂ ≈ Rz (phonon momentum ≈ 2k_L)."
+            "Appropriate for backscattering geometry where q̂ ≈ Rz."
         )
         self._sync_q_btn.clicked.connect(self._sync_q_to_rz)
         self._sync_q_btn.setVisible(show_q_controls)
         controls_vbox.addWidget(self._sync_q_btn)
 
-        self._raw_max_label = QLabel("Raw max intensity: 0.0", self)
-        controls_vbox.addWidget(self._raw_max_label)
-
-        self._ack_btn = QPushButton("Acknowledgement", self)
-        self._ack_btn.clicked.connect(self._show_acknowledgement)
-        controls_vbox.addWidget(self._ack_btn)
+        self._desc_btn = QPushButton("Description", self)
+        self._desc_btn.setToolTip("Show a description of the coordinate system and plot geometries.")
+        self._desc_btn.clicked.connect(self._show_description)
+        controls_vbox.addWidget(self._desc_btn)
         controls_vbox.addStretch(1)
 
         self.figure = matplotlib.figure.Figure()
@@ -178,28 +214,69 @@ class RamanPolarWindow(QWidget):
             activity_item = QTableWidgetItem(f"{mode['raman_total']:.6g}")
             for item in (mode_item, freq_item, lo_item, activity_item):
                 item.setFlags(ro_flags)
+            for item in (freq_item, lo_item, activity_item):
+                item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             self._mode_table.setItem(row, 1, mode_item)
             self._mode_table.setItem(row, 2, freq_item)
             self._mode_table.setItem(row, 3, lo_item)
             self._mode_table.setItem(row, 4, activity_item)
         self._mode_table.blockSignals(False)
 
-    def _add_vector_controls(self, layout, values):
-        """Add x/y/z spin boxes to a layout."""
-        hbox = QHBoxLayout()
+    def _add_vector_controls(self, grid, row, values, prefix_label=None, tooltip=None):
+        """Add x/y/z spin boxes into one row of a shared QGridLayout.
+
+        Placing all three direction rows in the same grid ensures the x/y/z
+        spin-box columns are aligned across rows.
+
+        Parameters
+        ----------
+        grid : QGridLayout
+            Shared grid for all vector rows.
+        row : int
+            Grid row index.
+        values : sequence of float
+            Initial (x, y, z) values.
+        prefix_label : str, optional
+            Text for the label placed in column 0.
+        tooltip : str, optional
+            Tooltip applied to every widget in the row.
+
+        Returns
+        -------
+        tuple[list[QDoubleSpinBox], list[QWidget]]
+            The three spin boxes and all widgets in the row (prefix label first
+            if present, then alternating axis-label / spin-box for x, y, z).
+        """
+        row_widgets = []
+        col = 0
+        if prefix_label is not None:
+            lbl_widget = QLabel(prefix_label, self)
+            if tooltip:
+                lbl_widget.setToolTip(tooltip)
+            grid.addWidget(lbl_widget, row, col)
+            row_widgets.append(lbl_widget)
+        col += 1  # column 0 is always the prefix column; skip it even when absent
         spins = []
-        for label_text, value in zip(("x", "y", "z"), values):
-            hbox.addWidget(QLabel(label_text, self))
+        for label_text, value in zip(("x:", "y:", "z:"), values):
+            axis_lbl = QLabel(label_text, self)
+            if tooltip:
+                axis_lbl.setToolTip(tooltip)
+            grid.addWidget(axis_lbl, row, col)
+            row_widgets.append(axis_lbl)
+            col += 1
             spin = QDoubleSpinBox(self)
             spin.setRange(-1.0, 1.0)
             spin.setDecimals(6)
-            spin.setSingleStep(0.1)
+            spin.setSingleStep(1.0)
             spin.setValue(value)
             spin.valueChanged.connect(self._update_plot)
-            hbox.addWidget(spin)
+            if tooltip:
+                spin.setToolTip(tooltip)
+            grid.addWidget(spin, row, col)
+            row_widgets.append(spin)
+            col += 1
             spins.append(spin)
-        layout.addLayout(hbox)
-        return spins
+        return spins, row_widgets
 
     def _selected_mode_indices(self):
         """Return selected zero-based mode indices."""
@@ -279,7 +356,6 @@ class RamanPolarWindow(QWidget):
         ax = self.figure.add_subplot(111, projection="polar")
         mode_indices = self._selected_mode_indices()
         if not mode_indices:
-            self._raw_max_label.setText("Raw max intensity: 0.0")
             self._orthogonality_label.setText("Orthogonality: n/a")
             ax.set_title("No Raman-active modes selected")
             self.canvas.draw()
@@ -334,34 +410,60 @@ class RamanPolarWindow(QWidget):
                 normalise=True,
             )
         except ValueError as exc:
-            self._raw_max_label.setText("Raw max intensity: n/a")
             self._orthogonality_label.setText(str(exc))
             ax.set_title("Invalid polarisation basis")
             self.canvas.draw()
             return
 
-        colors = {"VV": "tab:red", "HV": "tab:blue", "theta": "tab:green"}
+        colors = {"VV": "tab:red", "HV": "tab:blue", "Theta": "tab:green"}
         for geometry in POLAR_GEOMETRIES:
             ax.plot(result["angles_rad"], result["curves"][geometry], label=geometry, color=colors[geometry])
         raw_max = result["raw_max_intensity"]
-        self._raw_max_label.setText(f"Raw max intensity: {raw_max:.6g}")
         self._orthogonality_label.setText(f"Orthogonality: {result['orthogonality']:.6f}")
         if abs(result["orthogonality"]) > 1.0e-6:
             self._orthogonality_label.setText(self._orthogonality_label.text() + " (Pza adjusted for plot)")
         eo_suffix = " +EO" if eo_active else ""
-        ax.set_title(f"Polar Raman intensities{eo_suffix} (max: {raw_max:.6g})")
+        ax.set_title(f"Polar Raman intensities{eo_suffix}\n(max: {raw_max:.6g})")
         ax.set_ylim(0.0, 1.05)
-        ax.legend(loc="upper right", bbox_to_anchor=(1.18, 1.12))
+        ax.legend(loc="upper right", bbox_to_anchor=(1.05, 1.12))
         self.canvas.draw()
 
-    def _show_acknowledgement(self):
-        """Show a compact citation acknowledgement."""
+    def _show_description(self):
+        """Show a description of the coordinate system and plot geometries."""
         QMessageBox.information(
             self,
-            "Acknowledgement",
-            "This polar Raman visualisation is inspired by the CRD/Oulu Raman simulator.\n\n"
+            "Polar Raman Description",
+            "COORDINATE SYSTEM\n"
+            "─────────────────\n"
+            "Three directions in crystal coordinates define the geometry:\n\n"
+            "1. The light propagation direction Rz.\n\n"
+            "2. The direction Pz showing the laser polarisation direction at zero-angle.\n"
+            "   This should be perpendicular to Rz. \n"
+            "   When Rz is changed orthogonality of Pz is ensured automatically. \n"
+            "   Pza can also be changed, but orthogonality is not enforces\n"
+            "   'Orthogonality' displays the orthogonality between Pz and Rz\n"
+            "3. The remaining orthogonal direct Pp = Rz × Pz\n\n"
+            "PLOT LEGEND\n"
+            "───────────────\n"
+            "The sample is rotated by angle θ (via rotation matrix M):\n\n"
+            "• VV (vertical-vertical / parallel)\n"
+            "    Both incident and scattered polarisations rotate together.\n"
+            "    E_L = M·Pz,  E_S = M·Pz\n\n"
+            "• HV (horizontal-vertical / perpendicular)\n"
+            "    Incident and scattered polarisations are always perpendicular;\n"
+            "    both rotate with the sample — equivalent to simultaneous\n"
+            "    rotation around Pz and Pp.\n"
+            "    E_L = M·Pza,  E_S = M·Pp\n\n"
+            "• Theta (fixed incident, rotating analyser)\n"
+            "    Incident polarisation is fixed; the analyser rotates.\n"
+            "    E_L = Pz  (fixed),  E_S = M·Pz\n\n"
+            "REFERENCE\n"
+            "─────────\n"
+            "This visualisation is inspired by the CRD/Oulu Raman simulator.\n"
+            "https://ramandb.oulu.fi/simulator \n"
             "Please cite:\n"
-            'M. Bagheri and H.-P. Komsa, "High-throughput computation of Raman spectra '
-            'from first principles", Scientific Data 10, 80 (2023).\n'
+            "M. Bagheri and H.-P. Komsa, \n "
+            "\"High-throughput computation of Raman spectra from first principles\"\n"
+            " Scientific Data 10, 80 (2023).\n"
             "https://doi.org/10.1038/s41597-023-01988-5",
         )

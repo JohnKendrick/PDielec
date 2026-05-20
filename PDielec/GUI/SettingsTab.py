@@ -642,6 +642,11 @@ class SettingsTab(QWidget):
         self.redraw_output_tw()
         self._refresh_lo_columns()
         QCoreApplication.processEvents()
+        # LO freq header renders narrower than TO freq (font width of 'L' < 'T');
+        # force column 2 to be at least as wide as column 1.
+        to_width = self.output_tw.columnWidth(1)
+        if self.output_tw.columnWidth(2) < to_width:
+            self.output_tw.setColumnWidth(2, to_width)
         logger.debug("Finished:: create_intensity_table")
         return
 
@@ -874,7 +879,7 @@ class SettingsTab(QWidget):
         # Check whether NAC/EO ingredients are available
         has_nac_data = (
             self.reader is not None
-            and self.mass_weighted_normal_modes
+            and self.mass_weighted_normal_modes is not None
             and getattr(self.reader, "hessian", None) is not None
             and len(getattr(self.reader, "born_charges", [])) > 0
         )

@@ -18,7 +18,7 @@ import numpy as np
 
 RAMAN_ACTIVE_THRESHOLD = 1.0e-6
 ACOUSTIC_THRESHOLD_CM1 = 10.0
-POLAR_GEOMETRIES = ("VV", "HV", "theta")
+POLAR_GEOMETRIES = ("VV", "HV", "Theta")
 
 
 def normalise_vector(vector, name="vector"):
