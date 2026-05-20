@@ -731,14 +731,11 @@ class TestI5ScatteringMatrixConsistency:
 # ---------------------------------------------------------------------------
 
 class TestI7NACFrequencyShift:
-    """Verify that modal_pairs uses NAC-corrected frequencies, not TO frequencies.
+    """Verify that modal_pairs reports q-resolved TO and NAC frequencies.
 
-    Regression test for the bug where the NAC-corrected Hessian is diagonalised
-    and the resulting eigenmodes are sorted by eigenvalue.  A TO mode at index k
-    that shifts to a higher (LO) frequency moves to a different sorted index k'.
-    The old code used the TO index k to read nac_freqs[k] and nac_tensors[k],
-    which gave the wrong (nearly-zero-tensor) mode and hence ~10000× too small
-    intensity, with the peak reported at the TO frequency instead of the LO.
+    Regression test for q-resolved modal-pair handling.  Zero-q pairs remain at
+    the TO frequency, while non-zero-q pairs use the NAC-corrected frequencies
+    and tensors returned by the pair's nac_function.
 
     This test uses a synthetic nac_function that returns two phonon modes whose
     eigenvalue ordering is SWAPPED compared to the TO ordering, i.e. the TO mode
@@ -773,8 +770,8 @@ class TestI7NACFrequencyShift:
 
         return nac_fn
 
-    def test_peak_at_nac_frequency_not_to_frequency(self):
-        """Peak must appear at the NAC (LO) frequency, not the TO frequency."""
+    def test_peaks_include_to_and_nac_frequencies(self):
+        """q=0 and non-zero-q groups must report their own line centres."""
         # n_sub != n_layer creates a back-reflection, giving the backward mode (mode 2)
         # a non-zero amplitude.  Pair (0,2) then has q_ph ≈ 2n (backscattering) and
         # calls the nac_function, shifting the peak from TO (300) to LO (550).
@@ -811,15 +808,16 @@ class TestI7NACFrequencyShift:
 
         assert len(freqs) > 0, "No active modes returned"
 
-        # The reported peak must be at the NAC (LO) frequency ~550, not TO ~300
+        # q-resolved modal_pairs should keep the q=0 TO line and add the
+        # non-zero-q NAC/LO line.
         active_freqs = np.array(freqs)
         assert np.any(np.abs(active_freqs - self.NU_LO) < 1.0), (
             f"Expected a peak near {self.NU_LO} cm⁻¹ (NAC/LO freq) "
             f"but got active_freqs={active_freqs.tolist()}"
         )
-        assert not np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0), (
-            f"Peak found at TO frequency {self.NU_TO_LOW} cm⁻¹; "
-            "modal_pairs should report the NAC-corrected (LO) frequency"
+        assert np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0), (
+            f"Expected the q=0 TO line near {self.NU_TO_LOW} cm⁻¹ "
+            f"but got active_freqs={active_freqs.tolist()}"
         )
 
     def test_intensity_at_nac_mode_not_tiny(self):

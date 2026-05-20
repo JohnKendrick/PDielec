@@ -11,12 +11,15 @@ Tests verify:
 - zero Born charge gives no polar frequency shift (J10);
 - surface-mode resonance position for scalar sphere (J11).
 """
-import sys
 import os
+import sys
+import warnings
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import numpy as np
 import pytest
+
 from PDielec.Calculator import (
     compute_internal_field_tensor,
     compute_particle_raman_tensor,
@@ -259,6 +262,34 @@ def test_i5_raman_intensities_perpendicular_column():
     act2 = raman_intensities([3.0 * R], volume)
     assert abs(act2[0, 2] / act1[0, 2] - 9.0) < 1e-10, \
         "Perpendicular activity should scale as 9× when R is tripled"
+
+
+def test_i5_raman_intensities_accepts_complex_tensors_without_cast_warning():
+    """I5: Complex Raman tensors are handled with magnitude-squared invariants."""
+    R = np.array([
+        [1.0 + 0.2j, 0.3 - 0.1j, 0.0],
+        [0.3 - 0.1j, 2.0 + 0.4j, 0.2j],
+        [0.0, 0.2j, 0.5 - 0.3j],
+    ])
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        activities = raman_intensities([R], volume=2.0)
+
+    assert not any("Casting complex values to real" in str(w.message) for w in caught)
+    assert np.all(np.isfinite(activities))
+    assert np.all(activities >= 0.0)
+
+
+def test_i5_raman_intensities_complex_phase_does_not_change_activity():
+    """I5: Global complex phase does not change Raman activities."""
+    R = np.array([
+        [1.0, 0.2, 0.1],
+        [0.2, 2.0, -0.3],
+        [0.1, -0.3, 0.5],
+    ], dtype=complex)
+    reference = raman_intensities([R], volume=1.5)
+    phased = raman_intensities([np.exp(0.7j) * R], volume=1.5)
+    np.testing.assert_allclose(phased, reference, rtol=1e-12, atol=1e-12)
 
 
 # ---------------------------------------------------------------------------

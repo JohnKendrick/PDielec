@@ -59,9 +59,9 @@ def test_active_mode_indices_preserve_one_based_table_numbering_basis():
 
 
 def test_normalised_curves_share_raw_maximum():
-    """VV/HV/theta curves are normalised with one shared raw maximum."""
+    """VV/HV/Theta curves are normalised with one shared raw maximum."""
     tensors = [np.diag([2.0, 1.0, 0.0])]
     result = calculate_polar_curves(tensors, [0], angles_rad=np.linspace(0.0, 2.0 * np.pi, 37))
-    assert set(result["curves"]) == {"VV", "HV", "theta"}
+    assert set(result["curves"]) == {"VV", "HV", "Theta"}
     assert np.isclose(result["raw_max_intensity"], 4.0, atol=1.0e-12)
     assert max(np.max(curve) for curve in result["curves"].values()) == 1.0

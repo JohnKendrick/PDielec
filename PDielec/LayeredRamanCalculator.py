@@ -400,6 +400,21 @@ def _compute_modal_fields_and_channels(freq_cm1, system, angle_rad, z_arr, layer
     return modal_fields, qs_by_layer, zeta, channels
 
 
+def _modal_pair_frequency_and_tensors(mode_idx, fallback_frequency, fallback_tensors, cache_val):
+    """Return the q-resolved phonon frequency and Raman tensors for one pair."""
+    if cache_val is not None and cache_val[0] is not None:
+        nac_freqs = cache_val[0]
+        nac_tensors = cache_val[1]
+        if mode_idx < len(nac_freqs) and mode_idx < len(nac_tensors):
+            return float(nac_freqs[mode_idx]), nac_tensors
+    return float(fallback_frequency), fallback_tensors
+
+
+def _line_key(frequency_cm1, sigma_cm1):
+    """Hashable key for merging numerically identical spectral lines."""
+    return (round(float(frequency_cm1), 10), round(float(sigma_cm1), 10))
+
+
 def _compute_modal_pair_mode_worker(shared, mode_args):
     """Compute one modal-pair Raman mode using picklable cached NAC data."""
     (
@@ -421,44 +436,60 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
         temperature_K,
     ) = shared
 
-    mode_idx, nu_m, sigma, nu_S = mode_args
-    if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1 or nu_S <= 0.0:
-        return None
-
-    if approximate_es:
-        channels_S = channels_S_base
-    else:
-        _modal_fields_S, _qs_S, _zeta_S, channels_S = _compute_modal_fields_and_channels(
-            nu_S,
-            es_system,
-            collection_angle_rad,
-            z_s,
-            layer_indices,
-            gl_layer_slices,
-            detected_pol_indices,
-        )
+    mode_idx, fallback_nu_m, sigma, laser_frequency_cm1 = mode_args
 
     # Accumulate amplitudes into groups according to the summation policy.
     # The group key determines which amplitudes are coherently combined
     # before squaring.
-    pair_amps = {}  # group_key → complex amplitude
+    pair_groups = {}  # group_key -> {"amp", "frequency", "sigma"}
+    channels_s_cache = {}
 
     for layer_pos, (layer_index, sl) in enumerate(zip(layer_indices, gl_layer_slices, strict=True)):
         layer_channels_L = channels_L.get(layer_index, [])
         for i_channel, channel_L in enumerate(layer_channels_L):
             for det_pol_idx in detected_pol_indices:
-                layer_channels_S = channels_S[det_pol_idx].get(layer_index, [])
-                for j_channel, channel_S in enumerate(layer_channels_S):
+                layer_channels_S_base = channels_S_base[det_pol_idx].get(layer_index, [])
+                for j_channel, _channel_S_base in enumerate(layer_channels_S_base):
                     cache_key = (layer_index, i_channel, det_pol_idx, j_channel)
                     cache_val = nac_cache.get(cache_key)
 
-                    if cache_val is not None and cache_val[0] is not None:
-                        nac_tensors = cache_val[1]
-                    else:
-                        nac_tensors = raman_tensors_by_layer[layer_pos]
+                    nu_m, nac_tensors = _modal_pair_frequency_and_tensors(
+                        mode_idx,
+                        fallback_nu_m,
+                        raman_tensors_by_layer[layer_pos],
+                        cache_val,
+                    )
+                    if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+                        continue
 
                     if mode_idx >= len(nac_tensors):
                         continue
+
+                    if approximate_es:
+                        channels_S = channels_S_base
+                    else:
+                        nu_S_cm1 = laser_frequency_cm1 - nu_m
+                        if nu_S_cm1 <= 0.0:
+                            continue
+                        freq_key = round(float(nu_m), 10)
+                        if freq_key not in channels_s_cache:
+                            _modal_fields_S, _qs_S, _zeta_S, channels_s_cache[freq_key] = (
+                                _compute_modal_fields_and_channels(
+                                    nu_S_cm1,
+                                    es_system,
+                                    collection_angle_rad,
+                                    z_s,
+                                    layer_indices,
+                                    gl_layer_slices,
+                                    detected_pol_indices,
+                                )
+                            )
+                        channels_S = channels_s_cache[freq_key]
+
+                    layer_channels_S = channels_S[det_pol_idx].get(layer_index, [])
+                    if j_channel >= len(layer_channels_S):
+                        continue
+                    channel_S = layer_channels_S[j_channel]
 
                     R_crystal = nac_tensors[mode_idx]
                     R_lab = rotation_matrices[layer_pos] @ R_crystal @ rotation_matrices[layer_pos].T
@@ -481,12 +512,39 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                         # Debug only — mixes distinct phonon-q final states.
                         group_key = "all"
 
-                    pair_amps[group_key] = pair_amps.get(group_key, 0.0 + 0.0j) + amp_ij
+                    existing = pair_groups.get(group_key)
+                    if existing is None:
+                        pair_groups[group_key] = {
+                            "amp": amp_ij,
+                            "frequency": nu_m,
+                            "sigma": sigma,
+                        }
+                    elif abs(existing["frequency"] - nu_m) <= 1.0e-10:
+                        existing["amp"] += amp_ij
+                    else:
+                        split_key = (group_key, _line_key(nu_m, sigma))
+                        split_existing = pair_groups.get(split_key)
+                        if split_existing is None:
+                            pair_groups[split_key] = {
+                                "amp": amp_ij,
+                                "frequency": nu_m,
+                                "sigma": sigma,
+                            }
+                        else:
+                            split_existing["amp"] += amp_ij
 
-    I_m = sum(abs(amp) ** 2 for amp in pair_amps.values())
+    line_accumulator = {}
+    for group_data in pair_groups.values():
+        nu_m = group_data["frequency"]
+        sigma = group_data["sigma"]
+        intensity = abs(group_data["amp"]) ** 2 * bose_factor(nu_m, temperature_K)
+        key = _line_key(nu_m, sigma)
+        if key not in line_accumulator:
+            line_accumulator[key] = [nu_m, intensity, sigma]
+        else:
+            line_accumulator[key][1] += intensity
 
-    I_m *= bose_factor(nu_m, temperature_K)
-    return (mode_idx, nu_m, I_m, sigma)
+    return [(mode_idx, nu_m, intensity, sigma) for nu_m, intensity, sigma in line_accumulator.values()]
 
 
 # ---------------------------------------------------------------------------
@@ -1093,7 +1151,10 @@ class LayeredRamanCalculator:
         The phonon wavevector for each channel pair is q_ph = k_L − k_S,
         giving a distinct NAC-corrected phonon frequency and Raman tensor per
         pair.  NAC results are cached per layer/channel pair and reused across
-        all phonon modes.
+        all phonon modes.  The returned arrays are q-resolved: one input
+        ``mode_idx`` can produce multiple spectral rows when different q-groups
+        have different NAC frequencies.  Groups with numerically identical
+        frequencies and linewidths are merged as incoherent intensities.
 
         NAC closures are evaluated only while building the serial cache.  When a
         worker pool is supplied, the per-mode field and intensity calculations
@@ -1173,22 +1234,6 @@ class LayeredRamanCalculator:
                             self._modal_pair_q_keys[cache_key] = (q_key, det_key)
                             self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
 
-        # Build a reference NAC frequency/sigma array from the first pair (on the first
-        # Raman layer) that actually produced a non-None NAC result.  Pairs with zero
-        # q_ph (e.g., forward×forward at normal incidence, same system for ES) are
-        # stored as None in the cache and are skipped here.
-        # The NAC returns modes sorted by eigenvalue (ascending), so nac_freqs_ref[k]
-        # is the frequency of the k-th NAC eigenmode — NOT necessarily the TO mode
-        # originally at index k.  Using nac_freqs_ref[mode_idx] ensures both frequency
-        # and tensor (nac_tensors[mode_idx]) refer to the same NAC eigenmode.
-        nac_freqs_ref = None
-        nac_sigmas_ref = None
-        for _try_cv in self._nac_cache.values():
-            if _try_cv is not None and _try_cv[0] is not None:
-                nac_freqs_ref = _try_cv[0]   # shape (n_modes,), NAC-eigenvalue-sorted
-                nac_sigmas_ref = _try_cv[2]
-                break
-
         layer_indices = [rl.layer_index for rl in self.raman_layers]
         rotation_matrices = [rl.rotation_matrix for rl in self.raman_layers]
         raman_tensors_by_layer = [rl.raman_tensors for rl in self.raman_layers]
@@ -1214,17 +1259,9 @@ class LayeredRamanCalculator:
             )
             mode_args_list = []
             for mode_idx in range(n_modes):
-                if nac_freqs_ref is not None and mode_idx < len(nac_freqs_ref):
-                    nu_m = float(nac_freqs_ref[mode_idx])
-                else:
-                    nu_m = float(ref_layer.phonon_frequencies_cm1[mode_idx])
-
-                if nac_sigmas_ref is not None and mode_idx < len(nac_sigmas_ref):
-                    sigma = float(nac_sigmas_ref[mode_idx])
-                else:
-                    sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
-
-                mode_args_list.append((mode_idx, nu_m, sigma, self.laser_frequency_cm1 - nu_m))
+                fallback_nu_m = float(ref_layer.phonon_frequencies_cm1[mode_idx])
+                sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
+                mode_args_list.append((mode_idx, fallback_nu_m, sigma, self.laser_frequency_cm1))
 
             active_freqs = []
             active_intensities = []
@@ -1235,10 +1272,10 @@ class LayeredRamanCalculator:
                     progress_callback()
                 if result is None:
                     continue
-                _mode_idx, nu_m, I_m, sigma = result
-                active_freqs.append(nu_m)
-                active_intensities.append(I_m)
-                active_sigmas.append(sigma)
+                for _mode_idx, nu_m, I_m, sigma in result:
+                    active_freqs.append(nu_m)
+                    active_intensities.append(I_m)
+                    active_sigmas.append(sigma)
 
             return (
                 np.array(active_freqs),
@@ -1255,72 +1292,64 @@ class LayeredRamanCalculator:
             if progress_callback is not None:
                 progress_callback()
 
-            # Use the NAC-corrected frequency for this eigenmode position.  When NAC is
-            # unavailable fall back to the TO frequency stored in ref_layer.
-            if nac_freqs_ref is not None and mode_idx < len(nac_freqs_ref):
-                nu_m = float(nac_freqs_ref[mode_idx])
-            else:
-                nu_m = ref_layer.phonon_frequencies_cm1[mode_idx]
-
-            if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
-                continue
-
-            nu_S = self.laser_frequency_cm1 - nu_m
-            if nu_S <= 0.0:
-                logger.warning("modal_pairs: mode %.1f cm⁻¹ exceeds laser freq; skipping.", nu_m)
-                continue
-
-            if nac_sigmas_ref is not None and mode_idx < len(nac_sigmas_ref):
-                sigma = float(nac_sigmas_ref[mode_idx])
-            else:
-                sigma = self.linewidths_cm1[mode_idx] if mode_idx < len(self.linewidths_cm1) else 5.0
-
-            # ES modal fields: recompute at nu_S if not using approximate_es
-            if self.approximate_es:
-                channels_S = channels_S_base
-            else:
-                modal_fields_S, qs_S_mode, _ = self._get_modal_fields_at_gl_points(
-                    nu_S, es_system, self.collection_angle_rad, z_s
-                )
-                channels_S = {
-                    pol_idx: self._get_modal_q_channels(modal_fields_S, qs_S_mode, pol_idx)
-                    for pol_idx in detected_pol_indices
-                }
-                # Guard: if dispersion between laser and Stokes frequencies changes the
-                # number of qz channels, the NAC cache (built at laser frequency) will
-                # be silently mismatched.  This should not happen for normal Raman shifts
-                # but emit a warning so it is diagnosable if it ever does.
-                for _rl in self.raman_layers:
-                    for _pol in detected_pol_indices:
-                        _n_base = len(channels_S_base[_pol].get(_rl.layer_index, []))
-                        _n_mode = len(channels_S[_pol].get(_rl.layer_index, []))
-                        if _n_base != _n_mode:
-                            logger.warning(
-                                "modal_pairs approximate_es=False: layer %d pol %d has "
-                                "%d qz channels at nu_S=%.1f cm-1 but the NAC cache was "
-                                "built with %d channels at the laser frequency; NAC "
-                                "tensors may be misassigned for this mode.",
-                                _rl.layer_index, _pol, _n_mode, nu_S, _n_base,
-                            )
-
-            pair_amps = {}  # group_key → complex amplitude
+            fallback_nu_m = ref_layer.phonon_frequencies_cm1[mode_idx]
+            sigma = self.linewidths_cm1[mode_idx] if mode_idx < len(self.linewidths_cm1) else 5.0
+            pair_groups = {}  # group_key -> {"amp", "frequency", "sigma"}
+            channels_s_cache = {}
 
             for rl, sl in zip(self.raman_layers, self._gl_layer_slices):
                 layer_channels_L = channels_L.get(rl.layer_index, [])
                 for i_channel, channel_L in enumerate(layer_channels_L):
                     for det_pol_idx in detected_pol_indices:
-                        layer_channels_S = channels_S[det_pol_idx].get(rl.layer_index, [])
-                        for j_channel, channel_S in enumerate(layer_channels_S):
+                        layer_channels_S_base = channels_S_base[det_pol_idx].get(rl.layer_index, [])
+                        for j_channel, _channel_S_base in enumerate(layer_channels_S_base):
                             cache_key = (rl.layer_index, i_channel, det_pol_idx, j_channel)
                             cache_val = self._nac_cache.get(cache_key)
 
-                            if cache_val is not None and cache_val[0] is not None:
-                                nac_tensors = cache_val[1]
-                            else:
-                                nac_tensors = rl.raman_tensors
+                            nu_m, nac_tensors = _modal_pair_frequency_and_tensors(
+                                mode_idx, fallback_nu_m, rl.raman_tensors, cache_val
+                            )
+
+                            if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+                                continue
 
                             if mode_idx >= len(nac_tensors):
                                 continue
+
+                            if self.approximate_es:
+                                channels_S = channels_S_base
+                            else:
+                                nu_S = self.laser_frequency_cm1 - nu_m
+                                if nu_S <= 0.0:
+                                    logger.warning("modal_pairs: mode %.1f cm⁻¹ exceeds laser freq; skipping.", nu_m)
+                                    continue
+                                freq_key = round(float(nu_m), 10)
+                                if freq_key not in channels_s_cache:
+                                    modal_fields_S, qs_S_mode, _ = self._get_modal_fields_at_gl_points(
+                                        nu_S, es_system, self.collection_angle_rad, z_s
+                                    )
+                                    channels_s_cache[freq_key] = {
+                                        pol_idx: self._get_modal_q_channels(modal_fields_S, qs_S_mode, pol_idx)
+                                        for pol_idx in detected_pol_indices
+                                    }
+                                    for _rl in self.raman_layers:
+                                        for _pol in detected_pol_indices:
+                                            _n_base = len(channels_S_base[_pol].get(_rl.layer_index, []))
+                                            _n_mode = len(channels_s_cache[freq_key][_pol].get(_rl.layer_index, []))
+                                            if _n_base != _n_mode:
+                                                logger.warning(
+                                                    "modal_pairs approximate_es=False: layer %d pol %d has "
+                                                    "%d qz channels at nu_S=%.1f cm-1 but the NAC cache was "
+                                                    "built with %d channels at the laser frequency; NAC "
+                                                    "tensors may be misassigned for this mode.",
+                                                    _rl.layer_index, _pol, _n_mode, nu_S, _n_base,
+                                                )
+                                channels_S = channels_s_cache[freq_key]
+
+                            layer_channels_S = channels_S[det_pol_idx].get(rl.layer_index, [])
+                            if j_channel >= len(layer_channels_S):
+                                continue
+                            channel_S = layer_channels_S[j_channel]
 
                             R_crystal = nac_tensors[mode_idx]
                             R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
@@ -1337,24 +1366,41 @@ class LayeredRamanCalculator:
                             else:  # MODAL_PAIR_COHERENT_ALL
                                 group_key = "all"
 
-                            pair_amps[group_key] = pair_amps.get(group_key, 0.0 + 0.0j) + amp_ij
+                            existing = pair_groups.get(group_key)
+                            if existing is None:
+                                pair_groups[group_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": sigma}
+                            elif abs(existing["frequency"] - nu_m) <= 1.0e-10:
+                                existing["amp"] += amp_ij
+                            else:
+                                split_key = (group_key, _line_key(nu_m, sigma))
+                                split_existing = pair_groups.get(split_key)
+                                if split_existing is None:
+                                    pair_groups[split_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": sigma}
+                                else:
+                                    split_existing["amp"] += amp_ij
 
-            I_m = sum(abs(amp) ** 2 for amp in pair_amps.values())
-
-            bose = bose_factor(nu_m, self.temperature_K)
-            I_m *= bose
-
-            active_freqs.append(nu_m)
-            active_intensities.append(I_m)
-            active_sigmas.append(sigma)
-
-            if return_contributions:
-                for gkey, amp in pair_amps.items():
+            line_accumulator = {}
+            for gkey, group_data in pair_groups.items():
+                nu_m = group_data["frequency"]
+                sigma = group_data["sigma"]
+                amp = group_data["amp"]
+                bose = bose_factor(nu_m, self.temperature_K)
+                intensity = abs(amp) ** 2 * bose
+                lkey = _line_key(nu_m, sigma)
+                if lkey not in line_accumulator:
+                    line_accumulator[lkey] = [nu_m, intensity, sigma]
+                else:
+                    line_accumulator[lkey][1] += intensity
+                if return_contributions:
                     contributions.append(RamanContribution(
                         mode_idx=mode_idx, frequency=nu_m, sigma=sigma,
-                        group_key=gkey, amplitude=amp,
-                        intensity=abs(amp) ** 2 * bose,
+                        group_key=gkey, amplitude=amp, intensity=intensity,
                     ))
+
+            for nu_m, intensity, sigma in line_accumulator.values():
+                active_freqs.append(nu_m)
+                active_intensities.append(intensity)
+                active_sigmas.append(sigma)
 
         result = (
             np.array(active_freqs),
@@ -1402,8 +1448,10 @@ class LayeredRamanCalculator:
 
         Returns
         -------
-        active_frequencies : ndarray, shape (M,)
-            Frequencies of the active (non-acoustic) modes in cm⁻¹.
+            active_frequencies : ndarray, shape (M,)
+            Frequencies of the active (non-acoustic) spectral contributions in
+            cm⁻¹.  In ``modal_pairs`` mode, one original phonon index may
+            produce multiple q-resolved entries.
         active_intensities : ndarray, shape (M,)
             Corresponding Raman intensities I_m (real, non-negative).
         active_linewidths : ndarray, shape (M,)

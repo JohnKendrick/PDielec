@@ -170,8 +170,9 @@ class AzimuthalSweepWindow(QWidget):
         controls_hbox.addWidget(self._tol_sb)
 
         # --- Matplotlib canvas ---
-        self.figure = matplotlib.figure.Figure(constrained_layout=True)
+        self.figure = matplotlib.figure.Figure(figsize=(7.2, 6.0), constrained_layout=False)
         self.canvas = FigureCanvasQTAgg(self.figure)
+        self.canvas.setMinimumSize(480, 360)
         self.toolbar = NavigationToolbar2QT(self.canvas, self)
 
         # --- Main layout ---

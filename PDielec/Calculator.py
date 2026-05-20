@@ -434,17 +434,17 @@ def raman_intensities(raman_tensors, volume):
 
     .. math::
 
-        R_m^{\\rm total} = V \\left(45\\alpha^2 + 7G^{(2)} + 5G^{(1)}\\right)
+        R_m^{\\rm total} = V \\left(45|\\alpha|^2 + 7G^{(2)} + 5G^{(1)}\\right)
 
-        R_m^{\\parallel}  = V \\left(30\\alpha^2 + 4G^{(2)}\\right)
+        R_m^{\\parallel}  = V \\left(30|\\alpha|^2 + 4G^{(2)}\\right)
 
-        R_m^{\\perp}      = V \\left(15\\alpha^2 + 3G^{(2)}\\right)
+        R_m^{\\perp}      = V \\left(15|\\alpha|^2 + 3G^{(2)}\\right)
 
     where :math:`\\alpha = \\operatorname{Tr}(R)/3` is the isotropic invariant,
-    :math:`G^{(2)}` is the symmetric anisotropy invariant (sum of squares of the
-    traceless symmetric part), :math:`G^{(1)}` is the antisymmetric invariant
-    (sum of squares of the antisymmetric part), and :math:`V` is the unit-cell
-    volume in Å³.
+    :math:`G^{(2)}` is the symmetric anisotropy invariant (sum of squared
+    magnitudes of the traceless symmetric part), :math:`G^{(1)}` is the
+    antisymmetric invariant (sum of squared magnitudes of the antisymmetric
+    part), and :math:`V` is the unit-cell volume in Å³.
 
     The factor of :math:`V` converts from the code's internal tensor convention
     (CASTEP-style, units ``(Å/amu)^{0.5}``, i.e. divided by ``√V_cell``) to the
@@ -481,24 +481,25 @@ def raman_intensities(raman_tensors, volume):
     The rotational invariants used here:
 
     * :math:`\\alpha  = \\operatorname{Tr}(R)/3`
-    * :math:`G^{(2)} = \\sum_{ij}(R_{\\rm sym,\\,traceless})_{ij}^2`
-    * :math:`G^{(1)} = \\sum_{ij}(R_{\\rm anti})_{ij}^2`
+    * :math:`G^{(2)} = \\sum_{ij}|(R_{\\rm sym,\\,traceless})_{ij}|^2`
+    * :math:`G^{(1)} = \\sum_{ij}|(R_{\\rm anti})_{ij}|^2`
 
     """
     nmodes = len(raman_tensors)
     activities = np.zeros((nmodes, 3))
-    I3 = np.eye(3, dtype=float)
+    I3 = np.eye(3, dtype=complex)
     for i, R in enumerate(raman_tensors):
-        R = np.asarray(R, dtype=float)
+        R = np.asarray(R, dtype=complex)
         alpha = np.trace(R) / 3.0
         R_sym = 0.5 * (R + R.T)
         R_anti = 0.5 * (R - R.T)
         R_traceless = R_sym - alpha * I3
-        gamma2 = 3.0 / 2.0 * float(np.sum(R_traceless * R_traceless))
-        kappa2 = 3.0 / 2.0 * float(np.sum(R_anti * R_anti))
-        activities[i, 0] = volume * (45.0 * alpha * alpha + 7.0 * gamma2 + 5.0 * kappa2)
-        activities[i, 1] = volume * (30.0 * alpha * alpha + 4.0 * gamma2)
-        activities[i, 2] = volume * (15.0 * alpha * alpha + 3.0 * gamma2)
+        alpha2 = float(np.real(alpha * np.conj(alpha)))
+        gamma2 = 3.0 / 2.0 * float(np.real(np.sum(R_traceless * np.conj(R_traceless))))
+        kappa2 = 3.0 / 2.0 * float(np.real(np.sum(R_anti * np.conj(R_anti))))
+        activities[i, 0] = volume * (45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2)
+        activities[i, 1] = volume * (30.0 * alpha2 + 4.0 * gamma2)
+        activities[i, 2] = volume * (15.0 * alpha2 + 3.0 * gamma2)
     return activities
 
 
