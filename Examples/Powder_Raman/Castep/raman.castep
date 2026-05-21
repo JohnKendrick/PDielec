@@ -8,12 +8,13 @@
  |                                                 |
  +-------------------------------------------------+
  |                                                 |
- | Welcome to Academic Release CASTEP version 19.1 |          
+ | Welcome to Academic Release CASTEP version 24.1 |
  | Ab Initio Total Energy Program                  |
  |                                                 |
  | Authors:                                        |
  | M. Segall, M. Probert, C. Pickard, P. Hasnip,   |
- | S. Clark, K. Refson, J. R. Yates, M. Payne      |
+ | S. Clark, K. Refson, J. R. Yates,               |
+ | A. Bartok-Partay, M. Payne                      |
  |                                                 |
  | Contributors:                                   |
  | P. Lindan, P. Haynes, J. White, V. Milman,      |
@@ -24,14 +25,18 @@
  | J. Aarons, B. Walker, R. Gillen, D. Jones       |
  | T. Green, I. J. Bush, C. J. Armstrong,          |
  | E. J. Higgins, E. L. Brown, M. S. McFly,        |
- | J. Wilkins, B-C. Shih, P. J. P. Byrne           |
+ | J. Wilkins, B-C. Shih, P. J. P. Byrne,          |
+ | R. J. Maurer, J. C. Womack, J. Dziedzic,        |
+ | L. LeBlanc, T. K. Stenczel, J. Kermode,         |
+ | S. Sturniolo, B. Shi, B. Durham, M. Evans,      |
+ | M. J. Smith, A. Tamerus, Z. Hawkhead,           |
+ | V. Ravindran, T. Hollins, S. A. Joyce,          |
+ | R. T. Strong, A. M. Reilly, S. J. Donaldson     |
  |                                                 |
- | Copyright (c) 2000 - 2018                       |
+ | Copyright (c) 2000 - 2023                       |
  |                                                 |
- |     Distributed under the terms of an           |
- |     Agreement between the United Kingdom        |
- |     Car-Parrinello (UKCP) Consortium,           |
- |     Daresbury Laboratory and Accelrys, Inc.     |
+ |     Distributed under license from Cambridge    |
+ |     Enterprise for academic use only.           |
  |                                                 |
  | Please cite                                     |
  |                                                 |
@@ -55,16 +60,24 @@
 
 
 
- Compiled for linux_x86_64_gfortran10.1 on Mon, 18 May 2020 13:39:14 +0100
- from code version Version unavailable
- Compiler: GNU Fortran 10.1.0; Optimisation: fast
- MATHLIBS: openblas (LAPACK version 3.9.0)
- FFT Lib : fftw3 version fftw-3.3.8
- Fundamental constants values: CODATA 2014
+ Compiled for  GNU 14.2.0 on 13-05-2026 09:32:35
+ from code version 6355fd106 Castep241_branch Thu Mar 7 17:56:19 2024 +0000
+ Compiler: GNU Fortran 14.2.0; Optimisation: FAST
+ Comms   : Intel(R) MPI Library 2021.14 for Linux* OS
+ MATHLIBS: default (LAPACK version 3.11.0)
+ FFT Lib : mkl
+ Fundamental constants values: CODATA 2018
 
- Run started: Sat, 20 Jun 2020 22:05:29 +0100
+ Run started: Wed, 13 May 2026 17:21:12 +0100
  Warning - deprecated keyword PHONON_SUM_RULE found in input file
          - preferred usage is PHONON_SUM_RULE_METHOD
+
+ Warning in parameters_validate: current value of 
+   ELEC_EIGENVALUE_TOL = 0.100000E-09eV
+   is too large to achieve desired level of convergence of response properties.
+   This may cause convergence failures and/or inaccuracy of results
+   of PHONON+EFIELD calculations - recommend you use a smaller value, e.g. 
+   ELEC_EIGENVALUE_TOL = 0.222222E-11eV
  +-------------------------------------------------+
  |                                                 |
  |  D D D D    F F F F F  P P P P     T T T T T    |
@@ -77,7 +90,7 @@
  |                                                 |
  | Welcome to Castep Linear Response (DFPT)        |
  |                                                 |
- | Copyright (c) 2006 - 2018                       |
+ | Copyright (c) 2006 - 2023                       |
  |                                                 |
  | Please cite the following publications in all   |
  | work arising from your use of CASTEP LR.        |
@@ -94,7 +107,7 @@
  Converged in 61 iterations to an ae energy of -2040.902 eV
 
    ============================================================                
-   | Pseudopotential Report - Date of generation 20-06-2020   |                
+   | Pseudopotential Report - Date of generation 13-05-2026   |                
    ------------------------------------------------------------                
    | Element: O Ionic charge:  6.00 Level of theory: PBE      |                
    | Atomic Solver: Koelling-Harmon                           |                
@@ -122,10 +135,10 @@
 
  Atomic calculation performed for Zn: 1s2 2s2 2p6 3s2 3p6 3d10 4s2
 
- Converged in 112 iterations to an ae energy of -48872.129 eV
+ Converged in 113 iterations to an ae energy of -48872.130 eV
 
    ============================================================                
-   | Pseudopotential Report - Date of generation 20-06-2020   |                
+   | Pseudopotential Report - Date of generation 13-05-2026   |                
    ------------------------------------------------------------                
    | Element: Zn Ionic charge: 12.00 Level of theory: PBE     |                
    | Atomic Solver: Koelling-Harmon                           |                
@@ -152,13 +165,13 @@
 
  Pseudo atomic calculation performed for O 2s2 2p4
 
- Converged in 43 iterations to a total energy of -429.3506 eV
+ Converged in 46 iterations to a total energy of -429.3506 eV
 
  Pseudo atomic calculation performed for Zn 3d10 4s2
 
- Converged in 56 iterations to a total energy of -1740.2914 eV
- Calculation parallelised over 8 processes.
- Data is distributed by k-point(8-way)
+ Converged in 60 iterations to a total energy of -1740.2912 eV
+ Calculation parallelised over 24 processes.
+ Data is distributed by k-point(24-way)
 
  ************************************ Title ************************************
  
@@ -166,12 +179,15 @@
  ***************************** General Parameters ******************************
   
  output verbosity                               : normal  (1)
- write checkpoint data to                       : ramand3.check
+ write checkpoint data to                       : raman.check
  type of calculation                            : Phonon followed by E-field
- stress calculation                             : on
+ stress calculation                             : off
  density difference calculation                 : off
  electron localisation func (ELF) calculation   : off
  Hirshfeld analysis                             : off
+ polarisation (Berry phase) analysis            : off
+ molecular orbital projected DOS                : off
+ deltaSCF calculation                           : off
  unlimited duration calculation
  timing information                             : on
  memory usage estimate                          : on
@@ -201,9 +217,10 @@
  output         dipole unit                     : D
  output         efield unit                     : eV/A/e
  output        entropy unit                     : J/mol/K
+ output    efield chi2 unit                     : pm/V
   
  wavefunctions paging                           : none
- random number generator seed                   : randomised (220529403)
+ random number generator seed                   :  172113070
  data distribution                              : optimal for this architecture
  optimization strategy                          : maximize speed(+++)
 
@@ -225,9 +242,7 @@
  plane wave basis set cut-off                   :  1000.0000   eV
  size of standard grid                          :     2.0000
  size of   fine   gmax                          :    32.4018   1/A
- finite basis set correction                    : automatic
- number of sample energies                      :          3
-           sample  spacing                      :     5.0000   eV
+ finite basis set correction                    : none
 
  **************************** Electronic Parameters ****************************
   
@@ -242,7 +257,7 @@
          and number of  SD  steps               :          1
          and number of  CG  steps               :          4
   
- total energy / atom convergence tol.           : 0.1000E-09   eV
+ total energy / atom convergence tol.           : 0.1000E-10   eV
  max force / atom convergence tol.              : ignored
  convergence tolerance window                   :          3   cycles
  max. number of SCF cycles                      :        100
@@ -284,6 +299,7 @@
  => ignoring 3 lowest modes when calculating ionic  contribution to permittivity
  calculation with frequency spacing             : 0.4556E-05   cm-1
  Q-factor for lineshape broadening              :    50.0000
+ calculate non-linear optical properties        : CHI2
  max. number of E-field cycles                  :        200
  max. number of E-field CG steps                :          0
  convergence tolerance window                   :          2   cycles
@@ -307,7 +323,7 @@
 
                        Current cell volume =            49.373179       A**3
                                    density =             3.296907   AMU/A**3
-                                           =             5.474643     g/cm^3
+                                           =             5.474644     g/cm^3
 
                            -------------------------------
                                      Cell Contents
@@ -350,36 +366,18 @@
                            -------------------------------
                        MP grid size for SCF calculation is 11 11  6
                             with an offset of   0.000  0.000  0.000
-                       Number of kpoints used =            48
+                       Number of kpoints used =           363
 
                            -------------------------------
                                Symmetry and Constraints
                            -------------------------------
 
-                      Maximum deviation from symmetry = 0.531412E-07     ANG
+                      Maximum deviation from symmetry =  0.00000         ANG
 
- !-----------------------------------------------------------------------------!
- !                                                                             !
- !                     * * *      W A R N I N G     * * *                      !
- !                                                                             !
- !   Atomic positions are slightly inconsistent with symmetry operations,      !
- !   (although the discrepancy is lower than value of SYMMETRY_TOL).           !
-  !   In severe cases this could lead to seriously inaccurate results.         !
- !                                                                             !
- !   It is recommended that symmetries are satisfied to a tolerance of 1e-8au  !
- !   or better. Consider one or more of the following:                         !
- !     - Adjust input so that atomic positions and symmetry are consistent.    !
- !     - Use SNAP_TO_SYMMETRY keyword in the cell file to adjust co-ordinates. !
- !     - Reduce the value of SYMMETRY_TOL in the cell file.                    !
- !     - Remove incorrect symmetry operations from .cell file.                 !
- !                                                                             !
- !-----------------------------------------------------------------------------!
-
-
-                      Number of symmetry operations   =          12
+                      Number of symmetry operations   =           1
                       Number of ionic constraints     =           3
-                      Point group of crystal =    25: C6v, 6mm, 6 m m
-                      Space group of crystal =   186: P6_3mc, P 6c -2c
+                      Point group of crystal =     1: C1, 1, 1
+                      Space group of crystal =    36: Cmc2_1, C 2c -2
 
              Set iprint > 1 for details on symmetry rotations/translations
 
@@ -411,172 +409,130 @@
         x  Zn          111.9341       1.5620   (default)                   x
         xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  
+ 
 +---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
 |                                                     Memory          Disk    |
-| Baseline code, static data and system overhead      237.0 MB         0.0 MB |
+| Baseline code, static data and system overhead     6951.0 MB         0.0 MB |
 | BLAS internal memory storage                          0.0 MB         0.0 MB |
-| Model and support data                               34.6 MB         0.0 MB |
-| Electronic energy minimisation requirements          35.2 MB         0.0 MB |
+| Model and support data                               81.3 MB         0.0 MB |
+| Electronic energy minimisation requirements          85.4 MB         0.0 MB |
 | Force calculation requirements                       11.3 MB         0.0 MB |
-| Stress calculation requirements                      12.5 MB         0.0 MB |
 |                                               ----------------------------- |
-| Approx. total storage required per process          306.8 MB         0.0 MB |
+| Approx. total storage required per process         7117.6 MB         0.0 MB |
 |                                                                             |
 | Requirements will fluctuate during execution and may exceed these estimates |
 +-----------------------------------------------------------------------------+
-Calculating finite basis set correction with  3 cut-off energies.
-Calculating total energy with cut-off of  990.000 eV.
------------------------------------------------------------------------- <-- SCF
-SCF loop      Energy                           Energy gain       Timer   <-- SCF
-                                               per atom          (sec)   <-- SCF
------------------------------------------------------------------------- <-- SCF
-Initial  -1.46292983E+003                                          7.22  <-- SCF
-      1  -4.05465447E+003                    6.47931160E+002      13.89  <-- SCF
-      2  -4.31519046E+003                    6.51339966E+001      20.57  <-- SCF
-      3  -4.34802830E+003                    8.20945918E+000      27.25  <-- SCF
-      4  -4.35529445E+003                    1.81653812E+000      33.16  <-- SCF
-      5  -4.35734898E+003                    5.13633888E-001      39.61  <-- SCF
-      6  -4.35775183E+003                    1.00711970E-001      46.15  <-- SCF
-      7  -4.35784600E+003                    2.35431593E-002      52.70  <-- SCF
-      8  -4.35786907E+003                    5.76585728E-003      59.25  <-- SCF
-      9  -4.35787266E+003                    8.98040596E-004      65.22  <-- SCF
-     10  -4.35787402E+003                    3.39536710E-004      71.83  <-- SCF
-     11  -4.35787517E+003                    2.88294747E-004      78.45  <-- SCF
-     12  -4.35787600E+003                    2.06588481E-004      85.07  <-- SCF
-     13  -4.35787647E+003                    1.16702972E-004      91.68  <-- SCF
-     14  -4.35787670E+003                    5.80567171E-005      98.07  <-- SCF
-     15  -4.35787680E+003                    2.68844355E-005     103.79  <-- SCF
-     16  -4.35787685E+003                    1.20809535E-005     110.39  <-- SCF
-     17  -4.35787687E+003                    5.36398871E-006     116.98  <-- SCF
-     18  -4.35787688E+003                    2.36942858E-006     123.58  <-- SCF
-     19  -4.35787689E+003                    1.04635814E-006     130.17  <-- SCF
-     20  -4.35787689E+003                    4.61898609E-007     136.74  <-- SCF
-     21  -4.35787689E+003                    2.04167150E-007     142.70  <-- SCF
-     22  -4.35787689E+003                    9.02852546E-008     149.29  <-- SCF
-     23  -4.35787689E+003                    3.99767414E-008     155.88  <-- SCF
-     24  -4.35787689E+003                    1.76989308E-008     162.47  <-- SCF
-     25  -4.35787689E+003                    7.83776923E-009     169.07  <-- SCF
-     26  -4.35787689E+003                    3.49825489E-009     175.67  <-- SCF
-     27  -4.35787689E+003                    1.55162193E-009     181.27  <-- SCF
-     28  -4.35787689E+003                    6.77879935E-010     185.95  <-- SCF
-     29  -4.35787689E+003                    3.09357643E-010     190.64  <-- SCF
-     30  -4.35787689E+003                    1.34377226E-010     195.54  <-- SCF
-     31  -4.35787689E+003                    5.04639655E-011     200.67  <-- SCF
-     32  -4.35787689E+003                    4.44701611E-011     205.58  <-- SCF
------------------------------------------------------------------------- <-- SCF
- 
-Final energy =  -4357.876891555     eV
-(energy not corrected for finite basis set)
- 
-(SEDC) Total Energy Correction : -0.106912E+01 eV
-
-Dispersion corrected final energy* =  -4358.946016488     eV
-
- * not corrected for finite basis set
-
-Calculating total energy with cut-off of  995.000 eV.
------------------------------------------------------------------------- <-- SCF
-SCF loop      Energy                           Energy gain       Timer   <-- SCF
-                                               per atom          (sec)   <-- SCF
------------------------------------------------------------------------- <-- SCF
-Initial  -4.35787689E+003                                        207.43  <-- SCF
-      1  -4.35802603E+003                    3.72849233E-002     212.12  <-- SCF
-      2  -4.35802603E+003                    3.04284177E-008     216.79  <-- SCF
-      3  -4.35802603E+003                    1.90525638E-009     221.47  <-- SCF
-      4  -4.35802603E+003                    4.60556191E-010     226.17  <-- SCF
-      5  -4.35802603E+003                    1.56225610E-010     230.85  <-- SCF
-      6  -4.35802603E+003                    5.47176331E-011     235.53  <-- SCF
-      7  -4.35802603E+003                    9.86077486E-012     242.49  <-- SCF
------------------------------------------------------------------------- <-- SCF
- 
-Final energy =  -4358.026031380     eV
-(energy not corrected for finite basis set)
- 
-
-Dispersion corrected final energy* =  -4359.095156313     eV
-
- * not corrected for finite basis set
-
+Calculating approximate eigenstates for fixed initial Hamiltonian
+Cut-off for approx. calculation is   89.988 eV
+Improving approx. states at cut-off of  653.073 eV
+Resetting cut-off to 1000.000 eV
+Improving states further at cut-off of 1000.000 eV
 Calculating total energy with cut-off of 1000.000 eV.
 ------------------------------------------------------------------------ <-- SCF
 SCF loop      Energy                           Energy gain       Timer   <-- SCF
                                                per atom          (sec)   <-- SCF
 ------------------------------------------------------------------------ <-- SCF
-Initial  -4.35802603E+003                                        244.34  <-- SCF
-      1  -4.35816157E+003                    3.38858105E-002     249.04  <-- SCF
-      2  -4.35816157E+003                    2.60626080E-008     253.75  <-- SCF
-      3  -4.35816157E+003                    7.97756021E-010     258.46  <-- SCF
-      4  -4.35816157E+003                    9.47407781E-011     263.18  <-- SCF
-      5  -4.35816157E+003                    2.16550350E-011     268.30  <-- SCF
-      6  -4.35816157E+003                    7.73394107E-013     275.60  <-- SCF
+Initial  -4.32012786E+003                                         14.59  <-- SCF
+      1  -4.34776702E+003                    6.90978844E+000      21.89  <-- SCF
+      2  -4.35400591E+003                    1.55972367E+000      29.32  <-- SCF
+      3  -4.35682410E+003                    7.04547588E-001      36.52  <-- SCF
+      4  -4.35773877E+003                    2.28667343E-001      44.23  <-- SCF
+      5  -4.35799936E+003                    6.51466465E-002      51.07  <-- SCF
+      6  -4.35809438E+003                    2.37559774E-002      59.16  <-- SCF
+      7  -4.35813205E+003                    9.41717520E-003      66.06  <-- SCF
+      8  -4.35814786E+003                    3.95303387E-003      73.50  <-- SCF
+      9  -4.35815484E+003                    1.74538486E-003      80.24  <-- SCF
+     10  -4.35815850E+003                    9.14143609E-004      87.31  <-- SCF
+     11  -4.35816017E+003                    4.16390204E-004      94.42  <-- SCF
+     12  -4.35816084E+003                    1.68113274E-004     101.18  <-- SCF
+     13  -4.35816110E+003                    6.52480435E-005     108.54  <-- SCF
+     14  -4.35816120E+003                    2.56563938E-005     114.55  <-- SCF
+     15  -4.35816124E+003                    1.03943186E-005     121.58  <-- SCF
+     16  -4.35816126E+003                    4.37820456E-006     128.88  <-- SCF
+     17  -4.35816127E+003                    1.90804893E-006     136.12  <-- SCF
+     18  -4.35816127E+003                    8.58050025E-007     144.00  <-- SCF
+     19  -4.35816127E+003                    3.94595150E-007     150.89  <-- SCF
+     20  -4.35816127E+003                    1.84693088E-007     158.83  <-- SCF
+     21  -4.35816127E+003                    8.74374248E-008     165.71  <-- SCF
+     22  -4.35816127E+003                    4.17238390E-008     172.73  <-- SCF
+     23  -4.35816127E+003                    2.00216268E-008     180.24  <-- SCF
+     24  -4.35816127E+003                    9.63803743E-009     186.83  <-- SCF
+     25  -4.35816127E+003                    4.65660595E-009     194.82  <-- SCF
+     26  -4.35816127E+003                    2.24206953E-009     201.93  <-- SCF
+     27  -4.35816127E+003                    1.09203249E-009     209.44  <-- SCF
+     28  -4.35816127E+003                    5.28614876E-010     216.51  <-- SCF
+     29  -4.35816127E+003                    2.49226253E-010     223.19  <-- SCF
+     30  -4.35816127E+003                    1.15042374E-010     230.62  <-- SCF
+     31  -4.35816127E+003                    8.87469744E-011     236.87  <-- SCF
+     32  -4.35816127E+003                    2.68754454E-011     244.71  <-- SCF
+     33  -4.35816127E+003                    1.93348528E-012     255.60  <-- SCF
+     34  -4.35816127E+003                    9.66742640E-012     266.79  <-- SCF
+     35  -4.35816127E+003                    0.00000000E+000     279.17  <-- SCF
 ------------------------------------------------------------------------ <-- SCF
  
-Final energy =  -4358.161574730     eV
+Final energy =  -4358.161274931     eV
 (energy not corrected for finite basis set)
  
+(SEDC) Total Energy Correction : -0.106912E+01 eV
 
-Dispersion corrected final energy* =  -4359.230699663     eV
+Dispersion corrected final energy* =  -4359.230399872     eV
 
- * not corrected for finite basis set
+Writing analysis data to raman.castep_bin
 
- For future reference: finite basis dEtot/dlog(Ecut) =     -28.278492eV
- Total energy corrected for finite basis set =   -4359.231432 eV
+Writing model to raman.check
 
- Efield perturbation    1:  X                                           278.87s
-  Parallel strategy changed for perturbation using 363 k-points
-  Data is distributed by G-vector(1-way) and k-point(8-way) and band(1-way)
+ Efield perturbation    1:  X                                           284.75s
   +---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
   |                                                     Memory          Disk    |
-  | Baseline code, static data and system overhead      237.0 MB         0.0 MB |
+  | Baseline code, static data and system overhead     6951.0 MB         0.0 MB |
   | BLAS internal memory storage                          0.0 MB         0.0 MB |
-  | Model and support data                               34.6 MB         0.0 MB |
-  | DFPT E-field response requirements                  330.4 MB         0.0 MB |
+  | Model and support data                               81.3 MB         0.0 MB |
+  | DFPT E-field response requirements                  121.3 MB         0.0 MB |
   |                                               ----------------------------- |
-  | Approx. total storage required per process          602.0 MB         0.0 MB |
+  | Approx. total storage required per process         7153.5 MB         0.0 MB |
   |                                                                             |
   | Requirements will fluctuate during execution and may exceed these estimates |
   +-----------------------------------------------------------------------------+
 
- Efield perturbation    2:  Y                                           954.48s
+ Efield perturbation    2:  Y                                           444.37s
 
- Efield perturbation    3:  Z                                          1627.80s
- Computed auxilliary wavefunction - u2_E1E1   (           1  of 9)
- Computed auxilliary wavefunction - u2_E1E2   (           2  of 9)
- Computed auxilliary wavefunction - u2_E1E3   (           3  of 9)
- Computed auxilliary wavefunction - u2_E2E1   (           4  of 9)
- Computed auxilliary wavefunction - u2_E2E2   (           5  of 9)
- Computed auxilliary wavefunction - u2_E2E3   (           6  of 9)
- Computed auxilliary wavefunction - u2_E3E1   (           7  of 9)
- Computed auxilliary wavefunction - u2_E3E2   (           8  of 9)
- Computed auxilliary wavefunction - u2_E3E3   (           9  of 9)
- Perturbation    1 (of   12): O     1 X at q=( 0.000, 0.000, 0.000):   5218.10s
+ Efield perturbation    3:  Z                                           547.09s
+  Computed auxilliary wavefunction - u2_E1E1 (1 of 9)                    721.82
+  Computed auxilliary wavefunction - u2_E1E2 (2 of 9)                    766.82
+  Computed auxilliary wavefunction - u2_E1E3 (3 of 9)                    810.19
+  Computed auxilliary wavefunction - u2_E2E1 (4 of 9)                    853.62
+  Computed auxilliary wavefunction - u2_E2E2 (5 of 9)                    892.34
+  Computed auxilliary wavefunction - u2_E2E3 (6 of 9)                    931.46
+  Computed auxilliary wavefunction - u2_E3E1 (7 of 9)                    973.14
+  Computed auxilliary wavefunction - u2_E3E2 (8 of 9)                   1014.75
+  Computed auxilliary wavefunction - u2_E3E3 (9 of 9)                   1052.18
+ Perturbation    1 (of   12): O     1 X at q=( 0.000, 0.000, 0.000):   1078.89s
   Parallel strategy changed for perturbation using 363 k-points
-  Data is distributed by G-vector(1-way) and k-point(8-way) and band(1-way)
+  Data is distributed by G-vector(1-way) and k-point(24-way) and band(1-way)
   +---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
   |                                                     Memory          Disk    |
-  | Baseline code, static data and system overhead      237.0 MB         0.0 MB |
+  | Baseline code, static data and system overhead     6951.0 MB         0.0 MB |
   | BLAS internal memory storage                          0.0 MB         0.0 MB |
-  | Model and support data                               34.6 MB         0.0 MB |
-  | DFPT phonon calculation requirements                467.9 MB         0.0 MB |
+  | Model and support data                               81.3 MB         0.0 MB |
+  | DFPT phonon calculation requirements                169.1 MB         0.0 MB |
   |                                               ----------------------------- |
-  | Approx. total storage required per process          739.5 MB         0.0 MB |
+  | Approx. total storage required per process         7201.4 MB         0.0 MB |
   |                                                                             |
   | Requirements will fluctuate during execution and may exceed these estimates |
   +-----------------------------------------------------------------------------+
- Perturbation    2 (of   12): O     2 X at q=( 0.000, 0.000, 0.000):   5825.52s
- Perturbation    3 (of   12): Zn    1 X at q=( 0.000, 0.000, 0.000):   6426.98s
- Perturbation    4 (of   12): Zn    2 X at q=( 0.000, 0.000, 0.000):   7018.73s
- Perturbation    5 (of   12): O     1 Y at q=( 0.000, 0.000, 0.000):   7636.43s
- Perturbation    6 (of   12): O     2 Y at q=( 0.000, 0.000, 0.000):   8233.79s
- Perturbation    7 (of   12): Zn    1 Y at q=( 0.000, 0.000, 0.000):   8836.33s
- Perturbation    8 (of   12): Zn    2 Y at q=( 0.000, 0.000, 0.000):   9419.90s
- Perturbation    9 (of   12): O     1 Z at q=( 0.000, 0.000, 0.000):  10004.10s
- Perturbation   10 (of   12): O     2 Z at q=( 0.000, 0.000, 0.000):  10559.42s
- Perturbation   11 (of   12): Zn    1 Z at q=( 0.000, 0.000, 0.000):  11113.07s
- Perturbation   12 (of   12): Zn    2 Z at q=( 0.000, 0.000, 0.000):  11665.67s
+ Perturbation    2 (of   12): O     2 X at q=( 0.000, 0.000, 0.000):   1202.26s
+ Perturbation    3 (of   12): Zn    1 X at q=( 0.000, 0.000, 0.000):   1315.35s
+ Perturbation    4 (of   12): Zn    2 X at q=( 0.000, 0.000, 0.000):   1426.04s
+ Perturbation    5 (of   12): O     1 Y at q=( 0.000, 0.000, 0.000):   1534.94s
+ Perturbation    6 (of   12): O     2 Y at q=( 0.000, 0.000, 0.000):   1644.63s
+ Perturbation    7 (of   12): Zn    1 Y at q=( 0.000, 0.000, 0.000):   1753.09s
+ Perturbation    8 (of   12): Zn    2 Y at q=( 0.000, 0.000, 0.000):   1862.24s
+ Perturbation    9 (of   12): O     1 Z at q=( 0.000, 0.000, 0.000):   1978.75s
+ Perturbation   10 (of   12): O     2 Z at q=( 0.000, 0.000, 0.000):   2088.93s
+ Perturbation   11 (of   12): Zn    1 Z at q=( 0.000, 0.000, 0.000):   2196.94s
+ Perturbation   12 (of   12): Zn    2 Z at q=( 0.000, 0.000, 0.000):   2302.70s
 
- Phonon calculation: q-point   1 (of    1) ( 0.000, 0.000, 0.000):    12217.33s
+ Phonon calculation: q-point   1 (of    1) ( 0.000, 0.000, 0.000):     2410.97s
  -------------------------------------------------------------------------------
  
  ==============================================================================
@@ -589,94 +545,91 @@ Dispersion corrected final energy* =  -4359.230699663     eV
  + -------------------------------------------------------------------------- +
  +  q-pt=    1 (  0.000000  0.000000  0.000000)     1.0000000000              +
  + -------------------------------------------------------------------------- +
- +  Acoustic sum rule correction <  41.708380 cm-1 applied                    +
+ +  Acoustic sum rule correction <  41.773974 cm-1 applied                    +
  +     N      Frequency irrep.    ir intensity active  raman activity  active + 
  +                (cm-1)         ((D/A)**2/amu)              (A**4/amu)       + 
  +                                                                            +
- +     1      -0.024437   a          0.0000000  N            0.0047580  N     + 
- +     2      -0.024437   a          0.0000000  N            0.0047245  N     + 
- +     3      -0.015701   b          0.0000000  N            0.0112980  N     + 
- +     4     108.630082   c          0.0000000  N            0.4745303  Y     + 
- +     5     108.630082   c          0.0000000  N            0.4219600  Y     + 
- +     6     266.710852   d          0.0000000  N            0.0000000  N     + 
- +     7     334.572072   b         17.3760559  Y           13.6877813  Y     + 
- +     8     367.108684   a         16.6133454  Y            0.1548927  Y     + 
- +     9     367.108684   a         16.6133454  Y            0.1539648  Y     + 
- +    10     398.159689   c          0.0000000  N            4.2566640  Y     + 
- +    11     398.159689   c          0.0000000  N            2.4898752  Y     + 
- +    12     501.087633   d          0.0000000  N            0.0000001  N     + 
+ +     1      -0.026770   a          0.0000000  N            0.0053224  N     + 
+ +     2      -0.021857   a          0.0000000  N            0.0053493  N     + 
+ +     3      -0.015701   a          0.0000000  N            0.0086907  N     + 
+ +     4     108.638433   a          0.0000000  Y            0.4757574  Y     + 
+ +     5     108.643000   a          0.0000000  Y            0.4757006  Y     + 
+ +     6     266.713786   a          0.0000000  Y            0.0000000  Y     + 
+ +     7     334.565659   a         17.3761154  Y           13.6090575  Y     + 
+ +     8     367.100518   a         16.6129460  Y            0.0002894  Y     + 
+ +     9     367.101082   a         16.6128262  Y            0.0002749  Y     + 
+ +    10     398.154816   a          0.0000000  Y            2.0180457  Y     + 
+ +    11     398.156615   a          0.0000000  Y            2.0161926  Y     + 
+ +    12     501.088780   a          0.0000000  Y            0.0000000  Y     + 
  + .......................................................................... +
  +        Character table from group theory analysis of eigenvectors          +
- +                           Point Group =  25, C6v                           +
+ +                           Point Group =   1, C1                            +
  + .......................................................................... +
- +  Rep  Mul |    E m_v   3   2 m_v   6                                       +
- +           | ------------------------                                       +
- + a E1    2 |    2   0  -1  -2   0   1                                       +
- + b A1    2 |    1   1   1   1   1   1                                       +
- + c E2    2 |    2   0  -1   2   0  -1                                       +
- + d B2    2 |    1   1   1  -1  -1  -1                                       +
+ +  Rep  Mul |    E                                                           +
+ +           | ----                                                           +
+ + a A    12 |    1                                                           +
  ==============================================================================
   
  ==============================================================================
  +                      Raman Susceptibility Tensors ((A/amu)*0.5)            +
  +----------------------------------------------------------------------------+
  + Mode number:   1 Raman tensor       Depolarisation Ratio                   +
- +    -0.0000   -0.0000   -0.0003      0.750000                               +
- +    -0.0000   -0.0000    0.0021                                             +
- +    -0.0003    0.0021    0.0000                                             +
+ +    -0.0000    0.0000    0.0022      0.750000                               +
+ +     0.0000    0.0000   -0.0003                                             +
+ +     0.0022   -0.0003    0.0000                                             +
  +                                                                            +
  + Mode number:   2 Raman tensor       Depolarisation Ratio                   +
- +     0.0000    0.0000   -0.0021      0.750000                               +
- +     0.0000    0.0000   -0.0003                                             +
- +    -0.0021   -0.0003   -0.0000                                             +
+ +    -0.0000    0.0000   -0.0003      0.749994                               +
+ +     0.0000    0.0000   -0.0022                                             +
+ +    -0.0003   -0.0022   -0.0000                                             +
  +                                                                            +
  + Mode number:   3 Raman tensor       Depolarisation Ratio                   +
- +    -0.0014    0.0006   -0.0011      0.741465                               +
- +     0.0006   -0.0014   -0.0011                                             +
- +    -0.0011   -0.0011    0.0034                                             +
+ +     0.0015   -0.0000    0.0000      0.735410                               +
+ +    -0.0000    0.0015    0.0000                                             +
+ +     0.0000    0.0000   -0.0035                                             +
  +                                                                            +
  + Mode number:   4 Raman tensor       Depolarisation Ratio                   +
- +     0.0210   -0.0040    0.0006      0.750000                               +
- +    -0.0040   -0.0210   -0.0006                                             +
- +     0.0006   -0.0006   -0.0000                                             +
+ +    -0.0103   -0.0188    0.0000      0.750000                               +
+ +    -0.0188    0.0103    0.0000                                             +
+ +     0.0000    0.0000   -0.0000                                             +
  +                                                                            +
  + Mode number:   5 Raman tensor       Depolarisation Ratio                   +
- +     0.0042    0.0197    0.0001      0.750000                               +
- +     0.0197   -0.0042   -0.0001                                             +
- +     0.0001   -0.0001   -0.0000                                             +
+ +    -0.0188    0.0103    0.0000      0.750000                               +
+ +     0.0103    0.0188   -0.0000                                             +
+ +     0.0000   -0.0000   -0.0000                                             +
  +                                                                            +
  + Mode number:   6 Raman tensor       Depolarisation Ratio                   +
- +    -0.0000    0.0000    0.0000      0.366504                               +
- +     0.0000    0.0000    0.0000                                             +
+ +     0.0000   -0.0000    0.0000      0.726009                               +
+ +    -0.0000   -0.0000    0.0000                                             +
  +     0.0000    0.0000   -0.0000                                             +
  +                                                                            +
  + Mode number:   7 Raman tensor       Depolarisation Ratio                   +
- +     0.0487   -0.0101    0.0041      0.064608                               +
- +    -0.0101    0.0487    0.0041                                             +
- +     0.0041    0.0041    0.1208                                             +
+ +     0.0486   -0.0000   -0.0001      0.060894                               +
+ +    -0.0000    0.0486   -0.0000                                             +
+ +    -0.0001   -0.0000    0.1212                                             +
  +                                                                            +
  + Mode number:   8 Raman tensor       Depolarisation Ratio                   +
- +    -0.0000   -0.0000    0.0031      0.750000                               +
- +    -0.0000   -0.0000    0.0118                                             +
- +     0.0031    0.0118    0.0000                                             +
+ +    -0.0001    0.0000    0.0003      0.747853                               +
+ +     0.0000    0.0000   -0.0005                                             +
+ +     0.0003   -0.0005    0.0000                                             +
  +                                                                            +
  + Mode number:   9 Raman tensor       Depolarisation Ratio                   +
- +    -0.0000   -0.0000    0.0118      0.750000                               +
- +    -0.0000   -0.0000   -0.0031                                             +
- +     0.0118   -0.0031    0.0000                                             +
+ +    -0.0001   -0.0000    0.0004      0.749198                               +
+ +    -0.0000    0.0000    0.0003                                             +
+ +     0.0004    0.0003    0.0001                                             +
  +                                                                            +
  + Mode number:  10 Raman tensor       Depolarisation Ratio                   +
- +     0.0141    0.0623   -0.0035      0.750000                               +
- +     0.0623   -0.0141    0.0035                                             +
- +    -0.0035    0.0035   -0.0000                                             +
+ +    -0.0124   -0.0423    0.0000      0.750000                               +
+ +    -0.0423    0.0124    0.0000                                             +
+ +     0.0000    0.0000    0.0000                                             +
  +                                                                            +
  + Mode number:  11 Raman tensor       Depolarisation Ratio                   +
- +    -0.0418    0.0211    0.0103      0.750000                               +
- +     0.0211    0.0418   -0.0102                                             +
- +     0.0103   -0.0102    0.0000                                             +
+ +    -0.0423    0.0124    0.0000      0.750000                               +
+ +     0.0124    0.0423   -0.0000                                             +
+ +     0.0000   -0.0000   -0.0000                                             +
  +                                                                            +
  + Mode number:  12 Raman tensor       Depolarisation Ratio                   +
- +    -0.0000    0.0000    0.0000      0.722209                               +
+ +     0.0000    0.0000    0.0000      0.731539                               +
  +     0.0000    0.0000   -0.0000                                             +
  +     0.0000   -0.0000   -0.0000                                             +
  +                                                                            +
@@ -686,140 +639,134 @@ Dispersion corrected final energy* =  -4359.230699663     eV
  ===============================================================================
         Optical Permittivity (f->infinity)             DC Permittivity (f=0)
         ----------------------------------             ---------------------
-         5.32959     0.00000     0.00000        10.65480     0.00000    -0.00000
-         0.00000     5.32959     0.00000         0.00000    10.65480    -0.00000
-         0.00000     0.00000     5.06325        -0.00000    -0.00000    11.76889
+         5.32958    -0.00000     0.00002        10.65489    -0.00004    -0.00002
+        -0.00000     5.32957     0.00001        -0.00004    10.65484     0.00002
+         0.00002     0.00001     5.06335        -0.00002     0.00002    11.76927
  ===============================================================================
 
  ===============================================================================
                                     Polarisabilities (A**3)
                 Optical (f->infinity)                       Static  (f=0)
                 ---------------------                       -------------
-        17.01093     0.00000     0.00000        37.93362     0.00000    -0.00000
-         0.00000    17.01093     0.00000         0.00000    37.93362    -0.00000
-         0.00000     0.00000    15.96447        -0.00000    -0.00000    42.31089
+        17.01088    -0.00001     0.00006        37.93397    -0.00017    -0.00007
+        -0.00001    17.01085     0.00002        -0.00017    37.93378     0.00007
+         0.00006     0.00002    15.96487        -0.00007     0.00007    42.31239
  ===============================================================================
  ===================================================
                    Born Effective Charges
                    ----------------------
-   O       1       -2.15170    -0.00000     0.00000
-                   -0.00000    -2.15170     0.00000
-                    0.00000     0.00000    -2.20016
-   O       2       -2.15170    -0.00000     0.00000
-                   -0.00000    -2.15170     0.00000
-                    0.00000     0.00000    -2.20016
-   Zn      1        2.15170     0.00000     0.00000
-                    0.00000     2.15170     0.00000
-                    0.00000     0.00000     2.20016
-   Zn      2        2.15170     0.00000     0.00000
-                    0.00000     2.15170     0.00000
-                    0.00000     0.00000     2.20016
+   O       1       -2.15166     0.00001    -0.00000
+                    0.00000    -2.15166    -0.00001
+                   -0.00000     0.00000    -2.20016
+   O       2       -2.15168     0.00001    -0.00000
+                    0.00001    -2.15166    -0.00001
+                    0.00000    -0.00001    -2.20016
+   Zn      1        2.15168    -0.00002     0.00003
+                    0.00000     2.15164     0.00000
+                    0.00000     0.00001     2.20016
+   Zn      2        2.15166     0.00001    -0.00003
+                   -0.00001     2.15168     0.00001
+                   -0.00000    -0.00000     2.20016
  ===================================================
 
- ******************** Symmetrised Forces ********************
+ ===========================================================================
+      Nonlinear Optical Susceptibility (pm/V)
+      ---------------------------------------
+        -0.01384    -0.00493     0.00060    -0.00001    21.65509    -0.00057
+        -0.00057    -0.00261     0.00002    21.65875    -0.00001    -0.00493
+        21.65509    21.65875   -38.35388     0.00002     0.00060    -0.00001
+ ===========================================================================
+
+ ************************** Forces **************************
  *                                                          *
  *               Cartesian components (eV/A)                *
  * -------------------------------------------------------- *
  *                         x            y            z      *
  *                                                          *
- * O               1     -0.00000      0.00000      0.00001 *
- * O               2      0.00000      0.00000      0.00001 *
- * Zn              1     -0.00000      0.00000     -0.00001 *
- * Zn              2      0.00000      0.00000     -0.00001 *
+ * O               1     -0.00000      0.00001      0.00002 *
+ * O               2      0.00000     -0.00001      0.00002 *
+ * Zn              1     -0.00001      0.00006     -0.00000 *
+ * Zn              2      0.00001     -0.00006     -0.00004 *
  *                                                          *
  ************************************************************
 
- *********** Symmetrised Stress Tensor ***********
- *                                               *
- *          Cartesian components (GPa)           *
- * --------------------------------------------- *
- *             x             y             z     *
- *                                               *
- *  x     -0.047901      0.000000      0.000000  *
- *  y      0.000000     -0.047901      0.000000  *
- *  z      0.000000      0.000000     -0.041108  *
- *                                               *
- *  Pressure:    0.0456                          *
- *                                               *
- *************************************************
-
  Pseudo atomic calculation performed for O 2s2 2p4
 
- Converged in 43 iterations to a total energy of -429.3506 eV
+ Converged in 46 iterations to a total energy of -429.3506 eV
 
  Pseudo atomic calculation performed for Zn 3d10 4s2
 
- Converged in 56 iterations to a total energy of -1740.2914 eV
+ Converged in 60 iterations to a total energy of -1740.2912 eV
 Charge spilling parameter for spin component 1 = 0.10%
 
             Orbital Populations       
      Ion    Atom   Orbital             Charge
   -------------------------------------------
       O     1      S                    1.858
-      O     1      Px                   1.679
-      O     1      Py                   1.641
-      O     1      Pz                   1.661
-      O     2      S                    1.859
-      O     2      Px                   1.679
-      O     2      Py                   1.642
+      O     1      Px                   1.660
+      O     1      Py                   1.660
+      O     1      Pz                   1.662
+      O     2      S                    1.858
+      O     2      Px                   1.660
+      O     2      Py                   1.660
       O     2      Pz                   1.662
      Zn     1      Dzz                  1.991
-     Zn     1      Dzy                  1.996
+     Zn     1      Dzy                  1.997
      Zn     1      Dzx                  1.997
-     Zn     1      Dxx-yy               1.995
-     Zn     1      Dxy                  1.992
-     Zn     1      S                    0.926
-     Zn     1      Px                   0.228
-     Zn     1      Py                   0.240
+     Zn     1      Dxx-yy               1.994
+     Zn     1      Dxy                  1.994
+     Zn     1      S                    0.921
+     Zn     1      Px                   0.232
+     Zn     1      Py                   0.232
      Zn     1      Pz                   0.231
-     Zn     1      S                   -0.437
+     Zn     1      S                   -0.428
      Zn     2      Dzz                  1.991
-     Zn     2      Dzy                  1.996
+     Zn     2      Dzy                  1.997
      Zn     2      Dzx                  1.997
-     Zn     2      Dxx-yy               1.995
-     Zn     2      Dxy                  1.993
-     Zn     2      S                    0.915
-     Zn     2      Px                   0.226
-     Zn     2      Py                   0.233
+     Zn     2      Dxx-yy               1.994
+     Zn     2      Dxy                  1.994
+     Zn     2      S                    0.921
+     Zn     2      Px                   0.232
+     Zn     2      Py                   0.232
      Zn     2      Pz                   0.231
-     Zn     2      S                   -0.418
+     Zn     2      S                   -0.428
   -------------------------------------------
                            Total:      36.000
   -------------------------------------------
 
      Atomic Populations (Mulliken)
      -----------------------------
-Species          Ion     s      p      d      f     Total  Charge (e)
-=====================================================================
-  O               1     1.86   4.98   0.00   0.00   6.84    -0.84
-  O               2     1.86   4.98   0.00   0.00   6.84    -0.84
-  Zn              1     0.49   0.69   9.97   0.00  11.16     0.84
-  Zn              2     0.49   0.69   9.97   0.00  11.16     0.84
-=====================================================================
+Species          Ion     s       p       d       f      Total   Charge (e)
+==========================================================================
+  O               1     1.858   4.982   0.000   0.000   6.840    -0.840
+  O               2     1.858   4.982   0.000   0.000   6.840    -0.840
+  Zn              1     0.493   0.695   9.972   0.000  11.160     0.840
+  Zn              2     0.493   0.695   9.972   0.000  11.160     0.840
+==========================================================================
 
                  Bond                   Population      Length (A)
 ======================================================================
-               O 1 -- Zn 2                   1.11        1.99924
                O 2 -- Zn 1                   1.11        1.99924
+               O 1 -- Zn 2                   1.11        1.99924
                O 2 -- Zn 2                   0.14        2.00855
                O 1 -- Zn 1                   0.14        2.00855
 ======================================================================
 
 
-Writing analysis data to ramand3.castep_bin
+Writing analysis data to raman.castep_bin
 
-Writing model to ramand3.check
+Writing model to raman.check
  
  A BibTeX formatted list of references used in this run has been written to 
- ramand3.bib
+ raman.bib
  
-Initialisation time =      5.34 s
-Calculation time    =  12213.55 s
-Finalisation time   =      0.09 s
-Total time          =  12218.98 s
-Peak Memory Use     = 1060964 kB
-  
-Overall parallel efficiency rating: Excellent (99%)                             
-  
+Initialisation time =      5.37 s
+Calculation time    =   2408.99 s
+Finalisation time   =      0.88 s
+Total time          =   2415.25 s
+Peak Memory Use     = 7512588 kB
+ 
+Overall parallel efficiency rating: Excellent (90%)
+ 
 Data was distributed by:-
-k-point (8-way); efficiency rating: Excellent (99%)                             
+k-point (24-way); efficiency rating: Excellent (92%)

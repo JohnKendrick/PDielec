@@ -18,12 +18,12 @@ geom_force_tol         = 0.008
 geom_stress_tol        = 0.005
 geom_disp_tol          = 1.0e-3
 geom_max_iter          = 50
-elec_energy_tol        = 1.0e-10
+elec_energy_tol        = 1.0e-11
 geom_method            = BFGS
 !
 ! Properties
 !
-calculate_stress        = true
+elec_eigenvalue_tol   = 1.0e-10
 calculate_densdiff      = false
 pdos_calculate_weights  = false
 num_dump_cycles         = 0
@@ -33,7 +33,7 @@ calculate_born_charges  = true
 phonon_sum_rule         = true
 born_charge_sum_rule    = true
 calculate_raman         = true
+efield_calculate_nonlinear = CHI2
 raman_method            = dfpt
 phonon_max_cycles       = 200
 efield_max_cycles       = 200
-bs_max_iter             = 200
