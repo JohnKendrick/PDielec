@@ -9,6 +9,7 @@ Covers:
   J6  Non-zero χ^(2) → at least one polar mode Raman tensor changes.
   J7  EO correction scales linearly with χ^(2) magnitude.
   J8  Zero Born charges → EO correction is zero for all modes.
+  J9  QE reader parses χ^(2) from the electro-optic tensor block.
 """
 import os
 import sys
@@ -149,6 +150,48 @@ class TestJ2AbinitParser:
         # The stored tensor is 2d; halving should give the raw d entries
         d_recovered = chi2 / 2.0
         assert abs(d_recovered[2, 2, 2] - (-33.3688)) < 0.01
+
+
+# ---------------------------------------------------------------------------
+# J9: QE reader parses χ^(2) from electro-optic tensor block
+# ---------------------------------------------------------------------------
+
+class TestJ9QEParser:
+    """J9: QE _read_nlo_susceptibility reads chi^2 from electro-optic tensors."""
+
+    def test_qe_electro_optic_block(self, tmp_path):
+        """Parse QE electro-optic matrices and convert them to chi^2 in pm/V."""
+        from PDielec.QEOutputReader import QEOutputReader
+
+        output = tmp_path / "qe.raman.log"
+        output.write_text(
+            """
+          Electro-optic tensor in cartesian axis:
+
+          (       1.000000000       2.000000000       3.000000000 )
+          (       4.000000000       5.000000000       6.000000000 )
+          (       7.000000000       8.000000000       9.000000000 )
+
+          (      10.000000000      11.000000000      12.000000000 )
+          (      13.000000000      14.000000000      15.000000000 )
+          (      16.000000000      17.000000000      18.000000000 )
+
+          (      19.000000000      20.000000000      21.000000000 )
+          (      22.000000000      23.000000000      24.000000000 )
+          (      25.000000000      26.000000000      27.000000000 )
+            """,
+            encoding="utf-8",
+        )
+        r = QEOutputReader([str(output)])
+        r.read_output()
+        chi2 = r.nonlinear_optical_susceptibility
+
+        assert chi2 is not None
+        assert chi2.shape == (3, 3, 3)
+        factor = 0.5 * 2.7502
+        assert chi2[0, 0, 0] == pytest.approx(1.0 * factor)
+        assert chi2[2, 2, 2] == pytest.approx(27.0 * factor)
+        assert chi2[1, 2, 1] == pytest.approx(15.0 * factor)
 
 
 # ---------------------------------------------------------------------------

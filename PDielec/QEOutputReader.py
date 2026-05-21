@@ -95,6 +95,10 @@ class QEOutputReader(GenericOutputReader):
         self.manage["celldm1"]  = (re.compile("^ *celldm.1. ="), self._read_celldm1)
         self.manage["pressure"]  = (re.compile("^ *total *stress *.Ry"), self._read_pressure)
         self.manage["nions"]  = (re.compile("^ *number of atoms/cell"), self._read_nions)
+        self.manage["nlo_susceptibility"] = (
+            re.compile(r"\s*Electro-optic tensor in cartesian axis:\s*$"),
+            self._read_nlo_susceptibility,
+        )
         self.manage["ramanTensors"] = (re.compile(r"\s*Raman tensor \(A\^2\)"), self._read_raman_tensors_log)
         for f in self._outputfiles:
             if f.lower().endswith(".xml"):
@@ -156,6 +160,63 @@ class QEOutputReader(GenericOutputReader):
         if self.debug:
             logger.debug(f"_read_pressure: pressure={self.pressure}")
         return
+
+    def _read_nlo_susceptibility(self, line):
+        """Read the nonlinear optical susceptibility tensor from QE ph.x output.
+
+        QE prints the electro-optic tensor as three 3x3 Cartesian matrices::
+
+            Electro-optic tensor in cartesian axis:
+
+            ( ... )
+            ( ... )
+            ( ... )
+
+            ( ... )
+            ...
+
+        The three matrices are the derivatives of the dielectric tensor with
+        respect to electric fields along x, y, and z, respectively.  QE states
+        that this Rydberg-a.u. electro-optic tensor should be multiplied by
+        1/2 to obtain static chi^2, and by 2.7502 to convert to pm/V.
+
+        The stored attribute ``nonlinear_optical_susceptibility`` is chi^2 in
+        pm/V, with layout ``chi2[i, j, k]``.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (already consumed by the manage loop).
+
+        Returns
+        -------
+        bool
+            True on success.
+
+        """
+        float_re = re.compile(r"[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[EeDd][-+]?\d+)?")
+        electro_optic = np.zeros((3, 3, 3))
+
+        for ifield in range(3):
+            rows_read = 0
+            while rows_read < 3:
+                data_line = self.file_descriptor.readline()
+                if data_line == "":
+                    logger.warning("  Incomplete QE electro-optic tensor block")
+                    return False
+                if "(" not in data_line:
+                    continue
+                values = [float(v.replace("D", "E").replace("d", "e")) for v in float_re.findall(data_line)]
+                if len(values) < 3:
+                    continue
+                electro_optic[rows_read, :, ifield] = values[:3]
+                rows_read += 1
+
+        # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
+        # QE documents chi^(2) = 0.5 * tensor, and 1 Rydberg-a.u. = 2.7502 pm/V.
+        self.nonlinear_optical_susceptibility = 0.5 * 2.7502 * electro_optic
+        logger.info("  Nonlinear optical susceptibility tensor read from QE output (χ^(2) in pm/V)")
+        return True
 
     def _read_celldm1(self, line):
         #
