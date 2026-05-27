@@ -7,8 +7,9 @@ Normal modes for Wurtzite
   outdir='.'
   epsil=.true.,
   trans=.true.,
-  lraman=.true.,
   asr=.false.,
-  fildyn='ZnO.dynG'
+  lraman = .true.,
+  elop = .true.,
+  fildyn='zno.raman.dynG'
  /
  0.0 0.0 0.0

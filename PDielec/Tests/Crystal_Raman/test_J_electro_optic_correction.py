@@ -30,9 +30,11 @@ from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standal
 _REPO = os.path.join(os.path.dirname(__file__), "..", "..", "..")
 _ABINIT_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "AbInit", "raman.abo")
 _CASTEP_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Castep", "raman.castep")
+_QE_TENSORS_FILE = os.path.join(_REPO, "Examples", "Powder_Raman", "QE", "tensors.xml")
 
 _have_abinit = os.path.exists(_ABINIT_FILE)
 _have_castep = os.path.exists(_CASTEP_FILE)
+_have_qe_tensors = os.path.exists(_QE_TENSORS_FILE)
 
 # ---------------------------------------------------------------------------
 # Shared helper: load Abinit reader and extract standalone-function inputs
@@ -142,14 +144,18 @@ class TestJ2AbinitParser:
                         f"Symmetry broken at [{i},{j},{k}] vs [{i},{k},{j}]"
 
     def test_d_to_chi2_factor(self, chi2):
-        """χ^(2) = 2d, so all values should equal exactly 2× the raw d values."""
-        # Verify by re-reading d directly and comparing
+        """χ^(2) = 2d; the ZnO zzz component is unchanged by point-group symmetrisation."""
         from PDielec.AbinitOutputReader import AbinitOutputReader
         r = AbinitOutputReader([_ABINIT_FILE])
         r.read_output()
-        # The stored tensor is 2d; halving should give the raw d entries
         d_recovered = chi2 / 2.0
         assert abs(d_recovered[2, 2, 2] - (-33.3688)) < 0.01
+
+    def test_zno_6mm_symmetry_after_reader_symmetrisation(self, chi2):
+        """ZnO should obey 6mm symmetry even if Abinit's raw d table does not."""
+        assert chi2[0, 0, 2] == pytest.approx(chi2[1, 1, 2], abs=1e-6)
+        assert chi2[0, 1, 2] == pytest.approx(0.0, abs=1e-6)
+        assert chi2[1, 0, 2] == pytest.approx(0.0, abs=1e-6)
 
 
 # ---------------------------------------------------------------------------
@@ -192,6 +198,51 @@ class TestJ9QEParser:
         assert chi2[0, 0, 0] == pytest.approx(1.0 * factor)
         assert chi2[2, 2, 2] == pytest.approx(27.0 * factor)
         assert chi2[1, 2, 1] == pytest.approx(15.0 * factor)
+
+    @pytest.mark.skipif(not _have_qe_tensors, reason="QE tensors.xml not present")
+    def test_qe_elop_tns_xml_block(self):
+        """Parse QE ELOP_TNS from tensors.xml and convert it to chi^2 in pm/V."""
+        from PDielec.QEOutputReader import QEOutputReader
+
+        r = QEOutputReader([_QE_TENSORS_FILE])
+        r.read_output()
+        chi2 = r.nonlinear_optical_susceptibility
+
+        assert chi2 is not None
+        assert chi2.shape == (3, 3, 3)
+        factor = 0.5 * 2.7502
+        assert chi2[0, 0, 2] == pytest.approx(133.8996252820044 * factor)
+        assert chi2[2, 2, 2] == pytest.approx(-125.0252942735832 * factor)
+
+    @pytest.mark.skipif(not _have_qe_tensors, reason="QE tensors.xml not present")
+    def test_qe_elop_tns_xml_preferred_over_log(self, tmp_path):
+        """Keep the higher-precision XML electro-optic tensor when a log block is also present."""
+        from PDielec.QEOutputReader import QEOutputReader
+
+        output = tmp_path / "qe.raman.log"
+        output.write_text(
+            """
+          Electro-optic tensor in cartesian axis:
+
+          (       1.000000000       1.000000000       1.000000000 )
+          (       1.000000000       1.000000000       1.000000000 )
+          (       1.000000000       1.000000000       1.000000000 )
+
+          (       1.000000000       1.000000000       1.000000000 )
+          (       1.000000000       1.000000000       1.000000000 )
+          (       1.000000000       1.000000000       1.000000000 )
+
+          (       1.000000000       1.000000000       1.000000000 )
+          (       1.000000000       1.000000000       1.000000000 )
+          (       1.000000000       1.000000000       1.000000000 )
+            """,
+            encoding="utf-8",
+        )
+        r = QEOutputReader([_QE_TENSORS_FILE, str(output)])
+        r.read_output()
+
+        factor = 0.5 * 2.7502
+        assert r.nonlinear_optical_susceptibility[0, 0, 2] == pytest.approx(133.8996252820044 * factor)
 
 
 # ---------------------------------------------------------------------------

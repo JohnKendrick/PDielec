@@ -65,6 +65,7 @@ class QEOutputReader(GenericOutputReader):
         self._alat                   = None
         self._alat_from_xml          = False
         self._qe_raman_suscept       = None
+        self._nlo_susceptibility_from_xml = False
         return
 
     def _read_output_files(self):
@@ -194,6 +195,9 @@ class QEOutputReader(GenericOutputReader):
             True on success.
 
         """
+        if self._nlo_susceptibility_from_xml:
+            return True
+
         float_re = re.compile(r"[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[EeDd][-+]?\d+)?")
         electro_optic = np.zeros((3, 3, 3))
 
@@ -964,7 +968,48 @@ class QEOutputReader(GenericOutputReader):
             raman_tns_list = tensorsxml.findall("RAMAN_TNS")
             if raman_tns_list:
                 self._read_raman_tensors_xml(raman_tns_list)
+            self._read_nlo_susceptibility_xml(tensorsxml.find("ELOP_TNS"))
         return
+
+    def _read_nlo_susceptibility_xml(self, elop_tns_xml):
+        """Read the nonlinear optical susceptibility tensor from QE ``tensors.xml``.
+
+        The ``ELOP_TNS`` element stores the same electro-optic tensor printed
+        in the ph.x output log, but with the full XML precision.  Values are
+        arranged as three consecutive 3x3 matrices for electric fields along
+        x, y, and z.  The stored attribute is chi^2 in pm/V, with layout
+        ``chi2[i, j, k]``.
+
+        Parameters
+        ----------
+        elop_tns_xml : xml.etree.ElementTree.Element or None
+            The ``ELOP_TNS`` element from the ``EF_TENSORS`` block.
+
+        Returns
+        -------
+        bool
+            True if the tensor was read, False otherwise.
+
+        """
+        if elop_tns_xml is None or elop_tns_xml.text is None:
+            return False
+
+        values = [float(f) for f in elop_tns_xml.text.split()]
+        if len(values) != 27:
+            logger.warning(f"  QE ELOP_TNS block contains {len(values)} values; expected 27")
+            return False
+
+        electro_optic = np.zeros((3, 3, 3))
+        rows = np.array(values).reshape(9, 3)
+        for ifield in range(3):
+            electro_optic[:, :, ifield] = rows[ifield * 3:(ifield + 1) * 3, :]
+
+        # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
+        # QE documents chi^(2) = 0.5 * tensor, and 1 Rydberg-a.u. = 2.7502 pm/V.
+        self.nonlinear_optical_susceptibility = 0.5 * 2.7502 * electro_optic
+        self._nlo_susceptibility_from_xml = True
+        logger.info("  Nonlinear optical susceptibility tensor read from QE tensors.xml (χ^(2) in pm/V)")
+        return True
 
     def _effective_charges(self,effective_charges_xml):
         """Process the effective_charges element(s).

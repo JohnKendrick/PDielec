@@ -215,6 +215,96 @@ class GenericOutputReader:
 
         """
         self._read_output_files()
+        self._symmetrise_nonlinear_optical_susceptibility()
+        return
+
+    def _symmetrise_nonlinear_optical_susceptibility(self):
+        """Symmetrise the parsed Cartesian χ^(2) tensor using the final unit-cell point group."""
+        if self.nonlinear_optical_susceptibility is None:
+            return
+        chi2_sym, metrics = self._symmetrise_cartesian_rank3_tensor(self.nonlinear_optical_susceptibility)
+        self._report_rank3_symmetry_discrepancy(metrics)
+        self.nonlinear_optical_susceptibility = chi2_sym
+        return
+
+    def _symmetrise_cartesian_rank3_tensor(self, tensor):
+        """Return a Cartesian rank-3 polar tensor averaged over the current cell point group."""
+        metrics = {
+            "available": False,
+            "n_operations": 0,
+            "max_abs": 0.0,
+            "rms_abs": 0.0,
+            "relative_max": 0.0,
+        }
+        if not self.unit_cells:
+            return tensor, metrics
+        cell = self.unit_cells[-1]
+        if len(cell.fractional_coordinates) == 0 or len(cell.element_names) == 0:
+            return tensor, metrics
+        try:
+            import spglib
+            numbers = cell.get_atomic_numbers()
+            dataset = spglib.get_symmetry(
+                (cell.lattice, cell.fractional_coordinates, numbers),
+                symprec=1.0e-5,
+            )
+        except Exception as exc:
+            logger.debug(f"Could not symmetrise rank-3 tensor: {exc}")
+            return tensor, metrics
+        rotations = getattr(dataset, "rotations", None)
+        if rotations is None and hasattr(dataset, "get"):
+            rotations = dataset.get("rotations")
+        if rotations is None or len(rotations) == 0:
+            return tensor, metrics
+
+        lattice_t = np.asarray(cell.lattice, dtype=float).T
+        lattice_t_inv = np.linalg.inv(lattice_t)
+        tensor = np.asarray(tensor, dtype=float)
+        sym_tensor = np.zeros_like(tensor, dtype=float)
+        for rotation in rotations:
+            cart_rotation = lattice_t @ np.asarray(rotation, dtype=float) @ lattice_t_inv
+            sym_tensor += np.einsum(
+                "ia,jb,kc,abc->ijk",
+                cart_rotation,
+                cart_rotation,
+                cart_rotation,
+                tensor,
+            )
+        sym_tensor /= float(len(rotations))
+
+        diff = tensor - sym_tensor
+        max_tensor = float(np.max(np.abs(tensor)))
+        max_abs = float(np.max(np.abs(diff)))
+        metrics.update({
+            "available": True,
+            "n_operations": len(rotations),
+            "max_abs": max_abs,
+            "rms_abs": float(np.sqrt(np.mean(diff * diff))),
+            "relative_max": max_abs / max(max_tensor, 1.0e-30),
+        })
+        return sym_tensor, metrics
+
+    def _report_rank3_symmetry_discrepancy(self, metrics):
+        """Report large point-group violations in a parsed Cartesian rank-3 tensor."""
+        if not metrics["available"]:
+            return
+        max_abs = metrics["max_abs"]
+        relative_max = metrics["relative_max"]
+        rms_abs = metrics["rms_abs"]
+        n_operations = metrics["n_operations"]
+        logger.info(
+            f"  {self.type} χ^(2) point-group discrepancy before symmetrisation: "
+            f"max={max_abs:.6g} pm/V, rms={rms_abs:.6g} pm/V, relative={relative_max:.6g}, "
+            f"operations={n_operations}",
+        )
+        if max_abs > 1.0e-6 and relative_max > 1.0e-3:
+            print(
+                f"Warning: {self.type} χ^(2) tensor does not transform according to the "
+                "unit-cell point group. "
+                f"max |χ^(2) - sym(χ^(2))| = {max_abs:.6g} pm/V, "
+                f"rms = {rms_abs:.6g} pm/V, relative max = {relative_max:.6g}; "
+                f"using the point-group symmetrised tensor ({n_operations} operations).",
+            )
         return
 
     def reset_masses(self):
@@ -513,6 +603,7 @@ class GenericOutputReader:
         -------
         ndarray or None
             χ^(2) tensor, shape (3, 3, 3), units pm/V; None if not available.
+
         """
         return self.nonlinear_optical_susceptibility
 

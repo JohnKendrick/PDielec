@@ -236,6 +236,7 @@ class AbinitOutputReader(GenericOutputReader):
         -------
         bool
             True on success.
+
         """
         # skip "in cartesian coordinates" and "i1dir  i2dir  i3dir  d" header
         self.file_descriptor.readline()

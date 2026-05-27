@@ -16,7 +16,6 @@
 import copy
 import logging
 import os
-import sys
 
 import psutil
 from qtpy.QtCore import Qt
@@ -910,21 +909,17 @@ class NoteBook(QWidget):
 
         Notes
         -----
-        This function checks for specific key combinations (Control + S, and Control + C) and performs actions
-        accordingly: - Control + S: Calls the `print_settings` method. - Control + C: Prints a message and exits the
-        program.
+        This function checks for Control + S and calls the `print_settings` method.
 
         """        
         logger.debug("Start:: keyPressEvent")
-        if (e.key() == Qt.Key_S)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
+        if (e.key() == Qt.Key_S) and (QApplication.keyboardModifiers() & Qt.ControlModifier):
             logger.debug("Control S has been pressed")
             self.print_settings()
-        elif (e.key() == Qt.Key_C)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
-            logger.debug("Control C has been pressed")
-            logger.debug("The program will close down")
-            sys.exit()
+            e.accept()
+            return
         logger.debug("Finished:: keyPressEvent")
-        return
+        super().keyPressEvent(e)
 
     def progressbars_set_maximum( self, maximum ):
         """Set the maximum value for all progress bars in an object and reset their current status.
@@ -997,5 +992,4 @@ class NoteBook(QWidget):
         self.progressbars.append(bar)
         self.progressbars_set_maximum(self.progressbar_maximum)
         return
-
 

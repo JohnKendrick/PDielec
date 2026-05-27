@@ -19,7 +19,10 @@ import logging
 
 import numpy as np
 from qtpy.QtCore import QCoreApplication, QSize, Qt
+from qtpy.QtGui import QKeySequence
 from qtpy.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
     QCheckBox,
     QComboBox,
     QDoubleSpinBox,
@@ -87,6 +90,77 @@ class FixedQTableWidget(QTableWidget):
         self.columns = columns
         self.rows = rows
         super(QTableWidget, self).__init__(*args)
+        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionBehavior(QAbstractItemView.SelectItems)
+
+    def keyPressEvent(self, event):
+        """Copy and paste rectangular table selections with the system clipboard."""
+        if event.matches(QKeySequence.Copy):
+            self.copy_selection_to_clipboard()
+            event.accept()
+            return
+        if event.matches(QKeySequence.Paste):
+            self.paste_clipboard_from_selection()
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
+    def copy_selection_to_clipboard(self):
+        """Copy selected cells as tab-separated text."""
+        selected = {(index.row(), index.column()) for index in self.selectedIndexes() if index.isValid()}
+        if not selected:
+            return
+        min_row = min(row for row, _col in selected)
+        max_row = max(row for row, _col in selected)
+        min_col = min(col for _row, col in selected)
+        max_col = max(col for _row, col in selected)
+
+        rows = []
+        for row in range(min_row, max_row + 1):
+            values = []
+            for col in range(min_col, max_col + 1):
+                if (row, col) in selected:
+                    item = self.item(row, col)
+                    values.append("" if item is None else item.text())
+                else:
+                    values.append("")
+            rows.append("\t".join(values))
+        QApplication.clipboard().setText("\n".join(rows))
+
+    def paste_clipboard_from_selection(self):
+        """Paste tab-separated text into editable cells starting at the selection."""
+        text = QApplication.clipboard().text()
+        if not text:
+            return
+
+        lines = text.splitlines()
+        values = [line.split("\t") for line in lines]
+        if not values:
+            return
+
+        ranges = self.selectedRanges()
+        if ranges:
+            start_row = min(selection.topRow() for selection in ranges)
+            start_col = min(selection.leftColumn() for selection in ranges)
+        else:
+            start_row = self.currentRow() if self.currentRow() >= 0 else 0
+            start_col = self.currentColumn() if self.currentColumn() >= 0 else 0
+
+        for row_offset, row_values in enumerate(values):
+            row = start_row + row_offset
+            if row >= self.rowCount():
+                break
+            for col_offset, value in enumerate(row_values):
+                col = start_col + col_offset
+                if col >= self.columnCount():
+                    break
+                item = self.item(row, col)
+                if item is None:
+                    item = QTableWidgetItem(value)
+                    item.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
+                    self.setItem(row, col, item)
+                elif item.flags() & Qt.ItemIsEnabled and item.flags() & Qt.ItemIsEditable:
+                    item.setText(value)
 
     def sizeHint(self):
         """Calculate the suggested dimensions for the widget based on its content.
@@ -788,15 +862,14 @@ class SettingsTab(QWidget):
                 item.setCheckState(Qt.Checked)
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
                 freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
-                otherFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled
+                otherFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable
             else:
 
                 # Set selection flags for inactive modes
-                itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled )
-                freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
+                itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable )
                 item.setCheckState(Qt.Unchecked)
-                freqFlags = item.flags() & Qt.NoItemFlags
-                otherFlags = item.flags() & Qt.NoItemFlags
+                freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable
+                otherFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable
             items.append(item)
 
             # TO frequency column cm-1 (col 1)
