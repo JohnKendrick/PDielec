@@ -1,0 +1,45 @@
+&CONTROL
+  calculation  = "vc-relax",
+  prefix       = "ZnO",
+  pseudo_dir   = "/home/john/Data/PseudoPotentials/",
+  outdir       = ".",
+  nstep        = 50,
+  etot_conv_thr= 2.0D-7,
+  forc_conv_thr= 2.0D-6,
+/
+&SYSTEM
+  ibrav=0, nat=4, ntyp= 2,
+  occupations='fixed', 
+  ecutwfc =140.0, !better 140 was 80
+  celldm(1) = 6.141610
+/
+&ELECTRONS
+  diagonalization = 'cg',
+  mixing_mode='plain',
+  mixing_beta = 0.3,
+  startingwfc='atomic',
+  conv_thr =  1.0d-10
+/
+&IONS
+  ion_dynamics = 'bfgs',
+  pot_extrapolation = 'none',
+  wfc_extrapolation = 'none',
+/
+&CELL
+  cell_dynamics = 'bfgs',
+/
+CELL_PARAMETERS alat
+   0.873640933  -0.504396828  -0.000000000
+   0.000000000   1.008793656   0.000000000
+  -0.000000000   0.000000000   1.627462335
+ATOMIC_SPECIES
+  Zn 65.380  Zn_ONCV_PBE-1.2.upf
+  O  15.999   O_ONCV_PBE-1.2.upf
+ATOMIC_POSITIONS {crystal}
+Zn            0.3333333333        0.6666666667        0.0016158154
+Zn            0.6666666667        0.3333333333        0.5016158154
+O             0.3333333333        0.6666666667        0.3808841846
+O             0.6666666667        0.3333333333        0.8808841846
+
+K_POINTS automatic
+11 11 6 0 0 0

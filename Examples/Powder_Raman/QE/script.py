@@ -7,7 +7,7 @@ self.notebook.switch_scenario(0,scenarioType="Powder Raman")
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'Quantum espresso'
-tab.settings['Output file name'] = 'ZnO.xml'
+tab.settings['Output file name'] = 'zno.raman.log'
 tab.settings['Excel file name'] = 'results.xlsx'
 tab.settings['Script file name'] = 'script.py'
 tab.settings['Compatibility mode'] = 'Linux'
